@@ -87,16 +87,20 @@ public class TestGUI extends GridPane {
 				labelArray[i][j] = new Label(iString);
 				this.add(labelArray[i][j], i, j);
 				System.out.println(i +" - "+j);
+				//labelArray[i][j].setPrefHeight(20);
+				//labelArray[i][j].setPrefWidth(20);
 				
 			}
 		}
 		labelAnfang = labelArray[0][0];
-		testSpieler = new Circle(50);
+		testSpieler = new Circle(20);
 		testSpieler.setFill(Color.ROYALBLUE);
 		this.add(testSpieler, 0, 0);
+		//this.setRotate(20);
+		
 	}
 
-	public Label[] getLabelArray() {
+	public Label[][] getLabelArray() {
 		return labelArray;
 	}
 
@@ -109,6 +113,11 @@ public class TestGUI extends GridPane {
 		Background hintergrund = new Background(fill);
 		label.setBackground(hintergrund);
 	}
+	
+	public void revertBackground(Label label){
+		label.setBackground(null);
+	}
+	
 		public Circle getTestSpieler() {
 		return testSpieler;
 	}
@@ -140,4 +149,6 @@ public class TestGUI extends GridPane {
 	public void setSceneYo(Scene sceneYo) {
 		this.sceneYo = sceneYo;
 	}
+	
+	
 }
