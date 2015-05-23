@@ -1,5 +1,7 @@
 package testGui;
 
+import javax.print.attribute.Size2DSyntax;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
@@ -23,13 +25,14 @@ public class TestApp extends Application {
 	private KeyValue keyValue;
 	private Background hintergrund;
 	private BackgroundFill fill;
+	private int size = 23;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		testGUI = new TestGUI();
+		testGUI = new TestGUI(size);
 		testGUI.start();
-		for (int i = 0; i<testGUI.getLabelArray().length;i++){
-			for (int j = 0; j<testGUI.getLabelArray()[j].length;j++){
+		for (int i = 0; i<testGUI.getLabelArray().length-1;i++){
+			for (int j = 0; j<testGUI.getLabelArray()[j].length-1;j++){
 				Label momentanesLabel = testGUI.getLabelArray()[i][j];
 				momentanesLabel.setOnMouseClicked(e -> movePlayer(testGUI.getTestSpieler(), momentanesLabel));
 				
@@ -62,13 +65,13 @@ public class TestApp extends Application {
 	     if (linksInt<0){
 	    	 linksInt=0;
 	     }
-	     if (rechtsInt>24){
+	     if (rechtsInt>size){
 	    	 rechtsInt = 0;
 	     }
 	     if (obenInt<0){
 	    	 obenInt = 0;
 	     }
-	     if (untenInt>24){
+	     if (untenInt>size){
 	    	 untenInt = 0;
 	     }
 	     
@@ -90,14 +93,14 @@ public class TestApp extends Application {
 	     if (linksIntAlt<0){
 	    	 linksIntAlt=0;
 	     }
-	     if (rechtsIntAlt>23){
-	    	 rechtsIntAlt = 23;
+	     if (rechtsIntAlt>size){
+	    	 rechtsIntAlt = size;
 	     }
 	     if (obenIntAlt<0){
 	    	 obenIntAlt = 0;
 	     }
-	     if (untenIntAlt>24){
-	    	 untenIntAlt = 24;
+	     if (untenIntAlt>size){
+	    	 untenIntAlt = size;
 	     }
 	     
 	     Label linksAlt = testGUI.getLabelArray()[columnIndexAlt][linksIntAlt];
