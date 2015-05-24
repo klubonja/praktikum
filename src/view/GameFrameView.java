@@ -28,9 +28,11 @@ public class GameFrameView extends GridPane{
 	MenuItem startGame;
 	GridPane notizien;
 	GridPane diceFrame;
+	GridPane dice;
 	Button[][] buttons;
 	LinkedList<Label> labels = new LinkedList<Label>();
 	Button rollDice;
+	TextArea chatArea;
 	
 	final Image dice1 = new Image("http://dobbelsteen.virtuworld.net/img/1c.gif");
 	final Image dice2 = new Image("http://dobbelsteen.virtuworld.net/img/2c.gif");
@@ -41,10 +43,6 @@ public class GameFrameView extends GridPane{
 	
 	ImageView d1 = new ImageView(dice1);
 	ImageView d2 = new ImageView(dice1);
-	ImageView d3 = new ImageView(dice1);
-	ImageView d4 = new ImageView(dice1);
-	ImageView d5 = new ImageView(dice1);
-	ImageView d6 = new ImageView(dice1);
 	
 	public GameFrameView(){
 		
@@ -82,7 +80,7 @@ public class GameFrameView extends GridPane{
 		//chat area
 		VBox chat = new VBox(3);
 		Label chatLabel = new Label("Chat");
-		TextArea chatArea = new TextArea();
+		chatArea = new TextArea();
 		chatArea.setEditable(false);
 		HBox chatBox = new HBox(3);
 		Button chatSend = new Button("Send");
@@ -93,7 +91,7 @@ public class GameFrameView extends GridPane{
 		chat.getChildren().addAll(chatLabel,chatArea,chatBox);
 		
 		//dice area
-		GridPane dice = new GridPane();
+		dice = new GridPane();
 		dice.setGridLinesVisible(true);
 		dice.setVgap(10);
 		dice.setHgap(10);
@@ -102,10 +100,10 @@ public class GameFrameView extends GridPane{
 		dice.getColumnConstraints().add(new ColumnConstraints(150));
 		dice.getColumnConstraints().add(new ColumnConstraints(150));
 		rollDice = new Button("Roll!");
-		GridPane.setConstraints(rollDice,0,1);
+		GridPane.setConstraints(rollDice,0,0);
 		GridPane.setColumnSpan(rollDice, 2);
 		GridPane.setHalignment(rollDice, HPos.CENTER);
-		GridPane.setValignment(rollDice, VPos.CENTER);
+		GridPane.setValignment(rollDice, VPos.BOTTOM);
 		GridPane.setConstraints(d1,0,0);
 		d1.setFitHeight(100);
 		d1.setFitWidth(100);
