@@ -39,7 +39,7 @@ public class TestApp extends Application {
 			}
 		}		
 	}
-
+//
 	public void movePlayer(Circle spieler, Label ziel){
 		
 		int umfang = 5;
