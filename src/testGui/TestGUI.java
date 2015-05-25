@@ -14,6 +14,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class TestGUI extends GridPane {
+	/*
 	private Label 
 	label0_0, label0_1, label0_2, label0_3, label0_4, label0_5, label0_6, label0_7, label0_8, label0_9, label0_10, label0_11, label0_12, label0_13, label0_14, label0_15, label0_16, label0_17, label0_18, label0_19, label0_20, label0_21, label0_22, label0_23, 
 	label1_0, label1_1, label1_2, label1_3, label1_4, label1_5, label1_6, label1_7, label1_8, label1_9, label1_10, label1_11, label1_12, label1_13, label1_14, label1_15, label1_16, label1_17, label1_18, label1_19, label1_20, label1_21, label1_22, label1_23,
@@ -41,7 +42,7 @@ public class TestGUI extends GridPane {
 	label23_0, label23_1, label23_2, label23_3, label23_4, label23_5, label23_6, label23_7, label23_8, label23_9, label23_10, label23_11, label23_12, label23_13, label23_14, label23_15, label23_16, label23_17, label23_18, label23_19, label23_20, label23_21, label23_22, label23_23,
 	label24_0, label24_1, label24_2, label24_3, label24_4, label24_5, label24_6, label24_7, label24_8, label24_9, label24_10, label24_11, label24_12, label24_13, label24_14, label24_15, label24_16, label24_17, label24_18, label24_19, label24_20, label24_21, label24_22, label24_23
 	;
-	/*
+	
 	Label [][] labelArray = {{label0_0, label0_1, label0_2, label0_3, label0_4, label0_5, label0_6, label0_7, label0_8, label0_9, label0_10, label0_11, label0_12, label0_13, label0_14, label0_15, label0_16, label0_17, label0_18, label0_19, label0_20, label0_21, label0_22, label0_23}, 
         	{label1_0, label1_1, label1_2, label1_3, label1_4, label1_5, label1_6, label1_7, label1_8, label1_9, label1_10, label1_11, label1_12, label1_13, label1_14, label1_15, label1_16, label1_17, label1_18, label1_19, label1_20, label1_21, label1_22, label1_23},
         	{label2_0, label2_1, label2_2, label2_3, label2_4, label2_5, label2_6, label2_7, label2_8, label2_9, label2_10, label2_11, label2_12, label2_13, label2_14, label2_15, label2_16, label2_17, label2_18, label2_19, label2_20, label2_21, label2_22, label2_23},
@@ -88,7 +89,7 @@ public class TestGUI extends GridPane {
 	
 	public void start(){
 	this.stage = new Stage();
-	this.sceneYo = new Scene(this,600,600);
+	this.sceneYo = new Scene(this,1100,600);
 	this.stage.setScene(sceneYo);
 	setLayout();
 	this.stage.show();
