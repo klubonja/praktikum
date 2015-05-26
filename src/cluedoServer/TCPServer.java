@@ -1,5 +1,6 @@
 package cluedoServer;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.io.*; 
@@ -17,7 +18,7 @@ import javafx.stage.WindowEvent;
  */
 public class TCPServer  {
 	
-	public ExecutorService pool;
+	public CluedoGroup[] groups;
 	public ServerSocket socket;
 	final CluedoServerGUI gui;
 	int port;
@@ -31,6 +32,7 @@ public class TCPServer  {
 		port = 7000;		
 		running = false;
 		setListener();
+		createGroups();
 		System.out.println("Server Start");		
 	}
 	
@@ -39,10 +41,14 @@ public class TCPServer  {
 	 * aufgebaute verbindungen werden auf eigenen threads ausgeführt
 	 * @throws IOException
 	 */
+	private void createGroups(){
+		for(int i = 0; i < 4; i++) groups[i] = new CluedoGroup(6,"reduzierterHund"+i);
+	}
+	
 	private void startServer()  throws IOException{
-		pool = Executors.newFixedThreadPool(poolSize);		
+		
 		socket = new ServerSocket(port);	
-		networkService = new NetworkService(socket, pool, port, gui);
+		//networkService = new NetworkService(socket, pool, port, gui);
 		Thread t = new Thread(networkService);
 		t.start();
 		System.out.println("Server running");
