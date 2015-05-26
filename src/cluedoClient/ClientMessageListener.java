@@ -1,6 +1,7 @@
 package cluedoClient;
 
 import java.io.BufferedWriter;
+import json.*;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -22,13 +23,23 @@ class clientMessageListener implements Runnable{
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
-	int id = 0;
+	String id;
 	
 	public clientMessageListener(Socket cs,CluedoClientGUI g,int id) {
 		cSocket = cs;
 		gui = g;
-		this.id = id;
-		System.out.println(gui.loginPrompt().toString());
+		login();		
+	}
+	
+	private final boolean login(){
+		CluedoJSON handShake = new CluedoJSON("login");
+		String[] loginData = gui.loginPrompt();
+		handShake.put("nick", loginData[0]);
+		handShake.put("group", loginData[1]);
+		sendMsg(handShake.toString());
+		
+		return true;
+		
 	}
 	
 	public void run(){

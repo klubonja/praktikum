@@ -58,8 +58,7 @@ public class TCPClient {
 			
 			Thread t1 = new Thread(new ServerListener(cSocket,gui,id));
 			t1.start();
-			clientMessageListener cml = new clientMessageListener(cSocket,gui,id);
-			Thread t2 = new Thread(cml);
+			Thread t2 = new Thread(new clientMessageListener(cSocket,gui,id));
 			t2.start();
 			
 			gui.setStatus("Connected to "+ cSocket.getInetAddress().toString());	
