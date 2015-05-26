@@ -110,6 +110,16 @@ public class CluedoClientGUI {
 		return ipr.returnIp();
 	}
     
+    public String[] loginPrompt(){
+    	Stage loginStage = new Stage();
+    	LoginPrompt loginPrompt = new LoginPrompt(loginStage);
+    	Scene secondary = new Scene(loginPrompt,300,200);		
+		loginStage.setScene(secondary);
+		loginStage.showAndWait();	
+		
+		return loginPrompt.returnLoginData();
+    }
+    
     public String getUserMessage(){
     	String m = inputField.getText();
     	inputField.setText("");

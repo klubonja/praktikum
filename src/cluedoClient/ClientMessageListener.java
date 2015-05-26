@@ -28,6 +28,7 @@ class clientMessageListener implements Runnable{
 		cSocket = cs;
 		gui = g;
 		this.id = id;
+		System.out.println(gui.loginPrompt().toString());
 	}
 	
 	public void run(){

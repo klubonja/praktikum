@@ -79,7 +79,7 @@ class NetworkService implements Runnable{
 			System.out.println("thread runningflag: "+netWorkServiceThreadRunning+"");
 			notifyAllClients("CLOSE");
 			pool.shutdownNow();	
-			if (pool.isShutdown()) System.out.println("threadpoolshutdoen");// ist scheisse
+			if (pool.isShutdown()) System.out.println("threadpoolshutdown");// ist scheisse
 		}		
 	}
 	
@@ -102,9 +102,7 @@ class NetworkService implements Runnable{
 	}
 	
 	/**
-	 * wartet auf eingehende UDP verbindung mit client
-	 * schickt ein spieldatenobjekt zur begrüssung
-	 * @author sanghun, jakob
+	
 	 * @param port
 	 * @param dataJSON
 	 * @return
