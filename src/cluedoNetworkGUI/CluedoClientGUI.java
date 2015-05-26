@@ -113,7 +113,7 @@ public class CluedoClientGUI {
     public String[] loginPrompt(){
     	Stage loginStage = new Stage();
     	LoginPrompt loginPrompt = new LoginPrompt(loginStage);
-    	Scene secondary = new Scene(loginPrompt,300,200);		
+    	Scene secondary = new Scene(loginPrompt,300,400);		
 		loginStage.setScene(secondary);
 		loginStage.showAndWait();	
 		

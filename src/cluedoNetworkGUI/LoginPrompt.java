@@ -7,8 +7,10 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -20,11 +22,11 @@ public class LoginPrompt extends GridPane {
 	
 	
 	String[] labelNames = {"Nickname","Groupname"};
-	LoginTextField[] iFields = new LoginTextField[labelNames.length];
 	int[] reqLength = {3,1};
-	int nickMinLength = 3;
+	LoginTextField[] iFields = new LoginTextField[labelNames.length];
 	
-	TextArea errs = new TextArea();
+	
+	Text errs = new Text();
 	Text title = new Text("Login");
 	final Button submit = new Button("login");
 	String[] returnData = new String[labelNames.length];
@@ -34,10 +36,7 @@ public class LoginPrompt extends GridPane {
 	public LoginPrompt(Stage s) {
 		super();
 		stage = s;
-		setFields();
-		init();
-		
-		
+		init();		
 	}
 	
 	private void setFields(){
@@ -46,22 +45,26 @@ public class LoginPrompt extends GridPane {
 		}		
 	}
 	
-	private void init(){		
+	private void init(){
+		setFields();
+		requestFocus();
 		
 		title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
 		this.add(title, 0, 0);
-		errs.setStyle("-fx-text-fill: red;");
-		this.add(errs,1,0);		
+		errs.setStyle("-fx-text-fill: red;");		
+		this.add(errs,0,1);		
 		
 		for (int i = 0;i < labelNames.length; i++){				
 			this.add(iFields[i],0,i+2);
-		}	
+		}			
 		
-		
-		this.add(submit, labelNames.length+2, 0);
+		this.add(submit, 0,labelNames.length+2);
 		
 		this.setPadding(new Insets(25, 25, 25, 25));
-        this.setGridLinesVisible(true);	
+        ColumnConstraints col0 = new ColumnConstraints();
+		col0.setPercentWidth(100);
+		this.getColumnConstraints().add(col0);
+        this.setGridLinesVisible(false);	
         
         addHandlers();
 	 }
