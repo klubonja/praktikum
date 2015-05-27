@@ -5,13 +5,14 @@ import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -54,6 +55,10 @@ public class TestApp extends Application {
 	private int xZiel;
 	private int yZiel;
 	
+	private String textbuffer;
+	private Background backgroundbuffer;
+	private Font fontbuffer;
+	
 	/**
 	 * Hier wird die Stage gestartet und den Kacheln eine Methode für 
 	 * setOnMouseClicked zugewiesen.
@@ -69,23 +74,61 @@ public class TestApp extends Application {
 		for (int i = 0; i<testGUI.getLabelArray().length-1;i++){
 			for (int j = 0; j<testGUI.getLabelArray()[j].length-1;j++){
 				Kachel momentaneKachel = testGUI.getLabelArray()[i][j];
-				if (momentaneKachel.isIstRaum()==false){
-				momentaneKachel.setOnMouseClicked(e -> dasIstEinFeld(testGUI.getTestSpieler(), momentaneKachel));
-				}
-				else{
-					momentaneKachel.setOnMouseClicked(e -> dasIsEinRaum());
-				}
+					if (momentaneKachel.isIstRaum()==false){
+						momentaneKachel.setOnMouseClicked(e -> dasIstEinFeld(testGUI.getTestSpieler(), momentaneKachel));
+					}
+					else{
+						momentaneKachel.setOnMouseClicked(e -> dasIsEinRaum());						
+					}
+				momentaneKachel.setOnMouseExited(e -> persil(momentaneKachel));
+				momentaneKachel.setOnMouseEntered(e -> einfaerben(momentaneKachel));				
 			}
 		}		
 	}
 	
+	/**
+	 * Wird ausgegeben, wenn jemand auf einen Raum clickt.
+	 */
 	public void dasIsEinRaum(){
 		System.out.println("Das ist ein Raum, alter");
+	}
+	
+	/**
+	 * Färbt die Kachel ein bzw. setzt den Text auf "nope".
+	 * @param momentaneKachel
+	 */
+	public void einfaerben(Kachel momentaneKachel){
+		if (momentaneKachel.isIstRaum()==true){
+			textbuffer = momentaneKachel.getText();
+			fontbuffer = momentaneKachel.getFont();
+			momentaneKachel.setFont(Font.font ("Regular", 17));
+			momentaneKachel.setText("nope");
+		}
+		else {
+		backgroundbuffer = momentaneKachel.getBackground();
+		momentaneKachel.setBackgroundColor(momentaneKachel, Color.GREEN);
+		}
+	}
+	
+	/**
+	 * Bereinigt die Kachel von Schmutz aller Art!
+	 * @param momentaneKachel
+	 */
+	public void persil(Kachel momentaneKachel){
+		if (momentaneKachel.isIstRaum()==true){
+			momentaneKachel.setText(textbuffer);
+			momentaneKachel.setFont(fontbuffer);
+		}
+		else {
+			momentaneKachel.setBackground(backgroundbuffer);			
+		}
 	}
 	
 	public void dasIstEinFeld(Circle spielerDarstellung, Kachel ziel){
 		movePlayer(spielerDarstellung, ziel);
 	}
+	
+	
 	
 	/**
 	 * Die Methode, welche durch das ClickEvent ausgelöst wird.
@@ -99,37 +142,45 @@ public class TestApp extends Application {
 		
 		reset(spielerDarstellung,ziel);
 			
-			System.out.println("vorher : x Distanz   " +xDistanz);
-			System.out.println("vorher : y Distanz   " +yDistanz);
-			
-			while( (xDistanz != 0) ^ (yDistanz != 0) ){
-				pathfinder(xDistanz, yDistanz, jetzigesFeld);
-			}
-			
-			while( (xDistanz != 0) && (yDistanz != 0) ){
-				pathfinder(xDistanz, yDistanz, jetzigesFeld);
-			}
-			
+		System.out.println("vorher : x Distanz   " +xDistanz);
+		System.out.println("vorher : y Distanz   " +yDistanz);
+		
+		
+		while( (xDistanz != 0) && (yDistanz != 0) ){
+			pathfinder(xDistanz, yDistanz, jetzigesFeld);
+		}
+		
+		while( (xDistanz != 0) ^ (yDistanz != 0) ){
+			pathfinder(xDistanz, yDistanz, jetzigesFeld);
+		}
+		
 			
 
-			System.out.println("nachher : x Distanz   " +xDistanz);
-			System.out.println("nachher : y Distanz   " +yDistanz);
+		System.out.println("nachher : x Distanz   " +xDistanz);
+		System.out.println("nachher : y Distanz   " +yDistanz);
 			
-		 moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);				
+		// Animation
+	    moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);				
 		
-			System.out.println("Reihe : " +(testGUI.getRowIndex(this.jetzigesFeld)+1));
-			System.out.println("Spalte : " +(testGUI.getColumnIndex(this.jetzigesFeld)+1));
-			
-			System.out.println("x Spieler : " +testGUI.getSpieler().getxPosition() +"| x Ziel : " +xZiel);
-			System.out.println("y Spieler : " +testGUI.getSpieler().getyPosition() +"| y Ziel : " +yZiel);
-			
+		System.out.println("Reihe : " +(testGUI.getRowIndex(this.jetzigesFeld)+1));
+		System.out.println("Spalte : " +(testGUI.getColumnIndex(this.jetzigesFeld)+1));
 		
+		System.out.println("x Spieler : " +testGUI.getSpieler().getxPosition() +"| x Ziel : " +xZiel);
+		System.out.println("y Spieler : " +testGUI.getSpieler().getyPosition() +"| y Ziel : " +yZiel);
+			
+			
+		if (testGUI.getSpieler().getxPosition() == xZiel && testGUI.getSpieler().getyPosition() == yZiel){
+			System.out.println("Sie haben ihr Ziel erreicht");
+		}	
+			
 		if ((testGUI.getSpieler().getxPosition() != xZiel) || (testGUI.getSpieler().getyPosition() != yZiel) ){
 	    	System.out.println("recursion");		    	
 	    	
 	    	movePlayer(testGUI.getTestSpieler(), testGUI.getLabelArray()[yZiel][xZiel]);
 	    	
 	     }
+		
+		
 		
 	     
 	}
@@ -155,7 +206,7 @@ public class TestApp extends Application {
 		
 	}
 	/**
-	 * Sucht den Weg für die Spielfigur unter Berücksichtigung der Raumkacheln.
+	 * Berechnet die Erlaubte x und y Distanz bis zum Ziel
 	 * @param xDistanzeingegeben Die übermittelte Distanz in X Richtung
 	 * @param yDistanzeingegeben Die übermittelte Distanz in Y Richtung
 	 * @param jetzigesFeld
@@ -273,15 +324,25 @@ public class TestApp extends Application {
 		//moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
 	}
 	
+	/**
+	 * setzt die jetzigeReihe / jetzigeSpalte auf den aktuellen Wert.
+	 */
 	public void refresh(){
 		this.jetzigeReihe = testGUI.getRowIndex(this.jetzigesFeld);
 		this.jetzigeColumn = testGUI.getColumnIndex(this.jetzigesFeld);			
 		
 	}
-		
+	
+	/**
+	 * Inkrementiert xErlaubt um 1
+	 */
 	public void raiseErlaubtX(){
 		this.xErlaubt = xErlaubt+1;
 	}
+	
+	/**
+	 * Inkrementiert yErlaubt um 1
+	 */
 	public void raiseErlaubtY(){
 		this.yErlaubt = yErlaubt+1;
 	}
@@ -299,6 +360,7 @@ public class TestApp extends Application {
 			}
 			else {
 				System.out.println("x check false");
+				System.out.println("wurde blockiert");
 				return false;
 			}		
 		}
@@ -309,6 +371,7 @@ public class TestApp extends Application {
 			}
 			else {
 				System.out.println("x check false");
+				System.out.println("wurde blockiert");
 				return false;
 			}
 		}
@@ -327,6 +390,7 @@ public class TestApp extends Application {
 			}
 			else {
 				System.out.println("y check false");
+				System.out.println("wurde blockiert");
 				return false;
 			}		
 		}
@@ -337,6 +401,7 @@ public class TestApp extends Application {
 			}
 			else {
 				System.out.println("y check false");
+				System.out.println("wurde blockiert");
 				return false;
 			}
 		}
@@ -350,6 +415,7 @@ public class TestApp extends Application {
 	 * @param yStrecke Die Strecke in Y Richtung
 	 */
 	public void moveWithPath(Circle spielerDarstellung, int xStrecke, int yStrecke){
+		
 		System.out.println("path whatever");
 		this.xStreckeFuerPath = xStrecke;
 		this.yStreckeFuerPath = yStrecke;
@@ -382,6 +448,7 @@ public class TestApp extends Application {
 	     testGUI.getSpieler().setxPosition(testGUI.getSpieler().getxPosition()+xStreckeFuerPath);
 	     testGUI.getSpieler().setyPosition(testGUI.getSpieler().getyPosition()+yStreckeFuerPath);
 
+	     
 	      
 	}
 	

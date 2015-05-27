@@ -11,8 +11,6 @@ public class Spieler {
 
 	private int xPosition;
 	private int yPosition;
-	private int xNochZuLaufen;
-	private int yNochZuLaufen;
 	public Spieler (int xPosition, int yPosition) {
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;
@@ -33,23 +31,6 @@ public class Spieler {
 	public void setyPosition(int yPosition) {
 		this.yPosition = yPosition;
 	}
-
-	public int getxNochZuLaufen() {
-		return xNochZuLaufen;
-	}
-
-	public void setxNochZuLaufen(int xNochZuLaufen) {
-		this.xNochZuLaufen = xNochZuLaufen;
-	}
-
-	public int getyNochZuLaufen() {
-		return yNochZuLaufen;
-	}
-
-	public void setyNochZuLaufen(int yNochZuLaufen) {
-		this.yNochZuLaufen = yNochZuLaufen;
-	}
-	
 	
 	
 }
