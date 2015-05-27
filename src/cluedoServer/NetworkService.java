@@ -26,7 +26,7 @@ import cluedoNetworkGUI.*;
 class NetworkService implements Runnable{	
 	final CluedoServerGUI gui;
 	private ServerSocket serverSocket;
-	private ExecutorService pool;
+	public CluedoGroup group;
 	int port;
 	int numberConnectedClients;
 	ArrayList<Client> clientList = new ArrayList<Client>();
@@ -35,10 +35,10 @@ class NetworkService implements Runnable{
 	int maxClients = 6;
 	
 	
-	NetworkService (ServerSocket ss, ExecutorService pool, int port, CluedoServerGUI g) {
+	NetworkService (ServerSocket ss, CluedoGroup group, int port, CluedoServerGUI g) {
 		gui = g;
 		serverSocket = ss;
-		this.pool = pool;
+		this.group = group;
 		this.port = port;
 		numberConnectedClients = 0;
 	}
@@ -64,11 +64,7 @@ class NetworkService implements Runnable{
 					gui.addClient(cl.socket.getInetAddress().toString());
 	            });
 	            
-				pool.execute(new communicationHandler(serverSocket,cl,this,gui,numberConnectedClients));
-				if (numberConnectedClients > maxClients){
-					notifyClient("enough players",cl);
-					notifyClient("CLOSE", cl);
-				}
+				group.pool.execute(new communicationHandler(serverSocket,cl,this,gui,numberConnectedClients));
 			}					
 		}
 		catch(IOException e){
@@ -78,8 +74,8 @@ class NetworkService implements Runnable{
 		finally {
 			System.out.println("thread runningflag: "+netWorkServiceThreadRunning+"");
 			notifyAllClients("CLOSE");
-			pool.shutdownNow();	
-			if (pool.isShutdown()) System.out.println("threadpoolshutdown");// ist scheisse
+			group.pool.shutdownNow();	
+			if (group.pool.isShutdown()) System.out.println("threadpoolshutdown");// ist scheisse
 		}		
 	}
 	

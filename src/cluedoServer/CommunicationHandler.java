@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+
 import javafx.application.Platform;
 import cluedoNetworkGUI.CluedoServerGUI;
 
@@ -18,7 +19,7 @@ class communicationHandler implements Runnable{
 	
 	ServerSocket serverSocket;
 	Client client;
-	NetworkService server;
+	NetworkService networkService;
 	Socket socket;
 	final CluedoServerGUI gui;
 	boolean running = true;
@@ -30,9 +31,12 @@ class communicationHandler implements Runnable{
 	communicationHandler(ServerSocket ss, Client c, NetworkService s, CluedoServerGUI g,int id) throws IOException{
 		serverSocket = ss;
 		client = c;
-		server = s;
+		networkService = s;
 		gui = g;
 		this.id = id;	
+		long threadId = Thread.currentThread().getId();
+		System.out.println("client "+id+" on group:"+networkService.group.getName()+" living in thread"+threadId+ "added");
+
 	}
 	
 	public void run(){		
@@ -43,7 +47,7 @@ class communicationHandler implements Runnable{
 	           if (message.equals("CLOSE")){
 	        	   closeConnection("Client "+id+ " says plolitely: "+message);
 	           }
-				server.notifyAllClientsButSender(message,client);
+				networkService.notifyAllClientsButSender(message,client);
 				Platform.runLater(() -> {
 					gui.addMessage(client.id+" says : "+ message);
 				});		

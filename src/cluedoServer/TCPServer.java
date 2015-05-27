@@ -22,13 +22,13 @@ public class TCPServer  {
 	public ServerSocket socket;
 	final CluedoServerGUI gui;
 	int port;
-	int poolSize;
+	int amountGames;
 	boolean running;
 	NetworkService networkService;
 	
 	public TCPServer(CluedoServerGUI g){
 		gui = g;
-		poolSize = 4;
+		amountGames = 4;
 		port = 7000;		
 		running = false;
 		setListener();
@@ -42,15 +42,19 @@ public class TCPServer  {
 	 * @throws IOException
 	 */
 	private void createGroups(){
-		for(int i = 0; i < 4; i++) groups[i] = new CluedoGroup(6,"reduzierterHund"+i);
+		groups = new CluedoGroup[amountGames];
+		for(int i = 0; i < amountGames; i++) groups[i] = new CluedoGroup(6,"reduzierterHund"+i);
 	}
 	
 	private void startServer()  throws IOException{
 		
 		socket = new ServerSocket(port);	
 		//networkService = new NetworkService(socket, pool, port, gui);
-		Thread t = new Thread(networkService);
-		t.start();
+		for (int i = 0; i < amountGames; i++){
+			Thread t = new Thread(new NetworkService(socket, groups[i], port, gui));
+			t.start();
+		}
+		
 		System.out.println("Server running");
 		running = true;		
 	}
