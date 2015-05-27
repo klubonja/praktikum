@@ -65,10 +65,7 @@ class NetworkService implements Runnable{
 	            });
 	            
 				pool.execute(new communicationHandler(serverSocket,cl,this,gui,numberConnectedClients));
-				if (numberConnectedClients > maxClients){
-					notifyClient("enough players",cl);
-					notifyClient("CLOSE", cl);
-				}
+				
 			}					
 		}
 		catch(IOException e){

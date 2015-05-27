@@ -21,6 +21,7 @@ public class TCPServer  {
 	public CluedoGroup[] groups;
 	public ServerSocket socket;
 	final CluedoServerGUI gui;
+	ExecutorService pool;
 	int port;
 	int poolSize;
 	boolean running;
@@ -31,8 +32,8 @@ public class TCPServer  {
 		poolSize = 4;
 		port = 7000;		
 		running = false;
+		pool = Executors.newFixedThreadPool(poolSize);	
 		setListener();
-		createGroups();
 		System.out.println("Server Start");		
 	}
 	
@@ -48,7 +49,7 @@ public class TCPServer  {
 	private void startServer()  throws IOException{
 		
 		socket = new ServerSocket(port);	
-		//networkService = new NetworkService(socket, pool, port, gui);
+		networkService = new NetworkService(socket, pool, port, gui);
 		Thread t = new Thread(networkService);
 		t.start();
 		System.out.println("Server running");

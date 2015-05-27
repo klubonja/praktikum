@@ -13,90 +13,128 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
  
 public class CluedoClientGUI {
+	
 	ObservableList<String> ips;
 	ListView<String> clientList;
-	final TextArea messages;
+	
+	final TextArea messagesIn;
+	final TextArea messagesOut;
 	final Text status;
+	final Text inLabel;
+	final Text outLabel;
 	final public Button startClientButton;
 	final public Button submitMessageButton;
-	final public TextField inputField;
-	GridPane grid;
+	final public TextArea inputField;
+	final public GridPane grid;
 	final public Stage primaryStage;
+	
+	
+	int width;
+	int height;
+	
+	String desc;
 	
 	 public CluedoClientGUI(Stage primaryStage){
 		 this.primaryStage = primaryStage;
 		 ips = FXCollections.observableArrayList();
+		 
+		 grid = new GridPane();
 		 clientList = new ListView<String>(ips);
-		 messages = new TextArea();
+		 messagesIn = new TextArea();
+		 messagesIn.setEditable(false);
+		 messagesOut = new TextArea();
+		 messagesOut.setEditable(false);
 		 status = new Text("down");
 		 startClientButton = new Button("StartClient");
 		 submitMessageButton = new Button("submitMessage");
-		 inputField = new TextField();		 
-		 grid = new GridPane();
+		 inputField = new TextArea();		 
+		
+		 inLabel = new Text("IN");
+		 outLabel = new Text("OUT");
+		 
+		 width = 1000;
+		 height = 800;
+		 desc = new String("CluedoClient");
+		 
 		 startUp(primaryStage);
 		 
 	}
-	  public void addClient(String ip){
-		  ips.add(ip);
-	  }
-	  public void emptyList(){
-		  ips = FXCollections.observableArrayList();
-	  }
-	  
-	  public void setStatus(String stat){
-		  status.setText(stat);
-	  }
-	  
-	  public void addMessage(String mes){
-		  messages.appendText(mes+"\n");
-	  }
-	  
-	  public void clearMessages(){
-		  messages.setText("");
-	  }
-    
-    
+	    
     public void startUp(Stage primaryStage) {
-        primaryStage.setTitle("CluedoTestClient");
+        primaryStage.setTitle(desc);
         
         
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
         grid.setGridLinesVisible(false);
-        ColumnConstraints columnConstraints = new ColumnConstraints();
-        columnConstraints.setFillWidth(true);
-        columnConstraints.setHgrow(Priority.ALWAYS);
-        grid.getColumnConstraints().add(columnConstraints);
         
-       
+        ColumnConstraints col0 = new ColumnConstraints();
+        col0.setHgrow(Priority.ALWAYS);
+        col0.setPercentWidth(20);
+        grid.getColumnConstraints().add(col0);
         
-        messages.setPrefRowCount(10);
-        messages.setPrefColumnCount(100);
-        messages.setWrapText(true);
-        messages.setPrefWidth(400);        
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setHgrow(Priority.ALWAYS);
+        col1.setPercentWidth(80);
+        grid.getColumnConstraints().add(col1);
         
-        Text title = new Text("CluedoTestClient");
+        RowConstraints row0 = new RowConstraints();
+	    row0.setPercentHeight(5);        
+	    grid.getRowConstraints().add(row0);
+	    
+	    RowConstraints row1 = new RowConstraints();
+	    row1.setPercentHeight(5);        
+	    grid.getRowConstraints().add(row1);
+	    
+	    RowConstraints row2 = new RowConstraints();
+	    row1.setPercentHeight(5);        
+	    grid.getRowConstraints().add(row2);
+	    
+	    RowConstraints row3 = new RowConstraints();
+	    row3.setPercentHeight(40);        
+	    grid.getRowConstraints().add(row3);
+	    
+	    RowConstraints row4 = new RowConstraints();
+	    row1.setPercentHeight(5);        
+	    grid.getRowConstraints().add(row4);
+	    
+	    RowConstraints row5 = new RowConstraints();
+	    row5.setPercentHeight(40);        
+	    grid.getRowConstraints().add(row5);
+	    
+	    RowConstraints row6 = new RowConstraints();
+	    row6.setPercentHeight(10);
+	    //row6.setVgrow(Priority.ALWAYS);
+	    grid.getRowConstraints().add(row6);
+        
+        messagesIn.setWrapText(true);
+        messagesOut.setWrapText(true);
+        
+        Text title = new Text(desc);
         title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         status.setFont(Font.font("Tahoma", FontWeight.NORMAL, 10));
         
+       //grid.add(node,col,row,colspan,rowspan)
+        grid.add(title, 				0, 0, 2, 1);
+	    grid.add(startClientButton, 	0, 1);
+	    grid.add(clientList, 			0, 2, 2, 4);
+	    grid.add(submitMessageButton, 	0, 6, 1, 1);
+	    grid.add(status, 				1, 1);
+	    grid.add(inLabel, 				1, 2, 1, 1);
+	    grid.add(messagesIn, 			1, 3, 1, 1);
+	    grid.add(outLabel, 				1, 4, 1, 1);
+	    grid.add(messagesOut, 			1, 5, 1, 1);	    
+	    grid.add(inputField, 			1, 6, 1, 1);
+	    
        
-        grid.add(title, 0, 0, 2, 1);
-        grid.add(startClientButton,0,1);
-        grid.add(status, 1, 1);
-        grid.add(messages, 1, 2);
-        grid.add(clientList, 0, 2);
-       // grid.add(submitMessageButton,0, 3);
-        //grid.add(inputField, 1,3);
 
-        primaryStage.setScene(new Scene(grid, 700, 250));
+        primaryStage.setScene(new Scene(grid, width, height));
         primaryStage.show();
     }
     
@@ -125,4 +163,23 @@ public class CluedoClientGUI {
     	inputField.setText("");
     	return m;
     }
+    
+    public void addClient(String ip){
+		  ips.add(ip);
+	  }
+	  public void emptyList(){
+		  ips = FXCollections.observableArrayList();
+	  }
+	  
+	  public void setStatus(String stat){
+		  status.setText(stat);
+	  }
+	  
+	  public void addMessage(String mes){
+		  messagesIn.appendText(mes+"\n");
+	  }
+	  
+	  public void clearMessages(){
+		  messagesIn.setText("");
+	  }
 }
