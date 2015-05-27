@@ -33,8 +33,6 @@ class ServerListener implements Runnable {
 		cSocket = cs;
 		gui = g;
 		this.id = id;
-	
-		System.out.println("CLIENT has ID "+id);
 	}
 	
 	public void run() {			
