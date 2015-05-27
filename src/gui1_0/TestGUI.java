@@ -9,6 +9,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+
+/**
+ * @since 24.05.2015
+ * @version 27.05.2015
+ * @author Benedikt
+ *
+ * Hier wird die vorläufige GUI - eine GridPane - modelliert.
+ * Sie ist 24 x 25 Felder Groß und hat ein labelArray, in welchem
+ * alle Kacheln gespeichert sind, zuerst in Reihen, dann Spalten.
+ */
 public class TestGUI extends GridPane {
 		
 	private Kachel [][] labelArray;
@@ -24,12 +34,22 @@ public class TestGUI extends GridPane {
 	private int obstacleColumn;
 	private Spieler spieler;
 	
+	/**
+	 * Der Konstruktor für die GUI. Hier wird die Größe festgelegt und das
+	 * labelArray erzeugt.
+	 * @param columnSize
+	 * @param rowSize
+	 */
 	public TestGUI(int columnSize, int rowSize){
 		 this.rowSize = rowSize ;
 		 this.columnSize = columnSize ;
 		labelArray = new Kachel[rowSize][columnSize];
 	}	
 	
+	/**
+	 * Hier wird die GUI gestartet als Stage mit vorläufiger Auflösung 600 x 600
+	 * Die Methode setLayout() wird ausgelöst.
+	 */
 	public void start(){
 	this.stage = new Stage();
 	this.sceneYo = new Scene(this,600,600);
@@ -38,13 +58,18 @@ public class TestGUI extends GridPane {
 	this.stage.show();
 	}
 	
+	/**
+	 * Hier werden die Kacheln erzeugt und ihnen ein Platz zugewiesen.
+	 * Auch wird die Größe der Kacheln festgelegt auf 40 x 40 und ihnen
+	 * wird eine Aufschrift gegeben, je nach Position. 
+	 */
 	public void setLayout(){
 		this.setGridLinesVisible(true);
 
 		for (int iReihen = 0; iReihen< rowSize;iReihen++){
 			for (int jSpalten = 0; jSpalten<columnSize;jSpalten++){
 				String aufschrift = +iReihen +"" +jSpalten;
-				if (iReihen == 0 && jSpalten == 4){
+				if ( (iReihen == 0 && jSpalten == 4) || (iReihen == 8 && jSpalten == 8) || (iReihen == 4 && jSpalten == 0) ){
 					labelArray[iReihen][jSpalten] = new Raumkachel(aufschrift, iReihen, jSpalten, true);
 				}
 				else {
@@ -78,10 +103,14 @@ public class TestGUI extends GridPane {
 		this.labelArray = labelArray;
 	}
 
-	public void setBackground(Kachel label){
+	/**
+	 * Hiermit kann die Zielkachel auf die Farbe Color.ROYALBLUE gesetzt werden.
+	 * @param kachel
+	 */
+	public void setBackground(Kachel kachel){
 		fill = new BackgroundFill(Color.ROYALBLUE, null, null);
 		Background hintergrund = new Background(fill);
-		label.setBackground(hintergrund);
+		kachel.setBackground(hintergrund);
 	}
 	
 	public void revertBackground(Kachel label){

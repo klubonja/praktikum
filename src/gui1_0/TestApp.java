@@ -15,6 +15,13 @@ import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * @since 24.05.2015
+ * @version 27.05.2015
+ * @author Benedikt Mayer
+ *
+ * 
+ */
 public class TestApp extends Application {
 
 	private TestGUI testGUI;
@@ -43,6 +50,16 @@ public class TestApp extends Application {
 	
 	private int xRichtung;
 	private int yRichtung;
+	
+	private int xZiel;
+	private int yZiel;
+	
+	/**
+	 * Hier wird die Stage gestartet und den Kacheln eine Methode für 
+	 * setOnMouseClicked zugewiesen.
+	 * @param primaryStage 
+	 * @throws Exception
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
@@ -51,30 +68,76 @@ public class TestApp extends Application {
 		spieler = testGUI.getSpieler();
 		for (int i = 0; i<testGUI.getLabelArray().length-1;i++){
 			for (int j = 0; j<testGUI.getLabelArray()[j].length-1;j++){
-				Kachel momentanesLabel = testGUI.getLabelArray()[i][j];
-				momentanesLabel.setOnMouseClicked(e -> movePlayer(testGUI.getTestSpieler(), momentanesLabel));
-				
+				Kachel momentaneKachel = testGUI.getLabelArray()[i][j];
+				if (momentaneKachel.isIstRaum()==false){
+				momentaneKachel.setOnMouseClicked(e -> dasIstEinFeld(testGUI.getTestSpieler(), momentaneKachel));
+				}
+				else{
+					momentaneKachel.setOnMouseClicked(e -> dasIsEinRaum());
+				}
 			}
 		}		
 	}
 	
-	public void movePlayer(Circle spielerDarstellung, Kachel ziel){
-		System.out.println("move whatever");
-		reset(spielerDarstellung,ziel);
-		
-		/*while ((testGUI.getColumnIndex(ziel) - testGUI.getColumnIndex(spielerDarstellung) + testGUI.getRowIndex(ziel)-testGUI.getRowIndex(spielerDarstellung)) != 0){
-				xErlaubt = 0;
-				yErlaubt = 0;
-				pathfinder(testGUI.getColumnIndex(ziel) - testGUI.getColumnIndex(spielerDarstellung), testGUI.getRowIndex(ziel)-testGUI.getRowIndex(spielerDarstellung), testGUI.getLabelArray()[spieler.getyPosition()][spieler.getxPosition()]);
-		}*/
-		while(xDistanz + yDistanz != 0){
-			pathfinder(xDistanz, yDistanz, jetzigesFeld);
-		}
-		System.out.println("Reihe : " +testGUI.getRowIndex(this.jetzigesFeld));
-		
-		moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
+	public void dasIsEinRaum(){
+		System.out.println("Das ist ein Raum, alter");
 	}
 	
+	public void dasIstEinFeld(Circle spielerDarstellung, Kachel ziel){
+		movePlayer(spielerDarstellung, ziel);
+	}
+	
+	/**
+	 * Die Methode, welche durch das ClickEvent ausgelöst wird.
+	 * hier wird pathfinder und moveWithPath ausgelöst.
+	 * @param spielerDarstellung Der zu bewegende Spieler
+	 * @param ziel Die Zielkachel
+	 */	
+	public void movePlayer(Circle spielerDarstellung, Kachel ziel){
+		System.out.println("----------------------");
+		System.out.println("move whatever");
+		
+		reset(spielerDarstellung,ziel);
+			
+			System.out.println("vorher : x Distanz   " +xDistanz);
+			System.out.println("vorher : y Distanz   " +yDistanz);
+			
+			
+			while( (xDistanz != 0) && (yDistanz != 0) ){
+				pathfinder(xDistanz, yDistanz, jetzigesFeld);
+			}
+			
+			while( (xDistanz != 0) ^ (yDistanz != 0) ){
+				pathfinder(xDistanz, yDistanz, jetzigesFeld);
+			}
+
+			System.out.println("nachher : x Distanz   " +xDistanz);
+			System.out.println("nachher : y Distanz   " +yDistanz);
+			
+		// moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);				
+		
+			System.out.println("Reihe : " +(testGUI.getRowIndex(this.jetzigesFeld)+1));
+			System.out.println("Spalte : " +(testGUI.getColumnIndex(this.jetzigesFeld)+1));
+			
+			System.out.println("x Spieler : " +testGUI.getSpieler().getxPosition() +"| x Ziel : " +xZiel);
+			System.out.println("y Spieler : " +testGUI.getSpieler().getyPosition() +"| y Ziel : " +yZiel);
+			
+		
+		if ((testGUI.getSpieler().getxPosition() != xZiel) || (testGUI.getSpieler().getyPosition() != yZiel) ){
+	    	System.out.println("recursion");		    	
+	    	
+	    	movePlayer(testGUI.getTestSpieler(), testGUI.getLabelArray()[yZiel][xZiel]);
+	    	
+	     }
+		
+	     
+	}
+	
+	/**
+	 * Setzt die Werte wieder zurück.
+	 * @param spielerDarstellung
+	 * @param ziel
+	 */
 	public void reset(Circle spielerDarstellung, Kachel ziel){
 		System.out.println("reset whatever");
 		this.playerDarstellung = spielerDarstellung;
@@ -82,64 +145,88 @@ public class TestApp extends Application {
 		this.xDistanz = testGUI.getColumnIndex(ziel) - testGUI.getSpieler().getxPosition();
 		this.xRichtung = xDistanz;
 		this.yRichtung = yDistanz;
+		this.xZiel = testGUI.getColumnIndex(ziel);
+		this.yZiel = testGUI.getRowIndex(ziel);
 		this.jetzigesFeld =  testGUI.getLabelArray()[spieler.getyPosition()][spieler.getxPosition()];
 		this.xErlaubt = 0;
 		this.yErlaubt = 0;
 		
 		
 	}
-	
+	/**
+	 * Sucht den Weg für die Spielfigur unter Berücksichtigung der Raumkacheln.
+	 * @param xDistanzeingegeben Die übermittelte Distanz in X Richtung
+	 * @param yDistanzeingegeben Die übermittelte Distanz in Y Richtung
+	 * @param jetzigesFeld
+	 */
 	public void pathfinder(int xDistanzeingegeben, int yDistanzeingegeben, Kachel jetzigesFeld){
 		
 		System.out.println("find whatever");
 		this.xDistanz = xDistanzeingegeben;
 		this.yDistanz = yDistanzeingegeben;
 		this.jetzigesFeld = jetzigesFeld;
-		while (yDistanz>0){
-			while (xDistanz>0){
-				this.jetzigeReihe = testGUI.getRowIndex(this.jetzigesFeld);
-				this.jetzigeColumn = testGUI.getColumnIndex(this.jetzigesFeld);			
-				if (moveErlaubtX()){
-					this.xErlaubt = this.xErlaubt+1;
-					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
+		if (yDistanz != 0 && xDistanz != 0){
+			while (yDistanz>0){
+					while (xDistanz>0){
+						refresh();
+						if (moveErlaubtX()){
+							this.xErlaubt = this.xErlaubt+1;
+							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
+							
+						}
+						xDistanz--;
+					}
+					while (xDistanz<0){
+						refresh();
+						if (moveErlaubtX()){
+							this.xErlaubt = this.xErlaubt+1;
+							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn-1];
+							
+						}
+						xDistanz++;
+					}
+					
+				refresh();
+				if (moveErlaubtY()){
+					this.yErlaubt = this.yErlaubt+1;
+					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe+1][this.jetzigeColumn];
 					
 				}
-				xDistanz--;
+				yDistanz--;
 			}
-			while (xDistanz<0){
-				this.jetzigeReihe = testGUI.getRowIndex(this.jetzigesFeld);
-				this.jetzigeColumn = testGUI.getColumnIndex(this.jetzigesFeld);			
-				if (moveErlaubtX()){
-					this.xErlaubt = this.xErlaubt+1;
-					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn-1];
+			while (yDistanz<0){
+					while (xDistanz>0){
+						refresh();
+						if (moveErlaubtX()){
+							this.xErlaubt = this.xErlaubt+1;
+							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
+							
+						}
+						xDistanz--;
+					}
+					while (xDistanz<0){
+						refresh();
+						if (moveErlaubtX()){
+							this.xErlaubt = this.xErlaubt+1;
+							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn-1];
+							
+						}
+						xDistanz++;
+					}
+				refresh();
+				if (moveErlaubtY()){
+					this.yErlaubt = this.yErlaubt+1;
+					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe-1][this.jetzigeColumn];
 					
 				}
-				xDistanz++;
+				yDistanz++;
 			}
-			
-			this.jetzigeReihe = testGUI.getRowIndex(this.jetzigesFeld);
-			this.jetzigeColumn = testGUI.getColumnIndex(this.jetzigesFeld);			
-			if (moveErlaubtY()){
-				this.yErlaubt = this.yErlaubt+1;
-				this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe+1][this.jetzigeColumn];
-				
-			}
-			yDistanz--;
+		moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
 		}
-		while (yDistanz<0){
-			while (xDistanz>0){
-				this.jetzigeReihe = testGUI.getRowIndex(this.jetzigesFeld);
-				this.jetzigeColumn = testGUI.getColumnIndex(this.jetzigesFeld);			
-				if (moveErlaubtX()){
-					this.xErlaubt = this.xErlaubt+1;
-					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
-					
-				}
-				xDistanz--;
-			}
-			while (xDistanz<0){
-				this.jetzigeReihe = testGUI.getRowIndex(this.jetzigesFeld);
-				this.jetzigeColumn = testGUI.getColumnIndex(this.jetzigesFeld);			
+		else{	
+		
+			while (yDistanz == 0 && xDistanz < 0){
+				refresh();
 				if (moveErlaubtX()){
 					this.xErlaubt = this.xErlaubt+1;
 					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn-1];
@@ -147,34 +234,38 @@ public class TestApp extends Application {
 				}
 				xDistanz++;
 			}
-			
-			this.jetzigeReihe = testGUI.getRowIndex(this.jetzigesFeld);
-			this.jetzigeColumn = testGUI.getColumnIndex(this.jetzigesFeld);			
-			if (moveErlaubtY()){
-				this.yErlaubt = this.yErlaubt+1;
-				this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe-1][this.jetzigeColumn];
-				
+			while (yDistanz == 0 && xDistanz > 0){
+				refresh();
+				if (moveErlaubtX()){
+					this.xErlaubt = this.xErlaubt+1;
+					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
+					
+				}
+				xDistanz--;
 			}
-			yDistanz++;
+		moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
 		}
 		
+	}
+	
+	public void refresh(){
+		this.jetzigeReihe = testGUI.getRowIndex(this.jetzigesFeld);
+		this.jetzigeColumn = testGUI.getColumnIndex(this.jetzigesFeld);			
 		
 	}
 		
-			
+	/**
+	 * Hier wird überprüft, ob die nächstgelegene Kachel in X Richtung ein Raum ist.
+	 * @return true falls dort keine Raumkachel ist. false falls dort eine Raumkachel ist.
+	 */
 	public boolean moveErlaubtX (){
-		System.out.println("x check");
-		this.jetzigeReihe = testGUI.getRowIndex(jetzigesFeld);
-		this.jetzigeColumn = testGUI.getColumnIndex(jetzigesFeld);
+		refresh();
 		if (xDistanz>0){
 			if (testGUI.getLabelArray()[jetzigeReihe][jetzigeColumn+1].isIstRaum()==false){
 				System.out.println("x check true");
 				return true;	
 			}
 			else {
-				System.out.println("jetzige Kachel " + testGUI.getColumnIndex(jetzigesFeld));
-				System.out.println("xErlaubt " + xErlaubt);
-				System.out.println("xDistanz " + xDistanz);
 				System.out.println("x check false");
 				return false;
 			}		
@@ -185,18 +276,18 @@ public class TestApp extends Application {
 				return true;	
 			}
 			else {
-				System.out.println("jetzige Kachel " + testGUI.getColumnIndex(jetzigesFeld));
-				System.out.println("xErlaubt " + xErlaubt);
-				System.out.println("xDistanz " + xDistanz);
 				System.out.println("x check false");
 				return false;
 			}
 		}
 	}
+	
+	/**
+	 * Hier wird überprüft, ob die nächstgelegene Kachel in Y Richtung ein Raum ist.
+	 * @return true falls dort keine Raumkachel ist. false falls dort eine Raumkachel ist.
+	 */
 	public boolean moveErlaubtY (){
-		System.out.println("y check");
-		this.jetzigeReihe = testGUI.getRowIndex(jetzigesFeld);
-		this.jetzigeColumn = testGUI.getColumnIndex(jetzigesFeld);
+		refresh();
 		if (yDistanz>0){
 			if (testGUI.getLabelArray()[jetzigeReihe+1][jetzigeColumn].isIstRaum() == false){
 				System.out.println("y check true");
@@ -220,7 +311,12 @@ public class TestApp extends Application {
 	}
 	
 	
-
+	/**
+	 * Hier findet die Animation statt mithilfe von Paths.
+	 * @param spielerDarstellung Die zu bewegende Node
+	 * @param xStrecke Die Strecke in X Richtung
+	 * @param yStrecke Die Strecke in Y Richtung
+	 */
 	public void moveWithPath(Circle spielerDarstellung, int xStrecke, int yStrecke){
 		System.out.println("path whatever");
 		this.xStreckeFuerPath = xStrecke;
@@ -233,16 +329,11 @@ public class TestApp extends Application {
 			this.yStreckeFuerPath = - this.yStreckeFuerPath;
 		}
 		
-		System.out.println("x Strecke " + xStrecke);
-		
-		System.out.println("x Für Path" + xStreckeFuerPath);
-		
 		this.xPosition = testGUI.getSpieler().getxPosition();
 		this.yPosition = testGUI.getSpieler().getyPosition();
 		
 		Kachel anfangsKachel = testGUI.getLabelArray()[yPosition][xPosition];
 		Kachel zielKachel = testGUI.getLabelArray()[yPosition + yStreckeFuerPath][xPosition + xStreckeFuerPath];
-		System.out.println("path: y insgesamt" +(yStreckeFuerPath+yPosition));
 		
 		Path path = new Path();
 	     path.getElements().add (new MoveTo (anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
@@ -258,9 +349,8 @@ public class TestApp extends Application {
 
 	     testGUI.getSpieler().setxPosition(testGUI.getSpieler().getxPosition()+xStreckeFuerPath);
 	     testGUI.getSpieler().setyPosition(testGUI.getSpieler().getyPosition()+yStreckeFuerPath);
-	     
-	    this.xErlaubt = 0;
-		this.yErlaubt = 0;
+
+	      
 	}
 	
 	/*public void movePlayer(Circle spieler, Kachel ziel){
@@ -346,7 +436,10 @@ public class TestApp extends Application {
 	   
 	}
 */
-	
+	/**
+	 * Hier wird gelauncht.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}

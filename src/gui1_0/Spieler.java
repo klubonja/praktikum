@@ -1,5 +1,12 @@
 package gui1_0;
 
+/**
+ * @since 26.05.2015
+ * @version 26.05.2015
+ * @author Benedikt Mayer
+ *
+ * Ein Spieler mit Positionen
+ */
 public class Spieler {
 
 	private int xPosition;

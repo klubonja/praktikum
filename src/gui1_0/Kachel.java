@@ -5,6 +5,15 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 
+/**
+ * @since 26.05.2015
+ * @version 26.05.2015
+ * @author Benedikt Mayer
+ * 
+ * Eine Kachel ist ein Label mit Koordinaten und Hintergrundfarbe
+ * Kachel hat die Unterklassen Feldkachel und Raumkachel.
+ *
+ */
 public class Kachel extends Label {
 
 	private int xKoordinate;
