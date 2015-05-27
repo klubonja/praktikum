@@ -102,19 +102,20 @@ public class TestApp extends Application {
 			System.out.println("vorher : x Distanz   " +xDistanz);
 			System.out.println("vorher : y Distanz   " +yDistanz);
 			
+			while( (xDistanz != 0) ^ (yDistanz != 0) ){
+				pathfinder(xDistanz, yDistanz, jetzigesFeld);
+			}
 			
 			while( (xDistanz != 0) && (yDistanz != 0) ){
 				pathfinder(xDistanz, yDistanz, jetzigesFeld);
 			}
 			
-			while( (xDistanz != 0) ^ (yDistanz != 0) ){
-				pathfinder(xDistanz, yDistanz, jetzigesFeld);
-			}
+			
 
 			System.out.println("nachher : x Distanz   " +xDistanz);
 			System.out.println("nachher : y Distanz   " +yDistanz);
 			
-		// moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);				
+		 moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);				
 		
 			System.out.println("Reihe : " +(testGUI.getRowIndex(this.jetzigesFeld)+1));
 			System.out.println("Spalte : " +(testGUI.getColumnIndex(this.jetzigesFeld)+1));
@@ -162,15 +163,18 @@ public class TestApp extends Application {
 	public void pathfinder(int xDistanzeingegeben, int yDistanzeingegeben, Kachel jetzigesFeld){
 		
 		System.out.println("find whatever");
+		System.out.println("x Spieler : " +testGUI.getSpieler().getxPosition() +"| x Ziel : " +xZiel);
+		System.out.println("y Spieler : " +testGUI.getSpieler().getyPosition() +"| y Ziel : " +yZiel);
+		
 		this.xDistanz = xDistanzeingegeben;
 		this.yDistanz = yDistanzeingegeben;
 		this.jetzigesFeld = jetzigesFeld;
 		if (yDistanz != 0 && xDistanz != 0){
-			while (yDistanz>0){
+			while (yDistanz>0 || (yDistanz == 0 && xDistanz != 0)){
 					while (xDistanz>0){
 						refresh();
 						if (moveErlaubtX()){
-							this.xErlaubt = this.xErlaubt+1;
+							raiseErlaubtX();		
 							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
 							
 						}
@@ -179,7 +183,7 @@ public class TestApp extends Application {
 					while (xDistanz<0){
 						refresh();
 						if (moveErlaubtX()){
-							this.xErlaubt = this.xErlaubt+1;
+							raiseErlaubtX();		
 							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn-1];
 							
 						}
@@ -188,7 +192,7 @@ public class TestApp extends Application {
 					
 				refresh();
 				if (moveErlaubtY()){
-					this.yErlaubt = this.yErlaubt+1;
+					raiseErlaubtY();					
 					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe+1][this.jetzigeColumn];
 					
 				}
@@ -198,7 +202,7 @@ public class TestApp extends Application {
 					while (xDistanz>0){
 						refresh();
 						if (moveErlaubtX()){
-							this.xErlaubt = this.xErlaubt+1;
+							raiseErlaubtX();		
 							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
 							
 						}
@@ -207,7 +211,7 @@ public class TestApp extends Application {
 					while (xDistanz<0){
 						refresh();
 						if (moveErlaubtX()){
-							this.xErlaubt = this.xErlaubt+1;
+							raiseErlaubtX();		
 							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn-1];
 							
 						}
@@ -215,37 +219,58 @@ public class TestApp extends Application {
 					}
 				refresh();
 				if (moveErlaubtY()){
-					this.yErlaubt = this.yErlaubt+1;
+					raiseErlaubtY();					
 					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe-1][this.jetzigeColumn];
 					
 				}
 				yDistanz++;
 			}
-		moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
+		//moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
 		}
 		else{	
 		
 			while (yDistanz == 0 && xDistanz < 0){
 				refresh();
 				if (moveErlaubtX()){
-					this.xErlaubt = this.xErlaubt+1;
+					raiseErlaubtX();
 					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn-1];
 					
 				}
 				xDistanz++;
 			}
+			
 			while (yDistanz == 0 && xDistanz > 0){
 				refresh();
 				if (moveErlaubtX()){
-					this.xErlaubt = this.xErlaubt+1;
+					raiseErlaubtX();
 					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
 					
 				}
 				xDistanz--;
 			}
-		moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
+			
+			while (yDistanz > 0 && xDistanz == 0){
+				refresh();
+				if (moveErlaubtY()){
+					raiseErlaubtY();					
+					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe+1][this.jetzigeColumn];
+					
+				}
+				yDistanz--;
+			}
+			
+			while (yDistanz < 0 && xDistanz == 0){
+				refresh();
+				if (moveErlaubtY()){
+					raiseErlaubtY();					
+					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe-1][this.jetzigeColumn];
+					
+				}
+				yDistanz++;
+			}
+		//moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
 		}
-		
+		//moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
 	}
 	
 	public void refresh(){
@@ -254,6 +279,13 @@ public class TestApp extends Application {
 		
 	}
 		
+	public void raiseErlaubtX(){
+		this.xErlaubt = xErlaubt+1;
+	}
+	public void raiseErlaubtY(){
+		this.yErlaubt = yErlaubt+1;
+	}
+	
 	/**
 	 * Hier wird überprüft, ob die nächstgelegene Kachel in X Richtung ein Raum ist.
 	 * @return true falls dort keine Raumkachel ist. false falls dort eine Raumkachel ist.
