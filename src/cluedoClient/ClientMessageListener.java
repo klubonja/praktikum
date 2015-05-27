@@ -1,7 +1,9 @@
 package cluedoClient;
 
 import java.io.BufferedWriter;
+
 import json.*;
+
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -11,6 +13,10 @@ import java.nio.charset.StandardCharsets;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import cluedoNetworkGUI.CluedoClientGUI;
 
 
@@ -28,7 +34,40 @@ class clientMessageListener implements Runnable{
 	public clientMessageListener(Socket cs,CluedoClientGUI g,int id) {
 		cSocket = cs;
 		gui = g;
-		login();		
+		login();
+		addClientGUIListener();
+	}
+	
+	public void addClientGUIListener(){
+		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
+			 public void handle(KeyEvent e) {
+			        if (e.getCode() == KeyCode.ENTER){
+			        	sendMsg(gui.inputField.getText());	
+						gui.inputField.setText("");
+						e.consume();
+			        }
+			    }
+			};	
+		gui.inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
+		    	if (hasFocus){ 
+		        	gui.inputField.addEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );        	        	
+		    	}
+		    	else {
+		    		gui.inputField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );   
+		    	}
+		    }
+		});
+		
+		gui.submitMessageButton.setOnAction(new EventHandler<ActionEvent>() {				
+			@Override
+			public void handle(ActionEvent event) {
+				sendMsg(gui.inputField.getText());	
+				gui.inputField.setText("");
+				
+			}
+		});	
 	}
 	
 	private final boolean login(){

@@ -36,10 +36,9 @@ public class TCPServer  {
 		System.out.println("Server Start");		
 	}
 	
+	
 	/**
-	 * ein thread für eingehende verbindungen
-	 * aufgebaute verbindungen werden auf eigenen threads ausgeführt
-	 * @throws IOException
+	 * hier werden die verschiedenen groups instantiert
 	 */
 	private void createGroups(){
 		groups = new CluedoGroup[amountGames];
@@ -49,7 +48,6 @@ public class TCPServer  {
 	private void startServer()  throws IOException{
 		
 		socket = new ServerSocket(port);	
-		//networkService = new NetworkService(socket, pool, port, gui);
 		for (int i = 0; i < amountGames; i++){
 			Thread t = new Thread(new NetworkService(socket, groups[i], port, gui));
 			t.start();
