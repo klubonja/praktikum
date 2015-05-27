@@ -1,4 +1,4 @@
-package testGui;
+package gui1_0;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
