@@ -57,14 +57,14 @@ class NetworkService implements Runnable{
 			while (netWorkServiceThreadRunning){
 				Socket clientSocket = serverSocket.accept();  
 				numberConnectedClients++;
-				Client cl = new Client(numberConnectedClients,clientSocket);
-				clientList.add(cl);
+				Client client = new Client(numberConnectedClients,clientSocket);
+				clientList.add(client);
 				
 				Platform.runLater(() -> {
-					gui.addClient(cl.socket.getInetAddress().toString());
+					gui.addClient(client.socket.getInetAddress().toString());
 	            });
 	            
-				pool.execute(new communicationHandler(serverSocket,cl,this,gui,numberConnectedClients));
+				pool.execute(new communicationHandler(serverSocket,client,this,gui,numberConnectedClients));
 				
 			}					
 		}

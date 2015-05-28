@@ -7,6 +7,9 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+
+import org.json.JSONObject;
+
 import javafx.application.Platform;
 import cluedoNetworkGUI.CluedoServerGUI;
 
@@ -18,7 +21,7 @@ class communicationHandler implements Runnable{
 	
 	ServerSocket serverSocket;
 	Client client;
-	NetworkService server;
+	NetworkService networkService;
 	Socket socket;
 	final CluedoServerGUI gui;
 	boolean running = true;
@@ -30,9 +33,26 @@ class communicationHandler implements Runnable{
 	communicationHandler(ServerSocket ss, Client c, NetworkService s, CluedoServerGUI g,int id) throws IOException{
 		serverSocket = ss;
 		client = c;
-		server = s;
+		networkService = s;
 		gui = g;
-		this.id = id;	
+		this.id = id;
+		awaitLoginAtempt();
+		
+	}
+	
+	private void awaitLoginAtempt (){
+		try {
+			String message = getMessageFromClient(client.socket).trim();
+			JSONObject json = new JSONObject(message);
+			Platform.runLater(() -> {
+				gui.addMessage(client.id+" says : after json login : "+ json.get("type"));
+			});
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void run(){		
@@ -43,7 +63,7 @@ class communicationHandler implements Runnable{
 	           if (message.equals("CLOSE")){
 	        	   closeConnection("Client "+id+ " says plolitely: "+message);
 	           }
-				server.notifyAllClientsButSender(message,client);
+				networkService.notifyAllClientsButSender(message,client);
 				Platform.runLater(() -> {
 					gui.addMessage(client.id+" says : "+ message);
 				});		
@@ -85,6 +105,10 @@ class communicationHandler implements Runnable{
 			catch(Exception e) {}		
 		 	
 			return message.toString();
+	}
+	
+	private void sendMessageToClient(String msg){
+		client.sendMsg(msg);
 	}
 	
 	

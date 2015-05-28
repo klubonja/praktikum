@@ -71,8 +71,9 @@ class clientMessageListener implements Runnable{
 	}
 	
 	private final boolean login(){
-		CluedoJSON handShake = new CluedoJSON("login");
+		CluedoJSON handShake = new CluedoJSON();
 		String[] loginData = gui.loginPrompt();
+		handShake.put("type", "login");
 		handShake.put("nick", loginData[0]);
 		handShake.put("group", loginData[1]);
 		sendMsg(handShake.toString());

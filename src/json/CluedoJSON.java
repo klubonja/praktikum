@@ -3,15 +3,19 @@ import org.json.*;
 
 public class CluedoJSON extends JSONObject{
 	
-	private String type;
 	
-	public CluedoJSON(String type){
+	private  CluedoJSONTypes type;
+	
+	public CluedoJSON(){
 		super();
-		this.type = type;
-		put("type",type);
+	}
+	
+	public CluedoJSON(String message){
+		super(message);
+		
 	}
 	
 	public String getType(){
-		return type;
+		return this.type.getName();
 	}
 }
