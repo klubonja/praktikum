@@ -44,6 +44,9 @@ public class GameFrameView extends GridPane{
 		 */
 		menu = new MenuBarView();
 		
+		/**
+		 * Adds the Game Board frame.
+		 */
 		board = new BoardView(25,25);
 		
 		/**
@@ -62,11 +65,13 @@ public class GameFrameView extends GridPane{
 		dice = new DiceView();
 		
 		
-		
-		//leftGrid area that contains chat and dices
+		/**
+		 * Left part of the whole GameFrame,
+		 * Only for a better organising of objects.
+		 */
 		leftGrid = new GridPane();
 		leftGrid.setGridLinesVisible(true);
-		leftGrid.getRowConstraints().add(new RowConstraints(400));
+		leftGrid.getRowConstraints().add(new RowConstraints(450));
 		leftGrid.getRowConstraints().add(new RowConstraints(200));
 		leftGrid.getColumnConstraints().add(new ColumnConstraints(325));
 		leftGrid.getColumnConstraints().add(new ColumnConstraints(325));
@@ -74,7 +79,6 @@ public class GameFrameView extends GridPane{
 		GridPane.setConstraints(dice,0,1);
 		GridPane.setConstraints(chat,1,1);
 		leftGrid.getChildren().addAll(notes,chat,dice);
-		
 		
 		
 		GridPane.setConstraints(menu,0,0);

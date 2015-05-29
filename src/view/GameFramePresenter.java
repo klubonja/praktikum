@@ -19,6 +19,7 @@ public class GameFramePresenter {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public void startEvents(){
 		DicePresenter dice = new DicePresenter(gfv.dice);
 		

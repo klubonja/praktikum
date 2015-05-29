@@ -1,4 +1,4 @@
-package view;
+package gui1_0;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -8,14 +8,13 @@ import javafx.application.Application;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
-import view.PlayerView;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.*;
 
 /**
  * @since 24.05.2015
@@ -24,11 +23,11 @@ import model.*;
  *
  * 
  */	
-public class BoardPresenter extends Application {
+public class TestApp extends Application {
 
 	
-	private Player spieler;
-	private BoardView BoardView;
+	private Spieler spieler;
+	private TestGUI testGUI;
 	private int rowSize = 25;
 	private int columnSize = 24;
 	
@@ -41,10 +40,10 @@ public class BoardPresenter extends Application {
 	private int jetzigeColumn;
 	private Kachel jetzigesFeld;
 	
-	private PlayerView playerDarstellung;
+	private Circle playerDarstellung;
 	
-	private int CenterXFuerPath;
-	private int CenterYFuerPath;	
+	private int xPositionFuerPath;
+	private int yPositionFuerPath;	
 	private int xStreckeFuerPath;
 	private int yStreckeFuerPath;
 	
@@ -69,13 +68,14 @@ public class BoardPresenter extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		BoardView = new BoardView(columnSize, rowSize);
-		spieler = BoardView.getSpieler();
-		for (int i = 0; i<BoardView.getLabelArray().length-1;i++){
-			for (int j = 0; j<BoardView.getLabelArray()[j].length-1;j++){
-				Kachel momentaneKachel = BoardView.getLabelArray()[i][j];
+		testGUI = new TestGUI(columnSize, rowSize);
+		testGUI.start();
+		spieler = testGUI.getSpieler();
+		for (int i = 0; i<testGUI.getLabelArray().length-1;i++){
+			for (int j = 0; j<testGUI.getLabelArray()[j].length-1;j++){
+				Kachel momentaneKachel = testGUI.getLabelArray()[i][j];
 					if (momentaneKachel.isIstRaum()==false){
-						momentaneKachel.setOnMouseClicked(e -> dasIstEinFeld(BoardView.getTestSpieler(), momentaneKachel));
+						momentaneKachel.setOnMouseClicked(e -> dasIstEinFeld(testGUI.getTestSpieler(), momentaneKachel));
 					}
 					else{
 						momentaneKachel.setOnMouseClicked(e -> dasIsEinRaum());						
@@ -120,7 +120,7 @@ public class BoardPresenter extends Application {
 	/**
 	 * Wird von der Kachel.OnClick aufgerufen und löst die movePlayer Methode aus.
 	 */
-	public void dasIstEinFeld(PlayerView spielerDarstellung, Kachel ziel){
+	public void dasIstEinFeld(Circle spielerDarstellung, Kachel ziel){
 		movePlayer(spielerDarstellung, ziel);
 	}
 	
@@ -139,7 +139,7 @@ public class BoardPresenter extends Application {
 	 * @param spielerDarstellung Der zu bewegende Spieler
 	 * @param ziel Die Zielkachel
 	 */	
-	public void movePlayer(PlayerView spielerDarstellung, Kachel ziel){
+	public void movePlayer(Circle spielerDarstellung, Kachel ziel){
 		System.out.println("----------------------");
 		System.out.println("move whatever");
 		
@@ -174,21 +174,21 @@ public class BoardPresenter extends Application {
 		// Animation
 	    moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);				
 		
-		System.out.println("Reihe : " +(BoardView.getRowIndex(this.jetzigesFeld)+1));
-		System.out.println("Spalte : " +(BoardView.getColumnIndex(this.jetzigesFeld)+1));
+		System.out.println("Reihe : " +(testGUI.getRowIndex(this.jetzigesFeld)+1));
+		System.out.println("Spalte : " +(testGUI.getColumnIndex(this.jetzigesFeld)+1));
 		
-		System.out.println("x Spieler : " +BoardView.getSpieler().getCenterX() +"| x Ziel : " +xZiel);
-		System.out.println("y Spieler : " +BoardView.getSpieler().getCenterY() +"| y Ziel : " +yZiel);
+		System.out.println("x Spieler : " +testGUI.getSpieler().getxPosition() +"| x Ziel : " +xZiel);
+		System.out.println("y Spieler : " +testGUI.getSpieler().getyPosition() +"| y Ziel : " +yZiel);
 			
 			
-		if (BoardView.getSpieler().getCenterX() == xZiel && BoardView.getSpieler().getCenterY() == yZiel){
+		if (testGUI.getSpieler().getxPosition() == xZiel && testGUI.getSpieler().getyPosition() == yZiel){
 			System.out.println("Sie haben ihr Ziel erreicht");
 		}	
 			
-		if ((BoardView.getSpieler().getCenterX() != xZiel) || (BoardView.getSpieler().getCenterY() != yZiel) ){
+		if ((testGUI.getSpieler().getxPosition() != xZiel) || (testGUI.getSpieler().getyPosition() != yZiel) ){
 	    	System.out.println("recursion");		    	
 	    	
-	    	movePlayer(BoardView.getTestSpieler(), BoardView.getLabelArray()[yZiel][xZiel]);	    	
+	    	movePlayer(testGUI.getTestSpieler(), testGUI.getLabelArray()[yZiel][xZiel]);	    	
 	     }
 		
 		
@@ -201,16 +201,16 @@ public class BoardPresenter extends Application {
 	 * @param spielerDarstellung
 	 * @param ziel
 	 */
-	public void reset(PlayerView spielerDarstellung, Kachel ziel){
+	public void reset(Circle spielerDarstellung, Kachel ziel){
 		System.out.println("reset whatever");
 		this.playerDarstellung = spielerDarstellung;
-		this.yDistanz = BoardView.getRowIndex(ziel) - (int)BoardView.getSpieler().getCenterY();
-		this.xDistanz = BoardView.getColumnIndex(ziel) - (int)BoardView.getSpieler().getCenterX();
+		this.yDistanz = testGUI.getRowIndex(ziel) - testGUI.getSpieler().getyPosition();
+		this.xDistanz = testGUI.getColumnIndex(ziel) - testGUI.getSpieler().getxPosition();
 		this.xRichtung = xDistanz;
 		this.yRichtung = yDistanz;
-		this.xZiel = BoardView.getColumnIndex(ziel);
-		this.yZiel = BoardView.getRowIndex(ziel) + ausweichen;
-		this.jetzigesFeld =  BoardView.getLabelArray()[(int) spieler.getCenterY()][(int) spieler.getCenterX()];
+		this.xZiel = testGUI.getColumnIndex(ziel);
+		this.yZiel = testGUI.getRowIndex(ziel) + ausweichen;
+		this.jetzigesFeld =  testGUI.getLabelArray()[spieler.getyPosition()][spieler.getxPosition()];
 		this.xErlaubt = 0;
 		this.yErlaubt = 0;
 		this.ausweichen = 0;
@@ -273,8 +273,8 @@ public class BoardPresenter extends Application {
 	public void pathfinder(int xDistanzeingegeben, int yDistanzeingegeben, Kachel jetzigesFeld){
 		
 		System.out.println("find whatever");
-		System.out.println("x Spieler : " +BoardView.getSpieler().getCenterX() +"| x Ziel : " +xZiel);
-		System.out.println("y Spieler : " +BoardView.getSpieler().getCenterY() +"| y Ziel : " +yZiel);
+		System.out.println("x Spieler : " +testGUI.getSpieler().getxPosition() +"| x Ziel : " +xZiel);
+		System.out.println("y Spieler : " +testGUI.getSpieler().getyPosition() +"| y Ziel : " +yZiel);
 		
 		this.xDistanz = xDistanzeingegeben;
 		this.yDistanz = yDistanzeingegeben;
@@ -390,8 +390,8 @@ public class BoardPresenter extends Application {
 	 * setzt die jetzigeReihe / jetzigeSpalte auf den aktuellen Wert.
 	 */
 	public void refresh(){
-		this.jetzigeReihe = BoardView.getRowIndex(this.jetzigesFeld);
-		this.jetzigeColumn = BoardView.getColumnIndex(this.jetzigesFeld);			
+		this.jetzigeReihe = testGUI.getRowIndex(this.jetzigesFeld);
+		this.jetzigeColumn = testGUI.getColumnIndex(this.jetzigesFeld);			
 		
 	}
 	
@@ -415,7 +415,7 @@ public class BoardPresenter extends Application {
 	 * @param x Der Wert um welchen die Spalte erhöht wird
 	 */
 	public void updateCurrentField(int y, int x){
-		this.jetzigesFeld = BoardView.getLabelArray()[this.jetzigeReihe+y][this.jetzigeColumn+x];
+		this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe+y][this.jetzigeColumn+x];
 	}
 	
 	
@@ -426,7 +426,7 @@ public class BoardPresenter extends Application {
 	public boolean moveErlaubtX (){
 		refresh();
 		if (xDistanz>0){
-			if (BoardView.getLabelArray()[jetzigeReihe][jetzigeColumn+1].isIstRaum()==false){
+			if (testGUI.getLabelArray()[jetzigeReihe][jetzigeColumn+1].isIstRaum()==false){
 				System.out.println("x check true");
 				return true;	
 			}
@@ -437,7 +437,7 @@ public class BoardPresenter extends Application {
 			}		
 		}
 		else {
-			if (BoardView.getLabelArray()[jetzigeReihe][jetzigeColumn-1].isIstRaum()==false){
+			if (testGUI.getLabelArray()[jetzigeReihe][jetzigeColumn-1].isIstRaum()==false){
 				System.out.println("x check true");
 				return true;
 				
@@ -457,7 +457,7 @@ public class BoardPresenter extends Application {
 	public boolean moveErlaubtY (){
 		refresh();
 		if (yDistanz>0){
-			if (BoardView.getLabelArray()[jetzigeReihe+1][jetzigeColumn].isIstRaum() == false){
+			if (testGUI.getLabelArray()[jetzigeReihe+1][jetzigeColumn].isIstRaum() == false){
 				
 				System.out.println("y check true");
 				
@@ -470,7 +470,7 @@ public class BoardPresenter extends Application {
 			}		
 		}
 		else {
-			if (BoardView.getLabelArray()[jetzigeReihe-1][jetzigeColumn].isIstRaum() == false){
+			if (testGUI.getLabelArray()[jetzigeReihe-1][jetzigeColumn].isIstRaum() == false){
 				System.out.println("y check true");
 				return true;	
 			}
@@ -494,7 +494,7 @@ public class BoardPresenter extends Application {
 	 * @param xStrecke Die Strecke in X Richtung
 	 * @param yStrecke Die Strecke in Y Richtung
 	 */
-	public void moveWithPath(PlayerView spielerDarstellung, int xStrecke, int yStrecke){
+	public void moveWithPath(Circle spielerDarstellung, int xStrecke, int yStrecke){
 		
 		System.out.println("path whatever");
 		this.xStreckeFuerPath = xStrecke;
@@ -507,11 +507,11 @@ public class BoardPresenter extends Application {
 			this.yStreckeFuerPath = - this.yStreckeFuerPath;
 		}
 		
-		this.CenterXFuerPath = (int) BoardView.getSpieler().getCenterX();
-		this.CenterYFuerPath = (int) BoardView.getSpieler().getCenterY();
+		this.xPositionFuerPath = testGUI.getSpieler().getxPosition();
+		this.yPositionFuerPath = testGUI.getSpieler().getyPosition();
 		
-		Kachel anfangsKachel = BoardView.getLabelArray()[CenterYFuerPath][CenterXFuerPath];
-		Kachel zielKachel = BoardView.getLabelArray()[CenterYFuerPath + yStreckeFuerPath][CenterXFuerPath + xStreckeFuerPath];
+		Kachel anfangsKachel = testGUI.getLabelArray()[yPositionFuerPath][xPositionFuerPath];
+		Kachel zielKachel = testGUI.getLabelArray()[yPositionFuerPath + yStreckeFuerPath][xPositionFuerPath + xStreckeFuerPath];
 		
 		Path path = new Path();
 	     path.getElements().add (new MoveTo (anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
@@ -525,8 +525,8 @@ public class BoardPresenter extends Application {
 	     	//pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);	 
 	     pathTransition.play();
 
-	     BoardView.getSpieler().setCenterX(BoardView.getSpieler().getCenterX()+xStreckeFuerPath);
-	     BoardView.getSpieler().setCenterY(BoardView.getSpieler().getCenterY()+yStreckeFuerPath);
+	     testGUI.getSpieler().setxPosition(testGUI.getSpieler().getxPosition()+xStreckeFuerPath);
+	     testGUI.getSpieler().setyPosition(testGUI.getSpieler().getyPosition()+yStreckeFuerPath);
 
 	     
 	      
@@ -535,9 +535,9 @@ public class BoardPresenter extends Application {
 	/**
 	 * Inaktive alte Bewegungsmethode, welche auch einen "Kreis" um Ziel gezeichnet hat 
 	 */
-	/*public void movePlayer(PlayerView spieler, Kachel ziel){
+	/*public void movePlayer(Circle spieler, Kachel ziel){
 			
-		Kachel anfangsLabel = BoardView.getKachelAnfang();				
+		Kachel anfangsLabel = testGUI.getKachelAnfang();				
 		
 		System.out.println("X Distanz:  " + xDistanz + "Y Distanz:  " + yDistanz);
 		
@@ -553,12 +553,12 @@ public class BoardPresenter extends Application {
 	     pathTransition.setPath(path);
 	     	//pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);	 
 	     pathTransition.play();
-	    BoardView.setKachelAnfang(ziel);
+	    testGUI.setKachelAnfang(ziel);
 	    
 	    
 	     int umfang = 5;
-	     int rowIndex = BoardView.getRowIndex(ziel);
-	     int columnIndex = BoardView.getColumnIndex(ziel);
+	     int rowIndex = testGUI.getRowIndex(ziel);
+	     int columnIndex = testGUI.getColumnIndex(ziel);
 	     int linksInt = rowIndex - umfang;
 	     int rechtsInt = rowIndex + umfang;
 	     int obenInt = columnIndex - umfang;
@@ -575,17 +575,17 @@ public class BoardPresenter extends Application {
 	     if (untenInt>rowSize){
 	    	 untenInt = 0;
 	     }
-	     Kachel links = BoardView.getLabelArray()[columnIndex][linksInt];
-	     Kachel rechts = BoardView.getLabelArray()[columnIndex][rechtsInt];
-	     Kachel oben = BoardView.getLabelArray()[obenInt][rowIndex];
-	     Kachel unten = BoardView.getLabelArray()[untenInt][rowIndex];
-	     BoardView.setBackground(links);
-	     BoardView.setBackground(rechts);
-	     BoardView.setBackground(unten);
-	     BoardView.setBackground(oben);
+	     Kachel links = testGUI.getLabelArray()[columnIndex][linksInt];
+	     Kachel rechts = testGUI.getLabelArray()[columnIndex][rechtsInt];
+	     Kachel oben = testGUI.getLabelArray()[obenInt][rowIndex];
+	     Kachel unten = testGUI.getLabelArray()[untenInt][rowIndex];
+	     testGUI.setBackground(links);
+	     testGUI.setBackground(rechts);
+	     testGUI.setBackground(unten);
+	     testGUI.setBackground(oben);
 	     
-	     int rowIndexAlt = BoardView.getRowIndex(BoardView.getLabelAnfang());
-	     int columnIndexAlt = BoardView.getColumnIndex(BoardView.getLabelAnfang());
+	     int rowIndexAlt = testGUI.getRowIndex(testGUI.getLabelAnfang());
+	     int columnIndexAlt = testGUI.getColumnIndex(testGUI.getLabelAnfang());
 	     int linksIntAlt = rowIndexAlt - umfang;
 	     int rechtsIntAlt = rowIndexAlt + umfang;
 	     int obenIntAlt = columnIndexAlt - umfang;
@@ -603,14 +603,14 @@ public class BoardPresenter extends Application {
 	    	 untenIntAlt = rowSize;
 	     }
 	     
-	     Kachel linksAlt = BoardView.getLabelArray()[columnIndexAlt][linksIntAlt];
-	     Kachel rechtsAlt = BoardView.getLabelArray()[columnIndexAlt][rechtsIntAlt];
-	     Kachel obenAlt = BoardView.getLabelArray()[obenIntAlt][rowIndexAlt];
-	     Kachel untenAlt = BoardView.getLabelArray()[untenIntAlt][rowIndexAlt];
-	     BoardView.revertBackground(linksAlt);
-	     BoardView.revertBackground(rechtsAlt);
-	     BoardView.revertBackground(untenAlt);
-	     BoardView.revertBackground(obenAlt);
+	     Kachel linksAlt = testGUI.getLabelArray()[columnIndexAlt][linksIntAlt];
+	     Kachel rechtsAlt = testGUI.getLabelArray()[columnIndexAlt][rechtsIntAlt];
+	     Kachel obenAlt = testGUI.getLabelArray()[obenIntAlt][rowIndexAlt];
+	     Kachel untenAlt = testGUI.getLabelArray()[untenIntAlt][rowIndexAlt];
+	     testGUI.revertBackground(linksAlt);
+	     testGUI.revertBackground(rechtsAlt);
+	     testGUI.revertBackground(untenAlt);
+	     testGUI.revertBackground(obenAlt);
 	    
 	    
 	    
