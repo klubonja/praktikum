@@ -9,20 +9,27 @@ public class PlayerView extends Circle {
 	
 	private Player model;
 	
+	public PlayerView(double radius){
+		super(radius);
+		this.setFill(Color.BLUE);
+		
+		//bindComponents();
+	}
+	
 	public PlayerView(Player model, Color color){
 		super();
 		this.model= model;
 		this.setFill(color);
 		
-		bindComponents();
+		//bindComponents();
 		
 	}
 	
-	public void bindComponents(){
+	/*public void bindComponents(){
 		
 		this.centerXProperty().bind(model.xCoordProperty());
 		this.centerYProperty().bind(model.yCoordProperty());
-	}
+	}*/
 	
 	
 
