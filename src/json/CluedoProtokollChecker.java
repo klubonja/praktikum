@@ -78,6 +78,7 @@ public class CluedoProtokollChecker {
 		validateField("nick");
 		validateField("group");
 		validateField("expansions");
+			isJSONArray("expansions");
 	}
 
 	void val_login_successful() {
@@ -210,9 +211,7 @@ public class CluedoProtokollChecker {
 	}
 
 	void val_suspect() {
-		validateField("person");
-		validateField("weapon");
-		validateField("room");
+		validateStatement();
 	}
 
 	void val_disprove() {
@@ -227,8 +226,9 @@ public class CluedoProtokollChecker {
 
 	}
 	
+	
 	void validatePerson(String personName){
-		if (!Persons.isMember(personName))
+		if (!Persons.isMemberPersonName(personName))
 			setErr("Personname "+personName+ " not part of this Game");
 	}
 	
@@ -242,8 +242,45 @@ public class CluedoProtokollChecker {
 			setErr("Personname "+personName+ " not part of this Game");
 	}
 	
-	void validateGameState(){
+	void validatePlayerState(String playerState){
+		if (!PlayerStates.isMember(playerState))
+			setErr("PlayerState "+playerState+ " not a valid PlayerState in this Game");
+	}
+	
+	void validateGameState(String gameState){
+		if (!GameStates.isMember(gameState))
+			setErr("GameState "+gameState+ " not a valid PlayerState in this Game");
+	}
+	
+	void validateColor(String color){
+		if (!Persons.isMember(color))
+			setErr("Color "+color+ " not a valid Color in this Game");
+	}
+	
+	void validatePlayerInfo(String key){
+		if (isJSONArray(key)){
+			validateField("nick");
+			validateField("color");
+			validateField("fields");
+			validateField("cards");
+			validatePlayerState("playerstate");
+		}
+			
+			
+	}
+	
+	void validateGameInfo(){
+		if (validateField("gameID"))
+			isInt("gameID");
+		validateGameState("gamestate");
 		
+			
+	}
+	
+	void validateStatement(){
+		validatePerson("person");
+		validateWeapon("weapon");
+		validateRoom("room");
 	}
 	
 	void validatePlayerInfo(){
@@ -263,10 +300,29 @@ public class CluedoProtokollChecker {
 	}
 
 	boolean isJSONArray(String key) {
-		if (json.get(key) instanceof JSONArray)
-			return true;
+		// JSONArray jar = json.optJSONArray(key);
+		   if(json.optJSONArray(key) != null)
+		       return true;
+//		if (json.get(key) instanceof JSONArray)
+//			return true;
 		setErr("JSONArray expected");
 		return false;
+	}
+	
+	boolean isJSONArrayOfType(String key,String localtype) {
+		JSONArray jar = json.optJSONArray(key);
+		   if(json.optJSONArray(key) != null){				
+			for (int i = 0; i < jar.length(); i++) {
+				//if (key.equals("players")) validatePlayerInfo(jar.get(i)
+			}
+			return true;
+		}
+		setErr("JSONArray expected");	
+
+		setErr("JSONArray expected");
+		return false;
+		
+		
 	}
 
 	boolean isInt(String key) {
