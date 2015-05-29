@@ -1,6 +1,6 @@
-package json;
+package enums;
 
-public enum CluedoJSONTypes {
+public enum CluedoProtokollMessageTypes {
 	
 	//Verbindung
 	login("login"),
@@ -51,7 +51,7 @@ public enum CluedoJSONTypes {
 	
 	private String name;
 
-    CluedoJSONTypes(String name) {
+    CluedoProtokollMessageTypes(String name) {
         this.name = name;
     }
 
@@ -64,8 +64,8 @@ public enum CluedoJSONTypes {
     }  
     
     static public boolean isMember(String aName) {
-        CluedoJSONTypes[] types = CluedoJSONTypes.values();
-        for (CluedoJSONTypes type  : types)
+        CluedoProtokollMessageTypes[] types = CluedoProtokollMessageTypes.values();
+        for (CluedoProtokollMessageTypes type  : types)
             if (type.getName().equals(aName))
                 return true;
         return false;

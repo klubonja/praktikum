@@ -3,7 +3,7 @@ package json;
 public class vtestMain {
 	public static void main(String[] args) {
 		CluedoJSON to = new CluedoJSON();
-		to.put("type","login");
+		to.put("type","loginn");
 		CluedoProtokollChecker c = new CluedoProtokollChecker(to);
 		if (!c.validate()) c.printErrs();
 		
