@@ -29,9 +29,6 @@ public class TestGUI extends GridPane {
 	private Kachel kachelAnfang;
 	private int rowSize;
 	private int columnSize;
-	private Kachel obstacle;
-	private int obstacleRow;
-	private int obstacleColumn;
 	private Spieler spieler;
 	
 	/**
@@ -147,22 +144,6 @@ public class TestGUI extends GridPane {
 
 	public void setSceneYo(Scene sceneYo) {
 		this.sceneYo = sceneYo;
-	}
-
-	public int getObstacleRow() {
-		return obstacleRow;
-	}
-
-	public void setObstacleRow(int obstacleRow) {
-		this.obstacleRow = obstacleRow;
-	}
-
-	public int getObstacleColumn() {
-		return obstacleColumn;
-	}
-
-	public void setObstacleColumn(int obstacleColumn) {
-		this.obstacleColumn = obstacleColumn;
 	}
 
 	public Spieler getSpieler() {

@@ -18,46 +18,46 @@ import javafx.util.Duration;
 
 /**
  * @since 24.05.2015
- * @version 27.05.2015
+ * @version 28.05.2015
  * @author Benedikt Mayer
  *
  * 
- */
+ */	
 public class TestApp extends Application {
 
+	
+	private Spieler spieler;
 	private TestGUI testGUI;
-	private Timeline timeline;
-	private KeyFrame keyFrame;
-	private KeyValue keyValue;
-	private Background hintergrund;
-	private BackgroundFill fill;
 	private int rowSize = 25;
 	private int columnSize = 24;
+	
 	private int xDistanz;
-	private int yDistanz;
-	private Kachel altePosition;
-	private Spieler spieler;
+	private int yDistanz;	
 	private int xErlaubt;
 	private int yErlaubt;
+	
 	private int jetzigeReihe;
 	private int jetzigeColumn;
 	private Kachel jetzigesFeld;
-	private Circle playerDarstellung;
-	private int xPosition;
-	private int yPosition;
 	
+	private Circle playerDarstellung;
+	
+	private int xPositionFuerPath;
+	private int yPositionFuerPath;	
 	private int xStreckeFuerPath;
 	private int yStreckeFuerPath;
 	
 	private int xRichtung;
 	private int yRichtung;
-	
 	private int xZiel;
 	private int yZiel;
 	
 	private String textbuffer;
 	private Background backgroundbuffer;
 	private Font fontbuffer;
+
+	private int ausweichen;
+	private boolean aussenrum;
 	
 	/**
 	 * Hier wird die Stage gestartet und den Kacheln eine Methode für 
@@ -87,13 +87,6 @@ public class TestApp extends Application {
 	}
 	
 	/**
-	 * Wird ausgegeben, wenn jemand auf einen Raum clickt.
-	 */
-	public void dasIsEinRaum(){
-		System.out.println("Das ist ein Raum, alter");
-	}
-	
-	/**
 	 * Färbt die Kachel ein bzw. setzt den Text auf "nope".
 	 * @param momentaneKachel
 	 */
@@ -111,7 +104,7 @@ public class TestApp extends Application {
 	}
 	
 	/**
-	 * Bereinigt die Kachel von Schmutz aller Art!
+	 * Bereinigt die Kachel von Schmutz und Farben aller Art!
 	 * @param momentaneKachel
 	 */
 	public void persil(Kachel momentaneKachel){
@@ -124,10 +117,20 @@ public class TestApp extends Application {
 		}
 	}
 	
+	/**
+	 * Wird von der Kachel.OnClick aufgerufen und löst die movePlayer Methode aus.
+	 */
 	public void dasIstEinFeld(Circle spielerDarstellung, Kachel ziel){
 		movePlayer(spielerDarstellung, ziel);
 	}
 	
+
+	/**
+	 * Wird ausgelöst, wenn jemand auf einen Raum clickt und gibt eine nette Nachricht zurück.
+	 */
+	public void dasIsEinRaum(){
+		System.out.println("Das ist ein Raum, alter");
+	}
 	
 	
 	/**
@@ -148,12 +151,21 @@ public class TestApp extends Application {
 		
 		while( (xDistanz != 0) && (yDistanz != 0) ){
 			pathfinder(xDistanz, yDistanz, jetzigesFeld);
+			//newPathfinder(xDistanz, yDistanz, jetzigesFeld);
 		}
 		
 		while( (xDistanz != 0) ^ (yDistanz != 0) ){
 			pathfinder(xDistanz, yDistanz, jetzigesFeld);
 		}
-		
+		/*
+		while( (xDistanz != 0) && (yDistanz != 0) ){
+			if (xDistanz > 0 || xDistanz < 0){
+				pathfinder...
+				movewithpath
+			}
+			...y
+		}
+		*/
 			
 
 		System.out.println("nachher : x Distanz   " +xDistanz);
@@ -176,8 +188,7 @@ public class TestApp extends Application {
 		if ((testGUI.getSpieler().getxPosition() != xZiel) || (testGUI.getSpieler().getyPosition() != yZiel) ){
 	    	System.out.println("recursion");		    	
 	    	
-	    	movePlayer(testGUI.getTestSpieler(), testGUI.getLabelArray()[yZiel][xZiel]);
-	    	
+	    	movePlayer(testGUI.getTestSpieler(), testGUI.getLabelArray()[yZiel][xZiel]);	    	
 	     }
 		
 		
@@ -198,13 +209,61 @@ public class TestApp extends Application {
 		this.xRichtung = xDistanz;
 		this.yRichtung = yDistanz;
 		this.xZiel = testGUI.getColumnIndex(ziel);
-		this.yZiel = testGUI.getRowIndex(ziel);
+		this.yZiel = testGUI.getRowIndex(ziel) + ausweichen;
 		this.jetzigesFeld =  testGUI.getLabelArray()[spieler.getyPosition()][spieler.getxPosition()];
 		this.xErlaubt = 0;
 		this.yErlaubt = 0;
+		this.ausweichen = 0;
 		
 		
 	}
+	
+	public void newPathfinder(int xDistanzeingegeben, int yDistanzeingegeben, Kachel jetzigesFeld){
+		this.xDistanz = xDistanzeingegeben;
+		this.yDistanz = yDistanzeingegeben;
+		pathfinderX(jetzigesFeld);
+		//animationX();
+		pathfinderY(jetzigesFeld);
+		//animationY();
+	}
+	
+	public void pathfinderX(Kachel jetzigesFeld){
+		
+		if (moveErlaubtX()){
+			if (xDistanz>0){
+				animationX(1);
+				xDistanz--;	
+			}
+			if (xDistanz<0){
+				animationX(-1);
+				xDistanz++;	
+			}
+		}
+	}
+	
+	public void pathfinderY(Kachel jetzigesFeld){
+		
+		if (moveErlaubtY()){
+			if (yDistanz>0){
+				animationY(1);
+				yDistanz--;	
+			}
+			if (yDistanz<0){
+				animationY(-1);
+				yDistanz++;	
+			}
+		}
+	}
+	
+	public void animationX(int richtungX){
+		
+	}
+	
+	public void animationY(int richtungY){
+		
+	}
+	
+	
 	/**
 	 * Berechnet die Erlaubte x und y Distanz bis zum Ziel
 	 * @param xDistanzeingegeben Die übermittelte Distanz in X Richtung
@@ -226,7 +285,7 @@ public class TestApp extends Application {
 						refresh();
 						if (moveErlaubtX()){
 							raiseErlaubtX();		
-							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
+							updateCurrentField(0, 1);
 							
 						}
 						xDistanz--;
@@ -235,7 +294,7 @@ public class TestApp extends Application {
 						refresh();
 						if (moveErlaubtX()){
 							raiseErlaubtX();		
-							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn-1];
+							updateCurrentField(0, -1);
 							
 						}
 						xDistanz++;
@@ -244,7 +303,7 @@ public class TestApp extends Application {
 				refresh();
 				if (moveErlaubtY()){
 					raiseErlaubtY();					
-					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe+1][this.jetzigeColumn];
+					updateCurrentField(1, 0);
 					
 				}
 				yDistanz--;
@@ -254,7 +313,7 @@ public class TestApp extends Application {
 						refresh();
 						if (moveErlaubtX()){
 							raiseErlaubtX();		
-							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
+							updateCurrentField(0, 1);
 							
 						}
 						xDistanz--;
@@ -263,7 +322,7 @@ public class TestApp extends Application {
 						refresh();
 						if (moveErlaubtX()){
 							raiseErlaubtX();		
-							this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn-1];
+							updateCurrentField(0, -1);
 							
 						}
 						xDistanz++;
@@ -271,7 +330,7 @@ public class TestApp extends Application {
 				refresh();
 				if (moveErlaubtY()){
 					raiseErlaubtY();					
-					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe-1][this.jetzigeColumn];
+					updateCurrentField(-1, 0);
 					
 				}
 				yDistanz++;
@@ -284,7 +343,7 @@ public class TestApp extends Application {
 				refresh();
 				if (moveErlaubtX()){
 					raiseErlaubtX();
-					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn-1];
+					updateCurrentField(0, -1);
 					
 				}
 				xDistanz++;
@@ -294,8 +353,11 @@ public class TestApp extends Application {
 				refresh();
 				if (moveErlaubtX()){
 					raiseErlaubtX();
-					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe][this.jetzigeColumn+1];
+					updateCurrentField(0, 1);
 					
+				}
+				else {
+					dodge();
 				}
 				xDistanz--;
 			}
@@ -304,7 +366,7 @@ public class TestApp extends Application {
 				refresh();
 				if (moveErlaubtY()){
 					raiseErlaubtY();					
-					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe+1][this.jetzigeColumn];
+					updateCurrentField(1, 0);
 					
 				}
 				yDistanz--;
@@ -314,7 +376,7 @@ public class TestApp extends Application {
 				refresh();
 				if (moveErlaubtY()){
 					raiseErlaubtY();					
-					this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe-1][this.jetzigeColumn];
+					updateCurrentField(-1, 0);
 					
 				}
 				yDistanz++;
@@ -348,6 +410,16 @@ public class TestApp extends Application {
 	}
 	
 	/**
+	 * Updatet das jetzigeFeld um den jeweiligen Wert
+	 * @param y Der Wert um welchen die Reihe erhöht wird
+	 * @param x Der Wert um welchen die Spalte erhöht wird
+	 */
+	public void updateCurrentField(int y, int x){
+		this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe+y][this.jetzigeColumn+x];
+	}
+	
+	
+	/**
 	 * Hier wird überprüft, ob die nächstgelegene Kachel in X Richtung ein Raum ist.
 	 * @return true falls dort keine Raumkachel ist. false falls dort eine Raumkachel ist.
 	 */
@@ -367,7 +439,8 @@ public class TestApp extends Application {
 		else {
 			if (testGUI.getLabelArray()[jetzigeReihe][jetzigeColumn-1].isIstRaum()==false){
 				System.out.println("x check true");
-				return true;	
+				return true;
+				
 			}
 			else {
 				System.out.println("x check false");
@@ -385,7 +458,9 @@ public class TestApp extends Application {
 		refresh();
 		if (yDistanz>0){
 			if (testGUI.getLabelArray()[jetzigeReihe+1][jetzigeColumn].isIstRaum() == false){
+				
 				System.out.println("y check true");
+				
 				return true;	
 			}
 			else {
@@ -407,6 +482,11 @@ public class TestApp extends Application {
 		}
 	}
 	
+	public void dodge(){
+		
+	}
+	
+	
 	
 	/**
 	 * Hier findet die Animation statt mithilfe von Paths.
@@ -427,11 +507,11 @@ public class TestApp extends Application {
 			this.yStreckeFuerPath = - this.yStreckeFuerPath;
 		}
 		
-		this.xPosition = testGUI.getSpieler().getxPosition();
-		this.yPosition = testGUI.getSpieler().getyPosition();
+		this.xPositionFuerPath = testGUI.getSpieler().getxPosition();
+		this.yPositionFuerPath = testGUI.getSpieler().getyPosition();
 		
-		Kachel anfangsKachel = testGUI.getLabelArray()[yPosition][xPosition];
-		Kachel zielKachel = testGUI.getLabelArray()[yPosition + yStreckeFuerPath][xPosition + xStreckeFuerPath];
+		Kachel anfangsKachel = testGUI.getLabelArray()[yPositionFuerPath][xPositionFuerPath];
+		Kachel zielKachel = testGUI.getLabelArray()[yPositionFuerPath + yStreckeFuerPath][xPositionFuerPath + xStreckeFuerPath];
 		
 		Path path = new Path();
 	     path.getElements().add (new MoveTo (anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
@@ -452,6 +532,9 @@ public class TestApp extends Application {
 	      
 	}
 	
+	/**
+	 * Inaktive alte Bewegungsmethode, welche auch einen "Kreis" um Ziel gezeichnet hat 
+	 */
 	/*public void movePlayer(Circle spieler, Kachel ziel){
 			
 		Kachel anfangsLabel = testGUI.getKachelAnfang();				
@@ -535,6 +618,7 @@ public class TestApp extends Application {
 	   
 	}
 */
+	
 	/**
 	 * Hier wird gelauncht.
 	 * @param args
