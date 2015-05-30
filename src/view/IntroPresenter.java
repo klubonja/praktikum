@@ -2,7 +2,9 @@ package view;
 
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class IntroPresenter {
@@ -54,7 +56,13 @@ public class IntroPresenter {
 	}
 	
 	public void addEffect(Node node){
-		node.setEffect(new Glow(0.9));
+		Glow glow = new Glow(0.5);
+		DropShadow dropShadow2 = new DropShadow();
+		 dropShadow2.setOffsetX(6.0);
+		 dropShadow2.setOffsetY(4.0);
+		 dropShadow2.setColor(Color.FUCHSIA);
+		 glow.setInput(dropShadow2);
+		node.setEffect(glow);
 	}
 	
 	public void removeEffect(Node node){

@@ -24,6 +24,7 @@ public class GameFramePresenter {
 		gfv.board.add(testSpieler, player.getxCoord(),player.getyCoord());
 		DicePresenter dice = new DicePresenter(gfv.dice);
 		BoardPresenter board = new BoardPresenter(gfv.board, testSpieler, player);
+		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		
 	}
 	

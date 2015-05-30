@@ -190,10 +190,7 @@ public class BoardPresenter{
 	    	System.out.println("recursion");		    	
 	    	
 	    	movePlayer(view.getLabelArray()[yZiel][xZiel]);	    	
-	     }
-		
-		
-		
+	     }		
 	     
 	}
 	

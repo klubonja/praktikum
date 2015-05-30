@@ -65,10 +65,10 @@ public class BoardView extends GridPane {
 				System.out.println(iReihen +" - "+jSpalten);
 				// this.setConstraints(labelArray[iReihen][jSpalten], jSpalten, iReihen);
 				
-				labelArray[iReihen][jSpalten].setMaxHeight(28);
-				labelArray[iReihen][jSpalten].setMaxWidth(28);
-				labelArray[iReihen][jSpalten].setMinHeight(28);
-				labelArray[iReihen][jSpalten].setMinWidth(28);
+				labelArray[iReihen][jSpalten].setMaxHeight(29);
+				labelArray[iReihen][jSpalten].setMaxWidth(29);
+				labelArray[iReihen][jSpalten].setMinHeight(29);
+				labelArray[iReihen][jSpalten].setMinWidth(29);
 			}
 		}
 		kachelAnfang = labelArray[0][0];
