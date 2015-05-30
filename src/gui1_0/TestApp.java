@@ -70,7 +70,6 @@ public class TestApp extends Application {
 		
 		testGUI = new TestGUI(columnSize, rowSize);
 		testGUI.start();
-		spieler = testGUI.getSpieler();
 		for (int i = 0; i<testGUI.getLabelArray().length-1;i++){
 			for (int j = 0; j<testGUI.getLabelArray()[j].length-1;j++){
 				Kachel momentaneKachel = testGUI.getLabelArray()[i][j];

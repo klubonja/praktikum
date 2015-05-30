@@ -72,10 +72,6 @@ public class BoardView extends GridPane {
 			}
 		}
 		kachelAnfang = labelArray[0][0];
-		spieler = new Player("player1", 0, 0);
-		testSpieler = new PlayerView(20);
-		testSpieler.setFill(Color.ROYALBLUE);
-		this.add(testSpieler, spieler.getxCoord(), spieler.getyCoord()); // spieler.getyPosition()
 		
 		
 	}

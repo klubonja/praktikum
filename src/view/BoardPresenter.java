@@ -1,21 +1,16 @@
 package view;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
-import view.PlayerView;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.*;
+import model.Player;
+
 
 /**
  * @since 24.05.2015
@@ -24,11 +19,10 @@ import model.*;
  *
  * 
  */	
-public class BoardPresenter extends Application {
+public class BoardPresenter{
 
 	
-	private Player spieler;
-	private BoardView BoardView;
+	private Player player;
 	private int rowSize = 25;
 	private int columnSize = 24;
 	
@@ -41,10 +35,10 @@ public class BoardPresenter extends Application {
 	private int jetzigeColumn;
 	private Kachel jetzigesFeld;
 	
-	private PlayerView playerDarstellung;
+	private Circle playerDarstellung;
 	
-	private int CenterXFuerPath;
-	private int CenterYFuerPath;	
+	private int xPositionFuerPath;
+	private int yPositionFuerPath;	
 	private int xStreckeFuerPath;
 	private int yStreckeFuerPath;
 	
@@ -60,22 +54,29 @@ public class BoardPresenter extends Application {
 	private int ausweichen;
 	private boolean aussenrum;
 	
+	BoardView view;
+	
 	/**
 	 * Hier wird die Stage gestartet und den Kacheln eine Methode für 
 	 * setOnMouseClicked zugewiesen.
 	 * @param primaryStage 
 	 * @throws Exception
 	 */
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public BoardPresenter(BoardView view, Circle Playerdarstellung, Player player){
+		this.player = player;
+		this.view=view;
+		zuweisung();
+		this.playerDarstellung = Playerdarstellung;
+	}
 		
-		BoardView = new BoardView(columnSize, rowSize);
-		spieler = BoardView.getSpieler();
-		for (int i = 0; i<BoardView.getLabelArray().length-1;i++){
-			for (int j = 0; j<BoardView.getLabelArray()[j].length-1;j++){
-				Kachel momentaneKachel = BoardView.getLabelArray()[i][j];
+
+	public void zuweisung(){
+		
+		for (int i = 0; i<view.getLabelArray().length-1;i++){
+			for (int j = 0; j<view.getLabelArray()[j].length-1;j++){
+				Kachel momentaneKachel = view.getLabelArray()[i][j];
 					if (momentaneKachel.isIstRaum()==false){
-						momentaneKachel.setOnMouseClicked(e -> dasIstEinFeld(BoardView.getTestSpieler(), momentaneKachel));
+						momentaneKachel.setOnMouseClicked(e -> dasIstEinFeld(momentaneKachel));
 					}
 					else{
 						momentaneKachel.setOnMouseClicked(e -> dasIsEinRaum());						
@@ -120,8 +121,8 @@ public class BoardPresenter extends Application {
 	/**
 	 * Wird von der Kachel.OnClick aufgerufen und löst die movePlayer Methode aus.
 	 */
-	public void dasIstEinFeld(PlayerView spielerDarstellung, Kachel ziel){
-		movePlayer(spielerDarstellung, ziel);
+	public void dasIstEinFeld(Kachel ziel){
+		movePlayer(ziel);
 	}
 	
 
@@ -136,14 +137,14 @@ public class BoardPresenter extends Application {
 	/**
 	 * Die Methode, welche durch das ClickEvent ausgelöst wird.
 	 * hier wird pathfinder und moveWithPath ausgelöst.
-	 * @param spielerDarstellung Der zu bewegende Spieler
+	 * @param PlayerDarstellung Der zu bewegende Player
 	 * @param ziel Die Zielkachel
 	 */	
-	public void movePlayer(PlayerView spielerDarstellung, Kachel ziel){
+	public void movePlayer(Kachel ziel){
 		System.out.println("----------------------");
 		System.out.println("move whatever");
 		
-		reset(spielerDarstellung,ziel);
+		reset(ziel);
 			
 		System.out.println("vorher : x Distanz   " +xDistanz);
 		System.out.println("vorher : y Distanz   " +yDistanz);
@@ -172,23 +173,23 @@ public class BoardPresenter extends Application {
 		System.out.println("nachher : y Distanz   " +yDistanz);
 			
 		// Animation
-	    moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);				
+	    moveWithPath(this.xErlaubt, this.yErlaubt);				
 		
-		System.out.println("Reihe : " +(BoardView.getRowIndex(this.jetzigesFeld)+1));
-		System.out.println("Spalte : " +(BoardView.getColumnIndex(this.jetzigesFeld)+1));
+		System.out.println("Reihe : " +(view.getRowIndex(this.jetzigesFeld)+1));
+		System.out.println("Spalte : " +(view.getColumnIndex(this.jetzigesFeld)+1));
 		
-		System.out.println("x Spieler : " +BoardView.getSpieler().getCenterX() +"| x Ziel : " +xZiel);
-		System.out.println("y Spieler : " +BoardView.getSpieler().getCenterY() +"| y Ziel : " +yZiel);
+		System.out.println("x Player : " +player.getxCoord() +"| x Ziel : " +xZiel);
+		System.out.println("y Player : " +player.getyCoord() +"| y Ziel : " +yZiel);
 			
 			
-		if (BoardView.getSpieler().getCenterX() == xZiel && BoardView.getSpieler().getCenterY() == yZiel){
+		if (player.getxCoord() == xZiel && player.getyCoord() == yZiel){
 			System.out.println("Sie haben ihr Ziel erreicht");
 		}	
 			
-		if ((BoardView.getSpieler().getCenterX() != xZiel) || (BoardView.getSpieler().getCenterY() != yZiel) ){
+		if ((player.getxCoord() != xZiel) || (player.getyCoord() != yZiel) ){
 	    	System.out.println("recursion");		    	
 	    	
-	    	movePlayer(BoardView.getTestSpieler(), BoardView.getLabelArray()[yZiel][xZiel]);	    	
+	    	movePlayer(view.getLabelArray()[yZiel][xZiel]);	    	
 	     }
 		
 		
@@ -198,19 +199,18 @@ public class BoardPresenter extends Application {
 	
 	/**
 	 * Setzt die Werte wieder zurück.
-	 * @param spielerDarstellung
+	 * @param PlayerDarstellung
 	 * @param ziel
 	 */
-	public void reset(PlayerView spielerDarstellung, Kachel ziel){
+	public void reset(Kachel ziel){
 		System.out.println("reset whatever");
-		this.playerDarstellung = spielerDarstellung;
-		this.yDistanz = BoardView.getRowIndex(ziel) - (int)BoardView.getSpieler().getCenterY();
-		this.xDistanz = BoardView.getColumnIndex(ziel) - (int)BoardView.getSpieler().getCenterX();
+		this.yDistanz = view.getRowIndex(ziel) - player.getyCoord();
+		this.xDistanz = view.getColumnIndex(ziel) - player.getxCoord();
 		this.xRichtung = xDistanz;
 		this.yRichtung = yDistanz;
-		this.xZiel = BoardView.getColumnIndex(ziel);
-		this.yZiel = BoardView.getRowIndex(ziel) + ausweichen;
-		this.jetzigesFeld =  BoardView.getLabelArray()[(int) spieler.getCenterY()][(int) spieler.getCenterX()];
+		this.xZiel = view.getColumnIndex(ziel);
+		this.yZiel = view.getRowIndex(ziel) + ausweichen;
+		this.jetzigesFeld =  view.getLabelArray()[player.getyCoord()][player.getxCoord()];
 		this.xErlaubt = 0;
 		this.yErlaubt = 0;
 		this.ausweichen = 0;
@@ -273,8 +273,8 @@ public class BoardPresenter extends Application {
 	public void pathfinder(int xDistanzeingegeben, int yDistanzeingegeben, Kachel jetzigesFeld){
 		
 		System.out.println("find whatever");
-		System.out.println("x Spieler : " +BoardView.getSpieler().getCenterX() +"| x Ziel : " +xZiel);
-		System.out.println("y Spieler : " +BoardView.getSpieler().getCenterY() +"| y Ziel : " +yZiel);
+		System.out.println("x Player : " +player.getxCoord() +"| x Ziel : " +xZiel);
+		System.out.println("y Player : " +player.getyCoord() +"| y Ziel : " +yZiel);
 		
 		this.xDistanz = xDistanzeingegeben;
 		this.yDistanz = yDistanzeingegeben;
@@ -390,8 +390,8 @@ public class BoardPresenter extends Application {
 	 * setzt die jetzigeReihe / jetzigeSpalte auf den aktuellen Wert.
 	 */
 	public void refresh(){
-		this.jetzigeReihe = BoardView.getRowIndex(this.jetzigesFeld);
-		this.jetzigeColumn = BoardView.getColumnIndex(this.jetzigesFeld);			
+		this.jetzigeReihe = view.getRowIndex(this.jetzigesFeld);
+		this.jetzigeColumn = view.getColumnIndex(this.jetzigesFeld);			
 		
 	}
 	
@@ -415,7 +415,7 @@ public class BoardPresenter extends Application {
 	 * @param x Der Wert um welchen die Spalte erhöht wird
 	 */
 	public void updateCurrentField(int y, int x){
-		this.jetzigesFeld = BoardView.getLabelArray()[this.jetzigeReihe+y][this.jetzigeColumn+x];
+		this.jetzigesFeld = view.getLabelArray()[this.jetzigeReihe+y][this.jetzigeColumn+x];
 	}
 	
 	
@@ -426,7 +426,7 @@ public class BoardPresenter extends Application {
 	public boolean moveErlaubtX (){
 		refresh();
 		if (xDistanz>0){
-			if (BoardView.getLabelArray()[jetzigeReihe][jetzigeColumn+1].isIstRaum()==false){
+			if (view.getLabelArray()[jetzigeReihe][jetzigeColumn+1].isIstRaum()==false){
 				System.out.println("x check true");
 				return true;	
 			}
@@ -437,7 +437,7 @@ public class BoardPresenter extends Application {
 			}		
 		}
 		else {
-			if (BoardView.getLabelArray()[jetzigeReihe][jetzigeColumn-1].isIstRaum()==false){
+			if (view.getLabelArray()[jetzigeReihe][jetzigeColumn-1].isIstRaum()==false){
 				System.out.println("x check true");
 				return true;
 				
@@ -457,7 +457,7 @@ public class BoardPresenter extends Application {
 	public boolean moveErlaubtY (){
 		refresh();
 		if (yDistanz>0){
-			if (BoardView.getLabelArray()[jetzigeReihe+1][jetzigeColumn].isIstRaum() == false){
+			if (view.getLabelArray()[jetzigeReihe+1][jetzigeColumn].isIstRaum() == false){
 				
 				System.out.println("y check true");
 				
@@ -470,7 +470,7 @@ public class BoardPresenter extends Application {
 			}		
 		}
 		else {
-			if (BoardView.getLabelArray()[jetzigeReihe-1][jetzigeColumn].isIstRaum() == false){
+			if (view.getLabelArray()[jetzigeReihe-1][jetzigeColumn].isIstRaum() == false){
 				System.out.println("y check true");
 				return true;	
 			}
@@ -490,11 +490,11 @@ public class BoardPresenter extends Application {
 	
 	/**
 	 * Hier findet die Animation statt mithilfe von Paths.
-	 * @param spielerDarstellung Die zu bewegende Node
+	 * @param PlayerDarstellung Die zu bewegende Node
 	 * @param xStrecke Die Strecke in X Richtung
 	 * @param yStrecke Die Strecke in Y Richtung
 	 */
-	public void moveWithPath(PlayerView spielerDarstellung, int xStrecke, int yStrecke){
+	public void moveWithPath( int xStrecke, int yStrecke){
 		
 		System.out.println("path whatever");
 		this.xStreckeFuerPath = xStrecke;
@@ -507,11 +507,11 @@ public class BoardPresenter extends Application {
 			this.yStreckeFuerPath = - this.yStreckeFuerPath;
 		}
 		
-		this.CenterXFuerPath = (int) BoardView.getSpieler().getCenterX();
-		this.CenterYFuerPath = (int) BoardView.getSpieler().getCenterY();
+		this.xPositionFuerPath = player.getxCoord();
+		this.yPositionFuerPath = player.getyCoord();
 		
-		Kachel anfangsKachel = BoardView.getLabelArray()[CenterYFuerPath][CenterXFuerPath];
-		Kachel zielKachel = BoardView.getLabelArray()[CenterYFuerPath + yStreckeFuerPath][CenterXFuerPath + xStreckeFuerPath];
+		Kachel anfangsKachel = view.getLabelArray()[yPositionFuerPath][xPositionFuerPath];
+		Kachel zielKachel = view.getLabelArray()[yPositionFuerPath + yStreckeFuerPath][xPositionFuerPath + xStreckeFuerPath];
 		
 		Path path = new Path();
 	     path.getElements().add (new MoveTo (anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
@@ -520,13 +520,13 @@ public class BoardPresenter extends Application {
 	   
 	     PathTransition pathTransition = new PathTransition();	     
 	     pathTransition.setDuration(Duration.millis(xStrecke * 200 + yStrecke * 200));
-	     pathTransition.setNode(spielerDarstellung);
+	     pathTransition.setNode(playerDarstellung);
 	     pathTransition.setPath(path);
 	     	//pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);	 
 	     pathTransition.play();
 
-	     BoardView.getSpieler().setCenterX(BoardView.getSpieler().getCenterX()+xStreckeFuerPath);
-	     BoardView.getSpieler().setCenterY(BoardView.getSpieler().getCenterY()+yStreckeFuerPath);
+	     player.setxCoord(player.getxCoord()+xStreckeFuerPath);
+	     player.setyCoord(player.getyCoord()+yStreckeFuerPath);
 
 	     
 	      
@@ -535,9 +535,9 @@ public class BoardPresenter extends Application {
 	/**
 	 * Inaktive alte Bewegungsmethode, welche auch einen "Kreis" um Ziel gezeichnet hat 
 	 */
-	/*public void movePlayer(PlayerView spieler, Kachel ziel){
+	/*public void movePlayer(Circle Player, Kachel ziel){
 			
-		Kachel anfangsLabel = BoardView.getKachelAnfang();				
+		Kachel anfangsLabel = view.getKachelAnfang();				
 		
 		System.out.println("X Distanz:  " + xDistanz + "Y Distanz:  " + yDistanz);
 		
@@ -549,16 +549,16 @@ public class BoardPresenter extends Application {
 	     
 	     PathTransition pathTransition = new PathTransition();	     
 	     pathTransition.setDuration(Duration.millis(3000));
-	     pathTransition.setNode(spieler);
+	     pathTransition.setNode(Player);
 	     pathTransition.setPath(path);
 	     	//pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);	 
 	     pathTransition.play();
-	    BoardView.setKachelAnfang(ziel);
+	    view.setKachelAnfang(ziel);
 	    
 	    
 	     int umfang = 5;
-	     int rowIndex = BoardView.getRowIndex(ziel);
-	     int columnIndex = BoardView.getColumnIndex(ziel);
+	     int rowIndex = view.getRowIndex(ziel);
+	     int columnIndex = view.getColumnIndex(ziel);
 	     int linksInt = rowIndex - umfang;
 	     int rechtsInt = rowIndex + umfang;
 	     int obenInt = columnIndex - umfang;
@@ -575,17 +575,17 @@ public class BoardPresenter extends Application {
 	     if (untenInt>rowSize){
 	    	 untenInt = 0;
 	     }
-	     Kachel links = BoardView.getLabelArray()[columnIndex][linksInt];
-	     Kachel rechts = BoardView.getLabelArray()[columnIndex][rechtsInt];
-	     Kachel oben = BoardView.getLabelArray()[obenInt][rowIndex];
-	     Kachel unten = BoardView.getLabelArray()[untenInt][rowIndex];
-	     BoardView.setBackground(links);
-	     BoardView.setBackground(rechts);
-	     BoardView.setBackground(unten);
-	     BoardView.setBackground(oben);
+	     Kachel links = view.getLabelArray()[columnIndex][linksInt];
+	     Kachel rechts = view.getLabelArray()[columnIndex][rechtsInt];
+	     Kachel oben = view.getLabelArray()[obenInt][rowIndex];
+	     Kachel unten = view.getLabelArray()[untenInt][rowIndex];
+	     view.setBackground(links);
+	     view.setBackground(rechts);
+	     view.setBackground(unten);
+	     view.setBackground(oben);
 	     
-	     int rowIndexAlt = BoardView.getRowIndex(BoardView.getLabelAnfang());
-	     int columnIndexAlt = BoardView.getColumnIndex(BoardView.getLabelAnfang());
+	     int rowIndexAlt = view.getRowIndex(view.getLabelAnfang());
+	     int columnIndexAlt = view.getColumnIndex(view.getLabelAnfang());
 	     int linksIntAlt = rowIndexAlt - umfang;
 	     int rechtsIntAlt = rowIndexAlt + umfang;
 	     int obenIntAlt = columnIndexAlt - umfang;
@@ -603,27 +603,18 @@ public class BoardPresenter extends Application {
 	    	 untenIntAlt = rowSize;
 	     }
 	     
-	     Kachel linksAlt = BoardView.getLabelArray()[columnIndexAlt][linksIntAlt];
-	     Kachel rechtsAlt = BoardView.getLabelArray()[columnIndexAlt][rechtsIntAlt];
-	     Kachel obenAlt = BoardView.getLabelArray()[obenIntAlt][rowIndexAlt];
-	     Kachel untenAlt = BoardView.getLabelArray()[untenIntAlt][rowIndexAlt];
-	     BoardView.revertBackground(linksAlt);
-	     BoardView.revertBackground(rechtsAlt);
-	     BoardView.revertBackground(untenAlt);
-	     BoardView.revertBackground(obenAlt);
+	     Kachel linksAlt = view.getLabelArray()[columnIndexAlt][linksIntAlt];
+	     Kachel rechtsAlt = view.getLabelArray()[columnIndexAlt][rechtsIntAlt];
+	     Kachel obenAlt = view.getLabelArray()[obenIntAlt][rowIndexAlt];
+	     Kachel untenAlt = view.getLabelArray()[untenIntAlt][rowIndexAlt];
+	     view.revertBackground(linksAlt);
+	     view.revertBackground(rechtsAlt);
+	     view.revertBackground(untenAlt);
+	     view.revertBackground(obenAlt);
 	    
 	    
 	    
 	    
 	   
-	}
-*/
-	
-	/**
-	 * Hier wird gelauncht.
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		launch(args);
-	}
+	}*/
 }
