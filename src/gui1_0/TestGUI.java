@@ -66,7 +66,7 @@ public class TestGUI extends GridPane {
 		for (int iReihen = 0; iReihen< rowSize;iReihen++){
 			for (int jSpalten = 0; jSpalten<columnSize;jSpalten++){
 				String aufschrift = +iReihen +"" +jSpalten;
-				if ( (iReihen == 0 && jSpalten == 4) || (iReihen == 8 && jSpalten == 8) || (iReihen == 4 && jSpalten == 0) ){
+				if ( (iReihen > 0 && jSpalten == 4) || (iReihen == 8 && jSpalten == 8) || (iReihen == 4 && jSpalten == 0) ){
 					labelArray[iReihen][jSpalten] = new Raumkachel(aufschrift, iReihen, jSpalten, true);
 				}
 				else {

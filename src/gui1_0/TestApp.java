@@ -525,6 +525,7 @@ public class TestApp extends Application {
 	     	//pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);	 
 	     pathTransition.play();
 
+	     
 	     testGUI.getSpieler().setxPosition(testGUI.getSpieler().getxPosition()+xStreckeFuerPath);
 	     testGUI.getSpieler().setyPosition(testGUI.getSpieler().getyPosition()+yStreckeFuerPath);
 
