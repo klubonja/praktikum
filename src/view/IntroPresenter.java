@@ -2,10 +2,7 @@ package view;
 
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class IntroPresenter {
@@ -64,11 +61,12 @@ public class IntroPresenter {
 		node.setEffect(null);
 	}
 	
+	@SuppressWarnings("unused")
 	public void startNewGame(){
 		
 		GameFrameView view = new GameFrameView();
 		GameFramePresenter pres = new GameFramePresenter(view);
-		Scene scene = new Scene(view, 1200, 825);
+		Scene scene = new Scene(view, 1300, 700);
         Stage primaryStage = new Stage();
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);

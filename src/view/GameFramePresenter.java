@@ -1,11 +1,8 @@
 package view;
 
-import java.util.Random;
-
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.Scene;
-import javafx.util.Duration;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import model.Player;
 
 public class GameFramePresenter {
 	
@@ -19,54 +16,15 @@ public class GameFramePresenter {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public void startEvents(){
-		gfv.rollDice.setOnMouseClicked(e -> rollTheDice());
-		gfv.roll.setOnMouseClicked(e -> rollTheDice());
+		Player player = new Player("test", 1, 18);
+		Circle testSpieler = new Circle(13);
+		testSpieler.setFill(Color.ROYALBLUE);
+		gfv.board.add(testSpieler, player.getxCoord(),player.getyCoord());
+		DicePresenter dice = new DicePresenter(gfv.dice);
+		BoardPresenter board = new BoardPresenter(gfv.board, testSpieler, player);
 		
-		gfv.suspect.setOnMouseClicked(e -> makeSuggestion());
-	}
-	// Auswahl der Karten
-	private void makeSuggestion() {
-		gfv.card_1.setImage(gfv.blank1);
-		gfv.card_2.setImage(gfv.blank2);
-		gfv.card_3.setImage(gfv.blank3);
-	}
-	//Wuerfel Animation
-	public void rollTheDice(){
-	
-		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame());
-		Timeline t = new Timeline(keyFrame);
-		t.setCycleCount(10);
-		t.play();
-
 	}
 	
-	public void changeFrame(){
-		
-		gfv.dice.getChildren().remove(gfv.d1);
-		gfv.dice.getChildren().remove(gfv.d2);
-		
-		int first = 1 + (int)(Math.random()*6);
-		int second = 1 + (int)(Math.random()*6);
-		
-		switch(first){
-		case 1: gfv.d1.setImage(gfv.dice1);break;
-		case 2: gfv.d1.setImage(gfv.dice2);break;
-		case 3: gfv.d1.setImage(gfv.dice3);break;
-		case 4: gfv.d1.setImage(gfv.dice4);break;
-		case 5: gfv.d1.setImage(gfv.dice5);break;
-		case 6: gfv.d1.setImage(gfv.dice6);break;
-		}
-		switch(second){
-		case 1: gfv.d2.setImage(gfv.dice1);break;
-		case 2: gfv.d2.setImage(gfv.dice2);break;
-		case 3: gfv.d2.setImage(gfv.dice3);break;
-		case 4: gfv.d2.setImage(gfv.dice4);break;
-		case 5: gfv.d2.setImage(gfv.dice5);break;
-		case 6: gfv.d2.setImage(gfv.dice6);break;
-		}
-		
-		gfv.dice.getChildren().addAll(gfv.d1, gfv.d2);
-		}
-
 }
