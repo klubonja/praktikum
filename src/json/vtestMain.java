@@ -7,9 +7,12 @@ import org.json.JSONObject;
 
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.TopLevelAttribute;
 
+import enums.Orientation;
+
 public class vtestMain {
 	public static void main(String[] args) {
 		
+		Orientation s = Orientation.S;
 		CluedoJSON jsonRoot = new CluedoJSON();
 		
 		JSONObject gameInfo1 = new JSONObject();
