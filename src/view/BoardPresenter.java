@@ -65,10 +65,15 @@ public class BoardPresenter{
 	public BoardPresenter(BoardView view, Circle Playerdarstellung, Player player){
 		this.player = player;
 		this.view=view;
-		zuweisung();
+		
 		this.playerDarstellung = Playerdarstellung;
+		anfangsPositionSetzen();
+		zuweisung();
 	}
 		
+	public void anfangsPositionSetzen(){
+		moveWithPath(4, 4);
+	}
 
 	public void zuweisung(){
 		
@@ -509,12 +514,32 @@ public class BoardPresenter{
 		
 		this.xPositionFuerPath = player.getxCoord();
 		this.yPositionFuerPath = player.getyCoord();
+		//this.xPositionFuerPath = 0;
+		//this.yPositionFuerPath = 0;
+		
+		System.out.println(" player x vorher : " +player.getxCoord());
+		System.out.println(" player y vorher : " +player.getyCoord());
+		System.out.println(" x Position für path : " +xPositionFuerPath);
+		System.out.println(" y Position für path : " +yPositionFuerPath);
+		
+		System.out.println(" playerDarstellung X vorher : " +playerDarstellung.getLayoutX());
+		System.out.println(" playerDarstellung Y vorher : " +playerDarstellung.getLayoutY());
 		
 		Kachel anfangsKachel = view.getLabelArray()[yPositionFuerPath][xPositionFuerPath];
 		Kachel zielKachel = view.getLabelArray()[yPositionFuerPath + yStreckeFuerPath][xPositionFuerPath + xStreckeFuerPath];
 		
+		System.out.println("anfangs layout X : " +anfangsKachel.getLayoutX());
+		System.out.println("anfangs layout Y : " +anfangsKachel.getLayoutY());
+		System.out.println("ziel layout X : " +zielKachel.getLayoutX());
+		System.out.println("ziel layout Y : " +zielKachel.getLayoutY());
+		
+		
 		Path path = new Path();
+		//path.getElements().add(new MoveTo (view.getLabelArray()[4][4].getLayoutX(), view.getLabelArray()[4][4].getLayoutY()));
 	     path.getElements().add (new MoveTo (anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
+	     //path.getElements().add (new LineTo (view.getLabelArray()[5][5].getLayoutX(), view.getLabelArray()[5][5].getLayoutY()));
+	     //path.getElements().add (new LineTo (view.getLabelArray()[5][5].getLayoutX(), view.getLabelArray()[5][5].getLayoutY()));  
+	   
 	     path.getElements().add (new LineTo (zielKachel.getLayoutX(), anfangsKachel.getLayoutY()));
 	     path.getElements().add (new LineTo (zielKachel.getLayoutX(), zielKachel.getLayoutY()));  
 	   
@@ -525,10 +550,16 @@ public class BoardPresenter{
 	     	//pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);	 
 	     pathTransition.play();
 
+
+		System.out.println(" playerDarstellung X nachher : " +playerDarstellung.getLayoutX());
+		System.out.println(" playerDarstellung Y nachher : " +playerDarstellung.getLayoutY());
+			
+	     
 	     player.setxCoord(player.getxCoord()+xStreckeFuerPath);
 	     player.setyCoord(player.getyCoord()+yStreckeFuerPath);
 
-	     
+	    System.out.println(" player x nachher  : " +player.getxCoord());
+		System.out.println(" player y nachher : " +player.getyCoord());
 	      
 	}
 	
