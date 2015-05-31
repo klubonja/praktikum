@@ -7,21 +7,21 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 
 /**
  * @since 24.05.2015
  * @version 27.05.2015
  * @author Benedikt
  *
- * Hier wird die vorläufige GUI - eine GridPane - modelliert.
- * Sie ist 24 x 25 Felder Groß und hat ein labelArray, in welchem
- * alle Kacheln gespeichert sind, zuerst in Reihen, dann Spalten.
+ *         Hier wird die vorläufige GUI - eine GridPane - modelliert. Sie ist 24
+ *         x 25 Felder Groß und hat ein labelArray, in welchem alle Kacheln
+ *         gespeichert sind, zuerst in Reihen, dann Spalten.
  */
 public class TestGUI extends GridPane {
-		
-	private Kachel [][] labelArray;
+	
+	private Kachel[][] labelArray;
 	private Stage stage;
 	private Scene sceneYo;
 	private Circle testSpieler;
@@ -33,53 +33,58 @@ public class TestGUI extends GridPane {
 	private int obstacleRow;
 	private int obstacleColumn;
 	private Spieler spieler;
-	
+
 	/**
 	 * Der Konstruktor für die GUI. Hier wird die Größe festgelegt und das
 	 * labelArray erzeugt.
+	 * 
 	 * @param columnSize
 	 * @param rowSize
 	 */
-	public TestGUI(int columnSize, int rowSize){
-		 this.rowSize = rowSize ;
-		 this.columnSize = columnSize ;
+	public TestGUI(int columnSize, int rowSize) {
+		this.rowSize = rowSize;
+		this.columnSize = columnSize;
 		labelArray = new Kachel[rowSize][columnSize];
-	}	
-	
+	}
+
 	/**
 	 * Hier wird die GUI gestartet als Stage mit vorläufiger Auflösung 600 x 600
 	 * Die Methode setLayout() wird ausgelöst.
 	 */
-	public void start(){
-	this.stage = new Stage();
-	this.sceneYo = new Scene(this,600,600);
-	this.stage.setScene(sceneYo);
-	setLayout();
-	this.stage.show();
+	public void start() {
+		this.stage = new Stage();
+		this.sceneYo = new Scene(this, 600, 600);
+		this.stage.setScene(sceneYo);
+		setLayout();
+		this.stage.show();
 	}
-	
+
 	/**
-	 * Hier werden die Kacheln erzeugt und ihnen ein Platz zugewiesen.
-	 * Auch wird die Größe der Kacheln festgelegt auf 40 x 40 und ihnen
-	 * wird eine Aufschrift gegeben, je nach Position. 
+	 * Hier werden die Kacheln erzeugt und ihnen ein Platz zugewiesen. Auch wird
+	 * die Größe der Kacheln festgelegt auf 40 x 40 und ihnen wird eine
+	 * Aufschrift gegeben, je nach Position.
 	 */
-	public void setLayout(){
+	public void setLayout() {
 		this.setGridLinesVisible(true);
 
-		for (int iReihen = 0; iReihen< rowSize;iReihen++){
-			for (int jSpalten = 0; jSpalten<columnSize;jSpalten++){
-				String aufschrift = +iReihen +"" +jSpalten;
-				if ( (iReihen == 0 && jSpalten == 4) || (iReihen == 8 && jSpalten == 8) || (iReihen == 4 && jSpalten == 0) ){
-					labelArray[iReihen][jSpalten] = new Raumkachel(aufschrift, iReihen, jSpalten, true);
+		for (int iReihen = 0; iReihen < rowSize; iReihen++) {
+			for (int jSpalten = 0; jSpalten < columnSize; jSpalten++) {
+				String aufschrift = +iReihen + "" + jSpalten;
+				if ((iReihen == 0 && jSpalten == 4)
+						|| (iReihen == 8 && jSpalten == 8)
+						|| (iReihen == 4 && jSpalten == 0)) {
+					labelArray[iReihen][jSpalten] = new Raumkachel(aufschrift,
+							iReihen, jSpalten, true);
+				} else {
+					labelArray[iReihen][jSpalten] = new Feldkachel(aufschrift,
+							iReihen, jSpalten, false);
 				}
-				else {
-					labelArray[iReihen][jSpalten] = new Feldkachel(aufschrift, iReihen, jSpalten, false);	
-				}
-				
+
 				this.add(labelArray[iReihen][jSpalten], jSpalten, iReihen);
-				System.out.println(iReihen +" - "+jSpalten);
-				// this.setConstraints(labelArray[iReihen][jSpalten], jSpalten, iReihen);
-				
+				System.out.println(iReihen + " - " + jSpalten);
+				// this.setConstraints(labelArray[iReihen][jSpalten], jSpalten,
+				// iReihen);
+
 				labelArray[iReihen][jSpalten].setMaxHeight(40);
 				labelArray[iReihen][jSpalten].setMaxWidth(40);
 				labelArray[iReihen][jSpalten].setMinHeight(40);
@@ -87,12 +92,11 @@ public class TestGUI extends GridPane {
 			}
 		}
 		kachelAnfang = labelArray[0][0];
-		spieler = new Spieler(0,0);
+		spieler = new Spieler(0, 0);
 		testSpieler = new Circle(20);
 		testSpieler.setFill(Color.ROYALBLUE);
 		this.add(testSpieler, spieler.getxPosition(), spieler.getyPosition());
-		
-		
+
 	}
 
 	public Kachel[][] getLabelArray() {
@@ -105,26 +109,27 @@ public class TestGUI extends GridPane {
 
 	/**
 	 * Hiermit kann die Zielkachel auf die Farbe Color.ROYALBLUE gesetzt werden.
+	 * 
 	 * @param kachel
 	 */
-	public void setBackground(Kachel kachel){
+	public void setBackground(Kachel kachel) {
 		fill = new BackgroundFill(Color.ROYALBLUE, null, null);
 		Background hintergrund = new Background(fill);
 		kachel.setBackground(hintergrund);
 	}
-	
-	public void revertBackground(Kachel label){
+
+	public void revertBackground(Kachel label) {
 		label.setBackground(null);
 	}
-	
-		public Circle getTestSpieler() {
+
+	public Circle getTestSpieler() {
 		return testSpieler;
 	}
 
 	public void setTestSpieler(Circle testSpieler) {
 		this.testSpieler = testSpieler;
 	}
-	
+
 	public Kachel getKachelAnfang() {
 		return kachelAnfang;
 	}
@@ -172,5 +177,5 @@ public class TestGUI extends GridPane {
 	public void setSpieler(Spieler spieler) {
 		this.spieler = spieler;
 	}
-	
+
 }
