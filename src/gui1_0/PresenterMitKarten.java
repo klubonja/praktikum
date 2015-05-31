@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -73,11 +75,39 @@ public class PresenterMitKarten extends Application {
 	 */
 	public void verteile() {
 		if (kartenZaehler >= 0) {
+			RotateTransition rt = new RotateTransition(Duration.millis(500),
+					view.rects[kartenZaehler]);
+			rt.setByAngle(180);
+			rt.setCycleCount(1);
+			rt.play();
 			Path path = new Path();
 			path.getElements().add(new MoveTo(40, 60));
-			path.getElements().add(new LineTo(50, 350));
 			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(250));
+			if (kartenZaehler >= 14) {
+				path.getElements().add(new LineTo(50, 350));
+				pathTransition.stop();
+			}
+			if (kartenZaehler >= 11 && kartenZaehler < 14) {
+				path.getElements().add(new LineTo(-350, 180));
+				pathTransition.stop();
+			}
+			if (kartenZaehler >= 8 && kartenZaehler < 11) {
+				path.getElements().add(new LineTo(-350, -140));
+				pathTransition.stop();
+			}
+			if (kartenZaehler >= 5 && kartenZaehler < 8) {
+				path.getElements().add(new LineTo(-20, -320));
+				pathTransition.stop();
+			}
+			if (kartenZaehler >= 2 && kartenZaehler < 5) {
+				path.getElements().add(new LineTo(400, -120));
+				pathTransition.stop();
+			}
+			if (kartenZaehler >= 0 && kartenZaehler < 2) {
+				path.getElements().add(new LineTo(400, 210));
+				pathTransition.stop();
+			}
+			pathTransition.setDuration(Duration.millis(200));
 			pathTransition.setPath(path);
 			pathTransition.setNode(view.rects[kartenZaehler]);
 			pathTransition.setCycleCount(1);
@@ -123,7 +153,7 @@ public class PresenterMitKarten extends Application {
 		Media mediaFile3 = new Media(new File(sound3).toURI().toString());
 		MediaPlayer mediaplayer3 = new MediaPlayer(mediaFile3);
 		mediaplayer3.setAutoPlay(true);
-		mediaplayer3.setVolume(1);
+		mediaplayer3.setVolume(0.2);
 	}
 
 	/**

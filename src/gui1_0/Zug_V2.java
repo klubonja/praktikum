@@ -21,9 +21,9 @@ import javafx.stage.StageStyle;
 public class Zug_V2 extends Stage {
 	private Deck deck = new Deck();
 
-	public Image personImage = new Image("/icon.jpg");
-	public Image waffeImage = new Image("/knife.jpg");
-	public Image zimmerImage = new Image("/house.jpg");
+	public Image personImage = new Image("media/icon.jpg");
+	public Image waffeImage = new Image("media/knife.jpg");
+	public Image zimmerImage = new Image("media/house.jpg");
 
 	private Scene scene;
 	private BorderPane fenster;

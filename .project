@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-<<<<<<< HEAD
-	<name>SEPSS15_Vorprojekt_PolychromeRisaner</name>
-=======
 	<name>yinYanYolosProject</name>
 >>>>>>> origin/CRBranch
 	<comment></comment>
@@ -10,13 +7,6 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
-<<<<<<< HEAD
-			<name>org.eclipse.xtext.ui.shared.xtextBuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
-=======
 >>>>>>> origin/CRBranch
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
@@ -25,9 +15,6 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-<<<<<<< HEAD
-		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
-=======
 >>>>>>> origin/CRBranch
 	</natures>
 </projectDescription>
