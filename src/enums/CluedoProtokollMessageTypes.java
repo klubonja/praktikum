@@ -13,6 +13,7 @@ public enum CluedoProtokollMessageTypes {
 	ok("ok"),
 	error("error"),
 	chat("chat"),
+	
 	//Konfiguration und Spielstart
 	create_game("create game"),
 	join_game("join game"),
@@ -23,6 +24,7 @@ public enum CluedoProtokollMessageTypes {
 	left_game("left game"),
 	game_deleted("game deleted"),
 	start_game("start game"),
+	player_cards("player_cards"),
 	
 	//Spielzustand
 	game_started("game started"),
