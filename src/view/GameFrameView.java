@@ -21,7 +21,7 @@ import javafx.scene.layout.RowConstraints;
 public class GameFrameView extends GridPane{
 	
 	MenuBar menu;
-	GridPane leftGrid;
+	GridPane rightGrid;
 	NotesView notes;
 	DiceView dice;
 	ChatView chat;
@@ -44,7 +44,10 @@ public class GameFrameView extends GridPane{
 		 */
 		menu = new MenuBarView();
 		
-		board = new BoardView(25,25);
+		/**
+		 * Adds the Game Board frame.
+		 */
+		board = new BoardView(24,25);
 		
 		/**
 		 * Adds the Notes frame.
@@ -62,27 +65,28 @@ public class GameFrameView extends GridPane{
 		dice = new DiceView();
 		
 		
-		
-		//leftGrid area that contains chat and dices
-		leftGrid = new GridPane();
-		leftGrid.setGridLinesVisible(true);
-		leftGrid.getRowConstraints().add(new RowConstraints(400));
-		leftGrid.getRowConstraints().add(new RowConstraints(200));
-		leftGrid.getColumnConstraints().add(new ColumnConstraints(325));
-		leftGrid.getColumnConstraints().add(new ColumnConstraints(325));
+		/**
+		 * Left part of the whole GameFrame,
+		 * Only for a better organising of objects.
+		 */
+		rightGrid = new GridPane();
+		rightGrid.setGridLinesVisible(true);
+		rightGrid.getRowConstraints().add(new RowConstraints(450));
+		rightGrid.getRowConstraints().add(new RowConstraints(200));
+		rightGrid.getColumnConstraints().add(new ColumnConstraints(325));
+		rightGrid.getColumnConstraints().add(new ColumnConstraints(325));
 		GridPane.setConstraints(notes,1,0);
 		GridPane.setConstraints(dice,0,1);
 		GridPane.setConstraints(chat,1,1);
-		leftGrid.getChildren().addAll(notes,chat,dice);
-		
+		rightGrid.getChildren().addAll(notes,chat,dice);
 		
 		
 		GridPane.setConstraints(menu,0,0);
 		GridPane.setColumnSpan(menu, 2);
 		GridPane.setValignment(menu, VPos.TOP);
 		GridPane.setConstraints(board,0,1);
-		GridPane.setConstraints(leftGrid, 1,1);
-		this.getChildren().addAll(board, menu, leftGrid);
+		GridPane.setConstraints(rightGrid, 1,1);
+		this.getChildren().addAll(board, menu, rightGrid);
 		this.setGridLinesVisible(true);
 		
 		}

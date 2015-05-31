@@ -1,11 +1,8 @@
 package view;
 
-import java.util.Random;
-
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
-import view.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import model.Player;
 
 public class GameFramePresenter {
 	
@@ -19,8 +16,14 @@ public class GameFramePresenter {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public void startEvents(){
+		Player player = new Player("test", 0, 0);
+		Circle testSpieler = new Circle(14);
+		testSpieler.setFill(Color.ROYALBLUE);
+		gfv.board.add(testSpieler, player.getxCoord(),player.getyCoord());
 		DicePresenter dice = new DicePresenter(gfv.dice);
+		BoardPresenter board = new BoardPresenter(gfv.board, testSpieler, player);
 		
 	}
 	

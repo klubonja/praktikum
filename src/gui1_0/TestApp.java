@@ -1,16 +1,20 @@
-package view;
+package gui1_0;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
+import javafx.application.Application;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.Player;
-
 
 /**
  * @since 24.05.2015
@@ -19,10 +23,11 @@ import model.Player;
  *
  * 
  */	
-public class BoardPresenter{
+public class TestApp extends Application {
 
 	
-	private Player player;
+	private Spieler spieler;
+	private TestGUI testGUI;
 	private int rowSize = 25;
 	private int columnSize = 24;
 	
@@ -54,29 +59,22 @@ public class BoardPresenter{
 	private int ausweichen;
 	private boolean aussenrum;
 	
-	BoardView view;
-	
 	/**
 	 * Hier wird die Stage gestartet und den Kacheln eine Methode für 
 	 * setOnMouseClicked zugewiesen.
 	 * @param primaryStage 
 	 * @throws Exception
 	 */
-	public BoardPresenter(BoardView view, Circle Playerdarstellung, Player player){
-		this.player = player;
-		this.view=view;
-		zuweisung();
-		this.playerDarstellung = Playerdarstellung;
-	}
+	@Override
+	public void start(Stage primaryStage) throws Exception {
 		
-
-	public void zuweisung(){
-		
-		for (int i = 0; i<view.getLabelArray().length-1;i++){
-			for (int j = 0; j<view.getLabelArray()[j].length-1;j++){
-				Kachel momentaneKachel = view.getLabelArray()[i][j];
+		testGUI = new TestGUI(columnSize, rowSize);
+		testGUI.start();
+		for (int i = 0; i<testGUI.getLabelArray().length-1;i++){
+			for (int j = 0; j<testGUI.getLabelArray()[j].length-1;j++){
+				Kachel momentaneKachel = testGUI.getLabelArray()[i][j];
 					if (momentaneKachel.isIstRaum()==false){
-						momentaneKachel.setOnMouseClicked(e -> dasIstEinFeld(momentaneKachel));
+						momentaneKachel.setOnMouseClicked(e -> dasIstEinFeld(testGUI.getTestSpieler(), momentaneKachel));
 					}
 					else{
 						momentaneKachel.setOnMouseClicked(e -> dasIsEinRaum());						
@@ -121,8 +119,8 @@ public class BoardPresenter{
 	/**
 	 * Wird von der Kachel.OnClick aufgerufen und löst die movePlayer Methode aus.
 	 */
-	public void dasIstEinFeld(Kachel ziel){
-		movePlayer(ziel);
+	public void dasIstEinFeld(Circle spielerDarstellung, Kachel ziel){
+		movePlayer(spielerDarstellung, ziel);
 	}
 	
 
@@ -137,14 +135,14 @@ public class BoardPresenter{
 	/**
 	 * Die Methode, welche durch das ClickEvent ausgelöst wird.
 	 * hier wird pathfinder und moveWithPath ausgelöst.
-	 * @param PlayerDarstellung Der zu bewegende Player
+	 * @param spielerDarstellung Der zu bewegende Spieler
 	 * @param ziel Die Zielkachel
 	 */	
-	public void movePlayer(Kachel ziel){
+	public void movePlayer(Circle spielerDarstellung, Kachel ziel){
 		System.out.println("----------------------");
 		System.out.println("move whatever");
 		
-		reset(ziel);
+		reset(spielerDarstellung,ziel);
 			
 		System.out.println("vorher : x Distanz   " +xDistanz);
 		System.out.println("vorher : y Distanz   " +yDistanz);
@@ -173,23 +171,23 @@ public class BoardPresenter{
 		System.out.println("nachher : y Distanz   " +yDistanz);
 			
 		// Animation
-	    moveWithPath(this.xErlaubt, this.yErlaubt);				
+	    moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);				
 		
-		System.out.println("Reihe : " +(view.getRowIndex(this.jetzigesFeld)+1));
-		System.out.println("Spalte : " +(view.getColumnIndex(this.jetzigesFeld)+1));
+		System.out.println("Reihe : " +(testGUI.getRowIndex(this.jetzigesFeld)+1));
+		System.out.println("Spalte : " +(testGUI.getColumnIndex(this.jetzigesFeld)+1));
 		
-		System.out.println("x Player : " +player.getxCoord() +"| x Ziel : " +xZiel);
-		System.out.println("y Player : " +player.getyCoord() +"| y Ziel : " +yZiel);
+		System.out.println("x Spieler : " +testGUI.getSpieler().getxPosition() +"| x Ziel : " +xZiel);
+		System.out.println("y Spieler : " +testGUI.getSpieler().getyPosition() +"| y Ziel : " +yZiel);
 			
 			
-		if (player.getxCoord() == xZiel && player.getyCoord() == yZiel){
+		if (testGUI.getSpieler().getxPosition() == xZiel && testGUI.getSpieler().getyPosition() == yZiel){
 			System.out.println("Sie haben ihr Ziel erreicht");
 		}	
 			
-		if ((player.getxCoord() != xZiel) || (player.getyCoord() != yZiel) ){
+		if ((testGUI.getSpieler().getxPosition() != xZiel) || (testGUI.getSpieler().getyPosition() != yZiel) ){
 	    	System.out.println("recursion");		    	
 	    	
-	    	movePlayer(view.getLabelArray()[yZiel][xZiel]);	    	
+	    	movePlayer(testGUI.getTestSpieler(), testGUI.getLabelArray()[yZiel][xZiel]);	    	
 	     }
 		
 		
@@ -199,18 +197,19 @@ public class BoardPresenter{
 	
 	/**
 	 * Setzt die Werte wieder zurück.
-	 * @param PlayerDarstellung
+	 * @param spielerDarstellung
 	 * @param ziel
 	 */
-	public void reset(Kachel ziel){
+	public void reset(Circle spielerDarstellung, Kachel ziel){
 		System.out.println("reset whatever");
-		this.yDistanz = view.getRowIndex(ziel) - player.getyCoord();
-		this.xDistanz = view.getColumnIndex(ziel) - player.getxCoord();
+		this.playerDarstellung = spielerDarstellung;
+		this.yDistanz = testGUI.getRowIndex(ziel) - testGUI.getSpieler().getyPosition();
+		this.xDistanz = testGUI.getColumnIndex(ziel) - testGUI.getSpieler().getxPosition();
 		this.xRichtung = xDistanz;
 		this.yRichtung = yDistanz;
-		this.xZiel = view.getColumnIndex(ziel);
-		this.yZiel = view.getRowIndex(ziel) + ausweichen;
-		this.jetzigesFeld =  view.getLabelArray()[player.getyCoord()][player.getxCoord()];
+		this.xZiel = testGUI.getColumnIndex(ziel);
+		this.yZiel = testGUI.getRowIndex(ziel) + ausweichen;
+		this.jetzigesFeld =  testGUI.getLabelArray()[spieler.getyPosition()][spieler.getxPosition()];
 		this.xErlaubt = 0;
 		this.yErlaubt = 0;
 		this.ausweichen = 0;
@@ -273,8 +272,8 @@ public class BoardPresenter{
 	public void pathfinder(int xDistanzeingegeben, int yDistanzeingegeben, Kachel jetzigesFeld){
 		
 		System.out.println("find whatever");
-		System.out.println("x Player : " +player.getxCoord() +"| x Ziel : " +xZiel);
-		System.out.println("y Player : " +player.getyCoord() +"| y Ziel : " +yZiel);
+		System.out.println("x Spieler : " +testGUI.getSpieler().getxPosition() +"| x Ziel : " +xZiel);
+		System.out.println("y Spieler : " +testGUI.getSpieler().getyPosition() +"| y Ziel : " +yZiel);
 		
 		this.xDistanz = xDistanzeingegeben;
 		this.yDistanz = yDistanzeingegeben;
@@ -390,8 +389,8 @@ public class BoardPresenter{
 	 * setzt die jetzigeReihe / jetzigeSpalte auf den aktuellen Wert.
 	 */
 	public void refresh(){
-		this.jetzigeReihe = view.getRowIndex(this.jetzigesFeld);
-		this.jetzigeColumn = view.getColumnIndex(this.jetzigesFeld);			
+		this.jetzigeReihe = testGUI.getRowIndex(this.jetzigesFeld);
+		this.jetzigeColumn = testGUI.getColumnIndex(this.jetzigesFeld);			
 		
 	}
 	
@@ -415,7 +414,7 @@ public class BoardPresenter{
 	 * @param x Der Wert um welchen die Spalte erhöht wird
 	 */
 	public void updateCurrentField(int y, int x){
-		this.jetzigesFeld = view.getLabelArray()[this.jetzigeReihe+y][this.jetzigeColumn+x];
+		this.jetzigesFeld = testGUI.getLabelArray()[this.jetzigeReihe+y][this.jetzigeColumn+x];
 	}
 	
 	
@@ -426,7 +425,7 @@ public class BoardPresenter{
 	public boolean moveErlaubtX (){
 		refresh();
 		if (xDistanz>0){
-			if (view.getLabelArray()[jetzigeReihe][jetzigeColumn+1].isIstRaum()==false){
+			if (testGUI.getLabelArray()[jetzigeReihe][jetzigeColumn+1].isIstRaum()==false){
 				System.out.println("x check true");
 				return true;	
 			}
@@ -437,7 +436,7 @@ public class BoardPresenter{
 			}		
 		}
 		else {
-			if (view.getLabelArray()[jetzigeReihe][jetzigeColumn-1].isIstRaum()==false){
+			if (testGUI.getLabelArray()[jetzigeReihe][jetzigeColumn-1].isIstRaum()==false){
 				System.out.println("x check true");
 				return true;
 				
@@ -457,7 +456,7 @@ public class BoardPresenter{
 	public boolean moveErlaubtY (){
 		refresh();
 		if (yDistanz>0){
-			if (view.getLabelArray()[jetzigeReihe+1][jetzigeColumn].isIstRaum() == false){
+			if (testGUI.getLabelArray()[jetzigeReihe+1][jetzigeColumn].isIstRaum() == false){
 				
 				System.out.println("y check true");
 				
@@ -470,7 +469,7 @@ public class BoardPresenter{
 			}		
 		}
 		else {
-			if (view.getLabelArray()[jetzigeReihe-1][jetzigeColumn].isIstRaum() == false){
+			if (testGUI.getLabelArray()[jetzigeReihe-1][jetzigeColumn].isIstRaum() == false){
 				System.out.println("y check true");
 				return true;	
 			}
@@ -490,11 +489,11 @@ public class BoardPresenter{
 	
 	/**
 	 * Hier findet die Animation statt mithilfe von Paths.
-	 * @param PlayerDarstellung Die zu bewegende Node
+	 * @param spielerDarstellung Die zu bewegende Node
 	 * @param xStrecke Die Strecke in X Richtung
 	 * @param yStrecke Die Strecke in Y Richtung
 	 */
-	public void moveWithPath( int xStrecke, int yStrecke){
+	public void moveWithPath(Circle spielerDarstellung, int xStrecke, int yStrecke){
 		
 		System.out.println("path whatever");
 		this.xStreckeFuerPath = xStrecke;
@@ -507,11 +506,11 @@ public class BoardPresenter{
 			this.yStreckeFuerPath = - this.yStreckeFuerPath;
 		}
 		
-		this.xPositionFuerPath = player.getxCoord();
-		this.yPositionFuerPath = player.getyCoord();
+		this.xPositionFuerPath = testGUI.getSpieler().getxPosition();
+		this.yPositionFuerPath = testGUI.getSpieler().getyPosition();
 		
-		Kachel anfangsKachel = view.getLabelArray()[yPositionFuerPath][xPositionFuerPath];
-		Kachel zielKachel = view.getLabelArray()[yPositionFuerPath + yStreckeFuerPath][xPositionFuerPath + xStreckeFuerPath];
+		Kachel anfangsKachel = testGUI.getLabelArray()[yPositionFuerPath][xPositionFuerPath];
+		Kachel zielKachel = testGUI.getLabelArray()[yPositionFuerPath + yStreckeFuerPath][xPositionFuerPath + xStreckeFuerPath];
 		
 		Path path = new Path();
 	     path.getElements().add (new MoveTo (anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
@@ -520,13 +519,13 @@ public class BoardPresenter{
 	   
 	     PathTransition pathTransition = new PathTransition();	     
 	     pathTransition.setDuration(Duration.millis(xStrecke * 200 + yStrecke * 200));
-	     pathTransition.setNode(playerDarstellung);
+	     pathTransition.setNode(spielerDarstellung);
 	     pathTransition.setPath(path);
 	     	//pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);	 
 	     pathTransition.play();
 
-	     player.setxCoord(player.getxCoord()+xStreckeFuerPath);
-	     player.setyCoord(player.getyCoord()+yStreckeFuerPath);
+	     testGUI.getSpieler().setxPosition(testGUI.getSpieler().getxPosition()+xStreckeFuerPath);
+	     testGUI.getSpieler().setyPosition(testGUI.getSpieler().getyPosition()+yStreckeFuerPath);
 
 	     
 	      
@@ -535,9 +534,9 @@ public class BoardPresenter{
 	/**
 	 * Inaktive alte Bewegungsmethode, welche auch einen "Kreis" um Ziel gezeichnet hat 
 	 */
-	/*public void movePlayer(Circle Player, Kachel ziel){
+	/*public void movePlayer(Circle spieler, Kachel ziel){
 			
-		Kachel anfangsLabel = view.getKachelAnfang();				
+		Kachel anfangsLabel = testGUI.getKachelAnfang();				
 		
 		System.out.println("X Distanz:  " + xDistanz + "Y Distanz:  " + yDistanz);
 		
@@ -549,16 +548,16 @@ public class BoardPresenter{
 	     
 	     PathTransition pathTransition = new PathTransition();	     
 	     pathTransition.setDuration(Duration.millis(3000));
-	     pathTransition.setNode(Player);
+	     pathTransition.setNode(spieler);
 	     pathTransition.setPath(path);
 	     	//pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);	 
 	     pathTransition.play();
-	    view.setKachelAnfang(ziel);
+	    testGUI.setKachelAnfang(ziel);
 	    
 	    
 	     int umfang = 5;
-	     int rowIndex = view.getRowIndex(ziel);
-	     int columnIndex = view.getColumnIndex(ziel);
+	     int rowIndex = testGUI.getRowIndex(ziel);
+	     int columnIndex = testGUI.getColumnIndex(ziel);
 	     int linksInt = rowIndex - umfang;
 	     int rechtsInt = rowIndex + umfang;
 	     int obenInt = columnIndex - umfang;
@@ -575,17 +574,17 @@ public class BoardPresenter{
 	     if (untenInt>rowSize){
 	    	 untenInt = 0;
 	     }
-	     Kachel links = view.getLabelArray()[columnIndex][linksInt];
-	     Kachel rechts = view.getLabelArray()[columnIndex][rechtsInt];
-	     Kachel oben = view.getLabelArray()[obenInt][rowIndex];
-	     Kachel unten = view.getLabelArray()[untenInt][rowIndex];
-	     view.setBackground(links);
-	     view.setBackground(rechts);
-	     view.setBackground(unten);
-	     view.setBackground(oben);
+	     Kachel links = testGUI.getLabelArray()[columnIndex][linksInt];
+	     Kachel rechts = testGUI.getLabelArray()[columnIndex][rechtsInt];
+	     Kachel oben = testGUI.getLabelArray()[obenInt][rowIndex];
+	     Kachel unten = testGUI.getLabelArray()[untenInt][rowIndex];
+	     testGUI.setBackground(links);
+	     testGUI.setBackground(rechts);
+	     testGUI.setBackground(unten);
+	     testGUI.setBackground(oben);
 	     
-	     int rowIndexAlt = view.getRowIndex(view.getLabelAnfang());
-	     int columnIndexAlt = view.getColumnIndex(view.getLabelAnfang());
+	     int rowIndexAlt = testGUI.getRowIndex(testGUI.getLabelAnfang());
+	     int columnIndexAlt = testGUI.getColumnIndex(testGUI.getLabelAnfang());
 	     int linksIntAlt = rowIndexAlt - umfang;
 	     int rechtsIntAlt = rowIndexAlt + umfang;
 	     int obenIntAlt = columnIndexAlt - umfang;
@@ -603,18 +602,27 @@ public class BoardPresenter{
 	    	 untenIntAlt = rowSize;
 	     }
 	     
-	     Kachel linksAlt = view.getLabelArray()[columnIndexAlt][linksIntAlt];
-	     Kachel rechtsAlt = view.getLabelArray()[columnIndexAlt][rechtsIntAlt];
-	     Kachel obenAlt = view.getLabelArray()[obenIntAlt][rowIndexAlt];
-	     Kachel untenAlt = view.getLabelArray()[untenIntAlt][rowIndexAlt];
-	     view.revertBackground(linksAlt);
-	     view.revertBackground(rechtsAlt);
-	     view.revertBackground(untenAlt);
-	     view.revertBackground(obenAlt);
+	     Kachel linksAlt = testGUI.getLabelArray()[columnIndexAlt][linksIntAlt];
+	     Kachel rechtsAlt = testGUI.getLabelArray()[columnIndexAlt][rechtsIntAlt];
+	     Kachel obenAlt = testGUI.getLabelArray()[obenIntAlt][rowIndexAlt];
+	     Kachel untenAlt = testGUI.getLabelArray()[untenIntAlt][rowIndexAlt];
+	     testGUI.revertBackground(linksAlt);
+	     testGUI.revertBackground(rechtsAlt);
+	     testGUI.revertBackground(untenAlt);
+	     testGUI.revertBackground(obenAlt);
 	    
 	    
 	    
 	    
 	   
-	}*/
+	}
+*/
+	
+	/**
+	 * Hier wird gelauncht.
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		launch(args);
+	}
 }

@@ -6,6 +6,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import view.PlayerView;
+import model.*;
 
 
 
@@ -26,7 +27,7 @@ public class BoardView extends GridPane {
 	private Kachel kachelAnfang;
 	private int rowSize;
 	private int columnSize;
-	private PlayerView spieler;
+	private Player spieler;
 	
 	/**
 	 * Der Konstruktor für die GUI. Hier wird die Größe festgelegt und das
@@ -71,10 +72,6 @@ public class BoardView extends GridPane {
 			}
 		}
 		kachelAnfang = labelArray[0][0];
-		spieler = new PlayerView(20);
-		testSpieler = new PlayerView(20);
-		testSpieler.setFill(Color.ROYALBLUE);
-		this.add(testSpieler, 0, 0); // spieler.getyPosition()
 		
 		
 	}
@@ -117,11 +114,11 @@ public class BoardView extends GridPane {
 		this.kachelAnfang = labelAnfang;
 	}
 
-	public PlayerView getSpieler() {
+	public Player getSpieler() {
 		return spieler;
 	}
 
-	public void setSpieler(PlayerView spieler) {
+	public void setSpieler(Player spieler) {
 		this.spieler = spieler;
 	}
 	
