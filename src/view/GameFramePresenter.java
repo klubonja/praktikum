@@ -18,8 +18,10 @@ public class GameFramePresenter {
 	
 	@SuppressWarnings("unused")
 	public void startEvents(){
+
 		Player player = new Player("test", 0, 0);
-		Circle testSpieler = new Circle(14);
+
+		Circle testSpieler = new Circle(13);
 		testSpieler.setFill(Color.ROYALBLUE);
 		gfv.board.add(testSpieler, player.getxCoord(),player.getyCoord());
 		DicePresenter dice = new DicePresenter(gfv.dice);

@@ -1,6 +1,9 @@
 package view;
 
 
+
+
+import view.Kachel;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
@@ -28,6 +31,8 @@ public class BoardView extends GridPane {
 	private int rowSize;
 	private int columnSize;
 	private Player spieler;
+	private Kachel red,pink,blue,green,white,yellow;
+
 	
 	/**
 	 * Der Konstruktor für die GUI. Hier wird die Größe festgelegt und das
@@ -54,8 +59,9 @@ public class BoardView extends GridPane {
 		for (int iReihen = 0; iReihen< rowSize;iReihen++){
 			for (int jSpalten = 0; jSpalten<columnSize;jSpalten++){
 				String aufschrift = +iReihen +"" +jSpalten;
-				if ( 
-						(5 < iReihen && iReihen < 11  && jSpalten < 6) //Bibliothek
+				if ( (iReihen < 4 && jSpalten < 7) //Arbeitszimmer
+						|| (iReihen == 4 && jSpalten == 0)
+						|| (5 < iReihen && iReihen < 11  && jSpalten < 6) //Bibliothek
 						|| (6 < iReihen && iReihen < 10  && jSpalten == 6)
 						|| (iReihen==11 && jSpalten == 0)
 						|| (11 < iReihen && iReihen < 17 && jSpalten < 6) //Billardzimmer
@@ -91,14 +97,29 @@ public class BoardView extends GridPane {
 				System.out.println(iReihen +" - "+jSpalten);
 				// this.setConstraints(labelArray[iReihen][jSpalten], jSpalten, iReihen);
 				
-				labelArray[iReihen][jSpalten].setMaxHeight(28);
-				labelArray[iReihen][jSpalten].setMaxWidth(28);
-				labelArray[iReihen][jSpalten].setMinHeight(28);
-				labelArray[iReihen][jSpalten].setMinWidth(28);
+				labelArray[iReihen][jSpalten].setMaxHeight(26);
+				labelArray[iReihen][jSpalten].setMaxWidth(26);
+				labelArray[iReihen][jSpalten].setMinHeight(26);
+				labelArray[iReihen][jSpalten].setMinWidth(26);
+
 			}
 		}
 		kachelAnfang = labelArray[0][0];
 		
+		//Startpunkte
+		blue = new Kachel("B",0,18,false);
+		blue.setBackgroundColor(labelArray[18][0], Color.BLUE);
+		pink = new Kachel("P",0,5,false);
+		pink.setBackgroundColor(labelArray[5][0], Color.MAGENTA);
+		white = new Kachel("W",14,24,false);
+		white.setBackgroundColor(labelArray[24][14], Color.WHITE);
+		red = new Kachel("R",16,0,false);
+		red.setBackgroundColor(labelArray[0][16], Color.MAROON);
+		yellow = new Kachel("Y",23,7,false);
+		yellow.setBackgroundColor(labelArray[7][23], Color.YELLOW);
+		green = new Kachel("G",9,24,false);
+		green.setBackgroundColor(labelArray[24][9], Color.GREEN);
+
 		
 	}
 

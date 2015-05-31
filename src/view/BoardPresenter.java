@@ -1,5 +1,6 @@
 package view;
 
+import view.Kachel;
 import javafx.animation.PathTransition;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
@@ -48,12 +49,17 @@ public class BoardPresenter{
 	private int yZiel;
 	
 	private String textbuffer;
-	private Background backgroundbuffer;
+	private Background backgroundbuffer, backgroundbuffer2;;
 	private Font fontbuffer;
 
 	private int ausweichen;
 	private boolean aussenrum;
 	
+	private int first;
+	private int second;
+	private int augenzahl;
+	
+
 	BoardView view;
 	
 	/**
@@ -65,6 +71,7 @@ public class BoardPresenter{
 	public BoardPresenter(BoardView view, Circle Playerdarstellung, Player player){
 		this.player = player;
 		this.view=view;
+
 		
 		this.playerDarstellung = Playerdarstellung;
 		anfangsPositionSetzen();
@@ -75,8 +82,9 @@ public class BoardPresenter{
 		moveWithPath(4, 4);
 	}
 
+
 	public void zuweisung(){
-		
+		dice(view.getLabelArray()[player.getyCoord()][player.getxCoord()]);
 		for (int i = 0; i<view.getLabelArray().length-1;i++){
 			for (int j = 0; j<view.getLabelArray()[j].length-1;j++){
 				Kachel momentaneKachel = view.getLabelArray()[i][j];
@@ -108,6 +116,15 @@ public class BoardPresenter{
 		momentaneKachel.setBackgroundColor(momentaneKachel, Color.GREEN);
 		}
 	}
+	/**
+	 * Färbt die begehbaren Kacheln ein
+	 * @param begehbareKachel
+	 */
+	public void einfaerben2(Kachel begehbareKachel){
+		backgroundbuffer2 = begehbareKachel.getBackground();
+		begehbareKachel.setBackgroundColor(begehbareKachel, Color.DARKORANGE);
+	}
+
 	
 	/**
 	 * Bereinigt die Kachel von Schmutz und Farben aller Art!
@@ -123,6 +140,13 @@ public class BoardPresenter{
 		}
 	}
 	
+	/**
+	 * Bereinigt die Kacheln, die im letzten Zug begehbar waren
+	 * @param momentaneKachel
+	 */
+	public void persil2(Kachel momentaneKachel){
+		momentaneKachel.setBackground(backgroundbuffer2);			
+	}
 	/**
 	 * Wird von der Kachel.OnClick aufgerufen und löst die movePlayer Methode aus.
 	 */
@@ -148,7 +172,10 @@ public class BoardPresenter{
 	public void movePlayer(Kachel ziel){
 		System.out.println("----------------------");
 		System.out.println("move whatever");
-		
+
+		clearDice(view.getLabelArray()[player.getyCoord()][player.getxCoord()]);
+		persil2(view.getLabelArray()[player.getyCoord()][player.getxCoord()]);
+		dice(ziel);
 		reset(ziel);
 			
 		System.out.println("vorher : x Distanz   " +xDistanz);
@@ -401,6 +428,59 @@ public class BoardPresenter{
 	}
 	
 	/**
+	 * setzt die Kacheln wieder in den Ausgangszustand zurück
+	 * @param jetzigesFeld
+	 */
+	public void clearDice(Kachel jetzigesFeld){
+		for (int iReihe = 0; iReihe< rowSize;iReihe++){
+			for (int jSpalte = 0; jSpalte<columnSize;jSpalte++){
+				for(int i=0;(augenzahl-2*i>=0);i++){
+					if((jetzigesFeld.getxKoordinate()+jetzigesFeld.getyKoordinate()+(augenzahl-2*i))==(iReihe+jSpalte) || 
+							(jetzigesFeld.getxKoordinate()+jetzigesFeld.getyKoordinate()-(augenzahl-2*i))==(iReihe+jSpalte)){
+						
+							Kachel erreichbareKachel = view.getLabelArray()[iReihe][jSpalte];
+							if(erreichbareKachel.isIstRaum()==false){
+							persil2(erreichbareKachel);
+							}
+					}
+				}
+			}
+				
+		}
+	}
+	/**
+	 * Augenzahl -> Felder die man erreichen kann werden eingefärbt
+	 */
+	public void dice(Kachel jetzigesFeld){
+		
+		first = 1 + (int)(Math.random()*6);
+		second = 1 + (int)(Math.random()*6);
+		augenzahl = first + second;
+		System.out.println("Augenzahl: " + augenzahl);
+		
+		for (int iReihe = 0; iReihe< rowSize;iReihe++){
+			for (int jSpalte = 0; jSpalte<columnSize;jSpalte++){
+				for(int i=0;(augenzahl-2*i>=0);i++){
+					if((jetzigesFeld.getxKoordinate()+jetzigesFeld.getyKoordinate()+(augenzahl-2*i))==(iReihe+jSpalte) || 
+							(jetzigesFeld.getxKoordinate()+jetzigesFeld.getyKoordinate()-(augenzahl-2*i))==(iReihe+jSpalte)){
+							Kachel erreichbareKachel = view.getLabelArray()[iReihe][jSpalte];
+							int abstandX = erreichbareKachel.getxKoordinate()-jetzigesFeld.getxKoordinate();
+							int abstandY = erreichbareKachel.getyKoordinate()-jetzigesFeld.getyKoordinate();
+							if(abstandX<0){abstandX *= -1;}
+							if(abstandY<0){abstandY *= -1;}
+								if(abstandX+abstandY<=augenzahl){
+								if(erreichbareKachel.isIstRaum()==false){
+								einfaerben2(erreichbareKachel);
+								}
+							}
+					}
+				}
+			}
+				
+		}
+	}
+	
+	/**
 	 * Inkrementiert xErlaubt um 1
 	 */
 	public void raiseErlaubtX(){
@@ -524,10 +604,12 @@ public class BoardPresenter{
 		
 		System.out.println(" playerDarstellung X vorher : " +playerDarstellung.getLayoutX());
 		System.out.println(" playerDarstellung Y vorher : " +playerDarstellung.getLayoutY());
+
 		
 		Kachel anfangsKachel = view.getLabelArray()[yPositionFuerPath][xPositionFuerPath];
 		Kachel zielKachel = view.getLabelArray()[yPositionFuerPath + yStreckeFuerPath][xPositionFuerPath + xStreckeFuerPath];
 		
+
 		System.out.println("anfangs layout X : " +anfangsKachel.getLayoutX());
 		System.out.println("anfangs layout Y : " +anfangsKachel.getLayoutY());
 		System.out.println("ziel layout X : " +zielKachel.getLayoutX());
@@ -549,6 +631,7 @@ public class BoardPresenter{
 	     pathTransition.setPath(path);
 	     	//pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);	 
 	     pathTransition.play();
+
 
 
 		System.out.println(" playerDarstellung X nachher : " +playerDarstellung.getLayoutX());
