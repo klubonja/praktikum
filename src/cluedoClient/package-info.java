@@ -1,0 +1,8 @@
+/**
+ * 
+ */
+/**
+ * @author pascal
+ *
+ */
+package cluedoClient;
