@@ -11,6 +11,7 @@ public class Spieler {
 
 	private int xPosition;
 	private int yPosition;
+	
 	public Spieler (int xPosition, int yPosition) {
 		this.xPosition = xPosition;
 		this.yPosition = yPosition;

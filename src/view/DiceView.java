@@ -61,4 +61,33 @@ public class DiceView extends GridPane{
 		GridPane.setConstraints(d2,1,0);
 		this.getChildren().addAll(d1, d2, roll);
 	}
+	
+	public Button getRoll() {
+		return roll;
+	}
+
+
+	public void setRoll(Button roll) {
+		this.roll = roll;
+	}
+
+
+	public ImageView getD1() {
+		return d1;
+	}
+
+
+	public void setD1(ImageView d1) {
+		this.d1 = d1;
+	}
+
+
+	public ImageView getD2() {
+		return d2;
+	}
+
+
+	public void setD2(ImageView d2) {
+		this.d2 = d2;
+	}
 }

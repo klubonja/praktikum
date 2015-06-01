@@ -9,15 +9,6 @@ import javafx.scene.layout.RowConstraints;
 
 
 
-/**
- * @since 26.05.2015
- * @version 2.0
- * @author Kristi Lubonja
- * 
- * 
- *
- */
-
 public class GameFrameView extends GridPane{
 	
 	MenuBar menu;
@@ -73,8 +64,8 @@ public class GameFrameView extends GridPane{
 		rightGrid.setGridLinesVisible(true);
 		rightGrid.getRowConstraints().add(new RowConstraints(450));
 		rightGrid.getRowConstraints().add(new RowConstraints(200));
-		rightGrid.getColumnConstraints().add(new ColumnConstraints(325));
-		rightGrid.getColumnConstraints().add(new ColumnConstraints(325));
+		rightGrid.getColumnConstraints().add(new ColumnConstraints(350));
+		rightGrid.getColumnConstraints().add(new ColumnConstraints(300));
 		GridPane.setConstraints(notes,1,0);
 		GridPane.setConstraints(dice,0,1);
 		GridPane.setConstraints(chat,1,1);

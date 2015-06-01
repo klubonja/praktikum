@@ -7,10 +7,12 @@ import model.Player;
 public class GameFramePresenter {
 	
 	private GameFrameView gfv;
+	Player player;
 	
-	public GameFramePresenter(GameFrameView gfv){
+	public GameFramePresenter(GameFrameView gfv , Player player){
 		
 		this.gfv = gfv;
+		this.player = player;
 		
 		startEvents();
 		
@@ -22,10 +24,12 @@ public class GameFramePresenter {
 		Player player = new Player("test", 0, 0);
 
 		Circle testSpieler = new Circle(13);
+
 		testSpieler.setFill(Color.ROYALBLUE);
-		gfv.board.add(testSpieler, player.getxCoord(),player.getyCoord());
+		gfv.board.add(testSpieler, player.getxCoord(),this.player.getyCoord());
 		DicePresenter dice = new DicePresenter(gfv.dice);
-		BoardPresenter board = new BoardPresenter(gfv.board, testSpieler, player);
+		BoardPresenter board = new BoardPresenter(gfv.board, testSpieler, this.player);
+		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		
 	}
 	
