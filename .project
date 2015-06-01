@@ -1,12 +1,28 @@
 <<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
+
+=======
+>>>>>>> CRBranch
 	<name>yinYanYolosProject</name>
+
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
 		<buildCommand>
+<<<<<<< HEAD
+
+			<name>org.eclipse.xtext.ui.shared.xtextBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+
+=======
+>>>>>>> origin/CRBranch
+>>>>>>> CRBranch
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
 			</arguments>
@@ -14,6 +30,14 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+<<<<<<< HEAD
+
+		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
+
+
+=======
+>>>>>>> origin/CRBranch
+>>>>>>> CRBranch
 	</natures>
 </projectDescription>
 =======

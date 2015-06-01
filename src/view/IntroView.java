@@ -44,216 +44,6 @@ public class IntroView extends GridPane{
 	DropShadow radioShadow;
 	Label error;
 
-	//Getter and Setter Methods
-	public Label getTitleLabel() {
-		return title;
-	}
-
-
-	public void setTitleLabel(Label title) {
-		this.title = title;
-	}
-
-
-	public Label getSelectChar() {
-		return selectChar;
-	}
-
-
-	public void setSelectChar(Label selectChar) {
-		this.selectChar = selectChar;
-	}
-
-
-	public Button getChar1() {
-		return char1;
-	}
-
-
-	public void setChar1(Button char1) {
-		this.char1 = char1;
-	}
-
-
-	public Button getChar2() {
-		return char2;
-	}
-
-
-	public void setChar2(Button char2) {
-		this.char2 = char2;
-	}
-
-
-	public Button getChar3() {
-		return char3;
-	}
-
-
-	public void setChar3(Button char3) {
-		this.char3 = char3;
-	}
-
-
-	public Button getChar4() {
-		return char4;
-	}
-
-
-	public void setChar4(Button char4) {
-		this.char4 = char4;
-	}
-
-
-	public Button getChar5() {
-		return char5;
-	}
-
-
-	public void setChar5(Button char5) {
-		this.char5 = char5;
-	}
-
-
-	public Button getChar6() {
-		return char6;
-	}
-
-
-	public void setChar6(Button char6) {
-		this.char6 = char6;
-	}
-
-
-	public ToggleGroup getGroup() {
-		return group;
-	}
-
-
-	public void setGroup(ToggleGroup group) {
-		this.group = group;
-	}
-
-
-	public RadioButton getPl1() {
-		return pl1;
-	}
-
-
-	public void setPl1(RadioButton pl1) {
-		this.pl1 = pl1;
-	}
-
-
-	public RadioButton getPl2() {
-		return pl2;
-	}
-
-
-	public void setPl2(RadioButton pl2) {
-		this.pl2 = pl2;
-	}
-
-
-	public RadioButton getPl3() {
-		return pl3;
-	}
-
-
-	public void setPl3(RadioButton pl3) {
-		this.pl3 = pl3;
-	}
-
-
-	public RadioButton getPl4() {
-		return pl4;
-	}
-
-
-	public void setPl4(RadioButton pl4) {
-		this.pl4 = pl4;
-	}
-
-
-	public RadioButton getPl5() {
-		return pl5;
-	}
-
-
-	public void setPl5(RadioButton pl5) {
-		this.pl5 = pl5;
-	}
-
-
-	public RadioButton getPl6() {
-		return pl6;
-	}
-
-
-	public void setPl6(RadioButton pl6) {
-		this.pl6 = pl6;
-	}
-
-
-	public Label getNickname() {
-		return nickname;
-	}
-
-
-	public void setNickname(Label nickname) {
-		this.nickname = nickname;
-	}
-
-
-	public TextField getNick() {
-		return nick;
-	}
-
-
-	public void setNick(TextField nick) {
-		this.nick = nick;
-	}
-
-
-	public Button getNewGame() {
-		return newGame;
-	}
-
-
-	public void setNewGame(Button newGame) {
-		this.newGame = newGame;
-	}
-
-
-	public DropShadow getLabelShadow() {
-		return labelShadow;
-	}
-
-
-	public void setLabelShadow(DropShadow labelShadow) {
-		this.labelShadow = labelShadow;
-	}
-
-
-	public DropShadow getRadioShadow() {
-		return radioShadow;
-	}
-
-
-	public void setRadioShadow(DropShadow radioShadow) {
-		this.radioShadow = radioShadow;
-	}
-
-
-	public Label getError() {
-		return error;
-	}
-
-
-	public void setError(Label error) {
-		this.error = error;
-	}
-
 
 	final ImageView imageView = new ImageView(
 		      new Image("http://vignette3.wikia.nocookie.net/ageofempires/images/2/23/Hades.jpg/revision/latest?cb=20110606234954"));
@@ -427,5 +217,215 @@ public class IntroView extends GridPane{
 				char1,char2,char3,char4,char5,char6,
 				pl1,pl2,pl3,pl4,pl5,pl6,newGame, nickname, nick);
 	}
+	
+	//Getter and Setter Methods
+		public Label getTitleLabel() {
+			return title;
+		}
+
+
+		public void setTitleLabel(Label title) {
+			this.title = title;
+		}
+
+
+		public Label getSelectChar() {
+			return selectChar;
+		}
+
+
+		public void setSelectChar(Label selectChar) {
+			this.selectChar = selectChar;
+		}
+
+
+		public Button getChar1() {
+			return char1;
+		}
+
+
+		public void setChar1(Button char1) {
+			this.char1 = char1;
+		}
+
+
+		public Button getChar2() {
+			return char2;
+		}
+
+
+		public void setChar2(Button char2) {
+			this.char2 = char2;
+		}
+
+
+		public Button getChar3() {
+			return char3;
+		}
+
+
+		public void setChar3(Button char3) {
+			this.char3 = char3;
+		}
+
+
+		public Button getChar4() {
+			return char4;
+		}
+
+
+		public void setChar4(Button char4) {
+			this.char4 = char4;
+		}
+
+
+		public Button getChar5() {
+			return char5;
+		}
+
+
+		public void setChar5(Button char5) {
+			this.char5 = char5;
+		}
+
+
+		public Button getChar6() {
+			return char6;
+		}
+
+
+		public void setChar6(Button char6) {
+			this.char6 = char6;
+		}
+
+
+		public ToggleGroup getGroup() {
+			return group;
+		}
+
+
+		public void setGroup(ToggleGroup group) {
+			this.group = group;
+		}
+
+
+		public RadioButton getPl1() {
+			return pl1;
+		}
+
+
+		public void setPl1(RadioButton pl1) {
+			this.pl1 = pl1;
+		}
+
+
+		public RadioButton getPl2() {
+			return pl2;
+		}
+
+
+		public void setPl2(RadioButton pl2) {
+			this.pl2 = pl2;
+		}
+
+
+		public RadioButton getPl3() {
+			return pl3;
+		}
+
+
+		public void setPl3(RadioButton pl3) {
+			this.pl3 = pl3;
+		}
+
+
+		public RadioButton getPl4() {
+			return pl4;
+		}
+
+
+		public void setPl4(RadioButton pl4) {
+			this.pl4 = pl4;
+		}
+
+
+		public RadioButton getPl5() {
+			return pl5;
+		}
+
+
+		public void setPl5(RadioButton pl5) {
+			this.pl5 = pl5;
+		}
+
+
+		public RadioButton getPl6() {
+			return pl6;
+		}
+
+
+		public void setPl6(RadioButton pl6) {
+			this.pl6 = pl6;
+		}
+
+
+		public Label getNickname() {
+			return nickname;
+		}
+
+
+		public void setNickname(Label nickname) {
+			this.nickname = nickname;
+		}
+
+
+		public TextField getNick() {
+			return nick;
+		}
+
+
+		public void setNick(TextField nick) {
+			this.nick = nick;
+		}
+
+
+		public Button getNewGame() {
+			return newGame;
+		}
+
+
+		public void setNewGame(Button newGame) {
+			this.newGame = newGame;
+		}
+
+
+		public DropShadow getLabelShadow() {
+			return labelShadow;
+		}
+
+
+		public void setLabelShadow(DropShadow labelShadow) {
+			this.labelShadow = labelShadow;
+		}
+
+
+		public DropShadow getRadioShadow() {
+			return radioShadow;
+		}
+
+
+		public void setRadioShadow(DropShadow radioShadow) {
+			this.radioShadow = radioShadow;
+		}
+
+
+		public Label getError() {
+			return error;
+		}
+
+
+		public void setError(Label error) {
+			this.error = error;
+		}
 
 }
