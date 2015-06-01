@@ -10,12 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
-
-
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-
 import enums.*;
 
 public class CluedoProtokollChecker {
