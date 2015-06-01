@@ -348,46 +348,38 @@ public class CluedoProtokollChecker {
 	void validatePlayerInfo(JSONObject jsonParent){		
 			validateField(jsonParent, "nick");			
 			if (validateField(jsonParent, "color"))
-				validatePerson("color");
+				validatePerson(jsonParent.getString("color"));
 			validateField(jsonParent, "fields");
 			if (validateField(jsonParent, "cards"))
 				isInt(jsonParent, "cards");
 			if (validateField(jsonParent, "playerstate"))
-				validatePlayerState("playerstate");		
+				validatePlayerState(jsonParent.getString("playerstate"));		
 	}
 	
 	void validateGameInfo(JSONObject jsonParent) throws JSONException{
 		if (validateField(jsonParent, "gameID"))
 			isInt(jsonParent, "gameID");
-		validateGameState("gamestate");
-		//System. out.println("BEFORE entering players : parentvalue:"+jsonParent.toString());
-
+		validateGameState(jsonParent.getString("gamestate"));
 		isJSONArrayOfType(jsonParent,"players", "playerinfo");			
 	}
 	
 	boolean isJSONArrayOfType(JSONObject jsonParent, String key,String localtype) {
 		int index = 0;
-		//System.out.println("ENTERING +"+key+" localtype "+localtype);
 		try {
 			JSONArray jar = jsonParent.getJSONArray(key);
 			for (index = 0; index < jar.length(); index++) {
-				//System. out.println("jsonarray : "+key+" loopindex"+ index + " for "+localtype);
-
 				try {
 					switch (localtype) {
 						case "playerinfo" :
-							//System.out.println("GOIING into playerinfovalid");
 							validatePlayerInfo(jar.getJSONObject(index));
 							break;
 						case "gameinfo" :
-						//	System.out.println("GOIING into gameinfovalid");
 							validateGameInfo(jar.getJSONObject(index));
 							break;
 						case  "cards" :
 							validateCards(jar.getString(index));
 							break;
 						case "string" :
-							//System. out.println("GOODSTRING attempting jsonarray : "+key+" loopindex"+ index + " for "+localtype+ "value :"+jar.getString(index));
 							;
 							break;
 						default :
@@ -398,14 +390,13 @@ public class CluedoProtokollChecker {
 					System. out.println("BAD : attempting jsonarray : "+key+" loopindex"+ index + " for "+localtype);
 				}				
 			}		
-			//System. out.println("LEAVING jsonarray : "+key+" loopindex"+ index + " for "+localtype);
-
+			
 			return true;			
 		} 
 		catch (JSONException e) {
 		//	System. out.println("VERYBAD :JSONArray expected on : "+key+" loopindex"+ index + " for "+localtype+" value \n"+jsonParent.toString());
-			e.printStackTrace();
-			setErr("JSONArray expected on key "+ key +", localtype: "+localtype+" and index "+index+"\n JSONe : ");
+			//e.printStackTrace();
+			setErr("JSONArray: "+key+" expected  ");
 			return false;
 		}		
 	}

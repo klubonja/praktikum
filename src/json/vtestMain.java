@@ -83,13 +83,13 @@ public class vtestMain {
 		
 		playerInfo1.put("nick", "groupie" );
 		playerInfo1.put("color", "white" );
-		playerInfo1.put("field", "<12,12>" );
+		playerInfo1.put("fields", "<12,12>" );
 		playerInfo1.put("cards", "3" );
 		playerInfo1.put("playerstate", "do nothing" );
 		
 		playerInfo2.put("nick", "nickie" );
 		playerInfo2.put("color", "red" );
-		playerInfo2.put("field", "<24,12>" );
+		playerInfo2.put("fields", "<24,12>" );
 		playerInfo2.put("cards", "3" );
 		playerInfo2.put("playerstate", "roll dice" );	
 		
