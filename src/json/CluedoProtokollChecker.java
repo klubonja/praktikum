@@ -41,12 +41,11 @@ public class CluedoProtokollChecker {
 					System.out.println("invoking :"+"val_" + typeNoSpace );
 				} catch (IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("invoking :"+"val_" + typeNoSpace +" failed" );
 				}
 			} catch (NoSuchMethodException | SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("finding :"+"val_" + typeNoSpace +" failed : no such method");
+				//e.printStackTrace();
 			}
 
 			// CluedoJSONTypes[] types = CluedoJSONTypes.values();
@@ -74,8 +73,11 @@ public class CluedoProtokollChecker {
 		}
 		;
 
-		if (errs.size() == 0)
+		if (errs.size() == 0){
+			System.out.println("OK");
 			return true;
+		}
+		System.out.println("Not OK see : this.printErrs()");
 		return false;
 	}
 

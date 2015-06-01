@@ -96,7 +96,7 @@ public class vtestMain {
 		jsonRoot.put("type","login successful");
 		jsonRoot.put("expansions", expansions);
 		jsonRoot.put("nick array", nick_array);
-		jsonRoot.put("game array", game_array);
+		//jsonRoot.put("game array", game_array);
 		
 		System.out.println(jsonRoot.toString());
 		
@@ -113,20 +113,6 @@ public class vtestMain {
 		
     }
 	
-	private static JSONArray jal(ArrayList<JSONObject> c) {
-		JSONArray jar = new JSONArray();
-		for (int i = 00; i < c.size(); i++ ) jar.put(c.get(i));
-		
-		return jar;
-	}
-
-	public static JSONArray ja(Collection<String> c){
-		JSONArray jar = new JSONArray();
-		Iterator<String> iter= c.iterator();
-		while (iter.hasNext()) jar.put(iter.next());
-		
-		return jar;
-	}
 		
 	
 	
