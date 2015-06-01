@@ -1,62 +1,36 @@
 package view;
 
-import java.util.Random;
-
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import model.Player;
 
 public class GameFramePresenter {
 	
 	private GameFrameView gfv;
+	Player player;
 	
-	public GameFramePresenter(GameFrameView gfv){
+	public GameFramePresenter(GameFrameView gfv , Player player){
 		
 		this.gfv = gfv;
+		this.player = player;
 		
 		startEvents();
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public void startEvents(){
-		gfv.rollDice.setOnMouseClicked(e -> rollTheDice());
+
+		Player player = new Player("test", 0, 0);
+
+		Circle testSpieler = new Circle(13);
+
+		testSpieler.setFill(Color.ROYALBLUE);
+		gfv.board.add(testSpieler, player.getxCoord(),this.player.getyCoord());
+		DicePresenter dice = new DicePresenter(gfv.dice);
+		BoardPresenter board = new BoardPresenter(gfv.board, testSpieler, this.player);
+		NotesPresenter notes = new NotesPresenter(gfv.notes);
+		
 	}
 	
-	public void rollTheDice(){
-	
-		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame());
-		Timeline t = new Timeline(keyFrame);
-		t.setCycleCount(10);
-		t.play();
-
-	}
-	
-	public void changeFrame(){
-		
-		gfv.dice.getChildren().remove(gfv.d1);
-		gfv.dice.getChildren().remove(gfv.d2);
-		
-		int first = 1 + (int)(Math.random()*6);
-		int second = 1 + (int)(Math.random()*6);
-		
-		switch(first){
-		case 1: gfv.d1.setImage(gfv.dice1);break;
-		case 2: gfv.d1.setImage(gfv.dice2);break;
-		case 3: gfv.d1.setImage(gfv.dice3);break;
-		case 4: gfv.d1.setImage(gfv.dice4);break;
-		case 5: gfv.d1.setImage(gfv.dice5);break;
-		case 6: gfv.d1.setImage(gfv.dice6);break;
-		}
-		switch(second){
-		case 1: gfv.d2.setImage(gfv.dice1);break;
-		case 2: gfv.d2.setImage(gfv.dice2);break;
-		case 3: gfv.d2.setImage(gfv.dice3);break;
-		case 4: gfv.d2.setImage(gfv.dice4);break;
-		case 5: gfv.d2.setImage(gfv.dice5);break;
-		case 6: gfv.d2.setImage(gfv.dice6);break;
-		}
-		
-		gfv.dice.getChildren().addAll(gfv.d1, gfv.d2);
-		}
-
 }
