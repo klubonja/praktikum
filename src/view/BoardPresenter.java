@@ -69,8 +69,8 @@ public class BoardPresenter {
 	 * @param primaryStage
 	 * @throws Exception
 	 */
-	public BoardPresenter(BoardView view, Circle Playerdarstellung,
-			Player player) {
+	public BoardPresenter(BoardView view, Circle Playerdarstellung,	Player player) {
+		
 		buttonManager();
 		this.player = player;
 		this.view = view;

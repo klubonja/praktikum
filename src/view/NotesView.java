@@ -10,9 +10,17 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
 
 public class NotesView extends TabPane {
 	
@@ -94,6 +102,11 @@ public class NotesView extends TabPane {
 	LinkedList<Button> buttons;
 	LinkedList<TextField> textFlds;
 	
+	BackgroundFill	defaultFill = new BackgroundFill(Color.ANTIQUEWHITE, new CornerRadii(1), new Insets(0.2));
+	Background defaultButton = new Background(defaultFill);
+	BorderStroke defaultStroke = new BorderStroke(Color.DIMGREY, BorderStrokeStyle.SOLID, 
+			new CornerRadii(4), new BorderWidths(0.4));
+	Border defaultBorder = new Border(defaultStroke);
 	
 	public NotesView(){
 		 
@@ -370,6 +383,8 @@ public class NotesView extends TabPane {
 			button.setMaxSize(39, 19);
 			button.setMinSize(39, 19);
 			button.setPrefSize(39, 19);
+			button.setBackground(defaultButton);
+			button.setBorder(defaultBorder);
 			
 		}
 		
