@@ -118,12 +118,14 @@ public class BoardPresenter {
 				if (momentaneKachel.isIstRaum() == false) {
 					momentaneKachel
 							.setOnMouseClicked(e -> dasIstEinFeld(momentaneKachel));
-				} else {
+				} else if (momentaneKachel.isIstTuer()==false){
 					momentaneKachel.setOnMouseClicked(e -> dasIsEinRaum());
 				}
+				else {
+					momentaneKachel.setOnMouseClicked(e -> dasIstEineTuer());
+				}
 				momentaneKachel.setOnMouseExited(e -> persil(momentaneKachel));
-				momentaneKachel
-						.setOnMouseEntered(e -> einfaerben(momentaneKachel));
+				momentaneKachel.setOnMouseEntered(e -> einfaerben(momentaneKachel));
 			}
 		}
 	}
@@ -134,12 +136,21 @@ public class BoardPresenter {
 	 * @param momentaneKachel
 	 */
 	public void einfaerben(Kachel momentaneKachel) {
-		if (momentaneKachel.isIstRaum() == true) {
+		if (momentaneKachel.isIstRaum() == true && momentaneKachel.isIstTuer()==false) {
 			textbuffer = momentaneKachel.getText();
 			fontbuffer = momentaneKachel.getFont();
 			momentaneKachel.setFont(Font.font("Regular", 17));
 			momentaneKachel.setText("nope");
-		} else {
+		} 
+		
+		else if (momentaneKachel.isIstTuer()){
+			textbuffer = momentaneKachel.getText();
+			fontbuffer = momentaneKachel.getFont();
+			momentaneKachel.setFont(Font.font("Regular", 24));
+			momentaneKachel.setText("?");
+		}
+		
+		else {
 			backgroundbuffer = momentaneKachel.getBackground();
 			momentaneKachel.setBackgroundColor(momentaneKachel, Color.GREEN);
 		}

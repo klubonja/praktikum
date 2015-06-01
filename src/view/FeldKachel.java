@@ -9,8 +9,8 @@ package view;
  */
 public class FeldKachel extends Kachel {
 
-	public FeldKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum){
-		super(text, xKoordinate, yKoordinate, istRaum);
+	public FeldKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, boolean istTuer){
+		super(text, xKoordinate, yKoordinate, istRaum, istTuer);
 	}
 	
 	

@@ -19,13 +19,15 @@ public class Kachel extends Label {
 	private int xKoordinate;
 	private int yKoordinate;
 	private boolean istRaum;
+	private boolean istTuer;
 	private BackgroundFill hintergrundfarbe;
 	
-	public Kachel (String text, int xKoordinate, int yKoordinate, boolean istRaum){
+	public Kachel (String text, int xKoordinate, int yKoordinate, boolean istRaum, boolean istTuer){
 		super(text);
 		this.xKoordinate = xKoordinate;
 		this.yKoordinate = yKoordinate;
 		this.istRaum = istRaum;
+		this.istTuer = istTuer;
 	}
 	
 	public void setBackgroundColor(Label label, Color farbe){
@@ -64,6 +66,14 @@ public class Kachel extends Label {
 
 	public void setHintergrundfarbe(BackgroundFill hintergrundfarbe) {
 		this.hintergrundfarbe = hintergrundfarbe;
+	}
+
+	public boolean isIstTuer() {
+		return istTuer;
+	}
+
+	public void setIstTuer(boolean istTuer) {
+		this.istTuer = istTuer;
 	}
 	
 	

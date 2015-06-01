@@ -12,8 +12,11 @@ import javafx.scene.paint.Color;
  */
 public class RaumKachel extends Kachel {
 	
-	public RaumKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum){
-		super(text, xKoordinate, yKoordinate, istRaum);
+	private String raum;
+	
+	public RaumKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, String raum, boolean istTuer){
+		super(text, xKoordinate, yKoordinate, istRaum, istTuer);
+		this.raum = raum;
 		istRaum = true;
 		this.setBackgroundColor(this, Color.LIGHTSALMON);
 
