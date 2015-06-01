@@ -3,13 +3,11 @@ package view;
 
 
 
-import view.Kachel;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import view.PlayerView;
-import model.*;
+import model.Player;
 
 
 
@@ -87,8 +85,43 @@ public class BoardView extends GridPane {
 						|| (iReihen == 24 && 14 < jSpalten)
 
 						){
-					labelArray[iReihen][jSpalten] = new RaumKachel(aufschrift, iReihen, jSpalten, true);
+				    if ( (iReihen == 3 && jSpalten == 6) // Arbeitszimmer
+							|| (iReihen == 10 && jSpalten == 3) // Bibliothek
+							|| (iReihen == 14 && jSpalten == 11) // Schwimmbad
+							|| (iReihen == 5 && jSpalten == 17) // Salon
+							|| (iReihen == 6 && (jSpalten == 11 || jSpalten == 12) ) // Eingangshalle							
+							){
+						labelArray[iReihen][jSpalten] = new TuerKachel("S", iReihen, jSpalten, true, "SOUTH");
+					}
+				    else if ( (iReihen == 8 && jSpalten == 6) // Bibliothek
+							|| (iReihen == 15 && jSpalten == 5) // Billiardzimmer
+							|| (iReihen == 19 && jSpalten == 4) // Wintergarten
+							|| (iReihen == 19 && jSpalten == 15) // Musikzimmer
+							|| (iReihen == 9 && jSpalten == 13) // Schwimmbad
+							){
+						labelArray[iReihen][jSpalten] = new TuerKachel("O", iReihen, jSpalten, true, "EAST");
+					}
+				    else if ( (iReihen == 12 && jSpalten == 1) // Billiardzimmer
+							|| (iReihen == 17 && (jSpalten == 9 || jSpalten == 14) ) // Musikzimmer
+							|| (iReihen == 18 && jSpalten == 19) // Küche
+							|| (iReihen == 9 && jSpalten == 17) // Speisezimmer
+							|| (iReihen == 8 && jSpalten == 11) // Schwimmbad							
+							){
+						labelArray[iReihen][jSpalten] = new TuerKachel("N", iReihen, jSpalten, true, "NORTH");
+					}
+				    else if ( (iReihen == 19 && jSpalten == 8 ) // Musikzimmer
+							|| (iReihen == 12 && (jSpalten == 9) ) // Schwimmbad
+							|| (iReihen == 11 && (jSpalten == 16) ) // Speisezimmer
+							|| (iReihen == 4 && (jSpalten == 9) ) // Eingangshalle					 		
+							){
+						labelArray[iReihen][jSpalten] = new TuerKachel("W", iReihen, jSpalten, true, "WEST");
+					}
+					else {
+						labelArray[iReihen][jSpalten] = new RaumKachel(aufschrift, iReihen, jSpalten, true);
+					}
+					
 				}
+				
 				else {
 					labelArray[iReihen][jSpalten] = new FeldKachel(aufschrift, iReihen, jSpalten, false);	
 				}

@@ -218,6 +218,10 @@ public class IntroView extends GridPane{
 				pl1,pl2,pl3,pl4,pl5,pl6,newGame, nickname, nick);
 	}
 	
+	public void close(){
+		
+	}
+	
 	//Getter and Setter Methods
 		public Label getTitleLabel() {
 			return title;

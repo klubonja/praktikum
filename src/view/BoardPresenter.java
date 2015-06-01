@@ -81,7 +81,33 @@ public class BoardPresenter {
 	}
 
 	public void anfangsPositionSetzen() {
-		moveWithPath(4, 4);
+		if (player.getFirstName()=="Player1"){
+			moveWithPath(0, 5);	
+			System.out.println("Du bist Spieler 1");
+		}
+		if (player.getFirstName()=="Player2"){
+			moveWithPath(0, 18);
+			System.out.println("Du bist Spieler 2");
+		}
+		if (player.getFirstName()=="Player3"){
+			moveWithPath(9, 24);
+			System.out.println("Du bist Spieler 3");
+		}
+		if (player.getFirstName()=="Player4"){
+			moveWithPath(14, 24);
+			System.out.println("Du bist Spieler 4");
+		}
+		if (player.getFirstName()=="Player5"){
+			moveWithPath(23, 7);
+			System.out.println("Du bist Spieler 5");
+		}
+		if (player.getFirstName()=="Player6"){
+			moveWithPath(16, 0);
+			System.out.println("Du bist Spieler 6");
+		}
+		
+		
+		
 	}
 
 	public void zuweisung() {
@@ -129,6 +155,7 @@ public class BoardPresenter {
 		begehbareKachel.setBackgroundColor(begehbareKachel, Color.DARKORANGE);
 	}
 
+	
 	/**
 	 * Bereinigt die Kachel von Schmutz und Farben aller Art!
 	 * 
@@ -165,10 +192,13 @@ public class BoardPresenter {
 	 * Nachricht zurück.
 	 */
 	public void dasIsEinRaum() {
-		viewImRaum.show();
-//		System.out.println("Das ist ein Raum, alter");
+		System.out.println("Das ist ein Raum, alter");
 	}
 
+	public void dasIstEineTuer(){
+		viewImRaum.show();
+	}
+	
 	/**
 	 * Die Methode, welche durch das ClickEvent ausgelöst wird. hier wird
 	 * pathfinder und moveWithPath ausgelöst.
@@ -279,6 +309,9 @@ public class BoardPresenter {
 		}
 	}
 
+	/**
+	 * @param jetzigesFeld
+	 */
 	public void pathfinderY(Kachel jetzigesFeld) {
 
 		if (moveErlaubtY()) {
@@ -682,18 +715,9 @@ public class BoardPresenter {
 		System.out.println("ziel layout Y : " + zielKachel.getLayoutY());
 
 		Path path = new Path();
-		// path.getElements().add(new MoveTo
-		// (view.getLabelArray()[4][4].getLayoutX(),
-		// view.getLabelArray()[4][4].getLayoutY()));
 		path.getElements().add(
 				new MoveTo(anfangsKachel.getLayoutX(), anfangsKachel
 						.getLayoutY()));
-		// path.getElements().add (new LineTo
-		// (view.getLabelArray()[5][5].getLayoutX(),
-		// view.getLabelArray()[5][5].getLayoutY()));
-		// path.getElements().add (new LineTo
-		// (view.getLabelArray()[5][5].getLayoutX(),
-		// view.getLabelArray()[5][5].getLayoutY()));
 
 		path.getElements()
 				.add(new LineTo(zielKachel.getLayoutX(), anfangsKachel
@@ -721,66 +745,4 @@ public class BoardPresenter {
 		System.out.println(" player y nachher : " + player.getyCoord());
 
 	}
-
-	/**
-	 * Inaktive alte Bewegungsmethode, welche auch einen "Kreis" um Ziel
-	 * gezeichnet hat
-	 */
-	/*
-	 * public void movePlayer(Circle Player, Kachel ziel){
-	 * 
-	 * Kachel anfangsLabel = view.getKachelAnfang();
-	 * 
-	 * System.out.println("X Distanz:  " + xDistanz + "Y Distanz:  " +
-	 * yDistanz);
-	 * 
-	 * Path path = new Path(); path.getElements().add (new MoveTo
-	 * (anfangsLabel.getLayoutX(), anfangsLabel.getLayoutY()));
-	 * path.getElements().add (new LineTo (ziel.getLayoutX(),
-	 * anfangsLabel.getLayoutY())); path.getElements().add (new LineTo
-	 * (ziel.getLayoutX(), ziel.getLayoutY()));
-	 * 
-	 * 
-	 * PathTransition pathTransition = new PathTransition();
-	 * pathTransition.setDuration(Duration.millis(3000));
-	 * pathTransition.setNode(Player); pathTransition.setPath(path);
-	 * //pathTransition.setOrientation(OrientationType.ORTHOGONAL_TO_TANGENT);
-	 * pathTransition.play(); view.setKachelAnfang(ziel);
-	 * 
-	 * 
-	 * int umfang = 5; int rowIndex = view.getRowIndex(ziel); int columnIndex =
-	 * view.getColumnIndex(ziel); int linksInt = rowIndex - umfang; int
-	 * rechtsInt = rowIndex + umfang; int obenInt = columnIndex - umfang; int
-	 * untenInt = columnIndex + umfang; if (linksInt<0){ linksInt=0; } if
-	 * (rechtsInt>columnSize){ rechtsInt = 0; } if (obenInt<0){ obenInt = 0; }
-	 * if (untenInt>rowSize){ untenInt = 0; } Kachel links =
-	 * view.getLabelArray()[columnIndex][linksInt]; Kachel rechts =
-	 * view.getLabelArray()[columnIndex][rechtsInt]; Kachel oben =
-	 * view.getLabelArray()[obenInt][rowIndex]; Kachel unten =
-	 * view.getLabelArray()[untenInt][rowIndex]; view.setBackground(links);
-	 * view.setBackground(rechts); view.setBackground(unten);
-	 * view.setBackground(oben);
-	 * 
-	 * int rowIndexAlt = view.getRowIndex(view.getLabelAnfang()); int
-	 * columnIndexAlt = view.getColumnIndex(view.getLabelAnfang()); int
-	 * linksIntAlt = rowIndexAlt - umfang; int rechtsIntAlt = rowIndexAlt +
-	 * umfang; int obenIntAlt = columnIndexAlt - umfang; int untenIntAlt =
-	 * columnIndexAlt + umfang; if (linksIntAlt<0){ linksIntAlt=0; } if
-	 * (rechtsIntAlt>columnSize){ rechtsIntAlt = columnSize; } if
-	 * (obenIntAlt<0){ obenIntAlt = 0; } if (untenIntAlt>rowSize){ untenIntAlt =
-	 * rowSize; }
-	 * 
-	 * Kachel linksAlt = view.getLabelArray()[columnIndexAlt][linksIntAlt];
-	 * Kachel rechtsAlt = view.getLabelArray()[columnIndexAlt][rechtsIntAlt];
-	 * Kachel obenAlt = view.getLabelArray()[obenIntAlt][rowIndexAlt]; Kachel
-	 * untenAlt = view.getLabelArray()[untenIntAlt][rowIndexAlt];
-	 * view.revertBackground(linksAlt); view.revertBackground(rechtsAlt);
-	 * view.revertBackground(untenAlt); view.revertBackground(obenAlt);
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
 }

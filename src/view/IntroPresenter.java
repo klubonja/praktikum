@@ -110,6 +110,8 @@ public class IntroPresenter {
 		node.setEffect(null);
 	}
 	
+	
+	
 	@SuppressWarnings("unused")
 	public void startNewGame(){
 		
@@ -117,19 +119,19 @@ public class IntroPresenter {
 			this.player = new Player("Player1", 0, 0);
 		}
 		if(iv.pl2.isSelected()){ 
-			this.player = new Player("Player2", 10, 10);
+			this.player = new Player("Player2", 0, 0);
 		}
 		if(iv.pl3.isSelected()){ 
-			this.player = new Player("Player3", 12, 12);
+			this.player = new Player("Player3", 0, 0);
 		}
 		if(iv.pl4.isSelected()){ 
-			this.player = new Player("Player4", 0, 5);
+			this.player = new Player("Player4", 0, 0);
 		}
 		if(iv.pl5.isSelected()){ 
-			this.player = new Player("Player5", 18, 7);
+			this.player = new Player("Player5", 0, 0);
 		}
 		if(iv.pl6.isSelected()){ 
-			this.player = new Player("Player6", 20, 10);
+			this.player = new Player("Player6", 0, 0);
 		}
 		
 		GameFrameView view = new GameFrameView();
