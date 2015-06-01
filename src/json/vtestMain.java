@@ -96,7 +96,7 @@ public class vtestMain {
 		jsonRoot.put("type","login successful");
 		jsonRoot.put("expansions", expansions);
 		jsonRoot.put("nick array", nick_array);
-		//jsonRoot.put("game array", game_array);
+		jsonRoot.put("game array", game_array);
 		
 		System.out.println(jsonRoot.toString());
 		

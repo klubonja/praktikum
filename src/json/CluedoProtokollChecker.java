@@ -430,6 +430,7 @@ public class CluedoProtokollChecker {
 	}
 
 	public void printErrs() {
+		System.out.println("Missing: ");
 		for (String s : errs)
 			System.out.println(s);
 	}
