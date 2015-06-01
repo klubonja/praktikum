@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>yinYanYolosProject</name>
+>>>>>>> origin/CRBranch
 	<comment></comment>
 	<projects>
 	</projects>
 	<buildSpec>
 		<buildCommand>
+>>>>>>> origin/CRBranch
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
 			</arguments>
@@ -13,5 +15,6 @@
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+>>>>>>> origin/CRBranch
 	</natures>
 </projectDescription>

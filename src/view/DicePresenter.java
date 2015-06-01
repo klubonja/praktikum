@@ -1,3 +1,4 @@
+
 package view;
 
 import javafx.animation.KeyFrame;
@@ -7,11 +8,6 @@ import javafx.util.Duration;
 public class DicePresenter {
 	
 	DiceView dice;
-	
-	private int ergebnis;
-	private int first;
-	private int second;
-	
 	
 	public DicePresenter(DiceView dice){
 		
@@ -28,20 +24,17 @@ public class DicePresenter {
 		Timeline t = new Timeline(keyFrame);
 		t.setCycleCount(10);
 		t.play();
-		ergebnis = first + second;
-		//System.out.println(ergebnis);
 
 	}
 	
 	public void changeFrame(){
-		int [] zahlen = new int[10];
 		
 		dice.getChildren().remove(dice.d1);
 		dice.getChildren().remove(dice.d2);
 		
-		this.first = 1 + (int)(Math.random()*6);
-		this.second = 1 + (int)(Math.random()*6);
-		this.ergebnis = first + second;
+		int first = 1 + (int)(Math.random()*6);
+		int second = 1 + (int)(Math.random()*6);
+		
 		switch(first){
 		case 1: dice.d1.setImage(dice.dice1);break;
 		case 2: dice.d1.setImage(dice.dice2);break;
@@ -60,7 +53,7 @@ public class DicePresenter {
 		}
 		
 		dice.getChildren().addAll(dice.d1, dice.d2);
-		System.out.println(ergebnis);
 		}
 
 }
+
