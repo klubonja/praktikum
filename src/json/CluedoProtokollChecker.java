@@ -13,6 +13,9 @@ import org.json.JSONObject;
 
 
 
+
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+
 import enums.*;
 
 public class CluedoProtokollChecker {
@@ -85,6 +88,8 @@ public class CluedoProtokollChecker {
 	void val_login() {
 		validateField(json, "nick");
 		validateField(json, "group");
+		if (validateField(json, "version"))
+			validateProtokollVersion(json,"version");
 		isJSONArrayOfType(json, "expansions", "string");
 	}
 
@@ -198,7 +203,9 @@ public class CluedoProtokollChecker {
 	}
 
 	void val_dice_result() {
-		
+		val_watch_game();
+		if (validateField(json,"result"))
+			validateDiceResult(json,"result");
 	}
 
 	void val_moved() {
@@ -250,7 +257,6 @@ public class CluedoProtokollChecker {
 	void val_disprove() {
 		val_watch_game();
 		// card kann teil sein muss aber nicht
-
 	}
 
 	void val_end_turn() {
@@ -261,7 +267,16 @@ public class CluedoProtokollChecker {
 		val_suspicion();		
 	}
 	
+	void val_upd_server(){
+		validateField(json,"group");
+		if (validateField(json,"tcp port"))
+			isInt(json, "tcp port");
+		
+	}
 	
+	void val_upd_client(){
+		validateField(json,"group");		
+	}
 	
 	
 	
@@ -290,6 +305,25 @@ public class CluedoProtokollChecker {
 	void validatePlayerState(String playerState){
 		if (!PlayerStates.isMember(playerState))
 			setErr("PlayerState "+playerState+ " not a valid PlayerState in this Game");
+	}
+	
+	boolean validateProtokollVersion(JSONObject jsonParent,String key){
+		if (jsonParent.getString(key).equals(protokollVersion)) return true;		
+		return false;
+ 	}
+	
+	void validateDiceResult(JSONObject jsonParent,String key){
+		try {
+			int amountDices = 2;
+			JSONArray diceres = new JSONArray(jsonParent.getJSONArray(key));
+			for (int i = 0; i < amountDices;i++)
+				if (!isInt(jsonParent, diceres.getString(i)))
+					setErr("JSONArray : in JSONArray "+key+" on index "+i+" : noInt");
+			
+		}
+		catch (JSONException je){
+			setErr("JSONArray expected : "+key+" is not JSONArray");
+		}
 	}
 	
 	/**
@@ -362,7 +396,11 @@ public class CluedoProtokollChecker {
 		if (validateField(jsonParent, "gameID"))
 			isInt(jsonParent, "gameID");
 		validateGameState(jsonParent.getString("gamestate"));
-		isJSONArrayOfType(jsonParent,"players", "playerinfo");			
+		isJSONArrayOfType(jsonParent,"players", "playerinfo");
+//		isJSONArrayOfType(jsonParent,"watchers", "string");
+//		isJSONArrayOfType(jsonParent,"person positions", "personpos");
+//		isJSONArrayOfType(jsonParent,"weapon positions", "weaponpos");			
+
 	}
 	
 	boolean isJSONArrayOfType(JSONObject jsonParent, String key,String localtype) {
@@ -382,6 +420,12 @@ public class CluedoProtokollChecker {
 							validateCards(jar.getString(index));
 							break;
 						case "string" :
+							;
+							break;
+						case "weaponpos" :
+							;
+							break;
+						case "personpos" :
 							;
 							break;
 						default :

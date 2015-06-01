@@ -105,11 +105,7 @@ public class vtestMain {
 		if (!c.validate()) c.printErrs();
 		
 		
-//		CluedoJSONTypes[] ty = CluedoJSONTypes.values();
-//		for (CluedoJSONTypes t : ty){
-//			System.out.println("static void val_"+t.getNameNoSpace()+"(CluedoJSON json){\n\n}");
-//			
-//		}
+
 		
     }
 	
