@@ -1,9 +1,6 @@
 package json;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
 import java.lang.reflect.*;
 
 import org.json.JSONArray;
@@ -21,7 +18,6 @@ public class CluedoProtokollChecker {
 	String typeNoSpace;
 	boolean isValid;
 	double protokollVersion = 1.1;
-	Map<String, Method> methodMap = new HashMap<String, Method>();
 
 	public CluedoProtokollChecker(CluedoJSON j) {
 		jsonRoot = j;
@@ -45,31 +41,7 @@ public class CluedoProtokollChecker {
 				System.out.println("finding :"+"val_" + typeNoSpace +" failed : no such method");
 				//e.printStackTrace();
 			}
-
-			// CluedoJSONTypes[] types = CluedoJSONTypes.values();
-			// for (CluedoJSONTypes t : types){
-			// try {//maps cluedotypes to val_methods
-			// methodMap.put(t.getNameNoSpace(),
-			// CluedoProtokollChecker.class.getDeclaredMethod("val_"+t.getNameNoSpace()));
-			// } catch (NoSuchMethodException | SecurityException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
-
-			// for (CluedoJSONTypes t : types){
-			// try {
-			// methodMap.get(t.getNameNoSpace()).invoke(this);
-			// } catch (IllegalAccessException | IllegalArgumentException
-			// | InvocationTargetException e) {
-			//
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
-
-		}
-		;
+		};
 
 		if (errs.size() == 0){
 			System.out.println("OK");
@@ -403,10 +375,24 @@ public class CluedoProtokollChecker {
 			isInt(jsonParent, "gameID");
 		validateGameState(jsonParent.getString("gamestate"));
 		isJSONArrayOfType(jsonParent,"players", "playerinfo");
-//		isJSONArrayOfType(jsonParent,"watchers", "string");
-//		isJSONArrayOfType(jsonParent,"person positions", "personpos");
-//		isJSONArrayOfType(jsonParent,"weapon positions", "weaponpos");			
+		isJSONArrayOfType(jsonParent,"watchers", "string");
+		isJSONArrayOfType(jsonParent,"person positions", "personpos");
+		isJSONArrayOfType(jsonParent,"weapon positions", "weaponpos");			
 
+	}
+	
+	void validatePersonPos(JSONObject jsonParent, String key){
+		if (validateValue(jsonParent, "person"))
+			validatePerson(jsonParent.getString("person"));
+		if (validateValue(jsonParent, "field"))
+			validateField(jsonParent, "field");
+	}
+	
+	void validateWeaponPos(JSONObject jsonParent, String key){
+		if (validateValue(jsonParent, "weapon"))
+			validatePerson(jsonParent.getString("weapon"));
+		if (validateValue(jsonParent, "field"))
+			validateField(jsonParent, "field");
 	}
 	
 	boolean isJSONArrayOfType(JSONObject jsonParent, String key,String localtype) {
@@ -425,15 +411,14 @@ public class CluedoProtokollChecker {
 						case  "cards" :
 							validateCards(jar.getString(index));
 							break;
-						case "string" :
-							;
-							break;
 						case "weaponpos" :
-							;
+							validateWeaponPos(jar.getJSONObject(index), key);
 							break;
 						case "personpos" :
-							;
+							validatePersonPos(jar.getJSONObject(index), key);
 							break;
+						case "string" :
+							;
 						default :
 							;
 					}					
@@ -478,7 +463,11 @@ public class CluedoProtokollChecker {
 		this.type = jsonRoot.getString("type");
 		return true;
 	}
-
+	
+	public ArrayList getErrs(){
+		return errs;
+	}
+	
 	public void printErrs() {
 		System.out.println("Missing: ");
 		for (String s : errs)
