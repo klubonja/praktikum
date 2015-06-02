@@ -11,19 +11,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import enums.*;
+import enums.Field;
 
 public class CluedoProtokollChecker {
 	
 	private ArrayList<String> errs;
-	CluedoJSON json;
+	CluedoJSON jsonRoot;
 	String type;
 	String typeNoSpace;
 	boolean isValid;
-	double protokollVersion = 1;
+	double protokollVersion = 1.1;
 	Map<String, Method> methodMap = new HashMap<String, Method>();
 
 	public CluedoProtokollChecker(CluedoJSON j) {
-		json = j;
+		jsonRoot = j;
 		isValid = false;
 		errs = new ArrayList<String>();
 	}
@@ -80,31 +81,31 @@ public class CluedoProtokollChecker {
 
 	// type is set
 	void val_login() {
-		validateField(json, "nick");
-		validateField(json, "group");
-		if (validateField(json, "version"))
-			validateProtokollVersion(json,"version");
-		isJSONArrayOfType(json, "expansions", "string");
+		validateValue(jsonRoot, "nick");
+		validateValue(jsonRoot, "group");
+		if (validateValue(jsonRoot, "version"))
+			validateProtokollVersion(jsonRoot,"version");
+		isJSONArrayOfType(jsonRoot, "expansions", "string");
 	}
 
 	void val_login_successful() {		
-		isJSONArrayOfType(json, "expansions", "string");
-		isJSONArrayOfType(json, "nick array", "string");
-		isJSONArrayOfType(json, "game array", "gameinfo");
+		isJSONArrayOfType(jsonRoot, "expansions", "string");
+		isJSONArrayOfType(jsonRoot, "nick array", "string");
+		isJSONArrayOfType(jsonRoot, "game array", "gameinfo");
 	}
 
 	void val_user_added() {
-		validateField(json, "nick");
+		validateValue(jsonRoot, "nick");
 	}
 
 	void val_disconnect() {}
 
 	void val_disconnected() {
-		validateField(json, "message");
+		validateValue(jsonRoot, "message");
 	}
 
 	void val_user_left() {
-		validateField(json, "nick");
+		validateValue(jsonRoot, "nick");
 	}
 
 	void val_ok() {
@@ -112,42 +113,42 @@ public class CluedoProtokollChecker {
 	}
 
 	void val_error() {
-		validateField(json, "message");
+		validateValue(jsonRoot, "message");
 	}
 
 	void val_chat() {
-		validateField(json, "sender");
-		validateField(json, "message");
-		if (validateField(json, "timestamp"))
-			validateLocalTimeFormat(json, "timestamp");
+		validateValue(jsonRoot, "sender");
+		validateValue(jsonRoot, "message");
+		if (validateValue(jsonRoot, "timestamp"))
+			validateLocalTimeFormat(jsonRoot, "timestamp");
 	}
 
 	void val_create_game() {
-		if (validateField(json, "color"))
+		if (validateValue(jsonRoot, "color"))
 			validatePerson("color");
 	}
 
 	void val_game_created() {
-		if (validateField(json, "gameId"))
-			isInt(json, "gameId");
-		validateField(json, "nick");
+		if (validateValue(jsonRoot, "gameId"))
+			isInt(jsonRoot, "gameId");
+		validateValue(jsonRoot, "nick");
 	}
 
 	void val_join_game() {
-		if (validateField(json, "gameId"))
-			isInt(json, "gameId");
-		if (validateField(json, "color"))
+		if (validateValue(jsonRoot, "gameId"))
+			isInt(jsonRoot, "gameId");
+		if (validateValue(jsonRoot, "color"))
 			validatePerson("color");
 	}
 
 	void val_player_added() {
 		val_join_game();
-		validateField(json, "nick");
+		validateValue(jsonRoot, "nick");
 	}
 
 	void val_watch_game() {
-		if (validateField(json, "gameId"))
-			isInt(json, "gameId");
+		if (validateValue(jsonRoot, "gameId"))
+			isInt(jsonRoot, "gameId");
 	}
 
 	void val_watcher_added() {
@@ -172,54 +173,55 @@ public class CluedoProtokollChecker {
 
 	void val_game_started() {
 		val_watch_game();
-		if (validateField(json, "gamestate"))
-			validateGameState(json.getString("gamestate"), "started");
-		isJSONArrayOfType(json, "order", "string");
+		if (validateValue(jsonRoot, "gamestate"))
+			validateGameState(jsonRoot.getString("gamestate"), "started");
+		isJSONArrayOfType(jsonRoot, "order", "string");
 	}
 
 	void val_game_ended() {
 		val_game_created();
-		if (validateField(json, "statement"))
-			validateStatement(json.getJSONObject("statement"));
+		if (validateValue(jsonRoot, "statement"))
+			validateStatement(jsonRoot.getJSONObject("statement"));
 
 	}
 
 	void val_stateupdate() {
 		val_game_created();
-		if (validateField(json, "playerstate"))
-			validatePlayerState(json.getString("playerstate"));		
+		if (validateValue(jsonRoot, "playerstate"))
+			validatePlayerState(jsonRoot.getString("playerstate"));		
 	}
 	
 	void val_player_cards(){
 		val_watch_game();
-		if (validateField(json, "cards"))
-			isJSONArrayOfType(json, "cards", "cards");
+		if (validateValue(jsonRoot, "cards"))
+			isJSONArrayOfType(jsonRoot, "cards", "cards");
 	}
 
 	void val_dice_result() {
 		val_watch_game();
-		if (validateField(json,"result"))
-			validateDiceResult(json,"result");
+		if (validateValue(jsonRoot,"result"))
+			validateDiceResult(jsonRoot,"result");
 	}
 
 	void val_moved() {
 		val_watch_game();
-		if (validateField(json, "color"))
-			validatePerson(json.getString("color"));
-		validateField(json,"field");
+//		if (validateValue(jsonRoot, "color"))
+//			validatePerson(jsonRoot.getString("color"));
+		if (validateValue(jsonRoot, "field"))
+			validateField(jsonRoot, "field");
 	}
 
 	void val_suspicion() {
 		val_watch_game();
-		if (validateField(json, "statement"))
-			validateStatement(json.getJSONObject("statement"));
+		if (validateValue(jsonRoot, "statement"))
+			validateStatement(jsonRoot.getJSONObject("statement"));
 		
 	}
 
 	void val_disproved() {
 		val_game_created();
-		if (validateField(json, "card"))
-			validateCards(json.getString("cards"));
+		if (validateValue(jsonRoot, "card"))
+			validateCards(jsonRoot.getString("cards"));
 	}
 
 	void val_no_disprove() {
@@ -236,7 +238,8 @@ public class CluedoProtokollChecker {
 
 	void val_move() {
 		val_watch_game();
-		validateField(json,"field");
+		if (validateValue(jsonRoot, "field"))
+			validateField(jsonRoot, "field");
 	}
 
 	void val_secret_passage() {
@@ -245,7 +248,7 @@ public class CluedoProtokollChecker {
 
 	void val_suspect() {
 		val_watch_game();
-		validateStatement(json);
+		validateStatement(jsonRoot);
 	}
 
 	void val_disprove() {
@@ -262,14 +265,14 @@ public class CluedoProtokollChecker {
 	}
 	
 	void val_upd_server(){
-		validateField(json,"group");
-		if (validateField(json,"tcp port"))
-			isInt(json, "tcp port");
+		validateValue(jsonRoot,"group");
+		if (validateValue(jsonRoot,"tcp port"))
+			isInt(jsonRoot, "tcp port");
 		
 	}
 	
 	void val_upd_client(){
-		validateField(json,"group");		
+		validateValue(jsonRoot,"group");		
 	}
 	
 	
@@ -343,12 +346,20 @@ public class CluedoProtokollChecker {
 	void validateStatement(JSONObject jsonParent){
 		String[] expectedFields = {"person","weapon","room"};
 		for (String fieldName : expectedFields){
-			if (validateField(jsonParent, fieldName))
+			if (validateValue(jsonParent, fieldName))
 				validatePerson(jsonParent.getString(fieldName));
 		}
 	}
 	
-	boolean validateField(JSONObject jsonParent, String key) {
+	void validateField(JSONObject jsonParent, String key){
+		JSONObject json = jsonParent.getJSONObject(key);
+		if (validateValue(json, "x"))
+			Field.isValidX(json.getInt("x"));
+		if (validateValue(json, "y"))
+			Field.isValidX(json.getInt("y"));
+	}
+	
+	boolean validateValue(JSONObject jsonParent, String key) {
 		if (jsonParent.has(key))
 			if (jsonParent.get(key).toString().length() > 0)
 				return true;
@@ -372,22 +383,23 @@ public class CluedoProtokollChecker {
 	}
 	/**
 	 * @param jsonParent
-	 * ich weis noch nicht als was field kommt
+	 * 
 	 * 	
 	 *  */
 	void validatePlayerInfo(JSONObject jsonParent){		
-			validateField(jsonParent, "nick");			
-			if (validateField(jsonParent, "color"))
+			validateValue(jsonParent, "nick");			
+			if (validateValue(jsonParent, "color"))
 				validatePerson(jsonParent.getString("color"));
-			validateField(jsonParent, "fields");
-			if (validateField(jsonParent, "cards"))
+			if (validateValue(jsonParent, "field"))
+				validateField(jsonParent, "field");
+			if (validateValue(jsonParent, "cards"))
 				isInt(jsonParent, "cards");
-			if (validateField(jsonParent, "playerstate"))
+			if (validateValue(jsonParent, "playerstate"))
 				validatePlayerState(jsonParent.getString("playerstate"));		
 	}
 	
 	void validateGameInfo(JSONObject jsonParent) throws JSONException{
-		if (validateField(jsonParent, "gameID"))
+		if (validateValue(jsonParent, "gameID"))
 			isInt(jsonParent, "gameID");
 		validateGameState(jsonParent.getString("gamestate"));
 		isJSONArrayOfType(jsonParent,"players", "playerinfo");
@@ -452,18 +464,18 @@ public class CluedoProtokollChecker {
 	}
 
 	boolean checkType() {
-		if (!json.has("type")) {
+		if (!jsonRoot.has("type")) {
 			errs.add("message type not set");
 			return false;
 		} 
-		else if (!CluedoProtokollMessageTypes.isMember(json.getString("type"))) {
-			errs.add("type " + json.getString("type")
+		else if (!CluedoProtokollMessageTypes.isMember(jsonRoot.getString("type"))) {
+			errs.add("type " + jsonRoot.getString("type")
 					+ " is not part of protokoll v." + protokollVersion);
 			return false;
 		}
 
-		this.typeNoSpace = json.getString("type").replaceAll(" ", "_");
-		this.type = json.getString("type");
+		this.typeNoSpace = jsonRoot.getString("type").replaceAll(" ", "_");
+		this.type = jsonRoot.getString("type");
 		return true;
 	}
 
