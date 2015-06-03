@@ -14,4 +14,6 @@ public class CluedoGroup {
 		this.groupName = groupName;
 		pool = Executors.newFixedThreadPool(poolSize);
 	}
+	
+	
 }

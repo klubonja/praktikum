@@ -21,7 +21,6 @@ public class CluedoProtokollChecker {
 
 	public CluedoProtokollChecker(CluedoJSON j) {
 		jsonRoot = j;
-		isValid = false;
 		errs = new ArrayList<String>();
 	}
 
@@ -80,9 +79,7 @@ public class CluedoProtokollChecker {
 		validateValue(jsonRoot, "nick");
 	}
 
-	void val_ok() {
-
-	}
+	void val_ok() {}
 
 	void val_error() {
 		validateValue(jsonRoot, "message");
@@ -258,22 +255,22 @@ public class CluedoProtokollChecker {
 	
 	void validatePerson(String personName){
 		if (!Persons.isMemberPersonName(personName))
-			setErr("Personname "+personName+ " not part of this Game");
+			setErr("Person : "+personName+ " is not a valid Personname in this Game");
 	}
 	
 	void validateWeapon(String weaponName){
 		if (!Weapons.isMember(weaponName))
-			setErr("Weapon"+weaponName+ " not part of this Game");
+			setErr("Weapon : "+weaponName+ " is not a valid Weapon in this Game");
 	}
 	
 	void validateRoom(String personName){
 		if (!Persons.isMember(personName))
-			setErr("Personname "+personName+ " not part of this Game");
+			setErr("Room  : "+personName+ " not a valid Room in this Game");
 	}
 	
 	void validatePlayerState(String playerState){
 		if (!PlayerStates.isMember(playerState))
-			setErr("PlayerState "+playerState+ " not a valid PlayerState in this Game");
+			setErr("PlayerState : "+playerState+ " not a valid PlayerState in this Game");
 	}
 	
 	boolean validateProtokollVersion(JSONObject jsonParent,String key){
@@ -317,10 +314,12 @@ public class CluedoProtokollChecker {
 	
 	void validateStatement(JSONObject jsonParent){
 		String[] expectedFields = {"person","weapon","room"};
-		for (String fieldName : expectedFields){
-			if (validateValue(jsonParent, fieldName))
-				validatePerson(jsonParent.getString(fieldName));
-		}
+		if (validateValue(jsonParent, "parent"))
+			validatePerson(jsonParent.getString("person"));
+		if (validateValue(jsonParent, "weapon"))
+			validateWeapon(jsonParent.getString("weapon"));
+		if (validateValue(jsonParent, "room"))
+			validateRoom(jsonParent.getString("room"));
 	}
 	
 	void validateField(JSONObject jsonParent, String key){
@@ -328,7 +327,7 @@ public class CluedoProtokollChecker {
 		if (validateValue(json, "x"))
 			Field.isValidX(json.getInt("x"));
 		if (validateValue(json, "y"))
-			Field.isValidX(json.getInt("y"));
+			Field.isValidY(json.getInt("y"));
 	}
 	
 	boolean validateValue(JSONObject jsonParent, String key) {
@@ -336,9 +335,9 @@ public class CluedoProtokollChecker {
 			if (jsonParent.get(key).toString().length() > 0)
 				return true;
 			else
-				setErr(key + " is empty");
+				setErr("value of key : "+ key + " is empty");
 		else
-			setErr(key + " expected");
+			setErr("key : "+key + " expected in :\n"+jsonParent.toString());
 
 		return false;
 	}
@@ -390,7 +389,7 @@ public class CluedoProtokollChecker {
 	
 	void validateWeaponPos(JSONObject jsonParent, String key){
 		if (validateValue(jsonParent, "weapon"))
-			validatePerson(jsonParent.getString("weapon"));
+			validateWeapon(jsonParent.getString("weapon"));
 		if (validateValue(jsonParent, "field"))
 			validateField(jsonParent, "field");
 	}
@@ -466,6 +465,10 @@ public class CluedoProtokollChecker {
 	
 	public ArrayList getErrs(){
 		return errs;
+	}
+	
+	public boolean isValid(){
+		return errs.size() == 0;
 	}
 	
 	public void printErrs() {
