@@ -2,6 +2,9 @@ package view;
 
 import java.util.LinkedList;
 
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
@@ -22,6 +25,8 @@ public class IntroPresenter {
 	 Player player5;
 	 Player player6;
 	 
+	 StringProperty errorStr = new SimpleStringProperty("");
+	 
 	
 		public IntroPresenter(IntroView view){
 		
@@ -39,6 +44,8 @@ public class IntroPresenter {
 		players.add(player4);
 		players.add(player5);
 		players.add(player6);
+		
+		view.error.textProperty().bind(errorStr);
 	
 		activateEvents();
 		
@@ -66,6 +73,7 @@ public class IntroPresenter {
 		view.char6.setOnMouseExited(e -> removeEffect(view.char6));
 		view.newGame.setOnMouseExited(e -> removeEffect(view.newGame));
 		view.newGame.setOnAction(e -> startNewGame());
+		view.quit.setOnAction(e -> quitGame());
 	}
 	
 	public void selection(int n){
@@ -133,7 +141,7 @@ public class IntroPresenter {
 	}
 	
 	@SuppressWarnings("unused")
-	public void startNewGame(){
+	public void startNewGame() throws NullPointerException{
 		
 		if(view.pl1.isSelected()){ 
 			this.player = player1;
@@ -153,9 +161,7 @@ public class IntroPresenter {
 		if(view.pl6.isSelected()){ 
 			this.player = player6;
 		}else{
-			System.out.println("Select a player");
-			//muss die error label eingefügt werden
-			
+			errorStr.set("Please select a character!");
 		}
 		
 		GameFrameView view = new GameFrameView();
@@ -165,7 +171,12 @@ public class IntroPresenter {
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.setTitle("Cluedo");
+        //primaryStage.setFullScreen(true);
         primaryStage.show();
 		}
+	
+	public void quitGame(){
+		Platform.exit();
+	}
 
 }

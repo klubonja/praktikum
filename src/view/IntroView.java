@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
@@ -40,9 +41,13 @@ public class IntroView extends GridPane{
 	Label nickname;
 	TextField nick;
 	Button newGame;
+	Button options;
+	Button quit;
 	DropShadow labelShadow;
 	DropShadow radioShadow;
 	Label error;
+	ToggleButton soundsON;
+	ToggleButton soundsOFF;
 
 
 	final ImageView imageView = new ImageView(
@@ -60,7 +65,9 @@ public class IntroView extends GridPane{
 		this.getRowConstraints().add(new RowConstraints(50));
 		this.getRowConstraints().add(new RowConstraints(200));
 		this.getRowConstraints().add(new RowConstraints(70));
+		this.getRowConstraints().add(new RowConstraints(50));
 		this.getRowConstraints().add(new RowConstraints(70));
+		this.getRowConstraints().add(new RowConstraints(30));
 		this.getColumnConstraints().add(new ColumnConstraints(150));
 		this.getColumnConstraints().add(new ColumnConstraints(150));
 		this.getColumnConstraints().add(new ColumnConstraints(150));
@@ -158,16 +165,47 @@ public class IntroView extends GridPane{
 				+ "radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);"
 				+ "-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );"
 				+ "-fx-font-weight: bold; -fx-font-size: 25;");
-		/*newGame.setMinSize(150, 150);
-		newGame.setTextFill(Color.WHITE);
-		newGame.setStyle("-fx-font-size: 30 ;"
-				+ "-fx-background-color: radial-gradient(radius 100%, lightskyblue, cornflowerblue);"
-				+ "-fx-background-radius: 20");*/
+		
+		options = new Button("Options");
+		options.setPrefSize(200,70);
+		options.setMaxSize(200,70);
+		options.setStyle("-fx-padding: 8 15 15 15;"
+				+ " -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0; "
+				+ "-fx-background-radius: 8;"
+				+ "-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),"
+				+ " #9d4024, #d86e3a,"
+				+ "radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);"
+				+ "-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );"
+				+ "-fx-font-weight: bold; -fx-font-size: 25;");
+		
+		quit = new Button("Quit");
+		quit.setPrefSize(200,70);
+		quit.setMaxSize(200,70);
+		quit.setStyle("-fx-padding: 8 15 15 15;"
+				+ " -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0; "
+				+ "-fx-background-radius: 8;"
+				+ "-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),"
+				+ " #9d4024, #d86e3a,"
+				+ "radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);"
+				+ "-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );"
+				+ "-fx-font-weight: bold; -fx-font-size: 25;");
 		
 		
 		error = new Label("");
-		error.setStyle("-fx-font-size: 25");
-		error.setTextFill(Color.RED);
+		error.setStyle("-fx-font-size: 18");
+		error.setTextFill(Color.TOMATO);
+		
+		/*soundsON = new ToggleButton("Sounds");
+		GridPane.setConstraints(soundsON, 5, 0);
+		GridPane.setHalignment(soundsON, HPos.RIGHT);
+		GridPane.setValignment(soundsON, VPos.TOP);
+		soundsOFF = new ToggleButton("Sounds");
+		GridPane.setConstraints(soundsON, 5, 0);
+		GridPane.setHalignment(soundsON, HPos.CENTER);
+		GridPane.setValignment(soundsON, VPos.TOP);
+		ToggleGroup gr = new ToggleGroup();
+		soundsON.setToggleGroup(gr);
+		soundsOFF.setToggleGroup(gr);*/
 
 		GridPane.setConstraints(title, 0, 0);
 		GridPane.setColumnSpan(title, 6);
@@ -202,9 +240,17 @@ public class IntroView extends GridPane{
 		GridPane.setHalignment(pl6, HPos.CENTER);
 		GridPane.setValignment(pl6, VPos.TOP);
 		GridPane.setConstraints(newGame, 0, 5);
-		GridPane.setColumnSpan(newGame, 6);
-		GridPane.setHalignment(newGame, HPos.CENTER);
+		GridPane.setColumnSpan(newGame, 2);
+		GridPane.setHalignment(newGame, HPos.RIGHT);
 		GridPane.setValignment(newGame, VPos.BOTTOM);
+		GridPane.setConstraints(options, 2, 5);
+		GridPane.setColumnSpan(options, 2);
+		GridPane.setHalignment(options, HPos.CENTER);
+		GridPane.setValignment(options, VPos.BOTTOM);
+		GridPane.setConstraints(quit, 4, 5);
+		GridPane.setColumnSpan(quit, 2);
+		GridPane.setHalignment(quit, HPos.LEFT);
+		GridPane.setValignment(quit, VPos.BOTTOM);
 		GridPane.setConstraints(nickname, 0, 4);
 		GridPane.setColumnSpan(nickname, 3);
 		GridPane.setHalignment(nickname, HPos.RIGHT);
@@ -213,12 +259,32 @@ public class IntroView extends GridPane{
 		GridPane.setColumnSpan(nick, 2);
 		GridPane.setHalignment(nick, HPos.CENTER);
 		GridPane.setValignment(nick, VPos.CENTER);
+		GridPane.setConstraints(error, 0, 6);
+		GridPane.setColumnSpan(error, 6);
+		GridPane.setHalignment(error, HPos.CENTER);
+		GridPane.setValignment(error, VPos.BOTTOM);
 		this.getChildren().addAll(title,selectChar,
 				char1,char2,char3,char4,char5,char6,
-				pl1,pl2,pl3,pl4,pl5,pl6,newGame, nickname, nick);
+				pl1,pl2,pl3,pl4,pl5,pl6,newGame, nickname, nick, options, quit, error);
 	}
 	
-	//Getter and Setter Methods
+	public Button getOptions() {
+		return options;
+	}
+
+	public void setOptions(Button options) {
+		this.options = options;
+	}
+
+	public Button getQuit() {
+		return quit;
+	}
+
+	public void setQuit(Button quit) {
+		this.quit = quit;
+	}
+
+		//Getter and Setter Methods
 		public Label getTitleLabel() {
 			return title;
 		}
