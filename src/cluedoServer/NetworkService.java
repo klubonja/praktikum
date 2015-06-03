@@ -26,7 +26,7 @@ import cluedoNetworkGUI.*;
 class NetworkService implements Runnable{	
 	final CluedoServerGUI gui;
 	private ServerSocket serverSocket;
-	private ExecutorService pool;
+	public CluedoGroup group;
 	int port;
 	int numberConnectedClients;
 	ArrayList<Client> clientList = new ArrayList<Client>();
@@ -35,10 +35,10 @@ class NetworkService implements Runnable{
 	int maxClients = 6;
 	
 	
-	NetworkService (ServerSocket ss, ExecutorService pool, int port, CluedoServerGUI g) {
+	NetworkService (ServerSocket ss, CluedoGroup group, int port, CluedoServerGUI g) {
 		gui = g;
 		serverSocket = ss;
-		this.pool = pool;
+		this.group = group;
 		this.port = port;
 		numberConnectedClients = 0;
 	}
@@ -57,15 +57,14 @@ class NetworkService implements Runnable{
 			while (netWorkServiceThreadRunning){
 				Socket clientSocket = serverSocket.accept();  
 				numberConnectedClients++;
-				Client client = new Client(numberConnectedClients,clientSocket);
-				clientList.add(client);
+				Client cl = new Client(numberConnectedClients,clientSocket);
+				clientList.add(cl);
 				
 				Platform.runLater(() -> {
-					gui.addClient(client.socket.getInetAddress().toString());
+					gui.addClient(cl.socket.getInetAddress().toString());
 	            });
 	            
-				pool.execute(new communicationHandler(serverSocket,client,this,gui,numberConnectedClients));
-				
+				group.pool.execute(new communicationHandler(serverSocket,cl,this,gui,numberConnectedClients));
 			}					
 		}
 		catch(IOException e){
@@ -75,8 +74,8 @@ class NetworkService implements Runnable{
 		finally {
 			System.out.println("thread runningflag: "+netWorkServiceThreadRunning+"");
 			notifyAllClients("CLOSE");
-			pool.shutdownNow();	
-			if (pool.isShutdown()) System.out.println("threadpoolshutdown");// ist scheisse
+			group.pool.shutdownNow();	
+			if (group.pool.isShutdown()) System.out.println("threadpoolshutdown");// ist scheisse
 		}		
 	}
 	
@@ -98,74 +97,9 @@ class NetworkService implements Runnable{
 		}
 	}
 	
-	/**
-	
-	 * @param port
-	 * @param dataJSON
-	 * @return
-	 * @throws IOException
-	 */
-	public static boolean handShakeWithClientUDP(int port,JSONObject dataJSON) throws IOException{		
-		try {
-			System.out.println("Waitung for UDP client");
-			DatagramSocket serverSocket = new DatagramSocket(port);            
-			byte[] receiveData = new byte[1024];             
-			byte[] sendData = new byte[1024];    	
-	    	DatagramPacket receivePacket = new DatagramPacket(receiveData,receiveData.length);
-	    	serverSocket.receive(receivePacket);
-	    	String serverMsg = new String(receivePacket.getData());
-	    	System.out.println("Vom Client : " + serverMsg);
-	    	InetAddress IPAddress = receivePacket.getAddress(); 	
-	    	int port1 = receivePacket.getPort();  	    	
-	    	sendData = dataJSON.toString().getBytes();                   
-	    	DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port1);                   
-	    	serverSocket.send(sendPacket); 
-	    	serverSocket.close();
-	    	
-	    	return true;
-			
-		} 
-		catch (IOException e) {
-			System.out.println(e.getMessage());
-			return false;
-		}	
-	}
-	
-	
-	private JSONObject addFromGameDataToInitJSON(int id) {
-		JSONObject giveit = new JSONObject();
-		/*
-		GameData gameDataInit = giveit; //nur damit keine fehler stören
-		giveit.put("ID", id);
-		giveit.put("block1Up", gameDataInit.block1Up);
-		giveit.put("block1Down", gameDataInit.block1Down);
-		giveit.put("block2Up", gameDataInit.block2Up);
-		giveit.put("block2Down", gameDataInit.block2Down);
-		
-		giveit.put("speedUpRounds", gameDataInit.speedUpRounds);
-		
-		giveit.put("padding", String.valueOf(gameDataInit.padding));
-		giveit.put("blockHeight", String.valueOf(gameDataInit.blockHeight));
-		giveit.put("blockWidth", String.valueOf(gameDataInit.blockWidth));
-		giveit.put("ballRad", String.valueOf(gameDataInit.ballRad));
-		
-		giveit.put("blockMoveDelta", String.valueOf(gameDataInit.blockMoveDelta));
-		giveit.put("ballMoveDelta", String.valueOf(gameDataInit.ballMoveDelta));
-		
-		giveit.put("frames", String.valueOf(gameDataInit.frames));
-		
-		giveit.put("frameRate", String.valueOf(gameDataInit.frameRate));
-		giveit.put("speedUpStep", String.valueOf(gameDataInit.speedUpStep));
-		giveit.put("spin", false);
-		giveit.put("defaultFeldWidth", String.valueOf(gameDataInit.defaultFeldWidth));
-		giveit.put("defaultFeldHeight", String.valueOf(gameDataInit.padding));
-		
-		giveit.put("feldH", String.valueOf(gameDataInit.feldH));
-		giveit.put("feldW", String.valueOf(gameDataInit.feldW));
-		*/
 
-		return giveit;
-	}
+	
+
 	
 	/**
 	 * wird vom server aufgerufen zum höflichen schliessen der laufenden verbindungen
