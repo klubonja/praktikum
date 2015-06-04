@@ -164,8 +164,9 @@ public class IntroPresenter {
 			errorStr.set("Please select a character!");
 		}
 		
-		GameFrameView view = new GameFrameView();
+		GameFrameView view = new GameFrameView(this.player);
 		GameFramePresenter pres = new GameFramePresenter(view, this.player);
+		GameFramePresenter pres2 = new GameFramePresenter(view, player2);
 		Scene scene = new Scene(view, 1300, 700);
         Stage primaryStage = new Stage();
         primaryStage.setScene(scene);

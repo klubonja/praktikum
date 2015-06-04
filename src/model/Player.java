@@ -20,6 +20,7 @@ public class Player {
 	
 	Color color;
 	
+	
 	public Player(String name, int x, int y, Color color){
 		this.name.set(name);
 		this.xCoord.set(x);

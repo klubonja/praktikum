@@ -31,6 +31,7 @@ public class GameFramePresenter {
 		DicePresenter dice = new DicePresenter(gfv.dice);
 		BoardPresenter board = new BoardPresenter(gfv.board, playerCircle, this.player);
 		NotesPresenter notes = new NotesPresenter(gfv.notes);
+		HandFramePresenter hand = new HandFramePresenter(gfv.hand);
 		
 	}
 	

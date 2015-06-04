@@ -6,6 +6,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import model.Player;
 
 
 
@@ -17,9 +18,13 @@ public class GameFrameView extends GridPane{
 	DiceView dice;
 	ChatView chat;
 	BoardView board;
+	HandFrameView hand;
+	Player player;
 
 	
-	public GameFrameView(){
+	public GameFrameView(Player player){
+		
+		this.player = player;
 		
 		/**
 		* Adds the size and number of the Rows and Columns of the main GridPane
@@ -55,6 +60,8 @@ public class GameFrameView extends GridPane{
 		 */
 		dice = new DiceView();
 		
+		hand = new HandFrameView();
+		
 		
 		/**
 		 * Left part of the whole GameFrame,
@@ -69,7 +76,8 @@ public class GameFrameView extends GridPane{
 		GridPane.setConstraints(notes,1,0);
 		GridPane.setConstraints(dice,0,1);
 		GridPane.setConstraints(chat,1,1);
-		rightGrid.getChildren().addAll(notes,chat,dice);
+		GridPane.setConstraints(hand,0,0);
+		rightGrid.getChildren().addAll(hand,notes,chat,dice);
 		
 		
 		GridPane.setConstraints(menu,0,0);
