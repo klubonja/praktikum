@@ -14,8 +14,4 @@ public class CluedoGroup {
 		this.groupName = groupName;
 		pool = Executors.newFixedThreadPool(poolSize);
 	}
-	
-	public String getName(){
-		return groupName;
-	}
 }

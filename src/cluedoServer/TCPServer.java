@@ -21,38 +21,37 @@ public class TCPServer  {
 	public CluedoGroup[] groups;
 	public ServerSocket socket;
 	final CluedoServerGUI gui;
+	ExecutorService pool;
 	int port;
-	int amountGames;
+	int poolSize;
 	boolean running;
 	NetworkService networkService;
 	
 	public TCPServer(CluedoServerGUI g){
 		gui = g;
-		amountGames = 4;
+		poolSize = 4;
 		port = 7000;		
 		running = false;
+		pool = Executors.newFixedThreadPool(poolSize);	
 		setListener();
-		createGroups();
 		System.out.println("Server Start");		
 	}
 	
-	
 	/**
-	 * hier werden die verschiedenen groups instantiert
+	 * ein thread für eingehende verbindungen
+	 * aufgebaute verbindungen werden auf eigenen threads ausgeführt
+	 * @throws IOException
 	 */
 	private void createGroups(){
-		groups = new CluedoGroup[amountGames];
-		for(int i = 0; i < amountGames; i++) groups[i] = new CluedoGroup(6,"reduzierterHund"+i);
+		for(int i = 0; i < 4; i++) groups[i] = new CluedoGroup(6,"reduzierterHund"+i);
 	}
 	
 	private void startServer()  throws IOException{
 		
 		socket = new ServerSocket(port);	
-		for (int i = 0; i < amountGames; i++){
-			Thread t = new Thread(new NetworkService(socket, groups[i], port, gui));
-			t.start();
-		}
-		
+		networkService = new NetworkService(socket, pool, port, gui);
+		Thread t = new Thread(networkService);
+		t.start();
 		System.out.println("Server running");
 		running = true;		
 	}

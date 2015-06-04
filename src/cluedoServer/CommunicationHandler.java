@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import org.json.JSONObject;
+
 import javafx.application.Platform;
 import cluedoNetworkGUI.CluedoServerGUI;
 
@@ -33,10 +35,24 @@ class communicationHandler implements Runnable{
 		client = c;
 		networkService = s;
 		gui = g;
-		this.id = id;	
-		long threadId = Thread.currentThread().getId();
-		System.out.println("client "+id+" on group:"+networkService.group.getName()+" living in thread"+threadId+ "added");
-
+		this.id = id;
+		awaitLoginAtempt();
+		
+	}
+	
+	private void awaitLoginAtempt (){
+		try {
+			String message = getMessageFromClient(client.socket).trim();
+			JSONObject json = new JSONObject(message);
+			Platform.runLater(() -> {
+				gui.addMessage(client.id+" says : after json login : "+ json.get("type"));
+			});
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void run(){		
@@ -89,6 +105,10 @@ class communicationHandler implements Runnable{
 			catch(Exception e) {}		
 		 	
 			return message.toString();
+	}
+	
+	private void sendMessageToClient(String msg){
+		client.sendMsg(msg);
 	}
 	
 	
