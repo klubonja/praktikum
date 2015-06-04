@@ -45,7 +45,7 @@ public class Server  {
 		JSONObject msg = new JSONObject();
 		msg.put("type", "udp server");
 		msg.put("group", Config.GroupName);
-		msg.put("tcp portarazr", TCPport);
+		msg.put("tcp port", TCPport);
 		
 		
 		MulticastServerThread broadcaster = 

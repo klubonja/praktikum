@@ -1,9 +1,6 @@
 package cluedoClient;
 
 import java.io.BufferedWriter;
-
-import json.*;
-
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -17,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import json.CluedoJSON;
 import cluedoNetworkGUI.CluedoClientGUI;
 
 
@@ -40,7 +38,8 @@ class clientMessageListener implements Runnable{
 	
 	public void addClientGUIListener(){
 		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
-			 public void handle(KeyEvent e) {
+			 @Override
+			public void handle(KeyEvent e) {
 			        if (e.getCode() == KeyCode.ENTER){
 			        	sendMsg(gui.inputField.getText());	
 						gui.inputField.setText("");
@@ -72,7 +71,7 @@ class clientMessageListener implements Runnable{
 	
 	private final boolean login(){
 		CluedoJSON handShake = new CluedoJSON();
-		String[] loginData = gui.loginPrompt();
+		String[] loginData = gui.loginPrompt("Login to remote Server");
 		handShake.put("type", "login");
 		handShake.put("nick", loginData[0]);
 		handShake.put("group", loginData[1]);
@@ -82,6 +81,7 @@ class clientMessageListener implements Runnable{
 		
 	}
 	
+	@Override
 	public void run(){
 		Platform.runLater(() -> {
 			gui.addMessage("listening");

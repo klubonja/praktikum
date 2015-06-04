@@ -50,6 +50,7 @@ public class Client {
 			        if (click.getClickCount() == 2) {
 			           String currentItemSelected = gui.clientList.getSelectionModel().getSelectedItem();
 			           int currentItemSelectedIndex = gui.clientList.getSelectionModel().getSelectedIndex();
+			           gui.loginPrompt("Login to "+currentItemSelected);
 			           System.out.println(currentItemSelected);
 			        }
 			    }

@@ -4,12 +4,10 @@ package cluedoNetworkGUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -148,11 +146,12 @@ public class CluedoClientGUI {
 		return ipr.returnIp();
 	}
     
-    public String[] loginPrompt(){
+    public String[] loginPrompt(String stageTitle){
     	Stage loginStage = new Stage();
     	LoginPrompt loginPrompt = new LoginPrompt(loginStage);
     	Scene secondary = new Scene(loginPrompt,300,400);		
 		loginStage.setScene(secondary);
+		loginStage.setTitle(stageTitle);
 		loginStage.showAndWait();	
 		
 		return loginPrompt.returnLoginData();
