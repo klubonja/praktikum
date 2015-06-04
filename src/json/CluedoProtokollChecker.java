@@ -17,7 +17,6 @@ public class CluedoProtokollChecker {
 	String type;
 	String typeNoSpace;
 	boolean isValid;
-	double protokollVersion = 1.1;
 
 	public CluedoProtokollChecker(CluedoJSON j) {
 		jsonRoot = j;
@@ -274,7 +273,7 @@ public class CluedoProtokollChecker {
 	}
 	
 	boolean validateProtokollVersion(JSONObject jsonParent,String key){
-		if (jsonParent.getString(key).equals(protokollVersion)) return true;		
+		if (jsonParent.getString(key).equals((String.valueOf(Config.protokollVersion)))) return true;		
 		return false;
  	}
 	

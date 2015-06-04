@@ -1,18 +1,15 @@
 package cluedoClient;
 
 
-import java.io.*;
 import java.net.*;
 
 import org.json.JSONObject;
 
 import cluedoNetworkGUI.CluedoClientGUI;
-import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
-import javafx.util.Duration;
 
 
 
@@ -23,7 +20,7 @@ import javafx.util.Duration;
  * 
  */
 public class TCPClient {
-	int port = 7000;		
+	
 	Socket cSocket;
 	CluedoClientGUI gui;
 	String ip;
@@ -31,25 +28,33 @@ public class TCPClient {
 	int id;
 	
 	public TCPClient(CluedoClientGUI g) {
-		gui = g;		
-		gui.startClientButton.setOnAction(new EventHandler<ActionEvent>() {				
-			@Override
-			public void handle(ActionEvent event) {
-				startClient();	
-			}
-		});	
-		
+		gui = g;
+		setListener();		
+	}
+	
+	private void setListener(){
+		if (gui != null){
+			gui.startClientButton.setOnAction(new EventHandler<ActionEvent>() {				
+				@Override
+				public void handle(ActionEvent event) {
+					//startTCPConnection();	
+				}
+			});			
+		}
 		
 	}
 	
+	private void broadCastOn(){
+		
+	}
+	
+	
 	/**
-	 * der erfolgreiche handshake liefert ein spieldateninitialisierungobjekt
-	 * mit welchem das lokale spiel gestartet wird
-	 * es wird je ein thread für eingehende und ausgehende nachrichten verwendet
-	 * das Spiel wird initialisert
+	 * 
 	 */
-	private void startClient(){		
+	private void startTCPConnection(){		
 		try {
+			int port = 7000;		
 			ip = gui.askForIp();
 			if (ip.length() < 8) ip = new String("127.0.0.1");//localhost	
 			
