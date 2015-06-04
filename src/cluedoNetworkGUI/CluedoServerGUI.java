@@ -138,5 +138,9 @@ public class CluedoServerGUI {
 	  public void addMessage(String mes){
 		  messagesIn.appendText(mes+"\n");
 	  }
+	  
+	  public void addMessageOut(String mes){
+		  messagesOut.appendText(mes+"\n");
+	  }
   
 }

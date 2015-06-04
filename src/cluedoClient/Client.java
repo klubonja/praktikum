@@ -30,7 +30,8 @@ public class Client {
 	public Client(CluedoClientGUI g) {
 		gui = g;
 		setListener();	
-		listenForBroadCast();
+		System.out.println("client started");
+		listenForBrodcast();
 	}
 	
 	private void setListener(){
@@ -45,10 +46,11 @@ public class Client {
 		
 	}
 	
-	private void listenForBroadCast(){
-		MulticastClientThread broadCastListener = 
-				new MulticastClientThread("bcListenerThread",Config.BroadcastListenerIp, gui);
-		broadCastListener.start();
+	private void listenForBrodcast(){
+		MulticastClientThread broadcastListener = 
+				new MulticastClientThread("bcListenerThread",Config.BroadcastPort, gui);
+		broadcastListener.start();
+		
 	}
 	
 	

@@ -25,7 +25,7 @@ public class Server  {
 	public ServerSocket socket;
 	final CluedoServerGUI gui;
 	ExecutorService pool;
-	int port;
+	int TCPport;
 	int poolSize;
 	boolean running;
 	NetworkService networkService;
@@ -33,7 +33,7 @@ public class Server  {
 	public Server(CluedoServerGUI g){
 		gui = g;
 		poolSize = 4;
-		port = 7000;		
+		TCPport = Config.TCPport;		
 		running = false;
 		pool = Executors.newFixedThreadPool(poolSize);	
 		setListener();
@@ -43,9 +43,9 @@ public class Server  {
 	
 	private void broadcast() {
 		JSONObject msg = new JSONObject();
-		msg.put("type", "udp_server");
+		msg.put("type", "udp server");
 		msg.put("group", Config.GroupName);
-		msg.put("tcp port", Config.BroadcastPort);
+		msg.put("tcp port", TCPport);
 		
 		
 		MulticastServerThread broadcaster = 
@@ -64,8 +64,8 @@ public class Server  {
 	
 	private void startServer()  throws IOException{
 		
-		socket = new ServerSocket(port);	
-		networkService = new NetworkService(socket, pool, port, gui);
+		socket = new ServerSocket(TCPport);	
+		networkService = new NetworkService(socket, pool, TCPport, gui);
 		Thread t = new Thread(networkService);
 		t.start();
 		System.out.println("Server running");

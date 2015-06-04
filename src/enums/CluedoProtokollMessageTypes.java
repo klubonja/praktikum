@@ -10,7 +10,7 @@ public enum CluedoProtokollMessageTypes {
 	disconnected("disconnected"),
 	user_left("user left"),
 	udp_server("udp server"),
-	udp_client("udp_client"),
+	udp_client("udp client"),
 	//Bestätigungen und Fehler
 	ok("ok"),
 	error("error"),

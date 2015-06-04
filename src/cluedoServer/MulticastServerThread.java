@@ -50,13 +50,15 @@ public class MulticastServerThread extends Thread {
 				buf = broadcastMessage.getBytes();
 				packet = new DatagramPacket(buf, buf.length, groupAdress, port);
 				socket.setBroadcast(true);
-				socket.send(packet);				
+				socket.send(packet);	
+				System.out.println("ewrgfoiuhwrehourew");
 				
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 			finally {
 				try {
+					gui.addMessageOut("Sending UDPMessage :"+broadcastMessage);
 					sleep(Config.SECOND);
 				} catch (InterruptedException e2) {
 					// TODO: handle exception
