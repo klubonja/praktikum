@@ -453,7 +453,7 @@ public class CluedoProtokollChecker {
 		} 
 		else if (!CluedoProtokollMessageTypes.isMember(jsonRoot.getString("type"))) {
 			errs.add("type " + jsonRoot.getString("type")
-					+ " is not part of protokoll v." + protokollVersion);
+					+ " is not part of protokoll v." + Config.protokollVersion);
 			return false;
 		}
 
