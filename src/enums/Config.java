@@ -18,10 +18,13 @@ public final class Config {
 	
 	public final static long SECOND = 1000;//millis
 	
+	public final static int BroadcastInterval = 3;//SECS
+	
 	
 	public final static int BroadcastPort = 30303;
 	public final static int networkBufferSize = 265;
 	public final static String BroadcastIp = "255.255.255.255";
+	
 	
 	
 	/**

@@ -1,19 +1,19 @@
 package cluedoServer;
 
-import java.util.HashMap;
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.io.*; 
-import java.net.*;
 
-import org.json.JSONObject;
-
-import cluedoNetworkGUI.*;
-import enums.Config;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
+
+import org.json.JSONObject;
+
+import cluedoNetworkGUI.CluedoServerGUI;
+import enums.Config;
 
 /**
  * @author guldener
@@ -45,7 +45,7 @@ public class Server  {
 		JSONObject msg = new JSONObject();
 		msg.put("type", "udp server");
 		msg.put("group", Config.GroupName);
-		msg.put("tcp port", TCPport);
+		msg.put("tcp portarazr", TCPport);
 		
 		
 		MulticastServerThread broadcaster = 
@@ -104,7 +104,8 @@ public class Server  {
         });	
 		
 		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-		      public void handle(WindowEvent e){		          
+		      @Override
+			public void handle(WindowEvent e){		          
 		          try {		        	   
 		               Platform.exit();
 		               System.exit(0);

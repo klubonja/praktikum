@@ -1,16 +1,16 @@
 package cluedoClient;
 
 
-import java.net.*;
+import java.net.Socket;
+import java.util.ArrayList;
 
-import org.json.JSONObject;
-
-import cluedoNetworkGUI.CluedoClientGUI;
-import enums.Config;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
+import cluedoNetworkGUI.CluedoClientGUI;
+import enums.Config;
 
 
 
@@ -26,9 +26,11 @@ public class Client {
 	CluedoClientGUI gui;
 	String ip;
 	int id;
+	ArrayList<ServerItem> serverList;
 	
 	public Client(CluedoClientGUI g) {
 		gui = g;
+		serverList = new ArrayList<ServerItem>();
 		setListener();	
 		System.out.println("client started");
 		listenForBrodcast();
@@ -41,14 +43,23 @@ public class Client {
 				public void handle(ActionEvent event) {
 					//startTCPConnection();	
 				}
+			});	
+			gui.clientList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			    @Override
+			    public void handle(MouseEvent click) {
+			        if (click.getClickCount() == 2) {
+			           String currentItemSelected = gui.clientList.getSelectionModel().getSelectedItem();
+			           int currentItemSelectedIndex = gui.clientList.getSelectionModel().getSelectedIndex();
+			           System.out.println(currentItemSelected);
+			        }
+			    }
 			});			
-		}
-		
+		}		
 	}
 	
 	private void listenForBrodcast(){
 		MulticastClientThread broadcastListener = 
-				new MulticastClientThread("bcListenerThread",Config.BroadcastPort, gui);
+				new MulticastClientThread(serverList,"bcListenerThread",Config.BroadcastPort, gui);
 		broadcastListener.start();
 		
 	}
@@ -86,7 +97,8 @@ public class Client {
 	
 	private void setCloseHandler(){
 		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-		      public void handle(WindowEvent e){
+		      @Override
+			public void handle(WindowEvent e){
 		          
 		          try {
 		        	   cSocket.close();

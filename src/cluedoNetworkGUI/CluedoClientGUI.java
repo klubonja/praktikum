@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 public class CluedoClientGUI {
 	
 	ObservableList<String> ips;
-	ListView<String> clientList;
+	public ListView<String> clientList;
 	
 	final TextArea messagesIn;
 	final TextArea messagesOut;
@@ -164,8 +164,9 @@ public class CluedoClientGUI {
     	return m;
     }
     
-    public void addClient(String ip){
-		  ips.add(ip);
+    public void addIp(String ip){
+    	if (!ips.contains(ip))
+    			ips.add(ip);
 	  }
 	  public void emptyList(){
 		  ips = FXCollections.observableArrayList();

@@ -38,28 +38,26 @@ public class MulticastServerThread extends Thread {
 		}
 		catch (Exception e) {
 			killService();
-		}
-		
-		
+		}		
 	}
 	
+	@Override
 	public void run(){
 		while (running){
 			try {
-				buf = new byte[265];
+				buf = new byte[Config.networkBufferSize];
 				buf = broadcastMessage.getBytes();
 				packet = new DatagramPacket(buf, buf.length, groupAdress, port);
 				socket.setBroadcast(true);
-				socket.send(packet);	
-				System.out.println("ewrgfoiuhwrehourew");
-				
-			} catch (Exception e) {
+				socket.send(packet);				
+			} 
+			catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
 			finally {
 				try {
 					gui.addMessageOut("Sending UDPMessage :"+broadcastMessage);
-					sleep(Config.SECOND);
+					sleep(Config.SECOND*Config.BroadcastInterval);
 				} catch (InterruptedException e2) {
 					// TODO: handle exception
 				}
