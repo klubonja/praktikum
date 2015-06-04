@@ -1,14 +1,21 @@
 package json;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.lang.reflect.*;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import enums.*;
+import enums.CluedoProtokollMessageTypes;
+import enums.Config;
 import enums.Field;
+import enums.GameStates;
+import enums.Persons;
+import enums.PlayerStates;
+import enums.Rooms;
+import enums.Weapons;
 
 public class CluedoProtokollChecker {
 	
@@ -24,6 +31,7 @@ public class CluedoProtokollChecker {
 	}
 
 	public boolean validate() {
+		System.out.println(jsonRoot.toString());
 		if (checkType()) { // sets type to check
 			try {
 				Method m = CluedoProtokollChecker.class
@@ -232,7 +240,7 @@ public class CluedoProtokollChecker {
 		val_suspicion();		
 	}
 	
-	void val_upd_server(){
+	void val_udp_server(){
 		validateValue(jsonRoot,"group");
 		if (validateValue(jsonRoot,"tcp port"))
 			isInt(jsonRoot, "tcp port");
@@ -478,5 +486,16 @@ public class CluedoProtokollChecker {
 
 	private void setErr(String err) {
 		errs.add(err);
+	}
+	
+	public String getErrString(){
+		StringBuffer sb = new StringBuffer();
+		if (!isValid)
+			for (String err : errs) sb.append(err+"\n");
+		return sb.toString();
+	}
+	
+	public JSONObject getMessage(){
+		return jsonRoot;
 	}
 }
