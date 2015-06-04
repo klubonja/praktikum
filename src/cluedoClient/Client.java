@@ -6,6 +6,7 @@ import java.net.*;
 import org.json.JSONObject;
 
 import cluedoNetworkGUI.CluedoClientGUI;
+import enums.Config;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,17 +20,17 @@ import javafx.stage.WindowEvent;
  * das ist natürlich anfällig für betrug aber auch sehr effizient
  * 
  */
-public class TCPClient {
+public class Client {
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
 	String ip;
-	clientMessageListener cml;
 	int id;
 	
-	public TCPClient(CluedoClientGUI g) {
+	public Client(CluedoClientGUI g) {
 		gui = g;
-		setListener();		
+		setListener();	
+		listenForBroadCast();
 	}
 	
 	private void setListener(){
@@ -44,8 +45,10 @@ public class TCPClient {
 		
 	}
 	
-	private void broadCastOn(){
-		
+	private void listenForBroadCast(){
+		MulticastClientThread broadCastListener = 
+				new MulticastClientThread("bcListenerThread",Config.BroadcastListenerIp, gui);
+		broadCastListener.start();
 	}
 	
 	

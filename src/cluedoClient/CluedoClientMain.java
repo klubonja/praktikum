@@ -13,6 +13,6 @@ public class CluedoClientMain extends Application {
 	@Override
 	 public void start(Stage primaryStage) {		
 		CluedoClientGUI gui = new CluedoClientGUI(primaryStage);
-		TCPClient client = new TCPClient(gui);		 
+		Client client = new Client(gui);		 
 	 }
 }

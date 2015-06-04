@@ -6,7 +6,10 @@ import java.util.concurrent.Executors;
 import java.io.*; 
 import java.net.*;
 
+import org.json.JSONObject;
+
 import cluedoNetworkGUI.*;
+import enums.Config;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,7 +19,7 @@ import javafx.stage.WindowEvent;
  * @author guldener
  * 
  */
-public class TCPServer  {
+public class Server  {
 	
 	public CluedoGroup[] groups;
 	public ServerSocket socket;
@@ -27,14 +30,27 @@ public class TCPServer  {
 	boolean running;
 	NetworkService networkService;
 	
-	public TCPServer(CluedoServerGUI g){
+	public Server(CluedoServerGUI g){
 		gui = g;
 		poolSize = 4;
 		port = 7000;		
 		running = false;
 		pool = Executors.newFixedThreadPool(poolSize);	
 		setListener();
-		System.out.println("Server Start");		
+		System.out.println("Server Start");	
+		broadcast();
+	}
+	
+	private void broadcast() {
+		JSONObject msg = new JSONObject();
+		msg.put("type", "udp_server");
+		msg.put("group", Config.GroupName);
+		msg.put("tcp port", Config.BroadcastPort);
+		
+		
+		MulticastServerThread broadcaster = 
+				new MulticastServerThread("broadcastTthread", Config.BroadcastIp,msg.toString() , gui);
+		broadcaster.start();
 	}
 	
 	/**

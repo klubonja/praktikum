@@ -24,18 +24,19 @@ public class MulticastServerThread extends Thread {
 	String broadcastMessage;
 	
 	
-	public MulticastServerThread(String name,String hostip,String bm,CluedoServerGUI g) throws Exception {
+	public MulticastServerThread(String name,String hostip,String msg,CluedoServerGUI g) {
 		super(name);
 		try {
 			gui = g;
 			groupAdress = InetAddress.getByName(hostip);
-			port = Config.broadCastPort;
-			broadcastMessage = bm;
+			port = Config.BroadcastPort;
+			broadcastMessage = msg;
 			running = true;
 			socket = new DatagramSocket();
 			running = true;
 			
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			killService();
 		}
 		
@@ -48,11 +49,19 @@ public class MulticastServerThread extends Thread {
 				buf = new byte[265];
 				buf = broadcastMessage.getBytes();
 				packet = new DatagramPacket(buf, buf.length, groupAdress, port);
+				socket.setBroadcast(true);
 				socket.send(packet);				
 				
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
-			}			
+			}
+			finally {
+				try {
+					sleep(Config.SECOND);
+				} catch (InterruptedException e2) {
+					// TODO: handle exception
+				}
+			}
 		}
 	
 		
