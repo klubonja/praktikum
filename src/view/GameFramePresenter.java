@@ -28,7 +28,7 @@ public class GameFramePresenter {
 		testSpieler.setFill(Color.ROYALBLUE);
 		gfv.board.add(testSpieler, player.getxCoord(),this.player.getyCoord());
 		DicePresenter dice = new DicePresenter(gfv.dice);
-		BoardPresenter board = new BoardPresenter(gfv.board, testSpieler, this.player);
+		BoardPresenterNew board = new BoardPresenterNew(gfv.board, testSpieler, this.player);
 		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		
 	}

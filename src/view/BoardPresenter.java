@@ -80,6 +80,9 @@ public class BoardPresenter {
 		zuweisung();
 	}
 
+	/**
+	 * Hier werden die Anfangspositionen der Spieler gesetzt.
+	 */
 	public void anfangsPositionSetzen() {
 		if (player.getFirstName()=="Player1"){
 			moveWithPath(0, 5);	
@@ -110,11 +113,14 @@ public class BoardPresenter {
 		
 	}
 
+	/**
+	 * Hier werden den Kacheln Methoden für ClickEvents zugewiesen
+	 */
 	public void zuweisung() {
-		dice(view.getLabelArray()[player.getyCoord()][player.getxCoord()]);
-		for (int i = 0; i < view.getLabelArray().length - 1; i++) {
-			for (int j = 0; j < view.getLabelArray()[j].length - 1; j++) {
-				Kachel momentaneKachel = view.getLabelArray()[i][j];
+		dice(view.getKachelArray()[player.getyCoord()][player.getxCoord()]);
+		for (int i = 0; i < view.getKachelArray().length - 1; i++) {
+			for (int j = 0; j < view.getKachelArray()[j].length - 1; j++) {
+				Kachel momentaneKachel = view.getKachelArray()[i][j];
 				if (momentaneKachel.isIstRaum() == false) {
 					momentaneKachel
 							.setOnMouseClicked(e -> dasIstEinFeld(momentaneKachel));
@@ -206,6 +212,10 @@ public class BoardPresenter {
 		System.out.println("Das ist ein Raum, alter");
 	}
 
+	/**
+	 * Wird ausgelöst, wenn jemand auf einen Raum clickt und
+	 * löst den Vermutungs-Screen aus.
+	 */
 	public void dasIstEineTuer(){
 		viewImRaum.show();
 	}
@@ -223,8 +233,8 @@ public class BoardPresenter {
 		System.out.println("----------------------");
 		System.out.println("move whatever");
 
-		clearDice(view.getLabelArray()[player.getyCoord()][player.getxCoord()]);
-		persil2(view.getLabelArray()[player.getyCoord()][player.getxCoord()]);
+		clearDice(view.getKachelArray()[player.getyCoord()][player.getxCoord()]);
+		persil2(view.getKachelArray()[player.getyCoord()][player.getxCoord()]);
 		dice(ziel);
 		reset(ziel);
 
@@ -268,7 +278,7 @@ public class BoardPresenter {
 		if ((player.getxCoord() != xZiel) || (player.getyCoord() != yZiel)) {
 			System.out.println("recursion");
 
-			movePlayer(view.getLabelArray()[yZiel][xZiel]);
+			movePlayer(view.getKachelArray()[yZiel][xZiel]);
 		}
 
 
@@ -288,7 +298,7 @@ public class BoardPresenter {
 		this.yRichtung = yDistanz;
 		this.xZiel = view.getColumnIndex(ziel);
 		this.yZiel = view.getRowIndex(ziel) + ausweichen;
-		this.jetzigesFeld = view.getLabelArray()[player.getyCoord()][player
+		this.jetzigesFeld = view.getKachelArray()[player.getyCoord()][player
 				.getxCoord()];
 		this.xErlaubt = 0;
 		this.yErlaubt = 0;
@@ -296,6 +306,12 @@ public class BoardPresenter {
 
 	}
 
+	/**
+	 * Eine Blaupause für den Neuen Pathfinder
+	 * @param xDistanzeingegeben
+	 * @param yDistanzeingegeben
+	 * @param jetzigesFeld
+	 */
 	public void newPathfinder(int xDistanzeingegeben, int yDistanzeingegeben,
 			Kachel jetzigesFeld) {
 		this.xDistanz = xDistanzeingegeben;
@@ -305,7 +321,11 @@ public class BoardPresenter {
 		pathfinderY(jetzigesFeld);
 		// animationY();
 	}
-
+	
+	/**
+	 * Der neue Pathfinder in X Richung
+	 * @param jetzigesFeld
+	 */
 	public void pathfinderX(Kachel jetzigesFeld) {
 
 		if (moveErlaubtX()) {
@@ -321,6 +341,7 @@ public class BoardPresenter {
 	}
 
 	/**
+	 * Der neue Pathfinder in Y Richtung
 	 * @param jetzigesFeld
 	 */
 	public void pathfinderY(Kachel jetzigesFeld) {
@@ -337,10 +358,18 @@ public class BoardPresenter {
 		}
 	}
 
+	/**
+	 * Eine Blaupause für eine Animation in X Richtung
+	 * @param richtungX
+	 */
 	public void animationX(int richtungX) {
 
 	}
 
+	/**
+	 * Eine Blaupause für eine Animation in Y Richtung
+	 * @param richtungY
+	 */
 	public void animationY(int richtungY) {
 
 	}
@@ -466,9 +495,9 @@ public class BoardPresenter {
 				}
 				yDistanz++;
 			}
-			// moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
+			
 		}
-		// moveWithPath(playerDarstellung, this.xErlaubt, this.yErlaubt);
+		
 	}
 
 	/**
@@ -494,7 +523,7 @@ public class BoardPresenter {
 							|| (jetzigesFeld.getxKoordinate()
 									+ jetzigesFeld.getyKoordinate() - (augenzahl - 2 * i)) == (iReihe + jSpalte)) {
 
-						Kachel erreichbareKachel = view.getLabelArray()[iReihe][jSpalte];
+						Kachel erreichbareKachel = view.getKachelArray()[iReihe][jSpalte];
 						if (erreichbareKachel.isIstRaum() == false) {
 							persil2(erreichbareKachel);
 						}
@@ -522,7 +551,7 @@ public class BoardPresenter {
 							+ jetzigesFeld.getyKoordinate() + (augenzahl - 2 * i)) == (iReihe + jSpalte)
 							|| (jetzigesFeld.getxKoordinate()
 									+ jetzigesFeld.getyKoordinate() - (augenzahl - 2 * i)) == (iReihe + jSpalte)) {
-						Kachel erreichbareKachel = view.getLabelArray()[iReihe][jSpalte];
+						Kachel erreichbareKachel = view.getKachelArray()[iReihe][jSpalte];
 						int abstandX = erreichbareKachel.getxKoordinate()
 								- jetzigesFeld.getxKoordinate();
 						int abstandY = erreichbareKachel.getyKoordinate()
@@ -562,14 +591,11 @@ public class BoardPresenter {
 	/**
 	 * Updatet das jetzigeFeld um den jeweiligen Wert
 	 * 
-	 * @param y
-	 *            Der Wert um welchen die Reihe erhöht wird
-	 * @param x
-	 *            Der Wert um welchen die Spalte erhöht wird
+	 * @param y  Der Wert um welchen die Reihe erhöht wird
+	 * @param x  Der Wert um welchen die Spalte erhöht wird
 	 */
 	public void updateCurrentField(int y, int x) {
-		this.jetzigesFeld = view.getLabelArray()[this.jetzigeReihe + y][this.jetzigeColumn
-				+ x];
+		this.jetzigesFeld = view.getKachelArray()[this.jetzigeReihe + y][this.jetzigeColumn + x];
 	}
 
 	/**
@@ -582,7 +608,7 @@ public class BoardPresenter {
 	public boolean moveErlaubtX() {
 		refresh();
 		if (xDistanz > 0) {
-			if (view.getLabelArray()[jetzigeReihe][jetzigeColumn + 1]
+			if (view.getKachelArray()[jetzigeReihe][jetzigeColumn + 1]
 					.isIstRaum() == false) {
 				System.out.println("x check true");
 				return true;
@@ -592,7 +618,7 @@ public class BoardPresenter {
 				return false;
 			}
 		} else {
-			if (view.getLabelArray()[jetzigeReihe][jetzigeColumn - 1]
+			if (view.getKachelArray()[jetzigeReihe][jetzigeColumn - 1]
 					.isIstRaum() == false) {
 				System.out.println("x check true");
 				return true;
@@ -605,7 +631,7 @@ public class BoardPresenter {
 		}
 	}
 
-	/**
+	/**	
 	 * Hier wird überprüft, ob die nächstgelegene Kachel in Y Richtung ein Raum
 	 * ist.
 	 * 
@@ -615,7 +641,7 @@ public class BoardPresenter {
 	public boolean moveErlaubtY() {
 		refresh();
 		if (yDistanz > 0) {
-			if (view.getLabelArray()[jetzigeReihe + 1][jetzigeColumn]
+			if (view.getKachelArray()[jetzigeReihe + 1][jetzigeColumn]
 					.isIstRaum() == false) {
 
 				System.out.println("y check true");
@@ -627,7 +653,7 @@ public class BoardPresenter {
 				return false;
 			}
 		} else {
-			if (view.getLabelArray()[jetzigeReihe - 1][jetzigeColumn]
+			if (view.getKachelArray()[jetzigeReihe - 1][jetzigeColumn]
 					.isIstRaum() == false) {
 				System.out.println("y check true");
 				return true;
@@ -639,6 +665,9 @@ public class BoardPresenter {
 		}
 	}
 
+	/**
+	 * Eine Blaupause zum Ausweichen
+	 */
 	public void dodge() {
 
 	}
@@ -716,8 +745,8 @@ public class BoardPresenter {
 		System.out.println(" playerDarstellung Y vorher : "
 				+ playerDarstellung.getLayoutY());
 
-		Kachel anfangsKachel = view.getLabelArray()[yPositionFuerPath][xPositionFuerPath];
-		Kachel zielKachel = view.getLabelArray()[yPositionFuerPath
+		Kachel anfangsKachel = view.getKachelArray()[yPositionFuerPath][xPositionFuerPath];
+		Kachel zielKachel = view.getKachelArray()[yPositionFuerPath
 				+ yStreckeFuerPath][xPositionFuerPath + xStreckeFuerPath];
 
 		System.out.println("anfangs layout X : " + anfangsKachel.getLayoutX());
