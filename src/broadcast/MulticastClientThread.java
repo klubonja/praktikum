@@ -1,4 +1,4 @@
-package cluedoClient;
+package broadcast;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -12,6 +12,7 @@ import json.CluedoProtokollChecker;
 
 import org.json.JSONObject;
 
+import cluedoClient.ServerItem;
 import cluedoNetworkGUI.CluedoClientGUI;
 import enums.Config;
 
@@ -60,15 +61,15 @@ public class MulticastClientThread extends Thread{
 				if (checker.validate()) {
 					JSONObject jsonMsg = new JSONObject(msg);
 					gui.addIp(jsonMsg.getString("group"));
-					gui.addMessage(msg);
+					gui.addMessageIn(msg);
 					serverList.add(new ServerItem(jsonMsg.getString("group"),packet.getAddress(),jsonMsg.getInt("tcp port")));
 				}
 				else {
-					gui.addMessage(packet.getAddress()+" sends invalid Messages : \n"+checker.getErrString());
+					gui.addMessageIn(packet.getAddress()+" sends invalid Messages : \n"+checker.getErrString());
 				}
 			} 
 			catch (Exception e) {
-				gui.addMessage(e.getMessage());
+				gui.addMessageIn(e.getMessage());
 			}
 			
 			finally {

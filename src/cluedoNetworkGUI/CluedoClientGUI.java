@@ -1,15 +1,11 @@
 package cluedoNetworkGUI;
 
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
@@ -17,57 +13,23 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
  
-public class CluedoClientGUI {
+public class CluedoClientGUI extends CluedoNetworkGUI{
 	
-	ObservableList<String> ips;
-	public ListView<String> clientList;
 	
-	final TextArea messagesIn;
-	final TextArea messagesOut;
-	final Text status;
-	final Text inLabel;
-	final Text outLabel;
-	final public Button startClientButton;
 	final public Button submitMessageButton;
 	final public TextArea inputField;
-	final public GridPane grid;
-	final public Stage primaryStage;
-	
-	
-	int width;
-	int height;
-	
-	String desc;
 	
 	 public CluedoClientGUI(Stage primaryStage){
-		 this.primaryStage = primaryStage;
-		 ips = FXCollections.observableArrayList();
-		 
-		 grid = new GridPane();
-		 clientList = new ListView<String>(ips);
-		 messagesIn = new TextArea();
-		 messagesIn.setEditable(false);
-		 messagesOut = new TextArea();
-		 messagesOut.setEditable(false);
-		 status = new Text("down");
-		 startClientButton = new Button("StartClient");
+		 super(primaryStage);
 		 submitMessageButton = new Button("submitMessage");
 		 inputField = new TextArea();		 
-		
-		 inLabel = new Text("IN");
-		 outLabel = new Text("OUT");
-		 
-		 width = 1000;
-		 height = 800;
-		 desc = new String("CluedoClient");
-		 
-		 startUp(primaryStage);
-		 
+		 setWindowName("CluedoClient");
+		 setStartServiceButtonLabel("StartClient");	
+		 startUp();	 		 
 	}
 	    
-    public void startUp(Stage primaryStage) {
-        primaryStage.setTitle(desc);
-        
+	@Override
+	public void startUp() {        
         
         grid.setPadding(new Insets(25, 25, 25, 25));
         grid.setGridLinesVisible(false);
@@ -120,8 +82,8 @@ public class CluedoClientGUI {
         
        //grid.add(node,col,row,colspan,rowspan)
         grid.add(title, 				0, 0, 2, 1);
-	    grid.add(startClientButton, 	0, 1);
-	    grid.add(clientList, 			0, 2, 2, 4);
+	    grid.add(startService,		 	0, 1);
+	    grid.add(ipListView, 			0, 2, 2, 4);
 	    grid.add(submitMessageButton, 	0, 6, 1, 1);
 	    grid.add(status, 				1, 1);
 	    grid.add(inLabel, 				1, 2, 1, 1);
@@ -161,23 +123,8 @@ public class CluedoClientGUI {
     	String m = inputField.getText();
     	inputField.setText("");
     	return m;
-    }
-    
-    public void addIp(String ip){
-    	if (!ips.contains(ip))
-    			ips.add(ip);
-	  }
-	  public void emptyList(){
-		  ips = FXCollections.observableArrayList();
-	  }
-	  
-	  public void setStatus(String stat){
-		  status.setText(stat);
-	  }
-	  
-	  public void addMessage(String mes){
-		  messagesIn.appendText(mes+"\n");
-	  }
+    }  
+   
 	  
 	  public void clearMessages(){
 		  messagesIn.setText("");

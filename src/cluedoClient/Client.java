@@ -9,15 +9,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
+import json.CluedoJSON;
+import broadcast.MulticastClientThread;
 import cluedoNetworkGUI.CluedoClientGUI;
+import cluedoServer.Brodcaster;
 import enums.Config;
 
 
 
 /**
  * @author guldener
- * verbindet sich mit server und kontrolliert die kommunikation zwischen diesem und dem spiel
- * das ist natürlich anfällig für betrug aber auch sehr effizient
  * 
  */
 public class Client {
@@ -34,28 +35,36 @@ public class Client {
 		setListener();	
 		System.out.println("client started");
 		listenForBrodcast();
+		sayHello();
 	}
 	
 	private void setListener(){
 		if (gui != null){
-			gui.startClientButton.setOnAction(new EventHandler<ActionEvent>() {				
+			gui.startService.setOnAction(new EventHandler<ActionEvent>() {				
 				@Override
 				public void handle(ActionEvent event) {
 					//startTCPConnection();	
 				}
 			});	
-			gui.clientList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			gui.getIpList().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			    @Override
 			    public void handle(MouseEvent click) {
 			        if (click.getClickCount() == 2) {
-			           String currentItemSelected = gui.clientList.getSelectionModel().getSelectedItem();
-			           int currentItemSelectedIndex = gui.clientList.getSelectionModel().getSelectedIndex();
+			           String currentItemSelected = gui.getIpList().getSelectionModel().getSelectedItem();
+			           int currentItemSelectedIndex = gui.getIpList().getSelectionModel().getSelectedIndex();
 			           gui.loginPrompt("Login to "+currentItemSelected);
 			           System.out.println(currentItemSelected);
 			        }
 			    }
 			});			
 		}		
+	}
+	
+	private void sayHello(){		
+		Brodcaster bc = new Brodcaster(Config.GroupName, Config.BroadcastIp, gui);
+		CluedoJSON msg = new CluedoJSON("udp client");
+		msg.put("group", Config.GroupName);
+		bc.setMsg(msg.toString());
 	}
 	
 	private void listenForBrodcast(){

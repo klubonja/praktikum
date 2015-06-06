@@ -12,6 +12,7 @@ import javafx.stage.WindowEvent;
 
 import org.json.JSONObject;
 
+import broadcast.BrodcastServerThread;
 import cluedoNetworkGUI.CluedoServerGUI;
 import enums.Config;
 
@@ -48,8 +49,8 @@ public class Server  {
 		msg.put("tcp port", TCPport);
 		
 		
-		MulticastServerThread broadcaster = 
-				new MulticastServerThread("broadcastTthread", Config.BroadcastIp,msg.toString() , gui);
+		BrodcastServerThread broadcaster = 
+				new BrodcastServerThread("broadcastTthread", Config.BroadcastIp,msg.toString() , gui);
 		broadcaster.start();
 	}
 	
@@ -80,17 +81,17 @@ public class Server  {
 	}
 	
 	private void setListener(){
-		gui.startServerButton.setOnAction(new EventHandler<ActionEvent>() {
+		gui.startService.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	try {            	
 	            	if (!running){            		
 	            		startServer();
-	            		gui.startServerButton.setText("Shutdown");
+	            		gui.startService.setText("Shutdown");
 	            		running = true;
 	            	}
 	            	else {	            		
-	            		gui.startServerButton.setText("Server restart");
+	            		gui.startService.setText("Server restart");
 	            		gui.setStatus("Socket closed, Server Shutdown"); 
 	            		gui.emptyList();
 	            		stopServer();

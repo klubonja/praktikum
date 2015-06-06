@@ -29,10 +29,16 @@ public class CluedoProtokollChecker {
 		jsonRoot = j;
 		errs = new ArrayList<String>();
 	}
-
-	public boolean validate() {
-		System.out.println(jsonRoot.toString());
-		if (checkType()) { // sets type to check
+	
+	public boolean validateExpectedType(String exptype){
+		checkType();
+		if (type.equals(exptype)) return validate();
+		
+		return false;
+	}
+	
+	private void invokeValMethod(){
+		if (type != null){
 			try {
 				Method m = CluedoProtokollChecker.class
 						.getDeclaredMethod("val_" + typeNoSpace);
@@ -47,6 +53,13 @@ public class CluedoProtokollChecker {
 				System.out.println("finding :"+"val_" + typeNoSpace +" failed : no such method");
 				//e.printStackTrace();
 			}
+		}
+	}
+	
+	public boolean validate() {
+		System.out.println(jsonRoot.toString());
+		if (checkType()) { // sets type to check
+			invokeValMethod();
 		};
 
 		if (errs.size() == 0){

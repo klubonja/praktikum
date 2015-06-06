@@ -1,6 +1,5 @@
 package enums;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Wildcard;
 
 
 public final class Config {
@@ -18,7 +17,8 @@ public final class Config {
 	
 	public final static long SECOND = 1000;//millis
 	
-	public final static int BroadcastInterval = 3;//SECS
+	public final static int BroadcastInterval = 3;//SECONDS
+	public final static boolean ServerBroadcastOnce = false;
 	
 	
 	public final static int BroadcastPort = 30303;

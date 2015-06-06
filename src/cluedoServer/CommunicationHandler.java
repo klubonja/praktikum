@@ -88,7 +88,7 @@ class communicationHandler implements Runnable{
 		Platform.runLater(() -> {
 			gui.addMessage(msg);
 			System.out.println(msg);
-			gui.removeClient(id);
+			gui.removeIp(id);
 		});
 		running = false;
 	}

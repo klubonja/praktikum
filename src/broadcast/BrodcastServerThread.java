@@ -1,4 +1,4 @@
-package cluedoServer;
+package broadcast;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -8,7 +8,7 @@ import cluedoNetworkGUI.CluedoServerGUI;
 import enums.Config;
 
 
-public class MulticastServerThread extends Thread {
+public class BrodcastServerThread extends Thread {
 	
 	boolean running;
 	
@@ -24,7 +24,7 @@ public class MulticastServerThread extends Thread {
 	String broadcastMessage;
 	
 	
-	public MulticastServerThread(String name,String hostip,String msg,CluedoServerGUI g) {
+	public BrodcastServerThread(String name,String hostip,String msg,CluedoServerGUI g) {
 		super(name);
 		try {
 			gui = g;
@@ -58,6 +58,7 @@ public class MulticastServerThread extends Thread {
 				try {
 					gui.addMessageOut("Sending UDPMessage :"+broadcastMessage);
 					sleep(Config.SECOND*Config.BroadcastInterval);
+					if (Config.ServerBroadcastOnce) killService();
 				} catch (InterruptedException e2) {
 					// TODO: handle exception
 				}

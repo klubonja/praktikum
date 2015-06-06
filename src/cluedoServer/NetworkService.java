@@ -61,7 +61,7 @@ class NetworkService implements Runnable{
 				clientList.add(client);
 				
 				Platform.runLater(() -> {
-					gui.addClient(client.socket.getInetAddress().toString());
+					gui.addIp(client.socket.getInetAddress().toString());
 	            });
 	            
 				pool.execute(new communicationHandler(serverSocket,client,this,gui,numberConnectedClients));

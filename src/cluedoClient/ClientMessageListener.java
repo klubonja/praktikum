@@ -84,7 +84,7 @@ class clientMessageListener implements Runnable{
 	@Override
 	public void run(){
 		Platform.runLater(() -> {
-			gui.addMessage("listening");
+			gui.addMessageIn("listening");
 		});		
 	}
 	

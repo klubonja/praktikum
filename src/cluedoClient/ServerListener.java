@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+
 import javafx.application.Platform;
 import cluedoNetworkGUI.CluedoClientGUI;
 
@@ -35,6 +36,7 @@ class ServerListener implements Runnable {
 		this.id = id;
 	}
 	
+	@Override
 	public void run() {			
 		while (running) {
 			try {
@@ -96,7 +98,7 @@ class ServerListener implements Runnable {
 				try {
 									}
 				catch(Exception e){
-					gui.addMessage(e.getMessage());
+					gui.addMessageIn(e.getMessage());
 				}
 				
 			});				
