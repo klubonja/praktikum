@@ -38,7 +38,7 @@ class clientMessageListener implements Runnable{
 	
 	public void addClientGUIListener(){
 		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
-			 @Override
+			@Override
 			public void handle(KeyEvent e) {
 			        if (e.getCode() == KeyCode.ENTER){
 			        	sendMsg(gui.inputField.getText());	
