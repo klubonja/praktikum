@@ -41,7 +41,7 @@ public abstract class MulticastListenerThread extends Thread{
 			SocketAddress a = new InetSocketAddress(port);
 			socket.bind(a);
 			socket.setLoopbackMode(false);
-			bufSize = Config.networkBufferSize;
+			bufSize = Config.NETWORK_BUFFER_SIZE;
 			gui = g;
 			running = true;
 			

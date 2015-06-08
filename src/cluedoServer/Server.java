@@ -13,7 +13,6 @@ import json.CluedoJSON;
 
 import org.json.JSONObject;
 
-import broadcast.BroadcastServerThread;
 import broadcast.Multicaster;
 import broadcast.ClientHandShakeListener;
 import cluedoNetworkGUI.CluedoServerGUI;
@@ -37,7 +36,7 @@ public class Server  {
 	public Server(CluedoServerGUI g){
 		gui = g;
 		poolSize = 4;
-		TCPport = Config.TCPport;		
+		TCPport = Config.TCP_PORT;		
 		running = false;
 		pool = Executors.newFixedThreadPool(poolSize);	
 		setListener();
@@ -49,18 +48,18 @@ public class Server  {
 	private void broadcast() {
 		JSONObject msg = new JSONObject();
 		msg.put("type", "udp server");
-		msg.put("group", Config.GroupName);
+		msg.put("group", Config.GROUP_NAME);
 		msg.put("tcp port", TCPport);				
-		Multicaster bc = new Multicaster(Config.BroadcastIp, gui, msg.toString());
+		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg.toString());
 		bc.sendBrodcast();				
 	}
 	
 	void listenForClientsThread(){
 		CluedoJSON answer = new CluedoJSON("udp server");
-		answer.put("group", Config.GroupName);
-		answer.put("tcp port", Config.TCPport);
+		answer.put("group", Config.GROUP_NAME);
+		answer.put("tcp port", Config.TCP_PORT);
 		ClientHandShakeListener cl = 
-				new ClientHandShakeListener(answer.toString(),"udp client",Config.BroadcastPort,gui);
+				new ClientHandShakeListener(answer.toString(),"udp client",Config.BROADCAST_PORT,gui);
 		cl.start();
 	}
 	

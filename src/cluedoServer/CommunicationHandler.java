@@ -45,7 +45,7 @@ class communicationHandler implements Runnable{
 			String message = getMessageFromClient(client.socket).trim();
 			JSONObject json = new JSONObject(message);
 			Platform.runLater(() -> {
-				gui.addMessage(client.id+" says : after json login : "+ json.get("type"));
+				gui.addMessageIn(client.id+" says : after json login : "+ json.get("type"));
 			});
 			
 		} catch (IOException e) {
@@ -65,18 +65,16 @@ class communicationHandler implements Runnable{
 	           }
 				networkService.notifyAllClientsButSender(message,client);
 				Platform.runLater(() -> {
-					gui.addMessage(client.id+" says : "+ message);
+					gui.addMessageIn(client.id+" says : "+ message);
 				});		
 			}
 			catch (IOException e){
-				//System.out.println(e.getMessage());
 				try {
 					closeConnection("closing :"+e.getMessage());
 				}
 				catch (IOException ex){
-					//System.out.println(ex.getMessage());
 					Platform.runLater(() -> {
-						gui.addMessage(ex.getMessage());
+						gui.addMessageIn(ex.getMessage());
 					});	
 				}				
 			}
@@ -86,7 +84,7 @@ class communicationHandler implements Runnable{
 	private void closeConnection(String msg) throws IOException{
 		serverSocket.close();
 		Platform.runLater(() -> {
-			gui.addMessage(msg);
+			gui.addMessageIn(msg);
 			System.out.println(msg);
 			gui.removeIp(id);
 		});

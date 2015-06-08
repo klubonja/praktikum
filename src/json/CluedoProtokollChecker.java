@@ -13,6 +13,7 @@ import enums.CluedoProtokollMessageTypes;
 import enums.Config;
 import enums.Field;
 import enums.GameStates;
+import enums.NetworkHandhakeCodes;
 import enums.Persons;
 import enums.PlayerStates;
 import enums.Rooms;
@@ -33,20 +34,20 @@ public class CluedoProtokollChecker {
 		msgs = new ArrayList<String>();
 	}
 	
-	public int validateExpectedType(String exptype,String[] ignoredTypes){
+	public NetworkHandhakeCodes validateExpectedType(String exptype,String[] ignoredTypes){
 		checkType();
 		if (type.equals(exptype)) 
-			if (validate()) return 0; //alles OK
-			else return 1; //typ ok aber andere protokollabweichungen
+			if (validate()) return NetworkHandhakeCodes.OK; //alles OK
+			else return NetworkHandhakeCodes.TYPEOK_MESERR; //typ ok aber andere protokollabweichungen
 		else if (Arrays.asList(ignoredTypes).contains(type)){
 			setMsg(type+" is ignored");
-			return 2;//ignored
+			return NetworkHandhakeCodes.MESSOK_TYPEIGNORED;//ignored
 		}
 		else {
 			setErr(exptype +" : is expected; found :"+type);					
 		}
 		
-		return 3; // falscher typ
+		return NetworkHandhakeCodes.TYPERR; // falscher typ
 	}
 	
 	private void invokeValMethod(){
@@ -206,8 +207,6 @@ public class CluedoProtokollChecker {
 
 	void val_moved() {
 		val_watch_game();
-//		if (validateValue(jsonRoot, "color"))
-//			validatePerson(jsonRoot.getString("color"));
 		if (validateValue(jsonRoot, "field"))
 			validateField(jsonRoot, "field");
 	}
@@ -306,7 +305,7 @@ public class CluedoProtokollChecker {
 	}
 	
 	boolean validateProtokollVersion(JSONObject jsonParent,String key){
-		if (jsonParent.getString(key).equals((String.valueOf(Config.protokollVersion)))) return true;		
+		if (jsonParent.getString(key).equals((String.valueOf(Config.PROTOKOLL_VERSION)))) return true;		
 		return false;
  	}
 	
@@ -486,7 +485,7 @@ public class CluedoProtokollChecker {
 		} 
 		else if (!CluedoProtokollMessageTypes.isMember(jsonRoot.getString("type"))) {
 			errs.add("type " + jsonRoot.getString("type")
-					+ " is not part of protokoll v." + Config.protokollVersion);
+					+ " is not part of protokoll v." + Config.PROTOKOLL_VERSION);
 			return false;
 		}
 

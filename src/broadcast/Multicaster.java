@@ -1,7 +1,6 @@
 package broadcast;
 
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
@@ -25,7 +24,7 @@ public class Multicaster {
 		try {
 			gui = g;
 			groupAdress = InetAddress.getByName(targetIp);
-			port = Config.BroadcastPort;
+			port = Config.BROADCAST_PORT;
 			
 			socket = new MulticastSocket();
 			socket.setBroadcast(true);
@@ -33,7 +32,9 @@ public class Multicaster {
 			broadcastMessage = msg;
 		}
 		catch (Exception e) {
-			gui.addMessageIn(e.getMessage());
+			Platform.runLater(() -> {
+				gui.addMessageIn(e.getMessage());
+			});
 		}	
 	}
 	
@@ -44,7 +45,7 @@ public class Multicaster {
 	public boolean sendBrodcast(){
 		if (broadcastMessage != null){
 			try {
-				buf = new byte[Config.networkBufferSize];
+				buf = new byte[Config.NETWORK_BUFFER_SIZE];
 				buf = broadcastMessage.getBytes();
 				packet = new DatagramPacket(buf, buf.length, groupAdress, port);				
 				socket.send(packet);
@@ -57,12 +58,15 @@ public class Multicaster {
 			} 
 			catch (Exception e) {
 				System.out.println(e.getMessage());
-				gui.addMessageOut(e.getMessage());
-
+				Platform.runLater(() -> {
+					gui.addMessageOut(e.getMessage());
+				});	
 			}
 		}
 		else {
-			gui.addMessageOut("single Brodcast msg not set");
+			Platform.runLater(() -> {
+				gui.addMessageOut("single Brodcast msg not set");
+			});
 		}
 		
 		

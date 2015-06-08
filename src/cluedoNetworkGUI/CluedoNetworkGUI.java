@@ -53,15 +53,13 @@ public abstract class CluedoNetworkGUI {
        			ips.add(ip);
    	  }   	
    	  
-   	  public void addMessageIn(String mes){
-   		  messagesIn.appendText(mes+"\n");
-   	  }	
+   	 
 	  
 	  public void removeIp(int i){
 		  if (i-1 >= 0)  ips.remove(i-1);
 	  }
 	  
-	  public void emptyList(){
+	  public  void emptyList(){
 		  ipListView.getItems().clear();
 	  }
 	  
@@ -69,11 +67,15 @@ public abstract class CluedoNetworkGUI {
 		  status.setText(stat);
 	  }
 	  
-	  public void addMessage(String mes){
-		  messagesIn.appendText(mes+"\n");
+	  public void  addMessageIn(String mes){
+   		  messagesIn.appendText(mes+"\n");
+   	  }	
+	  
+	  public  void addMessageOut(String mes){
+		  messagesOut.appendText(mes+"\n");
 	  }
 	  
-	  public void addMessageOut(String mes){
+	  public  void addMessage(String mes){
 		  messagesOut.appendText(mes+"\n");
 	  }
 	  
@@ -85,7 +87,7 @@ public abstract class CluedoNetworkGUI {
 		  primaryStage.setTitle(label);
 	  }
 	  
-	  public ListView<String> getIpList(){
+	  public  ListView<String> getIpList(){
 		  return ipListView;
 	  }
   

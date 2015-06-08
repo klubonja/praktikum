@@ -62,17 +62,17 @@ public class Client {
 	
 	private void sayHello(){	
 		CluedoJSON msg = new CluedoJSON("udp client");
-		msg.put("group", Config.GroupName);
-		Multicaster bc = new Multicaster(Config.BroadcastIp, gui, msg.toString());
+		msg.put("group", Config.GROUP_NAME);
+		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg.toString());
 		bc.sendBrodcast();
 	}
 	
 	void listenForServersThread(){
 		CluedoJSON answer = new CluedoJSON("udp client");
-		answer.put("group", Config.GroupName);
-		answer.put("tcp port", Config.TCPport);
+		answer.put("group", Config.GROUP_NAME);
+		answer.put("tcp port", Config.TCP_PORT);
 		ServerHandShakeListener cl = 
-				new ServerHandShakeListener(serverList,answer.toString(),"udp server",Config.BroadcastPort,gui);
+				new ServerHandShakeListener(serverList,answer.toString(),"udp server",Config.BROADCAST_PORT,gui);
 		cl.start();
 	}
 	

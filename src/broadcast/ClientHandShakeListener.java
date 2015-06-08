@@ -1,6 +1,9 @@
 package broadcast;
 
 import java.net.DatagramPacket;
+import java.net.InetAddress;
+
+import javafx.application.Platform;
 
 import org.json.JSONObject;
 
@@ -8,6 +11,7 @@ import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 import cluedoNetworkGUI.CluedoServerGUI;
 import enums.Config;
+import enums.NetworkHandhakeCodes;
 
 public class ClientHandShakeListener extends MulticastListenerThread {
 	
@@ -23,20 +27,27 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 			buf = new byte[bufSize];
 			packet = new DatagramPacket(buf, buf.length);			
 			socket.receive(packet);	
-			String msg = new String (packet.getData());		
+			String msg = new String (packet.getData());	
+			InetAddress ip = packet.getAddress();
 			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(msg)));
-			int errcode = checker.validateExpectedType(expType,ignoredTypes);
-			if (errcode == 0) {	
-				gui.addMessageIn(packet.getAddress()+" says :"+msg);
-
-				Multicaster bc = new Multicaster(Config.BroadcastIp, gui,answer);
+			NetworkHandhakeCodes errcode = checker.validateExpectedType(expType,ignoredTypes);
+			if (errcode == NetworkHandhakeCodes.OK) {
+				Platform.runLater(() -> {
+					gui.addMessageIn(ip.toString()+" says :"+msg);
+				});
+				Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui,answer);
 				bc.sendBrodcast();			
 			}
-			else if (errcode == 1){
-				gui.addMessageIn(packet.getAddress()+" sends invalid Messages : \n"+checker.getErrString());
+			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR){
+				Platform.runLater(() -> {
+					gui.addMessageIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
+				});
+				
 			}
-			else if (errcode == 2){
-				gui.addMessageIn(packet.getAddress()+" is server and is ignored : \n"+checker.getAllString());
+			else if (errcode == NetworkHandhakeCodes.MESSOK_TYPEIGNORED){
+				Platform.runLater(() -> {
+					gui.addMessageIn(ip.toString()+" is server and is ignored : \n"+checker.getAllString());
+				});				
 			}
 		} 
 		catch (Exception e) {

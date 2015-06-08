@@ -29,7 +29,7 @@ public class BroadcastServerThread extends Thread {
 		try {
 			gui = g;
 			groupAdress = InetAddress.getByName(targetIp);
-			port = Config.BroadcastPort;
+			port = Config.BROADCAST_PORT;
 			broadcastMessage = msg;
 			socket = new DatagramSocket();
 			running = true;
@@ -43,7 +43,7 @@ public class BroadcastServerThread extends Thread {
 	public void run(){
 		while (running){
 			try {
-				buf = new byte[Config.networkBufferSize];
+				buf = new byte[Config.NETWORK_BUFFER_SIZE];
 				buf = broadcastMessage.getBytes();
 				packet = new DatagramPacket(buf, buf.length, groupAdress, port);
 				socket.setBroadcast(true);
@@ -55,7 +55,7 @@ public class BroadcastServerThread extends Thread {
 			finally {
 				try {
 					gui.addMessageOut("Sending UDPMessage :"+broadcastMessage);
-					sleep(Config.SECOND*Config.BroadcastInterval);
+					sleep(Config.SECOND*Config.BROADCAST_INTERVAL);
 					if (Config.ServerBroadcastOnce) killService();
 				} catch (InterruptedException e2) {
 					// TODO: handle exception
