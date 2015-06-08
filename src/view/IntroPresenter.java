@@ -115,6 +115,8 @@ public class IntroPresenter {
 	@SuppressWarnings("unused")
 	public void startNewGame(){
 		
+		iv.close();
+		
 		if(iv.pl1.isSelected()){ 
 			this.player = new Player("Player1", 0, 0);
 		}

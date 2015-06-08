@@ -222,6 +222,7 @@ public class IntroView extends GridPane{
 		
 	}
 	
+	
 	//Getter and Setter Methods
 		public Label getTitleLabel() {
 			return title;
