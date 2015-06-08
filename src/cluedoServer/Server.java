@@ -9,10 +9,13 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
+import json.CluedoJSON;
 
 import org.json.JSONObject;
 
 import broadcast.BrodcastServerThread;
+import broadcast.Brodcaster;
+import broadcast.ClientHandShakeListener;
 import cluedoNetworkGUI.CluedoServerGUI;
 import enums.Config;
 
@@ -40,18 +43,25 @@ public class Server  {
 		setListener();
 		System.out.println("Server Start");	
 		broadcast();
+		listenForClientsThread();
 	}
 	
 	private void broadcast() {
 		JSONObject msg = new JSONObject();
 		msg.put("type", "udp server");
 		msg.put("group", Config.GroupName);
-		msg.put("tcp port", TCPport);
-		
-		
-		BrodcastServerThread broadcaster = 
-				new BrodcastServerThread("broadcastTthread", Config.BroadcastIp,msg.toString() , gui);
-		broadcaster.start();
+		msg.put("tcp port", TCPport);				
+		Brodcaster bc = new Brodcaster(Config.BroadcastIp, gui, msg.toString());
+		bc.sendBrodcast();				
+	}
+	
+	void listenForClientsThread(){
+		CluedoJSON answer = new CluedoJSON("udp server");
+		answer.put("group", Config.GroupName);
+		answer.put("tcp port", Config.TCPport);
+		ClientHandShakeListener cl = 
+				new ClientHandShakeListener(answer.toString(),"udp client",Config.BroadcastPort,gui);
+		cl.start();
 	}
 	
 	/**

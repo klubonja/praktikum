@@ -16,7 +16,7 @@ import cluedoClient.ServerItem;
 import cluedoNetworkGUI.CluedoNetworkGUI;
 import enums.Config;
 
-public class MulticastListenerThread extends Thread{
+public abstract class MulticastListenerThread extends Thread{
 	MulticastSocket socket;
 	DatagramPacket packet;
 	InetAddress listenAdress;
@@ -26,17 +26,18 @@ public class MulticastListenerThread extends Thread{
 	int bufSize;
 	
 	String answer;
-	String role;
-	
-	ArrayList<ServerItem> serverList;
+	String expType;
 	
 	CluedoNetworkGUI gui;
 	
-	public MulticastListenerThread(ArrayList<ServerItem> sl,String role, int port, CluedoNetworkGUI g)  {
-		super(role);
-		role = new String(role);
+	abstract void listen();
+	
+	
+	public MulticastListenerThread(String answer, String expType, int port, CluedoNetworkGUI g)  {
+		super();
+		this.answer = new String(answer);
+		this.expType = new String(expType);
 		try {
-			serverList = sl;
 			socket = new MulticastSocket(null);
 			SocketAddress a = new InetSocketAddress(port);
 			socket.bind(a);
@@ -51,59 +52,12 @@ public class MulticastListenerThread extends Thread{
 	@Override
 	public void run(){
 		try {
-			if (role.equals("server")) listenForClientHandshake();
-			else if (role.equals("client")) listenForServerHandshake();
+			listen();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
 		
-	public void listenForServerHandshake(){
-		try {
-			buf = new byte[bufSize];
-			packet = new DatagramPacket(buf, buf.length);			
-			socket.receive(packet);	
-			String msg = new String (packet.getData());		
-			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(msg));
-			if (checker.validate()) {
-				gui.addIp(checker.getMessage().getString("group"));
-				gui.addMessageIn(msg);
-				serverList.add(new ServerItem(checker.getMessage().getString("group"),packet.getAddress(),checker.getMessage().getInt("tcp port")));
-			}
-			else {
-				gui.addMessageIn(packet.getAddress()+" sends invalid Messages : \n"+checker.getErrString());
-			}
-		} 
-		catch (Exception e) {
-			gui.addMessageIn(e.getMessage());
-		}
-	}
-	
-	public void listenForClientHandshake(){
-		try {
-			buf = new byte[bufSize];
-			packet = new DatagramPacket(buf, buf.length);			
-			socket.receive(packet);	
-			String msg = new String (packet.getData());		
-			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(msg));
-			if (checker.validateExpectedType("udp client")) {				
-				JSONObject answer = new JSONObject();
-				answer.put("type", "udp server");
-				answer.put("group", Config.GroupName);
-				answer.put("tcp port", Config.TCPport);
-				
-				Brodcaster bc = new Brodcaster(Config.BroadcastIp, gui);
-				bc.setMsg(answer.toString());
-				bc.sendBrodcast();			
-			}
-			else {
-				gui.addMessageIn(packet.getAddress()+" sends invalid Messages : \n"+checker.getErrString());
-			}
-		} 
-		catch (Exception e) {
-			gui.addMessageIn(e.getMessage());
-		}
-	}
 	
 	private boolean isValidCluedoMsg(String msg){
 		CluedoJSON json = new CluedoJSON(msg);

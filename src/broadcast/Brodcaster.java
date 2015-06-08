@@ -19,12 +19,13 @@ public class Brodcaster {
 	
 	String broadcastMessage;
 	
-	public Brodcaster(String targetIp,CluedoNetworkGUI g) {
+	public Brodcaster(String targetIp,CluedoNetworkGUI g,String msg) {
 		try {
 			gui = g;
 			groupAdress = InetAddress.getByName(targetIp);
 			port = Config.BroadcastPort;
 			socket = new DatagramSocket();
+			broadcastMessage = msg;
 		}
 		catch (Exception e) {
 			gui.addMessageIn(e.getMessage());

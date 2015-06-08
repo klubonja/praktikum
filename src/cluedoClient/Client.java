@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import json.CluedoJSON;
 import broadcast.Brodcaster;
-import broadcast.MulticastClientThread;
+import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
 import enums.Config;
 
@@ -34,7 +34,7 @@ public class Client {
 		serverList = new ArrayList<ServerItem>();
 		setListener();	
 		System.out.println("client started");
-		listenForBrodcast();
+		listenForServersThread();
 		sayHello();
 	}
 	
@@ -60,17 +60,20 @@ public class Client {
 		}		
 	}
 	
-	private void sayHello(){		
-		Brodcaster bc = new Brodcaster(Config.BroadcastIp, gui);
+	private void sayHello(){	
 		CluedoJSON msg = new CluedoJSON("udp client");
 		msg.put("group", Config.GroupName);
-		bc.setMsg(msg.toString());
+		Brodcaster bc = new Brodcaster(Config.BroadcastIp, gui, msg.toString());
+		bc.sendBrodcast();
 	}
 	
-	private void listenForBrodcast(){
-		MulticastClientThread broadcastListener = 
-				new MulticastClientThread(serverList,"bcListenerThread",Config.BroadcastPort, gui);
-		broadcastListener.start();		
+	void listenForServersThread(){
+		CluedoJSON answer = new CluedoJSON("udp server");
+		answer.put("group", Config.GroupName);
+		answer.put("tcp port", Config.TCPport);
+		ServerHandShakeListener cl = 
+				new ServerHandShakeListener(serverList,answer.toString(),"udp server",Config.BroadcastPort,gui);
+		cl.start();
 	}
 	
 	
