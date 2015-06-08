@@ -1,6 +1,8 @@
 package cluedoNetworkGUI;
 
 
+import java.awt.Button;
+
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.ColumnConstraints;
@@ -13,12 +15,15 @@ import javafx.stage.Stage;
  
 public class CluedoServerGUI extends CluedoNetworkGUI {
 	
+	Button sendHandshake;
 	
 	 public CluedoServerGUI(Stage s){
 		 super(s);
 		 setWindowName("CluedoServer");
 		 setStartServiceButtonLabel("StartServer");	
-		 startUp();	 		 
+		 sendHandshake = new Button("sendhandshake");
+		 startUp();	 
+		 
 	}
     
     @Override
@@ -75,8 +80,9 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
 	    
 	   //grid.add(node,				col,row,colspan,rowspan)
 	    grid.add(title, 			0, 0, 2, 1);
-	    grid.add(startService, 0, 1);
+	    grid.add(startService, 		0, 1);
 	    grid.add(ipListView, 		0, 2, 2, 4);
+	    
 	    grid.add(status, 			1, 1);
 	    grid.add(inLabel, 			1, 2, 1, 1);
 	    grid.add(messagesIn, 		1, 3, 1, 1);

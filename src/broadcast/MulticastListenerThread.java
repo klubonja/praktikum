@@ -40,10 +40,11 @@ public abstract class MulticastListenerThread extends Thread{
 			socket = new MulticastSocket(null);
 			SocketAddress a = new InetSocketAddress(port);
 			socket.bind(a);
+			socket.setLoopbackMode(false);
 			bufSize = Config.networkBufferSize;
 			gui = g;
 			running = true;
-			socket.setLoopbackMode(false);
+			
 		} 
 		catch (Exception e) {
 			System.out.println("mutlicast client :"+e.getMessage());
