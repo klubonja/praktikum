@@ -2,6 +2,7 @@ package view;
 
 import java.util.LinkedList;
 
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -164,16 +165,16 @@ public class IntroPresenter {
 			errorStr.set("Please select a character!");
 		}
 		
-		GameFrameView view = new GameFrameView(this.player);
-		GameFramePresenter pres = new GameFramePresenter(view, this.player);
-		GameFramePresenter pres2 = new GameFramePresenter(view, player2);
-		Scene scene = new Scene(view, 1300, 700);
+		GameFrameView gfview = new GameFrameView(this.player);
+		GameFramePresenter pres = new GameFramePresenter(gfview, this.player);
+		GameFramePresenter pres2 = new GameFramePresenter(gfview, player2);
+		Scene scene = new Scene(gfview, 1300, 700);
         Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(true);
-        primaryStage.setTitle("Cluedo");
-        //primaryStage.setFullScreen(true);
-        primaryStage.show();
+        view.primaryStage.setScene(scene);
+        view.primaryStage.setResizable(true);
+        view.primaryStage.setTitle("Cluedo");
+        view.primaryStage.setFullScreen(true);
+        view.primaryStage.show();
 		}
 	
 	public void quitGame(){

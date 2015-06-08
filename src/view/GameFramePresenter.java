@@ -1,7 +1,6 @@
 package view;
 
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import model.Player;
 
@@ -32,6 +31,7 @@ public class GameFramePresenter {
 		BoardPresenter board = new BoardPresenter(gfv.board, playerCircle, this.player);
 		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		HandFramePresenter hand = new HandFramePresenter(gfv.hand);
+		MenuBarPresenter menuBar = new MenuBarPresenter(gfv.menu);
 		
 	}
 	

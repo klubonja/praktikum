@@ -19,6 +19,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class IntroView extends GridPane{
 	
@@ -48,14 +49,16 @@ public class IntroView extends GridPane{
 	Label error;
 	ToggleButton soundsON;
 	ToggleButton soundsOFF;
+	Stage primaryStage;
 
 
 	final ImageView imageView = new ImageView(
 		      new Image("http://vignette3.wikia.nocookie.net/ageofempires/images/2/23/Hades.jpg/revision/latest?cb=20110606234954"));
 	
 	//Constructor of the Class
-	public IntroView(){
+	public IntroView(Stage primaryStage){
 		
+		this.primaryStage = primaryStage;
 		
 		this.setAlignment(Pos.CENTER);
 		this.setVgap(5);

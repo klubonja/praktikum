@@ -12,7 +12,7 @@ import model.Player;
 
 public class GameFrameView extends GridPane{
 	
-	MenuBar menu;
+	MenuBarView menu;
 	GridPane rightGrid;
 	NotesView notes;
 	DiceView dice;
