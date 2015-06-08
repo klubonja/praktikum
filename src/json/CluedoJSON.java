@@ -18,6 +18,10 @@ public class CluedoJSON extends JSONObject{
 		
 	}
 	
+	public CluedoJSON(JSONObject json){
+		super(json, JSONObject.getNames(json));		
+	}
+	
 	public String getType(){
 		return this.type.getName();
 	}

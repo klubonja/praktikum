@@ -3,14 +3,16 @@ package broadcast;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.MulticastSocket;
 
+import javafx.application.Platform;
 import cluedoNetworkGUI.CluedoNetworkGUI;
 import enums.Config;
 
-public class Brodcaster {
+public class Multicaster {
 	byte[] buf;
 	DatagramPacket packet;
-	DatagramSocket socket = null;
+	MulticastSocket socket = null;
 	
 	InetAddress groupAdress;
 	int port;
@@ -19,12 +21,15 @@ public class Brodcaster {
 	
 	String broadcastMessage;
 	
-	public Brodcaster(String targetIp,CluedoNetworkGUI g,String msg) {
+	public Multicaster(String targetIp,CluedoNetworkGUI g,String msg) {
 		try {
 			gui = g;
 			groupAdress = InetAddress.getByName(targetIp);
 			port = Config.BroadcastPort;
-			socket = new DatagramSocket();
+			
+			socket = new MulticastSocket();
+			socket.setBroadcast(true);
+			socket.setLoopbackMode(false);
 			broadcastMessage = msg;
 		}
 		catch (Exception e) {
@@ -33,7 +38,7 @@ public class Brodcaster {
 	}
 	
 	public void setMsg(String msg){
-		this.broadcastMessage= msg;
+		this.broadcastMessage = msg;
 	}
 	
 	public boolean sendBrodcast(){
@@ -41,12 +46,14 @@ public class Brodcaster {
 			try {
 				buf = new byte[Config.networkBufferSize];
 				buf = broadcastMessage.getBytes();
-				packet = new DatagramPacket(buf, buf.length, groupAdress, port);
-				socket.setBroadcast(true);
+				packet = new DatagramPacket(buf, buf.length, groupAdress, port);				
 				socket.send(packet);
-				gui.addMessageOut("Sending UDPMessage :"+broadcastMessage);
-				return true;
 				
+				Platform.runLater(() -> {
+					gui.addMessageOut("Sending UDPMessage :"+broadcastMessage);
+				});		
+				
+				return true;				
 			} 
 			catch (Exception e) {
 				System.out.println(e.getMessage());

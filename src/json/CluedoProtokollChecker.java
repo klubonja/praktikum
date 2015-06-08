@@ -3,6 +3,7 @@ package json;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ import enums.Weapons;
 public class CluedoProtokollChecker {
 	
 	private ArrayList<String> errs;
+	private ArrayList<String> msgs;
 	CluedoJSON jsonRoot;
 	String type;
 	String typeNoSpace;
@@ -28,13 +30,23 @@ public class CluedoProtokollChecker {
 	public CluedoProtokollChecker(CluedoJSON j) {
 		jsonRoot = j;
 		errs = new ArrayList<String>();
+		msgs = new ArrayList<String>();
 	}
 	
-	public boolean validateExpectedType(String exptype){
+	public int validateExpectedType(String exptype,String[] ignoredTypes){
 		checkType();
-		if (type.equals(exptype)) return validate();
+		if (type.equals(exptype)) 
+			if (validate()) return 0; //alles OK
+			else return 1; //typ ok aber andere protokollabweichungen
+		else if (Arrays.asList(ignoredTypes).contains(type)){
+			setMsg(type+" is ignored");
+			return 2;//ignored
+		}
+		else {
+			setErr(exptype +" : is expected; found :"+type);					
+		}
 		
-		return false;
+		return 3; // falscher typ
 	}
 	
 	private void invokeValMethod(){
@@ -260,7 +272,7 @@ public class CluedoProtokollChecker {
 		
 	}
 	
-	void val_upd_client(){
+	void val_udp_client(){
 		validateValue(jsonRoot,"group");		
 	}
 	
@@ -495,16 +507,30 @@ public class CluedoProtokollChecker {
 		System.out.println("Missing: ");
 		for (String s : errs)
 			System.out.println(s);
+		for (String s : msgs)
+			System.out.println(s);
 	}
 
 	private void setErr(String err) {
 		errs.add(err);
 	}
 	
+	private void setMsg(String msg) {
+		errs.add(msg);
+	}
+	
 	public String getErrString(){
-		StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer("");
 		if (!isValid)
 			for (String err : errs) sb.append(err+"\n");
+		return sb.toString();
+	}
+	
+	public String getAllString(){
+		StringBuffer sb = new StringBuffer("");
+		sb.append(getErrString());		
+			for (String msg : msgs) sb.append(msg+"\n");
+		
 		return sb.toString();
 	}
 	

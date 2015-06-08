@@ -13,8 +13,8 @@ import json.CluedoJSON;
 
 import org.json.JSONObject;
 
-import broadcast.BrodcastServerThread;
-import broadcast.Brodcaster;
+import broadcast.BroadcastServerThread;
+import broadcast.Multicaster;
 import broadcast.ClientHandShakeListener;
 import cluedoNetworkGUI.CluedoServerGUI;
 import enums.Config;
@@ -51,7 +51,7 @@ public class Server  {
 		msg.put("type", "udp server");
 		msg.put("group", Config.GroupName);
 		msg.put("tcp port", TCPport);				
-		Brodcaster bc = new Brodcaster(Config.BroadcastIp, gui, msg.toString());
+		Multicaster bc = new Multicaster(Config.BroadcastIp, gui, msg.toString());
 		bc.sendBrodcast();				
 	}
 	

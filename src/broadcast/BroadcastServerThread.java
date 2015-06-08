@@ -8,7 +8,7 @@ import cluedoNetworkGUI.CluedoServerGUI;
 import enums.Config;
 
 
-public class BrodcastServerThread extends Thread {
+public class BroadcastServerThread extends Thread {
 	
 	boolean running;
 	
@@ -24,7 +24,7 @@ public class BrodcastServerThread extends Thread {
 	String broadcastMessage;
 	
 	
-	public BrodcastServerThread(String name,String targetIp,String msg,CluedoServerGUI g) {
+	public BroadcastServerThread(String name,String targetIp,String msg,CluedoServerGUI g) {
 		super(name);
 		try {
 			gui = g;

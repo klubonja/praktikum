@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
-import org.json.JSONObject;
-
-import cluedoClient.ServerItem;
 import cluedoNetworkGUI.CluedoNetworkGUI;
 import enums.Config;
 
@@ -30,6 +27,8 @@ public abstract class MulticastListenerThread extends Thread{
 	
 	CluedoNetworkGUI gui;
 	
+	boolean running;
+	
 	abstract void listen();
 	
 	
@@ -43,6 +42,8 @@ public abstract class MulticastListenerThread extends Thread{
 			socket.bind(a);
 			bufSize = Config.networkBufferSize;
 			gui = g;
+			running = true;
+			socket.setLoopbackMode(false);
 		} 
 		catch (Exception e) {
 			System.out.println("mutlicast client :"+e.getMessage());
@@ -51,11 +52,14 @@ public abstract class MulticastListenerThread extends Thread{
 	
 	@Override
 	public void run(){
-		try {
-			listen();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		while (running){
+			try {
+				listen();
+				System.out.println(socket.getLoopbackMode());
+			} catch (Exception e) {
+				gui.addMessageIn("Listening Thread: failed to listen :\n"+e.getMessage());
+			}
+		}		
 	}
 		
 	
@@ -80,5 +84,9 @@ public abstract class MulticastListenerThread extends Thread{
 			sb.append(json.toString());
 		
 		return sb.toString();
+	}
+	
+	public void kill(){
+		running = false;
 	}
 }
