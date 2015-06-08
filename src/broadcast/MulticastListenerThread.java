@@ -9,11 +9,14 @@ import java.util.ArrayList;
 
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
+
+import org.json.JSONObject;
+
 import cluedoClient.ServerItem;
-import cluedoNetworkGUI.CluedoClientGUI;
+import cluedoNetworkGUI.CluedoNetworkGUI;
 import enums.Config;
 
-public class MulticastListener {
+public class MulticastListenerThread extends Thread{
 	MulticastSocket socket;
 	DatagramPacket packet;
 	InetAddress listenAdress;
@@ -22,11 +25,16 @@ public class MulticastListener {
 	byte[] buf;
 	int bufSize;
 	
+	String answer;
+	String role;
+	
 	ArrayList<ServerItem> serverList;
 	
-	CluedoClientGUI gui;
+	CluedoNetworkGUI gui;
 	
-	public MulticastListener(ArrayList<ServerItem> sl,String name, int port, CluedoClientGUI g) {
+	public MulticastListenerThread(ArrayList<ServerItem> sl,String role, int port, CluedoNetworkGUI g)  {
+		super(role);
+		role = new String(role);
 		try {
 			serverList = sl;
 			socket = new MulticastSocket(null);
@@ -38,6 +46,16 @@ public class MulticastListener {
 		catch (Exception e) {
 			System.out.println("mutlicast client :"+e.getMessage());
 		}	
+	}
+	
+	@Override
+	public void run(){
+		try {
+			if (role.equals("server")) listenForClientHandshake();
+			else if (role.equals("client")) listenForServerHandshake();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 		
 	public void listenForServerHandshake(){
@@ -68,9 +86,15 @@ public class MulticastListener {
 			socket.receive(packet);	
 			String msg = new String (packet.getData());		
 			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(msg));
-			if (checker.validateExpectedType("udp _client")) {				
+			if (checker.validateExpectedType("udp client")) {				
+				JSONObject answer = new JSONObject();
+				answer.put("type", "udp server");
+				answer.put("group", Config.GroupName);
+				answer.put("tcp port", Config.TCPport);
 				
-				serverList.add(new ServerItem(checker.getMessage().getString("group"),packet.getAddress(),checker.getMessage().getInt("tcp port")));
+				Brodcaster bc = new Brodcaster(Config.BroadcastIp, gui);
+				bc.setMsg(answer.toString());
+				bc.sendBrodcast();			
 			}
 			else {
 				gui.addMessageIn(packet.getAddress()+" sends invalid Messages : \n"+checker.getErrString());

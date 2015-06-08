@@ -10,9 +10,9 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import json.CluedoJSON;
+import broadcast.Brodcaster;
 import broadcast.MulticastClientThread;
 import cluedoNetworkGUI.CluedoClientGUI;
-import cluedoServer.Brodcaster;
 import enums.Config;
 
 
@@ -61,7 +61,7 @@ public class Client {
 	}
 	
 	private void sayHello(){		
-		Brodcaster bc = new Brodcaster(Config.GroupName, Config.BroadcastIp, gui);
+		Brodcaster bc = new Brodcaster(Config.BroadcastIp, gui);
 		CluedoJSON msg = new CluedoJSON("udp client");
 		msg.put("group", Config.GroupName);
 		bc.setMsg(msg.toString());
@@ -70,8 +70,7 @@ public class Client {
 	private void listenForBrodcast(){
 		MulticastClientThread broadcastListener = 
 				new MulticastClientThread(serverList,"bcListenerThread",Config.BroadcastPort, gui);
-		broadcastListener.start();
-		
+		broadcastListener.start();		
 	}
 	
 	

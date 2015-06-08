@@ -24,17 +24,15 @@ public class BrodcastServerThread extends Thread {
 	String broadcastMessage;
 	
 	
-	public BrodcastServerThread(String name,String hostip,String msg,CluedoServerGUI g) {
+	public BrodcastServerThread(String name,String targetIp,String msg,CluedoServerGUI g) {
 		super(name);
 		try {
 			gui = g;
-			groupAdress = InetAddress.getByName(hostip);
+			groupAdress = InetAddress.getByName(targetIp);
 			port = Config.BroadcastPort;
 			broadcastMessage = msg;
-			running = true;
 			socket = new DatagramSocket();
 			running = true;
-			
 		}
 		catch (Exception e) {
 			killService();

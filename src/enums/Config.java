@@ -18,7 +18,7 @@ public final class Config {
 	public final static long SECOND = 1000;//millis
 	
 	public final static int BroadcastInterval = 3;//SECONDS
-	public final static boolean ServerBroadcastOnce = false;
+	public final static boolean ServerBroadcastOnce = true;
 	
 	
 	public final static int BroadcastPort = 30303;
