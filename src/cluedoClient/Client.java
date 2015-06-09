@@ -4,11 +4,11 @@ package cluedoClient;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import staticClasses.Config;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
-import json.CluedoJSON;
+import staticClasses.Config;
+import staticClasses.NetworkMessages;
 import broadcast.Multicaster;
 import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
@@ -37,18 +37,15 @@ public class Client {
 	}	
 	
 	void sayHello(){	
-		CluedoJSON msg = new CluedoJSON("udp client");
-		msg.put("group", Config.GROUP_NAME);
-		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg.toString());
+		String msg = NetworkMessages.udp_clientMsg(Config.GROUP_NAME);
+		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg);
 		bc.sendBrodcast();
 	}
 	
 	void listenForServersThread(){
-		CluedoJSON answer = new CluedoJSON("udp client");
-		answer.put("group", Config.GROUP_NAME);
-		answer.put("tcp port", Config.TCP_PORT);
+		String answer = NetworkMessages.udp_clientMsg(Config.GROUP_NAME);
 		ServerHandShakeListener cl = 
-				new ServerHandShakeListener(serverList,answer.toString(),"udp server",Config.BROADCAST_PORT,gui,this);
+				new ServerHandShakeListener(serverList,answer,"udp server",Config.BROADCAST_PORT,gui,this);
 		cl.start();
 	}
 	

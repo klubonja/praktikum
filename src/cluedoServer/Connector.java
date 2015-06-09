@@ -14,11 +14,7 @@ import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
 
-/**
- * @author guldener
- * hört auf eingehende verbindungen und weist ihnen threads zu
- * übernimmt die kontroll-kommunikation des severs mit den clients
- */
+
 class Connector extends Thread{	
 	
 	final CluedoServerGUI gui;
