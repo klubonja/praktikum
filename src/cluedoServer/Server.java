@@ -9,11 +9,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
-import json.CluedoJSON;
-
-import org.json.JSONObject;
-
 import staticClasses.Config;
+import staticClasses.NetworkMessages;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
@@ -49,22 +46,17 @@ public class Server {
 		startServer();		
 		setListener();	
 		
-		System.out.println("Server Start");	
+		System.out.println("Server Starteeeee");	
 	}
 	
 	private void sayHello() {
-		JSONObject msg = new JSONObject();
-		msg.put("type", "udp server");
-		msg.put("group", Config.GROUP_NAME);
-		msg.put("tcp port", TCPport);				
-		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg.toString());
+		String msg = NetworkMessages.udp_serverMsg(Config.GROUP_NAME, TCPport);				
+		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg);
 		bc.sendBrodcast();				
 	}
 	
 	void listenForClientsThread(){
-		CluedoJSON answer = new CluedoJSON("udp server");
-		answer.put("group", Config.GROUP_NAME);
-		answer.put("tcp port", Config.TCP_PORT);
+		String answer = NetworkMessages.udp_serverMsg(Config.GROUP_NAME, TCPport);				
 		ClientHandShakeListener cl = 
 				new ClientHandShakeListener(answer.toString(),"udp client",Config.BROADCAST_PORT,gui);
 		cl.start();

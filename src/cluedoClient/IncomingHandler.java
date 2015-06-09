@@ -63,7 +63,7 @@ class IncomingHandler implements Runnable {
 			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
 			String message = new String (buffer, 0, charCount);
 			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(message)));
-			NetworkHandhakeCodes errcode = checker.validateExpectedType("login",null);
+			NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful",null);
 			if (errcode == NetworkHandhakeCodes.OK) {
 				
 				

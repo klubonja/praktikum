@@ -49,14 +49,15 @@ class CommunicationHandler implements Runnable{
 	
 	private void awaitingLoginAttempt (){
 		boolean readyForCommunication = false;
+		System.out.println("awaiting");
+
 		while (!readyForCommunication) {
 			try {
 				String message = getMessageFromClient(client.getSocket()).trim();
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(message)));
 				NetworkHandhakeCodes errcode = checker.validateExpectedType("login",null);
-				if (errcode == NetworkHandhakeCodes.OK) {
-					
-					
+
+				if (errcode == NetworkHandhakeCodes.OK) {							
 					Platform.runLater(() -> {
 						gui.addMessageIn(client.getAdress()+" says :"+message);
 						gui.addIp(client.getAdress()+" "+client.getNick());
@@ -87,11 +88,13 @@ class CommunicationHandler implements Runnable{
 					Platform.runLater(() -> {
 						gui.addMessageIn("unhandled incoming : \n" + message);
 					});
-				}				
+				}	
 				
-			} catch (IOException e) {
+
+			} 
+			catch (IOException e) {
 				e.printStackTrace();
-			}						
+			}
 		}	
 	}
 	
@@ -102,7 +105,7 @@ class CommunicationHandler implements Runnable{
 			try {
 	           String message = getMessageFromClient(client.socket).trim();
 	           
-	           //System.out.println(message);	         
+	           System.out.println(message);	         
 			}
 			catch (IOException e){
 				try {
