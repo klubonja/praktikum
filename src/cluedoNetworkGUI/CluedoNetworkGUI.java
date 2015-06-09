@@ -1,11 +1,16 @@
 package cluedoNetworkGUI;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -36,12 +41,19 @@ public abstract class CluedoNetworkGUI {
 		 messagesOut = new TextArea();
 		 startService = new Button();
 		 
+		 
 		 inLabel = new Text("IN");
 		 outLabel = new Text("OUT");
 		 status = new Text("down");
 		 
 		 width = 1000;
 		 height = 800;
+		 
+		 setListener();
+		 
+		 grid.setValignment(startService, VPos.CENTER);
+		 grid.setMargin(startService, new Insets(0, 0, 0, 10));
+		 
 		 		 
 	}
     
@@ -89,6 +101,18 @@ public abstract class CluedoNetworkGUI {
 	  
 	  public  ListView<String> getIpList(){
 		  return ipListView;
+	  }
+	  
+	  void setListener(){
+		  ChangeListener<Number> gridwidthlistener = new ChangeListener<Number>() {
+				@Override
+				public void changed(
+						ObservableValue<? extends Number> observable,
+						Number oldValue, Number newValue) {
+							ipListView.setMaxWidth(newValue.doubleValue()/100*20);
+						}							
+					};
+			grid.widthProperty().addListener(gridwidthlistener);
 	  }
   
 }

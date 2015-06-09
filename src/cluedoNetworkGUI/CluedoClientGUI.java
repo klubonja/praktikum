@@ -1,7 +1,15 @@
 package cluedoNetworkGUI;
 
 
+import javax.swing.event.ChangeEvent;
+
+import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -31,7 +39,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	@Override
 	public void startUp() {        
         
-        grid.setPadding(new Insets(25, 25, 25, 25));
+       // grid.setPadding(new Insets(25, 25, 25, 25));
         grid.setGridLinesVisible(false);
         
         ColumnConstraints col0 = new ColumnConstraints();
@@ -45,7 +53,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         grid.getColumnConstraints().add(col1);
         
         RowConstraints row0 = new RowConstraints();
-	    row0.setPercentHeight(5);        
+	    row0.setPercentHeight(5);    
 	    grid.getRowConstraints().add(row0);
 	    
 	    RowConstraints row1 = new RowConstraints();
@@ -79,8 +87,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         Text title = new Text(desc);
         title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         status.setFont(Font.font("Tahoma", FontWeight.NORMAL, 10));
-        
-       //grid.add(node,col,row,colspan,rowspan)
+      
+        grid.setValignment(submitMessageButton, VPos.CENTER);
+			
+       
+       //grid.add(node,				col,row,colspan,rowspan)
         grid.add(title, 				0, 0, 2, 1);
 	    grid.add(startService,		 	0, 1);
 	    grid.add(ipListView, 			0, 2, 2, 4);

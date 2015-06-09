@@ -32,33 +32,15 @@ public class Client {
 	public Client(CluedoClientGUI g) {
 		gui = g;
 		serverList = new ArrayList<ServerItem>();
-		setListener();	
+		//setListener();	
 		System.out.println("client started");
 		listenForServersThread();
 		sayHello();
 	}
 	
-	private void setListener(){
-		if (gui != null){
-			gui.startService.setOnAction(new EventHandler<ActionEvent>() {				
-				@Override
-				public void handle(ActionEvent event) {
-					//startTCPConnection();	
-				}
-			});	
-			gui.getIpList().setOnMouseClicked(new EventHandler<MouseEvent>() {
-			    @Override
-			    public void handle(MouseEvent click) {
-			        if (click.getClickCount() == 2) {
-			           String currentItemSelected = gui.getIpList().getSelectionModel().getSelectedItem();
-			           int currentItemSelectedIndex = gui.getIpList().getSelectionModel().getSelectedIndex();
-			           gui.loginPrompt("Login to "+currentItemSelected);
-			           System.out.println(currentItemSelected);
-			        }
-			    }
-			});			
-		}		
-	}
+	
+	
+	
 	
 	private void sayHello(){	
 		CluedoJSON msg = new CluedoJSON("udp client");

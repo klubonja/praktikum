@@ -21,6 +21,8 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 		
 	}
 	
+	
+	
 	@Override
 	void listen() {
 		try {
@@ -49,11 +51,34 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 					gui.addMessageIn(ip.toString()+" is server and is ignored : \n"+checker.getAllString());
 				});				
 			}
+			else {
+				Platform.runLater(() -> {
+					gui.addMessageIn("unhandled incoming : \n" + msg);
+				});
+			}
+			
+			
 		} 
 		catch (Exception e) {
 			gui.addMessageIn(e.toString());
 			e.printStackTrace();
 		}
+		
+	}
+
+
+
+	@Override
+	void select(String selectedListItem,int selectedListItemIndex) {
+		
+		
+	}
+
+
+
+	@Override
+	void startServiceAction() {
+		// TODO Auto-generated method stub
 		
 	}
 

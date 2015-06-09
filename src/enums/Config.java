@@ -17,7 +17,6 @@ public abstract class Config {
 	public final static long SECOND = 1000;//millis
 	
 	public final static int BROADCAST_INTERVAL = 3;//SECONDS
-	public final static boolean ServerBroadcastOnce = true;
 	
 	
 	public final static int BROADCAST_PORT = 30303;

@@ -60,6 +60,20 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 			e.printStackTrace();
 		}		
 	}
+
+	@Override
+	void select(String selectedListItemName,int selectedListItemIndex) {
+		String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
+		ServerItem serverInfo = serverList.get(selectedListItemIndex);
+		
+		
+	}
+
+	@Override
+	void startServiceAction() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

@@ -56,7 +56,7 @@ public class BroadcastServerThread extends Thread {
 				try {
 					gui.addMessageOut("Sending UDPMessage :"+broadcastMessage);
 					sleep(Config.SECOND*Config.BROADCAST_INTERVAL);
-					if (Config.ServerBroadcastOnce) killService();
+					
 				} catch (InterruptedException e2) {
 					// TODO: handle exception
 				}

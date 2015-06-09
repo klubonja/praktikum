@@ -29,7 +29,7 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
     @Override
 	public void startUp() {	    
 	   
-	    grid.setPadding(new Insets(25, 25, 25, 25));
+	    //grid.setPadding(new Insets(25, 25, 25, 25));
 	    grid.setGridLinesVisible(false);
 	    
 	    ColumnConstraints col0 = new ColumnConstraints();
