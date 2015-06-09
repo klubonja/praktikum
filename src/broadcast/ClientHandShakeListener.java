@@ -8,10 +8,10 @@ import javafx.scene.control.SelectionModel;
 
 import org.json.JSONObject;
 
+import staticClasses.Config;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 import cluedoNetworkGUI.CluedoServerGUI;
-import enums.Config;
 import enums.NetworkHandhakeCodes;
 
 public class ClientHandShakeListener extends MulticastListenerThread {
@@ -47,7 +47,7 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 				});
 				
 			}
-			else if (errcode == NetworkHandhakeCodes.MESSOK_TYPEIGNORED){
+			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
 				Platform.runLater(() -> {
 					gui.addMessageIn(ip.toString()+" is server and is ignored : \n"+checker.getAllString());
 				});				

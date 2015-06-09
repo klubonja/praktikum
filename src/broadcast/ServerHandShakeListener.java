@@ -51,7 +51,7 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 					gui.addMessageIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
 				});
 			}
-			else if (errcode == NetworkHandhakeCodes.MESSOK_TYPEIGNORED){
+			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
 				Platform.runLater(() -> {
 					gui.addMessageIn(ip.toString()+" is client and is ignored : \n"+checker.getErrString());
 

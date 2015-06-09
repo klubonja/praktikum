@@ -1,21 +1,16 @@
 package cluedoServer;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
 
-import org.json.JSONObject;
-
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import cluedoNetworkGUI.*;
+import cluedoNetworkGUI.CluedoServerGUI;
 
 /**
  * @author guldener
@@ -28,22 +23,34 @@ class Connector extends Thread{
 	private ServerSocket serverSocket;
 	
 	ArrayList<ClientItem> clientList;
+	ArrayList<ClientItem> blackList;
 	boolean running = true;	
 	
 	
-	Connector (ServerSocket ss, CluedoServerGUI g,ArrayList<ClientItem> clist) {
+	Connector (ServerSocket ss, CluedoServerGUI g,ArrayList<ClientItem> cList,ArrayList<ClientItem> bList) {
 		gui = g;
 		serverSocket = ss;
-		clientList = clist;
+		clientList = cList;
+		blackList = bList;
 	}
 	
+	@Override
 	public void run(){
 		try {			
 			while (running){
-				Socket clientSocket = serverSocket.accept();  
-				ClientItem client = new ClientItem(clientSocket);
-				Thread newCommunicationThread = new Thread(new CommunicationHandler(serverSocket, client, gui));
-				newCommunicationThread.start();				
+				Socket clientSocket = serverSocket.accept();
+				if (!checkForExistingIp(clientSocket.getInetAddress())){
+					if (isBlacklisted(clientSocket.getInetAddress()))
+						sendMsg("you have the ip of some evil known protolollviolator, lets try anyway", clientSocket);
+					Thread newCommunicationThread = new Thread(new CommunicationHandler(
+							serverSocket, new ClientItem(clientSocket), gui,clientList,blackList));
+					newCommunicationThread.start();	
+				}
+				else {
+					sendMsg("already connected", clientSocket);
+					clientSocket.close();
+				}
+							
 			}					
 		}
 		catch(IOException e){
@@ -73,6 +80,31 @@ class Connector extends Thread{
 		for (int i = 0;i < clientList.size();i++)
 			if (c.id == clientList.get(i).id) 
 				clientList.get(i).sendMsg(msg);
+	}
+	
+	private boolean checkForExistingIp(InetAddress adress){
+		for (ClientItem c : clientList)
+			if (adress.equals(c.getAdress())) return true;
+		return false;
+	}
+	
+	boolean isBlacklisted(InetAddress adress){
+		for (ClientItem c : blackList)
+			if (adress.equals(c.getAdress())) return true;
+		return false;
+	}
+	
+	public static void sendMsg(String msg,Socket socket){
+		try {
+			 PrintWriter out = new PrintWriter(
+					   new BufferedWriter(new OutputStreamWriter(
+					        socket.getOutputStream(), StandardCharsets.UTF_8)), true);
+			 out.print(msg);
+			 out.flush();
+		}
+		catch (IOException e){
+			System.out.println(e.getMessage());
+		}	
 	}
 	
 

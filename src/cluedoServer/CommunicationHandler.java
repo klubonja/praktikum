@@ -7,15 +7,16 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
-import org.json.JSONObject;
-
-import broadcast.Multicaster;
 import javafx.application.Platform;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
+
+import org.json.JSONObject;
+
+import staticClasses.Config;
 import cluedoNetworkGUI.CluedoServerGUI;
-import enums.Config;
 import enums.NetworkHandhakeCodes;
 
 /**
@@ -28,61 +29,79 @@ class CommunicationHandler implements Runnable{
 	ClientItem client;
 	Connector networkService;
 	Socket socket;
+	
+	ArrayList<ClientItem> clientList;
+	ArrayList<ClientItem> blackList;
+	
 	final CluedoServerGUI gui;
 	boolean running = true;
-	int bufferSize = 1024;
 	
 	
 	
-	CommunicationHandler(ServerSocket ss, ClientItem c,  CluedoServerGUI g) throws IOException{
-		serverSocket = ss;
-		client = c;
+	CommunicationHandler(ServerSocket ss, ClientItem c,  CluedoServerGUI g,ArrayList<ClientItem> cList,ArrayList<ClientItem> bList) {
 		gui = g;
+		serverSocket = ss;
+		clientList = cList;
+		blackList = bList;
+		client = c;
 	}
 	
 	private void awaitingLoginAttempt (){
 		boolean readyForCommunication = false;
 		while (!readyForCommunication) {
 			try {
-				String message = getMessageFromClient(client.socket).trim();
-				Platform.runLater(() -> {
-					gui.addMessageIn(client.getAdress()+" says : "+ message);
-				});
+				String message = getMessageFromClient(client.getSocket()).trim();
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(message)));
 				NetworkHandhakeCodes errcode = checker.validateExpectedType("login",null);
 				if (errcode == NetworkHandhakeCodes.OK) {
+					
+					client.sendMsg("Welcome at the "+Config.GROUP_NAME+"'s");
+					
 					Platform.runLater(() -> {
-						client.setNick(checker.getMessage().getString("nick"));
-						client.setGroupName(checker.getMessage().getString("group"));
 						gui.addMessageIn(client.getAdress()+" says :"+message);
 						gui.addIp(client.getAdress()+" "+client.getNick());
-					});					
+					});
+					
+					client.setNick(checker.getMessage().getString("nick"));
+					client.setGroupName(checker.getMessage().getString("group"));
+					clientList.add(client);
+					readyForCommunication = true;
 				}
-				else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR){
+				else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
+						|| errcode == NetworkHandhakeCodes.TYPERR){
 					Platform.runLater(() -> {
 						gui.addMessageIn(client.getAdress()+" sends invalid Messages : \n"+checker.getErrString());
-					});					
+					});	
+					client.sendMsg("You are being blacklisted due to following Protokollviolations :\n"+checker.getErrString());
+					client.sendMsg("closing");
+					client.closingConnection();
+					blackList.add(client);
+					
+					
+					
+					readyForCommunication = true; // no further listinenig on this socket
+					running = false; // thread will run out without further notice					
 				}
 				
 				else {
 					Platform.runLater(() -> {
 						gui.addMessageIn("unhandled incoming : \n" + message);
 					});
-				}
-				readyForCommunication = true;
+				}				
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}			
+			}						
 		}	
 	}
 	
+	@Override
 	public void run(){	
 		awaitingLoginAttempt();
 		while (running){
 			try {
 	           String message = getMessageFromClient(client.socket).trim();
+	           
 	           //System.out.println(message);	         
 			}
 			catch (IOException e){
@@ -108,12 +127,12 @@ class CommunicationHandler implements Runnable{
 	}
 	
 	
-	private String getMessageFromClient(Socket cs) throws IOException{
+	String getMessageFromClient(Socket cs) throws IOException{
 		StringBuffer message = new StringBuffer();
 			try {
 				BufferedReader clientInMessage = new BufferedReader(new InputStreamReader(cs.getInputStream(),StandardCharsets.UTF_8));
-				char[] buffer = new char[bufferSize];
-			 	int anzahlZeichen = clientInMessage.read(buffer, 0, bufferSize); // blockiert bis Nachricht empfangen
+				char[] buffer = new char[Config.MESSAGE_BUFFER];
+			 	int anzahlZeichen = clientInMessage.read(buffer, 0, Config.MESSAGE_BUFFER); // blockiert bis Nachricht empfangen
 				message.append(new String(buffer, 0, anzahlZeichen));
 			}
 			catch(Exception e) {}		

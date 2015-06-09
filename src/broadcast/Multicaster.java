@@ -4,9 +4,9 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
+import staticClasses.Config;
 import javafx.application.Platform;
 import cluedoNetworkGUI.CluedoNetworkGUI;
-import enums.Config;
 
 public class Multicaster {
 	byte[] buf;

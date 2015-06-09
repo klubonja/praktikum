@@ -25,6 +25,9 @@ class ClientItem {
 		adress = socket.getInetAddress();
 	}
 	
+	public Socket getSocket(){
+		return socket;
+	}
 	public void setGameId(int gameId) {
 		this.gameId = gameId;
 	}
@@ -61,8 +64,19 @@ class ClientItem {
 		this.adress = adress;
 	}
 
-	public String getAdress(){
-		return socket.getInetAddress().getHostAddress();
+	public InetAddress getAdress(){
+		return adress;
+	}
+	
+	public boolean closingConnection(){
+		try {
+			socket.close();
+			return true;
+		} catch (IOException e) {
+			System.out.println("client connection "+getAdress()+ "was not closed due to:\n"+ e.getMessage());
+		}
+		
+		return false;
 	}
 	
 	public void sendMsg(String msg){

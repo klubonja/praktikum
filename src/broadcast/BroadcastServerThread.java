@@ -4,8 +4,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import staticClasses.Config;
 import cluedoNetworkGUI.CluedoServerGUI;
-import enums.Config;
 
 
 public class BroadcastServerThread extends Thread {

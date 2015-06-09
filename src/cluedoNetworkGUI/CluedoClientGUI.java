@@ -1,14 +1,7 @@
 package cluedoNetworkGUI;
 
 
-import javax.swing.event.ChangeEvent;
-
-import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
+import staticClasses.Config;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -112,7 +105,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
     public String askForIp() {
     	Stage ipPrompt = new Stage();
     	IpPromptGrid ipr = new IpPromptGrid(ipPrompt);
-		Scene secondary = new Scene(ipr,300,200);		
+		Scene secondary = new Scene(ipr,Config.IP_PROMPT_WINDOW_WIDTH,Config.IP_PROMPT_WINDOW_HEIGHT);		
 		ipPrompt.setScene(secondary);
 		ipPrompt.showAndWait();	
 		
@@ -122,7 +115,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
     public String[] loginPrompt(String stageTitle){
     	Stage loginStage = new Stage();
     	LoginPrompt loginPrompt = new LoginPrompt(loginStage);
-    	Scene secondary = new Scene(loginPrompt,300,400);		
+    	Scene secondary = new Scene(loginPrompt,Config.LOGIN_PROMPT_WINDOW_WIDTH,Config.LOGIN_PROMPT_WINDOW_HEIGHT);		
 		loginStage.setScene(secondary);
 		loginStage.setTitle(stageTitle);
 		loginStage.showAndWait();	

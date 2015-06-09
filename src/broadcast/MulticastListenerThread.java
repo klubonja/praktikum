@@ -7,6 +7,7 @@ import java.net.MulticastSocket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 
+import staticClasses.Config;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.SelectionModel;
@@ -14,7 +15,6 @@ import javafx.scene.input.MouseEvent;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 import cluedoNetworkGUI.CluedoNetworkGUI;
-import enums.Config;
 
 public abstract class MulticastListenerThread extends Thread{
 	MulticastSocket socket;

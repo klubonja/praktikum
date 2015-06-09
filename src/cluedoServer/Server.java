@@ -13,10 +13,10 @@ import json.CluedoJSON;
 
 import org.json.JSONObject;
 
-import broadcast.Multicaster;
+import staticClasses.Config;
 import broadcast.ClientHandShakeListener;
+import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
-import enums.Config;
 
 /**
  * @author guldener
@@ -27,6 +27,7 @@ public class Server {
 	Connector connector;
 	public ServerSocket tcpSocket;
 	ArrayList<ClientItem> clientList;
+	ArrayList<ClientItem> blackList;
 	int TCPport;
 	
 	final CluedoServerGUI gui;
@@ -40,6 +41,7 @@ public class Server {
 		gui = g;
 		TCPport = Config.TCP_PORT;	
 		clientList = new ArrayList<ClientItem>();
+		blackList = new ArrayList<ClientItem>();
 			
 		sayHello();
 		listenForClientsThread();
@@ -81,7 +83,7 @@ public class Server {
 	private void startServer()  {
 		try {
 			tcpSocket = new ServerSocket(TCPport);	
-			connector = new Connector(tcpSocket, gui,clientList);
+			connector = new Connector(tcpSocket, gui,clientList,blackList);
 			connector.start();
 			try {
 				NetworkInterfacesIpManager nm = new NetworkInterfacesIpManager();				 	

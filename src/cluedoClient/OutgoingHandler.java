@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+import staticClasses.Config;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,7 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import json.CluedoJSON;
 import cluedoNetworkGUI.CluedoClientGUI;
-import enums.Config;
 
 
 /**
@@ -76,9 +76,9 @@ class OutgoingHandler implements Runnable{
 		CluedoJSON handShake = new CluedoJSON();
 		String[] loginData = gui.loginPrompt("Login to Server: " +serverName);
 		handShake.put("type", "login");
-		handShake.put("nick", loginData[0]);
+		handShake.put("nicke", loginData[0]);
 		handShake.put("group", loginData[1]);
-		handShake.put("version", Config.PROTOKOLL_VERSION);
+		handShake.put("versionse", Config.PROTOKOLL_VERSION);
 		handShake.put("expansions", Config.EXPANSIONS);
 		sendMsg(handShake.toString());
 		
@@ -89,7 +89,7 @@ class OutgoingHandler implements Runnable{
 	@Override
 	public void run(){
 		Platform.runLater(() -> {
-			gui.addMessageIn("listening");
+			
 		});		
 	}
 	

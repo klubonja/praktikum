@@ -4,16 +4,14 @@ package cluedoClient;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import staticClasses.Config;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import json.CluedoJSON;
 import broadcast.Multicaster;
 import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
-import enums.Config;
 
 
 
@@ -36,13 +34,9 @@ public class Client {
 		System.out.println("client started");
 		listenForServersThread();
 		sayHello();
-	}
+	}	
 	
-	
-	
-	
-	
-	private void sayHello(){	
+	void sayHello(){	
 		CluedoJSON msg = new CluedoJSON("udp client");
 		msg.put("group", Config.GROUP_NAME);
 		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg.toString());
@@ -62,29 +56,29 @@ public class Client {
 	/** 
 	 * 
 	 */
-	public void startTCPConnection(ServerItem serverInfo){		
+	public void startTCPConnection(ServerItem server){		
 		try {				
-			cSocket = new Socket(serverInfo.getIp(),serverInfo.getPort());			
-			
-			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,id));
+			cSocket = new Socket(server.getIp(),server.getPort());			
+			serverList.add(server);
+			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,serverList));
 			t1.start();
-			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,id,serverInfo.getGroupName()));
+			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,id,server.getGroupName()));
 			t2.start();
 			
-			gui.setStatus("Connected to "+serverInfo.getGroupName()+" on : "+ cSocket.getInetAddress().toString());	
+			gui.setStatus("Connected to "+server.getGroupName()+" on : "+ cSocket.getInetAddress().toString());	
 			
 			setCloseHandler();
 		}
 		catch (Exception e){
 			System.out.println(e.getMessage());
-			gui.setStatus(e.getMessage());
+			gui.setStatus("connecting to "+server.getGroupName()+" failed \n"+e.getMessage());
 		}
 		finally {}	
 	}	
 	
 
 	
-	private void setCloseHandler(){
+	void setCloseHandler(){
 		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		      @Override
 			public void handle(WindowEvent e){
@@ -100,9 +94,7 @@ public class Client {
 		               e1.printStackTrace();
 		          }
 		      }
-		 });
-	
-	
+		 });	
 	}
 }
 

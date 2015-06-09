@@ -1,4 +1,4 @@
-package enums;
+package staticClasses;
 
 
 
@@ -23,10 +23,15 @@ public abstract class Config {
 	public final static int NETWORK_BUFFER_SIZE = 265;
 	public final static String BROADCAST_WILDCARD_IP = "255.255.255.255";
 	
+	public final static int MESSAGE_BUFFER = 1024;
+	
 	
 	public final static int TCP_PORT = 9000;	
 	
 	public final static String[] EXPANSIONS= {"Chat","Pumping Oil in the Antarctica, fuck yeah!"};
 	
-	
+	public final static double IP_PROMPT_WINDOW_HEIGHT = 100;
+	public final static double IP_PROMPT_WINDOW_WIDTH = 300;
+	public final static double LOGIN_PROMPT_WINDOW_WIDTH = 300;
+	public final static double LOGIN_PROMPT_WINDOW_HEIGHT = 200;
 }
