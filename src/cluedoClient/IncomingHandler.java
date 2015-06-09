@@ -77,7 +77,7 @@ class IncomingHandler implements Runnable {
 //					gui.addMessageIn("unhandled incoming : \n" + message);
 //				});
 //			}		
-			gui.addMessageIn(new JSONObject(message).toString());
+			gui.addMessageOut(new JSONObject(message).toString());
 
 			
 		} 
