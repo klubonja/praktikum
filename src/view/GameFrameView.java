@@ -6,6 +6,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import figuren.FigurenView;
 
 
 
@@ -17,7 +18,8 @@ public class GameFrameView extends GridPane{
 	DiceView dice;
 	ChatView chat;
 	BoardView board;
-
+	private SpielfeldUndFiguren komplettesFeld;
+	private FigurenView figuren;
 	
 	public GameFrameView(){
 		
@@ -55,6 +57,10 @@ public class GameFrameView extends GridPane{
 		 */
 		dice = new DiceView();
 		
+		figuren = new FigurenView();
+		
+		komplettesFeld = new SpielfeldUndFiguren(board, figuren);
+		
 		
 		/**
 		 * Left part of the whole GameFrame,
@@ -75,9 +81,9 @@ public class GameFrameView extends GridPane{
 		GridPane.setConstraints(menu,0,0);
 		GridPane.setColumnSpan(menu, 2);
 		GridPane.setValignment(menu, VPos.TOP);
-		GridPane.setConstraints(board,0,1);
+		GridPane.setConstraints(komplettesFeld,0,1);
 		GridPane.setConstraints(rightGrid, 1,1);
-		this.getChildren().addAll(board, menu, rightGrid);
+		this.getChildren().addAll(komplettesFeld, menu, rightGrid);
 		this.setGridLinesVisible(true);
 		
 		}

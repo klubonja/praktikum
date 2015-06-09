@@ -13,10 +13,10 @@ public class StackAllThePanes extends StackPane{
 	private Stage stage;
 	private Scene scene;
 	
-	private HinteresPane hinten;
-	private VorderesPane vorne;
+	private BoardView hinten;
+	private FigurenView vorne;
 	
-	public StackAllThePanes(HinteresPane hinten, VorderesPane vorne){
+	public StackAllThePanes(BoardView hinten, FigurenView vorne){
 		this.hinten = hinten;
 		this.vorne = vorne;
 		

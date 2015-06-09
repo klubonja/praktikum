@@ -3,11 +3,18 @@ package view;
 
 
 
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import kacheln.FeldKachel;
+import kacheln.Kachel;
+import kacheln.RaumKachel;
+import kacheln.TuerKachel;
 import model.Player;
 
 
@@ -31,6 +38,8 @@ public class BoardView extends GridPane {
 	private Player spieler;
 	private Kachel red,pink,blue,green,white,yellow;
 
+	private Stage stage;
+	private Scene scene;
 	
 	/**
 	 * Der Konstruktor für die GUI. Hier wird die Größe festgelegt und das
@@ -252,6 +261,15 @@ public class BoardView extends GridPane {
 */
 		
 	}
+	
+
+	public void start(){
+		this.stage = new Stage();
+		this.scene = new Scene(this, 700, 700);
+		this.stage.setScene(scene);
+		// this.stage.show();
+	}
+
 
 	public Kachel[][] getKachelArray() {
 		return kachelArray;

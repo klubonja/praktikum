@@ -1,4 +1,4 @@
-package view;
+package kacheln;
 
 import javafx.scene.paint.Color;
 

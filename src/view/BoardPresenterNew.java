@@ -13,6 +13,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import kacheln.Kachel;
 import model.Player;
 
 /**

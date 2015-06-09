@@ -1,4 +1,4 @@
-package view;
+package kacheln;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;

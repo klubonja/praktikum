@@ -8,7 +8,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class HinteresPane extends GridPane {
+public class BoardView extends GridPane {
 
 	private Stage stage;
 	private Scene scene;

@@ -8,8 +8,8 @@ public class StartAllThePanes extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		
-		HinteresPane tollesGridPane = new HinteresPane();
-		VorderesPane tolleGroup = new VorderesPane();
+		BoardView tollesGridPane = new BoardView();
+		FigurenView tolleGroup = new FigurenView();
 		StackAllThePanes tolleStackPane = new StackAllThePanes(tollesGridPane, tolleGroup);
 		
 		tolleStackPane.start();

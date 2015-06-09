@@ -1,4 +1,5 @@
-package view;
+package kacheln;
+
 
 /**
  * @since 26.05.2015

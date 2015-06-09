@@ -1,6 +1,5 @@
 package view;
 
-import view.Kachel;
 import javafx.animation.PathTransition;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -12,6 +11,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import kacheln.Kachel;
 import model.Player;
 
 /**

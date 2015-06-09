@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
-public class VorderesPane extends Group {
+public class FigurenView extends Group {
 
 	private Stage stage;
 	private Scene scene;
