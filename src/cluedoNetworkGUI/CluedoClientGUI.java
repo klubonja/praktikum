@@ -1,12 +1,9 @@
 package cluedoNetworkGUI;
 
-
-import javax.swing.event.ChangeEvent;
-
-import com.sun.xml.internal.ws.dump.LoggingDumpTube.Position;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -26,6 +23,9 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	
 	final public Button submitMessageButton;
 	final public TextArea inputField;
+	final public Button manualIPConnect;
+	String countOfReturns[] = {"IP-Address", "Port"};
+	String [] returnIPAndPort = new String[countOfReturns.length];
 	
 	 public CluedoClientGUI(Stage primaryStage){
 		 super(primaryStage);
@@ -33,6 +33,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 inputField = new TextArea();		 
 		 setWindowName("CluedoClient");
 		 setStartServiceButtonLabel("StartClient");	
+		 manualIPConnect = new Button("Connect to IP-Address manually");
 		 startUp();	 		 
 	}
 	    
@@ -49,8 +50,13 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setHgrow(Priority.ALWAYS);
-        col1.setPercentWidth(80);
+        col1.setPercentWidth(40);
         grid.getColumnConstraints().add(col1);
+        
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setHgrow(Priority.ALWAYS);
+        col2.setPercentWidth(40);
+        grid.getColumnConstraints().add(col2);
         
         RowConstraints row0 = new RowConstraints();
 	    row0.setPercentHeight(5);    
@@ -96,12 +102,13 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	    grid.add(startService,		 	0, 1);
 	    grid.add(ipListView, 			0, 2, 2, 4);
 	    grid.add(submitMessageButton, 	0, 6, 1, 1);
-	    grid.add(status, 				1, 1);
-	    grid.add(inLabel, 				1, 2, 1, 1);
-	    grid.add(messagesIn, 			1, 3, 1, 1);
-	    grid.add(outLabel, 				1, 4, 1, 1);
-	    grid.add(messagesOut, 			1, 5, 1, 1);	    
-	    grid.add(inputField, 			1, 6, 1, 1);
+	    grid.add(status,				1, 1);
+	    grid.add(manualIPConnect, 		2, 1);
+	    grid.add(inLabel, 				1, 2, 2, 1);
+	    grid.add(messagesIn, 			1, 3, 2, 1);
+	    grid.add(outLabel, 				1, 4, 2, 1);
+	    grid.add(messagesOut, 			1, 5, 2, 1);	    
+	    grid.add(inputField, 			1, 6, 2, 1);
 	    
        
 
@@ -109,14 +116,16 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         primaryStage.show();
     }
     
-    public String askForIp() {
+    public String[] askForIp() {
     	Stage ipPrompt = new Stage();
     	IpPromptGrid ipr = new IpPromptGrid(ipPrompt);
 		Scene secondary = new Scene(ipr,300,200);		
 		ipPrompt.setScene(secondary);
 		ipPrompt.showAndWait();	
 		
-		return ipr.returnIp();
+		returnIPAndPort[0] = ipr.returnIp();
+		returnIPAndPort[1] = ipr.returnPort();
+		return returnIPAndPort;
 	}
     
     public String[] loginPrompt(String stageTitle){
@@ -140,4 +149,6 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	  public void clearMessages(){
 		  messagesIn.setText("");
 	  }
+	  
+	  
 }

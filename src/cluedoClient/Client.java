@@ -36,6 +36,7 @@ public class Client {
 		System.out.println("client started");
 		listenForServersThread();
 		sayHello();
+		setHandlers();
 	}
 	
 	
@@ -64,9 +65,18 @@ public class Client {
 	 */
 	private void startTCPConnection(){		
 		try {
-			int port = 7000;		
-			ip = gui.askForIp();
+					
+			String[] IPAndPort = gui.askForIp();
+			ip = IPAndPort[0];
+			int port = Integer.parseInt(IPAndPort[1]);
 			if (ip.length() < 8) ip = new String("127.0.0.1");//localhost	
+			
+			if (IPAndPort[1].length() < 4) port = 7000;
+			if (Integer.parseInt(IPAndPort[1]) < 1025) port = 7000; 
+			
+			System.out.println("IP: " + ip);
+			System.out.println("Port: " + port);
+			
 			
 			//ab hier nur noch tcp 
 			cSocket = new Socket(ip,port);			
@@ -78,7 +88,7 @@ public class Client {
 			
 			gui.setStatus("Connected to "+ cSocket.getInetAddress().toString());	
 			
-			setCloseHandler();
+			setHandlers();
 		}
 		catch (Exception e){
 			System.out.println(e.getMessage());
@@ -88,9 +98,17 @@ public class Client {
 	}	
 	
 
-	
-	private void setCloseHandler(){
-		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+	public void setHandlers(){
+		  gui.manualIPConnect.setOnAction(new EventHandler<ActionEvent>(){
+				
+				@Override 
+				public void handle(ActionEvent event ){
+					startTCPConnection();
+					
+				}
+			});
+		  
+		  gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		      @Override
 			public void handle(WindowEvent e){
 		          
@@ -106,9 +124,9 @@ public class Client {
 		          }
 		      }
 		 });
+	  }
 	
 	
-	}
 }
 
 
