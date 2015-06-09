@@ -4,6 +4,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 
 import javafx.application.Platform;
+import javafx.scene.control.SelectionModel;
 
 import org.json.JSONObject;
 
@@ -69,7 +70,7 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 
 
 	@Override
-	void select(String selectedListItem,int selectedListItemIndex) {
+	void select(SelectionModel<String> smod) {
 		
 		
 	}

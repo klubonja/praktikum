@@ -10,8 +10,13 @@ import java.nio.charset.StandardCharsets;
 
 import org.json.JSONObject;
 
+import broadcast.Multicaster;
 import javafx.application.Platform;
+import json.CluedoJSON;
+import json.CluedoProtokollChecker;
 import cluedoNetworkGUI.CluedoServerGUI;
+import enums.Config;
+import enums.NetworkHandhakeCodes;
 
 /**
  * @author guldener
@@ -40,10 +45,30 @@ class CommunicationHandler implements Runnable{
 		while (!readyForCommunication) {
 			try {
 				String message = getMessageFromClient(client.socket).trim();
-				JSONObject json = new JSONObject(message);
 				Platform.runLater(() -> {
-					gui.addMessageIn(client.id+" says : after json login : "+ json.get("type"));
+					gui.addMessageIn(client.getAdress()+" says : "+ message);
 				});
+				CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(message)));
+				NetworkHandhakeCodes errcode = checker.validateExpectedType("login",null);
+				if (errcode == NetworkHandhakeCodes.OK) {
+					Platform.runLater(() -> {
+						client.setNick(checker.getMessage().getString("nick"));
+						client.setGroupName(checker.getMessage().getString("group"));
+						gui.addMessageIn(client.getAdress()+" says :"+message);
+						gui.addIp(client.getAdress()+" "+client.getNick());
+					});					
+				}
+				else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR){
+					Platform.runLater(() -> {
+						gui.addMessageIn(client.getAdress()+" sends invalid Messages : \n"+checker.getErrString());
+					});					
+				}
+				
+				else {
+					Platform.runLater(() -> {
+						gui.addMessageIn("unhandled incoming : \n" + message);
+					});
+				}
 				readyForCommunication = true;
 				
 			} catch (IOException e) {

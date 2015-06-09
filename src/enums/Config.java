@@ -26,5 +26,7 @@ public abstract class Config {
 	
 	public final static int TCP_PORT = 9000;	
 	
+	public final static String[] EXPANSIONS= {"Chat","Pumping Oil in the Antarctica, fuck yeah!"};
+	
 	
 }

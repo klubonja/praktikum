@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import json.CluedoJSON;
 import cluedoNetworkGUI.CluedoClientGUI;
+import enums.Config;
 
 
 /**
@@ -23,15 +24,17 @@ import cluedoNetworkGUI.CluedoClientGUI;
  * 
  */
 
-class clientMessageListener implements Runnable{
+class OutgoingHandler implements Runnable{
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
 	String id;
+	String serverName;
 	
-	public clientMessageListener(Socket cs,CluedoClientGUI g,int id) {
+	public OutgoingHandler(Socket cs,CluedoClientGUI g,int id,String sName) {
 		cSocket = cs;
 		gui = g;
+		serverName = sName;
 		login();
 		addClientGUIListener();
 	}
@@ -71,10 +74,12 @@ class clientMessageListener implements Runnable{
 	
 	private final boolean login(){
 		CluedoJSON handShake = new CluedoJSON();
-		String[] loginData = gui.loginPrompt("Login to remote Server");
+		String[] loginData = gui.loginPrompt("Login to Server: " +serverName);
 		handShake.put("type", "login");
 		handShake.put("nick", loginData[0]);
 		handShake.put("group", loginData[1]);
+		handShake.put("version", Config.PROTOKOLL_VERSION);
+		handShake.put("expansions", Config.EXPANSIONS);
 		sendMsg(handShake.toString());
 		
 		return true;

@@ -69,7 +69,7 @@ public class Client {
 			
 			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,id));
 			t1.start();
-			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,id));
+			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,id,serverInfo.getGroupName()));
 			t2.start();
 			
 			gui.setStatus("Connected to "+ cSocket.getInetAddress().toString());	
