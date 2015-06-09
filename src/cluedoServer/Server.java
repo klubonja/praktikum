@@ -2,8 +2,8 @@ package cluedoServer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -22,30 +22,35 @@ import enums.Config;
  * @author guldener
  * 
  */
-public class Server  {
+public class Server {
 	
-	public CluedoGroup[] groups;
-	public ServerSocket socket;
-	final CluedoServerGUI gui;
-	ExecutorService pool;
+	Connector connector;
+	public ServerSocket tcpSocket;
+	ArrayList<ClientItem> clientList;
 	int TCPport;
-	int poolSize;
+	
+	final CluedoServerGUI gui;
+	public CluedoGame[] games;
+	
 	boolean running;
-	NetworkService networkService;
+	
+	
 	
 	public Server(CluedoServerGUI g){
 		gui = g;
-		poolSize = 4;
-		TCPport = Config.TCP_PORT;		
-		running = false;
-		pool = Executors.newFixedThreadPool(poolSize);	
-		setListener();
-		System.out.println("Server Start");	
-		broadcast();
+		TCPport = Config.TCP_PORT;	
+		clientList = new ArrayList<ClientItem>();
+			
+		sayHello();
 		listenForClientsThread();
+		
+		startServer();		
+		setListener();	
+		
+		System.out.println("Server Start");	
 	}
 	
-	private void broadcast() {
+	private void sayHello() {
 		JSONObject msg = new JSONObject();
 		msg.put("type", "udp server");
 		msg.put("group", Config.GROUP_NAME);
@@ -63,29 +68,36 @@ public class Server  {
 		cl.start();
 	}
 	
+	
+	private void createGroups(){
+		for(int i = 0; i < 4; i++) games[i] = new CluedoGame(6,"reduzierterHund"+i);
+	}
+	
 	/**
 	 * ein thread für eingehende verbindungen
 	 * aufgebaute verbindungen werden auf eigenen threads ausgeführt
 	 * @throws IOException
 	 */
-	private void createGroups(){
-		for(int i = 0; i < 4; i++) groups[i] = new CluedoGroup(6,"reduzierterHund"+i);
-	}
-	
-	private void startServer()  throws IOException{
-		
-		socket = new ServerSocket(TCPport);	
-		networkService = new NetworkService(socket, pool, TCPport, gui);
-		Thread t = new Thread(networkService);
-		t.start();
-		System.out.println("Server running");
-		running = true;		
+	private void startServer()  {
+		try {
+			tcpSocket = new ServerSocket(TCPport);	
+			connector = new Connector(tcpSocket, gui,clientList);
+			connector.start();
+			try {
+				NetworkInterfacesIpManager nm = new NetworkInterfacesIpManager();				 	
+				gui.setStatus("port "+TCPport+ " NInterfaces: "+nm.getServicesFormated()+" "+StandardCharsets.UTF_8);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("Server running");			
+		} catch (IOException e) {
+			gui.addMessageIn(e.getMessage());
+		}		
 	}
 	
 	private void stopServer()  throws IOException{
-		networkService.kill();
-		socket.close();	
-		running = false;
+		connector.kill();
+		tcpSocket.close();	
 		System.out.println("Serverservices closed");
 	}
 	

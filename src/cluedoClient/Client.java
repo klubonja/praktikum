@@ -54,26 +54,22 @@ public class Client {
 		answer.put("group", Config.GROUP_NAME);
 		answer.put("tcp port", Config.TCP_PORT);
 		ServerHandShakeListener cl = 
-				new ServerHandShakeListener(serverList,answer.toString(),"udp server",Config.BROADCAST_PORT,gui);
+				new ServerHandShakeListener(serverList,answer.toString(),"udp server",Config.BROADCAST_PORT,gui,this);
 		cl.start();
 	}
 	
 	
-	/**
+	/** 
 	 * 
 	 */
-	private void startTCPConnection(){		
-		try {
-			int port = 7000;		
-			ip = gui.askForIp();
-			if (ip.length() < 8) ip = new String("127.0.0.1");//localhost	
-			
+	public void startTCPConnection(ServerItem serverInfo){		
+		try {			
 			//ab hier nur noch tcp 
-			cSocket = new Socket(ip,port);			
+			cSocket = new Socket(serverInfo.getIp(),serverInfo.getPort());			
 			
-			Thread t1 = new Thread(new ServerListener(cSocket,gui,id));
+			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,id));
 			t1.start();
-			Thread t2 = new Thread(new clientMessageListener(cSocket,gui,id));
+			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,id));
 			t2.start();
 			
 			gui.setStatus("Connected to "+ cSocket.getInetAddress().toString());	

@@ -33,7 +33,7 @@ public abstract class MulticastListenerThread extends Thread{
 	boolean running;
 	
 	abstract void listen();
-	abstract void select(String selectedListItem,int selectedListItemIndex);
+	abstract void select(SelectionModel<String> s);
 	abstract void startServiceAction();
 	
 	
@@ -80,8 +80,7 @@ public abstract class MulticastListenerThread extends Thread{
 			    @Override
 			    public void handle(MouseEvent click) {
 			        if (click.getClickCount() == 2) {
-			           SelectionModel<String>  currentItemSelected = gui.getIpList().getSelectionModel();
-			           select(currentItemSelected.getSelectedItem(),currentItemSelected.getSelectedIndex());		
+			           select(gui.getIpList().getSelectionModel());		
 			        }
 			    }
 			});			

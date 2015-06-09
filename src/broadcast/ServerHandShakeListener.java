@@ -5,22 +5,26 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
+import javafx.scene.control.SelectionModel;
 
 import org.json.JSONObject;
 
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
+import cluedoClient.Client;
 import cluedoClient.ServerItem;
 import cluedoNetworkGUI.CluedoClientGUI;
 import enums.NetworkHandhakeCodes;
 
 public class ServerHandShakeListener extends MulticastListenerThread{
 	
+	Client parent;
 	ArrayList<ServerItem> serverList;
 	String[] ignoredTypes = {"udp client"};
 	
-	public ServerHandShakeListener(ArrayList<ServerItem> sl,String answer, String expType, int port, CluedoClientGUI g) {
+	public ServerHandShakeListener(ArrayList<ServerItem> sl,String answer, String expType, int port, CluedoClientGUI g,Client client) {
 		super(answer, expType, port, g);
+		parent = client;
 		serverList = sl;
 	}
 
@@ -62,9 +66,10 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 	}
 
 	@Override
-	void select(String selectedListItemName,int selectedListItemIndex) {
-		String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
-		ServerItem serverInfo = serverList.get(selectedListItemIndex);
+	void select(SelectionModel<String> smod) {
+		//String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
+		ServerItem serverInfo = serverList.get(smod.getSelectedIndex());
+		parent.startTCPConnection(serverInfo);
 		
 		
 	}

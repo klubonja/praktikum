@@ -15,7 +15,7 @@ import cluedoNetworkGUI.CluedoClientGUI;
  * @param cs das Socket über das eine Serververbindung aufgebaut wurde
  * 
  */
-class ServerListener implements Runnable {
+class IncomingHandler implements Runnable {
 	int bufferSize = 1024;
 	Socket cSocket;
 	CluedoClientGUI gui;
@@ -30,7 +30,7 @@ class ServerListener implements Runnable {
 	 * @param game
 	 * @param id
 	 */
-	ServerListener(Socket cs,CluedoClientGUI g,int id){
+	IncomingHandler(Socket cs,CluedoClientGUI g,int id){
 		cSocket = cs;
 		gui = g;
 		this.id = id;

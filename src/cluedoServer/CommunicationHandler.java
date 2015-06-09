@@ -17,56 +17,48 @@ import cluedoNetworkGUI.CluedoServerGUI;
  * @author guldener
  * verteilt die nachrichten der des clients
  */
-class communicationHandler implements Runnable{
+class CommunicationHandler implements Runnable{
 	
 	ServerSocket serverSocket;
-	Client client;
-	NetworkService networkService;
+	ClientItem client;
+	Connector networkService;
 	Socket socket;
 	final CluedoServerGUI gui;
 	boolean running = true;
-	int id;
 	int bufferSize = 1024;
 	
 	
 	
-	communicationHandler(ServerSocket ss, Client c, NetworkService s, CluedoServerGUI g,int id) throws IOException{
+	CommunicationHandler(ServerSocket ss, ClientItem c,  CluedoServerGUI g) throws IOException{
 		serverSocket = ss;
 		client = c;
-		networkService = s;
 		gui = g;
-		this.id = id;
-		awaitLoginAtempt();
-		
 	}
 	
-	private void awaitLoginAtempt (){
-		try {
-			String message = getMessageFromClient(client.socket).trim();
-			JSONObject json = new JSONObject(message);
-			Platform.runLater(() -> {
-				gui.addMessageIn(client.id+" says : after json login : "+ json.get("type"));
-			});
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	private void awaitingLoginAttempt (){
+		boolean readyForCommunication = false;
+		while (!readyForCommunication) {
+			try {
+				String message = getMessageFromClient(client.socket).trim();
+				JSONObject json = new JSONObject(message);
+				Platform.runLater(() -> {
+					gui.addMessageIn(client.id+" says : after json login : "+ json.get("type"));
+				});
+				readyForCommunication = true;
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+		}	
 	}
 	
-	public void run(){		
+	public void run(){	
+		awaitingLoginAttempt();
 		while (running){
 			try {
 	           String message = getMessageFromClient(client.socket).trim();
-	           //System.out.println(message);
-	           if (message.equals("CLOSE")){
-	        	   closeConnection("Client "+id+ " says plolitely: "+message);
-	           }
-				networkService.notifyAllClientsButSender(message,client);
-				Platform.runLater(() -> {
-					gui.addMessageIn(client.id+" says : "+ message);
-				});		
+	           //System.out.println(message);	         
 			}
 			catch (IOException e){
 				try {
@@ -86,7 +78,6 @@ class communicationHandler implements Runnable{
 		Platform.runLater(() -> {
 			gui.addMessageIn(msg);
 			System.out.println(msg);
-			gui.removeIp(id);
 		});
 		running = false;
 	}

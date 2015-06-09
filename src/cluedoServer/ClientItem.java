@@ -4,17 +4,28 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-class Client {
-	String id;
-	Socket socket;
+class ClientItem {
 	
-	Client(int i, Socket s){
-		id = "Client"+ i;
+	String id;
+	String nick;	
+	String groupName;
+	
+	int gameId;
+	
+	Socket socket;
+	InetAddress adress;
+	
+	
+	ClientItem(Socket s){
 		socket = s;
+		adress = socket.getInetAddress();
 	}
+	
+	
 	
 	public String getAdress(){
 		return socket.getInetAddress().getHostAddress();
@@ -27,7 +38,6 @@ class Client {
 					        socket.getOutputStream(), StandardCharsets.UTF_8)), true);
 			 out.print(msg);
 			 out.flush();
-			 //outToClient.writeUTF(msg);
 		}
 		catch (IOException e){
 			System.out.println(e.getMessage());
