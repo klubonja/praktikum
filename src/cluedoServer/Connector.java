@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+import staticClasses.Config;
+import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
 
 /**
@@ -41,13 +43,13 @@ class Connector extends Thread{
 				Socket clientSocket = serverSocket.accept();
 				if (!checkForExistingIp(clientSocket.getInetAddress())){
 					if (isBlacklisted(clientSocket.getInetAddress()))
-						sendMsg("you have the ip of some evil known protolollviolator, lets try anyway", clientSocket);
+						sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
 					Thread newCommunicationThread = new Thread(new CommunicationHandler(
 							serverSocket, new ClientItem(clientSocket), gui,clientList,blackList));
 					newCommunicationThread.start();	
 				}
 				else {
-					sendMsg("already connected", clientSocket);
+					sendMsg(NetworkMessages.error_Msg("already connected"), clientSocket);
 					clientSocket.close();
 				}
 							

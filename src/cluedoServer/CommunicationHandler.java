@@ -16,6 +16,7 @@ import json.CluedoProtokollChecker;
 import org.json.JSONObject;
 
 import staticClasses.Config;
+import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
 import enums.NetworkHandhakeCodes;
 
@@ -55,7 +56,6 @@ class CommunicationHandler implements Runnable{
 				NetworkHandhakeCodes errcode = checker.validateExpectedType("login",null);
 				if (errcode == NetworkHandhakeCodes.OK) {
 					
-					client.sendMsg("Welcome at the "+Config.GROUP_NAME+"'s");
 					
 					Platform.runLater(() -> {
 						gui.addMessageIn(client.getAdress()+" says :"+message);
@@ -72,8 +72,8 @@ class CommunicationHandler implements Runnable{
 					Platform.runLater(() -> {
 						gui.addMessageIn(client.getAdress()+" sends invalid Messages : \n"+checker.getErrString());
 					});	
-					client.sendMsg("You are being blacklisted due to following Protokollviolations :\n"+checker.getErrString());
-					client.sendMsg("closing");
+					client.sendMsg(NetworkMessages.error_Msg("you are violating the protokoll due to the following:\n"+checker.getErrString()));
+					client.sendMsg(NetworkMessages.disconnectMsg());
 					client.closingConnection();
 					blackList.add(client);
 					

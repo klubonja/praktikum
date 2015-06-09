@@ -2,6 +2,7 @@ package staticClasses;
 
 
 
+
 public abstract class Config {
 	/**
 	 * unsere config daten in einer static klasse
@@ -34,4 +35,7 @@ public abstract class Config {
 	public final static double IP_PROMPT_WINDOW_WIDTH = 300;
 	public final static double LOGIN_PROMPT_WINDOW_WIDTH = 300;
 	public final static double LOGIN_PROMPT_WINDOW_HEIGHT = 200;
+	
+	public final static String BLACKLISTED_MSG = ""
+			+ "you have the ip of some evil known protolollviolator, lets try anyway";
 }
