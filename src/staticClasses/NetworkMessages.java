@@ -25,7 +25,7 @@ public abstract class NetworkMessages {
 		CluedoJSON json = new CluedoJSON("login");
 		json.put("nick", nick);
 		json.put("version", Config.PROTOKOLL_VERSION);
-		json.put("groupe", group);
+		json.put("group", group);
 		json.put("expansions", new JSONArray(Config.EXPANSIONS));		
 		
 		return json.toString();

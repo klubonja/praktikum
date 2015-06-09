@@ -23,8 +23,6 @@ public class Client {
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
-	String ip;
-	int id;
 	ArrayList<ServerItem> serverList;
 	
 	public Client(CluedoClientGUI g) {
@@ -59,7 +57,7 @@ public class Client {
 			serverList.add(server);
 			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,serverList));
 			t1.start();
-			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,id,server.getGroupName()));
+			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,server.getGroupName()));
 			t2.start();
 			
 			gui.setStatus("Connected to "+server.getGroupName()+" on : "+ cSocket.getInetAddress().toString());	

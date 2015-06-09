@@ -3,7 +3,6 @@ package cluedoServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -39,7 +38,7 @@ class CommunicationHandler implements Runnable{
 	
 	
 	
-	CommunicationHandler(ServerSocket ss, ClientItem c,  CluedoServerGUI g,ArrayList<ClientItem> cList,ArrayList<ClientItem> bList) {
+	CommunicationHandler(ServerSocket ss, ClientItem c, CluedoServerGUI g,ArrayList<ClientItem> cList,ArrayList<ClientItem> bList) {
 		gui = g;
 		serverSocket = ss;
 		clientList = cList;
@@ -142,25 +141,6 @@ class CommunicationHandler implements Runnable{
 			catch(Exception e) {}		
 		 	
 			return message.toString();
-	}
-	
-	private void sendMessageToClient(String msg){
-		client.sendMsg(msg);
-	}
-	
-	
-	
-	private static String getHostInfo(){
-		StringBuffer hostInfo = new StringBuffer();
-		try {
-			hostInfo.append(InetAddress.getLocalHost());
-		}
-		catch (IOException e){
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return hostInfo.toString();
-		}
 	}
 	
 	public void kill(){

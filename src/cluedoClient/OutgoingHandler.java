@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -27,10 +28,9 @@ class OutgoingHandler implements Runnable{
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
-	String id;
 	String serverName;
 	
-	public OutgoingHandler(Socket cs,CluedoClientGUI g,int id,String sName) {
+	public OutgoingHandler(Socket cs,CluedoClientGUI g,String sName) {
 		cSocket = cs;
 		gui = g;
 		serverName = sName;
@@ -64,9 +64,8 @@ class OutgoingHandler implements Runnable{
 		gui.submitMessageButton.setOnAction(new EventHandler<ActionEvent>() {				
 			@Override
 			public void handle(ActionEvent event) {
-				sendMsg(gui.inputField.getText());	
-				gui.inputField.setText("");
-				
+				sendMsg(NetworkMessages.chat_to_serverMsg(gui.inputField.getText(), LocalDateTime.now().toString()));	
+				gui.inputField.setText("");				
 			}
 		});	
 	}
