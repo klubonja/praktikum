@@ -170,11 +170,12 @@ public class IntroPresenter {
 		GameFramePresenter pres2 = new GameFramePresenter(gfview, player2);
 		Scene scene = new Scene(gfview, 1300, 700);
         Stage primaryStage = new Stage();
-        view.primaryStage.setScene(scene);
-        view.primaryStage.setResizable(true);
-        view.primaryStage.setTitle("Cluedo");
-        view.primaryStage.setFullScreen(true);
-        view.primaryStage.show();
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(true);
+        primaryStage.setTitle("Cluedo");
+        primaryStage.setFullScreen(true);
+        primaryStage.show();
+        view.primaryStage.close();
 		}
 	
 	public void quitGame(){
