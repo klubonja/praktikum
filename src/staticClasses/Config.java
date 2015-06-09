@@ -27,7 +27,7 @@ public abstract class Config {
 	public final static int MESSAGE_BUFFER = 1024;
 	
 	
-	public final static int TCP_PORT = 9000;	
+	public final static int TCP_PORT = 1200;	
 	
 	public final static String[] EXPANSIONS= {"Chat","Pumping Oil in the Antarctica, fuck yeah!"};
 	

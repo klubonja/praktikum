@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
 

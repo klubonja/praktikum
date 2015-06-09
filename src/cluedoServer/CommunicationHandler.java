@@ -73,7 +73,7 @@ class CommunicationHandler implements Runnable{
 					Platform.runLater(() -> {
 						gui.addMessageIn(client.getAdress()+" sends invalid Messages : \n"+checker.getErrString());
 					});	
-					client.sendMsg(NetworkMessages.error_Msg("you are violating the protokoll due to the following:\n"+checker.getErrString()));
+					client.sendMsg(NetworkMessages.error_Msg("you are violating the protokoll due to the following: \n"+checker.getErrString()));
 					client.sendMsg(NetworkMessages.disconnectMsg());
 					client.closingConnection();
 					blackList.add(client);

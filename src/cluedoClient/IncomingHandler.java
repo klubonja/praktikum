@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 import staticClasses.Config;
 import cluedoNetworkGUI.CluedoClientGUI;
-import enums.NetworkHandhakeCodes;
 
 /**
  * Diese Klasse schickt über das Klientsocket nachrichten an den Server
@@ -63,21 +62,23 @@ class IncomingHandler implements Runnable {
 			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
 			String message = new String (buffer, 0, charCount);
 			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(message)));
-			NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful",null);
-			if (errcode == NetworkHandhakeCodes.OK) {
-				
-				
-			}
-			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
-					|| errcode == NetworkHandhakeCodes.TYPERR){
-								
-			}
-			
-			else {
-				Platform.runLater(() -> {
-					gui.addMessageIn("unhandled incoming : \n" + message);
-				});
-			}				
+//			NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful",null);
+//			if (errcode == NetworkHandhakeCodes.OK) {
+//				
+//				
+//			}
+//			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
+//					|| errcode == NetworkHandhakeCodes.TYPERR){
+//								
+//			}
+//			
+//			else {
+//				Platform.runLater(() -> {
+//					gui.addMessageIn("unhandled incoming : \n" + message);
+//				});
+//			}		
+			gui.addMessageIn(new JSONObject(message).toString());
+
 			
 		} 
 		catch (IOException e) {
