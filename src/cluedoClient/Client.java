@@ -66,16 +66,7 @@ public class Client {
 	private void startTCPConnection(){		
 		try {
 					
-			String[] IPAndPort = gui.askForIp();
-			ip = IPAndPort[0];
-			int port = Integer.parseInt(IPAndPort[1]);
-			if (ip.length() < 8) ip = new String("127.0.0.1");//localhost	
 			
-			if (IPAndPort[1].length() < 4) port = 7000;
-			if (Integer.parseInt(IPAndPort[1]) < 1025) port = 7000; 
-			
-			System.out.println("IP: " + ip);
-			System.out.println("Port: " + port);
 			
 			
 			//ab hier nur noch tcp 
@@ -103,7 +94,18 @@ public class Client {
 				
 				@Override 
 				public void handle(ActionEvent event ){
-					startTCPConnection();
+					String[] IPAndPort = gui.askForIp();
+					ip = IPAndPort[0];
+					int port = Integer.parseInt(IPAndPort[1]);
+					if (ip.length() < 8) ip = new String("127.0.0.1");//localhost	
+					
+					if (IPAndPort[1].length() < 4) port = 7000;
+					if (Integer.parseInt(IPAndPort[1]) < 1025) port = 7000; 
+					
+					System.out.println("IP: " + ip);
+					System.out.println("Port: " + port);
+					
+					startTCPConnection(new ServerItem(Config.GROUP_NAME, ip, port));
 					
 				}
 			});
