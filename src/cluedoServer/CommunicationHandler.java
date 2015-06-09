@@ -104,6 +104,7 @@ class CommunicationHandler implements Runnable{
 		while (running){
 			try {
 	           String message = getMessageFromClient(client.socket).trim();
+	           gui.addMessageIn(message);
 	           
 	           System.out.println(message);	         
 			}

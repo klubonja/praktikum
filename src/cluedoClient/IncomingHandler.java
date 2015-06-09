@@ -62,22 +62,8 @@ class IncomingHandler implements Runnable {
 			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
 			String message = new String (buffer, 0, charCount);
 			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(message)));
-//			NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful",null);
-//			if (errcode == NetworkHandhakeCodes.OK) {
-//				
-//				
-//			}
-//			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
-//					|| errcode == NetworkHandhakeCodes.TYPERR){
-//								
-//			}
-//			
-//			else {
-//				Platform.runLater(() -> {
-//					gui.addMessageIn("unhandled incoming : \n" + message);
-//				});
-//			}		
-			gui.addMessageOut(new JSONObject(message).toString());
+			if (checker.isValid())				
+				gui.addMessageIn(new JSONObject(message).toString());
 
 			
 		} 
