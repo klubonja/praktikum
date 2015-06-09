@@ -63,8 +63,7 @@ public class Client {
 	 * 
 	 */
 	public void startTCPConnection(ServerItem serverInfo){		
-		try {			
-			//ab hier nur noch tcp 
+		try {				
 			cSocket = new Socket(serverInfo.getIp(),serverInfo.getPort());			
 			
 			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,id));
@@ -72,7 +71,7 @@ public class Client {
 			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,id,serverInfo.getGroupName()));
 			t2.start();
 			
-			gui.setStatus("Connected to "+ cSocket.getInetAddress().toString());	
+			gui.setStatus("Connected to "+serverInfo.getGroupName()+" on : "+ cSocket.getInetAddress().toString());	
 			
 			setCloseHandler();
 		}
