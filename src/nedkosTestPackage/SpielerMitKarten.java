@@ -1,4 +1,4 @@
-package gui1_0;
+package nedkosTestPackage;
 
 import java.util.ArrayList;
 import java.util.List;

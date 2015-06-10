@@ -1,9 +1,11 @@
-package gui1_0;
+package nedkosTestPackage;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -11,17 +13,22 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
- * Eine View Klasse die die erste Version des Spielerzueges repraesentiert.
+ * Eine View Klasse die die zweite Version des Spielerzuges repraesentiert.
  * 
  * @author NedkoChulev
  *
  */
-public class Zug_V1 extends Stage {
+public class Zug_V2 extends Stage {
 	private Deck deck = new Deck();
+
+	public Image personImage = new Image("media/icon.jpg");
+	public Image waffeImage = new Image("media/knife.jpg");
+	public Image zimmerImage = new Image("media/house.jpg");
 
 	private Scene scene;
 	private BorderPane fenster;
 	private HBox buttons;
+	private HBox top;
 	private HBox bottom;
 	private Button anklage = new Button("Anklage" + "\n" + "äußern");
 
@@ -30,32 +37,31 @@ public class Zug_V1 extends Stage {
 	public Button close = new Button("Close");
 	private Button klagen = new Button("Anklage äußern");
 
-	private final ComboBox personen = new ComboBox();
-	private final ComboBox waffen = new ComboBox();
-	private final ComboBox zimmer = new ComboBox();
+	private final ComboBox personenListe = new ComboBox();
+	private final ComboBox waffenListe = new ComboBox();
+	private final ComboBox zimmerListe = new ComboBox();
 
 	/**
-	 * Constructor fuer die erste Version von einem Spielerzug
-	 * 
+	 * Constructor fuer die zweite Version des Spielzuges.
 	 */
-	public Zug_V1() {
+	public Zug_V2() {
 		setLayout();
 		this.initStyle(StageStyle.UNDECORATED);
-		this.scene = new Scene(fenster, 450, 300);
+		this.scene = new Scene(fenster, 500, 300);
 		this.setScene(scene);
 	}
 
 	/**
-	 * Baut den Layout Manager auf und fuegt ide Buttons usw. ein
-	 * 
+	 * Baut den Layout Manager auf und fuegt jegliche Buttons und Unter-Layout
+	 * Manager ein
 	 */
 	public void setLayout() {
-		personen.getItems().addAll(deck.getPersonenOrdered());
-		personen.setValue("Täter");
-		waffen.getItems().addAll(deck.getWaffenOrdered());
-		waffen.setValue("Waffe");
-		// zimmer.getItems().addAll(deck.getZimmerOrdered());
-		zimmer.setValue("Raum");
+		personenListe.getItems().addAll(deck.getPersonenOrdered());
+		personenListe.setValue("Täter");
+		waffenListe.getItems().addAll(deck.getWaffenOrdered());
+		waffenListe.setValue("Waffe");
+		// zimmerListe.getItems().addAll(deck.getZimmerOrdered());
+		zimmerListe.setValue("Raum");
 
 		anklage.setMinSize(80, 120);
 		anklage.setMaxSize(80, 120);
@@ -72,6 +78,10 @@ public class Zug_V1 extends Stage {
 		gang.setTextFill(Color.BLACK);
 		gang.setStyle("-fx-background-color: #787878;");
 
+		top = new HBox();
+		top.setSpacing(1);
+		top.setAlignment(Pos.CENTER);
+
 		buttons = new HBox();
 		buttons.setSpacing(20);
 		buttons.setAlignment(Pos.CENTER);
@@ -83,7 +93,8 @@ public class Zug_V1 extends Stage {
 		bottom.getChildren().addAll(close);
 
 		fenster = new BorderPane();
-		fenster.setStyle("-fx-background-color: #33CC66;");
+		fenster.setStyle("-fx-background-image: url('media/ZugFensterResized.png');");
+		fenster.setTop(top);
 		fenster.setCenter(buttons);
 		fenster.setBottom(bottom);
 	}
@@ -108,19 +119,35 @@ public class Zug_V1 extends Stage {
 		return this.buttons;
 	}
 
+	public HBox getTopBox() {
+		return this.top;
+	}
+
 	public HBox getBottomBox() {
 		return bottom;
 	}
 
 	public ComboBox getPersonenListe() {
-		return this.personen;
+		return this.personenListe;
 	}
 
 	public ComboBox getWaffenListe() {
-		return this.waffen;
+		return this.waffenListe;
 	}
 
 	public ComboBox getZimmerListe() {
-		return this.zimmer;
+		return this.zimmerListe;
+	}
+
+	public Image getPersonImage() {
+		return personImage;
+	}
+
+	public Image getWaffeImage() {
+		return waffeImage;
+	}
+
+	public Image getZimmerImage() {
+		return zimmerImage;
 	}
 }

@@ -1,4 +1,4 @@
-package gui1_0;
+package nedkosTestPackage;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

@@ -1,4 +1,4 @@
-package gui1_0;
+package nedkosTestPackage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class Deck {
 	private final String KUECHE = "KUECHE";
 	private final String HOF = "HOF";
 
-	private String[] antwort = new String[3];
+	String[] antwort = new String[3];
 	private List<String> personen = new ArrayList<String>();
 	private List<String> waffen = new ArrayList<String>();
 	private List<String> zimmer = new ArrayList<String>();

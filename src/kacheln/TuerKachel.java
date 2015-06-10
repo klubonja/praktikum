@@ -1,7 +1,7 @@
 package kacheln;
 
+import nedkosTestPackage.Raumkachel;
 import javafx.scene.paint.Color;
-import gui1_0.Raumkachel;
 
 public class TuerKachel extends Kachel {
 

@@ -1,4 +1,4 @@
-package gui1_0;
+package nedkosTestPackage;
 /**
  * @since 26.05.2015
  * @version 26.05.2015
