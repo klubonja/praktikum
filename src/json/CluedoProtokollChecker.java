@@ -9,10 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import staticClasses.Config;
 import enums.CluedoProtokollMessageTypes;
 import enums.Field;
 import enums.GameStates;
-import staticClasses.Config;
 import enums.NetworkHandhakeCodes;
 import enums.Persons;
 import enums.PlayerStates;
@@ -33,7 +33,6 @@ public class CluedoProtokollChecker {
 		errs = new ArrayList<String>();
 		msgs = new ArrayList<String>();
 	}
-
 	
 	public NetworkHandhakeCodes validateExpectedType(String exptype,String[] ignoredTypes){
 		checkType();
@@ -271,11 +270,7 @@ public class CluedoProtokollChecker {
 		
 	}
 	
-<<<<<<< HEAD
-	void val_upd_client(){
-=======
 	void val_udp_client(){
->>>>>>> network_multicast
 		validateValue(jsonRoot,"group");		
 	}
 	
@@ -290,46 +285,26 @@ public class CluedoProtokollChecker {
 	
 	void validatePerson(String personName){
 		if (!Persons.isMemberPersonName(personName))
-<<<<<<< HEAD
-			setErr("Person : "+personName+ " is not a valid Personname in this Game");
-=======
 			setErr("Person :\" "+personName+ "\" is not a valid Personname in this Game");
->>>>>>> network_multicast
 	}
 	
 	void validateWeapon(String weaponName){
 		if (!Weapons.isMember(weaponName))
-<<<<<<< HEAD
-			setErr("Weapon : "+weaponName+ " is not a valid Weapon in this Game");
-=======
 			setErr("Weapon : \""+weaponName+ "\" is not a valid Weapon in this Game");
->>>>>>> network_multicast
 	}
 	
 	void validateRoom(String personName){
 		if (!Persons.isMember(personName))
-<<<<<<< HEAD
-			setErr("Room  : "+personName+ " not a valid Room in this Game");
-=======
 			setErr("Room  : \""+personName+ "\" not a valid Room in this Game");
->>>>>>> network_multicast
 	}
 	
 	void validatePlayerState(String playerState){
 		if (!PlayerStates.isMember(playerState))
-<<<<<<< HEAD
-			setErr("PlayerState : "+playerState+ " not a valid PlayerState in this Game");
-	}
-	
-	boolean validateProtokollVersion(JSONObject jsonParent,String key){
-		if (jsonParent.getString(key).equals((String.valueOf(Config.protokollVersion)))) return true;		
-=======
 			setErr("PlayerState : \""+playerState+ "\" not a valid PlayerState in this Game");
 	}
 	
 	boolean validateProtokollVersion(JSONObject jsonParent,String key){
 		if (jsonParent.getString(key).equals((String.valueOf(Config.PROTOKOLL_VERSION)))) return true;		
->>>>>>> network_multicast
 		return false;
  	}
 	
@@ -375,7 +350,6 @@ public class CluedoProtokollChecker {
 			validateWeapon(jsonParent.getString("weapon"));
 		if (validateValue(jsonParent, "room"))
 			validateRoom(jsonParent.getString("room"));
-<<<<<<< HEAD
 	}
 	
 	void validateField(JSONObject jsonParent, String key){
@@ -386,32 +360,14 @@ public class CluedoProtokollChecker {
 			Field.isValidY(json.getInt("y"));
 	}
 	
-=======
-	}
-	
-	void validateField(JSONObject jsonParent, String key){
-		JSONObject json = jsonParent.getJSONObject(key);
-		if (validateValue(json, "x"))
-			Field.isValidX(json.getInt("x"));
-		if (validateValue(json, "y"))
-			Field.isValidY(json.getInt("y"));
-	}
-	
->>>>>>> network_multicast
 	boolean validateValue(JSONObject jsonParent, String key) {
 		if (jsonParent.has(key))
 			if (jsonParent.get(key).toString().length() > 0)
 				return true;
 			else
-<<<<<<< HEAD
-				setErr("value of key : "+ key + " is empty");
-		else
-			setErr("key : "+key + " expected in :\n"+jsonParent.toString());
-=======
 				setErr("value of key : \""+ key + "\" is empty");
 		else
 			setErr("key : \""+key + "\" expected in :\n"+jsonParent.toString());
->>>>>>> network_multicast
 
 		return false;
 	}
@@ -528,11 +484,7 @@ public class CluedoProtokollChecker {
 		} 
 		else if (!CluedoProtokollMessageTypes.isMember(jsonRoot.getString("type"))) {
 			errs.add("type " + jsonRoot.getString("type")
-<<<<<<< HEAD
-					+ " is not part of protokoll v." + Config.protokollVersion);
-=======
 					+ " is not part of protokoll v." + Config.PROTOKOLL_VERSION);
->>>>>>> network_multicast
 			return false;
 		}
 
@@ -561,24 +513,17 @@ public class CluedoProtokollChecker {
 		errs.add(err);
 	}
 	
-<<<<<<< HEAD
-	public String getErrString(){
-		StringBuffer sb = new StringBuffer();
-=======
 	private void setMsg(String msg) {
 		errs.add(msg);
 	}
 	
 	public String getErrString(){
 		StringBuffer sb = new StringBuffer("");
->>>>>>> network_multicast
 		if (!isValid)
 			for (String err : errs) sb.append(err+"\n");
 		return sb.toString();
 	}
 	
-<<<<<<< HEAD
-=======
 	public String getAllString(){
 		StringBuffer sb = new StringBuffer("");
 		sb.append(getErrString());		
@@ -587,7 +532,6 @@ public class CluedoProtokollChecker {
 		return sb.toString();
 	}
 	
->>>>>>> network_multicast
 	public JSONObject getMessage(){
 		return jsonRoot;
 	}

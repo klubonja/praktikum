@@ -40,5 +40,5 @@ public abstract class Config {
 	public final static double LOGIN_PROMPT_WINDOW_HEIGHT = 200;
 	
 	public final static String BLACKLISTED_MSG = ""
-			+ "you have the ip of some evil known protolollviolator, lets try anyway";
+			+ "you have the ip of some evil known protokollviolator, lets try anyway";
 }
