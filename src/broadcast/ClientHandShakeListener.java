@@ -5,12 +5,11 @@ import java.net.InetAddress;
 
 import javafx.application.Platform;
 import javafx.scene.control.SelectionModel;
+import json.CluedoJSON;
+import json.CluedoProtokollChecker;
 
 import org.json.JSONObject;
 
-import staticClasses.Config;
-import json.CluedoJSON;
-import json.CluedoProtokollChecker;
 import cluedoNetworkGUI.CluedoServerGUI;
 import enums.NetworkHandhakeCodes;
 
@@ -38,14 +37,13 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 				Platform.runLater(() -> {
 					gui.addMessageIn(ip.toString()+" says :"+msg);
 				});
-				Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui,answer);
+				Multicaster bc = new Multicaster(packet.getAddress().getLocalHost().getHostAddress(), gui,answer);
 				bc.sendBrodcast();			
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR){
 				Platform.runLater(() -> {
 					gui.addMessageIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
-				});
-				
+				});				
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
 				Platform.runLater(() -> {

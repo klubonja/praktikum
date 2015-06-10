@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.scene.control.SelectionModel;
+import json.CluedoJSON;
+import json.CluedoProtokollChecker;
 
 import org.json.JSONObject;
 
-import json.CluedoJSON;
-import json.CluedoProtokollChecker;
 import cluedoClient.Client;
 import cluedoClient.ServerItem;
 import cluedoNetworkGUI.CluedoClientGUI;
@@ -56,6 +56,7 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 					gui.addMessageIn(ip.toString()+" is client and is ignored : \n"+checker.getErrString());
 
 				});
+			gui.addMessageIn(msg);
 				
 			}
 		} 
