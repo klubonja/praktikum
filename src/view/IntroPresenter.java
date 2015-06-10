@@ -2,7 +2,6 @@ package view;
 
 import java.util.LinkedList;
 
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -166,14 +165,13 @@ public class IntroPresenter {
 		}
 		
 		GameFrameView gfview = new GameFrameView(this.player);
-		GameFramePresenter pres = new GameFramePresenter(gfview, this.player);
-		GameFramePresenter pres2 = new GameFramePresenter(gfview, player2);
 		Scene scene = new Scene(gfview, 1300, 700);
         Stage primaryStage = new Stage();
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.setTitle("Cluedo");
         primaryStage.setFullScreen(true);
+        GameFramePresenter pres2 = new GameFramePresenter(gfview, player2, primaryStage);
         primaryStage.show();
         view.primaryStage.close();
 		}

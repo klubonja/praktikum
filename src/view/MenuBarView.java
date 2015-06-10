@@ -31,7 +31,7 @@ public class MenuBarView extends MenuBar{
 	sounds = new MenuItem("Sound");
 	main = new MenuItem("Main Menu");
 	quit = new MenuItem("Exit Game");
-	options.getItems().addAll(sounds, quit);
+	options.getItems().addAll(sounds, main, quit);
 	this.getMenus().addAll(options, help);
 	
 	}
