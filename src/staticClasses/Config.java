@@ -11,7 +11,10 @@ public abstract class Config {
 	
 	
 	
+
 	public final static String GROUP_NAME = "yinyanyolos";
+
+	
 	
 	public final static double PROTOKOLL_VERSION = 1.1;
 	

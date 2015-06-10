@@ -1,8 +1,8 @@
 package cluedoClient;
 
-import cluedoNetworkGUI.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import cluedoNetworkGUI.CluedoClientGUI;
 
 public class CluedoClientMain extends Application {
 
@@ -13,6 +13,6 @@ public class CluedoClientMain extends Application {
 	@Override
 	 public void start(Stage primaryStage) {		
 		CluedoClientGUI gui = new CluedoClientGUI(primaryStage);
-		TCPClient client = new TCPClient(gui);		 
+		Client client = new Client(gui);		 
 	 }
 }

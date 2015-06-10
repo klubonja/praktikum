@@ -13,10 +13,10 @@ public class NetworkTestMain extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		 CluedoServerGUI serverGUI = new CluedoServerGUI(primaryStage);
-		 TCPServer server = new TCPServer(serverGUI);	
+		 Server server = new Server(serverGUI);	
 		 
 		 CluedoClientGUI clientGUI = new CluedoClientGUI(new Stage());
-			TCPClient client = new TCPClient(clientGUI);	
+			Client client = new Client(clientGUI);	
 	}
 
 	public static void main(String[] args) {
