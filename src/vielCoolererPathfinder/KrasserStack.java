@@ -27,7 +27,7 @@ public class KrasserStack extends StackPane {
 		stage.setScene(scene);
 		layoutStuff();
 		stage.show();
-		
+		doThatTitleThang("hans");
 	}
 	
 	public void layoutStuff(){
@@ -40,5 +40,10 @@ public class KrasserStack extends StackPane {
 		
 		
 	}
+	
+	public void doThatTitleThang(String title){
+		this.stage.setTitle(title);
+	}
+
 	
 }
