@@ -6,12 +6,7 @@ package staticClasses;
 public abstract class Config {
 	/**
 	 * unsere config daten in einer static klasse
-	 */
-	
-	
-	
-	
-
+	 * */
 	public final static String GROUP_NAME = "yinyanyolos";
 
 	
@@ -40,5 +35,5 @@ public abstract class Config {
 	public final static double LOGIN_PROMPT_WINDOW_HEIGHT = 200;
 	
 	public final static String BLACKLISTED_MSG = ""
-			+ "you have the ip of some evil known protokollviolator, lets try anyway";
+			+ "you have the ip of some evil known protoksaveollviolator, lets try anyway";
 }
