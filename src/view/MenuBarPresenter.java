@@ -31,6 +31,7 @@ public class MenuBarPresenter {
         mainStage.setScene(scene);
         mainStage.setResizable(true);
         mainStage.setTitle("YinYanYolos Present:");
+        mainStage.setResizable(false);
         mainStage.show();
         primaryStage.close();
 	}

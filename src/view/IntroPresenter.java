@@ -34,9 +34,9 @@ public class IntroPresenter {
 		player1 = new Player("Pl1", 0, 5, Color.RED);
 		player2 = new Player("Pl1", 16, 0, Color.GREEN);
 		player3 = new Player("Pl1", 0, 18, Color.BLUE);
-		player4 = new Player("Pl1", 9, 24, Color.YELLOW);
-		player5 = new Player("Pl1", 14, 24, Color.WHITE);
-		player6 = new Player("Pl1", 23, 7, Color.PURPLE);
+		player4 = new Player("Pl1", 0, 5, Color.YELLOW);
+		player5 = new Player("Pl1", 0, 5, Color.WHITE);
+		player6 = new Player("Pl1", 0, 5, Color.PURPLE);
 		players = new LinkedList<Player>();
 		players.add(player1);
 		players.add(player2);
@@ -74,6 +74,8 @@ public class IntroPresenter {
 		view.newGame.setOnMouseExited(e -> removeEffect(view.newGame));
 		view.newGame.setOnAction(e -> startNewGame());
 		view.quit.setOnAction(e -> quitGame());
+		view.options.setOnAction(e -> optionsFrame());
+		view.back.setOnAction(e -> mainFrame());
 	}
 	
 	public void selection(int n){
@@ -140,8 +142,18 @@ public class IntroPresenter {
 		node.setEffect(null);
 	}
 	
+	public void optionsFrame(){
+		view.secondary.toFront();
+	}
+	
+	public void mainFrame(){
+		view.primary.toFront();
+	}
+	
 	@SuppressWarnings("unused")
-	public void startNewGame() throws NullPointerException{
+	public void startNewGame(){
+		
+		try{
 		
 		if(view.pl1.isSelected()){ 
 			this.player = player1;
@@ -160,20 +172,35 @@ public class IntroPresenter {
 		}
 		if(view.pl6.isSelected()){ 
 			this.player = player6;
-		}else{
-			errorStr.set("Please select a character!");
 		}
 		
-		GameFrameView gfview = new GameFrameView(this.player);
-		Scene scene = new Scene(gfview, 1300, 700);
+		GameFrameView viewPl1 = new GameFrameView(this.player);
+		GameFrameView viewPl2 = new GameFrameView(player2);
+		GameFrameView viewPl3 = new GameFrameView(player3);
+		GameFrameView viewPl4 = new GameFrameView(player4);
+		GameFrameView viewPl5 = new GameFrameView(player5);
+		GameFrameView viewPl6 = new GameFrameView(player6);
+		Scene scene = new Scene(viewPl1, 1300, 700);
         Stage primaryStage = new Stage();
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.setTitle("Cluedo");
         primaryStage.setFullScreen(true);
-        GameFramePresenter pres2 = new GameFramePresenter(gfview, player2, primaryStage);
+        GameFramePresenter pres = new GameFramePresenter(viewPl1, this.player, primaryStage);
+        GameFramePresenter pres2 = new GameFramePresenter(viewPl2, player2, primaryStage);
+        GameFramePresenter pres3 = new GameFramePresenter(viewPl3, player3, primaryStage);
+        GameFramePresenter pres4 = new GameFramePresenter(viewPl4, player4, primaryStage);
+        /*GameFramePresenter pres5 = new GameFramePresenter(viewPl5, player5, primaryStage);
+        GameFramePresenter pres6 = new GameFramePresenter(viewPl6, player6, primaryStage);*/
         primaryStage.show();
         view.primaryStage.close();
+		}
+		
+		catch(NullPointerException e){
+			errorStr.set("Please select a character!"); 
+			}
+		
+		
 		}
 	
 	public void quitGame(){

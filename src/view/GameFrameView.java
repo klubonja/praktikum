@@ -3,6 +3,7 @@ package view;
 
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -21,6 +22,12 @@ public class GameFrameView extends GridPane{
 	BoardView board;
 	HandFrameView hand;
 	Player player;
+	Button view1;
+	Button view2;
+	Button view3;
+	Button view4;
+	Button view5;
+	Button view6;
 
 	
 	public GameFrameView(Player player){
@@ -63,7 +70,15 @@ public class GameFrameView extends GridPane{
 		 */
 		dice = new DiceView();
 		
+		// Adds the frame for the cards in hand.
 		hand = new HandFrameView();
+		
+		view1 = new Button("View 1");
+		view2 = new Button("View 2");
+		view3 = new Button("View 3");
+		view4 = new Button("View 4");
+		view5 = new Button("View 5");
+		view6 = new Button("View 6");
 		
 		
 		/**
@@ -80,18 +95,18 @@ public class GameFrameView extends GridPane{
 		rightGrid.setHgap(2);
 		VBox leftColumn = new VBox(10);
 		VBox rightColumn = new VBox(10);
-		leftColumn.getChildren().addAll(notes, dice);
-		rightColumn.getChildren().addAll(hand, chat);
+		rightColumn.getChildren().addAll(notes, dice);
+		leftColumn.getChildren().addAll(hand, chat, view1, view2, view3, view4, view5, view6);
 		/*GridPane.setConstraints(notes,1,0);
 		GridPane.setConstraints(dice,1,1);
 		GridPane.setConstraints(chat,0,1);
 		GridPane.setConstraints(hand,0,0);*/
 		
-		GridPane.setConstraints(leftColumn,1,0);
-		GridPane.setRowSpan(leftColumn, 2);
-		GridPane.setConstraints(rightColumn,0,0);
+		GridPane.setConstraints(rightColumn,1,0);
 		GridPane.setRowSpan(rightColumn, 2);
-		rightGrid.getChildren().addAll(leftColumn, rightColumn);
+		GridPane.setConstraints(leftColumn,0,0);
+		GridPane.setRowSpan(leftColumn, 2);
+		rightGrid.getChildren().addAll(rightColumn, leftColumn);
 		
 		
 		GridPane.setConstraints(menu,0,0);
