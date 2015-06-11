@@ -1,7 +1,6 @@
 package cluedoNetworkGUI;
 
 
-import staticClasses.Config;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,6 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import staticClasses.Config;
  
 public class CluedoClientGUI extends CluedoNetworkGUI{
 	
@@ -24,7 +24,6 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 super(primaryStage);
 		 submitMessageButton = new Button("submitMessage");
 		 inputField = new TextArea();		 
-		 setWindowName("CluedoClient");
 		 setStartServiceButtonLabel("StartClient");	
 		 startUp();	 		 
 	}

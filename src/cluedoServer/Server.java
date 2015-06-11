@@ -46,7 +46,8 @@ public class Server {
 		startServer();		
 		setListener();	
 		
-		System.out.println("Server Starteeeee");	
+		System.out.println("Server Starteeeee");
+		gui.setWindowName(Config.GROUP_NAME+" Client");
 	}
 	
 	private void sayHello() {

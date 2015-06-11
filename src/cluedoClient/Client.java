@@ -32,6 +32,7 @@ public class Client {
 		System.out.println("client started");
 		listenForServersThread();
 		sayHello();
+		gui.setWindowName(Config.GROUP_NAME+" Client");
 	}	
 	
 	void sayHello(){	

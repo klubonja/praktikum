@@ -7,7 +7,7 @@ public abstract class Config {
 	/**
 	 * unsere config daten in einer static klasse
 	 * */
-	public final static String GROUP_NAME = "yinyanyolos";
+	public final static String GROUP_NAME = "yinyanyolososes";
 
 	
 	

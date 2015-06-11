@@ -71,6 +71,8 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 		//String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
 		ServerItem serverInfo = serverList.get(smod.getSelectedIndex());
 		parent.startTCPConnection(serverInfo);
+		System.out.println(smod.toString());
+		
 		
 		
 	}
