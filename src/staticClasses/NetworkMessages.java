@@ -31,7 +31,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String login_sucMsg(String[] nickArray,JSONArray gameArray){
+	public static String login_sucMsg(JSONArray nickArray,JSONArray gameArray){
 		CluedoJSON json = new CluedoJSON("login successful");
 		json.put("expansions", new JSONArray(Config.EXPANSIONS));
 		json.put("game array", gameArray);
@@ -67,16 +67,16 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String statement(String person,String room,String weapon){
+	public static JSONObject statement(String person,String room,String weapon){
 		JSONObject json = new JSONObject();
 		json.put("person", person);
 		json.put("weapon", weapon);
 		json.put("room", room);
 		
-		return json.toString();
+		return json;
 	}
 	
-	public static String game_info(int gameId,String gamestate,JSONArray playerInfos,JSONArray watchers,JSONArray personposes,JSONArray weaponposes){
+	public static JSONObject gameinfo(int gameId,String gamestate,JSONArray playerInfos,JSONArray watchers,JSONArray personposes,JSONArray weaponposes){
 		JSONObject json = new JSONObject();
 		json.put("gameID",gameId);
 		json.put("gamestate",gamestate);
@@ -85,7 +85,7 @@ public abstract class NetworkMessages {
 		json.put("person positions", personposes);
 		json.put("weapon positions", weaponposes);
 		
-		return json.toString();
+		return json;
 	}
 	
 	public static String player_info(String nick,String color,String playerstate){
@@ -97,20 +97,28 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String player_pos(String person,String field){
+	public static JSONObject field(int x, int y){
+		JSONObject json = new JSONObject();
+		json.put("x", x);
+		json.put("y", y);
+		
+		return json;
+	}
+	
+	public static JSONObject player_pos(String person,JSONObject field){
 		JSONObject json = new JSONObject();
 		json.put("person", person);
 		json.put("field", field);
 		
-		return json.toString();
+		return json;
 	}
 	
-	public static String weapon_pos(String weapon,String field){
+	public static JSONObject weapon_pos(String weapon,JSONObject field){
 		JSONObject json = new JSONObject();
 		json.put("weapon", weapon);
 		json.put("field", field);
 		
-		return json.toString();
+		return json;
 	}
 	
 	public static String okMsg(){
@@ -224,7 +232,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String player_cardsMsg(int gameID,String[] cards){
+	public static String player_cardsMsg(int gameID,JSONArray cards){
 		CluedoJSON json = new CluedoJSON("player cards");
 		json.put("gameID", gameID);
 		json.put("cards", cards);		
@@ -232,7 +240,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String game_startedMsg(int gameID,String[] order){
+	public static String game_startedMsg(int gameID,JSONArray order){
 		CluedoJSON json = new CluedoJSON("game started");
 		json.put("order", order);
 		json.put("gamestate", "started");

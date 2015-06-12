@@ -7,11 +7,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javafx.application.Platform;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import staticClasses.Config;
@@ -32,18 +34,93 @@ class CommunicationHandler implements Runnable{
 	
 	ArrayList<ClientItem> clientList;
 	ArrayList<ClientItem> blackList;
+	ArrayList<CluedoGame> gameList;
+
 	
 	final CluedoServerGUI gui;
 	boolean running = true;
 	
 	
 	
-	CommunicationHandler(ServerSocket ss, ClientItem c, CluedoServerGUI g,ArrayList<ClientItem> cList,ArrayList<ClientItem> bList) {
+	/**
+	 * @param ss
+	 * @param c
+	 * @param g
+	 * @param cList
+	 * @param bList
+	 * 
+	 * tcp verbindung steht server wartet auf tcp handshake
+	 */
+	CommunicationHandler(ServerSocket ss, ClientItem c, CluedoServerGUI g,ArrayList<ClientItem> cList,ArrayList<ClientItem> bList,ArrayList<CluedoGame> gl) {
 		gui = g;
 		serverSocket = ss;
 		clientList = cList;
 		blackList = bList;
+		gameList = gl;
 		client = c;
+	}
+	
+	private JSONObject getGameInfo(CluedoGame game){
+		JSONArray playerInfosJSON = new JSONArray();
+		JSONArray perspossJSON = new JSONArray();
+		Map<String, CluedoPlayer> playerInfos = game.getPlayers();
+		for (Map.Entry<String, CluedoPlayer> pi : playerInfos.entrySet()){
+			playerInfosJSON.put(
+				NetworkMessages.player_info(
+					pi.getKey(), 
+					pi.getValue().getCluedoPerson().getColor(), 
+					pi.getValue().getState().getName()
+				)
+			);
+			perspossJSON.put(
+				NetworkMessages.player_pos(
+					pi.getValue().getCluedoPerson().getColor(), 
+					NetworkMessages.field(
+						pi.getValue().getPosition().getX(), 
+						pi.getValue().getPosition().getY()
+					)
+				)
+			);
+		}
+		JSONArray watchersJSON = new JSONArray();
+		ArrayList<String> watchers = game.getWatchersNicks();
+		for (String w : watchers)
+			watchersJSON.put(w);
+		
+		JSONArray weaponpossJSON = new JSONArray();
+		Map<String, CluedoWeapon> weaponPoss = game.getWeapons();
+		for (Map.Entry<String, CluedoWeapon> wp : weaponPoss.entrySet()){
+			weaponpossJSON.put(
+				NetworkMessages.weapon_pos(
+					wp.getKey(), 
+					NetworkMessages.field(
+						wp.getValue().getPosition().getX(),
+						wp.getValue().getPosition().getY()
+					)
+				)
+			);
+		}
+		
+		return NetworkMessages.gameinfo(
+				game.getGameId(), 
+				game.getGameState().getName(), 
+				playerInfosJSON, 
+				watchersJSON, 
+				perspossJSON,
+				weaponpossJSON
+			  );		
+	}
+	
+	void sendLoginSuccessful(){
+		JSONArray nickArray = new JSONArray();
+		JSONArray gameArray = new JSONArray();
+		for (ClientItem c : clientList)
+			nickArray.put(c.getNick());
+		for (CluedoGame g : gameList)
+			gameArray.put(getGameInfo(g));
+		String msg = NetworkMessages.login_sucMsg(nickArray, gameArray);
+		
+		client.sendMsg(msg);		
 	}
 	
 	private void awaitingLoginAttempt (){
@@ -65,6 +142,7 @@ class CommunicationHandler implements Runnable{
 					client.setNick(checker.getMessage().getString("nick"));
 					client.setGroupName(checker.getMessage().getString("group"));
 					clientList.add(client);
+					
 					readyForCommunication = true;
 				}
 				else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
@@ -105,7 +183,6 @@ class CommunicationHandler implements Runnable{
 	           String message = getMessageFromClient(client.socket).trim();
 	           gui.addMessageIn(message);
 	           
-	           System.out.println(message);	         
 			}
 			catch (IOException e){
 				try {

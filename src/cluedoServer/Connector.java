@@ -22,14 +22,16 @@ class Connector extends Thread{
 	
 	ArrayList<ClientItem> clientList;
 	ArrayList<ClientItem> blackList;
+	ArrayList<CluedoGame> gameList;
 	boolean running = true;	
 	
 	
-	Connector (ServerSocket ss, CluedoServerGUI g,ArrayList<ClientItem> cList,ArrayList<ClientItem> bList) {
+	Connector (ServerSocket ss, CluedoServerGUI g,ArrayList<ClientItem> cList,ArrayList<ClientItem> bList,ArrayList<CluedoGame> gl) {
 		gui = g;
 		serverSocket = ss;
 		clientList = cList;
 		blackList = bList;
+		gameList = gl;
 	}
 	
 	@Override
@@ -41,7 +43,7 @@ class Connector extends Thread{
 					if (isBlacklisted(clientSocket.getInetAddress()))
 						sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
 					Thread newCommunicationThread = new Thread(new CommunicationHandler(
-							serverSocket, new ClientItem(clientSocket), gui,clientList,blackList));
+							serverSocket, new ClientItem(clientSocket), gui,clientList,blackList,gameList));
 					newCommunicationThread.start();	
 				}
 				else {
@@ -91,6 +93,8 @@ class Connector extends Thread{
 			if (adress.equals(c.getAdress())) return true;
 		return false;
 	}
+	
+	
 	
 	public static void sendMsg(String msg,Socket socket){
 		try {

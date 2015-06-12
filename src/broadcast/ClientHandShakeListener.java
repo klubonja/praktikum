@@ -33,9 +33,10 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 			InetAddress ip = packet.getAddress();
 			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(msg)));
 			NetworkHandhakeCodes errcode = checker.validateExpectedType(expType,ignoredTypes);
+			
 			if (errcode == NetworkHandhakeCodes.OK) {
 				Platform.runLater(() -> {
-					gui.addMessageIn(ip.toString()+" says :"+msg);
+					gui.addMessageIn(ip.toString()+" sends handshake");
 				});
 				Multicaster bc = new Multicaster(packet.getAddress().getLocalHost().getHostAddress(), gui,answer);
 				bc.sendBrodcast();			
@@ -47,12 +48,12 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
 				Platform.runLater(() -> {
-					gui.addMessageIn(ip.toString()+" is server and is ignored : \n"+checker.getAllString());
+					gui.addMessageIn(ip.toString()+" is server and is ignored");
 				});				
 			}
 			else {
 				Platform.runLater(() -> {
-					gui.addMessageIn("unhandled incoming : \n" + msg);
+					gui.addMessageIn("TODO : unhandled incoming : \n" + msg);
 				});
 			}
 			

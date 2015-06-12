@@ -374,7 +374,7 @@ public class CluedoProtokollChecker {
 	
 	boolean validateCards(String value){
 		Persons[] persons = Persons.values();
-		for(Persons p : persons) if (value.equals(p.getName())) return true;
+		for(Persons p : persons) if (value.equals(p.getColor())) return true;
 		Weapons[] weapons = Weapons.values();
 		for(Weapons w : weapons) if (value.equals(w.getName())) return true;
 		Rooms[] rooms = Rooms.values();

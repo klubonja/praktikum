@@ -28,7 +28,7 @@ public class Server {
 	int TCPport;
 	
 	final CluedoServerGUI gui;
-	public CluedoGame[] games;
+	public ArrayList<CluedoGame> games;
 	
 	boolean run;
 	
@@ -39,16 +39,19 @@ public class Server {
 		TCPport = Config.TCP_PORT;	
 		clientList = new ArrayList<ClientItem>();
 		blackList = new ArrayList<ClientItem>();
+		games = new ArrayList<CluedoGame>();
 		run = true;
-			
-		sayHello();
-		listenForClientsThread();
 		
-		startServer();		
-		setListener();	
+		createTestGroups();
+		sayHello();
+		listenForClientsThread();		
+		startTCPServer();		
+		
 		
 		System.out.println("Server Starteeeee");
 		gui.setWindowName(Config.GROUP_NAME+" Server");
+		
+		setListener();	
 	}
 	
 	private void sayHello() {
@@ -65,8 +68,9 @@ public class Server {
 	}
 	
 	
-	private void createGroups(){
-		for(int i = 0; i < 4; i++) games[i] = new CluedoGame(6,"reduzierterHund"+i);
+	private void createTestGroups(){
+		for(int i = 0; i < 4; i++) 
+			games.add(new CluedoGame(6,"reduzierterHund"+i));
 	}
 	
 	/**
@@ -74,7 +78,7 @@ public class Server {
 	 * aufgebaute verbindungen werden auf eigenen threads ausgeführt
 	 * @throws IOException
 	 */
-	private void startServer()  {
+	private void startTCPServer()  {
 		try {
 			tcpSocket = new ServerSocket(TCPport);	
 			connector = new Connector(tcpSocket, gui,clientList,blackList);

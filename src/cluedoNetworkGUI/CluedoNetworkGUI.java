@@ -1,5 +1,8 @@
 package cluedoNetworkGUI;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -77,15 +80,15 @@ public abstract class CluedoNetworkGUI {
 	  }
 	  
 	  public void  addMessageIn(String mes){
-   		  messagesIn.appendText(mes+"\n");
+	  SimpleDateFormat date = new SimpleDateFormat("hh:mm:ss");
+	  Date now = new Date();
+   		  messagesIn.appendText(date.format(now)+" : "+mes+"\n");
    	  }	
 	  
 	  public  void addMessageOut(String mes){
-		  messagesOut.appendText(mes+"\n");
-	  }
-	  
-	  public  void addMessage(String mes){
-		  messagesOut.appendText(mes+"\n");
+		  SimpleDateFormat date = new SimpleDateFormat("hh:mm:ss");
+		  Date now = new Date();
+	   		  messagesOut.appendText(date.format(now)+" : "+mes+"\n");
 	  }
 	  
 	  public void setStartServiceButtonLabel(String label){
