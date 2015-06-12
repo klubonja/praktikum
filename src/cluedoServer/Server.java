@@ -28,7 +28,7 @@ public class Server {
 	int TCPport;
 	
 	final CluedoServerGUI gui;
-	public ArrayList<CluedoGame> games;
+	public ArrayList<CluedoGame> gameList;
 	
 	boolean run;
 	
@@ -39,7 +39,7 @@ public class Server {
 		TCPport = Config.TCP_PORT;	
 		clientList = new ArrayList<ClientItem>();
 		blackList = new ArrayList<ClientItem>();
-		games = new ArrayList<CluedoGame>();
+		gameList = new ArrayList<CluedoGame>();
 		run = true;
 		
 		createTestGroups();
@@ -70,7 +70,7 @@ public class Server {
 	
 	private void createTestGroups(){
 		for(int i = 0; i < 4; i++) 
-			games.add(new CluedoGame(6,"reduzierterHund"+i));
+			gameList.add(new CluedoGame(6,"reduzierterHund"+i));
 	}
 	
 	/**
@@ -81,7 +81,7 @@ public class Server {
 	private void startTCPServer()  {
 		try {
 			tcpSocket = new ServerSocket(TCPport);	
-			connector = new Connector(tcpSocket, gui,clientList,blackList);
+			connector = new Connector(tcpSocket, gui,clientList,blackList,gameList);
 			connector.start();
 			try {
 				NetworkInterfacesIpManager nm = new NetworkInterfacesIpManager();				 	
