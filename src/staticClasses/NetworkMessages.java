@@ -31,9 +31,9 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String login_sucMsg(JSONArray nickArray,JSONArray gameArray){
+	public static String login_sucMsg(JSONArray nickArray,JSONArray gameArray,JSONArray expansions){
 		CluedoJSON json = new CluedoJSON("login successful");
-		json.put("expansions", new JSONArray(Config.EXPANSIONS));
+		json.put("expansions", expansions);
 		json.put("game array", gameArray);
 		json.put("nick array", nickArray);
 		
@@ -88,13 +88,13 @@ public abstract class NetworkMessages {
 		return json;
 	}
 	
-	public static String player_info(String nick,String color,String playerstate){
+	public static JSONObject player_info(String nick,String color,String playerstate){
 		JSONObject json = new JSONObject();
 		json.put("nick", nick);
 		json.put("color", color);
 		json.put("playerstate", playerstate);
 		
-		return json.toString();
+		return json;
 	}
 	
 	public static JSONObject field(int x, int y){
@@ -360,7 +360,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 
-
+	
 	
 	
 	

@@ -24,22 +24,19 @@ public class CluedoGame {
 	ArrayList<ClientItem> watchers;
 	Map<String, CluedoPlayer> players;
 	Map<String, CluedoWeapon> weapons;
-	
-	
-	
-	//playerInfos, watchers, personposes, weaponposes)
-	
+		
 	public CluedoGame(int poolSize,String groupName){
 		size = poolSize;
 		this.groupName = groupName;
 		
-
-		//pool = Executors.newFixedThreadPool(poolSize);
+		init();
 	}
 	
 	void init(){
 		players = new LinkedHashMap<String,CluedoPlayer>();
 		weapons = new LinkedHashMap<String,CluedoWeapon>();
+		participants = new ArrayList<ClientItem>();
+		watchers = new ArrayList<ClientItem>();
 		
 		Persons[] persons = Persons.values();
 		for(Persons p : persons) players.put("", new CluedoPlayer(p, PlayerStates.do_nothing, p.getStartposition()));

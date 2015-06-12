@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import staticClasses.Config;
+import staticClasses.Methods;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
 import enums.NetworkHandhakeCodes;
@@ -118,10 +119,16 @@ class CommunicationHandler implements Runnable{
 			nickArray.put(c.getNick());
 		for (CluedoGame g : gameList)
 			gameArray.put(getGameInfo(g));
-		String msg = NetworkMessages.login_sucMsg(nickArray, gameArray);
+		String msg = NetworkMessages.login_sucMsg(
+						nickArray, 
+						gameArray,
+						new JSONArray(client.getExpansions()
+					));
 		
 		client.sendMsg(msg);		
 	}
+	
+	
 	
 	private void awaitingLoginAttempt (){
 		boolean readyForCommunication = false;
@@ -139,6 +146,12 @@ class CommunicationHandler implements Runnable{
 						gui.addIp(client.getAdress()+" "+client.getNick());
 					});
 					
+					client.setExpansions(
+						Methods.makeConjunction(
+							Config.EXPANSIONS, 
+							checker.getMessage().getJSONArray("expansions")
+						)
+					);
 					client.setNick(checker.getMessage().getString("nick"));
 					client.setGroupName(checker.getMessage().getString("group"));
 					clientList.add(client);

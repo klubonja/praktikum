@@ -13,6 +13,7 @@ class ClientItem {
 	String id;
 	String nick;	
 	String groupName;
+	String[] expansions;
 	
 	int gameId;
 	
@@ -27,6 +28,14 @@ class ClientItem {
 	
 	public Socket getSocket(){
 		return socket;
+	}
+	
+	public void setExpansions(String[] expansion) {
+		this.expansions = expansion;
+	}
+	
+	public String[] getExpansions() {
+		return expansions;
 	}
 	public void setGameId(int gameId) {
 		this.gameId = gameId;
