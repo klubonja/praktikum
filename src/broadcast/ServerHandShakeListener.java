@@ -36,18 +36,10 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 			socket.receive(packet);	
 			String msg = new String (packet.getData());	
 			InetAddress ip = packet.getAddress();
-			String ipad = ip.getHostAddress();
-//			if (ipad.equals("127.0.0.1")) {
-//				buf = new byte[bufSize];
-//				packet = new DatagramPacket(buf, buf.length);			
-//				socket.receive(packet);	
-//				msg = new String (packet.getData());	
-//				ip = new InetAddress();
-//				
-//			}
 
 			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(msg)));
 			NetworkHandhakeCodes errcode = checker.validateExpectedType(expType,ignoredTypes);
+			
 			if (errcode == NetworkHandhakeCodes.OK) {
 				Platform.runLater(() -> {
 					gui.addIp(checker.getMessage().getString("group"));
