@@ -100,23 +100,12 @@ public class Server {
 		gui.startService.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	try {            	
-	            	if (!running){            		
-	            		startServer();
-	            		gui.startService.setText("Shutdown");
-	            		running = true;
-	            	}
-	            	else {	            		
-	            		gui.startService.setText("Server restart");
-	            		gui.setStatus("Socket closed, Server Shutdown"); 
-	            		gui.emptyList();
-	            		stopServer();
-	            		running = false;
-	            	}           
-            	}
-            	catch(IOException e){
-            		System.out.println(e.getMessage());
-            	}            		               
+            	//try {            	
+	            	sayHello();
+           // 	}
+//            	catch(IOException e){
+//            		System.out.println(e.getMessage());
+//            	}            		               
             }
         });	
 		
