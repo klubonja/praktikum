@@ -22,8 +22,9 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 	ArrayList<ServerItem> serverList;
 	String[] ignoredTypes = {"udp client"};
 	
-	public ServerHandShakeListener(ArrayList<ServerItem> sl,String answer, String expType, int port, CluedoClientGUI g,Client client) {
-		super(answer, expType, port, g);
+	
+	public ServerHandShakeListener(ArrayList<ServerItem> sl,String answer, String expType, int port, CluedoClientGUI g,Client client,boolean run) {
+		super(answer, expType, port, g,run);
 		parent = client;
 		serverList = sl;
 	}

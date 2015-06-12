@@ -30,7 +30,7 @@ public class Server {
 	final CluedoServerGUI gui;
 	public CluedoGame[] games;
 	
-	boolean running;
+	boolean run;
 	
 	
 	
@@ -39,6 +39,7 @@ public class Server {
 		TCPport = Config.TCP_PORT;	
 		clientList = new ArrayList<ClientItem>();
 		blackList = new ArrayList<ClientItem>();
+		run = true;
 			
 		sayHello();
 		listenForClientsThread();
@@ -59,7 +60,7 @@ public class Server {
 	void listenForClientsThread(){
 		String answer = NetworkMessages.udp_serverMsg(Config.GROUP_NAME, TCPport);				
 		ClientHandShakeListener cl = 
-				new ClientHandShakeListener(answer.toString(),"udp client",Config.BROADCAST_PORT,gui);
+				new ClientHandShakeListener(answer.toString(),"udp client",Config.BROADCAST_PORT,gui,run);
 		cl.start();
 	}
 	
@@ -93,6 +94,8 @@ public class Server {
 	private void stopServer()  throws IOException{
 		connector.kill();
 		tcpSocket.close();	
+		run = false;
+		
 		System.out.println("Serverservices closed");
 	}
 	

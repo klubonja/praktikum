@@ -1,10 +1,9 @@
 package cluedoNetworkGUI;
 
 
-import java.awt.Button;
 
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
@@ -12,6 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import staticClasses.Config;
  
 public class CluedoServerGUI extends CluedoNetworkGUI {
 	
@@ -22,6 +22,8 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
 		 setStartServiceButtonLabel("StartServer");	
 		 sendHandshake = new Button("sendhandshake");
 		 startUp();	 
+		 width = Config.SERVER_WINDOW_WIDTH;
+		 height = Config.SERVER_WINDOW_HEIGHT;
 		 
 	}
     

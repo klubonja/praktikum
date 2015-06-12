@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -26,8 +25,8 @@ public abstract class CluedoNetworkGUI {
 	final public Button startService;
 	final public GridPane grid;
 	final public Stage primaryStage;
-	int width;
-	int height;
+	double width;
+	double height;
 	
 	String desc;
 	
@@ -46,14 +45,12 @@ public abstract class CluedoNetworkGUI {
 		 outLabel = new Text("OUT");
 		 status = new Text("down");
 		 
-		 width = 1000;
-		 height = 800;
-		 
 		 setListener();
 		 
 		 grid.setValignment(startService, VPos.CENTER);
 		 grid.setMargin(startService, new Insets(0, 0, 0, 10));
-		 
+		 messagesIn.setEditable(false);
+	     messagesOut.setEditable(false);
 		 		 
 	}
     

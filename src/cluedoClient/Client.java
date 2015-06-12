@@ -24,15 +24,19 @@ public class Client {
 	Socket cSocket;
 	CluedoClientGUI gui;
 	ArrayList<ServerItem> serverList;
-	
+	boolean run;
+		
 	public Client(CluedoClientGUI g) {
 		gui = g;
 		serverList = new ArrayList<ServerItem>();
-		//setListener();	
+		gui.setWindowName(Config.GROUP_NAME+" Client");
+		//setListener();		
 		System.out.println("client started");
+		
+		setCloseHandler();
 		listenForServersThread();
 		sayHello();
-		gui.setWindowName(Config.GROUP_NAME+" Client");
+		
 	}	
 	
 	void sayHello(){	
@@ -44,7 +48,7 @@ public class Client {
 	void listenForServersThread(){
 		String answer = NetworkMessages.udp_clientMsg(Config.GROUP_NAME);
 		ServerHandShakeListener cl = 
-				new ServerHandShakeListener(serverList,answer,"udp server",Config.BROADCAST_PORT,gui,this);
+				new ServerHandShakeListener(serverList,answer,"udp server",Config.BROADCAST_PORT,gui,this,run);
 		cl.start();
 	}
 	
@@ -52,13 +56,13 @@ public class Client {
 	/** 
 	 * 
 	 */
-	public void startTCPConnection(ServerItem server){		
+	public void startTCPConnection(ServerItem server){	
 		try {				
 			cSocket = new Socket(server.getIp(),server.getPort());			
 			serverList.add(server);
-			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,serverList));
+			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,serverList,run));
 			t1.start();
-			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,server.getGroupName()));
+			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,server.getGroupName(),run));
 			t2.start();
 			
 			gui.setStatus("Connected to "+server.getGroupName()+" on : "+ cSocket.getInetAddress().toString());	
@@ -80,7 +84,8 @@ public class Client {
 			public void handle(WindowEvent e){
 		          
 		          try {
-		        	   cSocket.close();
+		        	   run = false;
+		        	   if (cSocket != null) cSocket.close();
 		               Platform.exit();
 		               System.exit(0);
 		               System.out.println("Terminated");

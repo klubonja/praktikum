@@ -7,13 +7,13 @@ import java.net.MulticastSocket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 
-import staticClasses.Config;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.input.MouseEvent;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
+import staticClasses.Config;
 import cluedoNetworkGUI.CluedoNetworkGUI;
 
 public abstract class MulticastListenerThread extends Thread{
@@ -30,14 +30,14 @@ public abstract class MulticastListenerThread extends Thread{
 	
 	CluedoNetworkGUI gui;
 	
-	boolean running;
+	boolean run;
 	
 	abstract void listen();
 	abstract void select(SelectionModel<String> s);
 	abstract void startServiceAction();
 	
 	
-	public MulticastListenerThread(String answer, String expType, int port, CluedoNetworkGUI g)  {
+	public MulticastListenerThread(String answer, String expType, int port, CluedoNetworkGUI g,boolean run)  {
 		super();
 		this.answer = new String(answer);
 		this.expType = new String(expType);
@@ -49,7 +49,7 @@ public abstract class MulticastListenerThread extends Thread{
 			bufSize = Config.NETWORK_BUFFER_SIZE;
 			gui = g;
 			setListener();
-			running = true;
+			this.run = run;
 			
 		} 
 		catch (Exception e) {
@@ -59,7 +59,7 @@ public abstract class MulticastListenerThread extends Thread{
 	
 	@Override
 	public void run(){
-		while (running){
+		while (run){
 			try {
 				listen();
 			} catch (Exception e) {
@@ -112,6 +112,6 @@ public abstract class MulticastListenerThread extends Thread{
 	}
 	
 	public void kill(){
-		running = false;
+		run = false;
 	}
 }

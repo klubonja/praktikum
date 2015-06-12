@@ -16,8 +16,8 @@ import enums.NetworkHandhakeCodes;
 public class ClientHandShakeListener extends MulticastListenerThread {
 	
 	String[] ignoredTypes = {"udp server"};
-	public ClientHandShakeListener(String answer,String expType, int port, CluedoServerGUI g) {
-		super(answer,expType, port, g);
+	public ClientHandShakeListener(String answer,String expType, int port, CluedoServerGUI g,boolean run) {
+		super(answer,expType, port, g,run);
 		
 	}
 	

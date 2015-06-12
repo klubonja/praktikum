@@ -28,17 +28,18 @@ class IncomingHandler implements Runnable {
 	CluedoClientGUI gui;
 	ArrayList<ServerItem> serverList;
 	
-	boolean running = true;
+	private boolean run = true;
 	
-	IncomingHandler(Socket cs,CluedoClientGUI g,ArrayList<ServerItem> sList){
+	IncomingHandler(Socket cs,CluedoClientGUI g,ArrayList<ServerItem> sList,boolean run){
 		cSocket = cs;
 		gui = g;
 		serverList = sList;
+		this.run = run;
 	}
 	
 	@Override
 	public void run() {			
-		while (running) {
+		while (run) {
 			try {
 				getMessagesFromServer(cSocket);
 			}
@@ -48,7 +49,6 @@ class IncomingHandler implements Runnable {
 					gui.setStatus("Server hat sich unhöflich verabschiedet");
 					//
 				});		
-				running = false;				
 			}
 		}
 		System.out.println("serverlistener thread running out");		
