@@ -28,7 +28,7 @@ public class Multicaster {
 			
 			socket = new MulticastSocket();
 			socket.setBroadcast(true);
-			socket.setLoopbackMode(false);
+			socket.setLoopbackMode(true);
 			broadcastMessage = msg;
 		}
 		catch (Exception e) {
