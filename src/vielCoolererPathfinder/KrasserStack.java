@@ -10,36 +10,39 @@ public class KrasserStack extends StackPane {
 	private Stage stage;
 	private Scene scene;
 	
-	private BallEbene ballEbene;
+	private BallEbene2 ballEbene;
 	private GUI gui;
 	
-	public KrasserStack(BallEbene ballEbene, GUI gui){
+	public KrasserStack(BallEbene2 ballEbeneEingabe, GUI guiEingabe){
 		
-		this.ballEbene = ballEbene;
-		this.gui = gui;
+		this.ballEbene = ballEbeneEingabe;
+		this.gui = guiEingabe;
+		gui.start();
+		ballEbene.start();
 		
-		
+		layoutStuff();
 	}
 	
 	public void start(){
 		stage = new Stage();
 		scene = new Scene(this, 500, 500);
 		stage.setScene(scene);
-		layoutStuff();
+		
 		stage.show();
+		
 		doThatTitleThang("hans");
 	}
 	
 	public void layoutStuff(){
-		gui.start();
-		ballEbene.start();
+		
 		StackPane.setMargin(gui, new Insets(0,0,0,0));
-		StackPane.setMargin(ballEbene, new Insets(0,420,420,0));
+		StackPane.setMargin(ballEbene, new Insets(0,0,0,0));
 		
 		this.getChildren().addAll(gui, ballEbene);
 		
 		
 	}
+	
 	
 	public void doThatTitleThang(String title){
 		this.stage.setTitle(title);

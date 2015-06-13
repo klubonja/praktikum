@@ -23,6 +23,7 @@ public class Kachel extends Label {
 	private boolean istTuer;
 	private BackgroundFill hintergrundfarbe;
 	private Orientation orientierung;
+	private char [] moeglichkeitenHierher = new char [12];
 	
 	private final IntegerProperty xKoordinate = 
 			new SimpleIntegerProperty(this, "xKoordinate", 0);
@@ -32,13 +33,14 @@ public class Kachel extends Label {
 			new SimpleIntegerProperty(this, "yKoordinate", 0);
 	
 	
-	public Kachel (String text, int xKoordinate, int yKoordinate, boolean istRaum,Orientation orientierung, boolean istTuer){
+	public Kachel (String text, int xKoordinate, int yKoordinate, boolean istRaum,Orientation orientierung, boolean istTuer, char [] moeglichkeitenHierher){
 		super(text);
 		this.xKoordinate.set(xKoordinate);
 		this.yKoordinate.set(yKoordinate);
 		this.istRaum = istRaum;
 		this.orientierung = orientierung;
 		this.istTuer = istTuer;
+		this.moeglichkeitenHierher = moeglichkeitenHierher;
 	}
 	
 	public void setBackgroundColor(Label label, Color farbe){
@@ -105,8 +107,16 @@ public class Kachel extends Label {
 	public final IntegerProperty yKoordinateProperty(){
         return yKoordinate;
     }
-	
 
+	public char[] getMoeglichkeitenHierher() {
+		return moeglichkeitenHierher;
+	}
+
+	public void setMoeglichkeitenHierher(char[] moeglichkeitenHierher) {
+		this.moeglichkeitenHierher = moeglichkeitenHierher;
+	}
+	
+	
 	
 	
 }

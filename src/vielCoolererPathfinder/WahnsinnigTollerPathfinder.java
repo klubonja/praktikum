@@ -15,7 +15,7 @@ public class WahnsinnigTollerPathfinder {
 	/**
 	 * Alle Möglichkeiten, welche an Wegen ausgegeben werden.
 	 */
-	private char [][] moeglichkeiten = new char [244000][12];
+	private char [][] moeglichkeiten = new char [2440][12];
 	private int welcheMoeglichkeit; 
 	
 	/**
@@ -40,9 +40,12 @@ public class WahnsinnigTollerPathfinder {
 	 * Das Spielfeld und die Ballebene mit welcher gerechnet wird.
 	 */
 	private GUI gui;
-	private BallEbene ballEbene;
+	private BallEbene2 ballEbene;
 	
-
+	private String currentEntry;
+	
+	private int schritte;
+	
 	/**
 	 *  Die Himmelsrichtungen S, E, N, W
 	 */
@@ -53,12 +56,10 @@ public class WahnsinnigTollerPathfinder {
 	 * @param gui
 	 * @param ballEbene
 	 */
-	public WahnsinnigTollerPathfinder(GUI gui, BallEbene ballEbene){
+	public WahnsinnigTollerPathfinder(GUI gui, BallEbene2 ballEbene){
 		
 		this.gui = gui;
 		this.ballEbene = ballEbene;
-		
-		findThatPathBetter();
 		
 	}
 	
@@ -76,9 +77,9 @@ public class WahnsinnigTollerPathfinder {
         // Die Werte werden auf die Urpsrungsposition gesetzt.
         reset(2,1);
         ausgangsPosition(jetzigeSpalte, jetzigeReihe);
-        possibleMoves(2, himmelsrichtungen,"");
+        possibleMoves(1, himmelsrichtungen,"");
 	}
-	
+		
 	/**
 	 * Hier wird die momentane Position (y,x) gesetzt.
 	 * @param reihe hierauf wird die jetzigeReihe gesetzt
@@ -123,6 +124,8 @@ public class WahnsinnigTollerPathfinder {
 	 */
 	public boolean detectHimmelsrichtung(char richtung){
 		
+		level = currentEntry.length();
+		
 		System.out.println("rootX[level] : " + rootX[level]);
 		System.out.println("rootY[level] : " + rootY[level]);
 		
@@ -157,7 +160,7 @@ public class WahnsinnigTollerPathfinder {
 		
 		System.out.println("Er sucht Süden");
 		
-		level++;		
+		level = currentEntry.length();;		
 		rootX[level] = rootX[level-1];
 		rootY[level] = rootY[level-1] + 1;
 		
@@ -179,7 +182,7 @@ public class WahnsinnigTollerPathfinder {
 		
 		else {
 			System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
-			level--;
+			level = currentEntry.length();;
 			return false;
 		}
 		
@@ -195,7 +198,7 @@ public class WahnsinnigTollerPathfinder {
 		
 		System.out.println("Er sucht Osten");
 		
-		level++;
+		level = currentEntry.length();;
 		rootX[level] = rootX[level-1] + 1;
 		rootY[level] = rootY[level-1];
 		
@@ -217,7 +220,7 @@ public class WahnsinnigTollerPathfinder {
 		
 		else {
 			System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
-			level--;
+			level = currentEntry.length();;
 			return false;
 		}
 	}
@@ -231,7 +234,7 @@ public class WahnsinnigTollerPathfinder {
 
 		System.out.println("Er sucht Norden");
 		
-		level++;
+		level = currentEntry.length();;
 		rootX[level] = rootX[level-1];
 		rootY[level] = rootY[level-1] - 1;
 		
@@ -253,7 +256,7 @@ public class WahnsinnigTollerPathfinder {
 		
 		else {
 			System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
-			level--;
+			level = currentEntry.length();;
 			return false;
 		}
 				
@@ -266,9 +269,10 @@ public class WahnsinnigTollerPathfinder {
 	 */
 	public boolean detectWest(){
 
+		
 		System.out.println("Er sucht Westen");
 		
-		level++;
+		level = currentEntry.length();;
 		rootX[level] = rootX[level-1] - 1;
 		rootY[level] = rootY[level-1];
 		
@@ -291,8 +295,8 @@ public class WahnsinnigTollerPathfinder {
 
 		else {
 			System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
-			level--;
-			level--;
+			level = currentEntry.length();;
+			level = currentEntry.length();;
 			return false;
 		}
 				
@@ -306,28 +310,27 @@ public class WahnsinnigTollerPathfinder {
 	 * @param currentEntry der momentane zu-überprüfende Eintrag
 	 * @param moeglichkeiten Die Ausgabeliste mit allen Möglichkeiten
 	 */
-	public void possibleMoves(int maximaleSchritte, char[] himmelsrichtungen, String currentEntry) {
+	public void possibleMoves(int maximaleSchritte, char[] himmelsrichtungen, String currentEntryEingabe) {
+		
+		this.currentEntry = currentEntryEingabe;
+		
+		this.schritte = maximaleSchritte;
 		
 		System.out.println("curr : " + currentEntry);
 		System.out.println("level : " + level);
 		
         // Falls wir bei der maximalen Anzahl an Schritten angekommen sind
         if(currentEntry.length() == maximaleSchritte) {
-            //System.out.println(curr);
-            welcheMoeglichkeit++;
+            
             moeglichkeiten[welcheMoeglichkeit] = currentEntry.toCharArray();
+            welcheMoeglichkeit++;
+            setMoeglichkeiten(moeglichkeiten);
             
             for (int i = 1; i<=welcheMoeglichkeit;i++){
             	System.out.println(moeglichkeiten[i]);
             }
-            
-            // falls curr[level] == Westen, dann gehe solange zurück (level reduzieren)
-            // bis curr[level] != Westen.
-            while (currentEntry.toCharArray()[level-1] == 'W'){
-            	level--;
-            }
             // level reduzieren            
-            level--;
+            level = currentEntry.length();;
         }    
 
 
@@ -337,6 +340,7 @@ public class WahnsinnigTollerPathfinder {
             	
             	String oldEntry = currentEntry;
                 currentEntry += himmelsrichtungen[i];
+                
                 if (detectHimmelsrichtung(himmelsrichtungen[i])){
                 	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);
                     

@@ -15,8 +15,8 @@ public class RaumKachel extends Kachel {
 	
 	private String raum;
 	
-	public RaumKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung, String raum, boolean istTuer){
-		super(text, xKoordinate, yKoordinate, istRaum, orientierung, istTuer);
+	public RaumKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung, String raum, boolean istTuer, char [] moeglichkeiten){
+		super(text, xKoordinate, yKoordinate, istRaum, orientierung, istTuer, moeglichkeiten);
 		this.raum = raum;
 		istRaum = true;
 		this.setBackgroundColor(this, Color.LIGHTSALMON);

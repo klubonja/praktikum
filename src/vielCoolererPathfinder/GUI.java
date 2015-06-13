@@ -32,6 +32,8 @@ public class GUI extends GridPane {
 	private FeldKachel feld11;
 	private FeldKachel feld12;
 	
+	private char [] keineMoeglichkeiten;
+	
 	
 	private RaumKachel raum1;
 	private RaumKachel raum2;
@@ -58,30 +60,26 @@ public class GUI extends GridPane {
 		
 	}
 	
-	public void stop(){
-		
-	}
-	
 	public void layoutSachen(){
 		
-		kachelArray = new Kachel [5][5];
+		kachelArray = new Kachel [höhe][breite];
 		
-		feld1 = new FeldKachel("    Feld    ", 0, 0, false, null, false);
-		feld2 = new FeldKachel("    Feld    ", 0, 1, false, null, false);
-		tuer1 = new TuerKachel("      O      ", 0, 2, true, Orientation.O , "", true);
-		feld3 = new FeldKachel("    Feld    ", 1, 0, false, null, false);
-		feld4 = new FeldKachel("    Feld    ", 1, 1, false, null, false);
-		feld5 = new FeldKachel("    Feld    ", 1, 2, false, null, false);
-		feld6 = new FeldKachel("    Feld    ", 2, 0, false, null, false);
-		feld6 = new FeldKachel("    Feld    ", 2, 0, false, null, false);
-		feld7 = new FeldKachel("    Feld    ", 0, 3, false, null, false);
-		feld8 = new FeldKachel("    Feld    ", 1, 3, false, null, false);
-		feld9 = new FeldKachel("    Feld    ", 2, 3, false, null, false);
-		feld10 = new FeldKachel("    Feld    ", 0, 4, false, null, false);
-		feld11 = new FeldKachel("    Feld    ", 1, 4, false, null, false);
-		feld12 = new FeldKachel("    Feld    ", 2, 4, false, null, false);
-		raum1 = new RaumKachel("    Raum    ", 2, 1, true, null,"",  false);
-		raum2 = new RaumKachel("    Raum    ", 2, 2, true, null, "", false);
+		feld1 = new FeldKachel("    Feld    ", 0, 0, false, null, false, keineMoeglichkeiten);
+		feld2 = new FeldKachel("    Feld    ", 0, 1, false, null, false, keineMoeglichkeiten);
+		tuer1 = new TuerKachel("      O      ", 0, 2, true, Orientation.O , "", true, keineMoeglichkeiten);
+		feld3 = new FeldKachel("    Feld    ", 1, 0, false, null, false, keineMoeglichkeiten);
+		feld4 = new FeldKachel("    Feld    ", 1, 1, false, null, false, keineMoeglichkeiten);
+		feld5 = new FeldKachel("    Feld    ", 1, 2, false, null, false, keineMoeglichkeiten);
+		feld6 = new FeldKachel("    Feld    ", 2, 0, false, null, false, keineMoeglichkeiten);
+		feld6 = new FeldKachel("    Feld    ", 2, 0, false, null, false, keineMoeglichkeiten);
+		feld7 = new FeldKachel("    Feld    ", 0, 3, false, null, false, keineMoeglichkeiten);
+		feld8 = new FeldKachel("    Feld    ", 1, 3, false, null, false, keineMoeglichkeiten);
+		feld9 = new FeldKachel("    Feld    ", 2, 3, false, null, false, keineMoeglichkeiten);
+		feld10 = new FeldKachel("    Feld    ", 0, 4, false, null, false, keineMoeglichkeiten);
+		feld11 = new FeldKachel("    Feld    ", 1, 4, false, null, false, keineMoeglichkeiten);
+		feld12 = new FeldKachel("    Feld    ", 2, 4, false, null, false, keineMoeglichkeiten);
+		raum1 = new RaumKachel("    Raum    ", 2, 1, true, null,"",  false, keineMoeglichkeiten);
+		raum2 = new RaumKachel("    Raum    ", 2, 2, true, null, "", false, keineMoeglichkeiten);
 		this.add(feld1, 0, 0);
 		this.add(feld2, 0, 1);
 		this.add(tuer1, 0, 2);
@@ -147,81 +145,41 @@ public class GUI extends GridPane {
 		tuer1.setMinHeight(80);
 		
 		
+		
+		feld1.setMaxWidth(80);
+		feld2.setMaxWidth(80);
+		feld3.setMaxWidth(80);
+		feld4.setMaxWidth(80);
+		feld5.setMaxWidth(80);
+		feld6.setMaxWidth(80);
+		feld7.setMaxWidth(80);
+		feld8.setMaxWidth(80);
+		feld9.setMaxWidth(80);
+		feld10.setMaxWidth(80);
+		feld11.setMaxWidth(80);
+		feld12.setMaxWidth(80);
+		raum1.setMaxWidth(80);
+		raum2.setMaxWidth(80);
+		tuer1.setMaxWidth(80);
+		
+		feld1.setMaxHeight(80);
+		feld2.setMaxHeight(80);
+		feld3.setMaxHeight(80);
+		feld4.setMaxHeight(80);
+		feld5.setMaxHeight(80);
+		feld6.setMaxHeight(80);
+		feld7.setMaxHeight(80);
+		feld8.setMaxHeight(80);
+		feld9.setMaxHeight(80);
+		feld10.setMaxHeight(80);
+		feld11.setMaxHeight(80);
+		feld12.setMaxHeight(80);
+		raum1.setMaxHeight(80);
+		raum2.setMaxHeight(80);
+		tuer1.setMaxHeight(80);
+		
 	}
-
-	public FeldKachel getFeld1() {
-		return feld1;
-	}
-
-	public void setFeld1(FeldKachel feld1) {
-		this.feld1 = feld1;
-	}
-
-	public FeldKachel getFeld2() {
-		return feld2;
-	}
-
-	public void setFeld2(FeldKachel feld2) {
-		this.feld2 = feld2;
-	}
-
-	public FeldKachel getFeld3() {
-		return feld3;
-	}
-
-	public void setFeld3(FeldKachel feld3) {
-		this.feld3 = feld3;
-	}
-
-	public FeldKachel getFeld4() {
-		return feld4;
-	}
-
-	public void setFeld4(FeldKachel feld4) {
-		this.feld4 = feld4;
-	}
-
-	public FeldKachel getFeld5() {
-		return feld5;
-	}
-
-	public void setFeld5(FeldKachel feld5) {
-		this.feld5 = feld5;
-	}
-
-	public FeldKachel getFeld6() {
-		return feld6;
-	}
-
-	public void setFeld6(FeldKachel feld6) {
-		this.feld6 = feld6;
-	}
-
-	public RaumKachel getRaum1() {
-		return raum1;
-	}
-
-	public void setRaum1(RaumKachel raum1) {
-		this.raum1 = raum1;
-	}
-
-	public RaumKachel getRaum2() {
-		return raum2;
-	}
-
-	public void setRaum2(RaumKachel raum2) {
-		this.raum2 = raum2;
-	}
-
-	public TuerKachel getTuer1() {
-		return tuer1;
-	}
-
-	public void setTuer1(TuerKachel tuer1) {
-		this.tuer1 = tuer1;
-	}
-
-	public Kachel[][] getKachelArray() {
+		public Kachel[][] getKachelArray() {
 		return kachelArray;
 	}
 

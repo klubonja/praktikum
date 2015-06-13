@@ -3,132 +3,141 @@ package vielCoolererPathfinder;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.util.Duration;
+import kacheln.Kachel;
+import enums.Orientation;
 
 public class DerBeweger {
 
 	private GUI gui;
 	private KrasserStack krasserStack;
-	private BallEbene ballEbene;
+	private BallEbene2 ballEbene;
 	
-	private char [] anweisungen;
+	private Orientation [] anweisungen;
+	private int momentaneAnweisung;
+	private int wieVieleAnweisungen;
 	
-	private Timeline timeline;
-	private KeyFrame keyFrame;
-	private KeyValue keyValue;
-	private AnimationTimer timer;
+	private int jetzigeReihe;
+	private int jetzigeSpalte;
 	
 	private int xDistanz;
 	private int yDistanz;
 	
+	private Circle spieler;
+	
     private KeyValue keyValueX;
     private KeyValue keyValueY;
     
+    private int schritte;
     
-	 
-	    //variable for storing actual frame
-	    private Integer frame=0;
+    private Kachel anfangsKachel;
+    private Kachel zielKachel;
 	
 	
-	public DerBeweger(GUI gui, KrasserStack krasserStack, BallEbene ballEbene){
+	public DerBeweger(GUI gui, KrasserStack krasserStack, BallEbene2 ballEbene){
 		this.gui = gui;
 		this.krasserStack = krasserStack;
 		this.ballEbene = ballEbene;
+		anfangsKachel = gui.getKachelArray()[1][2];
+		
+		spieler = ballEbene.getSpieler();
 	}
 	
-	public void cheaten(char [][] anweisungen){
+	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe){
 		
-		int welcheAnweisung = 0;
+		this.schritte = schritteEingabe;
 		
-		for (int i = anweisungen[welcheAnweisung].length-1; i > 0; i--){
-			if (anweisungen[welcheAnweisung][i] == 'N'){
-				yDistanz--;
-			}
-			if (anweisungen[welcheAnweisung][i] == 'S'){
-				yDistanz++;
-			}
-			if (anweisungen[welcheAnweisung][i] == 'W'){
-				xDistanz--;
-			}
-			if (anweisungen[welcheAnweisung][i] == 'E'){
-				xDistanz++;
-			}
-		}
+		this.anweisungen = anweisungenEingabe;
 		
-		ballEbene.getSpieler().setCenterX(gui.getKachelArray()[1+xDistanz][2+yDistanz].getLayoutX());
-		ballEbene.getSpieler().setCenterY(gui.getKachelArray()[1+xDistanz][2+yDistanz].getLayoutY());
-	}
-	
-	public void bewegen(char [] anweisungen){
-				
-		this.anweisungen = anweisungen;
-						
-		//create a timeline for moving the circle
-        timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.setAutoReverse(true);
- 
-//You can add a specific action when each frame is started.
-        timer = new AnimationTimer() {
-            @Override
-            public void handle(long l) {
-            	//System.out.println(frame);
-                krasserStack.doThatTitleThang(frame.toString());
-                frame++;
-            }
- 
-        };
- 
-        //create a keyValue with factory: scaling the circle 2times
-        //KeyValue keyValueX = new KeyValue(gui.getKachelArray()[1][1].xKoordinateProperty());
-        //KeyValue keyValueY = new KeyValue(gui.getKachelArray()[1][1].yKoordinateProperty());
-        
-        //create a keyFrame, the keyValue is reached at time 2s
-        Duration duration = Duration.millis(2000);
-        //one can add a specific action when the keyframe is reached
-        EventHandler onFinished = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                //falls es noch mehr gibt: weitermachen! 
-            	/*
-                 if (anweisungen[i+1] != ' '){
-                	 
-                 }
-                 */
-            }
-        };
- 
-        KeyFrame keyFrame = new KeyFrame(duration, onFinished , keyValueX, keyValueY);
- 
-        //add the keyframe to the timeline
-        timeline.getKeyFrames().add(keyFrame);
- 
-        timeline.play();
-        timer.start();
-		/*
-		for (int i = 0; anweisungen[i] != ' ';i++){
-			if (anweisungen[i] == 'S'){
-				
+		wieVieleAnweisungen = 0;
+		
+		for (int i = 0; i < anweisungen.length;i++)
+			{
+				if (anweisungen[i] != null){
+					wieVieleAnweisungen++;
+				}
 			}
 			
-			if (anweisungen[i] == 'E'){
-				
-			}
+//		System.out.println("§§§§§§§§§§§§§§§§§§§§§§§§§§");
+//		System.out.println("wievieleAnweisungen : " +wieVieleAnweisungen);
+//		System.out.println("schritte : "+schritte);
+//		System.out.println("momentaneAnweisung : "+momentaneAnweisung);
 
-			if (anweisungen[i] == 'N'){
-				
+		momentaneAnweisung = wieVieleAnweisungen - schritte;
+		
+		System.out.println("endposition    X    " + spieler.getCenterX() +"    ||    Y    " + spieler.getCenterY());
+		
+		
+		if (schritte>0){
+			
+			System.out.println("while-anfang");
+			
+			jetzigeReihe = gui.getRowIndex(anfangsKachel);
+			jetzigeSpalte = gui.getColumnIndex(anfangsKachel);
+			
+			if (anweisungen[momentaneAnweisung] == Orientation.S){
+				System.out.println("Test");
 			}
+			
+			System.out.println(anweisungen[momentaneAnweisung]);
+			
+			if (anweisungen[momentaneAnweisung] == Orientation.S){
+				yDistanz = 1;
+				xDistanz = 0;
+			}
+			
+			else if (anweisungen[momentaneAnweisung] == Orientation.O){
+				xDistanz = 1;
+				yDistanz = 0;
+			}
+			
+			else if (anweisungen[momentaneAnweisung] == Orientation.N){
+				yDistanz = -1;
+				xDistanz = 0;
+			}
+			
+			else if (anweisungen[momentaneAnweisung] == Orientation.W){
+				xDistanz = -1;
+				yDistanz = 0;
+			}
+			
+			zielKachel = gui.getKachelArray()[jetzigeSpalte+xDistanz][jetzigeReihe+yDistanz];
+			
+			System.out.println("xDistanz : " +xDistanz +"   yDistanz : " +yDistanz);
+			
+			System.out.println("anfangsKachel X : " +anfangsKachel.getLayoutX() +"  anfangsKachel Y : " +anfangsKachel.getLayoutY());
+			System.out.println("zielKachel X : " +zielKachel.getLayoutX() +"  zielKachel Y : " +zielKachel.getLayoutY());
+			
+			Path path = new Path();
+			path.getElements().add(new MoveTo(anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
 
-			if (anweisungen[i] == 'W'){
-				
-			}
+			path.getElements().add(new LineTo(zielKachel.getLayoutX(), zielKachel.getLayoutY()));
+
+			PathTransition pathTransition = new PathTransition();
+			pathTransition.setDuration(Duration.millis(Math.abs(xDistanz) * 1000 + Math.abs(yDistanz)
+					* 1000));
+			pathTransition.setNode(spieler);
+			pathTransition.setPath(path);
+			pathTransition.play();
+			pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
+				public void handle(ActionEvent e) {
+					anfangsKachel = zielKachel;
+					schritte--;
+					bewegen(anweisungen, schritte);
+				}
+			});
+			
 
 			
 		}
-		*/
+	
 	}
-	
-	
 }

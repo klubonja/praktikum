@@ -24,8 +24,8 @@ public class TuerKachel extends Kachel {
 	 * @param raum
 	 * @param istTuer
 	 */
-	public TuerKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung, String raum, boolean istTuer){
-		super(text, xKoordinate, yKoordinate, istRaum, orientierung, istTuer);
+	public TuerKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung, String raum, boolean istTuer, char [] moeglichkeiten){
+		super(text, xKoordinate, yKoordinate, istRaum, orientierung, istTuer, moeglichkeiten);
 		this.raum = raum;
 		this.setBackgroundColor(this, Color.BLUEVIOLET);
 	}
