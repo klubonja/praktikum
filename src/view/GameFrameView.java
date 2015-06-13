@@ -5,7 +5,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -31,12 +30,6 @@ public class GameFrameView extends GridPane{
 	private FigurenView figuren;
 
 	Player player;
-	Button view1;
-	Button view2;
-	Button view3;
-	Button view4;
-	Button view5;
-	Button view6;
 	
 	private Stage stage;
 	private Scene scene;
@@ -89,16 +82,7 @@ public class GameFrameView extends GridPane{
 		figuren = new FigurenView();
 		komplettesFeld = new SpielfeldUndFiguren(board, figuren);
 		komplettesFeld.start();
-
-		
-		view1 = new Button("View 1");
-		view2 = new Button("View 2");
-		view3 = new Button("View 3");
-		view4 = new Button("View 4");
-		view5 = new Button("View 5");
-		view6 = new Button("View 6");
-		
-
+	
 		
 		/* Left part of the whole GameFrame,
 		   only for a better organising of objects. */
@@ -107,14 +91,14 @@ public class GameFrameView extends GridPane{
 		rightGrid.getColumnConstraints().add(new ColumnConstraints(350));
 		rightGrid.getColumnConstraints().add(new ColumnConstraints(300));
 		rightGrid.setVgap(2);
-		rightGrid.setHgap(2);
+		rightGrid.setHgap(4);
 		//rightGrid.setGridLinesVisible(true);
 
 		// VBox and HBox for dividing elements in two columns
 		VBox leftColumn = new VBox(10);
 		VBox rightColumn = new VBox(10);
 		rightColumn.getChildren().addAll(notes, dice);
-		leftColumn.getChildren().addAll(hand, chat, view1, view2, view3, view4, view5, view6);
+		leftColumn.getChildren().addAll(hand, chat);
 		
 		//
 		/*GridPane.setConstraints(notes,1,0);
