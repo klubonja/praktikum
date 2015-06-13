@@ -2,6 +2,7 @@ package view;
 
 
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -24,11 +25,11 @@ public class GameFrameView extends GridPane{
 	DiceView dice;
 	ChatView chat;
 	BoardView board;
-
+	HandFrameView hand;
+	
 	private SpielfeldUndFiguren komplettesFeld;
 	private FigurenView figuren;
 
-	HandFrameView hand;
 	Player player;
 	Button view1;
 	Button view2;
@@ -44,58 +45,51 @@ public class GameFrameView extends GridPane{
 	
 	public GameFrameView(Player player){
 		
+		//We need the reference to the player so that we can get the player's cards
 		this.player = player;
 		
-		/**
-		* Adds the size and number of the Rows and Columns of the main GridPane
-		* (2 Rows x 2 Columns).
-		*/
+		
+		/*Adds the size and number of the Rows and Columns of the main GridPane
+		(2 Rows x 2 Columns). */
 		this.getRowConstraints().add(new RowConstraints(25));
 		this.getRowConstraints().add(new RowConstraints(725));
 		this.getColumnConstraints().add(new ColumnConstraints(700));
 		this.getColumnConstraints().add(new ColumnConstraints(650));
-		this.setVgap(2);
-		this.setHgap(2);
+		this.setVgap(4);
+		this.setHgap(4);
+		this.setPadding(new Insets(0, 4, 2, 4));
+		//this.setGridLinesVisible(true);
 		
-		/**
-		 * Adds the MenuBar and Menus at the top of the screen.
-		 */
+		
+		//Adds the MenuBar and Menus at the top of the screen.
 		menu = new MenuBarView();
 		
-		/**
-		 * Adds the Game Board frame.
-		 */
+		
+		//Adds the Game Board frame.
 		board = new BoardView(24,25);
 		
-		/**
-		 * Adds the Notes frame.
-		 */
+		
+		//Adds the Notes frame.
 		notes = new NotesView();
 		
-		/**
-		 * Adds the Chat frame.
-		 */
+		
+		//Adds the Chat frame.
 		chat = new ChatView();
 		
-		/**
-		 * Adds the Dices frame.
-		 */
+		
+		//Adds the Dices frame.
 		dice = new DiceView();
 		
+		
+		//Adds the frame for the Cards in hand.
+		hand = new HandFrameView();
 
-
+		
+		
 		figuren = new FigurenView();
-		
 		komplettesFeld = new SpielfeldUndFiguren(board, figuren);
-		
 		komplettesFeld.start();
 
-		hand = new HandFrameView();
-		
-
-
-		// Adds the frame for the cards in hand.
-		hand = new HandFrameView();
 		
 		view1 = new Button("View 1");
 		view2 = new Button("View 2");
@@ -106,27 +100,27 @@ public class GameFrameView extends GridPane{
 		
 
 		
-		/**
-		 * Left part of the whole GameFrame,
-		 * Only for a better organising of objects.
-		 */
+		/* Left part of the whole GameFrame,
+		   only for a better organising of objects. */
 		rightGrid = new GridPane();
-		//rightGrid.setGridLinesVisible(true);
 		rightGrid.getRowConstraints().add(new RowConstraints(450));
-		//rightGrid.getRowConstraints().add(new RowConstraints(200));
 		rightGrid.getColumnConstraints().add(new ColumnConstraints(350));
 		rightGrid.getColumnConstraints().add(new ColumnConstraints(300));
 		rightGrid.setVgap(2);
 		rightGrid.setHgap(2);
+		//rightGrid.setGridLinesVisible(true);
+
+		// VBox and HBox for dividing elements in two columns
 		VBox leftColumn = new VBox(10);
 		VBox rightColumn = new VBox(10);
 		rightColumn.getChildren().addAll(notes, dice);
 		leftColumn.getChildren().addAll(hand, chat, view1, view2, view3, view4, view5, view6);
+		
+		//
 		/*GridPane.setConstraints(notes,1,0);
 		GridPane.setConstraints(dice,1,1);
 		GridPane.setConstraints(chat,0,1);
 		GridPane.setConstraints(hand,0,0);*/
-		
 		GridPane.setConstraints(rightColumn,1,0);
 		GridPane.setRowSpan(rightColumn, 2);
 		GridPane.setConstraints(leftColumn,0,0);
@@ -144,10 +138,9 @@ public class GameFrameView extends GridPane{
 		GridPane.setHalignment(komplettesFeld, HPos.LEFT);
 		GridPane.setConstraints(rightGrid, 1,1);
 		this.getChildren().addAll(komplettesFeld, menu, rightGrid);
-
-		this.setGridLinesVisible(true);
 		
 		}
+	
 	
 	public void start(){
 		scene = new Scene (this, 1300,700);
@@ -163,7 +156,129 @@ public class GameFrameView extends GridPane{
 	public void close(){
 		this.stage.close();
 	}
+
+
 	
+	//Getter and Setter Methods
+	public MenuBarView getMenu() {
+		return menu;
 	}
+
+
+	public void setMenu(MenuBarView menu) {
+		this.menu = menu;
+	}
+
+
+	public GridPane getRightGrid() {
+		return rightGrid;
+	}
+
+
+	public void setRightGrid(GridPane rightGrid) {
+		this.rightGrid = rightGrid;
+	}
+
+
+	public NotesView getNotes() {
+		return notes;
+	}
+
+
+	public void setNotes(NotesView notes) {
+		this.notes = notes;
+	}
+
+
+	public DiceView getDice() {
+		return dice;
+	}
+
+
+	public void setDice(DiceView dice) {
+		this.dice = dice;
+	}
+
+
+	public ChatView getChat() {
+		return chat;
+	}
+
+
+	public void setChat(ChatView chat) {
+		this.chat = chat;
+	}
+
+
+	public BoardView getBoard() {
+		return board;
+	}
+
+
+	public void setBoard(BoardView board) {
+		this.board = board;
+	}
+
+
+	public HandFrameView getHand() {
+		return hand;
+	}
+
+
+	public void setHand(HandFrameView hand) {
+		this.hand = hand;
+	}
+
+
+	public SpielfeldUndFiguren getKomplettesFeld() {
+		return komplettesFeld;
+	}
+
+
+	public void setKomplettesFeld(SpielfeldUndFiguren komplettesFeld) {
+		this.komplettesFeld = komplettesFeld;
+	}
+
+
+	public FigurenView getFiguren() {
+		return figuren;
+	}
+
+
+	public void setFiguren(FigurenView figuren) {
+		this.figuren = figuren;
+	}
+
+
+	public Player getPlayer() {
+		return player;
+	}
+
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+
+	public Stage getStage() {
+		return stage;
+	}
+
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+
+
+	public Scene getOurScene() {
+		return scene;
+	}
+
+
+	public void setScene(Scene scene) {
+		this.scene = scene;
+	}
+	
+}
 
 

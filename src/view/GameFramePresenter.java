@@ -33,19 +33,12 @@ public class GameFramePresenter {
 		gfv.board.getChildren().add(playerCircle);
 		
 		DicePresenter dice = new DicePresenter(gfv.dice);
-
 		BoardPresenter board = new BoardPresenter(gfv.board, playerCircle, this.player);
-
 		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		HandFramePresenter hand = new HandFramePresenter(gfv.hand);
 		MenuBarPresenter menuBar = new MenuBarPresenter(gfv.menu, gfv);
 		
-		gfv.view2.setOnAction(e -> changeFramePl2());
-		
 	}
 	
-	public void changeFramePl2(){
-		
-	}
 	
 }
