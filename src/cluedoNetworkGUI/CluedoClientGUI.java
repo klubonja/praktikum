@@ -23,7 +23,10 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	 public CluedoClientGUI(Stage primaryStage){
 		 super(primaryStage);
 		 submitMessageButton = new Button("submitMessage");
-		 inputField = new TextArea();		 
+		 inputField = new TextArea();	
+		 width = Config.CLIENT_WINDOW_WIDTH;
+		 height = Config.CLIENT_WINDOW_HEIGHT;
+		 
 		 setStartServiceButtonLabel("StartClient");	
 		 startUp();	 		 
 	}
@@ -75,6 +78,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         messagesIn.setWrapText(true);
         messagesOut.setWrapText(true);
+        
         
         Text title = new Text(desc);
         title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));

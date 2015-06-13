@@ -31,8 +31,15 @@ public abstract class Config {
 	
 	public final static double IP_PROMPT_WINDOW_HEIGHT = 100;
 	public final static double IP_PROMPT_WINDOW_WIDTH = 300;
+	
 	public final static double LOGIN_PROMPT_WINDOW_WIDTH = 300;
 	public final static double LOGIN_PROMPT_WINDOW_HEIGHT = 200;
+	
+	public final static double CLIENT_WINDOW_WIDTH = 800;
+	public final static double CLIENT_WINDOW_HEIGHT = 300;
+	
+	public final static double SERVER_WINDOW_WIDTH = 800;
+	public final static double SERVER_WINDOW_HEIGHT = 400;
 	
 	public final static String BLACKLISTED_MSG = ""
 			+ "you have the ip of some evil known protoksaveollviolator, lets try anyway";

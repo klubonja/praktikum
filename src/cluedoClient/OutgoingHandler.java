@@ -30,10 +30,13 @@ class OutgoingHandler implements Runnable{
 	CluedoClientGUI gui;
 	String serverName;
 	
-	public OutgoingHandler(Socket cs,CluedoClientGUI g,String sName) {
+	boolean run;
+	
+	public OutgoingHandler(Socket cs,CluedoClientGUI g,String sName,boolean run) {
 		cSocket = cs;
 		gui = g;
 		serverName = sName;
+		this.run = run;
 		login();
 		addClientGUIListener();
 	}
