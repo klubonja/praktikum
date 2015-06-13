@@ -14,6 +14,7 @@ import staticClasses.NetworkMessages;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkLayer.CluedoGameServer;
 
 /**
  * @author guldener
@@ -23,12 +24,12 @@ public class Server {
 	
 	Connector connector;
 	public ServerSocket tcpSocket;
-	ArrayList<ClientItem> clientList;
+	ClientPool clientPool;
 	ArrayList<ClientItem> blackList;
 	int TCPport;
 	
 	final CluedoServerGUI gui;
-	public ArrayList<CluedoGame> gameList;
+	public ArrayList<CluedoGameServer> gameList;
 	
 	boolean run;
 	
@@ -37,9 +38,9 @@ public class Server {
 	public Server(CluedoServerGUI g){
 		gui = g;
 		TCPport = Config.TCP_PORT;	
-		clientList = new ArrayList<ClientItem>();
+		clientPool = new ClientPool(); 
 		blackList = new ArrayList<ClientItem>();
-		gameList = new ArrayList<CluedoGame>();
+		gameList = new ArrayList<CluedoGameServer>();
 		run = true;
 		
 		createTestGroups();
@@ -69,8 +70,10 @@ public class Server {
 	
 	
 	private void createTestGroups(){
-		for(int i = 0; i < 4; i++) 
-			gameList.add(new CluedoGame(6,"reduzierterHund"+i,i));
+		for(int i = 0; i < 4; i++) {
+			gameList.add(new CluedoGameServer(i));
+			gui.addGame("erweiterer Hund "+gameList.get(i).getGameId(), gameList.get(i).getNicksConnected());
+		}
 	}
 	
 	/**
@@ -81,7 +84,7 @@ public class Server {
 	private void startTCPServer()  {
 		try {
 			tcpSocket = new ServerSocket(TCPport);	
-			connector = new Connector(tcpSocket, gui,clientList,blackList,gameList);
+			connector = new Connector(tcpSocket, gui,clientPool,blackList,gameList);
 			connector.start();
 			try {
 				NetworkInterfacesIpManager nm = new NetworkInterfacesIpManager();				 	

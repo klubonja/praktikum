@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-class ClientItem {
+public class ClientItem {
 	
 	String id;
 	String nick;	
@@ -22,7 +22,7 @@ class ClientItem {
 	InetAddress adress;
 	
 	
-	ClientItem(Socket s){
+	public ClientItem(Socket s){
 		socket = s;
 		adress = socket.getInetAddress();
 	}

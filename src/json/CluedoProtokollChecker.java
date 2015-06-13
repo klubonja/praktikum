@@ -34,6 +34,12 @@ public class CluedoProtokollChecker {
 		msgs = new ArrayList<String>();
 	}
 	
+	public CluedoProtokollChecker(JSONObject j) {
+		jsonRoot = new CluedoJSON(j);
+		errs = new ArrayList<String>();
+		msgs = new ArrayList<String>();
+	}
+	
 	public NetworkHandhakeCodes validateExpectedType(String exptype,String[] ignoredTypes){
 		checkType();
 		if (type.equals(exptype)) 

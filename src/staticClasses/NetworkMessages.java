@@ -1,9 +1,18 @@
 package staticClasses;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import json.CluedoJSON;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import cluedoNetworkLayer.CluedoGameServer;
+import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoWeapon;
+import cluedoServer.ClientItem;
+
 
 public abstract class NetworkMessages {
 	
@@ -31,14 +40,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String login_sucMsg(JSONArray nickArray,JSONArray gameArray,JSONArray expansions){
-		CluedoJSON json = new CluedoJSON("login successful");
-		json.put("expansions", expansions);
-		json.put("game array", gameArray);
-		json.put("nick array", nickArray);
-		
-		return json.toString();
-	}
+	
 	
 	public static String user_addedMsg(String nick){
 		CluedoJSON json = new CluedoJSON("user added");
@@ -359,7 +361,84 @@ public abstract class NetworkMessages {
 		
 		return json.toString();
 	}
-
+	
+	public static JSONObject gameInfo(CluedoGameServer game){
+		JSONArray playerInfosJSON = new JSONArray();
+		JSONArray perspossJSON = new JSONArray();
+		ArrayList<CluedoPlayer> playerInfos = game.getPlayers();
+		for (CluedoPlayer p : playerInfos){
+			playerInfosJSON.put(
+				NetworkMessages.player_info(
+					p.getNick(), 
+					p.getCluedoPerson().getColor(), 
+					p.getState().getName()
+				)
+			);
+			perspossJSON.put(
+				NetworkMessages.player_pos(
+					p.getCluedoPerson().getPersonName(), 
+					NetworkMessages.field(
+						p.getPosition().getX(), 
+						p.getPosition().getY()
+					)
+				)
+			);
+		}
+		JSONArray watchersJSON = new JSONArray();
+		ArrayList<String> watchers = game.getWatchersNicks();
+		for (String w : watchers)
+			watchersJSON.put(w);
+		
+		JSONArray weaponpossJSON = new JSONArray();
+		Map<String, CluedoWeapon> weaponPoss = game.getWeapons();
+		for (Map.Entry<String, CluedoWeapon> wp : weaponPoss.entrySet()){
+			weaponpossJSON.put(
+				NetworkMessages.weapon_pos(
+					wp.getValue().getWeapon().getName(), 
+					NetworkMessages.field(
+						wp.getValue().getPosition().getX(),
+						wp.getValue().getPosition().getY()
+					)
+				)
+			);
+		}
+		
+		return NetworkMessages.gameinfo(
+				game.getGameId(), 
+				game.getGameState().getName(), 
+				playerInfosJSON, 
+				watchersJSON, 
+				perspossJSON,
+				weaponpossJSON
+			  );		
+	}
+	
+	public static String make_login_sucMsg(JSONArray nickArray,JSONArray gameArray,JSONArray expansions){
+		CluedoJSON json = new CluedoJSON("login successful");
+		json.put("expansions", expansions);
+		json.put("game array", gameArray);
+		json.put("nick array", nickArray);
+		
+		return json.toString();
+	}
+	
+	public static String login_sucMsg(ArrayList<String> expansions, ArrayList<ClientItem> clientList, ArrayList<CluedoGameServer> gameList ){
+		JSONArray nickArray = new JSONArray();
+		JSONArray gameArray = new JSONArray();
+		JSONArray expansionsJSON = new JSONArray();
+		for (ClientItem c : clientList)
+			nickArray.put(c.getNick());
+		for (CluedoGameServer g : gameList)
+			gameArray.put(gameInfo(g));
+		for (String ex: expansions)
+			expansionsJSON.put(ex);
+			
+		return NetworkMessages.make_login_sucMsg(
+						nickArray, 
+						gameArray,
+						expansionsJSON
+					);
+	}
 	
 	
 	

@@ -23,4 +23,11 @@ public enum GameStates {
                 return true;
         return false;
     }
+	 static public GameStates getState(String aName) {
+	        GameStates[] gameStates = GameStates.values();
+	        for (GameStates gameState  : gameStates)
+	            if (gameState.getName().equals(aName))
+	                return gameState;
+	        return null;
+	    }
 }

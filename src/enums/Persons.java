@@ -1,6 +1,6 @@
 package enums;
 
-import cluedoServer.CluedoPosition;
+import cluedoNetworkLayer.CluedoPosition;
 
 public enum Persons {
 	
@@ -50,4 +50,20 @@ public enum Persons {
                 return true;
         return false;
     }
+	
+	 static public Persons getPersonByName(String name) {
+	        Persons[] persons = Persons.values();
+	        for (Persons person  : persons)
+	            if (person.getPersonName().equals(name))
+	                return person;
+	        return null;
+	    }
+	 
+	 static public Persons getPersonByColor(String color) {
+	        Persons[] persons = Persons.values();
+	        for (Persons person  : persons)
+	            if (person.getColor().equals(color))
+	                return person;
+	        return null;
+	    }
 }

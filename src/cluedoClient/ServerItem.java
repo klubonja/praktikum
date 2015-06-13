@@ -1,12 +1,16 @@
 package cluedoClient;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
+
+import cluedoNetworkLayer.CluedoGameClient;
 
 
 public class ServerItem  {
 	String groupName;
 	InetAddress ip;
 	int port;
+	ArrayList<CluedoGameClient> gameList;
 	
 	public ServerItem(String groupName,InetAddress ip, int port) {
 		this.groupName = groupName;
@@ -25,4 +29,17 @@ public class ServerItem  {
 	public String getGroupName() {
 		return groupName;
 	}
+	
+	public ArrayList<CluedoGameClient> getGameList() {
+		return gameList;
+	}
+	
+	public void addGame(CluedoGameClient cg){
+		gameList.add(cg);
+	}
+	
+	public void removeGame(ClientGameItem cg){
+		gameList.remove(cg);
+	}
+	
 }

@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -28,6 +29,7 @@ public abstract class CluedoNetworkGUI {
 	final public Button startService;
 	final public GridPane grid;
 	final public Stage primaryStage;
+	final public Scene scene;
 	double width;
 	double height;
 	
@@ -38,10 +40,12 @@ public abstract class CluedoNetworkGUI {
 		 ipListView = new ListView<String>(ips);
 		 
 		 primaryStage = s;
+		 
 		 grid = new GridPane();
 		 messagesIn = new TextArea();
 		 messagesOut = new TextArea();
 		 startService = new Button();
+		 scene = new Scene(grid);
 		 
 		 
 		 inLabel = new Text("IN");
@@ -71,9 +75,8 @@ public abstract class CluedoNetworkGUI {
 		  if (i-1 >= 0)  ips.remove(i-1);
 	  }
 	  public void removeIp(String name){
-		  for (String s: ips)
-			  if (s.equals(name))
-				  ips.remove(name);
+		  for (int i = 0;i < ips.size(); i++)
+			  if (ips.get(i).equals(name))  ips.remove(i);
 	  }
 	  
 	  public  void emptyList(){
@@ -100,6 +103,7 @@ public abstract class CluedoNetworkGUI {
 		  startService.setText(label);
 	  }
 	  
+	 
 	  public void setWindowName(String label){
 		  primaryStage.setTitle(label);
 	  }
@@ -119,5 +123,18 @@ public abstract class CluedoNetworkGUI {
 					};
 			grid.widthProperty().addListener(gridwidthlistener);
 	  }
-  
+	  
+	 public void setStylesheet(String cssFile){
+		 scene.getStylesheets().add(cssFile);
+
+	  }
+	 
+	 public void setStageWidth(double w){
+		 primaryStage.setWidth(w);
+	 }
+	 
+	 public void setStageHeight(double h){
+		 primaryStage.setHeight(h);
+	 }
+
 }

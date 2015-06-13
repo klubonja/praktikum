@@ -1,4 +1,4 @@
-package cluedoServer;
+package cluedoNetworkLayer;
 
 import enums.Persons;
 import enums.PlayerStates;
@@ -8,11 +8,17 @@ public class CluedoPlayer {
 	Persons cluedoPerson;
 	PlayerStates state;
 	CluedoPosition position;
+	String nick;
 	
 	public CluedoPlayer(Persons pers,PlayerStates s, CluedoPosition p) {
 		cluedoPerson = pers;
 		state = s;
 		position = p;
+	}
+	
+	public CluedoPlayer(Persons pers,PlayerStates s) {
+		cluedoPerson = pers;
+		state = s;
 	}
 	
 	public void setNewPosition(int x,int y) {
@@ -35,5 +41,14 @@ public class CluedoPlayer {
 	public Persons getCluedoPerson() {
 		return cluedoPerson;
 	}
+	
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+	
+	public String getNick() {
+		return nick;
+	}
+	
 
 }

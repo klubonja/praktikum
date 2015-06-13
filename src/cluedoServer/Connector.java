@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkLayer.CluedoGameServer;
 
 
 class Connector extends Thread{	
@@ -20,16 +21,16 @@ class Connector extends Thread{
 	final CluedoServerGUI gui;
 	private ServerSocket serverSocket;
 	
-	ArrayList<ClientItem> clientList;
+	ClientPool clientPool;
 	ArrayList<ClientItem> blackList;
-	ArrayList<CluedoGame> gameList;
+	ArrayList<CluedoGameServer> gameList;
 	boolean running = true;	
 	
 	
-	Connector (ServerSocket ss, CluedoServerGUI g,ArrayList<ClientItem> cList,ArrayList<ClientItem> bList,ArrayList<CluedoGame> gl) {
+	Connector (ServerSocket ss, CluedoServerGUI g,ClientPool cList,ArrayList<ClientItem> bList,ArrayList<CluedoGameServer> gl) {
 		gui = g;
 		serverSocket = ss;
-		clientList = cList;
+		clientPool = cList;
 		blackList = bList;
 		gameList = gl;
 	}
@@ -39,18 +40,17 @@ class Connector extends Thread{
 		try {			
 			while (running){
 				Socket clientSocket = serverSocket.accept();
-				if (!checkForExistingIp(clientSocket.getInetAddress())){
+				if (!clientPool.checkForExistingIp(clientSocket.getInetAddress())){
 					if (isBlacklisted(clientSocket.getInetAddress()))
 						sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
 					Thread newCommunicationThread = new Thread(new CommunicationHandler(
-							serverSocket, new ClientItem(clientSocket), gui,clientList,blackList,gameList));
+							serverSocket, new ClientItem(clientSocket), gui,clientPool,blackList,gameList));
 					newCommunicationThread.start();	
 				}
 				else {
 					sendMsg(NetworkMessages.error_Msg("already connected"), clientSocket);
 					clientSocket.close();
-				}
-					 		
+				}					 		
 			}					
 		}
 		catch(IOException e){
@@ -61,31 +61,6 @@ class Connector extends Thread{
 			System.out.println("thread runningflag: "+running+"");
 			kill();
 		}		
-	}
-	
-	public void notifyAllClients(String msg){
-		for (int i = 0;i < clientList.size();i++)
-			clientList.get(i).sendMsg(msg);
-		
-	}
-	
-	public void notifyAllClientsButSender(String msg,ClientItem c){
-		for (int i = 0;i < clientList.size(); i++)
-			if (c.id != clientList.get(i).id) 
-				clientList.get(i).sendMsg(msg);
-		
-	}
-	
-	public void notifyClient(String msg,ClientItem c){
-		for (int i = 0;i < clientList.size();i++)
-			if (c.id == clientList.get(i).id) 
-				clientList.get(i).sendMsg(msg);
-	}
-	
-	private boolean checkForExistingIp(InetAddress adress){
-		for (ClientItem c : clientList)
-			if (adress.equals(c.getAdress())) return true;
-		return false;
 	}
 	
 	boolean isBlacklisted(InetAddress adress){

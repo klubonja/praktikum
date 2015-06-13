@@ -1,4 +1,4 @@
-package cluedoServer;
+package cluedoNetworkLayer;
 
 
 import enums.Weapons;
