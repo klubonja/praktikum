@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Player;
@@ -24,6 +25,13 @@ public class IntroPresenter {
 	 Player player4;
 	 Player player5;
 	 Player player6;
+	 GameFrameView viewPl1;
+	 GameFrameView viewPl2;
+	 GameFrameView viewPl3;
+	 GameFrameView viewPl4;
+	 GameFrameView viewPl5;
+	 GameFrameView viewPl6;
+	 StackPane gameStack;
 	 
 	 StringProperty errorStr = new SimpleStringProperty("");
 	 
@@ -174,12 +182,7 @@ public class IntroPresenter {
 			this.player = player6;
 		}
 		
-		GameFrameView viewPl1 = new GameFrameView(this.player);
-		GameFrameView viewPl2 = new GameFrameView(player2);
-		GameFrameView viewPl3 = new GameFrameView(player3);
-		GameFrameView viewPl4 = new GameFrameView(player4);
-		GameFrameView viewPl5 = new GameFrameView(player5);
-		GameFrameView viewPl6 = new GameFrameView(player6);
+		viewPl1 = new GameFrameView(this.player);
 		Scene scene = new Scene(viewPl1, 1300, 700);
         Stage primaryStage = new Stage();
         primaryStage.setScene(scene);
@@ -190,8 +193,8 @@ public class IntroPresenter {
         GameFramePresenter pres2 = new GameFramePresenter(viewPl2, player2, primaryStage);
         GameFramePresenter pres3 = new GameFramePresenter(viewPl3, player3, primaryStage);
         GameFramePresenter pres4 = new GameFramePresenter(viewPl4, player4, primaryStage);
-        /*GameFramePresenter pres5 = new GameFramePresenter(viewPl5, player5, primaryStage);
-        GameFramePresenter pres6 = new GameFramePresenter(viewPl6, player6, primaryStage);*/
+        GameFramePresenter pres5 = new GameFramePresenter(viewPl5, player5, primaryStage);
+        GameFramePresenter pres6 = new GameFramePresenter(viewPl6, player6, primaryStage);
         primaryStage.show();
         view.primaryStage.close();
 		}
