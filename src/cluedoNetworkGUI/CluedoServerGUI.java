@@ -16,11 +16,11 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
 		
 	 public CluedoServerGUI(Stage s){
 		 super(s);
-		 setStartServiceButtonLabel("sendhandshake");	
-		 startUp();	 
 		 width = Config.SERVER_WINDOW_WIDTH;
 		 height = Config.SERVER_WINDOW_HEIGHT;
 		 
+		 setStartServiceButtonLabel("sendhandshake");	
+		 startUp();	 		 
 	}
     
     @Override

@@ -70,6 +70,11 @@ public abstract class CluedoNetworkGUI {
 	  public void removeIp(int i){
 		  if (i-1 >= 0)  ips.remove(i-1);
 	  }
+	  public void removeIp(String name){
+		  for (String s: ips)
+			  if (s.equals(name))
+				  ips.remove(name);
+	  }
 	  
 	  public  void emptyList(){
 		  ipListView.getItems().clear();

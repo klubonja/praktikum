@@ -75,7 +75,7 @@ class CommunicationHandler implements Runnable{
 			);
 			perspossJSON.put(
 				NetworkMessages.player_pos(
-					pi.getValue().getCluedoPerson().getColor(), 
+					pi.getValue().getCluedoPerson().getPersonName(), 
 					NetworkMessages.field(
 						pi.getValue().getPosition().getX(), 
 						pi.getValue().getPosition().getY()
@@ -93,7 +93,7 @@ class CommunicationHandler implements Runnable{
 		for (Map.Entry<String, CluedoWeapon> wp : weaponPoss.entrySet()){
 			weaponpossJSON.put(
 				NetworkMessages.weapon_pos(
-					wp.getKey(), 
+					wp.getValue().getWeapon().getName(), 
 					NetworkMessages.field(
 						wp.getValue().getPosition().getX(),
 						wp.getValue().getPosition().getY()
@@ -119,12 +119,16 @@ class CommunicationHandler implements Runnable{
 			nickArray.put(c.getNick());
 		for (CluedoGame g : gameList)
 			gameArray.put(getGameInfo(g));
+		ArrayList<String> exp = client.getExpansions();
+		JSONArray expans = new JSONArray();
+		expans.put(exp.get(0));
 		String msg = NetworkMessages.login_sucMsg(
 						nickArray, 
 						gameArray,
-						new JSONArray(client.getExpansions()
-					));
-		
+						//new JSONArray(client.getExpansions())
+						expans
+					);
+		System.out.println(msg);
 		client.sendMsg(msg);		
 	}
 	
@@ -137,7 +141,9 @@ class CommunicationHandler implements Runnable{
 		while (!readyForCommunication) {
 			try {
 				String message = getMessageFromClient(client.getSocket()).trim();
-				CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(message)));
+				CluedoProtokollChecker checker = new CluedoProtokollChecker(
+						new CluedoJSON(
+								new JSONObject(message)));
 				NetworkHandhakeCodes errcode = checker.validateExpectedType("login",null);
 
 				if (errcode == NetworkHandhakeCodes.OK) {							
@@ -155,6 +161,7 @@ class CommunicationHandler implements Runnable{
 					client.setNick(checker.getMessage().getString("nick"));
 					client.setGroupName(checker.getMessage().getString("group"));
 					clientList.add(client);
+					sendLoginSuccessful();
 					
 					readyForCommunication = true;
 				}
@@ -205,7 +212,8 @@ class CommunicationHandler implements Runnable{
 					Platform.runLater(() -> {
 						gui.addMessageIn(ex.getMessage());
 					});	
-				}				
+				}
+				
 			}
 		}				
 	}

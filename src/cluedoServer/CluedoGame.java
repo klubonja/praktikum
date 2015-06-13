@@ -25,9 +25,11 @@ public class CluedoGame {
 	Map<String, CluedoPlayer> players;
 	Map<String, CluedoWeapon> weapons;
 		
-	public CluedoGame(int poolSize,String groupName){
+	public CluedoGame(int poolSize,String groupName,int gameId){
 		size = poolSize;
 		this.groupName = groupName;
+		this.gameId = gameId; 
+		gameState = GameStates.not_started;
 		
 		init();
 	}
@@ -39,9 +41,11 @@ public class CluedoGame {
 		watchers = new ArrayList<ClientItem>();
 		
 		Persons[] persons = Persons.values();
-		for(Persons p : persons) players.put("", new CluedoPlayer(p, PlayerStates.do_nothing, p.getStartposition()));
+		for(Persons p : persons) 
+			players.put(p.getColor(), new CluedoPlayer(p, PlayerStates.do_nothing, p.getStartposition()));
 		Weapons[] weaponsEnum = Weapons.values();
-		for(Weapons w : weaponsEnum) weapons.put("", new CluedoWeapon(w, new CluedoPosition(11, 11)) ); //11,11 ist schwimmbad
+		for(Weapons w : weaponsEnum) 
+			weapons.put("", new CluedoWeapon(w, new CluedoPosition(11, 11)) ); //11,11 ist schwimmbad
 
 		
 		

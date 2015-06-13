@@ -17,9 +17,9 @@ public enum Persons {
 	private String personName;
 	private CluedoPosition startposition;
 	
-	Persons(String pName,String name,CluedoPosition startpos){
-		this.color = name;
-		this.personName = pName;
+	Persons(String color,String name,CluedoPosition startpos){
+		this.color = color;
+		this.personName = name;
 		startposition = startpos;
 	}
 	

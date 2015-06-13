@@ -27,28 +27,34 @@ class IncomingHandler implements Runnable {
 	Socket cSocket;
 	CluedoClientGUI gui;
 	ArrayList<ServerItem> serverList;
+	ServerItem server;
 	
-	private boolean run = true;
+	boolean run = true;
 	
-	IncomingHandler(Socket cs,CluedoClientGUI g,ArrayList<ServerItem> sList,boolean run){
+	IncomingHandler(Socket cs,CluedoClientGUI g,ServerItem server,ArrayList<ServerItem> sList,boolean run){
 		cSocket = cs;
 		gui = g;
 		serverList = sList;
 		this.run = run;
+		this.server = server;
 	}
 	
 	@Override
 	public void run() {			
 		while (run) {
 			try {
+				System.out.println("CLIENT on incoming trhead");
 				getMessagesFromServer(cSocket);
 			}
 			catch (Exception e){
 				System.out.println("running out "+e.getMessage());
 				Platform.runLater(() -> {
 					gui.setStatus("Server hat sich unhöflich verabschiedet");
+					//gui.removeIp(server.getGroupName());
 					//
 				});		
+				run = false;
+				serverList.remove(server);
 			}
 		}
 		System.out.println("serverlistener thread running out");		
@@ -61,14 +67,19 @@ class IncomingHandler implements Runnable {
 			char[] buffer = new char[Config.MESSAGE_BUFFER];
 			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
 			String message = new String (buffer, 0, charCount);
-			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(message)));
+			CluedoProtokollChecker checker = new CluedoProtokollChecker(
+					new CluedoJSON(new JSONObject(message)));
+			checker.validate();
 			if (checker.isValid())				
-				gui.addMessageIn(new JSONObject(message).toString());
+				gui.addMessageIn(checker.getMessage().toString());
+			else 
+				gui.addMessageIn(checker.getErrString());
 
 			
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("CLIENT getting messsage on Incomming thread failed");
 	    }		
 	}
 }

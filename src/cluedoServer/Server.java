@@ -70,7 +70,7 @@ public class Server {
 	
 	private void createTestGroups(){
 		for(int i = 0; i < 4; i++) 
-			gameList.add(new CluedoGame(6,"reduzierterHund"+i));
+			gameList.add(new CluedoGame(6,"reduzierterHund"+i,i));
 	}
 	
 	/**

@@ -59,7 +59,7 @@ class Connector extends Thread{
 		}
 		finally {
 			System.out.println("thread runningflag: "+running+"");
-			notifyAllClients("CLOSE");
+			kill();
 		}		
 	}
 	

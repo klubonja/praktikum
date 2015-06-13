@@ -7,7 +7,7 @@ import org.json.JSONArray;
 public abstract class Methods {
 	
 	
-	public static String[] makeConjunction(String[] sa1,JSONArray sa2JSON){
+	public static ArrayList<String> makeConjunction(String[] sa1,JSONArray sa2JSON){
 		ArrayList<String> res = new ArrayList<String>();
 		
 		for (String s1 : sa1)
@@ -16,6 +16,6 @@ public abstract class Methods {
 					res.add(s1);
 		
 		
-		return (String[]) res.toArray();
+		return res;
 	}
 }

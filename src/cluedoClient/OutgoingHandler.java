@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -84,9 +83,11 @@ class OutgoingHandler implements Runnable{
 	
 	@Override
 	public void run(){
-		Platform.runLater(() -> {
+		while (run){
 			
-		});		
+		}
+		System.out.println("CLIENT OutgoingHandlerThread running out");
+			
 	}
 	
 	private void sendMsg(String msg){

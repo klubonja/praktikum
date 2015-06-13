@@ -27,7 +27,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 width = Config.CLIENT_WINDOW_WIDTH;
 		 height = Config.CLIENT_WINDOW_HEIGHT;
 		 
-		 setStartServiceButtonLabel("StartClient");	
+		 setStartServiceButtonLabel("senddhandshake");	
 		 startUp();	 		 
 	}
 	    

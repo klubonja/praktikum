@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
@@ -32,10 +33,11 @@ public class Client {
 		gui.setWindowName(Config.GROUP_NAME+" Client");
 		//setListener();		
 		System.out.println("client started");
-		
+		run = true;
 		setCloseHandler();
 		listenForServersThread();
 		sayHello();
+		
 		
 	}	
 	
@@ -60,7 +62,7 @@ public class Client {
 		try {				
 			cSocket = new Socket(server.getIp(),server.getPort());			
 			serverList.add(server);
-			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,serverList,run));
+			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,server,serverList,run));
 			t1.start();
 			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,server.getGroupName(),run));
 			t2.start();
@@ -72,6 +74,8 @@ public class Client {
 		catch (Exception e){
 			System.out.println(e.getMessage());
 			gui.setStatus("connecting to "+server.getGroupName()+" failed \n"+e.getMessage());
+			run = false;
+			serverList.remove(server);
 		}
 		finally {}	
 	}	
@@ -79,6 +83,12 @@ public class Client {
 
 	
 	void setCloseHandler(){
+		gui.startService.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	sayHello();
+            }
+        });	
 		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		      @Override
 			public void handle(WindowEvent e){

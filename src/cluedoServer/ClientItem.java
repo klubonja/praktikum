@@ -7,13 +7,14 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 class ClientItem {
 	
 	String id;
 	String nick;	
 	String groupName;
-	String[] expansions;
+	ArrayList<String> expansions;
 	
 	int gameId;
 	
@@ -30,11 +31,11 @@ class ClientItem {
 		return socket;
 	}
 	
-	public void setExpansions(String[] expansion) {
+	public void setExpansions(ArrayList<String> expansion) {
 		this.expansions = expansion;
 	}
 	
-	public String[] getExpansions() {
+	public ArrayList<String> getExpansions() {
 		return expansions;
 	}
 	public void setGameId(int gameId) {
