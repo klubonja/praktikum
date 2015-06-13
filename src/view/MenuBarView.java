@@ -18,6 +18,8 @@ public class MenuBarView extends MenuBar{
 	Menu options;
 	Menu help;
 	MenuItem sounds;
+	MenuItem main;
+	MenuItem quit;
 	
 	public MenuBarView(){
 		
@@ -27,7 +29,9 @@ public class MenuBarView extends MenuBar{
 	options = new Menu("Options");
 	help = new Menu("Help");
 	sounds = new MenuItem("Sound");
-	options.getItems().addAll(sounds);
+	main = new MenuItem("Main Menu");
+	quit = new MenuItem("Exit Game");
+	options.getItems().addAll(sounds, main, quit);
 	this.getMenus().addAll(options, help);
 	
 	}

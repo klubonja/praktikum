@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -19,12 +20,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class IntroView extends GridPane{
+public class IntroView extends StackPane{
 	
-	
+	GridPane primary;
+	GridPane secondary;
 	Label title;
 	Label selectChar;
 	Button char1;
@@ -50,6 +53,11 @@ public class IntroView extends GridPane{
 	Label error;
 	ToggleButton soundsON;
 	ToggleButton soundsOFF;
+	Stage primaryStage;
+	
+	Button back;
+	Label volumeLabel;
+	Slider volumeSlider;
 
 	private Stage stage;
 	private Scene scene;
@@ -61,26 +69,28 @@ public class IntroView extends GridPane{
 	public IntroView(){
 		
 		
-		this.setAlignment(Pos.CENTER);
-		this.setVgap(5);
-		this.setHgap(20);
-		this.setPadding(new Insets(20));
-		this.getRowConstraints().add(new RowConstraints(100));
-		this.getRowConstraints().add(new RowConstraints(50));
-		this.getRowConstraints().add(new RowConstraints(200));
-		this.getRowConstraints().add(new RowConstraints(70));
-		this.getRowConstraints().add(new RowConstraints(50));
-		this.getRowConstraints().add(new RowConstraints(70));
-		this.getRowConstraints().add(new RowConstraints(30));
-		this.getColumnConstraints().add(new ColumnConstraints(150));
-		this.getColumnConstraints().add(new ColumnConstraints(150));
-		this.getColumnConstraints().add(new ColumnConstraints(150));
-		this.getColumnConstraints().add(new ColumnConstraints(150));
-		this.getColumnConstraints().add(new ColumnConstraints(150));
-		this.getColumnConstraints().add(new ColumnConstraints(150));
-		this.setMinHeight(600);
-		this.setMinWidth(1000);
-		this.setStyle("-fx-background-image: url('http://i.huffpost.com/gen/1375606/images/o-DETECTIVE-facebook.jpg');"
+		
+		primary = new GridPane();	
+		primary.setAlignment(Pos.CENTER);
+		primary.setVgap(5);
+		primary.setHgap(20);
+		primary.setPadding(new Insets(20));
+		primary.getRowConstraints().add(new RowConstraints(100));
+		primary.getRowConstraints().add(new RowConstraints(50));
+		primary.getRowConstraints().add(new RowConstraints(200));
+		primary.getRowConstraints().add(new RowConstraints(70));
+		primary.getRowConstraints().add(new RowConstraints(50));
+		primary.getRowConstraints().add(new RowConstraints(70));
+		primary.getRowConstraints().add(new RowConstraints(30));
+		primary.getColumnConstraints().add(new ColumnConstraints(150));
+		primary.getColumnConstraints().add(new ColumnConstraints(150));
+		primary.getColumnConstraints().add(new ColumnConstraints(150));
+		primary.getColumnConstraints().add(new ColumnConstraints(150));
+		primary.getColumnConstraints().add(new ColumnConstraints(150));
+		primary.getColumnConstraints().add(new ColumnConstraints(150));
+		primary.setMinHeight(600);
+		primary.setMinWidth(1000);
+		primary.setStyle("-fx-background-image: url('http://i.huffpost.com/gen/1375606/images/o-DETECTIVE-facebook.jpg');"
 				+ " -fx-background-repeat: stretch;  -fx-background-size: 1050 680;");
 		
 		labelShadow = new DropShadow();
@@ -267,11 +277,79 @@ public class IntroView extends GridPane{
 		GridPane.setColumnSpan(error, 6);
 		GridPane.setHalignment(error, HPos.CENTER);
 		GridPane.setValignment(error, VPos.BOTTOM);
-		this.getChildren().addAll(title,selectChar,
+		primary.getChildren().addAll(title,selectChar,
 				char1,char2,char3,char4,char5,char6,
 				pl1,pl2,pl3,pl4,pl5,pl6,newGame, nickname, nick, options, quit, error);
+		
+		secondary = new GridPane();
+		secondary.setAlignment(Pos.CENTER);
+		secondary.setVgap(5);
+		secondary.setHgap(20);
+		secondary.setPadding(new Insets(20));
+		secondary.getRowConstraints().add(new RowConstraints(100));
+		secondary.getRowConstraints().add(new RowConstraints(50));
+		secondary.getRowConstraints().add(new RowConstraints(200));
+		secondary.getRowConstraints().add(new RowConstraints(70));
+		secondary.getRowConstraints().add(new RowConstraints(50));
+		secondary.getRowConstraints().add(new RowConstraints(70));
+		secondary.getRowConstraints().add(new RowConstraints(30));
+		secondary.getColumnConstraints().add(new ColumnConstraints(150));
+		secondary.getColumnConstraints().add(new ColumnConstraints(150));
+		secondary.getColumnConstraints().add(new ColumnConstraints(150));
+		secondary.getColumnConstraints().add(new ColumnConstraints(150));
+		secondary.getColumnConstraints().add(new ColumnConstraints(150));
+		secondary.getColumnConstraints().add(new ColumnConstraints(150));
+		secondary.setMinHeight(600);
+		secondary.setMinWidth(1000);
+		secondary.setStyle("-fx-background-image: url('http://i.huffpost.com/gen/1375606/images/o-DETECTIVE-facebook.jpg');"
+				+ " -fx-background-repeat: stretch;  -fx-background-size: 1050 680;");
+		
+		volumeLabel = new Label("Sound Volume");
+		volumeSlider = new Slider();
+		volumeSlider.setMin(0);
+		volumeSlider.setMax(100);
+		volumeSlider.setValue(50);
+		volumeSlider.setShowTickLabels(true);
+		volumeSlider.setShowTickMarks(true);
+		volumeSlider.setMajorTickUnit(50);
+		volumeSlider.setMinorTickCount(5);
+		volumeSlider.setBlockIncrement(10);
+		
+		back = new Button("Back");
+		back.setPrefSize(200,70);
+		back.setMaxSize(200,70);
+		back.setStyle("-fx-padding: 8 15 15 15;"
+				+ " -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0; "
+				+ "-fx-background-radius: 8;"
+				+ "-fx-background-color: linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),"
+				+ " #9d4024, #d86e3a,"
+				+ "radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);"
+				+ "-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );"
+				+ "-fx-font-weight: bold; -fx-font-size: 25;");
+	
+		GridPane.setConstraints(back, 0, 5);
+		GridPane.setColumnSpan(back, 6);
+		GridPane.setValignment(back, VPos.CENTER);
+		GridPane.setHalignment(back, HPos.CENTER);
+		GridPane.setConstraints(volumeLabel, 0, 3);
+		GridPane.setColumnSpan(volumeLabel, 2);
+		GridPane.setValignment(volumeLabel, VPos.CENTER);
+		GridPane.setHalignment(volumeLabel, HPos.CENTER);
+		GridPane.setConstraints(volumeSlider, 2, 3);
+		GridPane.setColumnSpan(volumeSlider, 3);
+		GridPane.setValignment(volumeSlider, VPos.CENTER);
+		GridPane.setHalignment(volumeSlider, HPos.CENTER);
+		
+		secondary.getChildren().addAll(volumeLabel, volumeSlider, back);
+		
+		StackPane.setAlignment(primary, Pos.CENTER);
+		StackPane.setAlignment(secondary, Pos.CENTER);
+		this.getChildren().addAll(primary, secondary);
+		primary.toFront();
+		secondary.toBack();
 	}
 	
+
 	public void start(){
 		this.scene = new Scene(this, 1000, 650);
 		this.stage = new Stage();

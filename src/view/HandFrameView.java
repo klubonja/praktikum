@@ -25,9 +25,9 @@ public class HandFrameView extends StackPane{
 		secondCard = new ImageView(img);
 		thirdCard = new ImageView(img);
 		
-		this.setMaxSize(350, 450);
-		this.setPrefSize(350, 450);
-		this.setMinSize(350, 450);
+		this.setMaxSize(350, 350);
+		this.setPrefSize(350, 350);
+		this.setMinSize(350, 350);
 		
 		StackPane.setAlignment(title, Pos.TOP_LEFT);
 		StackPane.setAlignment(firstCard, Pos.CENTER_LEFT);

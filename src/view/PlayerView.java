@@ -7,6 +7,7 @@ import javafx.scene.shape.Circle;
 
 public class PlayerView extends Circle {
 	
+	@SuppressWarnings("unused")
 	private Player model;
 	
 	public PlayerView(double radius){

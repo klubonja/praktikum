@@ -3,6 +3,7 @@ package view;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import model.Player;
 
 public class GameFramePresenter {
@@ -10,6 +11,8 @@ public class GameFramePresenter {
 	private GameFrameView gfv;
 	Player player;
 	Circle playerCircle;
+	private Stage stage;
+	
 	
 	public GameFramePresenter(GameFrameView gfv , Player player){
 		
@@ -17,6 +20,7 @@ public class GameFramePresenter {
 		this.player = player;
 		this.playerCircle = new Circle(12);
 		this.playerCircle.setFill(player.getColor());
+		//this.primaryStage = primaryStage;
 		
 		startEvents();
 		
@@ -34,6 +38,13 @@ public class GameFramePresenter {
 
 		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		HandFramePresenter hand = new HandFramePresenter(gfv.hand);
+		MenuBarPresenter menuBar = new MenuBarPresenter(gfv.menu, gfv);
+		
+		gfv.view2.setOnAction(e -> changeFramePl2());
+		
+	}
+	
+	public void changeFramePl2(){
 		
 	}
 	

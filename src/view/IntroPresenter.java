@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Player;
@@ -24,6 +25,13 @@ public class IntroPresenter {
 	 Player player4;
 	 Player player5;
 	 Player player6;
+	 GameFrameView viewPl1;
+	 GameFrameView viewPl2;
+	 GameFrameView viewPl3;
+	 GameFrameView viewPl4;
+	 GameFrameView viewPl5;
+	 GameFrameView viewPl6;
+	 StackPane gameStack;
 	 
 	 StringProperty errorStr = new SimpleStringProperty("");
 	 
@@ -31,12 +39,13 @@ public class IntroPresenter {
 		public IntroPresenter(IntroView view){
 		
 		this.view = view;
-		player1 = new Player("Player 1", 0, 0, Color.RED);
-		player2 = new Player("Player 2", 0, 0, Color.GREEN);
-		player3 = new Player("Player 3", 0, 0, Color.BLUE);
-		player4 = new Player("Player 4", 0, 0, Color.YELLOW);
-		player5 = new Player("Player 5", 0, 0, Color.WHITE);
-		player6 = new Player("Player 6", 0, 0, Color.PURPLE);
+
+		player1 = new Player("Player1", 0, 0, Color.RED);
+		player2 = new Player("Player2", 0, 0, Color.GREEN);
+		player3 = new Player("Player3", 0, 0, Color.BLUE);
+		player4 = new Player("Player4", 0, 0, Color.YELLOW);
+		player5 = new Player("Player5", 0, 0, Color.WHITE);
+		player6 = new Player("Player6", 0, 0, Color.PURPLE);
 		players = new LinkedList<Player>();
 		players.add(player1);
 		players.add(player2);
@@ -74,6 +83,8 @@ public class IntroPresenter {
 		view.newGame.setOnMouseExited(e -> removeEffect(view.newGame));
 		view.newGame.setOnAction(e -> startNewGame());
 		view.quit.setOnAction(e -> quitGame());
+		view.options.setOnAction(e -> optionsFrame());
+		view.back.setOnAction(e -> mainFrame());
 	}
 	
 	public void selection(int n){
@@ -140,10 +151,19 @@ public class IntroPresenter {
 		node.setEffect(null);
 	}
 	
+	public void optionsFrame(){
+		view.secondary.toFront();
+	}
 	
+	public void mainFrame(){
+		view.primary.toFront();
+	}
+
 	
 	@SuppressWarnings("unused")
-	public void startNewGame() throws NullPointerException{
+	public void startNewGame(){
+		
+		try{
 		
 
 		if(view.pl1.isSelected()){ 
@@ -163,23 +183,26 @@ public class IntroPresenter {
 		}
 		if(view.pl6.isSelected()){ 
 			this.player = player6;
-		}else{
-			errorStr.set("Please select a character!");
 		}
 		
-		view.close();
-		
-		GameFrameView view = new GameFrameView(this.player);
-		GameFramePresenter pres = new GameFramePresenter(view, this.player);
-		GameFramePresenter pres2 = new GameFramePresenter(view, player2);
 
-		Scene scene = new Scene(view, 1300, 700);
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(true);
-        primaryStage.setTitle("Cluedo");
-        //primaryStage.setFullScreen(true);
-        primaryStage.show();
+		
+		
+		GameFrameView gameView = new GameFrameView(this.player);
+		GameFramePresenter pres = new GameFramePresenter(gameView, this.player);
+		GameFramePresenter pres2 = new GameFramePresenter(gameView, player2);
+
+
+		viewPl1 = new GameFrameView(this.player);
+		gameView.start();
+		view.close();
+		}
+		
+		catch(NullPointerException e){
+			errorStr.set("Please select a character!"); 
+			}
+		
+		
 		}
 	
 	public void quitGame(){
