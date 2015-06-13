@@ -138,6 +138,7 @@ public class IntroPresenter {
 		
 		GameFrameView view = new GameFrameView();
 		GameFramePresenter pres = new GameFramePresenter(view, player);
+		
 		Scene scene = new Scene(view, 1300, 700);
         Stage primaryStage = new Stage();
         primaryStage.setScene(scene);

@@ -1,38 +1,58 @@
 package vielCoolererPathfinder;
 
-import java.util.ArrayList;
+import enums.Orientation;
 
-import kacheln.Kachel;
-
+/**
+ * @since 10.06.2015
+ * @version 13.06.2015
+ * @author Benedikt Mayer, Maximilian Lammel
+ *
+ *	Hier werden alle Möglichkeiten berechnet, von der momentanen Position aus
+ * sich zu bewegen in die entsprechenden Himmelsrichtungen. 
+ */
 public class WahnsinnigTollerPathfinder {
 
-	private char [] anweisungen = new char [12];
-	
+	/**
+	 * Alle Möglichkeiten, welche an Wegen ausgegeben werden.
+	 */
 	private char [][] moeglichkeiten = new char [244000][12];
 	private int welcheMoeglichkeit; 
 	
+	/**
+	 * Die momentane Position an gegebenem Baum-Level
+	 */
 	private int [] rootX = new int [12];
 	private int [] rootY = new int [12];
 	
+	/**
+	 * Das momentane Baum-Level
+	 */
 	private int level;
 	
-	private Kachel jetzigeKachel;
 	
+	/**
+	 * Die Position, von welcher momentan überprüft wird.
+	 */
 	private int jetzigeReihe;
 	private int jetzigeSpalte;
 	
+	/**
+	 * Das Spielfeld und die Ballebene mit welcher gerechnet wird.
+	 */
 	private GUI gui;
 	private BallEbene ballEbene;
 	
-	private int jetzigeAnweisung;
+
+	/**
+	 *  Die Himmelsrichtungen S, E, N, W
+	 */
+    private char[] himmelsrichtungen = new char[] {'S','E', 'N', 'W'};
 	
-	private int distanz;
-	
-	public int south;
-	public int east;
-	public int north;
-	public int west;
-	
+	/**
+	 * Konstruktor für den pathfinder, welcher alle möglichen Wege berechnet.
+	 * @param gui
+	 * @param ballEbene
+	 */
 	public WahnsinnigTollerPathfinder(GUI gui, BallEbene ballEbene){
 		
 		this.gui = gui;
@@ -42,46 +62,52 @@ public class WahnsinnigTollerPathfinder {
 		
 	}
 	
+	/**
+	 * Leerer Konstruktor, wenn man ohne Parameter einen pathfinder erstellen will.
+	 */
 	public WahnsinnigTollerPathfinder(){		
 	}
 	
+	/**
+	 * Hauptmethode, mit welcher die ganzen checks aufgerufen werden.
+	 */
 	public void findThatPathBetter(){
 
-		
-		jetzigeAnweisung = 0;
-		
-		for (int i=0; i < anweisungen.length;i++){
-			anweisungen[i] = ' ';
-		}
-		
-		// Create an alphabet to work with
-        char[] alphabet = new char[] {'S','E', 'N', 'W'};
-        // Find all possible combinations of this alphabet in the string size of 3
-        reset();
+        // Die Werte werden auf die Urpsrungsposition gesetzt.
+        reset(2,1);
         ausgangsPosition(jetzigeSpalte, jetzigeReihe);
-        possibleMoves(2, alphabet,"");
+        possibleMoves(2, himmelsrichtungen,"");
 	}
 	
-	public void reset(){
-		jetzigeReihe = 2;
-		jetzigeSpalte = 1;
+	/**
+	 * Hier wird die momentane Position (y,x) gesetzt.
+	 * @param reihe hierauf wird die jetzigeReihe gesetzt
+	 * @param spalte hierauf wird die jetzigeSpalte gesetzt
+	 */
+	public void reset(int reihe, int spalte){
+		jetzigeReihe = reihe;
+		jetzigeSpalte = spalte;
 	}
 
-	
-	public void refreshPosition(Kachel dieseKachel){
-		jetzigeReihe = gui.getRowIndex(dieseKachel);
-		jetzigeSpalte = gui.getColumnIndex(dieseKachel);
-	}
-	
+	/**
+	 * Hier wird 
+	 * @param jetzigeReihe auf @param rootY[level] gesetzt 
+	 * @param jetzigeSpalte auf @param rootX[level] gesetzt
+	 */
 	public void refreshRoot(){
 		jetzigeReihe = rootY[level];
 		jetzigeSpalte = rootX[level];
 	}
 	
-	
+	/**
+	 * Hier werden die kompletten root Werte auf die Eingaben gesetzt
+	 * @param eingabeSpalte bestimmt alle @param rootX -Werte
+	 * @param eingabeReihe bestimmt alle @param rootY -Werte
+	 */
 	public void ausgangsPosition(int eingabeSpalte, int eingabeReihe){
 		level = 0;
 		
+		// Alle roots werden auf die Eingabe gesetzt.
 		for (int i = 0; i < rootX.length; i++){
 			rootX[i] = eingabeSpalte;
 			rootY[i] = eingabeReihe;
@@ -89,6 +115,12 @@ public class WahnsinnigTollerPathfinder {
 		
 	}
 	
+	/**
+	 * Hier werden die detect-Methoden aufgerufen und gecheckt ob der move legal ist.
+	 * @param richtung gibt die zu überprüfende Himmelsrichtung an
+	 * @return true wenn die input-Richtung erlaubt ist.
+	 * @return false wenn die input-Richtung verboten ist.
+	 */
 	public boolean detectHimmelsrichtung(char richtung){
 		
 		System.out.println("rootX[level] : " + rootX[level]);
@@ -108,14 +140,19 @@ public class WahnsinnigTollerPathfinder {
 		
 		else if (richtung == 'W'){
 			return detectWest();
-		}	
+		}
+		
 		else {
 			System.out.println("ungültige Himmelsrichtung");
 			return false;
 		}
 	}
 	
-	
+	/**
+	 * Hier wird überprüft ob man sich nach Süden bewegen darf
+	 * @return true falls im Süden keine Tür ist
+	 * @return false falls im Süden eine Tür ist
+	 */
 	public boolean detectSouth(){
 		
 		System.out.println("Er sucht Süden");
@@ -125,28 +162,36 @@ public class WahnsinnigTollerPathfinder {
 		rootY[level] = rootY[level-1] + 1;
 		
 		refreshRoot();
-		System.out.println("Reihe  : " +jetzigeReihe +"   Spalte  : " + jetzigeSpalte);
 		
+		System.out.println("Reihe  : " +jetzigeReihe +"   Spalte  : " + jetzigeSpalte);
 		System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum());
 		
 		if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum()==false){
 			return true;
-			
 		}
 
+		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
+				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.S)
+				{
+					System.out.println("hier ist ein Tür");
+					return false;
+				}
+		
 		else {
 			System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
 			level--;
 			return false;
-			
 		}
 		
 				
 	}
-	
+
+	/**
+	 * Hier wird überprüft ob man sich nach Osten bewegen darf
+	 * @return true falls im Osten keine Tür ist
+	 * @return false falls im Osten eine Tür ist
+	 */
 	public boolean detectEast(){
-		
-		
 		
 		System.out.println("Er sucht Osten");
 		
@@ -157,21 +202,31 @@ public class WahnsinnigTollerPathfinder {
 		refreshRoot();
 
 		System.out.println("Reihe  : " +jetzigeReihe +"   Spalte  : " + jetzigeSpalte);
-		
-		
 		System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum());
-		
 		
 		if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum()==false){
 			return true;
 		}
+		
+		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
+				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.O)
+				{
+					System.out.println("hier ist eine Tür");
+					return false;
+				}
+		
 		else {
 			System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
 			level--;
 			return false;
 		}
 	}
-	
+
+	/**
+	 * Hier wird überprüft ob man sich nach Norden bewegen darf
+	 * @return true falls im Norden keine Tür ist
+	 * @return false falls im Norden eine Tür ist
+	 */
 	public boolean detectNorth(){
 
 		System.out.println("Er sucht Norden");
@@ -183,14 +238,19 @@ public class WahnsinnigTollerPathfinder {
 		refreshRoot();
 		
 		System.out.println("Reihe  : " +jetzigeReihe +"   Spalte  : " + jetzigeSpalte);
-		
-		
 		System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum());
 		
 		if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum()==false){
 			return true;
 		}
 
+		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
+				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.N)
+				{
+					System.out.println("hier ist eine Tür");
+					return false;
+				}
+		
 		else {
 			System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
 			level--;
@@ -198,7 +258,12 @@ public class WahnsinnigTollerPathfinder {
 		}
 				
 	}
-	
+
+	/**
+	 * Hier wird überprüft ob man sich nach Westen bewegen darf
+	 * @return true falls im Westen keine Tür ist
+	 * @return false falls im Westen eine Tür ist
+	 */
 	public boolean detectWest(){
 
 		System.out.println("Er sucht Westen");
@@ -210,12 +275,19 @@ public class WahnsinnigTollerPathfinder {
 		refreshRoot();
 		
 		System.out.println("Reihe  : " +jetzigeReihe +"   Spalte  : " + jetzigeSpalte);
-		
 		System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum());
 		
 		if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum()==false){
 			return true;
 		}
+		
+		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
+				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.W)
+				{
+					System.out.println("hier ist eine Tür");
+					return false;
+				}
+		
 
 		else {
 			System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
@@ -227,110 +299,99 @@ public class WahnsinnigTollerPathfinder {
 	}
 	
 
-	
-	public void possibleMoves(int maxLength, char[] alphabet, String curr) {
+	/**
+	 * Hier wird der liste moeglichkeiten mit Himmelsrichtungen gefüllt.
+	 * @param maximaleSchritte die maximale Anzahl an Schritten
+	 * @param himmelsrichtungen die zu überprüfenden Himmelsrichtungen
+	 * @param currentEntry der momentane zu-überprüfende Eintrag
+	 * @param moeglichkeiten Die Ausgabeliste mit allen Möglichkeiten
+	 */
+	public void possibleMoves(int maximaleSchritte, char[] himmelsrichtungen, String currentEntry) {
 		
-		System.out.println("curr : " + curr);
-		
+		System.out.println("curr : " + currentEntry);
 		System.out.println("level : " + level);
 		
-        // If the current string has reached it's maximum length
-        if(curr.length() == maxLength) {
+        // Falls wir bei der maximalen Anzahl an Schritten angekommen sind
+        if(currentEntry.length() == maximaleSchritte) {
             //System.out.println(curr);
             welcheMoeglichkeit++;
-            moeglichkeiten[welcheMoeglichkeit] = curr.toCharArray();
+            moeglichkeiten[welcheMoeglichkeit] = currentEntry.toCharArray();
             
             for (int i = 1; i<=welcheMoeglichkeit;i++){
             	System.out.println(moeglichkeiten[i]);
             }
-            while (curr.toCharArray()[level-1] == 'W'){
-            	level--;
-            }
-            
-            level--;
             
             // falls curr[level] == Westen, dann gehe solange zurück (level reduzieren)
             // bis curr[level] != Westen.
-            
-            // level reduzieren
+            while (currentEntry.toCharArray()[level-1] == 'W'){
+            	level--;
+            }
+            // level reduzieren            
+            level--;
+        }    
 
-        // Else add each letter from the alphabet to new strings and process these new strings again
-        } else {
-            for(int i = 0; i < alphabet.length; i++) {
+
+        // sonst falls es gültige Richtungen gibt weiter diese hinzufügen.
+        else {
+        	for(int i = 0; i < himmelsrichtungen.length; i++) {
             	
-            	String oldCurr = curr;
-                curr += alphabet[i];
-                if (detectHimmelsrichtung(alphabet[i])){
-                	possibleMoves(maxLength,alphabet,curr);
+            	String oldEntry = currentEntry;
+                currentEntry += himmelsrichtungen[i];
+                if (detectHimmelsrichtung(himmelsrichtungen[i])){
+                	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);
                     
                 }
-                	curr = oldCurr;
+                	currentEntry = oldEntry;
                 }
         }
 	}
 
-
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	public void findThatPath(){
-		
-		
-		
-		distanz = 2;		
-jetzigeAnweisung = 0;
-		
-		for (int i=0; i < anweisungen.length;i++){
-			anweisungen[i] = ' ';
-		}
-		
-		
-
-		
-		while (distanz > 0){
-			detectSouth();
-			distanz--;
-			
-		}
-		//System.out.println("Bin ich ein Raum?  " +gui.getKachelArray()[0][2].isIstRaum());
-		
-		for (int zähler = 0; zähler < anweisungen.length;zähler++){
-			System.out.println(anweisungen[zähler]);
-		}
-		
-		System.out.println("Reihe  : " +jetzigeReihe +"   Spalte  : " + jetzigeSpalte);
-		
-	}
-	
-	*/
-	
-	
+	/**
+	 * 
+	 * @return die momentan zu-überprüfende Reihe
+	 */
 	public int getJetzigeReihe() {
 		return jetzigeReihe;
 	}
 
+	/**
+	 * 
+	 * @param jetzigeReihe setzt die momentan zu-überprüfende Reihe
+	 */
 	public void setJetzigeReihe(int jetzigeReihe) {
 		this.jetzigeReihe = jetzigeReihe;
 	}
 
+	/**
+	 * 
+	 * @return die momentan zu-überprüfende Spalte
+	 */
 	public int getJetzigeSpalte() {
 		return jetzigeSpalte;
 	}
 
+	/**
+	 * 
+	 * @param jetzigeSpalte setzt die momentan zu-überprüfende Spalte
+	 */
 	public void setJetzigeSpalte(int jetzigeSpalte) {
 		this.jetzigeSpalte = jetzigeSpalte;
 	}
 
+	/**
+	 * Der erste Wert ist der Index der Möglichkeit.
+	 * Der zweite Wert ist ein Wert wie "S, O, N, W"
+	 * @return das char[][] mit allen Möglichkeiten
+	 */
 	public char[][] getMoeglichkeiten() {
 		return moeglichkeiten;
 	}
 
+	/**
+	 * Der erste Wert ist der Index der Möglichkeit.
+	 * Der zweite Wert ist ein Wert wie "S, O, N, W"
+	 * @param moeglichkeiten setzt das char[][] mit allen Möglichkeiten
+	 */
 	public void setMoeglichkeiten(char[][] moeglichkeiten) {
 		this.moeglichkeiten = moeglichkeiten;
 	}

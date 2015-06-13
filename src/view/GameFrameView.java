@@ -61,6 +61,7 @@ public class GameFrameView extends GridPane{
 		
 		komplettesFeld = new SpielfeldUndFiguren(board, figuren);
 		
+		komplettesFeld.start();
 		
 		/**
 		 * Left part of the whole GameFrame,

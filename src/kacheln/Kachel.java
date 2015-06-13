@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import enums.Orientation;
 
 /**
  * @since 26.05.2015
@@ -18,11 +19,10 @@ import javafx.scene.paint.Color;
  */
 public class Kachel extends Label {
 
-	//private int xKoordinate;
-	//private int yKoordinate;
 	private boolean istRaum;
 	private boolean istTuer;
 	private BackgroundFill hintergrundfarbe;
+	private Orientation orientierung;
 	
 	private final IntegerProperty xKoordinate = 
 			new SimpleIntegerProperty(this, "xKoordinate", 0);
@@ -32,11 +32,12 @@ public class Kachel extends Label {
 			new SimpleIntegerProperty(this, "yKoordinate", 0);
 	
 	
-	public Kachel (String text, int xKoordinate, int yKoordinate, boolean istRaum, boolean istTuer){
+	public Kachel (String text, int xKoordinate, int yKoordinate, boolean istRaum,Orientation orientierung, boolean istTuer){
 		super(text);
 		this.xKoordinate.set(xKoordinate);
 		this.yKoordinate.set(yKoordinate);
 		this.istRaum = istRaum;
+		this.orientierung = orientierung;
 		this.istTuer = istTuer;
 	}
 	
@@ -45,23 +46,15 @@ public class Kachel extends Label {
 		Background hintergrund = new Background(hintergrundfarbe);
 		label.setBackground(hintergrund);
 	}
-/*
-	public int getxKoordinate() {
-		return xKoordinate;
+	
+	public Orientation getOrientierung() {
+		return orientierung;
 	}
 
-	public void setxKoordinate(int xKoordinate) {
-		this.xKoordinate = xKoordinate;
+	public void setOrientierung(Orientation orientierung) {
+		this.orientierung = orientierung;
 	}
 
-	public int getyKoordinate() {
-		return yKoordinate;
-	}
-
-	public void setyKoordinate(int yKoordinate) {
-		this.yKoordinate = yKoordinate;
-	}
-*/
 	public boolean isIstRaum() {
 		return istRaum;
 	}

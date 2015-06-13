@@ -7,6 +7,7 @@ import kacheln.FeldKachel;
 import kacheln.Kachel;
 import kacheln.RaumKachel;
 import kacheln.TuerKachel;
+import enums.Orientation;
 
 public class GUI extends GridPane {
 
@@ -65,22 +66,22 @@ public class GUI extends GridPane {
 		
 		kachelArray = new Kachel [5][5];
 		
-		feld1 = new FeldKachel("    Feld    ", 0, 0, false, false);
-		feld2 = new FeldKachel("    Feld    ", 0, 1, false, false);
-		tuer1 = new TuerKachel("      O      ", 0, 2, true, "O" , "", true);
-		feld3 = new FeldKachel("    Feld    ", 1, 0, false, false);
-		feld4 = new FeldKachel("    Feld    ", 1, 1, false, false);
-		feld5 = new FeldKachel("    Feld    ", 1, 2, false, false);
-		feld6 = new FeldKachel("    Feld    ", 2, 0, false, false);
-		feld6 = new FeldKachel("    Feld    ", 2, 0, false, false);
-		feld7 = new FeldKachel("    Feld    ", 0, 3, false, false);
-		feld8 = new FeldKachel("    Feld    ", 1, 3, false, false);
-		feld9 = new FeldKachel("    Feld    ", 2, 3, false, false);
-		feld10 = new FeldKachel("    Feld    ", 0, 4, false, false);
-		feld11 = new FeldKachel("    Feld    ", 1, 4, false, false);
-		feld12 = new FeldKachel("    Feld    ", 2, 4, false, false);
-		raum1 = new RaumKachel("    Raum    ", 2, 1, true, "",  false);
-		raum2 = new RaumKachel("    Raum    ", 2, 2, true, "", false);
+		feld1 = new FeldKachel("    Feld    ", 0, 0, false, null, false);
+		feld2 = new FeldKachel("    Feld    ", 0, 1, false, null, false);
+		tuer1 = new TuerKachel("      O      ", 0, 2, true, Orientation.O , "", true);
+		feld3 = new FeldKachel("    Feld    ", 1, 0, false, null, false);
+		feld4 = new FeldKachel("    Feld    ", 1, 1, false, null, false);
+		feld5 = new FeldKachel("    Feld    ", 1, 2, false, null, false);
+		feld6 = new FeldKachel("    Feld    ", 2, 0, false, null, false);
+		feld6 = new FeldKachel("    Feld    ", 2, 0, false, null, false);
+		feld7 = new FeldKachel("    Feld    ", 0, 3, false, null, false);
+		feld8 = new FeldKachel("    Feld    ", 1, 3, false, null, false);
+		feld9 = new FeldKachel("    Feld    ", 2, 3, false, null, false);
+		feld10 = new FeldKachel("    Feld    ", 0, 4, false, null, false);
+		feld11 = new FeldKachel("    Feld    ", 1, 4, false, null, false);
+		feld12 = new FeldKachel("    Feld    ", 2, 4, false, null, false);
+		raum1 = new RaumKachel("    Raum    ", 2, 1, true, null,"",  false);
+		raum2 = new RaumKachel("    Raum    ", 2, 2, true, null, "", false);
 		this.add(feld1, 0, 0);
 		this.add(feld2, 0, 1);
 		this.add(tuer1, 0, 2);

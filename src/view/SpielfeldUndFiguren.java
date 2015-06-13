@@ -32,8 +32,8 @@ public class SpielfeldUndFiguren extends StackPane {
 	
 	public void layoutStuff(){
 
-	     //StackPane.setMargin(spielbrett, new Insets(0,0,0,0));
-	     //StackPane.setMargin(figuren, new Insets(0,0,0,0));
+	     this.setMargin(spielbrett, new Insets(0,0,0,0));
+	     this.setMargin(figuren, new Insets(0,0,0,0));
 	     this.getChildren().addAll(spielbrett, figuren);
 	     //this.getChildren().addAll(new Rectangle(100,100,Color.BLUE), new Label("Go!"));
 	     
