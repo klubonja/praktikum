@@ -27,7 +27,6 @@ public class SpielfeldUndFiguren extends StackPane {
 		this.scene = new Scene(this, 700, 700);
 		this.stage.setScene(scene);
 		layoutStuff();
-		this.stage.show();
 	}
 	
 	public void layoutStuff(){

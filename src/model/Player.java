@@ -4,6 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.paint.Color;
 
 public class Player {
 
@@ -12,18 +13,32 @@ public class Player {
             new SimpleStringProperty(this, "name", null);
 	
 	private final IntegerProperty xCoord = 
-			new SimpleIntegerProperty(this, "xCoord", 0);
+			new SimpleIntegerProperty(0);
 	
 	private final IntegerProperty yCoord = 
-			new SimpleIntegerProperty(this, "yCoord", 0);
+			new SimpleIntegerProperty(0);
 	
-	public Player(String name, int x, int y){
+	Color color;
+	
+	
+	public Player(String name, int x, int y, Color color){
 		this.name.set(name);
 		this.xCoord.set(x);
 		this.yCoord.set(y);
+		this.color = color;
 	}
 
 	
+	public Color getColor() {
+		return color;
+	}
+
+
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+
 	public String getFirstName() {
 		return name.get();
 	}
@@ -41,7 +56,7 @@ public class Player {
 	}
 
 	public void setxCoord(int n) {
-		this.xCoord.set(n);;
+		this.xCoord.set(n);
 	}
 
 	public void setyCoord(int n) {

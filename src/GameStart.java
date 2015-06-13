@@ -7,6 +7,7 @@ import view.*;
 public class GameStart extends Application{
 	
 	
+	
 	@SuppressWarnings("unused")
 	@Override
 	public void start(Stage primaryStage) {
@@ -14,12 +15,7 @@ public class GameStart extends Application{
         IntroView view = new IntroView();
         IntroPresenter presenter = new IntroPresenter(view);
 
-        Scene scene = new Scene(view, 1000, 650);
-
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.setTitle("YinYanYolos present:");
-        primaryStage.show();
+        view.start();
     }
 
 	
