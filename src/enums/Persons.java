@@ -35,7 +35,7 @@ public enum Persons {
         return this.personName;
     }
 	
-	 static public boolean isMember(String aName) {
+	 static public boolean isMemberColor(String aName) {
         Persons[] persons = Persons.values();
         for (Persons person  : persons)
             if (person.getColor().equals(aName))

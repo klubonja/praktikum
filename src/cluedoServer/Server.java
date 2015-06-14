@@ -29,7 +29,7 @@ public class Server {
 	int TCPport;
 	
 	final CluedoServerGUI gui;
-	public ArrayList<CluedoGameServer> gameList;
+	public  GameListServer gameList;
 	
 	boolean run;
 	
@@ -40,7 +40,7 @@ public class Server {
 		TCPport = Config.TCP_PORT;	
 		clientPool = new ClientPool(); 
 		blackList = new ArrayList<ClientItem>();
-		gameList = new ArrayList<CluedoGameServer>();
+		gameList = new GameListServer();
 		run = true;
 		
 		createTestGroups();
@@ -72,7 +72,7 @@ public class Server {
 	private void createTestGroups(){
 		for(int i = 0; i < 4; i++) {
 			gameList.add(new CluedoGameServer(i));
-			gui.addGame("GAMEID : "+gameList.get(i).getGameId(), gameList.get(i).getNicksConnected());
+			gui.addGame(gameList.get(i).getGameId(),"(test) Game", gameList.get(i).getNicksConnected());
 		}
 	}
 	
@@ -107,7 +107,7 @@ public class Server {
 	}
 	
 	private void setListener(){
-		gui.startService.setOnAction(new EventHandler<ActionEvent>() {
+		gui.button0.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	//try {            	

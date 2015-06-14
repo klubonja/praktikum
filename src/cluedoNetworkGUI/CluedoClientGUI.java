@@ -1,14 +1,11 @@
 package cluedoNetworkGUI;
 
-
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
@@ -16,16 +13,21 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import staticClasses.Config;
+
+
  
 public class CluedoClientGUI extends CluedoNetworkGUI{
 	
 	
 	final public Button submitMessageButton;
+	final public Button createGame;
 	final public TextArea inputField;
+	
 	
 	 public CluedoClientGUI(Stage primaryStage){
 		 super(primaryStage);
 		 submitMessageButton = new Button("Send");
+		 createGame = new Button("Create Game");
 		 inputField = new TextArea();	
 		 width = Config.CLIENT_WINDOW_WIDTH;
 		 height = Config.CLIENT_WINDOW_HEIGHT;
@@ -55,7 +57,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         grid.getColumnConstraints().add(col1);
         
         RowConstraints row0 = new RowConstraints();
-	    row0.setPercentHeight(5);    
+	    row0.setPrefHeight(30);    
 	    grid.getRowConstraints().add(row0);
 	    
 	    RowConstraints row1 = new RowConstraints();
@@ -87,14 +89,18 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         messagesOut.setWrapText(true);
         
         Tab tab0 = new Tab();
-        tab0.setText("Game list");           
+        tab0.setText("Spiele");           
         tab0.setContent(gameListView);
-        tabPane.getTabs().add(tab0);            
+              
         
         Tab tab1 = new Tab();
-        tab1.setText("Server List");           
+        tab1.setText("Server");           
         tab1.setContent(ipListView);
-        tabPane.getTabs().add(tab1);    
+        
+        tabPane.getTabs().add(tab1);
+        tabPane.getTabs().add(tab0);  
+        
+        menue.getChildren().add(createGame);
         
         
         Text title = new Text(desc);
@@ -102,14 +108,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         status.setFont(Font.font("Tahoma", FontWeight.NORMAL, 10));
       
         grid.setValignment(submitMessageButton, VPos.CENTER);
-			
        
        //grid.add(node,				col,row,colspan,rowspan)
-        grid.add(title, 				0, 0, 2, 1);
-	    grid.add(startService,		 	0, 1);
+        grid.add(menue, 				0, 0, 2, 1);	  
 	    grid.add(tabPane, 				0, 2, 2, 4);
 	    grid.add(submitMessageButton, 	0, 6, 1, 1);
-	    grid.add(status, 				1, 1);
 	    grid.add(inLabel, 				1, 2, 1, 1);
 	    grid.add(messagesIn, 			1, 3, 1, 1);
 	    grid.add(outLabel, 				1, 4, 1, 1);
@@ -142,25 +145,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		
 		return loginPrompt.returnLoginData();
     }
-    
-    @Override
-	public void addGame(String gamename,String info){
-		for (Pane p: games)
-       		if (p.getId().equals(gamename)) return;
-		 	
-		Pane pane = new Pane();
-		pane.setPrefHeight(50);
-		pane.setPrefWidth(400);
-		pane.getStyleClass().add("gameListItem");
-		Label gameName = new Label(gamename);
-		gameName.getStyleClass().add("gameNameItem");
-		Label gameInfo = new Label("Connected plyaers :" +info);
-		gameInfo.getStyleClass().add("gameInfoItem");
-		gameInfo.setLayoutY(14);
-		pane.setId(gamename);
-		pane.getChildren().addAll(gameInfo,gameName);
-		games.add(pane);		     
-  }  
+     
     
     public String getUserMessage(){
     	String m = inputField.getText();

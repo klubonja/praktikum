@@ -40,6 +40,10 @@ public class CluedoProtokollChecker {
 		msgs = new ArrayList<String>();
 	}
 	
+	public String getType(){
+		return type;
+	}
+	
 	public NetworkHandhakeCodes validateExpectedType(String exptype,String[] ignoredTypes){
 		checkType();
 		if (type.equals(exptype)) 
@@ -140,20 +144,20 @@ public class CluedoProtokollChecker {
 
 	void val_create_game() {
 		if (validateValue(jsonRoot, "color"))
-			validatePerson("color");
+			validateColor(jsonRoot.getString("color"));
 	}
 
 	void val_game_created() {
-		if (validateValue(jsonRoot, "gameId"))
-			isInt(jsonRoot, "gameId");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
 		validateValue(jsonRoot, "nick");
 	}
 
 	void val_join_game() {
-		if (validateValue(jsonRoot, "gameId"))
-			isInt(jsonRoot, "gameId");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
 		if (validateValue(jsonRoot, "color"))
-			validatePerson("color");
+			validateColor(jsonRoot.getString("color"));
 	}
 
 	void val_player_added() {
@@ -162,8 +166,8 @@ public class CluedoProtokollChecker {
 	}
 
 	void val_watch_game() {
-		if (validateValue(jsonRoot, "gameId"))
-			isInt(jsonRoot, "gameId");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
 	}
 
 	void val_watcher_added() {
@@ -352,7 +356,7 @@ public class CluedoProtokollChecker {
 	}
 	
 	void validateColor(String color){
-		if (!Persons.isMember(color))
+		if (!Persons.isMemberColor(color))
 			setErr("Color \""+color+ "\" not a valid Color in this Game");
 	}
 	

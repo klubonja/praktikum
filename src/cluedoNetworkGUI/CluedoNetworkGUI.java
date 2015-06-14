@@ -7,15 +7,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -25,15 +23,16 @@ public abstract class CluedoNetworkGUI {
 	final ListView<String> ipListView;
 	
 	final TabPane tabPane;
-	final ObservableList<Pane> games;
-	final ListView<Pane> gameListView;
+	final ObservableList<GameVBox> games;
+	final ListView<GameVBox> gameListView;
 	
+	final HBox menue;
 	final TextArea messagesIn;
 	final TextArea messagesOut;
 	final Text status;
 	final Text inLabel;
 	final Text outLabel;
-	final public Button startService;
+	final public Button button0;
 	final public GridPane grid;
 	final public Stage primaryStage;
 	final public Scene scene;
@@ -43,25 +42,25 @@ public abstract class CluedoNetworkGUI {
 	String desc;
 	
 	public abstract void startUp();
-    public abstract void addGame(String gamename,String info);
 	
 	 public CluedoNetworkGUI(Stage s){
 		 tabPane = new TabPane();
-		 
+		 menue = new HBox();
+		 menue.setPrefHeight(30);
 		 
 		 ips = FXCollections.observableArrayList();
 		 ipListView = new ListView<String>(ips);
 		 
 		 
 		 games = FXCollections.observableArrayList();
-		 gameListView = new ListView<Pane>(games);
+		 gameListView = new ListView<GameVBox>(games);
 		 
 		 primaryStage = s;
 		 
 		 grid = new GridPane();
 		 messagesIn = new TextArea();
 		 messagesOut = new TextArea();
-		 startService = new Button();
+		 button0 = new Button();
 		 scene = new Scene(grid);
 		 
 		 
@@ -71,8 +70,8 @@ public abstract class CluedoNetworkGUI {
 		 
 		 setListener();
 		 
-		 grid.setValignment(startService, VPos.CENTER);
-		 grid.setMargin(startService, new Insets(0, 0, 0, 10));
+		 menue.getChildren().addAll(button0,status);
+		 
 		 messagesIn.setEditable(false);
 	     messagesOut.setEditable(false);
 		 		 
@@ -112,7 +111,7 @@ public abstract class CluedoNetworkGUI {
 	  }
 	  
 	  public void setStartServiceButtonLabel(String label){
-		  startService.setText(label);
+		  button0.setText(label);
 	  }
 	  
 	 
@@ -120,8 +119,12 @@ public abstract class CluedoNetworkGUI {
 		  primaryStage.setTitle(label);
 	  }
 	  
-	  public  ListView<String> getIpList(){
+	  public  ListView<String> getIpListView(){
 		  return ipListView;
+	  }
+	  
+	  public  ListView<GameVBox> getGamesListView(){
+		  return gameListView;
 	  }
 	  
 	  public void removeGame(String gamename){
@@ -134,6 +137,34 @@ public abstract class CluedoNetworkGUI {
 	  public  void emptyGamesList(){
 		  games.clear();
 	  }
+	  
+	  public void addGame(int gameID,String specialinfo, String info){
+			for (GameVBox p: games)
+	       		if (p.getGameID() == gameID) return;
+			 	
+			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info);
+			gamelistitem.setPrefHeight(50);		
+			games.add(gamelistitem);	
+	  }
+	  
+	  public void updateGame(int gameID,String specialinfo, String info){
+		for (GameVBox p: games)
+       		if (p.getGameID() == gameID){
+       			p.setLabelString(specialinfo);
+       			p.setInfoString(info);
+       			return;
+       		}			 		
+	  }
+	 
+	  public GameVBox getGame(int gameID){
+			for (GameVBox p: games)
+	       		if (p.getGameID() == gameID){
+	       			return p;
+	       		}
+			return null;
+		  }
+	  
+	  
 	  
 	  void setListener(){
 		  ChangeListener<Number> gridwidthlistener = new ChangeListener<Number>() {
@@ -152,6 +183,7 @@ public abstract class CluedoNetworkGUI {
 		ipListView.setId("ipList");
 		tabPane.getStyleClass().add("listViewC");
 		ipListView.getStyleClass().add("listViewC");
+		menue.setId("menue");
 		gameListView.setId("gameList");
 		scene.getStylesheets().add(cssFile);
 	}

@@ -1,12 +1,15 @@
 
 .listViewC .list-cell:filled:hover,
-.list-cell:filled:hover {	
+.listViewC .list-cell:filled:hover {	
 	-fx-background-color: #000000;
 	-fx-text-fill: #ffffff;		
 }
 
-#gameList .list-cell {
+.listViewC .list-cell,
+.listViewC .list-cell:selected {
 	-fx-padding : 0em;
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
 }
 
 .gameListItem:hover .gameInfoItem,  
@@ -19,7 +22,7 @@
 
 .gameListItem {
 	-fx-background-color: #ffffff;
-	-fx-text-inner-color: #000000;
+	-fx-fx-text-fill: #000000;
 	-fx-padding: 5 0 5 5;
 	-fx-border-color:  #999999;
 	-fx-border-width: 0 0 1 0;
@@ -38,7 +41,6 @@
 
 #tabPane:top *.tab-header-area {
 	-fx-background-insets: 0 0 0 0;
- /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
     -fx-padding: 0 0 0 0;
 	
 }
@@ -52,5 +54,9 @@
 
 #ipList , #gameList{
 	-fx-padding : 0em;
+}
+
+#menue {
+	-fx-padding: 5 5 5 5;
 }
 

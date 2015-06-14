@@ -6,6 +6,8 @@ import java.net.Socket;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.SelectionModel;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
@@ -30,7 +32,6 @@ public class Client {
 		gui = g;
 		serverList = new ServerList();
 		gui.setWindowName(Config.GROUP_NAME+" Client");
-		//setListener();		
 		System.out.println("client started");
 		run = true;
 		setCloseHandler();
@@ -82,7 +83,7 @@ public class Client {
 
 	
 	void setCloseHandler(){
-		gui.startService.setOnAction(new EventHandler<ActionEvent>() {
+		gui.button0.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	sayHello();
@@ -104,7 +105,26 @@ public class Client {
 		               e1.printStackTrace();
 		          }
 		      }
-		 });	
+		 });
+		
+		gui.getIpListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent click) {
+		        if (click.getClickCount() == 2) {
+		           selectIp(gui.getIpListView().getSelectionModel());		
+		        }
+		    }
+		});	
+	}
+	
+	void selectIp(SelectionModel<String> smod) {
+		//String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
+		ServerItem serverInfo = serverList.get(smod.getSelectedIndex());
+		startTCPConnection(serverInfo);
+		System.out.println(smod.toString());
+		
+		
+		
 	}
 }
 

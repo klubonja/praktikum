@@ -4,19 +4,20 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 import cluedoNetworkLayer.CluedoGameClient;
+import cluedoServer.GameListClient;
 
 
 public class ServerItem  {
 	String groupName;
 	InetAddress ip;
 	int port;
-	ArrayList<CluedoGameClient> gameList;
+	GameListClient gameList;
 	
 	public ServerItem(String groupName,InetAddress ip, int port) {
 		this.groupName = groupName;
 		this.ip = ip;
 		this.port = port;
-		gameList = new ArrayList<CluedoGameClient>();
+		gameList = new GameListClient();
 		
 	}
 	
@@ -38,6 +39,11 @@ public class ServerItem  {
 	
 	public void addGame(CluedoGameClient cg){
 		gameList.add(cg);
+	}
+		
+	public void addGames(ArrayList<CluedoGameClient> cg){
+		for (CluedoGameClient c : cg)
+			gameList.add(c);
 	}
 	
 	public void removeGame(ClientGameItem cg){

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
-import cluedoNetworkLayer.CluedoGameServer;
 
 
 class Connector extends Thread{	
@@ -23,11 +22,11 @@ class Connector extends Thread{
 	
 	ClientPool clientPool;
 	ArrayList<ClientItem> blackList;
-	ArrayList<CluedoGameServer> gameList;
+	GameListServer gameList;
 	boolean running = true;	
 	
 	
-	Connector (ServerSocket ss, CluedoServerGUI g,ClientPool cList,ArrayList<ClientItem> bList,ArrayList<CluedoGameServer> gl) {
+	Connector (ServerSocket ss, CluedoServerGUI g,ClientPool cList,ArrayList<ClientItem> bList,GameListServer gl) {
 		gui = g;
 		serverSocket = ss;
 		clientPool = cList;

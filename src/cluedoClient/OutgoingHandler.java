@@ -12,10 +12,13 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoClientGUI;
+import cluedoNetworkGUI.GameVBox;
 
 
 /**
@@ -70,6 +73,35 @@ class OutgoingHandler implements Runnable{
 				gui.inputField.setText("");				
 			}
 		});	
+		
+		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            		createGame();	               
+            }
+        });	
+		
+		gui.getGamesListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent click) {
+		        if (click.getClickCount() == 2) {
+		           selectGame(gui.getGamesListView().getSelectionModel());		
+		        }
+		    }
+		});
+		
+		
+		
+	}
+	
+	void selectGame(SelectionModel<GameVBox> g) {
+		int gameID = g.getSelectedItem().getGameID();
+		sendMsg(NetworkMessages.join_gameMsg("white", gameID));		
+	}
+	
+	void createGame(){
+		sendMsg(NetworkMessages.create_gameMsg("white"));
+		System.out.println("wefwfe");
 	}
 	
 	private final boolean login(){

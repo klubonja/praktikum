@@ -13,7 +13,7 @@ public class ClientPool extends ArrayList<ClientItem> {
 		this.add(c);
 	}
 	
-	public void notifyAllClients(String msg){
+	public void notifyAll(String msg){
 		for (int i = 0;i < this.size();i++)
 			this.get(i).sendMsg(msg);
 		

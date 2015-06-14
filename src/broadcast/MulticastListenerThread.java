@@ -7,10 +7,6 @@ import java.net.MulticastSocket;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.SelectionModel;
-import javafx.scene.input.MouseEvent;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 import staticClasses.Config;
@@ -33,8 +29,7 @@ public abstract class MulticastListenerThread extends Thread{
 	boolean run;
 	
 	abstract void listen();
-	abstract void select(SelectionModel<String> s);
-	abstract void startServiceAction();
+	
 	
 	
 	public MulticastListenerThread(String answer, String expType, int port, CluedoNetworkGUI g,boolean run)  {
@@ -69,22 +64,7 @@ public abstract class MulticastListenerThread extends Thread{
 	}
 	
 	private void setListener(){
-		if (gui != null){
-			gui.startService.setOnAction(new EventHandler<ActionEvent>() {				
-				@Override
-				public void handle(ActionEvent event) {
-					startServiceAction();
-				}
-			});	
-			gui.getIpList().setOnMouseClicked(new EventHandler<MouseEvent>() {
-			    @Override
-			    public void handle(MouseEvent click) {
-			        if (click.getClickCount() == 2) {
-			           select(gui.getIpList().getSelectionModel());		
-			        }
-			    }
-			});			
-		}		
+		
 	}
 		
 	

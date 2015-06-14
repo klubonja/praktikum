@@ -2,11 +2,8 @@ package cluedoNetworkGUI;
 
 
 
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
@@ -17,6 +14,7 @@ import staticClasses.Config;
  
 public class CluedoServerGUI extends CluedoNetworkGUI {
 	 
+	
 	 public CluedoServerGUI(Stage s){
 		 super(s);
 		 
@@ -48,7 +46,7 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
 	    grid.getColumnConstraints().add(col1);
 	    
 	    RowConstraints row0 = new RowConstraints();
-	    row0.setPercentHeight(5);        
+	    row0.setPrefHeight(30);       
 	    grid.getRowConstraints().add(row0);
 	    
 	    RowConstraints row1 = new RowConstraints();
@@ -77,25 +75,24 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
 		messagesOut.setEditable(false);
         
         Tab tab0 = new Tab();
-        tab0.setText("gamelist");           
+        tab0.setText("Spiele");           
         tab0.setContent(gameListView);
-        tabPane.getTabs().add(tab0);
+        
         
         Tab tab1 = new Tab();
-        tab1.setText("clientlist");           
+        tab1.setText("Clients");           
         tab1.setContent(ipListView);
-        tabPane.getTabs().add(tab1);    
+        
+        tabPane.getTabs().add(tab1);
+        tabPane.getTabs().add(tab0);    
 	    
 	    Text title = new Text(desc);
 	    title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 	    status.setFont(Font.font("Tahoma", FontWeight.NORMAL, 10));
 	    
 	   //grid.add(node,				col,row,colspan,rowspan)
-	    grid.add(title, 			0, 0, 2, 1);
-	    grid.add(startService, 		0, 1);
+	    grid.add(menue, 			0, 0, 2, 1);
 	    grid.add(tabPane, 			0, 2, 2, 4);
-	    
-	    grid.add(status, 			1, 1);
 	    grid.add(inLabel, 			1, 2, 1, 1);
 	    grid.add(messagesIn, 		1, 3, 1, 1);
 	    grid.add(outLabel, 			1, 4, 1, 1);
@@ -104,26 +101,7 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
 	
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
-     }  
-    
-    @Override
-	public void addGame(String gamename,String info){
-		for (Pane p: games)
-       		if (p.getId().equals(gamename)) return;
-		 	
-		HBox pane = new HBox();
-		pane.setPrefHeight(50);
-		pane.getStyleClass().add("gameListItem");
-		Label gameName = new Label(gamename);
-		gameName.getStyleClass().add("gameNameItem");
-		Label gameInfo = new Label(info);
-		gameInfo.getStyleClass().add("gameInfoItem");
-		gameInfo.setLayoutY(14);
-		pane.setId(gamename);
-		pane.getChildren().addAll(gameInfo,gameName);
-		games.add(pane);
-    }   	
-   
+     }   
     
 	void setAdditionalListener(){
 			  

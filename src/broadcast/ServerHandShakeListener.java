@@ -4,7 +4,6 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 
 import javafx.application.Platform;
-import javafx.scene.control.SelectionModel;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
@@ -66,25 +65,6 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 			gui.addMessageIn(e.toString());
 			e.printStackTrace();
 		}		
-	}
-
-	@Override
-	void select(SelectionModel<String> smod) {
-		//String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
-		ServerItem serverInfo = serverList.get(smod.getSelectedIndex());
-		parent.startTCPConnection(serverInfo);
-		System.out.println(smod.toString());
-		
-		
-		
-	}
-	
-	
-
-	@Override
-	void startServiceAction() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	

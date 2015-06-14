@@ -25,4 +25,6 @@ public class CluedoGameServer extends CluedoGame{
 	public void addWatcher(ClientItem c){
 		watchers.add(c);
 	}
+	
+	
 }

@@ -4,7 +4,6 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 
 import javafx.application.Platform;
-import javafx.scene.control.SelectionModel;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
@@ -20,7 +19,6 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 		super(answer,expType, port, g,run);
 		
 	}
-	
 	
 	
 	@Override
@@ -63,22 +61,6 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 			gui.addMessageIn(e.toString());
 			e.printStackTrace();
 		}
-		
-	}
-
-
-
-	@Override
-	void select(SelectionModel<String> smod) {
-		
-		
-	}
-
-
-
-	@Override
-	void startServiceAction() {
-		// TODO Auto-generated method stub
 		
 	}
 

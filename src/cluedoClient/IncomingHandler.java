@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import javafx.application.Platform;
 import json.CluedoJSON;
@@ -14,13 +15,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import staticClasses.Config;
+import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkLayer.CluedoGameClient;
-import cluedoNetworkLayer.CluedoPlayer;
-import enums.GameStates;
 import enums.NetworkHandhakeCodes;
-import enums.Persons;
-import enums.PlayerStates;
 
 
 class IncomingHandler implements Runnable {
@@ -38,6 +36,7 @@ class IncomingHandler implements Runnable {
 		serverList = sList;
 		this.run = run;
 		this.server = server;
+		setListener();
 	}
 	
 	@Override
@@ -51,8 +50,34 @@ class IncomingHandler implements Runnable {
 				checker.validate();
 				if (checker.isValid())				
 					gui.addMessageIn(checker.getMessage().toString());
-				else 
+					if (checker.getType().equals("game created")){
+						int gameID = checker.getMessage().getInt("gameID");
+						CluedoGameClient newgame = 
+								new CluedoGameClient(gameID);
+						Platform.runLater(() -> {
+							gui.addGame(gameID, "Game", 
+									checker.getMessage().
+									getJSONObject("player").getString("nick"));
+						});						
+					}
+					else if (checker.getType().equals("player added")){
+							int gameID = checker.getMessage().getInt("gameID");
+		        		   JSONObject player = checker.getMessage().getJSONObject("player");
+		        		  
+		        		   Platform.runLater(() -> {
+								gui.updateGame(
+										gameID, 
+										"(updated) Game "+gameID, 
+										gui.getGame(gameID).
+											getInfoString()+ " "+player.getString("nick"));
+								gui.addMessageIn(checker.getMessage().toString());
+							});			        		   
+					}
+						
+				else {
 					gui.addMessageIn(checker.getErrString());
+				}
+					
 			}
 			catch (Exception e){
 				System.out.println("running out "+e.getMessage());
@@ -61,8 +86,9 @@ class IncomingHandler implements Runnable {
 				});	
 				kill();
 			}
-			kill();
+			
 		}
+		kill();
 		
 		System.out.println("serverlistener thread running out");		
 	}
@@ -73,68 +99,13 @@ class IncomingHandler implements Runnable {
 		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", null);
 		
 		if (errcode == NetworkHandhakeCodes.OK) {	
-			JSONArray gamearray = checker.getMessage().getJSONArray("game array");
-			for (int i = 0; i < gamearray.length(); i++){							
-				CluedoGameClient newgame = new CluedoGameClient(
-						gamearray.getJSONObject(i).getInt("gameID"));
-				newgame.setGameState(
-						GameStates.getState(
-								gamearray.getJSONObject(i).getString("gamestate")
-								)
-							);
-				
-				JSONArray players = gamearray.getJSONObject(i).getJSONArray("players");				
-				for (int n = 0;n < players.length();n++){
-					CluedoPlayer player = new CluedoPlayer(
-							Persons.getPersonByColor(
-									players.getJSONObject(n).getString("color")
-									),
-							PlayerStates.getPlayerState(
-									players.getJSONObject(n).getString("playerstate")
-									)									
-							);	
-					player.setNick(players.getJSONObject(n).getString("nick"));
-				}
-				
-				JSONArray watchers = gamearray.getJSONObject(i).getJSONArray("watchers");				
-				for (int n = 0;n < watchers.length();n++){
-					//wofür?
-				}
-				
-				JSONArray personposs = gamearray.getJSONObject(i).getJSONArray("person positions");				
-				for (int n = 0;n < personposs.length();n++){						
-					JSONObject ppos = personposs.getJSONObject(n);
-					String pname = ppos.getString("person");
-					newgame.
-						getPlayer(pname).
-							getPosition().
-								setX(ppos.getJSONObject("field").
-										getInt("x"));
-					newgame.getPlayer(pname).getPosition().setY(ppos.getJSONObject("field").getInt("y"));
-				}
-				
-				JSONArray weaponposs = gamearray.getJSONObject(i).getJSONArray("weapon positions");				
-				for (int n = 0;n < weaponposs.length();n++){						
-					JSONObject wpos = weaponposs.getJSONObject(n);
-					String wname = wpos.getString("weapon");
-					newgame.
-						getWeaponByName(wname).
-							getPosition().
-								setX(
-										wpos.getJSONObject("field").
-										getInt("x")
-									);
-					newgame.getWeaponByName(wname).getPosition().setY(wpos.getJSONObject("field").getInt("y"));
-				}				
-				
-				server.addGame(newgame);
-				Platform.runLater(() -> {
-					gui.addGame("GAMEID : "+newgame.getGameId()+"", newgame.getNicksConnected());
-				});	
-				
-			}
-			System.out.println(gamearray.toString());
-					
+			JSONArray gamearray = checker.getMessage().getJSONArray("game array");	
+			ArrayList<CluedoGameClient> gameslist = NetworkMessages.createGamesFromJSONGameArray(gamearray);
+			server.addGames(gameslist);
+			Platform.runLater(() -> {
+				for (CluedoGameClient c: gameslist)
+					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
+			});					
 		}
 		else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
 				|| errcode == NetworkHandhakeCodes.TYPERR){
@@ -160,8 +131,17 @@ class IncomingHandler implements Runnable {
 	    }		
 	}
 	
+	public void setListener(){
+		
+	
+		
+	}
+	
+	
+	
 	public void kill(){
 		run = false;
+		
 		serverList.remove(server);
 		Platform.runLater(() -> {
 			gui.removeIp(server.getGroupName());

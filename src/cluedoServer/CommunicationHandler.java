@@ -20,6 +20,7 @@ import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
 import cluedoNetworkLayer.CluedoGameServer;
 import enums.NetworkHandhakeCodes;
+import enums.PlayerStates;
 
 /**
  * @author guldener
@@ -34,7 +35,7 @@ class CommunicationHandler implements Runnable{
 	
 	ClientPool clientPool;
 	ArrayList<ClientItem> blackList;
-	ArrayList<CluedoGameServer> gameList;
+	GameListServer gameList;
 
 	
 	final CluedoServerGUI gui;
@@ -51,7 +52,7 @@ class CommunicationHandler implements Runnable{
 	 * 
 	 * tcp verbindung steht server wartet auf tcp handshake
 	 */
-	CommunicationHandler(ServerSocket ss, ClientItem c, CluedoServerGUI g,ClientPool cList,ArrayList<ClientItem> bList,ArrayList<CluedoGameServer> gl) {
+	CommunicationHandler(ServerSocket ss, ClientItem c, CluedoServerGUI g,ClientPool cList,ArrayList<ClientItem> bList,GameListServer gl) {
 		gui = g;
 		serverSocket = ss;
 		clientPool = cList;
@@ -88,7 +89,7 @@ class CommunicationHandler implements Runnable{
 					client.setGroupName(checker.getMessage().getString("group"));					
 					client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(), clientPool, gameList));
 					
-					clientPool.notifyAllClients(NetworkMessages.user_addedMsg(client.getNick()));
+					clientPool.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
 					clientPool.add(client);
 					readyForCommunication = true;
 				}
@@ -124,6 +125,35 @@ class CommunicationHandler implements Runnable{
 		while (running){
 			try {
 	           String message = getMessageFromClient(client.socket).trim();
+	           CluedoProtokollChecker checker = new CluedoProtokollChecker(
+	        		   								new JSONObject(message));
+	           checker.validate();
+	           if (!checker.isValid()){
+	        	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()));
+	           }
+	           else {
+	        	   if (checker.getType().equals("create game")){
+	        		   createGame(checker.getMessage().getString("color"),client.getNick());
+	        	   }
+	        	   else if (checker.getType().equals("join game")){
+	        		   int gameID = checker.getMessage().getInt("gameID");
+	        		   String color = checker.getMessage().getString("color");
+	        		   gameList.joinGame(
+	        				   gameID, 
+	        				   color, 
+	        				   client.getNick());
+	        		   Platform.runLater(() -> {
+							gui.updateGame(gameID, 
+									"(updated) Game "+gameID, gameList.getGameByGameID(gameID).getNicksConnected());
+						});	
+	        		   clientPool.notifyAll(
+	        				   NetworkMessages.player_addedMsg(
+	        						   NetworkMessages.player_info(client.getNick(), color , PlayerStates.do_nothing.getName()),
+	        						   gameID)
+	        				   );
+	        	   }
+	           }
+	           
 	           gui.addMessageIn(message);
 	           
 			}
@@ -135,18 +165,35 @@ class CommunicationHandler implements Runnable{
 					Platform.runLater(() -> {
 						gui.addMessageIn(ex.getMessage());
 					});	
-				}
-				
+				}				
 			}
 		}
 		client.sendMsg(NetworkMessages.disconnectedMsg("bye " +client.getNick()));
+	}
+	
+	void createGame(String color,String nick){
+		int gameID = gameList.size();
+		CluedoGameServer newgame = new CluedoGameServer(gameID);
+		newgame.joinGame(color, nick);
+		clientPool.notifyAll(
+				NetworkMessages.game_createdMsg(
+						NetworkMessages.player_info(
+								nick, color,PlayerStates.do_nothing.getName()
+								), 
+						gameID
+						)
+				);
+		gameList.add(newgame);
+		Platform.runLater(() -> {
+			gui.addGame(gameID, "(created by"+nick+")", newgame.getNicksConnected());
+		});
 	}
 	
 	private void closeConnection(String msg) throws IOException{
 		serverSocket.close();
 		Platform.runLater(() -> {
 			gui.addMessageIn(msg);
-			System.out.println(msg);
+			
 		});
 		running = false;
 	}

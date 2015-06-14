@@ -7,10 +7,14 @@ import json.CluedoJSON;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoWeapon;
 import cluedoServer.ClientItem;
+import enums.GameStates;
+import enums.Persons;
+import enums.PlayerStates;
 
 
 public abstract class NetworkMessages {
@@ -437,6 +441,66 @@ public abstract class NetworkMessages {
 						gameArray,
 						expansionsJSON
 					);
+	}
+	
+	public static ArrayList<CluedoGameClient> createGamesFromJSONGameArray(JSONArray gamearray){
+		ArrayList<CluedoGameClient> gamelist = new ArrayList<CluedoGameClient>();
+		for (int i = 0; i < gamearray.length(); i++){							
+			CluedoGameClient newgame = new CluedoGameClient(
+					gamearray.getJSONObject(i).getInt("gameID"));
+			newgame.setGameState(
+					GameStates.getState(
+							gamearray.getJSONObject(i).getString("gamestate")
+							)
+						);
+			
+			JSONArray players = gamearray.getJSONObject(i).getJSONArray("players");				
+			for (int n = 0;n < players.length();n++){
+				CluedoPlayer player = new CluedoPlayer(
+						Persons.getPersonByColor(
+								players.getJSONObject(n).getString("color")
+								),
+						PlayerStates.getPlayerState(
+								players.getJSONObject(n).getString("playerstate")
+								)									
+						);	
+				player.setNick(players.getJSONObject(n).getString("nick"));
+			}
+			
+			JSONArray watchers = gamearray.getJSONObject(i).getJSONArray("watchers");				
+			for (int n = 0;n < watchers.length();n++){
+				//wofür?
+			}
+			
+			JSONArray personposs = gamearray.getJSONObject(i).getJSONArray("person positions");				
+			for (int n = 0;n < personposs.length();n++){						
+				JSONObject ppos = personposs.getJSONObject(n);
+				String pname = ppos.getString("person");
+				newgame.
+					getPlayer(pname).
+						getPosition().
+							setX(ppos.getJSONObject("field").
+									getInt("x"));
+				newgame.getPlayer(pname).getPosition().setY(ppos.getJSONObject("field").getInt("y"));
+			}
+			
+			JSONArray weaponposs = gamearray.getJSONObject(i).getJSONArray("weapon positions");				
+			for (int n = 0;n < weaponposs.length();n++){						
+				JSONObject wpos = weaponposs.getJSONObject(n);
+				String wname = wpos.getString("weapon");
+				newgame.
+					getWeaponByName(wname).
+						getPosition().
+							setX(
+									wpos.getJSONObject("field").
+									getInt("x")
+								);
+				newgame.getWeaponByName(wname).getPosition().setY(wpos.getJSONObject("field").getInt("y"));
+			}	
+			gamelist.add(newgame);
+		}
+		
+		return gamelist;
 	}
 	
 	
