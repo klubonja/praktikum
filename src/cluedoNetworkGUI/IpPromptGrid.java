@@ -24,6 +24,7 @@ public class IpPromptGrid extends GridPane {
 	ArrayList<IpTextField> iFields = new ArrayList<>();
 	ArrayList<PortTextField> pField = new ArrayList<>();
 	Text title = new Text("Connect to Server IP:");
+	Text portNumber = new Text("Enter Port:");
 	Stage parent;
 	
 	public IpPromptGrid(Stage p) {
@@ -59,12 +60,13 @@ public class IpPromptGrid extends GridPane {
 		for (int i = 0; i < iFields.size(); i++){
 			this.add(iFields.get(i),i,1);
 		}
-		
+		portNumber.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
 		pField.add(new PortTextField());
-		this.add(pField.get(0), 0, 2, 1, 1);
+		this.add(portNumber, 0, 2);
+		this.add(pField.get(0), 0, 3, 1, 1);
 		
 		this.add(title, 0, 0,fieldNumber,1);
-		this.add(submit, 0, 3);
+		this.add(submit, 0, 4);
 		
 		this.setPadding(new Insets(25, 25, 25, 25));
         this.setGridLinesVisible(false);		

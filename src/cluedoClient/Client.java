@@ -1,7 +1,9 @@
 package cluedoClient;
 
 
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -15,6 +17,7 @@ import cluedoNetworkGUI.CluedoClientGUI;
 
 
 
+
 /**
  * @author guldener
  * 
@@ -25,6 +28,8 @@ public class Client {
 	CluedoClientGUI gui;
 	ServerList serverList;
 	boolean run;
+	String groupName = "YinYanYolos";
+	int port = 1200;
 		
 	public Client(CluedoClientGUI g) {
 		gui = g;
@@ -97,6 +102,24 @@ public class Client {
             @Override
             public void handle(ActionEvent event) {
             	String[] IPAndPort = gui.askForIp();
+            	InetAddress manualserverIP = null;
+				try {
+					
+					manualserverIP = InetAddress.getByName(IPAndPort[0]);
+					Integer.parseInt(IPAndPort[1]);
+					if(IPAndPort[0].equals("...")){
+						manualserverIP = InetAddress.getByName("127.0.0.001");
+					}
+					if(IPAndPort[1].equals("")){
+						port = 1200;
+					}
+				} catch (UnknownHostException e) {
+					
+					e.printStackTrace();
+				}
+            	
+				ServerItem manualServer = new ServerItem(groupName, manualserverIP, port);
+				startTCPConnection(manualServer);
             }
         });	
 		gui.startService.setOnAction(new EventHandler<ActionEvent>() {
