@@ -2,25 +2,30 @@ package broadcast;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.util.ArrayList;
 
 import javafx.application.Platform;
+import javafx.scene.control.SelectionModel;
+import json.CluedoJSON;
+import json.CluedoProtokollChecker;
 
 import org.json.JSONObject;
 
-import json.CluedoJSON;
-import json.CluedoProtokollChecker;
+import cluedoClient.Client;
 import cluedoClient.ServerItem;
+import cluedoClient.ServerList;
 import cluedoNetworkGUI.CluedoClientGUI;
 import enums.NetworkHandhakeCodes;
 
 public class ServerHandShakeListener extends MulticastListenerThread{
 	
-	ArrayList<ServerItem> serverList;
+	Client parent;
+	ServerList serverList;
 	String[] ignoredTypes = {"udp client"};
 	
-	public ServerHandShakeListener(ArrayList<ServerItem> sl,String answer, String expType, int port, CluedoClientGUI g) {
-		super(answer, expType, port, g);
+	
+	public ServerHandShakeListener(ServerList sl,String answer, String expType, int port, CluedoClientGUI g,Client client,boolean run) {
+		super(answer, expType, port, g,run);
+		parent = client;
 		serverList = sl;
 	}
 
@@ -35,6 +40,7 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 
 			CluedoProtokollChecker checker = new CluedoProtokollChecker(new CluedoJSON(new JSONObject(msg)));
 			NetworkHandhakeCodes errcode = checker.validateExpectedType(expType,ignoredTypes);
+			
 			if (errcode == NetworkHandhakeCodes.OK) {
 				Platform.runLater(() -> {
 					gui.addIp(checker.getMessage().getString("group"));
@@ -47,11 +53,12 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 					gui.addMessageIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
 				});
 			}
-			else if (errcode == NetworkHandhakeCodes.MESSOK_TYPEIGNORED){
+			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
 				Platform.runLater(() -> {
 					gui.addMessageIn(ip.toString()+" is client and is ignored : \n"+checker.getErrString());
 
 				});
+			gui.addMessageIn(msg);
 				
 			}
 		} 
@@ -62,12 +69,17 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 	}
 
 	@Override
-	void select(String selectedListItemName,int selectedListItemIndex) {
-		String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
-		ServerItem serverInfo = serverList.get(selectedListItemIndex);
+	void select(SelectionModel<String> smod) {
+		//String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
+		ServerItem serverInfo = serverList.get(smod.getSelectedIndex());
+		parent.startTCPConnection(serverInfo);
+		System.out.println(smod.toString());
+		
 		
 		
 	}
+	
+	
 
 	@Override
 	void startServiceAction() {

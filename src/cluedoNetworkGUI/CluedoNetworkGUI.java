@@ -1,22 +1,32 @@
 package cluedoNetworkGUI;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public abstract class CluedoNetworkGUI {
-	ObservableList<String> ips;
-	ListView<String> ipListView;
+	
+	final ObservableList<String> ips;
+	final ListView<String> ipListView;
+	
+	final TabPane tabPane;
+	final ObservableList<Pane> games;
+	final ListView<Pane> gameListView;
 	
 	final TextArea messagesIn;
 	final TextArea messagesOut;
@@ -26,49 +36,59 @@ public abstract class CluedoNetworkGUI {
 	final public Button startService;
 	final public GridPane grid;
 	final public Stage primaryStage;
-	int width;
-	int height;
+	final public Scene scene;
+	double width;
+	double height;
 	
 	String desc;
 	
+	public abstract void startUp();
+    public abstract void addGame(String gamename,String info);
+	
 	 public CluedoNetworkGUI(Stage s){
+		 tabPane = new TabPane();
+		 
+		 
 		 ips = FXCollections.observableArrayList();
 		 ipListView = new ListView<String>(ips);
 		 
+		 
+		 games = FXCollections.observableArrayList();
+		 gameListView = new ListView<Pane>(games);
+		 
 		 primaryStage = s;
+		 
 		 grid = new GridPane();
 		 messagesIn = new TextArea();
 		 messagesOut = new TextArea();
 		 startService = new Button();
+		 scene = new Scene(grid);
 		 
 		 
 		 inLabel = new Text("IN");
 		 outLabel = new Text("OUT");
 		 status = new Text("down");
 		 
-		 width = 1000;
-		 height = 800;
-		 
 		 setListener();
 		 
 		 grid.setValignment(startService, VPos.CENTER);
 		 grid.setMargin(startService, new Insets(0, 0, 0, 10));
-		 
+		 messagesIn.setEditable(false);
+	     messagesOut.setEditable(false);
 		 		 
-	}
+	}  
     
-    public abstract void startUp();
-    
-    
-   	public void addIp(String ip){
+   	 public void addIp(String ip){
        	if (!ips.contains(ip))
        			ips.add(ip);
-   	  }   	
-   	  
-   	 
+   	  }   	 
 	  
 	  public void removeIp(int i){
 		  if (i-1 >= 0)  ips.remove(i-1);
+	  }
+	  public void removeIp(String name){
+		  for (int i = 0;i < ips.size(); i++)
+			  if (ips.get(i).equals(name))  ips.remove(i);
 	  }
 	  
 	  public  void emptyList(){
@@ -80,21 +100,22 @@ public abstract class CluedoNetworkGUI {
 	  }
 	  
 	  public void  addMessageIn(String mes){
-   		  messagesIn.appendText(mes+"\n");
+	  SimpleDateFormat date = new SimpleDateFormat("hh:mm:ss");
+	  Date now = new Date();
+   		  messagesIn.appendText(date.format(now)+" : "+mes+"\n");
    	  }	
 	  
 	  public  void addMessageOut(String mes){
-		  messagesOut.appendText(mes+"\n");
-	  }
-	  
-	  public  void addMessage(String mes){
-		  messagesOut.appendText(mes+"\n");
+		  SimpleDateFormat date = new SimpleDateFormat("hh:mm:ss");
+		  Date now = new Date();
+	   		  messagesOut.appendText(date.format(now)+" : "+mes+"\n");
 	  }
 	  
 	  public void setStartServiceButtonLabel(String label){
 		  startService.setText(label);
 	  }
 	  
+	 
 	  public void setWindowName(String label){
 		  primaryStage.setTitle(label);
 	  }
@@ -103,16 +124,44 @@ public abstract class CluedoNetworkGUI {
 		  return ipListView;
 	  }
 	  
+	  public void removeGame(String gamename){
+		  int index;
+			for (index = 0; index < games.size(); index++)
+	       		if (games.get(index).getId().equals(gamename)) games.remove(index);		 
+	  }
+	  
+	
+	  public  void emptyGamesList(){
+		  games.clear();
+	  }
+	  
 	  void setListener(){
 		  ChangeListener<Number> gridwidthlistener = new ChangeListener<Number>() {
 				@Override
 				public void changed(
 						ObservableValue<? extends Number> observable,
 						Number oldValue, Number newValue) {
-							ipListView.setMaxWidth(newValue.doubleValue()/100*20);
+							tabPane.setMaxWidth(newValue.doubleValue()/100*20);
 						}							
-					};
-			grid.widthProperty().addListener(gridwidthlistener);
+				};
+		  grid.widthProperty().addListener(gridwidthlistener);
 	  }
-  
+	  
+	public void setStylesheet(String cssFile){
+		tabPane.setId("tabPane");
+		ipListView.setId("ipList");
+		tabPane.getStyleClass().add("listViewC");
+		ipListView.getStyleClass().add("listViewC");
+		gameListView.setId("gameList");
+		scene.getStylesheets().add(cssFile);
+	}
+	 
+	public void setStageWidth(double w){
+		primaryStage.setWidth(w);
+	}
+	 
+	public void setStageHeight(double h){
+	    primaryStage.setHeight(h);
+	}
+
 }

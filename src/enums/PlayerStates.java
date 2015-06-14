@@ -27,4 +27,12 @@ public enum PlayerStates {
                 return true;
         return false;
     }
+	 
+	 static public PlayerStates getPlayerState(String name) {
+	        PlayerStates[] pstates = PlayerStates.values();
+	        for (PlayerStates pstate  : pstates)
+	            if (pstate.getName().equals(name))
+	                return pstate;
+	        return null;
+	    }
 }

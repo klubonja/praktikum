@@ -1,8 +1,8 @@
 package cluedoClient;
 
-import cluedoNetworkGUI.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import cluedoNetworkGUI.CluedoClientGUI;
 
 public class CluedoClientMain extends Application {
 

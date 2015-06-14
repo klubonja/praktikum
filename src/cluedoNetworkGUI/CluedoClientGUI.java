@@ -1,22 +1,20 @@
 package cluedoNetworkGUI;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import staticClasses.Config;
  
 public class CluedoClientGUI extends CluedoNetworkGUI{
 	
@@ -27,13 +25,22 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	String countOfReturns[] = {"IP-Address", "Port"};
 	String [] returnIPAndPort = new String[countOfReturns.length];
 	
+
+	
 	 public CluedoClientGUI(Stage primaryStage){
 		 super(primaryStage);
-		 submitMessageButton = new Button("submitMessage");
-		 inputField = new TextArea();		 
-		 setWindowName("CluedoClient");
-		 setStartServiceButtonLabel("StartClient");	
-		 manualIPConnect = new Button("Connect to IP-Address manually");
+		 submitMessageButton = new Button("Send");
+		 inputField = new TextArea();	
+		 width = Config.CLIENT_WINDOW_WIDTH;
+		 height = Config.CLIENT_WINDOW_HEIGHT;
+		 manualIPConnect = new Button("Connect to IP Address manually");
+		 
+		 setStageWidth(width);
+		 setStageHeight(height);
+		 
+
+		 setStartServiceButtonLabel("Send Handshake");	
+		 setStylesheet("cluedoNetworkGUI/networkStyle.css");
 		 startUp();	 		 
 	}
 	    
@@ -90,6 +97,17 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         messagesIn.setWrapText(true);
         messagesOut.setWrapText(true);
         
+        Tab tab0 = new Tab();
+        tab0.setText("Game list");           
+        tab0.setContent(gameListView);
+        tabPane.getTabs().add(tab0);            
+        
+        Tab tab1 = new Tab();
+        tab1.setText("Server List");           
+        tab1.setContent(ipListView);
+        tabPane.getTabs().add(tab1);    
+        
+        
         Text title = new Text(desc);
         title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         status.setFont(Font.font("Tahoma", FontWeight.NORMAL, 10));
@@ -100,9 +118,9 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
        //grid.add(node,				col,row,colspan,rowspan)
         grid.add(title, 				0, 0, 2, 1);
 	    grid.add(startService,		 	0, 1);
-	    grid.add(ipListView, 			0, 2, 2, 4);
+	    grid.add(tabPane, 				0, 2, 2, 4);
 	    grid.add(submitMessageButton, 	0, 6, 1, 1);
-	    grid.add(status,				1, 1);
+	    grid.add(status, 				1, 1);
 	    grid.add(manualIPConnect, 		2, 1);
 	    grid.add(inLabel, 				1, 2, 2, 1);
 	    grid.add(messagesIn, 			1, 3, 2, 1);
@@ -112,14 +130,14 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	    
        
 
-        primaryStage.setScene(new Scene(grid, width, height));
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
     
     public String[] askForIp() {
     	Stage ipPrompt = new Stage();
     	IpPromptGrid ipr = new IpPromptGrid(ipPrompt);
-		Scene secondary = new Scene(ipr,300,200);		
+		Scene secondary = new Scene(ipr,Config.IP_PROMPT_WINDOW_WIDTH,Config.IP_PROMPT_WINDOW_HEIGHT);		
 		ipPrompt.setScene(secondary);
 		ipPrompt.showAndWait();	
 		
@@ -131,13 +149,32 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
     public String[] loginPrompt(String stageTitle){
     	Stage loginStage = new Stage();
     	LoginPrompt loginPrompt = new LoginPrompt(loginStage);
-    	Scene secondary = new Scene(loginPrompt,300,400);		
+    	Scene secondary = new Scene(loginPrompt,Config.LOGIN_PROMPT_WINDOW_WIDTH,Config.LOGIN_PROMPT_WINDOW_HEIGHT);		
 		loginStage.setScene(secondary);
 		loginStage.setTitle(stageTitle);
 		loginStage.showAndWait();	
 		
 		return loginPrompt.returnLoginData();
     }
+    
+    @Override
+	public void addGame(String gamename,String info){
+		for (Pane p: games)
+       		if (p.getId().equals(gamename)) return;
+		 	
+		Pane pane = new Pane();
+		pane.setPrefHeight(50);
+		pane.setPrefWidth(400);
+		pane.getStyleClass().add("gameListItem");
+		Label gameName = new Label(gamename);
+		gameName.getStyleClass().add("gameNameItem");
+		Label gameInfo = new Label("Connected plyaers :" +info);
+		gameInfo.getStyleClass().add("gameInfoItem");
+		gameInfo.setLayoutY(14);
+		pane.setId(gamename);
+		pane.getChildren().addAll(gameInfo,gameName);
+		games.add(pane);		     
+  }  
     
     public String getUserMessage(){
     	String m = inputField.getText();

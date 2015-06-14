@@ -9,8 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import staticClasses.Config;
 import enums.CluedoProtokollMessageTypes;
-import enums.Config;
 import enums.Field;
 import enums.GameStates;
 import enums.NetworkHandhakeCodes;
@@ -34,19 +34,24 @@ public class CluedoProtokollChecker {
 		msgs = new ArrayList<String>();
 	}
 	
+	public CluedoProtokollChecker(JSONObject j) {
+		jsonRoot = new CluedoJSON(j);
+		errs = new ArrayList<String>();
+		msgs = new ArrayList<String>();
+	}
+	
 	public NetworkHandhakeCodes validateExpectedType(String exptype,String[] ignoredTypes){
 		checkType();
 		if (type.equals(exptype)) 
 			if (validate()) return NetworkHandhakeCodes.OK; //alles OK
 			else return NetworkHandhakeCodes.TYPEOK_MESERR; //typ ok aber andere protokollabweichungen
-		else if (Arrays.asList(ignoredTypes).contains(type)){
+		else if (ignoredTypes != null && Arrays.asList(ignoredTypes).contains(type)){
 			setMsg(type+" is ignored");
-			return NetworkHandhakeCodes.MESSOK_TYPEIGNORED;//ignored
-		}
-		else {
-			setErr(exptype +" : is expected; found :"+type);					
+			return NetworkHandhakeCodes.TYPEIGNORED;//ignored
 		}
 		
+			
+		setErr(exptype +" : is expected, found :"+type);		
 		return NetworkHandhakeCodes.TYPERR; // falscher typ
 	}
 	
@@ -56,11 +61,19 @@ public class CluedoProtokollChecker {
 				Method m = CluedoProtokollChecker.class
 						.getDeclaredMethod("val_" + typeNoSpace);
 				try {
-					m.invoke(this);
+					try {
+						m.invoke(this);
+					} catch (IllegalAccessException | IllegalArgumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					System.out.println("invoking :"+"val_" + typeNoSpace );
-				} catch (IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					System.out.println("invoking :"+"val_" + typeNoSpace +" failed" );
+				} catch (InvocationTargetException e) {
+					System.out.println("invoking :"+"val_" + typeNoSpace +" failed");
+					 Throwable originalException = e.getTargetException();
+					   for (StackTraceElement element : originalException.getStackTrace()) {
+					       System.out.println(element);
+					   }
 				}
 			} catch (NoSuchMethodException | SecurityException e) {
 				System.out.println("finding :"+"val_" + typeNoSpace +" failed : no such method");
@@ -286,26 +299,26 @@ public class CluedoProtokollChecker {
 	
 	void validatePerson(String personName){
 		if (!Persons.isMemberPersonName(personName))
-			setErr("Person : "+personName+ " is not a valid Personname in this Game");
+			setErr("Person :\" "+personName+ "\" is not a valid Personname in this Game");
 	}
 	
 	void validateWeapon(String weaponName){
 		if (!Weapons.isMember(weaponName))
-			setErr("Weapon : "+weaponName+ " is not a valid Weapon in this Game");
+			setErr("Weapon : \""+weaponName+ "\" is not a valid Weapon in this Game");
 	}
 	
-	void validateRoom(String personName){
-		if (!Persons.isMember(personName))
-			setErr("Room  : "+personName+ " not a valid Room in this Game");
+	void validateRoom(String roomName){
+		if (!Rooms.isMember(roomName))
+			setErr("Room  : \""+roomName+ "\" not a valid Room in this Game");
 	}
 	
 	void validatePlayerState(String playerState){
 		if (!PlayerStates.isMember(playerState))
-			setErr("PlayerState : "+playerState+ " not a valid PlayerState in this Game");
+			setErr("PlayerState : \""+playerState+ "\" not a valid PlayerState in this Game");
 	}
 	
 	boolean validateProtokollVersion(JSONObject jsonParent,String key){
-		if (jsonParent.getString(key).equals((String.valueOf(Config.PROTOKOLL_VERSION)))) return true;		
+		if (jsonParent.getDouble(key) == Config.PROTOKOLL_VERSION) return true;		
 		return false;
  	}
 	
@@ -315,11 +328,11 @@ public class CluedoProtokollChecker {
 			JSONArray diceres = new JSONArray(jsonParent.getJSONArray(key));
 			for (int i = 0; i < amountDices;i++)
 				if (!isInt(jsonParent, diceres.getString(i)))
-					setErr("JSONArray : in JSONArray "+key+" on index "+i+" : noInt");
+					setErr("JSONArray : in JSONArray \""+key+"\" on index "+i+" : noInt");
 			
 		}
 		catch (JSONException je){
-			setErr("JSONArray expected : "+key+" is not JSONArray");
+			setErr("JSONArray expected : \""+key+"\" is not JSONArray");
 		}
 	}
 	
@@ -330,22 +343,22 @@ public class CluedoProtokollChecker {
 	 */
 	void validateGameState(String gameState,String expectedState){
 			if (!gameState.equals(expectedState))
-				setErr("expected State :"+ expectedState);
+				setErr("expected State :\""+ expectedState+"\"");
 	}
 	
 	void validateGameState(String gameState){
 		if (!GameStates.isMember(gameState))
-			setErr("GameState "+gameState+ " not a valid Gamestate in this Game");
+			setErr("GameState \""+gameState+ "\" not a valid Gamestate in this Game");
 	}
 	
 	void validateColor(String color){
 		if (!Persons.isMember(color))
-			setErr("Color "+color+ " not a valid Color in this Game");
+			setErr("Color \""+color+ "\" not a valid Color in this Game");
 	}
 	
 	void validateStatement(JSONObject jsonParent){
 		String[] expectedFields = {"person","weapon","room"};
-		if (validateValue(jsonParent, "parent"))
+		if (validateValue(jsonParent, "person"))
 			validatePerson(jsonParent.getString("person"));
 		if (validateValue(jsonParent, "weapon"))
 			validateWeapon(jsonParent.getString("weapon"));
@@ -366,16 +379,16 @@ public class CluedoProtokollChecker {
 			if (jsonParent.get(key).toString().length() > 0)
 				return true;
 			else
-				setErr("value of key : "+ key + " is empty");
+				setErr("value of key : \""+ key + "\" is empty");
 		else
-			setErr("key : "+key + " expected in :\n"+jsonParent.toString());
+			setErr("key : \""+key + "\" expected in :\n"+jsonParent.toString());
 
 		return false;
 	}
 	
 	boolean validateCards(String value){
 		Persons[] persons = Persons.values();
-		for(Persons p : persons) if (value.equals(p.getName())) return true;
+		for(Persons p : persons) if (value.equals(p.getColor())) return true;
 		Weapons[] weapons = Weapons.values();
 		for(Weapons w : weapons) if (value.equals(w.getName())) return true;
 		Rooms[] rooms = Rooms.values();
@@ -391,11 +404,11 @@ public class CluedoProtokollChecker {
 	void validatePlayerInfo(JSONObject jsonParent){		
 			validateValue(jsonParent, "nick");			
 			if (validateValue(jsonParent, "color"))
-				validatePerson(jsonParent.getString("color"));
-			if (validateValue(jsonParent, "field"))
-				validateField(jsonParent, "field");
-			if (validateValue(jsonParent, "cards"))
-				isInt(jsonParent, "cards");
+				validateColor(jsonParent.getString("color"));
+//			if (validateValue(jsonParent, "field"))
+//				validateField(jsonParent, "field");
+//			if (validateValue(jsonParent, "cards"))
+//				isInt(jsonParent, "cards");
 			if (validateValue(jsonParent, "playerstate"))
 				validatePlayerState(jsonParent.getString("playerstate"));		
 	}
@@ -463,7 +476,7 @@ public class CluedoProtokollChecker {
 		catch (JSONException e) {
 		//	System. out.println("VERYBAD :JSONArray expected on : "+key+" loopindex"+ index + " for "+localtype+" value \n"+jsonParent.toString());
 			//e.printStackTrace();
-			setErr("JSONArray: "+key+" expected  ");
+			setErr("JSONArray: \""+key+"\" expected  ");
 			return false;
 		}		
 	}
@@ -473,7 +486,7 @@ public class CluedoProtokollChecker {
 			jsonParent.getInt(key);
 			return true;
 		} catch (JSONException je) {
-			setErr("value of " + key + " is not of type int");
+			setErr("value of \"" + key + "\" is not of type int");
 			return false;
 		}
 	}

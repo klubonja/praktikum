@@ -3,70 +3,129 @@ package cluedoServer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
+import javafx.application.Platform;
+import json.CluedoJSON;
+import json.CluedoProtokollChecker;
 
 import org.json.JSONObject;
 
-import javafx.application.Platform;
+import staticClasses.Config;
+import staticClasses.Methods;
+import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkLayer.CluedoGameServer;
+import enums.NetworkHandhakeCodes;
 
 /**
  * @author guldener
  * verteilt die nachrichten der des clients
  */
-class communicationHandler implements Runnable{
+class CommunicationHandler implements Runnable{
 	
 	ServerSocket serverSocket;
-	Client client;
-	NetworkService networkService;
+	ClientItem client;
+	Connector networkService;
 	Socket socket;
+	
+	ClientPool clientPool;
+	ArrayList<ClientItem> blackList;
+	ArrayList<CluedoGameServer> gameList;
+
+	
 	final CluedoServerGUI gui;
 	boolean running = true;
-	int id;
-	int bufferSize = 1024;
 	
 	
 	
-	communicationHandler(ServerSocket ss, Client c, NetworkService s, CluedoServerGUI g,int id) throws IOException{
-		serverSocket = ss;
-		client = c;
-		networkService = s;
+	/**
+	 * @param ss
+	 * @param c
+	 * @param g
+	 * @param cList
+	 * @param bList
+	 * 
+	 * tcp verbindung steht server wartet auf tcp handshake
+	 */
+	CommunicationHandler(ServerSocket ss, ClientItem c, CluedoServerGUI g,ClientPool cList,ArrayList<ClientItem> bList,ArrayList<CluedoGameServer> gl) {
 		gui = g;
-		this.id = id;
-		awaitLoginAtempt();
-		
+		serverSocket = ss;
+		clientPool = cList;
+		blackList = bList;
+		gameList = gl;
+		client = c;
+	}	
+	
+	private void awaitingLoginAttempt (){
+		boolean readyForCommunication = false;
+		System.out.println("awaiting");
+
+		while (!readyForCommunication) {
+			try {
+				String message = getMessageFromClient(client.getSocket()).trim();
+				CluedoProtokollChecker checker = new CluedoProtokollChecker(
+						new CluedoJSON(
+								new JSONObject(message)));
+				NetworkHandhakeCodes errcode = checker.validateExpectedType("login",null);
+
+				if (errcode == NetworkHandhakeCodes.OK) {							
+					Platform.runLater(() -> {
+						gui.addMessageIn(client.getAdress()+" says :"+message);
+						gui.addIp(client.getAdress()+" "+client.getNick());
+					});
+					
+					client.setExpansions(
+						Methods.makeConjunction(
+							Config.EXPANSIONS, 
+							checker.getMessage().getJSONArray("expansions")
+						)
+					);
+					client.setNick(checker.getMessage().getString("nick"));
+					client.setGroupName(checker.getMessage().getString("group"));					
+					client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(), clientPool, gameList));
+					
+					clientPool.notifyAllClients(NetworkMessages.user_addedMsg(client.getNick()));
+					clientPool.add(client);
+					readyForCommunication = true;
+				}
+				else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
+						|| errcode == NetworkHandhakeCodes.TYPERR){
+					Platform.runLater(() -> {
+						gui.addMessageIn(client.getAdress()+" sends invalid Messages : \n"+checker.getErrString());
+					});	
+					client.sendMsg(NetworkMessages.error_Msg("you are violating the protokoll due to the following: \n"+checker.getErrString()));
+					client.sendMsg(NetworkMessages.disconnectMsg());
+					client.closingConnection();
+					blackList.add(client);					
+					
+					readyForCommunication = true; // no further listinenig on this socket
+					running = false; // thread will run out without further notice					
+				}
+				
+				else {
+					Platform.runLater(() -> {
+						gui.addMessageIn("unhandled incoming : \n" + message);
+					});
+				}
+			} 
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}	
 	}
 	
-	private void awaitLoginAtempt (){
-		try {
-			String message = getMessageFromClient(client.socket).trim();
-			JSONObject json = new JSONObject(message);
-			Platform.runLater(() -> {
-				gui.addMessageIn(client.id+" says : after json login : "+ json.get("type"));
-			});
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
-	public void run(){		
+	@Override
+	public void run(){	
+		awaitingLoginAttempt();
 		while (running){
 			try {
 	           String message = getMessageFromClient(client.socket).trim();
-	           //System.out.println(message);
-	           if (message.equals("CLOSE")){
-	        	   closeConnection("Client "+id+ " says plolitely: "+message);
-	           }
-				networkService.notifyAllClientsButSender(message,client);
-				Platform.runLater(() -> {
-					gui.addMessageIn(client.id+" says : "+ message);
-				});		
+	           gui.addMessageIn(message);
+	           
 			}
 			catch (IOException e){
 				try {
@@ -76,9 +135,11 @@ class communicationHandler implements Runnable{
 					Platform.runLater(() -> {
 						gui.addMessageIn(ex.getMessage());
 					});	
-				}				
+				}
+				
 			}
-		}				
+		}
+		client.sendMsg(NetworkMessages.disconnectedMsg("bye " +client.getNick()));
 	}
 	
 	private void closeConnection(String msg) throws IOException{
@@ -86,42 +147,22 @@ class communicationHandler implements Runnable{
 		Platform.runLater(() -> {
 			gui.addMessageIn(msg);
 			System.out.println(msg);
-			gui.removeIp(id);
 		});
 		running = false;
 	}
 	
 	
-	private String getMessageFromClient(Socket cs) throws IOException{
+	String getMessageFromClient(Socket cs) throws IOException{
 		StringBuffer message = new StringBuffer();
 			try {
 				BufferedReader clientInMessage = new BufferedReader(new InputStreamReader(cs.getInputStream(),StandardCharsets.UTF_8));
-				char[] buffer = new char[bufferSize];
-			 	int anzahlZeichen = clientInMessage.read(buffer, 0, bufferSize); // blockiert bis Nachricht empfangen
+				char[] buffer = new char[Config.MESSAGE_BUFFER];
+			 	int anzahlZeichen = clientInMessage.read(buffer, 0, Config.MESSAGE_BUFFER); // blockiert bis Nachricht empfangen
 				message.append(new String(buffer, 0, anzahlZeichen));
 			}
 			catch(Exception e) {}		
 		 	
 			return message.toString();
-	}
-	
-	private void sendMessageToClient(String msg){
-		client.sendMsg(msg);
-	}
-	
-	
-	
-	private static String getHostInfo(){
-		StringBuffer hostInfo = new StringBuffer();
-		try {
-			hostInfo.append(InetAddress.getLocalHost());
-		}
-		catch (IOException e){
-			System.out.println(e.getMessage());
-		}
-		finally {
-			return hostInfo.toString();
-		}
 	}
 	
 	public void kill(){

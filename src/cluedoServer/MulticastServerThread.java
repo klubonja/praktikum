@@ -1,4 +1,4 @@
-package broadcast;
+package cluedoServer;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -8,7 +8,7 @@ import staticClasses.Config;
 import cluedoNetworkGUI.CluedoServerGUI;
 
 
-public class BroadcastServerThread extends Thread {
+public class MulticastServerThread extends Thread {
 	
 	boolean running;
 	
@@ -24,43 +24,36 @@ public class BroadcastServerThread extends Thread {
 	String broadcastMessage;
 	
 	
-	public BroadcastServerThread(String name,String targetIp,String msg,CluedoServerGUI g) {
+	public MulticastServerThread(String name,String hostip,String bm,CluedoServerGUI g) throws Exception {
 		super(name);
 		try {
 			gui = g;
-			groupAdress = InetAddress.getByName(targetIp);
+			groupAdress = InetAddress.getByName(hostip);
 			port = Config.BROADCAST_PORT;
-			broadcastMessage = msg;
+			broadcastMessage = bm;
+			running = true;
 			socket = new DatagramSocket();
 			running = true;
-		}
-		catch (Exception e) {
+			
+		} catch (Exception e) {
 			killService();
-		}		
+		}
+		
+		
 	}
 	
 	@Override
 	public void run(){
 		while (running){
 			try {
-				buf = new byte[Config.NETWORK_BUFFER_SIZE];
+				buf = new byte[265];
 				buf = broadcastMessage.getBytes();
 				packet = new DatagramPacket(buf, buf.length, groupAdress, port);
-				socket.setBroadcast(true);
 				socket.send(packet);				
-			} 
-			catch (Exception e) {
+				
+			} catch (Exception e) {
 				System.out.println(e.getMessage());
-			}
-			finally {
-				try {
-					gui.addMessageOut("Sending UDPMessage :"+broadcastMessage);
-					sleep(Config.SECOND*Config.BROADCAST_INTERVAL);
-					
-				} catch (InterruptedException e2) {
-					// TODO: handle exception
-				}
-			}
+			}			
 		}
 	
 		

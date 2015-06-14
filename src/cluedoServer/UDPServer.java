@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * 
  * @author Huy
  * 
- * @param socket Erstellt ein neues Datagramsocket fuer den Server 
+ * @param tcpSocket Erstellt ein neues Datagramsocket fuer den Server 
  *
  */
 public class UDPServer implements Runnable {

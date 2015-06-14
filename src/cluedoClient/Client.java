@@ -2,18 +2,16 @@ package cluedoClient;
 
 
 import java.net.Socket;
-import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
-import json.CluedoJSON;
+import staticClasses.Config;
+import staticClasses.NetworkMessages;
 import broadcast.Multicaster;
 import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
-import enums.Config;
 
 
 
@@ -25,97 +23,96 @@ public class Client {
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
-	String ip;
-	int id;
-	ArrayList<ServerItem> serverList;
-	
+	ServerList serverList;
+	boolean run;
+		
 	public Client(CluedoClientGUI g) {
 		gui = g;
-		serverList = new ArrayList<ServerItem>();
-		//setListener();	
+		serverList = new ServerList();
+		gui.setWindowName(Config.GROUP_NAME+" Client");
+		//setListener();		
 		System.out.println("client started");
+		run = true;
+		setHandler();
 		listenForServersThread();
 		sayHello();
-		setHandlers();
-	}
+
+		
+		
+	}	
+
 	
-	
-	
-	
-	
-	private void sayHello(){	
-		CluedoJSON msg = new CluedoJSON("udp client");
-		msg.put("group", Config.GROUP_NAME);
-		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg.toString());
+	void sayHello(){	
+		String msg = NetworkMessages.udp_clientMsg(Config.GROUP_NAME);
+		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg);
 		bc.sendBrodcast();
 	}
 	
 	void listenForServersThread(){
-		CluedoJSON answer = new CluedoJSON("udp client");
-		answer.put("group", Config.GROUP_NAME);
-		answer.put("tcp port", Config.TCP_PORT);
+		String answer = NetworkMessages.udp_clientMsg(Config.GROUP_NAME);
 		ServerHandShakeListener cl = 
-				new ServerHandShakeListener(serverList,answer.toString(),"udp server",Config.BROADCAST_PORT,gui);
+				new ServerHandShakeListener(serverList,answer,"udp server",Config.BROADCAST_PORT,gui,this,run);
 		cl.start();
 	}
 	
 	
-	/**
+	/** 
 	 * 
 	 */
-	private void startTCPConnection(){		
-		try {
-					
-			
-			
-			
-			//ab hier nur noch tcp 
-			cSocket = new Socket(ip,port);			
-			
-			Thread t1 = new Thread(new ServerListener(cSocket,gui,id));
+
+	public void startTCPConnection(ServerItem server){	
+		try {				
+			cSocket = new Socket(server.getIp(),server.getPort());			
+			serverList.add(server);
+			Thread t1 = new Thread(new IncomingHandler(cSocket,gui,server,serverList,run));
 			t1.start();
-			Thread t2 = new Thread(new clientMessageListener(cSocket,gui,id));
+			Thread t2 = new Thread(new OutgoingHandler(cSocket,gui,server.getGroupName(),run));
 			t2.start();
 			
-			gui.setStatus("Connected to "+ cSocket.getInetAddress().toString());	
+			gui.setStatus("Connected to "+server.getGroupName()+" on : "+ cSocket.getInetAddress().toString());	
 			
-			setHandlers();
+
+			setHandler();
+
 		}
 		catch (Exception e){
 			System.out.println(e.getMessage());
-			gui.setStatus(e.getMessage());
+			gui.setStatus("connecting to "+server.getGroupName()+" failed \n"+e.getMessage());
+			run = false;
+			serverList.remove(server);
 		}
-		finally {}	
-	}	
+		finally {
+			}	
+		}
 	
 
-	public void setHandlers(){
-		  gui.manualIPConnect.setOnAction(new EventHandler<ActionEvent>(){
-				
-				@Override 
-				public void handle(ActionEvent event ){
-					String[] IPAndPort = gui.askForIp();
-					ip = IPAndPort[0];
-					int port = Integer.parseInt(IPAndPort[1]);
-					if (ip.length() < 8) ip = new String("127.0.0.1");//localhost	
-					
-					if (IPAndPort[1].length() < 4) port = 7000;
-					if (Integer.parseInt(IPAndPort[1]) < 1025) port = 7000; 
-					
-					System.out.println("IP: " + ip);
-					System.out.println("Port: " + port);
-					
-					startTCPConnection(new ServerItem(Config.GROUP_NAME, ip, port));
-					
-				}
-			});
-		  
-		  gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		
+	
+
+
+	
+	void setHandler(){
+		
+		gui.manualIPConnect.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	String[] IPAndPort = gui.askForIp();
+            }
+        });	
+		gui.startService.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	sayHello();
+            }
+        });	
+		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
 		      @Override
 			public void handle(WindowEvent e){
 		          
 		          try {
-		        	   cSocket.close();
+		        	   run = false;
+		        	   if (cSocket != null) cSocket.close();
 		               Platform.exit();
 		               System.exit(0);
 		               System.out.println("Terminated");
@@ -125,13 +122,14 @@ public class Client {
 		               e1.printStackTrace();
 		          }
 		      }
-		 });
-	  }
+
+
 	
+
+		});
+	}
 	
 }
-
-
 
 
 

@@ -13,8 +13,8 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.input.MouseEvent;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
+import staticClasses.Config;
 import cluedoNetworkGUI.CluedoNetworkGUI;
-import enums.Config;
 
 public abstract class MulticastListenerThread extends Thread{
 	MulticastSocket socket;
@@ -30,14 +30,14 @@ public abstract class MulticastListenerThread extends Thread{
 	
 	CluedoNetworkGUI gui;
 	
-	boolean running;
+	boolean run;
 	
 	abstract void listen();
-	abstract void select(String selectedListItem,int selectedListItemIndex);
+	abstract void select(SelectionModel<String> s);
 	abstract void startServiceAction();
 	
 	
-	public MulticastListenerThread(String answer, String expType, int port, CluedoNetworkGUI g)  {
+	public MulticastListenerThread(String answer, String expType, int port, CluedoNetworkGUI g,boolean run)  {
 		super();
 		this.answer = new String(answer);
 		this.expType = new String(expType);
@@ -45,11 +45,11 @@ public abstract class MulticastListenerThread extends Thread{
 			socket = new MulticastSocket(null);
 			SocketAddress a = new InetSocketAddress(port);
 			socket.bind(a);
-			socket.setLoopbackMode(false);
+			socket.setLoopbackMode(true);
 			bufSize = Config.NETWORK_BUFFER_SIZE;
 			gui = g;
 			setListener();
-			running = true;
+			this.run = run;
 			
 		} 
 		catch (Exception e) {
@@ -59,7 +59,7 @@ public abstract class MulticastListenerThread extends Thread{
 	
 	@Override
 	public void run(){
-		while (running){
+		while (run){
 			try {
 				listen();
 			} catch (Exception e) {
@@ -80,8 +80,7 @@ public abstract class MulticastListenerThread extends Thread{
 			    @Override
 			    public void handle(MouseEvent click) {
 			        if (click.getClickCount() == 2) {
-			           SelectionModel<String>  currentItemSelected = gui.getIpList().getSelectionModel();
-			           select(currentItemSelected.getSelectedItem(),currentItemSelected.getSelectedIndex());		
+			           select(gui.getIpList().getSelectionModel());		
 			        }
 			    }
 			});			
@@ -113,6 +112,6 @@ public abstract class MulticastListenerThread extends Thread{
 	}
 	
 	public void kill(){
-		running = false;
+		run = false;
 	}
 }

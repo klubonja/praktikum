@@ -1,26 +1,34 @@
 package enums;
 
+import cluedoNetworkLayer.CluedoPosition;
+
 public enum Persons {
 	
-	red("red","Fräulein Gloria"),
-	yellow("yellow","Oberts von Gatow"),
-	white("white","Frau Weiß"),
-	green("green","Reverend Green"),
-	blue("blue","Baronin von Porz"),
-	purple("purple","Professor Bloom")
+	red("red","Fräulein Gloria",new CluedoPosition(10,20)),
+	yellow("yellow","Oberts von Gatow",new CluedoPosition(1,2)),
+	white("white","Frau Weiß",new CluedoPosition(7,23)),
+	green("green","Reverend Green",new CluedoPosition(23,20)),
+	blue("blue","Baronin von Porz",new CluedoPosition(20,21)),
+	purple("purple","Professor Bloom",new CluedoPosition(21,7))
 	;
 	
 	
-	private String name;
+	private String color;
 	private String personName;
+	private CluedoPosition startposition;
 	
-	Persons(String pName,String name){
-		this.name = name;
-		this.personName = pName;
+	Persons(String color,String name,CluedoPosition startpos){
+		this.color = color;
+		this.personName = name;
+		startposition = startpos;
 	}
 	
-	public String getName() {
-        return this.name;
+	public CluedoPosition getStartposition() {
+		return startposition;
+	}
+	
+	public String getColor() {
+        return this.color;
     }
 	
 	public String getPersonName() {
@@ -30,7 +38,7 @@ public enum Persons {
 	 static public boolean isMember(String aName) {
         Persons[] persons = Persons.values();
         for (Persons person  : persons)
-            if (person.getName().equals(aName))
+            if (person.getColor().equals(aName))
                 return true;
         return false;
     }
@@ -42,4 +50,20 @@ public enum Persons {
                 return true;
         return false;
     }
+	
+	 static public Persons getPersonByName(String name) {
+	        Persons[] persons = Persons.values();
+	        for (Persons person  : persons)
+	            if (person.getPersonName().equals(name))
+	                return person;
+	        return null;
+	    }
+	 
+	 static public Persons getPersonByColor(String color) {
+	        Persons[] persons = Persons.values();
+	        for (Persons person  : persons)
+	            if (person.getColor().equals(color))
+	                return person;
+	        return null;
+	    }
 }
