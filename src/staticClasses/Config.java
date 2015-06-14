@@ -29,7 +29,7 @@ public abstract class Config {
 	
 	public final static String[] EXPANSIONS= {"Chat","Pumping Oil in the Antarctica, fuck yeah!"};
 	
-	public final static double IP_PROMPT_WINDOW_HEIGHT = 100;
+	public final static double IP_PROMPT_WINDOW_HEIGHT = 200;
 	public final static double IP_PROMPT_WINDOW_WIDTH = 300;
 	
 	public final static double LOGIN_PROMPT_WINDOW_WIDTH = 300;
