@@ -14,11 +14,14 @@ public class CluedoPlayer {
 		cluedoPerson = pers;
 		state = s;
 		position = p;
+		nick = "alfons"+Math.random();
 	}
 	
 	public CluedoPlayer(Persons pers,PlayerStates s) {
 		cluedoPerson = pers;
 		state = s;
+		position = new CluedoPosition(cluedoPerson.getStartposition().getX(),
+									 cluedoPerson.getStartposition().getY());
 	}
 	
 	public void setNewPosition(int x,int y) {

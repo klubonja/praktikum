@@ -77,7 +77,7 @@ class IncomingHandler implements Runnable {
 			JSONArray gamearray = checker.getMessage().getJSONArray("game array");
 			for (int i = 0; i < gamearray.length(); i++){							
 				CluedoGameClient newgame = new CluedoGameClient(
-						gamearray.getJSONObject(i).getInt("gameId"));
+						gamearray.getJSONObject(i).getInt("gameID"));
 				newgame.setGameState(
 						GameStates.getState(
 								gamearray.getJSONObject(i).getString("gamestate")
@@ -91,7 +91,7 @@ class IncomingHandler implements Runnable {
 									players.getJSONObject(n).getString("color")
 									),
 							PlayerStates.getPlayerState(
-									players.getJSONObject(n).getString("playerststate")
+									players.getJSONObject(n).getString("playerstate")
 									)									
 							);	
 					player.setNick(players.getJSONObject(n).getString("nick"));
@@ -106,7 +106,11 @@ class IncomingHandler implements Runnable {
 				for (int n = 0;n < personposs.length();n++){						
 					JSONObject ppos = personposs.getJSONObject(n);
 					String pname = ppos.getString("person");
-					newgame.getPlayer(pname).getPosition().setX(ppos.getJSONObject("field").getInt("x"));
+					newgame.
+						getPlayer(pname).
+							getPosition().
+								setX(ppos.getJSONObject("field").
+										getInt("x"));
 					newgame.getPlayer(pname).getPosition().setY(ppos.getJSONObject("field").getInt("y"));
 				}
 				
@@ -129,7 +133,7 @@ class IncomingHandler implements Runnable {
 		else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
 				|| errcode == NetworkHandhakeCodes.TYPERR){
 			Platform.runLater(() -> {
-				gui.addMessageIn(server.getGroupName()+" sends invalid Messages : \n"+checker.getErrString());
+				gui.addMessageIn(server.getGroupName()+" sends invalid Messages : \n"+checker.getErrString()+"\n"+checker.getMessage());
 			});				
 			kill(); // thread will run out without further notice					
 		}

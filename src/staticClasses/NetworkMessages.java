@@ -1,7 +1,6 @@
 package staticClasses;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import json.CluedoJSON;
 
@@ -390,14 +389,14 @@ public abstract class NetworkMessages {
 			watchersJSON.put(w);
 		
 		JSONArray weaponpossJSON = new JSONArray();
-		Map<String, CluedoWeapon> weaponPoss = game.getWeapons();
-		for (Map.Entry<String, CluedoWeapon> wp : weaponPoss.entrySet()){
+		ArrayList<CluedoWeapon> weaponPoss = game.getWeapons();
+		for (CluedoWeapon wp : weaponPoss){
 			weaponpossJSON.put(
 				NetworkMessages.weapon_pos(
-					wp.getValue().getWeapon().getName(), 
+					wp.getWeapon().getName(), 
 					NetworkMessages.field(
-						wp.getValue().getPosition().getX(),
-						wp.getValue().getPosition().getY()
+						wp.getPosition().getX(),
+						wp.getPosition().getY()
 					)
 				)
 			);

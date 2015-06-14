@@ -22,7 +22,7 @@ public abstract class Config {
 	public final static int NETWORK_BUFFER_SIZE = 265;
 	public final static String BROADCAST_WILDCARD_IP = "255.255.255.255";
 	
-	public final static int MESSAGE_BUFFER = 4096;
+	public final static int MESSAGE_BUFFER = 4096*2;
 	
 	
 	public final static int TCP_PORT = 1200;	
@@ -35,10 +35,10 @@ public abstract class Config {
 	public final static double LOGIN_PROMPT_WINDOW_WIDTH = 300;
 	public final static double LOGIN_PROMPT_WINDOW_HEIGHT = 200;
 	
-	public final static double CLIENT_WINDOW_WIDTH = 1000;
+	public final static double CLIENT_WINDOW_WIDTH = 1500;
 	public final static double CLIENT_WINDOW_HEIGHT = 400;
 	
-	public final static double SERVER_WINDOW_WIDTH = 1000;
+	public final static double SERVER_WINDOW_WIDTH = 1500;
 	public final static double SERVER_WINDOW_HEIGHT = 400;
 	
 	public final static String BLACKLISTED_MSG = ""
