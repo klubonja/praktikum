@@ -1,9 +1,7 @@
 package cluedoClient;
 
 
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -19,7 +17,6 @@ import cluedoNetworkGUI.CluedoClientGUI;
 
 
 
-
 /**
  * @author guldener
  * 
@@ -30,8 +27,6 @@ public class Client {
 	CluedoClientGUI gui;
 	ServerList serverList;
 	boolean run;
-	String groupName = "YinYanYolos";
-	int port = 1200;
 		
 	public Client(CluedoClientGUI g) {
 		gui = g;
@@ -39,14 +34,12 @@ public class Client {
 		gui.setWindowName(Config.GROUP_NAME+" Client");
 		System.out.println("client started");
 		run = true;
-		setHandler();
+		setCloseHandler();
 		listenForServersThread();
 		sayHello();
-
 		
 		
 	}	
-
 	
 	void sayHello(){	
 		String msg = NetworkMessages.udp_clientMsg(Config.GROUP_NAME);
@@ -65,7 +58,6 @@ public class Client {
 	/** 
 	 * 
 	 */
-
 	public void startTCPConnection(ServerItem server){	
 		try {				
 			cSocket = new Socket(server.getIp(),server.getPort());			
@@ -77,9 +69,7 @@ public class Client {
 			
 			gui.setStatus("Connected to "+server.getGroupName()+" on : "+ cSocket.getInetAddress().toString());	
 			
-
-			setHandler();
-
+			setCloseHandler();
 		}
 		catch (Exception e){
 			System.out.println(e.getMessage());
@@ -87,55 +77,19 @@ public class Client {
 			run = false;
 			serverList.remove(server);
 		}
-		finally {
-			}	
-		}
+		finally {}	
+	}	
 	
 
-		
 	
-
-
-	
-<<<<<<< HEAD
 	void setCloseHandler(){
 		gui.button0.setOnAction(new EventHandler<ActionEvent>() {
-=======
-	void setHandler(){
-		
-		gui.manualIPConnect.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	String[] IPAndPort = gui.askForIp();
-            	InetAddress manualserverIP = null;
-				try {
-					
-					manualserverIP = InetAddress.getByName(IPAndPort[0]);
-					Integer.parseInt(IPAndPort[1]);
-					if(IPAndPort[0].equals("...")){
-						manualserverIP = InetAddress.getByName("127.0.0.001");
-					}
-					if(IPAndPort[1].equals("")){
-						port = 1200;
-					}
-				} catch (UnknownHostException e) {
-					
-					e.printStackTrace();
-				}
-            	
-				ServerItem manualServer = new ServerItem(groupName, manualserverIP, port);
-				startTCPConnection(manualServer);
-            }
-        });	
-		gui.startService.setOnAction(new EventHandler<ActionEvent>() {
->>>>>>> 8e8b9f38a37dd7709a9d4c454111ea658121827b
             @Override
             public void handle(ActionEvent event) {
             	sayHello();
             }
         });	
 		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-
 		      @Override
 			public void handle(WindowEvent e){
 		          
@@ -151,7 +105,6 @@ public class Client {
 		               e1.printStackTrace();
 		          }
 		      }
-<<<<<<< HEAD
 		 });
 		
 		gui.getIpListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -174,16 +127,8 @@ public class Client {
 		
 	}
 }
-=======
->>>>>>> 8e8b9f38a37dd7709a9d4c454111ea658121827b
 
 
-	
-
-		});
-	}
-	
-}
 
 
 
