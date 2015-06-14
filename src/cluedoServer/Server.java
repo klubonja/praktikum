@@ -72,7 +72,7 @@ public class Server {
 	private void createTestGroups(){
 		for(int i = 0; i < 4; i++) {
 			gameList.add(new CluedoGameServer(i));
-			gui.addGame("erweiterer Hund "+gameList.get(i).getGameId(), gameList.get(i).getNicksConnected());
+			gui.addGame("GAMEID : "+gameList.get(i).getGameId(), gameList.get(i).getNicksConnected());
 		}
 	}
 	

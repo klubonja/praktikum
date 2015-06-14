@@ -2,15 +2,10 @@ package cluedoNetworkGUI;
 
 
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
@@ -21,20 +16,15 @@ import javafx.stage.Stage;
 import staticClasses.Config;
  
 public class CluedoServerGUI extends CluedoNetworkGUI {
-		
-	 TabPane tabPane;
-	 ObservableList<Pane> games;
-	 ListView<Pane> gameListView;
 	 
 	 public CluedoServerGUI(Stage s){
 		 super(s);
 		 
 		 width = Config.SERVER_WINDOW_WIDTH;
 		 height = Config.SERVER_WINDOW_HEIGHT;
-		 tabPane = new TabPane();
-		 games = FXCollections.observableArrayList();
-		 gameListView = new ListView<Pane>(games);
 		 
+		 setStylesheet("cluedoNetworkGUI/networkStyle.css");
+
 		 setStartServiceButtonLabel("sendhandshake");	
 		 startUp();	 
 		 setStageWidth(width);
@@ -85,11 +75,11 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
 	    messagesOut.setWrapText(true);
 		messagesIn.setEditable(false);
 		messagesOut.setEditable(false);
-      
+        
         Tab tab0 = new Tab();
         tab0.setText("gamelist");           
         tab0.setContent(gameListView);
-        tabPane.getTabs().add(tab0);            
+        tabPane.getTabs().add(tab0);
         
         Tab tab1 = new Tab();
         tab1.setText("clientlist");           
@@ -116,49 +106,27 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
 	    primaryStage.show();
      }  
     
-    
+    @Override
 	public void addGame(String gamename,String info){
 		for (Pane p: games)
        		if (p.getId().equals(gamename)) return;
 		 	
-		Pane pane = new Pane();
+		HBox pane = new HBox();
 		pane.setPrefHeight(50);
 		pane.getStyleClass().add("gameListItem");
 		Label gameName = new Label(gamename);
 		gameName.getStyleClass().add("gameNameItem");
-		Label gameInfo = new Label("Connected plyaers :" +info);
+		Label gameInfo = new Label(info);
 		gameInfo.getStyleClass().add("gameInfoItem");
 		gameInfo.setLayoutY(14);
 		pane.setId(gamename);
 		pane.getChildren().addAll(gameInfo,gameName);
-		games.add(pane);		     
-   	  }   	
-   	 
-	  
-	public void removeGame(String gamename){
-		  int index;
-			for (index = 0; index < games.size(); index++)
-	       		if (games.get(index).getId().equals(gamename)) games.remove(index);		 
-	}
-	  
-	  @Override
-	public  void emptyList(){
-		  games.clear();
-	  }
+		games.add(pane);
+    }   	
    
-    @Override
-	void setListener(){
-		 super.setListener();
-		
-		  ChangeListener<Number> gridwidthlistener = new ChangeListener<Number>() {
-				@Override
-				public void changed(
-						ObservableValue<? extends Number> observable,
-						Number oldValue, Number newValue) {
-							tabPane.setMaxWidth(newValue.doubleValue()/100*20);
-						}							
-					};
-			grid.widthProperty().addListener(gridwidthlistener);
+    
+	void setAdditionalListener(){
+			  
 		  
 	  }
 }

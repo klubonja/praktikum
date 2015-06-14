@@ -76,9 +76,9 @@ public class CluedoGame {
 		return null;
 	}
 	
-	public CluedoWeapon getWeapon(String name){
+	public CluedoWeapon getWeaponByName(String name){
 		for (CluedoWeapon w : weapons)
-			if (w.getWeapon().equals(name))
+			if (w.getWeaponName().equals(name))
 				return w;
 		
 		return null;
@@ -92,12 +92,30 @@ public class CluedoGame {
 		return n;
 	}
 	
+	public ArrayList<CluedoPlayer> getPlayersConnected(){
+		ArrayList<CluedoPlayer> cp = new ArrayList<CluedoPlayer>();
+		for (CluedoPlayer p : players)
+			if (!p.getNick().equals(""))
+				cp.add(getConnectedPlayerByName(p.getNick()));
+		
+		return cp;
+	}
+	
+	public CluedoPlayer getConnectedPlayerByName(String name){
+		for (CluedoPlayer p : players)
+			if (p.getNick().equals(name))
+				return p;
+		
+		return null;
+		
+	}
+	
 	public String getNicksConnected(){
 		StringBuffer nb = new StringBuffer();
 		for (CluedoPlayer p : players)
-			if (p != null)
+			if (!p.getNick().equals(""))
 				nb.append(p.getNick()+", ");
-		nb.delete(nb.length()-2, nb.length()-1);
+		if (nb.length() > 2) nb.delete(nb.length()-2, nb.length()-1);
 		return nb.toString();
 	}
 	

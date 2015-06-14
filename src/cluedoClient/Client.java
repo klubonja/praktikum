@@ -2,7 +2,6 @@ package cluedoClient;
 
 
 import java.net.Socket;
-import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -24,12 +23,12 @@ public class Client {
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
-	ArrayList<ServerItem> serverList;
+	ServerList serverList;
 	boolean run;
 		
 	public Client(CluedoClientGUI g) {
 		gui = g;
-		serverList = new ArrayList<ServerItem>();
+		serverList = new ServerList();
 		gui.setWindowName(Config.GROUP_NAME+" Client");
 		//setListener();		
 		System.out.println("client started");

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import javafx.application.Platform;
 import json.CluedoJSON;
@@ -28,12 +27,12 @@ class IncomingHandler implements Runnable {
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
-	ArrayList<ServerItem> serverList;
+	ServerList serverList;
 	ServerItem server;
 	
 	boolean run = true;
 	
-	IncomingHandler(Socket cs,CluedoClientGUI g,ServerItem server,ArrayList<ServerItem> sList,boolean run){
+	IncomingHandler(Socket cs,CluedoClientGUI g,ServerItem server,ServerList sList,boolean run){
 		cSocket = cs;
 		gui = g;
 		serverList = sList;
@@ -118,12 +117,19 @@ class IncomingHandler implements Runnable {
 				for (int n = 0;n < weaponposs.length();n++){						
 					JSONObject wpos = weaponposs.getJSONObject(n);
 					String wname = wpos.getString("weapon");
-					newgame.getWeapon(wname).getPosition().setX( wpos.getJSONObject("field").getInt("x"));
-					newgame.getWeapon(wname).getPosition().setY(wpos.getJSONObject("field").getInt("y"));
+					newgame.
+						getWeaponByName(wname).
+							getPosition().
+								setX(
+										wpos.getJSONObject("field").
+										getInt("x")
+									);
+					newgame.getWeaponByName(wname).getPosition().setY(wpos.getJSONObject("field").getInt("y"));
 				}				
 				
 				server.addGame(newgame);
 				Platform.runLater(() -> {
+					gui.addGame("GAMEID : "+newgame.getGameId()+"", newgame.getNicksConnected());
 				});	
 				
 			}
