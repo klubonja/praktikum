@@ -34,7 +34,7 @@ public class Client {
 		//setListener();		
 		System.out.println("client started");
 		run = true;
-		setCloseHandler();
+		setHandler();
 		listenForServersThread();
 		sayHello();
 		
@@ -69,7 +69,7 @@ public class Client {
 			
 			gui.setStatus("Connected to "+server.getGroupName()+" on : "+ cSocket.getInetAddress().toString());	
 			
-			setCloseHandler();
+			setHandler();
 		}
 		catch (Exception e){
 			System.out.println(e.getMessage());
@@ -82,7 +82,14 @@ public class Client {
 	
 
 	
-	void setCloseHandler(){
+	void setHandler(){
+		
+		gui.manualIPConnect.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	
+            }
+        });	
 		gui.startService.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
