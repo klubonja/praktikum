@@ -20,6 +20,11 @@ public class CluedoWeapon {
 		return weapon;
 	}
 	
+	public String getWeaponName(){
+		return weapon.getName();
+	}
+	
+	
 	public void setPosition(int x, int y) {
 		this.position.setX(x);
 		this.position.setY(y);

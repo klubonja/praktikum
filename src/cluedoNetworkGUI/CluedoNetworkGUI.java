@@ -12,14 +12,21 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public abstract class CluedoNetworkGUI {
-	ObservableList<String> ips;
-	ListView<String> ipListView;
+	
+	final ObservableList<String> ips;
+	final ListView<String> ipListView;
+	
+	final TabPane tabPane;
+	final ObservableList<Pane> games;
+	final ListView<Pane> gameListView;
 	
 	final TextArea messagesIn;
 	final TextArea messagesOut;
@@ -35,9 +42,19 @@ public abstract class CluedoNetworkGUI {
 	
 	String desc;
 	
+	public abstract void startUp();
+    public abstract void addGame(String gamename,String info);
+	
 	 public CluedoNetworkGUI(Stage s){
+		 tabPane = new TabPane();
+		 
+		 
 		 ips = FXCollections.observableArrayList();
 		 ipListView = new ListView<String>(ips);
+		 
+		 
+		 games = FXCollections.observableArrayList();
+		 gameListView = new ListView<Pane>(games);
 		 
 		 primaryStage = s;
 		 
@@ -59,17 +76,12 @@ public abstract class CluedoNetworkGUI {
 		 messagesIn.setEditable(false);
 	     messagesOut.setEditable(false);
 		 		 
-	}
+	}  
     
-    public abstract void startUp();
-    
-    
-   	public void addIp(String ip){
+   	 public void addIp(String ip){
        	if (!ips.contains(ip))
        			ips.add(ip);
-   	  }   	
-   	  
-   	 
+   	  }   	 
 	  
 	  public void removeIp(int i){
 		  if (i-1 >= 0)  ips.remove(i-1);
@@ -112,29 +124,44 @@ public abstract class CluedoNetworkGUI {
 		  return ipListView;
 	  }
 	  
+	  public void removeGame(String gamename){
+		  int index;
+			for (index = 0; index < games.size(); index++)
+	       		if (games.get(index).getId().equals(gamename)) games.remove(index);		 
+	  }
+	  
+	
+	  public  void emptyGamesList(){
+		  games.clear();
+	  }
+	  
 	  void setListener(){
 		  ChangeListener<Number> gridwidthlistener = new ChangeListener<Number>() {
 				@Override
 				public void changed(
 						ObservableValue<? extends Number> observable,
 						Number oldValue, Number newValue) {
-							ipListView.setMaxWidth(newValue.doubleValue()/100*20);
+							tabPane.setMaxWidth(newValue.doubleValue()/100*20);
 						}							
-					};
-			grid.widthProperty().addListener(gridwidthlistener);
+				};
+		  grid.widthProperty().addListener(gridwidthlistener);
 	  }
 	  
-	 public void setStylesheet(String cssFile){
-		 scene.getStylesheets().add(cssFile);
-
-	  }
+	public void setStylesheet(String cssFile){
+		tabPane.setId("tabPane");
+		ipListView.setId("ipList");
+		tabPane.getStyleClass().add("listViewC");
+		ipListView.getStyleClass().add("listViewC");
+		gameListView.setId("gameList");
+		scene.getStylesheets().add(cssFile);
+	}
 	 
-	 public void setStageWidth(double w){
-		 primaryStage.setWidth(w);
-	 }
+	public void setStageWidth(double w){
+		primaryStage.setWidth(w);
+	}
 	 
-	 public void setStageHeight(double h){
-		 primaryStage.setHeight(h);
-	 }
+	public void setStageHeight(double h){
+	    primaryStage.setHeight(h);
+	}
 
 }

@@ -16,6 +16,8 @@ public class ServerItem  {
 		this.groupName = groupName;
 		this.ip = ip;
 		this.port = port;
+		gameList = new ArrayList<CluedoGameClient>();
+		
 	}
 	
 	public InetAddress getIp() {
@@ -40,6 +42,14 @@ public class ServerItem  {
 	
 	public void removeGame(ClientGameItem cg){
 		gameList.remove(cg);
+	}
+	
+	public void setIp(InetAddress ip) {
+		this.ip = ip;
+	}
+	
+	public void setPort(int port) {
+		this.port = port;
 	}
 	
 }

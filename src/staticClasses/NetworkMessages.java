@@ -364,7 +364,7 @@ public abstract class NetworkMessages {
 	public static JSONObject gameInfo(CluedoGameServer game){
 		JSONArray playerInfosJSON = new JSONArray();
 		JSONArray perspossJSON = new JSONArray();
-		ArrayList<CluedoPlayer> playerInfos = game.getPlayers();
+		ArrayList<CluedoPlayer> playerInfos = game.getPlayersConnected();
 		for (CluedoPlayer p : playerInfos){
 			playerInfosJSON.put(
 				NetworkMessages.player_info(

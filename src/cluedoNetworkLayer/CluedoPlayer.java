@@ -14,7 +14,7 @@ public class CluedoPlayer {
 		cluedoPerson = pers;
 		state = s;
 		position = p;
-		nick = "alfons"+Math.random();
+		nick = "";
 	}
 	
 	public CluedoPlayer(Persons pers,PlayerStates s) {
