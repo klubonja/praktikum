@@ -31,6 +31,7 @@ import enums.Orientation;
 public class BoardView extends GridPane {
 		
 	private Kachel [][] kachelArray;
+	private final Background [][] backgroundKachelArray = new Background [25][24];
 	private PlayerView testSpieler;
 	private BackgroundFill fill;
 	private int rowSize;
@@ -38,7 +39,7 @@ public class BoardView extends GridPane {
 	private Player spieler;
 	private Kachel red,pink,blue,green,white,yellow;
 
-	private char [][] keineMoeglichkeiten;
+	private char [] keineMoeglichkeiten;
 	
 	private Stage stage;
 	private Scene scene;
@@ -55,7 +56,44 @@ public class BoardView extends GridPane {
 		this.columnSize = columnSize ;
 		kachelArray = new Kachel[rowSize][columnSize];
 		setLayout();
+
+		for( int iSpalten = 0; iSpalten < backgroundKachelArray.length;iSpalten++){
+			
+			for (int jReihen = 0; jReihen < backgroundKachelArray[iSpalten].length;jReihen++){
+				backgroundKachelArray[iSpalten][jReihen] = kachelArray[iSpalten][jReihen].getBackground();
+			}
+			
+		}
+		 
 	}	
+	
+	public void resetBackground(){
+
+		System.out.println("reset Background");
+		
+		for( int iSpalten = 0; iSpalten < kachelArray.length;iSpalten++){
+			
+			for (int jReihen = 0; jReihen < kachelArray[iSpalten].length;jReihen++){
+				kachelArray[iSpalten][jReihen].setBackground(backgroundKachelArray[iSpalten][jReihen]);
+			}
+			
+		}
+		 
+	}	
+
+	public void resetMoeglichkeiten(){
+		
+		for( int iSpalten = 0; iSpalten < kachelArray.length;iSpalten++){
+			
+			for (int jReihen = 0; jReihen < kachelArray[iSpalten].length;jReihen++){
+				kachelArray[iSpalten][jReihen].setMoeglichkeitenHierher(null);
+			}
+			
+		}
+		
+	}
+	
+	
 	
 	/**
 	 * Hier werden die Kacheln erzeugt und ihnen ein Platz zugewiesen.
