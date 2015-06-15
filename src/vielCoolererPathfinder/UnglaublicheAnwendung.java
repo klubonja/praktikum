@@ -12,35 +12,41 @@ public class UnglaublicheAnwendung extends Application{
 	private BallEbene2 ballEbene;
 	private KrasserStack krasserStack;
 	
+	private DerBeweger beweger;
+	private Vorschlaege vorschlager;
+	private WahnsinnigTollerPathfinder pathfinder;
+	private Ausloeser ausloeser;
+	
+	Player player;
 	
 	private char [][] anweisungen;
 	private Orientation [][] anweisungenOrientations = new Orientation [244000][12];
 	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public UnglaublicheAnwendung() {
 
-		Player player = new Player("Hans", 1, 2, Color.AQUAMARINE);
+		player = new Player("Hans",1,2, Color.AQUAMARINE);
 		
 		gui = new GUI(3,5);
 		ballEbene = new BallEbene2();
 		krasserStack = new KrasserStack(ballEbene, gui);
-		krasserStack.start();
+
+		beweger = new DerBeweger(gui, krasserStack, ballEbene, player);
+		vorschlager = new Vorschlaege(gui);
+		pathfinder = new WahnsinnigTollerPathfinder(gui, ballEbene, player);
+		ausloeser = new Ausloeser(gui, beweger, ballEbene, pathfinder);
 		
+	}
+	
+	
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+
+		krasserStack.start();		
 		
+		suchen();
+		zuweisen();
 		
-		DerBeweger beweger = new DerBeweger(gui, krasserStack, ballEbene);
-		Vorschlaege vorschlager = new Vorschlaege(gui);
-		WahnsinnigTollerPathfinder pathfinder = new WahnsinnigTollerPathfinder(gui, ballEbene);
-		Ausloeser ausloeser = new Ausloeser(gui, beweger, ballEbene, pathfinder);
-		
-		
-		pathfinder.findThatPathBetter();
-		
-		anweisungen = pathfinder.getMoeglichkeiten();		
-		
-		vorschlager.vorschlaegeMachen(anweisungen, gui.getKachelArray()[1][2]);
-		
-		ausloeser.zuweisung(); // ruft Bewegung auf
+		player = new Player("Hans", 1, 2, Color.AQUAMARINE);
 		
 		
 		
@@ -95,6 +101,20 @@ public class UnglaublicheAnwendung extends Application{
 		
 	}
 
+	public void suchen(){
+		
+		pathfinder.findThatPathBetter();
+		
+		anweisungen = pathfinder.getMoeglichkeiten();		
+		
+		vorschlager.vorschlaegeMachen(anweisungen, gui.getKachelArray()[1][2]);
+		
+	}
+	
+	public void zuweisen(){
+		ausloeser.zuweisung(); // ruft Bewegung auf
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

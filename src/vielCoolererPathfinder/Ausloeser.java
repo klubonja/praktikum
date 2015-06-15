@@ -2,6 +2,7 @@ package vielCoolererPathfinder;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import kacheln.Kachel;
 import enums.Orientation;
 
@@ -23,6 +24,8 @@ public class Ausloeser {
 	private char [] moeglichkeiten;
 	private Orientation [] anweisungenOrientations = new Orientation [12];
 	private WahnsinnigTollerPathfinder pathfinder;
+	
+	private UnglaublicheAnwendung anwendung;
 	
 	/**
 	 * Konstruktor für den Ausloeser, welcher ballEbenen-clicks mit Bewegungen verlinkt.
@@ -73,6 +76,10 @@ public class Ausloeser {
 			@Override
 			public void handle(MouseEvent event) {
 				
+				anwendung = new UnglaublicheAnwendung();
+				
+				anwendung.suchen();
+				anwendung.zuweisen();
 				
 				for (int i = 0; i < gui.getKachelArray().length; i++){
 					for (int j = 0; j < gui.getKachelArray()[i].length; j++){

@@ -27,6 +27,11 @@ public class Player {
 		this.yCoord.set(y);
 		this.color = color;
 	}
+	
+	public Player(String name, Color color){
+		this.name.set(name);
+		this.color = color;
+	}
 
 	
 	public Color getColor() {

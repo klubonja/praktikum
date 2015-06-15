@@ -1,5 +1,6 @@
 package vielCoolererPathfinder;
 
+import model.Player;
 import enums.Orientation;
 
 /**
@@ -42,7 +43,15 @@ public class WahnsinnigTollerPathfinder {
 	private GUI gui;
 	private BallEbene2 ballEbene;
 	
+	/**
+	 * Der momentane String mit Anweisungen
+	 */
 	private String currentEntry;
+	
+	/**
+	 * Der Model-Spieler
+	 */
+	private Player player;
 	
 	private int schritte;
 	
@@ -56,10 +65,11 @@ public class WahnsinnigTollerPathfinder {
 	 * @param gui
 	 * @param ballEbene
 	 */
-	public WahnsinnigTollerPathfinder(GUI gui, BallEbene2 ballEbene){
+	public WahnsinnigTollerPathfinder(GUI gui, BallEbene2 ballEbene, Player player){
 		
 		this.gui = gui;
 		this.ballEbene = ballEbene;
+		this.player = player;
 		
 	}
 	
@@ -75,9 +85,9 @@ public class WahnsinnigTollerPathfinder {
 	public void findThatPathBetter(){
 
         // Die Werte werden auf die Urpsrungsposition gesetzt.
-        reset(2,1);
+        reset(player.getyCoord(),player.getxCoord());
         ausgangsPosition(jetzigeSpalte, jetzigeReihe);
-        possibleMoves(1, himmelsrichtungen,"");
+        possibleMoves(2, himmelsrichtungen,"");
 	}
 		
 	/**

@@ -23,7 +23,7 @@ public class BallEbene2 extends GridPane{
 	private char [] keineMoeglichkeiten;
 	
 	public BallEbene2(){
-		kachelArray = new Kachel[3][5];
+		kachelArray = new Kachel[5][3];
 		layoutStuff();
 	}
 	

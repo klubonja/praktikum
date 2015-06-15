@@ -1,10 +1,7 @@
 package vielCoolererPathfinder;
 
-import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.shape.Circle;
@@ -13,6 +10,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import kacheln.Kachel;
+import model.Player;
 import enums.Orientation;
 
 public class DerBeweger {
@@ -20,6 +18,8 @@ public class DerBeweger {
 	private GUI gui;
 	private KrasserStack krasserStack;
 	private BallEbene2 ballEbene;
+	
+	private Player player;
 	
 	private Orientation [] anweisungen;
 	private int momentaneAnweisung;
@@ -42,11 +42,12 @@ public class DerBeweger {
     private Kachel zielKachel;
 	
 	
-	public DerBeweger(GUI gui, KrasserStack krasserStack, BallEbene2 ballEbene){
+	public DerBeweger(GUI gui, KrasserStack krasserStack, BallEbene2 ballEbene, Player player){
 		this.gui = gui;
 		this.krasserStack = krasserStack;
 		this.ballEbene = ballEbene;
-		anfangsKachel = gui.getKachelArray()[1][2];
+		this.player = player;
+		anfangsKachel = gui.getKachelArray()[player.getxCoord()][player.getyCoord()];
 		
 		spieler = ballEbene.getSpieler();
 	}
@@ -135,7 +136,8 @@ public class DerBeweger {
 				}
 			});
 			
-
+			player.setxCoord(jetzigeSpalte + xDistanz);
+			player.setyCoord(jetzigeReihe + yDistanz);
 			
 		}
 	
