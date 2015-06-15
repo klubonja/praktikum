@@ -48,7 +48,7 @@ class IncomingHandler implements Runnable {
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(new JSONObject(msg)));
 				checker.validate();
-				if (checker.isValid())				
+				if (checker.isValid()){				
 					gui.addMessageIn(checker.getMessage().toString());
 					if (checker.getType().equals("game created")){
 						int gameID = checker.getMessage().getInt("gameID");
@@ -73,12 +73,11 @@ class IncomingHandler implements Runnable {
 								gui.addMessageIn(checker.getType()+" : "+player.getString("nick")+" added");
 							});			        		   
 					}
-						
+				}		
 				else {
 					gui.addMessageIn(checker.getErrString());
 				}
-					
-			}
+			}			
 			catch (Exception e){
 				System.out.println("running out "+e.getMessage());
 				Platform.runLater(() -> {

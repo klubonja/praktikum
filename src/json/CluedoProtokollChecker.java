@@ -96,7 +96,7 @@ public class CluedoProtokollChecker {
 			System.out.println("OK");
 			return true;
 		}
-		System.out.println("Not OK see : this.printErrs()");
+		System.out.println("Not OK see : this.getErrString()\n"+getErrString());
 		return false;
 	}
 
@@ -150,7 +150,8 @@ public class CluedoProtokollChecker {
 	void val_game_created() {
 		if (validateValue(jsonRoot, "gameID"))
 			isInt(jsonRoot, "gameID");
-		validateValue(jsonRoot, "nick");
+		if (validateValue(jsonRoot, "player"))
+			validatePlayerInfo(jsonRoot.getJSONObject("player"));
 	}
 
 	void val_join_game() {
@@ -161,8 +162,11 @@ public class CluedoProtokollChecker {
 	}
 
 	void val_player_added() {
-		val_join_game();
-		validateValue(jsonRoot, "nick");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
+		if (validateValue(jsonRoot, "player"))
+			validatePlayerInfo(jsonRoot.getJSONObject("player"));
+		
 	}
 
 	void val_watch_game() {
