@@ -1,8 +1,5 @@
 package cluedoNetworkGUI;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import staticClasses.Config;
 
 public abstract class CluedoNetworkGUI {
 	
@@ -139,7 +137,7 @@ public abstract class CluedoNetworkGUI {
 	       		if (p.getGameID() == gameID) return;
 			 	
 			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info);
-			gamelistitem.setPrefHeight(50);		
+			gamelistitem.setPrefHeight(Config.GAME_LIST_ITEM_HEIGHT);		
 			games.add(gamelistitem);	
 	  }
 	  
