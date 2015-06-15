@@ -82,12 +82,12 @@ public class WahnsinnigTollerPathfinder {
 	/**
 	 * Hauptmethode, mit welcher die ganzen checks aufgerufen werden.
 	 */
-	public void findThatPathBetter(){
+	public void findThatPathBetter(int wuerfelZahl){
 
         // Die Werte werden auf die Urpsrungsposition gesetzt.
         reset(player.getyCoord(),player.getxCoord());
         ausgangsPosition(jetzigeSpalte, jetzigeReihe);
-        possibleMoves(2, himmelsrichtungen,"");
+        possibleMoves(wuerfelZahl, himmelsrichtungen,"");
 	}
 		
 	/**

@@ -103,7 +103,7 @@ public class UnglaublicheAnwendung extends Application{
 
 	public void suchen(){
 		
-		pathfinder.findThatPathBetter();
+		pathfinder.findThatPathBetter(2);
 		
 		anweisungen = pathfinder.getMoeglichkeiten();		
 		
