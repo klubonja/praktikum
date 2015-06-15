@@ -70,7 +70,7 @@ class IncomingHandler implements Runnable {
 										"(updated) Game "+gameID, 
 										gui.getGame(gameID).
 											getInfoString()+ " "+player.getString("nick"));
-								gui.addMessageIn(checker.getMessage().toString());
+								gui.addMessageIn(checker.getType()+" : "+player.getString("nick")+" added");
 							});			        		   
 					}
 						
