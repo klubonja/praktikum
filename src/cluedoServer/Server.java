@@ -14,6 +14,7 @@ import staticClasses.NetworkMessages;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkGUI.CluedoServerDataGuiInterface;
 import cluedoNetworkLayer.CluedoGameServer;
 
 /**
@@ -26,10 +27,12 @@ public class Server {
 	public ServerSocket tcpSocket;
 	ClientPool clientPool;
 	ArrayList<ClientItem> blackList;
+	DataManagerServer dataManger;
 	int TCPport;
 	
 	final CluedoServerGUI gui;
 	public  GameListServer gameList;
+	public CluedoServerDataGuiInterface guiinterface;
 	
 	boolean run;
 	
@@ -38,9 +41,11 @@ public class Server {
 	public Server(CluedoServerGUI g){
 		gui = g;
 		TCPport = Config.TCP_PORT;	
+		dataManger = new DataManagerServer();
 		clientPool = new ClientPool(); 
 		blackList = new ArrayList<ClientItem>();
 		gameList = new GameListServer();
+		guiinterface = new CluedoServerDataGuiInterface(gui,dataManger);
 		run = true;
 		
 		createTestGroups();
@@ -84,7 +89,7 @@ public class Server {
 	private void startTCPServer()  {
 		try {
 			tcpSocket = new ServerSocket(TCPport);	
-			connector = new Connector(tcpSocket, gui,clientPool,blackList,gameList);
+			connector = new Connector(tcpSocket, gui,dataManger);
 			connector.start();
 			try {
 				NetworkInterfacesIpManager nm = new NetworkInterfacesIpManager();				 	

@@ -25,12 +25,12 @@ public class Client {
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
-	ServerList serverList;
+	ServerPool serverList;
 	boolean run;
 		
 	public Client(CluedoClientGUI g) {
 		gui = g;
-		serverList = new ServerList();
+		serverList = new ServerPool();
 		gui.setWindowName(Config.GROUP_NAME+" Client");
 		System.out.println("client started");
 		run = true;

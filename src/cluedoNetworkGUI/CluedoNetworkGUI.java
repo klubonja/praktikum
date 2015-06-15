@@ -90,7 +90,7 @@ public abstract class CluedoNetworkGUI {
 			  if (ips.get(i).equals(name))  ips.remove(i);
 	  }
 	  
-	  public  void emptyList(){
+	  public  void emptyIpList(){
 		  ipListView.getItems().clear();
 	  }
 	  
@@ -98,16 +98,12 @@ public abstract class CluedoNetworkGUI {
 		  status.setText(stat);
 	  }
 	  
-	  public void  addMessageIn(String mes){
-	  SimpleDateFormat date = new SimpleDateFormat("hh:mm:ss");
-	  Date now = new Date();
-   		  messagesIn.appendText(date.format(now)+" : "+mes+"\n");
+	  public void  addMessageIn(String mes){	  
+   		  messagesIn.appendText(mes);
    	  }	
 	  
 	  public  void addMessageOut(String mes){
-		  SimpleDateFormat date = new SimpleDateFormat("hh:mm:ss");
-		  Date now = new Date();
-	   		  messagesOut.appendText(date.format(now)+" : "+mes+"\n");
+	   	  messagesOut.appendText(mes);
 	  }
 	  
 	  public void setStartServiceButtonLabel(String label){

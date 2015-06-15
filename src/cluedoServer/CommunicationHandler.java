@@ -148,13 +148,21 @@ class CommunicationHandler implements Runnable{
 						});	
 	        		   clientPool.notifyAll(
 	        				   NetworkMessages.player_addedMsg(
-	        						   NetworkMessages.player_info(client.getNick(), color , PlayerStates.do_nothing.getName()),
-	        						   gameID)
+	        						   NetworkMessages.player_info(
+	        								   client.getNick(), 
+	        								   color , 
+	        								   PlayerStates.do_nothing.getName()
+	        								   ),
+	        						   gameID
+	        						   )
 	        				   );
 	        	   }
 	           }
 	           
-	           gui.addMessageIn(message);
+	           
+	           Platform.runLater(() -> {
+	        	   gui.addMessageIn(message);
+				});	
 	           
 			}
 			catch (IOException e){

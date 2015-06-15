@@ -2,9 +2,9 @@ package cluedoClient;
 
 import java.util.ArrayList;
 
-public class ServerList extends ArrayList<ServerItem> {
+public class ServerPool extends ArrayList<ServerItem> {
 	
-	public ServerList() {
+	public ServerPool() {
 		super();
 	}
 	

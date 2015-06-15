@@ -25,12 +25,12 @@ class IncomingHandler implements Runnable {
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
-	ServerList serverList;
+	ServerPool serverList;
 	ServerItem server;
 	
 	boolean run = true;
 	
-	IncomingHandler(Socket cs,CluedoClientGUI g,ServerItem server,ServerList sList,boolean run){
+	IncomingHandler(Socket cs,CluedoClientGUI g,ServerItem server,ServerPool sList,boolean run){
 		cSocket = cs;
 		gui = g;
 		serverList = sList;

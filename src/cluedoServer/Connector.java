@@ -23,15 +23,14 @@ class Connector extends Thread{
 	ClientPool clientPool;
 	ArrayList<ClientItem> blackList;
 	GameListServer gameList;
+	DataManagerServer dataManger;
 	boolean running = true;	
 	
 	
-	Connector (ServerSocket ss, CluedoServerGUI g,ClientPool cList,ArrayList<ClientItem> bList,GameListServer gl) {
+	Connector (ServerSocket ss, CluedoServerGUI g,DataManagerServer datam) {
 		gui = g;
 		serverSocket = ss;
-		clientPool = cList;
-		blackList = bList;
-		gameList = gl;
+		dataManger = datam;
 	}
 	
 	@Override

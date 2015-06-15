@@ -11,18 +11,18 @@ import org.json.JSONObject;
 
 import cluedoClient.Client;
 import cluedoClient.ServerItem;
-import cluedoClient.ServerList;
+import cluedoClient.ServerPool;
 import cluedoNetworkGUI.CluedoClientGUI;
 import enums.NetworkHandhakeCodes;
 
 public class ServerHandShakeListener extends MulticastListenerThread{
 	
 	Client parent;
-	ServerList serverList;
+	ServerPool serverList;
 	String[] ignoredTypes = {"udp client"};
 	
 	
-	public ServerHandShakeListener(ServerList sl,String answer, String expType, int port, CluedoClientGUI g,Client client,boolean run) {
+	public ServerHandShakeListener(ServerPool sl,String answer, String expType, int port, CluedoClientGUI g,Client client,boolean run) {
 		super(answer, expType, port, g,run);
 		parent = client;
 		serverList = sl;
