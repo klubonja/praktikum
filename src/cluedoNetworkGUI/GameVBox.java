@@ -15,7 +15,7 @@ public class GameVBox extends VBox{
 		gameLabelStringProp = new SimpleStringProperty(label+" :"+gameid);
 		gameInfoStringProp = new SimpleStringProperty(info);
 		gameID = gameid;
-		setPrefHeight(50);
+	
 		getStyleClass().add("gameListItem");
 		
 				

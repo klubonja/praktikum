@@ -14,7 +14,7 @@ import staticClasses.NetworkMessages;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
-import cluedoNetworkGUI.ServerDataGuiManager;
+import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoGameServer;
 
 /**
@@ -25,16 +25,15 @@ public class Server {
 	
 	Connector connector;
 	public ServerSocket tcpSocket;
+	int TCPport;
 	
 //	ClientPool clientPool;
 //	ArrayList<ClientItem> blackList;
 //	public  GameListServer gameList;
 
-	DataManagerServer dataManger;
-	int TCPport;
-	
+	DataManagerServer dataManager;	
 	final CluedoServerGUI gui;
-	public ServerDataGuiManager dataGuiManager;
+	public DataGuiManagerServer dataGuiManager;
 	
 	boolean run;
 	
@@ -43,13 +42,14 @@ public class Server {
 	public Server(CluedoServerGUI g){
 		gui = g;
 		TCPport = Config.TCP_PORT;	
-		dataManger = new DataManagerServer();
+		dataManager = new DataManagerServer();
+		dataGuiManager = new DataGuiManagerServer(gui,dataManager);
 		
 //		clientPool = new ClientPool(); 
 //		blackList = new ArrayList<ClientItem>();
 //		gameList = new GameListServer();
 		
-		dataGuiManager = new ServerDataGuiManager(gui,dataManger);
+		
 		run = true;
 		
 		createTestGroups();
@@ -59,7 +59,7 @@ public class Server {
 		
 		
 		System.out.println("Server Starteeeee");
-		gui.setWindowName(Config.GROUP_NAME+" Server");
+		dataGuiManager.setWindowName(Config.GROUP_NAME+" Server");
 		
 		setListener();	
 	}
@@ -80,8 +80,7 @@ public class Server {
 	
 	private void createTestGroups(){
 		for(int i = 0; i < 4; i++) {
-			gameList.add(new CluedoGameServer(i));
-			gui.addGame(gameList.get(i).getGameId(),"(test) Game", gameList.get(i).getNicksConnected());
+			dataGuiManager.addGame(new CluedoGameServer(i));
 		}
 	}
 	
@@ -93,7 +92,7 @@ public class Server {
 	private void startTCPServer()  {
 		try {
 			tcpSocket = new ServerSocket(TCPport);	
-			connector = new Connector(tcpSocket, gui,dataManger);
+			connector = new Connector(tcpSocket, gui,dataManager);
 			connector.start();
 			try {
 				NetworkInterfacesIpManager nm = new NetworkInterfacesIpManager();				 	

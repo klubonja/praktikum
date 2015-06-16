@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkGUI.DataGuiManager;
 
 
 class Connector extends Thread{	
@@ -20,17 +21,19 @@ class Connector extends Thread{
 	final CluedoServerGUI gui;
 	private ServerSocket serverSocket;
 	
-	ClientPool clientPool;
-	ArrayList<ClientItem> blackList;
-	GameListServer gameList;
+//	ClientPool clientPool;
+//	ArrayList<ClientItem> blackList;
+//	GameListServer gameList;
 	DataManagerServer dataManger;
+	DataGuiManagerServer dataGuiManager;
 	boolean running = true;	
 	
 	
-	Connector (ServerSocket ss, CluedoServerGUI g,DataManagerServer datam) {
+	Connector (ServerSocket ss, CluedoServerGUI g,DataManagerServer datam,DataGuiManagerServer dgm) {
 		gui = g;
 		serverSocket = ss;
 		dataManger = datam;
+		dataGuiManager = dgm;
 	}
 	
 	@Override
@@ -38,11 +41,11 @@ class Connector extends Thread{
 		try {			
 			while (running){
 				Socket clientSocket = serverSocket.accept();
-				if (!clientPool.checkForExistingIp(clientSocket.getInetAddress())){
-					if (isBlacklisted(clientSocket.getInetAddress()))
+				if (!dataManger.checkIpExists(clientSocket.getInetAddress())){
+					if (dataManger.isBlacklisted(clientSocket.getInetAddress()))
 						sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
 					Thread newCommunicationThread = new Thread(new CommunicationHandler(
-							serverSocket, new ClientItem(clientSocket), gui,clientPool,blackList,gameList));
+							serverSocket, new ClientItem(clientSocket),dataManger,dataGuiManager));
 					newCommunicationThread.start();	
 				}
 				else {
@@ -61,11 +64,7 @@ class Connector extends Thread{
 		}		
 	}
 	
-	boolean isBlacklisted(InetAddress adress){
-		for (ClientItem c : blackList)
-			if (adress.equals(c.getAdress())) return true;
-		return false;
-	}
+	
 	
 	
 	

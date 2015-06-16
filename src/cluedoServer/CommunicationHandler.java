@@ -33,9 +33,9 @@ class CommunicationHandler implements Runnable{
 	Connector networkService;
 	Socket socket;
 	
-	ClientPool clientPool;
-	ArrayList<ClientItem> blackList;
-	GameListServer gameList;
+	//ClientPool clientPool;
+	//ArrayList<ClientItem> blackList;
+	//GameListServer gameList;
 
 	
 	final CluedoServerGUI gui;
@@ -55,9 +55,9 @@ class CommunicationHandler implements Runnable{
 	CommunicationHandler(ServerSocket ss, ClientItem c, CluedoServerGUI g,ClientPool cList,ArrayList<ClientItem> bList,GameListServer gl) {
 		gui = g;
 		serverSocket = ss;
-		clientPool = cList;
-		blackList = bList;
-		gameList = gl;
+//		clientPool = cList;
+//		blackList = bList;
+//		gameList = gl;
 		client = c;
 	}	
 	
