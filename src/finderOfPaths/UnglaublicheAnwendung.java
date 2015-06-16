@@ -43,12 +43,31 @@ public class UnglaublicheAnwendung extends Application{
 		ausloeser = new Ausloeser(boardView, beweger, ballEbene, pathfinder, sucher, player);
 	}
 	
+	public UnglaublicheAnwendung(BoardView boardView, BallEbene2 ballEbene, KrasserStack krasserStack) {
+
+		player = new Player("Hans",5,5, Color.AQUAMARINE);
+
+		this.boardView = boardView;
+		this.ballEbene = ballEbene;
+		this.krasserStack = krasserStack;
+		
+		beweger = new DerBeweger(boardView, krasserStack, ballEbene, player);
+		vorschlager = new Vorschlaege(boardView, player);
+		pathfinder = new WahnsinnigTollerPathfinder(boardView, ballEbene, player);
+		
+		sucher = new Sucher(boardView, ballEbene, krasserStack, beweger, vorschlager, pathfinder,  player, anweisungen);
+		ausloeser = new Ausloeser(boardView, beweger, ballEbene, pathfinder, sucher, player);
+	}
 	
-	
+	public void test(){
+		ausloeser.zuweisung();
+		
+		player = new Player("Hans", 5, 5, Color.AQUAMARINE);
+	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
-		krasserStack.start();		
+		//krasserStack.start();		
 
 		ausloeser.zuweisung();
 				

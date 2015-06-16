@@ -1,5 +1,6 @@
 package view;
 
+import finderOfPaths.UnglaublicheAnwendung;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -29,13 +30,15 @@ public class GameFramePresenter {
 	@SuppressWarnings("unused")
 	public void startEvents(){
 		
-		GridPane.setConstraints(playerCircle, this.player.getxCoord(), this.player.getyCoord());
-		gfv.board.getChildren().add(playerCircle);
+//		GridPane.setConstraints(playerCircle, this.player.getxCoord(), this.player.getyCoord());
+//		gfv.board.getChildren().add(playerCircle);
 		
 		DicePresenter dice = new DicePresenter(gfv.dice);
-
-		BoardPresenter board = new BoardPresenter(gfv.board, playerCircle, this.player);
-
+		
+		UnglaublicheAnwendung wow = new UnglaublicheAnwendung(gfv.board, gfv.ballEbene, gfv.komplettesFeld);
+		//BoardPresenter board = new BoardPresenter(gfv.board, playerCircle, this.player);
+		wow.test();
+		
 		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		HandFramePresenter hand = new HandFramePresenter(gfv.hand);
 		MenuBarPresenter menuBar = new MenuBarPresenter(gfv.menu, gfv);

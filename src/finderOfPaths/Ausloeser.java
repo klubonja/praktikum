@@ -5,6 +5,8 @@ import javafx.scene.input.MouseEvent;
 import kacheln.Kachel;
 import model.Player;
 import view.BoardView;
+import view.DicePresenter;
+import view.DiceView;
 import enums.Orientation;
 
 /**
@@ -36,6 +38,8 @@ public class Ausloeser {
 	
 	private UnglaublicheAnwendung anwendung;
 	
+	DicePresenter dice;
+	
 	/**
 	 * Konstruktor für den Ausloeser, welcher ballEbenen-clicks mit Bewegungen verlinkt.
 	 * @param gui um aufs KachelArray zuzugreifen
@@ -63,6 +67,7 @@ public class Ausloeser {
 				click(event);
 			}});
 		ballEbene.getWuerfeln().setOnMouseClicked(e -> wuerfeln());
+		DiceView.roll.setOnMouseClicked(e -> wuerfeln());
 	}
 	
 	/**
@@ -87,7 +92,7 @@ public class Ausloeser {
 	public void wuerfeln(){
 		gui.resetBackground();
 		gui.resetMoeglichkeiten();
-		wuerfelZahl = (int)(Math.random()*6+1);
+		wuerfelZahl = 1 + (int)(Math.random()*6);
 		System.out.println(wuerfelZahl);
 		sucher.suchen(wuerfelZahl);
 		zuweisung();

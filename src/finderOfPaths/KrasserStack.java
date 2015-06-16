@@ -29,9 +29,9 @@ public class KrasserStack extends StackPane {
 		scene = new Scene(this, 700, 700);
 		stage.setScene(scene);
 		
-		stage.show();
+	//	stage.show();
 		
-		doThatTitleThang("hans");
+	//	doThatTitleThang("hans");
 	}
 	
 	public void layoutStuff(){

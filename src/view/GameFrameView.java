@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Player;
 import figuren.FigurenView;
+import finderOfPaths.BallEbene2;
+import finderOfPaths.KrasserStack;
 
 
 
@@ -25,8 +27,10 @@ public class GameFrameView extends GridPane{
 	ChatView chat;
 	BoardView board;
 
-	private SpielfeldUndFiguren komplettesFeld;
-	private FigurenView figuren;
+	//private SpielfeldUndFiguren komplettesFeld;
+	//private FigurenView figuren;
+	KrasserStack komplettesFeld;
+	BallEbene2 ballEbene;
 
 	HandFrameView hand;
 	Player player;
@@ -82,13 +86,14 @@ public class GameFrameView extends GridPane{
 		 */
 		dice = new DiceView();
 		
-
-
-		figuren = new FigurenView();
 		
-		komplettesFeld = new SpielfeldUndFiguren(board, figuren);
+		ballEbene = new BallEbene2();
+		komplettesFeld = new KrasserStack(ballEbene, board);
+		//figuren = new FigurenView();
+
+//		komplettesFeld = new SpielfeldUndFiguren(board, krasserStack);
 		
-		komplettesFeld.start();
+//		komplettesFeld.start();
 
 		hand = new HandFrameView();
 		

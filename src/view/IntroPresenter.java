@@ -190,7 +190,7 @@ public class IntroPresenter {
 		
 		GameFrameView gameView = new GameFrameView(this.player);
 		GameFramePresenter pres = new GameFramePresenter(gameView, this.player);
-		GameFramePresenter pres2 = new GameFramePresenter(gameView, player2);
+	//	GameFramePresenter pres2 = new GameFramePresenter(gameView, player2);
 
 
 		viewPl1 = new GameFrameView(this.player);
