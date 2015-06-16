@@ -1,6 +1,7 @@
 package cluedoClient;
 
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import cluedoNetworkLayer.CluedoGameClient;
@@ -12,6 +13,7 @@ public class ServerItem  {
 	InetAddress ip;
 	int port;
 	GameListClient gameList;
+	Socket socket;
 	
 	public ServerItem(String groupName,InetAddress ip, int port) {
 		this.groupName = groupName;
@@ -21,8 +23,18 @@ public class ServerItem  {
 		
 	}
 	
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
+	
+	public Socket getSocket() {
+		return socket;
+	}
 	public InetAddress getIp() {
 		return ip;
+	}
+	public String getIpString() {
+		return ip.toString();
 	}
 	
 	public int getPort() {
@@ -40,6 +52,10 @@ public class ServerItem  {
 	public void addGame(CluedoGameClient cg){
 		gameList.add(cg);
 	}
+	
+	public boolean addPlayerByGameID(int gameID, String color,String nick){
+		return getGameByGameID(gameID).joinGame(color, nick);
+	}
 		
 	public void addGames(ArrayList<CluedoGameClient> cg){
 		for (CluedoGameClient c : cg)
@@ -48,6 +64,10 @@ public class ServerItem  {
 	
 	public void removeGame(ClientGameItem cg){
 		gameList.remove(cg);
+	}
+	
+	public CluedoGameClient getGameByGameID(int gameID){
+		return gameList.getGameByGameID(gameID);
 	}
 	
 	public void setIp(InetAddress ip) {

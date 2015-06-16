@@ -18,6 +18,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoClientGUI;
+import cluedoNetworkGUI.DataGuiManagerClient;
 import cluedoNetworkGUI.GameVBox;
 
 
@@ -30,17 +31,20 @@ class OutgoingHandler implements Runnable{
 	
 	Socket cSocket;
 	CluedoClientGUI gui;
-	String serverName;
+	DataGuiManagerClient dataGuiManager;
+	ServerItem server;
+	
 	
 	boolean run;
 	
-	public OutgoingHandler(Socket cs,CluedoClientGUI g,String sName,boolean run) {
-		cSocket = cs;
-		gui = g;
-		serverName = sName;
+	public OutgoingHandler(CluedoClientGUI g,ServerItem s, boolean run) {
+		this.gui = g;
 		this.run = run;
-		login();
+		dataGuiManager = new DataGuiManagerClient(gui, server);		
+		server = s;		
+		
 		addClientGUIListener();
+		login();
 	}
 	
 	public void addClientGUIListener(){
@@ -81,17 +85,14 @@ class OutgoingHandler implements Runnable{
             }
         });	
 		
-		gui.getGamesListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
+		dataGuiManager.getGui().getGamesListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
 		           selectGame(gui.getGamesListView().getSelectionModel());		
 		        }
 		    }
-		});
-		
-		
-		
+		});		
 	}
 	
 	void selectGame(SelectionModel<GameVBox> g) {
@@ -105,7 +106,7 @@ class OutgoingHandler implements Runnable{
 	}
 	
 	private final boolean login(){
-		String[] loginData = gui.loginPrompt("Login to Server: " +serverName);
+		String[] loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
 		String msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
 		sendMsg(msg);
 		
@@ -118,20 +119,19 @@ class OutgoingHandler implements Runnable{
 		while (run){
 			
 		}
-		System.out.println("CLIENT OutgoingHandlerThread running out");
-			
+		System.out.println("CLIENT OutgoingHandlerThread running out");		
 	}
 	
 	private void sendMsg(String msg){
 		try {
 			PrintWriter out = new PrintWriter(
 					   new BufferedWriter(new OutputStreamWriter(
-					        cSocket.getOutputStream(), StandardCharsets.UTF_8)), true);
+					        server.getSocket().getOutputStream(), StandardCharsets.UTF_8)), true);
 			 out.print(msg);
 			 out.flush();	
 		}
 		catch (IOException e){
-			gui.setStatus(e.getMessage());
+			dataGuiManager.setStatus(e.getMessage());
 		}			
 	}		
 }

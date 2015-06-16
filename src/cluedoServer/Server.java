@@ -14,6 +14,7 @@ import staticClasses.NetworkMessages;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkGUI.DataGuiManager;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoGameServer;
 
@@ -66,14 +67,14 @@ public class Server {
 	
 	private void sayHello() {
 		String msg = NetworkMessages.udp_serverMsg(Config.GROUP_NAME, TCPport);				
-		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg);
+		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, dataGuiManager, msg);
 		bc.sendBrodcast();				
 	}
 	
 	void listenForClientsThread(){
 		String answer = NetworkMessages.udp_serverMsg(Config.GROUP_NAME, TCPport);				
 		ClientHandShakeListener cl = 
-				new ClientHandShakeListener(answer.toString(),"udp client",Config.BROADCAST_PORT,gui,run);
+				new ClientHandShakeListener(answer.toString(),"udp client",Config.BROADCAST_PORT,dataGuiManager,run);
 		cl.start();
 	}
 	
@@ -92,7 +93,7 @@ public class Server {
 	private void startTCPServer()  {
 		try {
 			tcpSocket = new ServerSocket(TCPport);	
-			connector = new Connector(tcpSocket, gui,dataManager);
+			connector = new Connector(tcpSocket,dataManager,dataGuiManager);
 			connector.start();
 			try {
 				NetworkInterfacesIpManager nm = new NetworkInterfacesIpManager();				 	

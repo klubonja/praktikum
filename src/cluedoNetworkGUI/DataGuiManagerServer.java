@@ -1,13 +1,9 @@
 package cluedoNetworkGUI;
 
-import java.util.ArrayList;
 
-import cluedoClient.ServerPool;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoServer.ClientItem;
-import cluedoServer.ClientPool;
 import cluedoServer.DataManagerServer;
-import cluedoServer.GameListServer;
 
 public class DataGuiManagerServer extends DataGuiManager {
 	
@@ -21,7 +17,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 	}	
 	
 	public void loginEvent(String ip,String nick,String msg){
-		addMessageIn(nick+" says :"+msg);
+		addMsgIn(nick+" says :"+msg);
 		addIp(nick+" on "+ip);
 	}
 	
@@ -38,12 +34,41 @@ public class DataGuiManagerServer extends DataGuiManager {
 		return false;		
 	}
 	
+	public boolean joinGame(int gameID, String color,String nick){
+		 if (dataManager.joinGame(gameID, color, nick)){
+			updateGame(gameID, "(updated) Game", dataManager.getNicksConnectedByGameID(gameID));
+			return true;
+		 };
+		 
+		 return false;
+	}
+	
 	public void setGuiStatus(String status) {
 		setStatus(status);
 	}
 	
-	public void setWindowName(String newname) {
+	public void setGuiWindowName(String newname) {
 		setWindowName(newname);
+	}
+	
+	public void addClient(ClientItem client,String msg){
+		addIp(client.getNick()+"("+client.getAdress().toString()+")");
+		addMsgIn(client.getNick()+" joined");
+		dataManager.addNetworkActor(client);
+	}
+	
+	public int createGame(String color, String nick){		
+		int gameId = dataManager.getGameCount();
+		CluedoGameServer newgame = new CluedoGameServer(gameId);
+		newgame.joinGame(color, nick);
+		dataManager.addGame(newgame);
+		addGame(gameId, "(created by )"+ nick, nick);
+		
+		return gameId;
+	}
+	
+	public void closeOn(String msg){
+		addMsgIn(msg);
 	}
 	
 	

@@ -19,4 +19,11 @@ public class ServerPool extends ArrayList<ServerItem> {
 		}
 		return super.add(e);
 	}
+	
+//	public ClientGameItem getGameById(int gameID,ServerItem server){
+//		for (ServerItem s : this)
+//			if (s == server) return s.getGameByGameID(gameID);
+//		
+//		return null;
+//	}
 }

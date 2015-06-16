@@ -4,21 +4,17 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
-import cluedoNetworkGUI.CluedoServerGUI;
-import cluedoNetworkGUI.DataGuiManager;
+import cluedoNetworkGUI.DataGuiManagerServer;
 
 
 class Connector extends Thread{	
 	
-	final CluedoServerGUI gui;
 	private ServerSocket serverSocket;
 	
 //	ClientPool clientPool;
@@ -29,8 +25,7 @@ class Connector extends Thread{
 	boolean running = true;	
 	
 	
-	Connector (ServerSocket ss, CluedoServerGUI g,DataManagerServer datam,DataGuiManagerServer dgm) {
-		gui = g;
+	Connector (ServerSocket ss, DataManagerServer datam, DataGuiManagerServer dgm) {
 		serverSocket = ss;
 		dataManger = datam;
 		dataGuiManager = dgm;
@@ -55,7 +50,8 @@ class Connector extends Thread{
 			}					
 		}
 		catch(IOException e){
-			gui.setStatus(e.getMessage());
+			//gui.setStatus(e.getMessage());
+			dataGuiManager.addMsgIn("connector says :fuck "+e.getMessage());
 			System.out.println(e.getMessage());
 		}
 		finally {

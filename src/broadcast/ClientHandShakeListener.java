@@ -10,13 +10,14 @@ import json.CluedoProtokollChecker;
 import org.json.JSONObject;
 
 import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkGUI.DataGuiManagerServer;
 import enums.NetworkHandhakeCodes;
 
 public class ClientHandShakeListener extends MulticastListenerThread {
 	
 	String[] ignoredTypes = {"udp server"};
-	public ClientHandShakeListener(String answer,String expType, int port, CluedoServerGUI g,boolean run) {
-		super(answer,expType, port, g,run);
+	public ClientHandShakeListener(String answer,String expType, int port,DataGuiManagerServer dgm,boolean run) {
+		super(answer,expType, port, dgm,run);
 		
 	}
 	
@@ -33,32 +34,36 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 			NetworkHandhakeCodes errcode = checker.validateExpectedType(expType,ignoredTypes);
 			
 			if (errcode == NetworkHandhakeCodes.OK) {
-				Platform.runLater(() -> {
-					gui.addMessageIn(ip.toString()+" sends handshake");
-				});
-				Multicaster bc = new Multicaster(packet.getAddress().getLocalHost().getHostAddress(), gui,answer);
+//				Platform.runLater(() -> {
+//					gui.addMessageIn(ip.toString()+" sends handshake");
+//				});
+				dataGuiManager.addMsgIn(ip.toString()+" sends handshake");
+				Multicaster bc = new Multicaster(packet.getAddress().getLocalHost().getHostAddress(), dataGuiManager,answer);
 				bc.sendBrodcast();			
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR){
-				Platform.runLater(() -> {
-					gui.addMessageIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
-				});				
+//				Platform.runLater(() -> {
+//					gui.addMessageIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
+//				});	
+				dataGuiManager.addMsgIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
-				Platform.runLater(() -> {
-					gui.addMessageIn(ip.toString()+" is server and is ignored");
-				});				
+//				Platform.runLater(() -> {
+//					gui.addMessageIn(ip.toString()+" is server and is ignored");
+//				});	
+				dataGuiManager.addMsgIn(ip.toString()+" is server and is ignored");
 			}
 			else {
-				Platform.runLater(() -> {
-					gui.addMessageIn("TODO : unhandled incoming : \n" + msg);
-				});
+//				Platform.runLater(() -> {
+//					gui.addMessageIn("TODO : unhandled incoming : \n" + msg);
+//				});
+				dataGuiManager.addMsgIn("TODO : unhandled incoming : \n" + msg);
 			}
 			
 			
 		} 
 		catch (Exception e) {
-			gui.addMessageIn(e.toString());
+			dataGuiManager.addMsgIn(e.getMessage());
 			e.printStackTrace();
 		}
 		

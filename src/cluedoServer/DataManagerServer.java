@@ -3,9 +3,11 @@ package cluedoServer;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
+import cluedoNetworkGUI.DataManager;
+import cluedoNetworkLayer.CluedoGame;
 import cluedoNetworkLayer.CluedoGameServer;
 
-public class DataManagerServer {
+public class DataManagerServer extends DataManager {
 	
 	ClientPool clientPool;
 	ArrayList<ClientItem> blackList;
@@ -30,8 +32,20 @@ public class DataManagerServer {
 		return gameList.get(index);
 	}
 	
+	public boolean joinGame(int gameID, String color,String nick){
+		return gameList.joinGame(gameID, color, nick);
+	}
+	
+	public boolean addNetworkActor(ClientItem client){
+		return clientPool.add(client);
+	}
+	
 	public String getNicksConnectedByIndex(int index){
 		return getGameByIndex(index).getNicksConnected();
+	}
+	
+	public String getNicksConnectedByGameID(int gameID){
+		return gameList.getGameByGameID(gameID).getNicksConnected();
 	}
 	
 	public boolean addGame(CluedoGameServer game){
@@ -47,5 +61,23 @@ public class DataManagerServer {
 			if (adress.equals(c.getAdress())) return true;
 		return false;
 	}
+	
+	public void notifyAll(String msg){
+		clientPool.notifyAll(msg);
+	}
+	
+	public boolean blacklist(ClientItem client){
+		if (clientPool.contains(client))
+			clientPool.remove(client);
+		return blackList.add(client);
+	}
+	
+	public int getGameCount(){
+		return gameList.size();
+	}
+
+
+
+	
 }	
 

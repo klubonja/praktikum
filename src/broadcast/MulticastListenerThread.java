@@ -11,6 +11,7 @@ import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 import staticClasses.Config;
 import cluedoNetworkGUI.CluedoNetworkGUI;
+import cluedoNetworkGUI.DataGuiManager;
 
 public abstract class MulticastListenerThread extends Thread{
 	MulticastSocket socket;
@@ -24,7 +25,7 @@ public abstract class MulticastListenerThread extends Thread{
 	String answer;
 	String expType;
 	
-	CluedoNetworkGUI gui;
+	DataGuiManager dataGuiManager;
 	
 	boolean run;
 	
@@ -32,7 +33,7 @@ public abstract class MulticastListenerThread extends Thread{
 	
 	
 	
-	public MulticastListenerThread(String answer, String expType, int port, CluedoNetworkGUI g,boolean run)  {
+	public MulticastListenerThread(String answer, String expType, int port, DataGuiManager dgm,boolean run)  {
 		super();
 		this.answer = new String(answer);
 		this.expType = new String(expType);
@@ -42,7 +43,7 @@ public abstract class MulticastListenerThread extends Thread{
 			socket.bind(a);
 			socket.setLoopbackMode(true);
 			bufSize = Config.NETWORK_BUFFER_SIZE;
-			gui = g;
+			dataGuiManager = dgm;
 			setListener();
 			this.run = run;
 			
@@ -58,7 +59,8 @@ public abstract class MulticastListenerThread extends Thread{
 			try {
 				listen();
 			} catch (Exception e) {
-				gui.addMessageIn("Listening Thread: failed to listen :\n"+e.getMessage());
+				//gui.addMessageIn("Listening Thread: failed to listen :\n"+e.getMessage());
+				dataGuiManager.addMsgIn("Listening Thread: failed to listen :\n"+e.getMessage());
 			}
 		}		
 	}

@@ -1,8 +1,13 @@
 package cluedoNetworkGUI;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
+import javax.print.attribute.ResolutionSyntax;
+
+import cluedoClient.ClientGameItem;
+import cluedoNetworkLayer.CluedoGameClient;
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
 
@@ -22,15 +27,23 @@ public class DataGuiManager   {
 		  return date.format(now);
 	}
 	
+	public ListView<String> getIpListView(){
+		return gui.getIpListView();
+	}
+	
+	public ListView<GameVBox> getGameListView(){
+		return gui.getGamesListView();
+	}
 	public void addIp(String ip){
 		Platform.runLater(() -> {
 			gui.addIp(ip);
+			System.out.println(ip+" added");
 		});
    	  }   	 
 	
-	public void addMessageIn(String msg){		
+	public void addMsgIn(String msg){		
 		Platform.runLater(() -> {
-			gui.addMessageIn(now()+" : "+msg);
+			gui.addMessageIn(now()+" : "+msg+"\n");
 		});
 	}
 	
@@ -80,7 +93,18 @@ public class DataGuiManager   {
 		  Platform.runLater(() -> {gui.addGame(gameID, specialinfo, info);});
 	  }
 	  
+	  public void addGamesGui(ArrayList<CluedoGameClient> glist){
+		  Platform.runLater(() -> {
+			  for (CluedoGameClient c: glist)
+					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
+		 });
+	  }
+	  
 	  public void updateGame(int gameID,String specialinfo, String info){
 		Platform.runLater(() -> {gui.updateGame(gameID, specialinfo, info); 		});
 	  }
+	  
+	  public CluedoNetworkGUI getGui() {
+		return gui;
+	}
 }

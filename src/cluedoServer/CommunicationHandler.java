@@ -18,6 +18,8 @@ import staticClasses.Config;
 import staticClasses.Methods;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkGUI.DataGuiManager;
+import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoGameServer;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
@@ -33,12 +35,13 @@ class CommunicationHandler implements Runnable{
 	Connector networkService;
 	Socket socket;
 	
+	DataManagerServer dataManager;
+	DataGuiManagerServer dataGuiManager;
 	//ClientPool clientPool;
 	//ArrayList<ClientItem> blackList;
 	//GameListServer gameList;
 
 	
-	final CluedoServerGUI gui;
 	boolean running = true;
 	
 	
@@ -52,12 +55,10 @@ class CommunicationHandler implements Runnable{
 	 * 
 	 * tcp verbindung steht server wartet auf tcp handshake
 	 */
-	CommunicationHandler(ServerSocket ss, ClientItem c, CluedoServerGUI g,ClientPool cList,ArrayList<ClientItem> bList,GameListServer gl) {
-		gui = g;
+	CommunicationHandler(ServerSocket ss, ClientItem c, DataManagerServer dm,DataGuiManagerServer dgm) {
 		serverSocket = ss;
-//		clientPool = cList;
-//		blackList = bList;
-//		gameList = gl;
+		dataManager = dm;
+		dataGuiManager = dgm;
 		client = c;
 	}	
 	
@@ -73,12 +74,7 @@ class CommunicationHandler implements Runnable{
 								new JSONObject(message)));
 				NetworkHandhakeCodes errcode = checker.validateExpectedType("login",null);
 
-				if (errcode == NetworkHandhakeCodes.OK) {							
-					Platform.runLater(() -> {
-						gui.addMessageIn(client.getAdress()+" says :"+message);
-						gui.addIp(client.getAdress()+" "+client.getNick());
-					});
-					
+				if (errcode == NetworkHandhakeCodes.OK) {					
 					client.setExpansions(
 						Methods.makeConjunction(
 							Config.EXPANSIONS, 
@@ -87,30 +83,30 @@ class CommunicationHandler implements Runnable{
 					);
 					client.setNick(checker.getMessage().getString("nick"));
 					client.setGroupName(checker.getMessage().getString("group"));					
-					client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(), clientPool, gameList));
+					client.sendMsg(NetworkMessages.login_sucMsg(
+							client.getExpansions(),
+							dataManager.getClientPool(), 
+							dataManager.getGameList()));
 					
-					clientPool.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
-					clientPool.add(client);
+					dataGuiManager.addClient(client,message);
+					dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
 					readyForCommunication = true;
 				}
 				else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
 						|| errcode == NetworkHandhakeCodes.TYPERR){
-					Platform.runLater(() -> {
-						gui.addMessageIn(client.getAdress()+" sends invalid Messages : \n"+checker.getErrString());
-					});	
+					
+					dataGuiManager.addMsgIn(client.getAdress()+" sends invalid Messages : \n"+checker.getErrString());
 					client.sendMsg(NetworkMessages.error_Msg("you are violating the protokoll due to the following: \n"+checker.getErrString()));
 					client.sendMsg(NetworkMessages.disconnectMsg());
 					client.closingConnection();
-					blackList.add(client);					
+					dataManager.blacklist(client);					
 					
 					readyForCommunication = true; // no further listinenig on this socket
 					running = false; // thread will run out without further notice					
 				}
 				
 				else {
-					Platform.runLater(() -> {
-						gui.addMessageIn("unhandled incoming : \n" + message);
-					});
+					dataGuiManager.addMsgIn("unhandled incoming : \n" + message);
 				}
 			} 
 			catch (IOException e) {
@@ -138,15 +134,14 @@ class CommunicationHandler implements Runnable{
 	        	   else if (checker.getType().equals("join game")){
 	        		   int gameID = checker.getMessage().getInt("gameID");
 	        		   String color = checker.getMessage().getString("color");
-	        		   gameList.joinGame(
-	        				   gameID, 
-	        				   color, 
-	        				   client.getNick());
-	        		   Platform.runLater(() -> {
-							gui.updateGame(gameID, 
-									"(updated) Game "+gameID, gameList.getGameByGameID(gameID).getNicksConnected());
-						});	
-	        		   clientPool.notifyAll(
+//	        		   dataManager.joinGame( gameID, color, client.getNick()):
+//	        		   
+//	        		   Platform.runLater(() -> {
+//							gui.updateGame(gameID, 
+//									"(updated) Game "+gameID, gameList.getGameByGameID(gameID).getNicksConnected());
+//						});	
+	        		   dataGuiManager.joinGame(gameID, color, client.getNick());
+	        		  dataManager.notifyAll(
 	        				   NetworkMessages.player_addedMsg(
 	        						   NetworkMessages.player_info(
 	        								   client.getNick(), 
@@ -160,19 +155,22 @@ class CommunicationHandler implements Runnable{
 	           }
 	           
 	           
-	           Platform.runLater(() -> {
-	        	   gui.addMessageIn(message);
-				});	
+//	           Platform.runLater(() -> {
+//	        	   gui.addMessageIn(message);
+//				});	
 	           
+		          dataGuiManager.addMsgIn(message);
+
 			}
 			catch (IOException e){
 				try {
 					closeConnection("closing :"+e.getMessage());
 				}
 				catch (IOException ex){
-					Platform.runLater(() -> {
-						gui.addMessageIn(ex.getMessage());
-					});	
+//					Platform.runLater(() -> {
+//						gui.addMessageIn(ex.getMessage());
+//					});	
+					dataGuiManager.addMsgIn(ex.getMessage());
 				}				
 			}
 		}
@@ -180,10 +178,11 @@ class CommunicationHandler implements Runnable{
 	}
 	
 	void createGame(String color,String nick){
-		int gameID = gameList.size();
-		CluedoGameServer newgame = new CluedoGameServer(gameID);
-		newgame.joinGame(color, nick);
-		clientPool.notifyAll(
+//		int gameID = gameList.size();
+//		CluedoGameServer newgame = new CluedoGameServer(gameID);
+//		newgame.joinGame(color, nick);
+		int gameID = dataGuiManager.createGame(color, nick);
+		dataManager.notifyAll(
 				NetworkMessages.game_createdMsg(
 						NetworkMessages.player_info(
 								nick, color,PlayerStates.do_nothing.getName()
@@ -191,18 +190,19 @@ class CommunicationHandler implements Runnable{
 						gameID
 						)
 				);
-		gameList.add(newgame);
-		Platform.runLater(() -> {
-			gui.addGame(gameID, "(created by"+nick+")", newgame.getNicksConnected());
-		});
+//		gameList.add(newgame);
+//		Platform.runLater(() -> {
+//			gui.addGame(gameID, "(created by"+nick+")", newgame.getNicksConnected());
+//		});
 	}
 	
 	private void closeConnection(String msg) throws IOException{
 		serverSocket.close();
-		Platform.runLater(() -> {
-			gui.addMessageIn(msg);
-			
-		});
+		dataGuiManager.closeOn(msg);
+//		Platform.runLater(() -> {
+//			gui.addMessageIn(msg);
+//			
+//		});
 		running = false;
 	}
 	

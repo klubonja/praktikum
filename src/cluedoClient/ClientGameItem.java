@@ -3,12 +3,12 @@ package cluedoClient;
 import java.util.ArrayList;
 
 public class ClientGameItem {
-	int gameId;
+	int gameID;
 	String servername;
 	ArrayList<String> playerNicks;
 	
 	public ClientGameItem(int gi,String sname) {
-		gameId = gi;
+		gameID = gi;
 		servername = sname;
 		playerNicks = new ArrayList<String>();
 	}

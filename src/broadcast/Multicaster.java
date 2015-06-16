@@ -5,8 +5,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 import staticClasses.Config;
-import javafx.application.Platform;
-import cluedoNetworkGUI.CluedoNetworkGUI;
+import cluedoNetworkGUI.DataGuiManager;
 
 public class Multicaster {
 	byte[] buf;
@@ -16,13 +15,13 @@ public class Multicaster {
 	InetAddress groupAdress;
 	int port;
 	
-	CluedoNetworkGUI gui;
+	DataGuiManager dataGuiManager;
 	
 	String broadcastMessage;
 	
-	public Multicaster(String targetIp,CluedoNetworkGUI g,String msg) {
+	public Multicaster(String targetIp,DataGuiManager dm,String msg) {
 		try {
-			gui = g;
+			dataGuiManager = dm;
 			groupAdress = InetAddress.getByName(targetIp);
 			port = Config.BROADCAST_PORT;
 			
@@ -32,9 +31,7 @@ public class Multicaster {
 			broadcastMessage = msg;
 		}
 		catch (Exception e) {
-			Platform.runLater(() -> {
-				gui.addMessageIn(e.getMessage());
-			});
+			dataGuiManager.addMsgIn(e.getMessage());
 		}	
 	}
 	
@@ -50,23 +47,18 @@ public class Multicaster {
 				packet = new DatagramPacket(buf, buf.length, groupAdress, port);				
 				socket.send(packet);
 				
-				Platform.runLater(() -> {
-					gui.addMessageOut("Sending UDPMessage :"+broadcastMessage);
-				});		
+//						
+				dataGuiManager.addMsgIn("Sending UDPMessage :"+broadcastMessage);
 				
 				return true;				
 			} 
 			catch (Exception e) {
-				System.out.println(e.getMessage());
-				Platform.runLater(() -> {
-					gui.addMessageOut(e.getMessage());
-				});	
+				System.out.println(e.getMessage());	
+				dataGuiManager.addMsgIn(e.getMessage());
 			}
 		}
 		else {
-			Platform.runLater(() -> {
-				gui.addMessageOut("single Brodcast msg not set");
-			});
+			dataGuiManager.addMsgIn("single Brodcast msg not set");
 		}
 		
 		
