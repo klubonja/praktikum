@@ -8,14 +8,14 @@ import cluedoServer.ClientPool;
 import cluedoServer.DataManagerServer;
 import cluedoServer.GameListServer;
 
-public class CluedoServerDataGuiInterface extends CluedoNetworkDataGuiInterface {
+public class ServerDataGuiManager extends DataGuiManager {
 	
 	
 	DataManagerServer dataManager;
 	
 	ServerPool serverList;//CLient
 	
-	public CluedoServerDataGuiInterface(CluedoServerGUI gui,DataManagerServer datam) {
+	public ServerDataGuiManager(CluedoServerGUI gui,DataManagerServer datam) {
 		super(gui);
 		dataManager = datam;		
 	}	

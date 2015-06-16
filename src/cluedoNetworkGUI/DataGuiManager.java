@@ -6,12 +6,12 @@ import java.util.Date;
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
 
-public class CluedoNetworkDataGuiInterface {
+public class DataGuiManager   {
 	
 	
 	CluedoNetworkGUI gui;
 	
-	public CluedoNetworkDataGuiInterface(CluedoNetworkGUI gui) {
+	public DataGuiManager(CluedoNetworkGUI gui) {
 		this.gui = gui;
 	}
 	
