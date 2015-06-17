@@ -32,14 +32,8 @@ class CommunicationHandler implements Runnable{
 	
 	DataManagerServer dataManager;
 	DataGuiManagerServer dataGuiManager;
-	//ClientPool clientPool;
-	//ArrayList<ClientItem> blackList;
-	//GameListServer gameList;
-
 	
-	boolean run = true;
-	
-	
+	boolean run = true;	
 	
 	/**
 	 * @param ss
@@ -79,6 +73,10 @@ class CommunicationHandler implements Runnable{
 					client.setNick(checker.getMessage().getString("nick"));
 					client.setGroupName(checker.getMessage().getString("group"));					
 					client.sendMsg(NetworkMessages.login_sucMsg(
+							client.getExpansions(),
+							dataManager.getClientPool(), 
+							dataManager.getGameList()));
+					System.out.println(NetworkMessages.login_sucMsg(
 							client.getExpansions(),
 							dataManager.getClientPool(), 
 							dataManager.getGameList()));

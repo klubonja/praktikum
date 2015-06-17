@@ -76,7 +76,7 @@ class OutgoingHandler implements Runnable{
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            		createGame("whit");	               
+            		createGame("white");	               
             }
         });	
 		
