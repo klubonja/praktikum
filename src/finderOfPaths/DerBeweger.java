@@ -59,9 +59,13 @@ public class DerBeweger {
 		
 		this.schritte = schritteEingabe;
 		
+		
+		
 		this.anweisungen = anweisungenEingabe;
 		
 		wieVieleAnweisungen = 0;
+		
+		
 		
 		for (int i = 0; i < anweisungen.length;i++)
 			{
@@ -153,6 +157,13 @@ public class DerBeweger {
 //			System.out.println("player y : " +player.getxCoord());
 			
 			}
+		
+//			for (Orientation momentanesElement : anweisungen){
+//				momentanesElement = null; 
+//			}
+		
+			anweisungen[momentaneAnweisung] = null;
+			
 			
 		}
 	
