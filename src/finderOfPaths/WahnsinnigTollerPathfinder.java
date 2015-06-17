@@ -197,6 +197,8 @@ public class WahnsinnigTollerPathfinder {
 		
 		//System.out.println("Er sucht Süden");
 		
+		
+		
 		level = currentEntry.length();
 		
 		if (rootY[level-1] != 24)
@@ -209,10 +211,18 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 		
+		if (jetzigeReihe == 25 && jetzigeSpalte == 9){
+			return false;
+		}
+		
 		//System.out.println("Reihe  : " +jetzigeSpalte +"   Spalte  : " + jetzigeReihe);
 		//System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum());
 		
 		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()==false){
+			
+			if (jetzigeReihe == 25 && jetzigeSpalte == 9){
+				System.out.println("Cheater");
+			}
 			return true;
 		}
 

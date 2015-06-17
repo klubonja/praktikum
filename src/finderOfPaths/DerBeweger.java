@@ -162,7 +162,7 @@ public class DerBeweger {
 //				momentanesElement = null; 
 //			}
 		
-			anweisungen[momentaneAnweisung] = null;
+			
 			
 			
 		}

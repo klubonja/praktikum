@@ -115,7 +115,8 @@ public class Vorschlaege {
 			// Erreichbare Kacheln
 			if ( (yDistanz != 0 || xDistanz != 0) && (jetzigeReihe + yDistanz >=0) && (jetzigeSpalte + xDistanz >=0) 
 					&& (jetzigeReihe + yDistanz < 25) && (jetzigeSpalte + xDistanz < 24)
-					&& (moeglichkeiten[counterAussen] != null) )
+					&& (moeglichkeiten[counterAussen] != null)
+					&& gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstRaum() == false)
 			{
 				gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 				
@@ -124,6 +125,9 @@ public class Vorschlaege {
 				//markierteHintergruende[jetzigeSpalte + xDistanz][jetzigeReihe + yDistanz] = gui.getKachelArray()[jetzigeSpalte + xDistanz][jetzigeReihe + yDistanz].getBackground();
 				
 				gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], Color.GREEN);
+			}
+			else {
+				
 			}
 			
 		}

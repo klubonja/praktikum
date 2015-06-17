@@ -21,6 +21,8 @@ import enums.Orientation;
  */
 public class Ausloeser {
 
+	private boolean gewuerfelt;
+	
 	private BoardView gui;
 	private BallEbene2 ballEbene;
 	private DerBeweger beweger;
@@ -101,6 +103,7 @@ public class Ausloeser {
 		System.out.println("==================================");
 		sucher.suchen(wuerfelZahl);
 		zuweisung();
+		gewuerfelt = true;
 	}
 	
 	/**
@@ -108,6 +111,8 @@ public class Ausloeser {
 	 */
 	public void click(MouseEvent event){
 				
+		if (gewuerfelt){
+			gewuerfelt = false;
 				System.out.println("auslöser click");
 				
 				
@@ -116,9 +121,14 @@ public class Ausloeser {
 					for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length-1; jSpalten++){
 						if ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutX() <= event.getX()) && (event.getX() < gui.getKachelArray()[iReihen][jSpalten].getLayoutX()+29)
 						&& ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutY() <= event.getY()) && (event.getY() < gui.getKachelArray()[iReihen][jSpalten].getLayoutY()+29) ) ){
+							
+							try {
+								
+							
 							Kachel momentaneKachel = gui.getKachelArray()[iReihen][jSpalten];
 							System.out.println("Reihe : "+iReihen +"  ||  Spalte : " +jSpalten);
 							char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
+							resetAnweisungen();
 							anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
 							schritte = wieVieleSchritte(moeglichkeitenHierher);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,6 +143,12 @@ public class Ausloeser {
 							}
 							
 							beweger.bewegen(anweisungenOrientations, schritte);
+							
+							
+							}
+							catch (NullPointerException e ){
+								
+							}
 //							System.out.println("???????????????????");
 //							System.out.println("player x " +player.getxCoord());
 //							System.out.println("player y " +player.getyCoord());
@@ -140,6 +156,7 @@ public class Ausloeser {
 						}
 					}
 				}
+		}
 	}
 	
 	/**
@@ -169,7 +186,7 @@ public class Ausloeser {
 				}
 				 
 			}
-
+		
 		return anweisungenOrientations;
 	}
 
@@ -181,6 +198,12 @@ public class Ausloeser {
 		this.wuerfelZahl = wuerfelZahl;
 	}
 
-	
+	public void resetAnweisungen(){
+		
+		for (int i = 0; i < anweisungenOrientations.length; i++){
+			anweisungenOrientations[i] = null;
+		}
+		
+	}
 	
 }
