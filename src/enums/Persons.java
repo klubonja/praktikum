@@ -6,7 +6,7 @@ public enum Persons {
 	
 	red("red","Fräulein Gloria",new CluedoPosition(10,20)),
 	yellow("yellow","Oberts von Gatow",new CluedoPosition(1,2)),
-	white("white","Frau Weiß",new CluedoPosition(7,23)),
+	white("white","Frau Weiss",new CluedoPosition(7,23)),
 	green("green","Reverend Green",new CluedoPosition(23,20)),
 	blue("blue","Baronin von Porz",new CluedoPosition(20,21)),
 	purple("purple","Professor Bloom",new CluedoPosition(21,7))
