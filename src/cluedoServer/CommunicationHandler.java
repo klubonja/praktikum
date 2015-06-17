@@ -121,8 +121,7 @@ class CommunicationHandler implements Runnable{
 		while (running){
 			try {
 	           String message = getMessageFromClient(client.socket).trim();
-	           CluedoProtokollChecker checker = new CluedoProtokollChecker(
-	        		   								new JSONObject(message));
+	           CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
 	           checker.validate();
 	           if (!checker.isValid()){
 	        	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()));

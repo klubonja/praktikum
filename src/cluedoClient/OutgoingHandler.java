@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
@@ -29,25 +28,21 @@ import cluedoNetworkGUI.GameVBox;
 
 class OutgoingHandler implements Runnable{
 	
-	Socket cSocket;
-	CluedoClientGUI gui;
 	DataGuiManagerClient dataGuiManager;
-	ServerItem server;
-	
+	ServerItem server;	
 	
 	boolean run;
 	
-	public OutgoingHandler(CluedoClientGUI g,ServerItem s, boolean run) {
-		this.gui = g;
+	public OutgoingHandler(CluedoClientGUI gui,ServerItem s, boolean run) {
 		this.run = run;
 		dataGuiManager = new DataGuiManagerClient(gui, server);		
 		server = s;		
 		
-		addClientGUIListener();
-		login();
+		addClientGUIListener(dataGuiManager.getGui());
+		login(dataGuiManager.getGui());
 	}
 	
-	public void addClientGUIListener(){
+	public void addClientGUIListener(CluedoClientGUI gui){
 		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
 			@Override
 			public void handle(KeyEvent e) {
@@ -58,7 +53,7 @@ class OutgoingHandler implements Runnable{
 			        }
 			    }
 			};	
-		gui.inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
+		dataGuiManager.getGui().inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
 		    @Override
 		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
 		    	if (hasFocus){ 
@@ -81,7 +76,7 @@ class OutgoingHandler implements Runnable{
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            		createGame();	               
+            		createGame("white");	               
             }
         });	
 		
@@ -100,12 +95,11 @@ class OutgoingHandler implements Runnable{
 		sendMsg(NetworkMessages.join_gameMsg("white", gameID));		
 	}
 	
-	void createGame(){
-		sendMsg(NetworkMessages.create_gameMsg("white"));
-		System.out.println("wefwfe");
+	void createGame(String color){
+		sendMsg(NetworkMessages.create_gameMsg(color));
 	}
 	
-	private final boolean login(){
+	private final boolean login(CluedoClientGUI gui){
 		String[] loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
 		String msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
 		sendMsg(msg);

@@ -83,9 +83,8 @@ public abstract class CluedoNetworkGUI {
 	  public void removeIp(int i){
 		  if (i-1 >= 0)  ips.remove(i-1);
 	  }
-	  public void removeIp(String name){
-		  for (int i = 0;i < ips.size(); i++)
-			  if (ips.get(i).equals(name))  ips.remove(i);
+	  public void removeIp(String label){
+		  ips.remove(label);
 	  }
 	  
 	  public  void emptyIpList(){
@@ -121,10 +120,9 @@ public abstract class CluedoNetworkGUI {
 		  return gameListView;
 	  }
 	  
-	  public void removeGame(String gamename){
-		  int index;
-			for (index = 0; index < games.size(); index++)
-	       		if (games.get(index).getId().equals(gamename)) games.remove(index);		 
+	  public void removeGame(int gameID){		  
+			for (GameVBox gameListItem: games)
+	       		if (gameListItem.getGameID() == gameID) games.remove(gameListItem);		 
 	  }
 	  
 	

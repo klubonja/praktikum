@@ -13,9 +13,10 @@ public class DataGuiManagerClient extends DataGuiManager{
 		server = s;
 	}
 	
-	public void addGame(int gameID, String nick,ServerItem server){
+	public void addGame(int gameID, String nick,String color,ServerItem server){
 		CluedoGameClient newgame = 
 				new CluedoGameClient(gameID);
+		newgame.joinGame(color, nick);
 		addGameGui(gameID, "(created by "+nick+") Game "+gameID, nick);
 		
 		server.addGame(newgame);
@@ -36,6 +37,11 @@ public class DataGuiManagerClient extends DataGuiManager{
 	public void setGames(ArrayList<CluedoGameClient> glist){
 		server.addGames(glist);
 		addGamesGui(glist);
+	}
+	
+	@Override
+	public CluedoClientGUI getGui() {
+		return (CluedoClientGUI) super.getGui();
 	}
 	
 }

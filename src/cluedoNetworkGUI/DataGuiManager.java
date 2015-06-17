@@ -53,13 +53,11 @@ public class DataGuiManager   {
 		});
 	}
 	
-	public void removeIp(int i){
-		  Platform.runLater(() -> {
-			  gui.removeIp(i);
+	
+	  public void removeIp(String serverlabel){		 
+		 Platform.runLater(() -> {
+			 gui.removeIp(serverlabel);
 		  });
-	  }
-	  public void removeIp(String name){
-		 removeGame(name);
 	  }
 	  
 	  public  void emptyIpList(){
@@ -80,8 +78,8 @@ public class DataGuiManager   {
 		  Platform.runLater(() -> {gui.setWindowName(label);});
 	  }
 	  
-	  public void removeGame(String gamename){
-		  Platform.runLater(() -> {gui.removeGame(gamename);	 });
+	  public void removeGame(int gameID){
+		  Platform.runLater(() -> {gui.removeGame(gameID);	 });
 	  }
 	  
 	

@@ -7,7 +7,6 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import javafx.application.Platform;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
@@ -17,7 +16,6 @@ import org.json.JSONObject;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoClientGUI;
-import cluedoNetworkGUI.DataGuiManager;
 import cluedoNetworkGUI.DataGuiManagerClient;
 import cluedoNetworkLayer.CluedoGameClient;
 import enums.NetworkHandhakeCodes;
@@ -26,17 +24,12 @@ import enums.NetworkHandhakeCodes;
 class IncomingHandler implements Runnable {
 	
 	Socket cSocket;
-	CluedoClientGUI gui;
-	//ServerPool serverList;
 	DataGuiManagerClient dataGuiManager;
 	ServerItem server;
 	
 	boolean run = true;
 	
 	IncomingHandler(CluedoClientGUI gui,ServerItem server,boolean run){
-//		cSocket = cs;
-//		gui = g;
-		//serverList = sList;
 		dataGuiManager = new DataGuiManagerClient(gui,server);
 		this.run = run;
 		this.server = server;
@@ -56,46 +49,25 @@ class IncomingHandler implements Runnable {
 					dataGuiManager.addMsgIn(checker.getMessage().toString());
 					if (checker.getType().equals("game created")){
 						int gameID = checker.getMessage().getInt("gameID");
-						dataGuiManager.addGame(gameID, checker.getMessage().
-								getJSONObject("player").getString("nick"), server);
-//						CluedoGameClient newgame = 
-//								new CluedoGameClient(gameID);
-//						Platform.runLater(() -> {
-//							gui.addGame(gameID, "Game", 
-//									checker.getMessage().
-//									getJSONObject("player").getString("nick"));
-//						});						
+						JSONObject playerJSON = checker.getMessage().getJSONObject("player");
+						dataGuiManager.addGame(gameID, playerJSON.getString("nick"),playerJSON.getString("color"),server);
 					}
 					
 					else if (checker.getType().equals("player added")){
 						  int gameID = checker.getMessage().getInt("gameID");
 		        		  JSONObject player = checker.getMessage().getJSONObject("player");
-		        		  dataGuiManager.joinGame(gameID,player.getString("color"),player.getString("nick"));
-//		        		   Platform.runLater(() -> {
-//								gui.updateGame(
-//										gameID, 
-//										"(updated) Game "+gameID, 
-//										gui.getGame(gameID).
-//											getInfoString()+ " "+player.getString("nick"));
-//								gui.addMessageIn(checker.getType()+" : "+player.getString("nick")+" added");
-//							});			        		   
+		        		  dataGuiManager.joinGame(gameID,player.getString("color"),player.getString("nick"));      		   
 					}
 				}		
 				else {
-					//gui.addMessageIn();
 					dataGuiManager.addMsgIn(checker.getErrString());
-
 				}
 			}			
 			catch (Exception e){
 				System.out.println("running out "+e.getMessage());
-				dataGuiManager.setStatus("Server hat sich unhöflich verabschiedet");
-//				Platform.runLater(() -> {
-//					gui.setStatus("Server hat sich unhöflich verabschiedet");					
-//				});	
+				dataGuiManager.setStatus("Server hat sich unhöflich verabschiedet");		
 				kill();
-			}
-			
+			}			
 		}
 		kill();
 		
@@ -110,19 +82,11 @@ class IncomingHandler implements Runnable {
 		if (errcode == NetworkHandhakeCodes.OK) {	
 			JSONArray gamearray = checker.getMessage().getJSONArray("game array");	
 			ArrayList<CluedoGameClient> gameslist = NetworkMessages.createGamesFromJSONGameArray(gamearray);
-			dataGuiManager.setGames(gameslist);
-//			server.addGames(gameslist);
-//			Platform.runLater(() -> {
-//				for (CluedoGameClient c: gameslist)
-//					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
-//			});					
+			dataGuiManager.setGames(gameslist);			
 		}
 		else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
 				|| errcode == NetworkHandhakeCodes.TYPERR){
-			dataGuiManager.addMsgIn(server.getGroupName()+" sends invalid Messages : \n"+checker.getErrString());
-//			Platform.runLater(() -> {
-//				gui.addMessageIn(server.getGroupName()+" sends invalid Messages : \n"+checker.getErrString()+"\n"+checker.getMessage());
-//			});				
+			dataGuiManager.addMsgIn(server.getGroupName()+" sends invalid Messages : \n"+checker.getErrString());		
 			kill(); // thread will run out without further notice					
 		}
 	}
@@ -152,9 +116,6 @@ class IncomingHandler implements Runnable {
 	
 	public void kill(){
 		run = false;
-		dataGuiManager.removeIp(server.groupName);
-//		Platform.runLater(() -> {
-//			gui.removeIp(server.getGroupName());
-//		});			
+		dataGuiManager.removeIp(server.groupName);	
 	}
 }
