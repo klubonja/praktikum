@@ -379,7 +379,7 @@ public abstract class NetworkMessages {
 			);
 			perspossJSON.put(
 				NetworkMessages.player_pos(
-					p.getCluedoPerson().getPersonName(), 
+					p.getCluedoPerson().getColor(), 
 					NetworkMessages.field(
 						p.getPosition().getX(), 
 						p.getPosition().getY()
