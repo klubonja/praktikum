@@ -84,15 +84,15 @@ class OutgoingHandler implements Runnable{
 		    @Override
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
-		           selectGame(gui.getGamesListView().getSelectionModel());		
+		        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor(gui));		
 		        }
 		    }
 		});		
 	}
 	
-	void selectGame(SelectionModel<GameVBox> g) {
+	void selectGame(SelectionModel<GameVBox> g, String color) {
 		int gameID = g.getSelectedItem().getGameID();
-		sendMsg(NetworkMessages.join_gameMsg("white", gameID));		
+		sendMsg(NetworkMessages.join_gameMsg(color, gameID));	
 	}
 	
 	void createGame(String color){

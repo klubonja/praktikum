@@ -44,4 +44,12 @@ public abstract class Config {
 	
 	public final static String BLACKLISTED_MSG = ""
 			+ "you have the ip of some evil known protoksaveollviolator, lets try anyway";
+
+
+
+	public static final double COLOR_SELECT_WINDOW_WIDTH = 500;
+
+
+
+	public static final double COLOR_SELECT_WINDOW_HEIGHT = 200;
 }

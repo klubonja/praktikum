@@ -158,4 +158,13 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	  public void clearMessages(){
 		  messagesIn.setText("");
 	  }
+	  
+	  public String selectColor(CluedoClientGUI gui) {
+			Stage selectNewColor = new Stage();
+	    	ColorSelectPrompt select = new ColorSelectPrompt(selectNewColor);
+	    	Scene secondary = new Scene(select, Config.COLOR_SELECT_WINDOW_WIDTH, Config.COLOR_SELECT_WINDOW_HEIGHT);
+	    	selectNewColor.setScene(secondary);
+	    	selectNewColor.showAndWait();
+	    	return select.returnColor();
+		}
 }
