@@ -3,7 +3,6 @@ package cluedoServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -14,7 +13,6 @@ import staticClasses.NetworkMessages;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
-import cluedoNetworkGUI.DataGuiManager;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoGameServer;
 
@@ -27,10 +25,6 @@ public class Server {
 	Connector connector;
 	public ServerSocket tcpSocket;
 	int TCPport;
-	
-//	ClientPool clientPool;
-//	ArrayList<ClientItem> blackList;
-//	public  GameListServer gameList;
 
 	DataManagerServer dataManager;	
 	final CluedoServerGUI gui;
@@ -45,12 +39,7 @@ public class Server {
 		TCPport = Config.TCP_PORT;	
 		dataManager = new DataManagerServer();
 		dataGuiManager = new DataGuiManagerServer(gui,dataManager);
-		
-//		clientPool = new ClientPool(); 
-//		blackList = new ArrayList<ClientItem>();
-//		gameList = new GameListServer();
-		
-		
+	
 		run = true;
 		
 		createTestGroups();
@@ -119,12 +108,7 @@ public class Server {
 		gui.button0.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	//try {            	
-	            	sayHello();
-           // 	}
-//            	catch(IOException e){
-//            		System.out.println(e.getMessage());
-//            	}            		               
+	            sayHello();               
             }
         });	
 		

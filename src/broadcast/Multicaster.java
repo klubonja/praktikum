@@ -46,10 +46,8 @@ public class Multicaster {
 				buf = broadcastMessage.getBytes();
 				packet = new DatagramPacket(buf, buf.length, groupAdress, port);				
 				socket.send(packet);
-				
-//						
-				dataGuiManager.addMsgIn("Sending UDPMessage :"+broadcastMessage);
-				
+									
+				dataGuiManager.addMessageOut("Sending UDPMessage :"+broadcastMessage);				
 				return true;				
 			} 
 			catch (Exception e) {

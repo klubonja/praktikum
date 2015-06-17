@@ -62,14 +62,12 @@ class IncomingHandler implements Runnable {
 				}
 			}			
 			catch (Exception e){
-				System.out.println("running out "+e.getMessage());
-				dataGuiManager.setStatus("Server hat sich unhöflich verabschiedet");		
-				kill();
+				dataGuiManager.setStatus("Server "+dataGuiManager.getServer().getGroupName()+" hat sich unhöflich verabschiedet\n "+e.getMessage());		
+				//kill();
 			}			
 		}
-		kill();
-		
-		System.out.println("serverlistener thread running out");		
+		System.out.println("running out client connected to"+dataGuiManager.getServer().getGroupName()+"incoming thread running out");
+		kill();	
 	}
 	
 	private void getGamesList(){
@@ -107,11 +105,7 @@ class IncomingHandler implements Runnable {
 	    }		
 	}
 	
-	public void setListener(){
-		
-	
-		
-	}
+	public void setListener(){}
 	
 	
 	

@@ -5,12 +5,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.net.SocketAddress;
-import java.util.ArrayList;
-
-import json.CluedoJSON;
-import json.CluedoProtokollChecker;
 import staticClasses.Config;
-import cluedoNetworkGUI.CluedoNetworkGUI;
 import cluedoNetworkGUI.DataGuiManager;
 
 public abstract class MulticastListenerThread extends Thread{
@@ -65,33 +60,7 @@ public abstract class MulticastListenerThread extends Thread{
 		}		
 	}
 	
-	private void setListener(){
-		
-	}
-		
-	
-	private boolean isValidCluedoMsg(String msg){
-		CluedoJSON json = new CluedoJSON(msg);
-		CluedoProtokollChecker checker =
-				new CluedoProtokollChecker(json);
-		return checker.validate();
-	}
-	
-	private String getNetworkMessage(String networkMes){
-		CluedoJSON json = new CluedoJSON(networkMes);
-		CluedoProtokollChecker checker =
-				new CluedoProtokollChecker(json);
-		checker.validate();
-		StringBuffer sb = new StringBuffer();
-		if (!checker.isValid()){
-			ArrayList<String> errs = checker.getErrs();
-			for (String s : errs) sb.append(s);
-		}
-		else 
-			sb.append(json.toString());
-		
-		return sb.toString();
-	}
+	private void setListener(){}
 	
 	public void kill(){
 		run = false;

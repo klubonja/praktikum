@@ -42,10 +42,6 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 			NetworkHandhakeCodes errcode = checker.validateExpectedType(expType,ignoredTypes);
 			
 			if (errcode == NetworkHandhakeCodes.OK) {
-//				Platform.runLater(() -> {
-//					gui.addIp(checker.getMessage().getString("group"));
-//					gui.addMessageIn(ip.toString()+" says \n"+msg);
-//				});
 				dataGuiManager.addServer(
 						new ServerItem(
 								checker.getMessage().getString("group"),
@@ -53,26 +49,15 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 								checker.getMessage().getInt("tcp port")
 								)
 						);
-				//serverList.add(new ServerItem(checker.getMessage().getString("group"),packet.getAddress(),checker.getMessage().getInt("tcp port")));
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR){
-//				Platform.runLater(() -> {
-//					gui.addMessageIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
-//				});
 				dataGuiManager.addMsgIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
-//				Platform.runLater(() -> {
-//					gui.addMessageIn(ip.toString()+" is client and is ignored : \n"+checker.getErrString());
-//
-//				});
-				dataGuiManager.addMsgIn(ip.toString()+" is client and is ignored : \n"+checker.getErrString());
-
-				
+				dataGuiManager.addMsgIn(ip.toString()+" is client and is ignored : \n"+checker.getErrString());			
 			}
 		} 
 		catch (Exception e) {
-			//gui.addMessageIn(e.toString());
 			dataGuiManager.addMsgIn(e.toString());
 			e.printStackTrace();
 		}		
