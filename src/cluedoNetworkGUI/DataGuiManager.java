@@ -27,19 +27,13 @@ public class DataGuiManager   {
 		  return date.format(now);
 	}
 	
-	public ListView<String> getIpListView(){
-		return gui.getIpListView();
+	public ListView<NetworkActorHBox> getNetworkActorsListView(){
+		return gui.getNetworkActorsView();
 	}
 	
 	public ListView<GameVBox> getGameListView(){
 		return gui.getGamesListView();
 	}
-	public void addIp(String ip){
-		Platform.runLater(() -> {
-			gui.addIp(ip);
-			System.out.println(ip+" added");
-		});
-   	  }   	 
 	
 	public void addMsgIn(String msg){		
 		Platform.runLater(() -> {
@@ -54,9 +48,15 @@ public class DataGuiManager   {
 	}
 	
 	
-	  public void removeIp(String serverlabel){		 
+	  public void removeNetworkActorFromGui(String name,String ip){		 
 		 Platform.runLater(() -> {
-			 gui.removeIp(serverlabel);
+			 gui.removeNetworkActor(name,ip);
+		  });
+	  }
+	  
+	  public void addNetworkActorToGui(String name,String ip){		 
+		 Platform.runLater(() -> {
+			 gui.addNetworkActor(name,ip);
 		  });
 	  }
 	  

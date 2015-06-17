@@ -18,6 +18,7 @@ import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManager;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
+import cluedoNetworkGUI.NetworkActorHBox;
 
 
 
@@ -80,10 +81,8 @@ public class Client {
 			setCloseHandler();
 		}
 		catch (IOException e){
-			System.out.println(e.getMessage());
-			
+			System.out.println(e.getMessage());			
 			dataGuiManager.removeServer("TCP server connection failed"+e.getMessage(),server);
-			//gui.setStatus("connecting to "+server.getGroupName()+" failed \n"+e.getMessage());
 			run = false;
 			
 		}
@@ -117,24 +116,32 @@ public class Client {
 		      }
 		 });
 		
-		gui.getIpListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
+		gui.getNetworkActorsView().setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
-		           selectIp(dataGuiManager.getIpListView().getSelectionModel());		
+		           selectIp(dataGuiManager.getNetworkActorsListView().getSelectionModel());		
 		        }
 		    }
 		});	
 	}
 	
-	void selectIp(SelectionModel<String> smod) {
+	void selectIp(SelectionModel<NetworkActorHBox> smod) {
 		//String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
 		try {
 			System.out.println("attempting getting from serverpool atr"+smod.getSelectedIndex());
-			ServerItem serverInfo = dataGuiManager.getServerByIndex(smod.getSelectedIndex());
-			System.out.println(serverInfo.getIpString());
-			startTCPConnection(serverInfo);
-			System.out.println("slecting"+serverInfo.getGroupName()+" at "+smod.getSelectedIndex());
+			NetworkActorHBox nb = smod.getSelectedItem();
+			ServerItem serverInfo = dataGuiManager.getServerByID(
+					smod.getSelectedItem().getNameID(),
+					smod.getSelectedItem().getIpID());
+			if (serverInfo.getSocket() == null){
+				System.out.println("attemtping to create TCP Con wioth"+serverInfo.getIpString());
+				startTCPConnection(serverInfo);
+				System.out.println("slecting"+serverInfo.getGroupName()+" at "+smod.getSelectedIndex());
+			}
+			else {
+				dataGuiManager.addMsgIn("alread connected to Server "+serverInfo.getGroupName());
+			}
 		}
 		catch (Exception e){
 			e.printStackTrace();

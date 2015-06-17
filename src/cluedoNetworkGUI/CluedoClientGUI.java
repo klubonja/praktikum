@@ -96,7 +96,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         Tab tab1 = new Tab();
         tab1.setText("Server");           
-        tab1.setContent(ipListView);
+        tab1.setContent(networkActorsListView);
         
         tabPane.getTabs().add(tab1);
         tabPane.getTabs().add(tab0);  

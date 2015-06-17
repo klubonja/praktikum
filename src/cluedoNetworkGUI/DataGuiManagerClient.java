@@ -1,5 +1,6 @@
 package cluedoNetworkGUI;
 
+import java.net.Socket;
 import java.util.ArrayList;
 
 import cluedoClient.ServerItem;
@@ -13,13 +14,21 @@ public class DataGuiManagerClient extends DataGuiManager{
 		server = s;
 	}
 	
-	public void addGame(int gameID, String nick,String color,ServerItem server){
+	public ServerItem getServer(){
+		return server;
+	}
+	
+	public void addGame(int gameID, String nick,String color){
 		CluedoGameClient newgame = 
 				new CluedoGameClient(gameID);
 		newgame.joinGame(color, nick);
-		addGameGui(gameID, "(created by "+nick+") Game "+gameID, nick);
+		addGameToGui(gameID, "(created by "+nick+") Game "+gameID, nick);
 		
 		server.addGame(newgame);
+	}
+	
+	public void kill(){
+		removeNetworkActorFromGui(server.getGroupName(), server.getIpString());
 	}
 	
 	public boolean joinGame(int gameID,String color,String nick){
@@ -30,7 +39,7 @@ public class DataGuiManagerClient extends DataGuiManager{
 		return false;
 	}
 	
-	public void addGameGui(int gameID,String specialInfo, String info){
+	public void addGameToGui(int gameID,String specialInfo, String info){
 		addGame(gameID, specialInfo, info);
 	}
 	

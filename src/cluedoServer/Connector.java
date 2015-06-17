@@ -22,7 +22,7 @@ class Connector extends Thread{
 //	GameListServer gameList;
 	DataManagerServer dataManger;
 	DataGuiManagerServer dataGuiManager;
-	boolean running = true;	
+	boolean run = true;	
 	
 	
 	Connector (ServerSocket ss, DataManagerServer datam, DataGuiManagerServer dgm) {
@@ -34,7 +34,7 @@ class Connector extends Thread{
 	@Override
 	public void run(){
 		try {			
-			while (running){
+			while (run){
 				Socket clientSocket = serverSocket.accept();
 				if (!dataManger.checkIpExists(clientSocket.getInetAddress())){
 					if (dataManger.isBlacklisted(clientSocket.getInetAddress()))
@@ -55,7 +55,7 @@ class Connector extends Thread{
 			System.out.println(e.getMessage());
 		}
 		finally {
-			System.out.println("thread runningflag: "+running+"");
+			System.out.println("thread runningflag: "+run+"");
 			kill();
 		}		
 	}
@@ -82,7 +82,7 @@ class Connector extends Thread{
 	 * wird vom server aufgerufen zum höflichen schliessen der laufenden verbindungen
 	 */
 	public void kill(){
-		running = false;
+		run = false;
 		System.out.println("networkthread killed");
 	}
 }

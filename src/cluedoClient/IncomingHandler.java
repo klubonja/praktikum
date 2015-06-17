@@ -25,14 +25,12 @@ class IncomingHandler implements Runnable {
 	
 	Socket cSocket;
 	DataGuiManagerClient dataGuiManager;
-	ServerItem server;
 	
 	boolean run = true;
 	
 	IncomingHandler(CluedoClientGUI gui,ServerItem server,boolean run){
 		dataGuiManager = new DataGuiManagerClient(gui,server);
 		this.run = run;
-		this.server = server;
 		setListener();
 	}
 	
@@ -41,7 +39,7 @@ class IncomingHandler implements Runnable {
 		getGamesList();
 		while (run) {
 			try {
-				String msg = getMessageFromServer(server.getSocket());
+				String msg = getMessageFromServer(dataGuiManager.getServer().getSocket());
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(new JSONObject(msg)));
 				checker.validate();
@@ -50,7 +48,7 @@ class IncomingHandler implements Runnable {
 					if (checker.getType().equals("game created")){
 						int gameID = checker.getMessage().getInt("gameID");
 						JSONObject playerJSON = checker.getMessage().getJSONObject("player");
-						dataGuiManager.addGame(gameID, playerJSON.getString("nick"),playerJSON.getString("color"),server);
+						dataGuiManager.addGame(gameID, playerJSON.getString("nick"),playerJSON.getString("color"));
 					}
 					
 					else if (checker.getType().equals("player added")){
@@ -75,9 +73,9 @@ class IncomingHandler implements Runnable {
 	}
 	
 	private void getGamesList(){
-		String msg = getMessageFromServer(server.getSocket());
+		String msg = getMessageFromServer(dataGuiManager.getServer().getSocket());
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(msg));
-		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", null);
+		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error"});
 		
 		if (errcode == NetworkHandhakeCodes.OK) {	
 			JSONArray gamearray = checker.getMessage().getJSONArray("game array");	
@@ -86,8 +84,11 @@ class IncomingHandler implements Runnable {
 		}
 		else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
 				|| errcode == NetworkHandhakeCodes.TYPERR){
-			dataGuiManager.addMsgIn(server.getGroupName()+" sends invalid Messages : \n"+checker.getErrString());		
+			dataGuiManager.addMsgIn(dataGuiManager.getServer().getGroupName()+" sends invalid Messages : \n"+checker.getErrString());		
 			kill(); // thread will run out without further notice					
+		}
+		else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
+			dataGuiManager.addMsgIn(checker.getMessage().getString("message"));
 		}
 	}
 	
@@ -116,6 +117,6 @@ class IncomingHandler implements Runnable {
 	
 	public void kill(){
 		run = false;
-		dataGuiManager.removeIp(server.groupName);	
+		dataGuiManager.kill();	
 	}
 }

@@ -4,7 +4,6 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 
 import cluedoNetworkGUI.DataManager;
-import cluedoNetworkLayer.CluedoGame;
 import cluedoNetworkLayer.CluedoGameServer;
 
 public class DataManagerServer extends DataManager {
@@ -75,9 +74,25 @@ public class DataManagerServer extends DataManager {
 	public int getGameCount(){
 		return gameList.size();
 	}
-
-
-
+	public boolean addClient(ClientItem client){
+		if (!hasClient(client))
+			return clientPool.add(client);
+		return false;
+	}
+	public boolean removeClientfromSystem(ClientItem client){
+		for (CluedoGameServer cgs: gameList){
+			cgs.findAndRemovePlayer(client);
+		}
+		
+		return clientPool.remove(client);
+	}
 	
-}	
+	public boolean hasClient(ClientItem client){
+		for (ClientItem c: clientPool)
+			if (c.getNick().equals(client.getNick()))
+					return true;
+		return false;
+ 	}
+}
+	
 

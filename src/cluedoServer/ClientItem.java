@@ -31,6 +31,10 @@ public class ClientItem {
 		return socket;
 	}
 	
+	public String getIpString(){
+		return adress.toString();
+	}
+	
 	public void setExpansions(ArrayList<String> expansion) {
 		this.expansions = expansion;
 	}

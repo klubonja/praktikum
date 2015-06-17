@@ -2,6 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
+import jdk.nashorn.internal.ir.ReturnNode;
 import cluedoServer.ClientItem;
 
 public class CluedoGameServer extends CluedoGame{
@@ -20,6 +21,22 @@ public class CluedoGameServer extends CluedoGame{
 			nicks.add(c.getNick());
 		
 		return nicks;
+	}
+	
+	public boolean hasPlayerNick(ClientItem client){
+		for (ClientItem c: participants)
+			if (c == client) 
+				return true;
+		
+		return false;
+	}
+	
+	public boolean findAndRemovePlayer(ClientItem client){
+		for (ClientItem c: participants)
+			if (c == client) 
+				return participants.remove(client);
+		
+		return false;
 	}
 	
 	public void addWatcher(ClientItem c){
