@@ -76,9 +76,7 @@ public class DerBeweger {
 //		System.out.println("momentaneAnweisung : "+momentaneAnweisung);
 
 		momentaneAnweisung = wieVieleAnweisungen - schritte;
-		
-		System.out.println("endposition    Y    " + spieler.getCenterY() +"    ||    X    " + spieler.getCenterX());
-		
+				
 		
 		if (schritte>0){
 			
@@ -87,13 +85,18 @@ public class DerBeweger {
 			jetzigeSpalte = player.getxCoord();
 			jetzigeReihe = player.getyCoord();
 			
-			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&6");
+			System.out.println("??????????????????");
+			
+			for (int i = 0; i < anweisungen.length; i++){
+				
+				System.out.println("null?   " +anweisungen[i]);
+			}
+			
+			
+			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 			System.out.println("player y : " +player.getyCoord());
 			System.out.println("player x : " +player.getxCoord());
 			
-			if (anweisungen[momentaneAnweisung] == Orientation.S){
-				System.out.println("Test");
-			}
 			
 			System.out.println(anweisungen[momentaneAnweisung]);
 			
@@ -116,7 +119,7 @@ public class DerBeweger {
 				xDistanz = -1;
 				yDistanz = 0;
 			}
-			
+			if (jetzigeReihe+yDistanz != 26 && jetzigeSpalte + xDistanz != 25)
 			zielKachel = gui.getKachelArray()[jetzigeReihe+yDistanz][jetzigeSpalte+xDistanz];
 			
 			System.out.println("yDistanz : " +yDistanz +"   xDistanz : " +xDistanz);
@@ -130,8 +133,8 @@ public class DerBeweger {
 			path.getElements().add(new LineTo(zielKachel.getLayoutX(), zielKachel.getLayoutY()));
 
 			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 1000 + Math.abs(xDistanz)
-					* 1000));
+			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 100 + Math.abs(xDistanz)
+					* 100));
 			pathTransition.setNode(spieler);
 			pathTransition.setPath(path);
 			pathTransition.play();

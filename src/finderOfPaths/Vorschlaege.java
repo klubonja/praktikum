@@ -113,7 +113,9 @@ public class Vorschlaege {
 			
 
 			// Erreichbare Kacheln
-			if ( (yDistanz != 0 || xDistanz != 0) && (jetzigeReihe + yDistanz >=0) && (jetzigeSpalte + xDistanz >=0) && (moeglichkeiten[counterAussen] != null) )
+			if ( (yDistanz != 0 || xDistanz != 0) && (jetzigeReihe + yDistanz >=0) && (jetzigeSpalte + xDistanz >=0) 
+					&& (jetzigeReihe + yDistanz < 25) && (jetzigeSpalte + xDistanz < 24)
+					&& (moeglichkeiten[counterAussen] != null) )
 			{
 				gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 				

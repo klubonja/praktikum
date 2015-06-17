@@ -31,7 +31,7 @@ import enums.Orientation;
 public class BoardView extends GridPane {
 		
 	private Kachel [][] kachelArray;
-	private final Background [][] backgroundKachelArray = new Background [25][24];
+	private final Background [][] backgroundKachelArray = new Background [26][25];
 	private PlayerView testSpieler;
 	private BackgroundFill fill;
 	private int rowSize;
@@ -108,9 +108,21 @@ public class BoardView extends GridPane {
 			for (int jSpalten = 0; jSpalten<columnSize;jSpalten++){
 				String aufschrift = +iReihen +"" +jSpalten;
 				
+				//////////////// Außerhalb /////////////////
+				
+				if (jSpalten == 24){
+					kachelArray[iReihen][jSpalten] = new RaumKachel("", iReihen, jSpalten, true, null, "Ausserhalb", false, keineMoeglichkeiten);
+				}
+				
+				else if ( iReihen == 25){
+					kachelArray[iReihen][jSpalten] = new RaumKachel("", iReihen, jSpalten, true, null, "Ausserhalb", false, keineMoeglichkeiten);
+				}
+				
+				
+				
 				///////////////// RAUMKACHELN /////////////////
 				
-				if ( (iReihen < 4 && jSpalten < 7) //Arbeitszimmer
+				else if ( (iReihen < 4 && jSpalten < 7) //Arbeitszimmer
 						|| (iReihen == 4 && jSpalten == 0) ){
 					if (iReihen == 3 && jSpalten == 6){ /////////////////// TÜR ///////////////////
 						kachelArray[iReihen][jSpalten] = new TuerKachel(" S ", iReihen, jSpalten, true, Orientation.S, "Arbeitszimmer", true, keineMoeglichkeiten);
@@ -274,7 +286,11 @@ public class BoardView extends GridPane {
 				    	//kachelArray[iReihen][jSpalten] = new FeldKachel("", iReihen, jSpalten, false, false);
 				    }
 				
-				this.add(kachelArray[iReihen][jSpalten], jSpalten, iReihen);
+				
+				if (iReihen != 25 && jSpalten != 24){
+					this.add(kachelArray[iReihen][jSpalten], jSpalten, iReihen);
+				}
+				
 				System.out.println(iReihen +" - "+jSpalten);
 				
 				kachelArray[iReihen][jSpalten].setMaxHeight(29);

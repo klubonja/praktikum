@@ -26,8 +26,8 @@ import model.Player;
 public class BoardPresenterNew {
 
 	private Player player;
-	private int rowSize = 25;
-	private int columnSize = 24;
+	private int rowSize = 26;
+	private int columnSize = 25;
 
 	private Color [] farben = new Color [30];
 	private int farbenzähler;

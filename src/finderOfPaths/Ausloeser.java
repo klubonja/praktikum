@@ -110,8 +110,10 @@ public class Ausloeser {
 				
 				System.out.println("auslöser click");
 				
-				for (int iReihen = 0; iReihen < gui.getKachelArray().length; iReihen++){
-					for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length; jSpalten++){
+				
+				
+				for (int iReihen = 0; iReihen < gui.getKachelArray().length-1; iReihen++){
+					for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length-1; jSpalten++){
 						if ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutX() <= event.getX()) && (event.getX() < gui.getKachelArray()[iReihen][jSpalten].getLayoutX()+29)
 						&& ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutY() <= event.getY()) && (event.getY() < gui.getKachelArray()[iReihen][jSpalten].getLayoutY()+29) ) ){
 							Kachel momentaneKachel = gui.getKachelArray()[iReihen][jSpalten];
@@ -146,6 +148,8 @@ public class Ausloeser {
 	 * @return umgewandeltes Orientation []
 	 */
 	public Orientation [] charToOrientation(char [] anweisungen){
+		
+		
 		
 			for (int counterInnen = 0; counterInnen < anweisungen.length; counterInnen++){
 				if (anweisungen[counterInnen] == 'S'){

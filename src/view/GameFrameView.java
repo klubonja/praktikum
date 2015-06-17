@@ -69,7 +69,7 @@ public class GameFrameView extends GridPane{
 		/**
 		 * Adds the Game Board frame.
 		 */
-		board = new BoardView(24,25);
+		board = new BoardView(25,26);
 		
 		/**
 		 * Adds the Notes frame.
