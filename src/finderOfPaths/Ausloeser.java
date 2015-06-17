@@ -67,7 +67,7 @@ public class Ausloeser {
 				click(event);
 			}});
 		ballEbene.getWuerfeln().setOnMouseClicked(e -> wuerfeln());
-		DiceView.roll.setOnMouseClicked(e -> wuerfeln());
+//		DiceView.roll.setOnMouseClicked(e -> wuerfeln());
 	}
 	
 	/**

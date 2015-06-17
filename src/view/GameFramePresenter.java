@@ -1,6 +1,11 @@
 package view;
 
+import finderOfPaths.Ausloeser;
+import finderOfPaths.DerBeweger;
+import finderOfPaths.Sucher;
 import finderOfPaths.UnglaublicheAnwendung;
+import finderOfPaths.Vorschlaege;
+import finderOfPaths.WahnsinnigTollerPathfinder;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -13,6 +18,13 @@ public class GameFramePresenter {
 	Player player;
 	Circle playerCircle;
 	private Stage stage;
+	
+	private Ausloeser ausloeser;
+	private Sucher sucher;
+	private DerBeweger beweger;
+	private Vorschlaege vorschlager;
+	private WahnsinnigTollerPathfinder pathfinder;
+	private char [][] anweisungen;
 	
 	
 	public GameFramePresenter(GameFrameView gfv , Player player){
@@ -35,20 +47,42 @@ public class GameFramePresenter {
 		
 		DicePresenter dice = new DicePresenter(gfv.dice);
 		
-		UnglaublicheAnwendung wow = new UnglaublicheAnwendung(gfv.board, gfv.ballEbene, gfv.komplettesFeld);
-		//BoardPresenter board = new BoardPresenter(gfv.board, playerCircle, this.player);
-		wow.test();
+//		UnglaublicheAnwendung wow = new UnglaublicheAnwendung(gfv.board, gfv.ballEbene, gfv.komplettesFeld);
+//		wow.test();
+
+//		BoardPresenter board = new BoardPresenter(gfv.board, playerCircle, this.player);
+
 		
 		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		HandFramePresenter hand = new HandFramePresenter(gfv.hand);
 		MenuBarPresenter menuBar = new MenuBarPresenter(gfv.menu, gfv);
 		
-		gfv.view2.setOnAction(e -> changeFramePl2());
+		// creates the Player Area and the Movement
+		player = new Player("Hans",5,5, Color.AQUAMARINE);
 		
+		beweger = new DerBeweger(gfv.board, gfv.komplettesFeld, gfv.ballEbene, player);
+		vorschlager = new Vorschlaege(gfv.board, player);
+		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene, player);
+		
+		sucher = new Sucher(gfv.board, gfv.ballEbene, gfv.komplettesFeld, beweger, vorschlager, pathfinder,  player, anweisungen);
+		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher, player);
+		
+		test();
+	}
+	
+	
+		
+		
+	
+	
+	public void test(){
+		ausloeser.zuweisung();
+		
+		player = new Player("Hans", 5, 5, Color.AQUAMARINE);
 	}
 	
 	public void changeFramePl2(){
-		
+		gfv.view2.setOnAction(e -> changeFramePl2());
 	}
 	
 }

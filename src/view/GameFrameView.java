@@ -87,6 +87,9 @@ public class GameFrameView extends GridPane{
 		dice = new DiceView();
 		
 		
+		/**
+		 *  Adds the Stackpane with the field
+		 */
 		ballEbene = new BallEbene2();
 		komplettesFeld = new KrasserStack(ballEbene, board);
 		//figuren = new FigurenView();

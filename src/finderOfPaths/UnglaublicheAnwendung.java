@@ -7,7 +7,7 @@ import model.Player;
 import view.BoardView;
 import enums.Orientation;
 
-public class UnglaublicheAnwendung extends Application{
+public class UnglaublicheAnwendung{
 
 	private BoardView boardView;
 	private BallEbene2 ballEbene;
@@ -44,12 +44,12 @@ public class UnglaublicheAnwendung extends Application{
 	}
 	
 	public UnglaublicheAnwendung(BoardView boardView, BallEbene2 ballEbene, KrasserStack krasserStack) {
-
 		player = new Player("Hans",5,5, Color.AQUAMARINE);
 
 		this.boardView = boardView;
 		this.ballEbene = ballEbene;
 		this.krasserStack = krasserStack;
+		
 		
 		beweger = new DerBeweger(boardView, krasserStack, ballEbene, player);
 		vorschlager = new Vorschlaege(boardView, player);
@@ -64,14 +64,14 @@ public class UnglaublicheAnwendung extends Application{
 		
 		player = new Player("Hans", 5, 5, Color.AQUAMARINE);
 	}
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-
-		//krasserStack.start();		
-
-		ausloeser.zuweisung();
-				
-		player = new Player("Hans", 5, 5, Color.AQUAMARINE);
+//	@Override
+//	public void start(Stage primaryStage) throws Exception {
+//
+//		krasserStack.start();		
+//
+//		ausloeser.zuweisung();
+//				
+//		player = new Player("Hans", 5, 5, Color.AQUAMARINE);
 				
 		
 		
@@ -107,12 +107,12 @@ public class UnglaublicheAnwendung extends Application{
 //		}
 //		
 		
-	}
+//	}
 
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
+//	public static void main(String[] args) {
+//		launch(args);
+//	}
 
 
 	
