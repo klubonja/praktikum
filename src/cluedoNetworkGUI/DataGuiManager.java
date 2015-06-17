@@ -4,12 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.print.attribute.ResolutionSyntax;
-
-import cluedoClient.ClientGameItem;
-import cluedoNetworkLayer.CluedoGameClient;
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
+import cluedoNetworkLayer.CluedoGameClient;
 
 public class DataGuiManager   {
 	
@@ -58,6 +55,12 @@ public class DataGuiManager   {
 		 Platform.runLater(() -> {
 			 gui.addNetworkActor(name,ip);
 		  });
+	  }
+	  
+	  public void addGameToGui(int gameID,String specialInfo, String info){
+		  Platform.runLater(() -> {
+			gui.addGame(gameID, specialInfo, info);
+		});
 	  }
 	  
 	  public  void emptyIpList(){

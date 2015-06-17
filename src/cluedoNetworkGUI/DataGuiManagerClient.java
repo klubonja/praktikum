@@ -1,6 +1,5 @@
 package cluedoNetworkGUI;
 
-import java.net.Socket;
 import java.util.ArrayList;
 
 import cluedoClient.ServerItem;
@@ -18,6 +17,7 @@ public class DataGuiManagerClient extends DataGuiManager{
 		return server;
 	}
 	
+	@Override
 	public void addGame(int gameID, String nick,String color){
 		CluedoGameClient newgame = 
 				new CluedoGameClient(gameID);
@@ -37,10 +37,6 @@ public class DataGuiManagerClient extends DataGuiManager{
 			return true;
 		}
 		return false;
-	}
-	
-	public void addGameToGui(int gameID,String specialInfo, String info){
-		addGame(gameID, specialInfo, info);
 	}
 	
 	public void setGames(ArrayList<CluedoGameClient> glist){
