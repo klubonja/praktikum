@@ -76,7 +76,7 @@ class OutgoingHandler implements Runnable{
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            		createGame("white");	               
+            		createGame("whit");	               
             }
         });	
 		
@@ -101,11 +101,22 @@ class OutgoingHandler implements Runnable{
 	
 	private final boolean login(CluedoClientGUI gui){
 		String[] loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
-		String msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
+		String msg;
+		try {
+			msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
+
+		} catch (Exception e) {
+			msg = null;
+		}
+		if (msg == null)	return false;
+
 		sendMsg(msg);
-		
 		return true;
 		
+//		String[] loginData = new String[]{"",""};
+//		while (loginData[0].equals("") || loginData[1].equals(""))
+//			loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
+//		
 	}
 	
 	@Override

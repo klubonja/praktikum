@@ -71,8 +71,6 @@ public class Client {
 			cSocket = new Socket(server.getIp(),server.getPort());
 			server.setSocket(cSocket);
 			dataGuiManager.addServer(server);
-			//serverList.add(server);
-			//dataManager.addNe
 			Thread t1 = new Thread(new IncomingHandler(gui,server,run));
 			t1.start();
 			Thread t2 = new Thread(new OutgoingHandler(gui,server,run));
@@ -140,7 +138,8 @@ public class Client {
 				System.out.println("slecting"+serverInfo.getGroupName()+" at "+smod.getSelectedIndex());
 			}
 			else {
-				dataGuiManager.addMsgIn("alread connected to Server "+serverInfo.getGroupName());
+				dataGuiManager.addMsgIn("already connected to Server "+serverInfo.getGroupName());
+				
 			}
 		}
 		catch (Exception e){

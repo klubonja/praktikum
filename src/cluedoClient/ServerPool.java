@@ -14,10 +14,12 @@ public class ServerPool extends ArrayList<ServerItem> {
 			if (se.getGroupName().equals(e.getGroupName())){
 				se.setIp(e.getIp());
 				se.setPort(e.getPort());
-				return true;
+				return false;
 			}
 		}
+		
 		return super.add(e);
+		
 	}
 	
 //	public ClientGameItem getGameById(int gameID,ServerItem server){

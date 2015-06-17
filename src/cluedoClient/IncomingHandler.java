@@ -63,7 +63,7 @@ class IncomingHandler implements Runnable {
 			}			
 			catch (Exception e){
 				dataGuiManager.setStatus("Server "+dataGuiManager.getServer().getGroupName()+" hat sich unhöflich verabschiedet\n "+e.getMessage());		
-				//kill();
+				kill();
 			}			
 		}
 		System.out.println("running out client connected to"+dataGuiManager.getServer().getGroupName()+"incoming thread running out");

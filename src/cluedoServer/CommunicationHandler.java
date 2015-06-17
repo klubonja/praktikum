@@ -6,9 +6,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
-import javafx.application.Platform;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
@@ -17,10 +15,7 @@ import org.json.JSONObject;
 import staticClasses.Config;
 import staticClasses.Methods;
 import staticClasses.NetworkMessages;
-import cluedoNetworkGUI.CluedoServerGUI;
-import cluedoNetworkGUI.DataGuiManager;
 import cluedoNetworkGUI.DataGuiManagerServer;
-import cluedoNetworkLayer.CluedoGameServer;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
 
