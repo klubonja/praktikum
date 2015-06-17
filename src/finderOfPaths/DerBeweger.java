@@ -26,11 +26,11 @@ public class DerBeweger {
 	private int momentaneAnweisung;
 	private int wieVieleAnweisungen;
 	
-	private int jetzigeReihe;
 	private int jetzigeSpalte;
+	private int jetzigeReihe;
 	
-	private int xDistanz;
 	private int yDistanz;
+	private int xDistanz;
 	
 	private Circle spieler;
 	
@@ -48,7 +48,7 @@ public class DerBeweger {
 		this.krasserStack = krasserStack;
 		this.ballEbene = ballEbene;
 		this.player = player;
-		anfangsKachel = gui.getKachelArray()[player.getxCoord()][player.getyCoord()];
+		anfangsKachel = gui.getKachelArray()[player.getyCoord()][player.getxCoord()];
 		
 		spieler = ballEbene.getSpieler();
 	}
@@ -77,22 +77,19 @@ public class DerBeweger {
 
 		momentaneAnweisung = wieVieleAnweisungen - schritte;
 		
-		System.out.println("endposition    X    " + spieler.getCenterX() +"    ||    Y    " + spieler.getCenterY());
+		System.out.println("endposition    Y    " + spieler.getCenterY() +"    ||    X    " + spieler.getCenterX());
 		
 		
 		if (schritte>0){
 			
 			System.out.println("while-anfang");
 			
-			jetzigeReihe = gui.getRowIndex(anfangsKachel);
-			jetzigeSpalte = gui.getColumnIndex(anfangsKachel);
-			
-			jetzigeReihe = player.getyCoord();
 			jetzigeSpalte = player.getxCoord();
+			jetzigeReihe = player.getyCoord();
 			
 			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&6");
-			System.out.println("player x : " +player.getxCoord());
 			System.out.println("player y : " +player.getyCoord());
+			System.out.println("player x : " +player.getxCoord());
 			
 			if (anweisungen[momentaneAnweisung] == Orientation.S){
 				System.out.println("Test");
@@ -120,9 +117,9 @@ public class DerBeweger {
 				yDistanz = 0;
 			}
 			
-			zielKachel = gui.getKachelArray()[jetzigeSpalte+xDistanz][jetzigeReihe+yDistanz];
+			zielKachel = gui.getKachelArray()[jetzigeReihe+yDistanz][jetzigeSpalte+xDistanz];
 			
-			System.out.println("xDistanz : " +xDistanz +"   yDistanz : " +yDistanz);
+			System.out.println("yDistanz : " +yDistanz +"   xDistanz : " +xDistanz);
 			
 //			System.out.println("anfangsKachel X : " +anfangsKachel.getLayoutX() +"  anfangsKachel Y : " +anfangsKachel.getLayoutY());
 //			System.out.println("zielKachel X : " +zielKachel.getLayoutX() +"  zielKachel Y : " +zielKachel.getLayoutY());
@@ -133,7 +130,7 @@ public class DerBeweger {
 			path.getElements().add(new LineTo(zielKachel.getLayoutX(), zielKachel.getLayoutY()));
 
 			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(Math.abs(xDistanz) * 1000 + Math.abs(yDistanz)
+			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 1000 + Math.abs(xDistanz)
 					* 1000));
 			pathTransition.setNode(spieler);
 			pathTransition.setPath(path);
@@ -146,15 +143,37 @@ public class DerBeweger {
 				}
 			});
 			
-			player.setxCoord(jetzigeSpalte + xDistanz);
 			player.setyCoord(jetzigeReihe + yDistanz);
+			player.setxCoord(jetzigeSpalte + xDistanz);
 //			System.out.println("///////////////////////////////////");
-//			System.out.println("player x : " +player.getxCoord());
-//			System.out.println("player y : " +player.getyCoord());
+//			System.out.println("player x : " +player.getyCoord());
+//			System.out.println("player y : " +player.getxCoord());
 			
 			}
 			
 		}
+	
+		public void anfangsPositionSetzen(){
+
+			System.out.println("§§§§§§§§§§§§§§§§§§§§");
+			System.out.println("anfangs positionen!");
+			System.out.println("player y : " +player.getyCoord() +"   player x : " +player.getxCoord());
+			
+			System.out.println("layout y : " +gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutX() +"  layout x : " +gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutY());
+			
+			Path path = new Path();
+			path.getElements().add(new MoveTo(0,0));
+			path.getElements().add(new LineTo(gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutX(), gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutY()));
+
+			PathTransition pathTransition = new PathTransition();
+			pathTransition.setDuration(Duration.millis(Math.abs(player.getyCoord()) * 1000 + Math.abs(player.getxCoord()) * 1000));
+			pathTransition.setNode(spieler);
+			pathTransition.setPath(path);
+			pathTransition.play();
+
+			
+		}
+		
 	
 	}
 

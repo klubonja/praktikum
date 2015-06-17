@@ -58,7 +58,7 @@ public class GameFramePresenter {
 		MenuBarPresenter menuBar = new MenuBarPresenter(gfv.menu, gfv);
 		
 		// creates the Player Area and the Movement
-		player = new Player("Hans",5,5, Color.AQUAMARINE);
+		player = new Player("Hans",4,5, Color.AQUAMARINE);
 		
 		beweger = new DerBeweger(gfv.board, gfv.komplettesFeld, gfv.ballEbene, player);
 		vorschlager = new Vorschlaege(gfv.board, player);
@@ -68,6 +68,8 @@ public class GameFramePresenter {
 		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher, player);
 		
 		test();
+		
+		System.out.println("test vorbei");
 	}
 	
 	
@@ -76,9 +78,9 @@ public class GameFramePresenter {
 	
 	
 	public void test(){
+		System.out.println("test");
 		ausloeser.zuweisung();
-		
-		player = new Player("Hans", 5, 5, Color.AQUAMARINE);
+		beweger.anfangsPositionSetzen();
 	}
 	
 	public void changeFramePl2(){

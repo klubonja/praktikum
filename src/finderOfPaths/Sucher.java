@@ -40,6 +40,9 @@ public class Sucher {
 		
 		anweisungen = pathfinder.getMoeglichkeiten();		
 		
+		
+		
+		
 		vorschlager.vorschlaegeMachen(anweisungen);
 		
 	}

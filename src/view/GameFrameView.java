@@ -90,8 +90,10 @@ public class GameFrameView extends GridPane{
 		/**
 		 *  Adds the Stackpane with the field
 		 */
+		
 		ballEbene = new BallEbene2();
 		komplettesFeld = new KrasserStack(ballEbene, board);
+		
 		//figuren = new FigurenView();
 
 //		komplettesFeld = new SpielfeldUndFiguren(board, krasserStack);
@@ -162,7 +164,7 @@ public class GameFrameView extends GridPane{
 		stage = new Stage();
 		stage.setScene(scene);
 		stage.setResizable(true);
-		stage.setFullScreen(true);
+		//stage.setFullScreen(true);
 		stage.setTitle("Cluedo");
 		stage.show();
 		

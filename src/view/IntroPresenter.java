@@ -6,12 +6,10 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import model.Player;
 
 public class IntroPresenter {
@@ -193,7 +191,7 @@ public class IntroPresenter {
 	//	GameFramePresenter pres2 = new GameFramePresenter(gameView, player2);
 
 
-		viewPl1 = new GameFrameView(this.player);
+		//viewPl1 = new GameFrameView(this.player);
 		gameView.start();
 		view.close();
 		}

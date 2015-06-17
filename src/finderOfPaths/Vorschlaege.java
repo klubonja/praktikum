@@ -20,8 +20,8 @@ public class Vorschlaege {
 	private BoardView gui;
 	private char [][] moeglichkeiten;
 	private Kachel jetzigeKachel;
-	private int jetzigeReihe;
 	private int jetzigeSpalte;
+	private int jetzigeReihe;
 	private int counterAussen;
 	private int counterInnen;
 	
@@ -41,10 +41,10 @@ public class Vorschlaege {
 		this.gui = gui;
 		this.player = player;
 		
-		for( int iSpalten = 0; iSpalten < markierteHintergruende.length;iSpalten++){
+		for( int iReihen = 0; iReihen < markierteHintergruende.length;iReihen++){
 			
-			for (int jReihen = 0; jReihen < markierteHintergruende[iSpalten].length;jReihen++){
-				markierteHintergruende[iSpalten][jReihen] = gui.getKachelArray()[iSpalten][jReihen].getBackground();
+			for (int jSpalten = 0; jSpalten < markierteHintergruende[iReihen].length;jSpalten++){
+				markierteHintergruende[iReihen][jSpalten] = gui.getKachelArray()[iReihen][jSpalten].getBackground();
 			}
 			
 		}
@@ -63,14 +63,14 @@ public class Vorschlaege {
 		gui.resetBackground();
 		
 		//this.jetzigeKachel = jetzigeKachelEingabe;
-		jetzigeReihe = player.getyCoord();
 		jetzigeSpalte = player.getxCoord();
+		jetzigeReihe = player.getyCoord();
 		this.moeglichkeiten = moeglichkeitenEingabe;
 		
 		// Allen arrays werden leere anweisungs-arrays zugewiesen.
-		for (int i = 0; i < gui.getKachelArray().length;i++){
-			for (int j = 0; j < gui.getKachelArray()[i].length;j++){
-				gui.getKachelArray()[i][j].setMoeglichkeitenHierher(null);
+		for (int iReihen = 0; iReihen < gui.getKachelArray().length;iReihen++){
+			for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length;jSpalten++){
+				gui.getKachelArray()[iReihen][jSpalten].setMoeglichkeitenHierher(null);
 			}
 		}
 		
@@ -89,8 +89,8 @@ public class Vorschlaege {
 		*/
 		
 		for (counterAussen = 0; counterAussen < moeglichkeiten.length; counterAussen++ ){
-			int xDistanz=0;
 			int yDistanz=0;
+			int xDistanz=0;
 			for (counterInnen = 0; counterInnen < moeglichkeiten[counterAussen].length; counterInnen++){
 				if (moeglichkeiten[counterAussen][counterInnen] == 'S'){
 					yDistanz++;
@@ -113,15 +113,15 @@ public class Vorschlaege {
 			
 
 			// Erreichbare Kacheln
-			if ( (xDistanz != 0 || yDistanz != 0) && (jetzigeSpalte + xDistanz >=0) && (jetzigeReihe + yDistanz >=0) && (moeglichkeiten[counterAussen] != null) )
+			if ( (yDistanz != 0 || xDistanz != 0) && (jetzigeReihe + yDistanz >=0) && (jetzigeSpalte + xDistanz >=0) && (moeglichkeiten[counterAussen] != null) )
 			{
-				gui.getKachelArray()[jetzigeSpalte + xDistanz][jetzigeReihe + yDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
+				gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 				
 				//Farbliche Markierung
 					// Buffer
 				//markierteHintergruende[jetzigeSpalte + xDistanz][jetzigeReihe + yDistanz] = gui.getKachelArray()[jetzigeSpalte + xDistanz][jetzigeReihe + yDistanz].getBackground();
 				
-				gui.getKachelArray()[jetzigeSpalte + xDistanz][jetzigeReihe + yDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeSpalte + xDistanz][jetzigeReihe + yDistanz], Color.GREEN);
+				gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], Color.GREEN);
 			}
 			
 		}

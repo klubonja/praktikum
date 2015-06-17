@@ -17,7 +17,7 @@ public class WahnsinnigTollerPathfinder {
 	/**
 	 * Alle Möglichkeiten, welche an Wegen ausgegeben werden.
 	 */
-	private char [][] moeglichkeiten = new char [244000][12];
+	private char [][] moeglichkeiten = new char [2440000][12];
 	private int welcheMoeglichkeit; 
 	
 	private char hans;
@@ -25,8 +25,8 @@ public class WahnsinnigTollerPathfinder {
 	/**
 	 * Die momentane Position an gegebenem Baum-Level
 	 */
-	private int [] rootX = new int [12];
-	private int [] rootY = new int [12];
+	private int [] rootX = new int [13];
+	private int [] rootY = new int [13];
 	
 	/**
 	 * Das momentane Baum-Level
@@ -37,8 +37,8 @@ public class WahnsinnigTollerPathfinder {
 	/**
 	 * Die Position, von welcher momentan überprüft wird.
 	 */
-	private int jetzigeReihe;
 	private int jetzigeSpalte;
+	private int jetzigeReihe;
 	
 	/**
 	 * Das Spielfeld und die Ballebene mit welcher gerechnet wird.
@@ -93,9 +93,9 @@ public class WahnsinnigTollerPathfinder {
         //System.out.println("!!!!!!!!!!!!!!!!!!!");
         //System.out.println("player x "+player.getxCoord());
         //System.out.println("player y "+player.getyCoord());
-        //System.out.println("jetzt x "+jetzigeSpalte);
-        //System.out.println("jetzt y "+jetzigeReihe);
-        ausgangsPosition(jetzigeSpalte, jetzigeReihe);
+        //System.out.println("jetzt x "+jetzigeReihe);
+        //System.out.println("jetzt y "+jetzigeSpalte);
+        ausgangsPosition(jetzigeReihe, jetzigeSpalte);
         currentEntry = null;
         
         possibleMoves(wuerfelZahl, himmelsrichtungen,"");
@@ -103,12 +103,14 @@ public class WahnsinnigTollerPathfinder {
 		
 	/**
 	 * Hier wird die momentane Position (y,x) gesetzt.
-	 * @param reihe hierauf wird die jetzigeReihe gesetzt
-	 * @param spalte hierauf wird die jetzigeSpalte gesetzt
+	 * @param reihe hierauf wird die jetzigeSpalte gesetzt
+	 * @param spalte hierauf wird die jetzigeReihe gesetzt
 	 */
 	public void reset(int reihe, int spalte){
+		
 		jetzigeReihe = reihe;
 		jetzigeSpalte = spalte;
+		
 		System.out.println("````````````````````````````````````````");
 		System.out.println("hans : "+hans);
 		if (hans == ' '){
@@ -127,12 +129,12 @@ public class WahnsinnigTollerPathfinder {
 
 	/**
 	 * Hier wird 
-	 * @param jetzigeReihe auf @param rootY[level] gesetzt 
-	 * @param jetzigeSpalte auf @param rootX[level] gesetzt
+	 * @param jetzigeSpalte auf @param rootY[level] gesetzt 
+	 * @param jetzigeReihe auf @param rootX[level] gesetzt
 	 */
 	public void refreshRoot(){
-		jetzigeReihe = rootY[level];
 		jetzigeSpalte = rootX[level];
+		jetzigeReihe = rootY[level];
 	}
 	
 	/**
@@ -140,7 +142,7 @@ public class WahnsinnigTollerPathfinder {
 	 * @param eingabeSpalte bestimmt alle @param rootX -Werte
 	 * @param eingabeReihe bestimmt alle @param rootY -Werte
 	 */
-	public void ausgangsPosition(int eingabeSpalte, int eingabeReihe){
+	public void ausgangsPosition( int eingabeReihe,int eingabeSpalte){
 		level = 0;
 		
 		// Alle roots werden auf die Eingabe gesetzt.
@@ -199,7 +201,7 @@ public class WahnsinnigTollerPathfinder {
 		
 		if (rootY[level-1] != 24)
 		{
-			rootY[level] = rootY[level-1] + 1;
+			rootY[level] = rootY[level-1] + 1; 
 		}
 		
 		rootX[level] = rootX[level-1];
@@ -207,22 +209,22 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 		
-		//System.out.println("Reihe  : " +jetzigeReihe +"   Spalte  : " + jetzigeSpalte);
-		//System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum());
+		//System.out.println("Reihe  : " +jetzigeSpalte +"   Spalte  : " + jetzigeReihe);
+		//System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum());
 		
-		if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum()==false){
+		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()==false){
 			return true;
 		}
 
-		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
-				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.S)
+		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
+				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.S)
 				{
 					//System.out.println("hier ist ein Tür");
 					return false;
 				}
 		
 		else {
-			//System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
+			//System.out.println("Hier ist ein Raum  :" + jetzigeSpalte +"  " + jetzigeReihe);
 			level = currentEntry.length();;
 			return false;
 		}
@@ -250,22 +252,22 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 
-		//System.out.println("Reihe  : " +jetzigeReihe +"   Spalte  : " + jetzigeSpalte);
-		//System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum());
+		//System.out.println("Reihe  : " +jetzigeSpalte +"   Spalte  : " + jetzigeReihe);
+		//System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum());
 		
-		if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum()==false){
+		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()==false){
 			return true;
 		}
 		
-		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
-				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.O)
+		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
+				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.O)
 				{
 					//System.out.println("hier ist eine Tür");
 					return false;
 				}
 		
 		else {
-			//System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
+			//System.out.println("Hier ist ein Raum  :" + jetzigeSpalte +"  " + jetzigeReihe);
 			level = currentEntry.length();;
 			return false;
 		}
@@ -289,22 +291,22 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 		
-		//System.out.println("Reihe  : " +jetzigeReihe +"   Spalte  : " + jetzigeSpalte);
-		//System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum());
+		//System.out.println("Reihe  : " +jetzigeSpalte +"   Spalte  : " + jetzigeReihe);
+		//System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum());
 		
-		if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum()==false){
+		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()==false){
 			return true;
 		}
 
-		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
-				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.N)
+		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
+				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.N)
 				{
 					//System.out.println("hier ist eine Tür");
 					return false;
 				}
 		
 		else {
-			//System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
+			//System.out.println("Hier ist ein Raum  :" + jetzigeSpalte +"  " + jetzigeReihe);
 			level = currentEntry.length();;
 			return false;
 		}
@@ -334,15 +336,15 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 		
-		//System.out.println("Reihe  : " +jetzigeReihe +"   Spalte  : " + jetzigeSpalte);
-		//System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum());
+		//System.out.println("Reihe  : " +jetzigeSpalte +"   Spalte  : " + jetzigeReihe);
+		//System.out.println("ist es ein Raum? : " + gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum());
 		
-		if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum()==false){
+		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()==false){
 			return true;
 		}
 		
-		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
-				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.W)
+		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
+				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.W)
 				{
 					//System.out.println("hier ist eine Tür");
 					return false;
@@ -350,7 +352,7 @@ public class WahnsinnigTollerPathfinder {
 		
 
 		else {
-			//System.out.println("Hier ist ein Raum  :" + jetzigeReihe +"  " + jetzigeSpalte);
+			//System.out.println("Hier ist ein Raum  :" + jetzigeSpalte +"  " + jetzigeReihe);
 			level = currentEntry.length();;
 			level = currentEntry.length();;
 			return false;
@@ -411,32 +413,32 @@ public class WahnsinnigTollerPathfinder {
 	 * 
 	 * @return die momentan zu-überprüfende Reihe
 	 */
-	public int getJetzigeReihe() {
-		return jetzigeReihe;
+	public int getjetzigeSpalte() {
+		return jetzigeSpalte;
 	}
 
 	/**
 	 * 
-	 * @param jetzigeReihe setzt die momentan zu-überprüfende Reihe
+	 * @param jetzigeSpalte setzt die momentan zu-überprüfende Reihe
 	 */
-	public void setJetzigeReihe(int jetzigeReihe) {
-		this.jetzigeReihe = jetzigeReihe;
+	public void setjetzigeSpalte(int jetzigeSpalte) {
+		this.jetzigeSpalte = jetzigeSpalte;
 	}
 
 	/**
 	 * 
 	 * @return die momentan zu-überprüfende Spalte
 	 */
-	public int getJetzigeSpalte() {
-		return jetzigeSpalte;
+	public int getjetzigeReihe() {
+		return jetzigeReihe;
 	}
 
 	/**
 	 * 
-	 * @param jetzigeSpalte setzt die momentan zu-überprüfende Spalte
+	 * @param jetzigeReihe setzt die momentan zu-überprüfende Spalte
 	 */
-	public void setJetzigeSpalte(int jetzigeSpalte) {
-		this.jetzigeSpalte = jetzigeSpalte;
+	public void setjetzigeReihe(int jetzigeReihe) {
+		this.jetzigeReihe = jetzigeReihe;
 	}
 
 	/**

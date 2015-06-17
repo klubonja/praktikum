@@ -61,6 +61,7 @@ public class Ausloeser {
 	 * nimmt clicks aus der ballEbene und weist ihnen hier eine Methode zu.
 	 */
 	public void zuweisung(){
+		System.out.println("zuweisung");
 		ballEbene.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
@@ -92,8 +93,12 @@ public class Ausloeser {
 	public void wuerfeln(){
 		gui.resetBackground();
 		gui.resetMoeglichkeiten();
-		wuerfelZahl = 1 + (int)(Math.random()*6);
-		System.out.println(wuerfelZahl);
+		wuerfelZahl = (1 + (int)(Math.random()*6)) + (1 + (int)(Math.random()*6)) ;
+		System.out.println("==================================");
+		System.out.println("==================================");
+		System.out.println("Würfelzahl : " +wuerfelZahl);
+		System.out.println("==================================");
+		System.out.println("==================================");
 		sucher.suchen(wuerfelZahl);
 		zuweisung();
 	}
@@ -105,25 +110,30 @@ public class Ausloeser {
 				
 				System.out.println("auslöser click");
 				
-				for (int i = 0; i < gui.getKachelArray().length; i++){
-					for (int j = 0; j < gui.getKachelArray()[i].length; j++){
-						if ( (gui.getKachelArray()[i][j].getLayoutX() <= event.getX()) && (event.getX() < gui.getKachelArray()[i][j].getLayoutX()+29)
-						&& ( (gui.getKachelArray()[i][j].getLayoutY() <= event.getY()) && (event.getY() < gui.getKachelArray()[i][j].getLayoutY()+29) ) ){
-							Kachel momentaneKachel = gui.getKachelArray()[i][j];
-							System.out.println("i : "+i +"  ||  j : " +j);
+				for (int iReihen = 0; iReihen < gui.getKachelArray().length; iReihen++){
+					for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length; jSpalten++){
+						if ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutX() <= event.getX()) && (event.getX() < gui.getKachelArray()[iReihen][jSpalten].getLayoutX()+29)
+						&& ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutY() <= event.getY()) && (event.getY() < gui.getKachelArray()[iReihen][jSpalten].getLayoutY()+29) ) ){
+							Kachel momentaneKachel = gui.getKachelArray()[iReihen][jSpalten];
+							System.out.println("Reihe : "+iReihen +"  ||  Spalte : " +jSpalten);
 							char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
 							anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
 							schritte = wieVieleSchritte(moeglichkeitenHierher);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////Bewegung wird ausgelöst/////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-							System.out.println("================");
-							System.out.println("player x " +player.getxCoord());
-							System.out.println("player y " +player.getyCoord());
+//							System.out.println("================");
+//							System.out.println("player x " +player.getxCoord());
+//							System.out.println("player y " +player.getyCoord());
+							// Hier: Schon falsch
+							for (int h = 0; h < moeglichkeitenHierher.length; h++){
+								System.out.println(moeglichkeitenHierher[h]);
+							}
+							
 							beweger.bewegen(anweisungenOrientations, schritte);
-							System.out.println("???????????????????");
-							System.out.println("player x " +player.getxCoord());
-							System.out.println("player y " +player.getyCoord());
+//							System.out.println("???????????????????");
+//							System.out.println("player x " +player.getxCoord());
+//							System.out.println("player y " +player.getyCoord());
 							
 						}
 					}
