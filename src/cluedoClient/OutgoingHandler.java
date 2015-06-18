@@ -1,10 +1,5 @@
 package cluedoClient;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 import javafx.beans.value.ChangeListener;
@@ -30,15 +25,12 @@ import cluedoNetworkGUI.GameVBox;
 
 class OutgoingHandler implements Runnable{
 	
-	DataGuiManagerClient dataGuiManager;
-	ServerItem server;	
-	
+	DataGuiManagerClient dataGuiManager;	
 	boolean run;
 	
-	public OutgoingHandler(CluedoClientGUI gui,ServerItem s, boolean run) {
+	public OutgoingHandler(CluedoClientGUI gui,ServerItem server, boolean run) {
 		this.run = run;
 		dataGuiManager = new DataGuiManagerClient(gui, server);		
-		server = s;		
 		
 		addClientGUIListener(dataGuiManager.getGui());
 		login(dataGuiManager.getGui());
@@ -112,12 +104,12 @@ class OutgoingHandler implements Runnable{
 	}
 	
 	private final boolean login(CluedoClientGUI gui){
-		String[] loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
+		String[] loginData = gui.loginPrompt("Login to Server: "+dataGuiManager.getServer().getGroupName());
 		String msg;
 		
 //		String[] loginData = new String[]{"",""};
 //		while (loginData[0].equals("") || loginData[1].equals(""))
-//			loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
+//			loginData = gui.loginPrompt("Login to Server: "+dataGuiManager.getServer().getGroupName());
 //		
 		try {
 			msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);

@@ -13,8 +13,7 @@ public class GameListServer extends ArrayList<CluedoGameServer> {
 	public boolean joinGame(int gameID, String color, String nick){
 		for (CluedoGameServer cg : this)
 			if (gameID == cg.getGameId()){
-				cg.joinGame(color, nick);
-				return true;
+				return cg.joinGame(color, nick);
 			}
 		return false;
 	}

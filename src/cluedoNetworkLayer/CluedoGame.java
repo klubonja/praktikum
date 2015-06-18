@@ -40,8 +40,12 @@ public class CluedoGame {
 	public boolean joinGame(String color,String nick){
 		for (CluedoPlayer p: players){
 			if (p.getCluedoPerson().getColor().equals(color)){
-				p.setNick(nick);
-				return true;
+				if (p.getNick().equals("")){
+					p.setNick(nick);
+					return true;
+				}
+				return false;
+				
 			}
 		}	
 				
