@@ -15,7 +15,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public boolean addServer(ServerItem server){
 		if (serverPool.add(server)){
-			addMsgIn("opened connection to "+server.getGroupName()+" on : "+ server.getIpString());
+			addMsgIn("opened TCPSocket to "+server.getGroupName()+" on : "+ server.getIpString());
 			addNetworkActorToGui(server.getGroupName(),server.getIpString());
 			int n = serverPool.size()-1;
 			System.out.println("server added at"+n);

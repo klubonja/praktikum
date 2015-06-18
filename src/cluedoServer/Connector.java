@@ -16,10 +16,6 @@ import cluedoNetworkGUI.DataGuiManagerServer;
 class Connector extends Thread{	
 	
 	private ServerSocket serverSocket;
-	
-//	ClientPool clientPool;
-//	ArrayList<ClientItem> blackList;
-//	GameListServer gameList;
 	DataManagerServer dataManger;
 	DataGuiManagerServer dataGuiManager;
 	boolean run = true;	
@@ -40,7 +36,7 @@ class Connector extends Thread{
 					if (dataManger.isBlacklisted(clientSocket.getInetAddress()))
 						sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
 					Thread newCommunicationThread = new Thread(new CommunicationHandler(
-							serverSocket, new ClientItem(clientSocket),dataManger,dataGuiManager));
+							new ClientItem(clientSocket),dataManger,dataGuiManager));
 					newCommunicationThread.start();	
 				}
 				else {

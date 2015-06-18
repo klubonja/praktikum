@@ -11,11 +11,15 @@ public class DataManagerServer extends DataManager {
 	ClientPool clientPool;
 	ArrayList<ClientItem> blackList;
 	GameListServer gameList;
-	public DataManagerServer() {
+	
+	public DataManagerServer(String groupname) {
+		super(groupname);
 		clientPool = new ClientPool();
 		blackList = new ArrayList<ClientItem>();
 		gameList = new GameListServer();
 	}
+	
+
 	
 	public ArrayList<ClientItem> getBlackList() {
 		return blackList;

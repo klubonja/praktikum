@@ -25,10 +25,8 @@ import enums.PlayerStates;
  */
 class CommunicationHandler implements Runnable{
 	
-	ServerSocket serverSocket;
 	ClientItem client;
 	Connector networkService;
-	Socket socket;
 	
 	DataManagerServer dataManager;
 	DataGuiManagerServer dataGuiManager;
@@ -44,8 +42,7 @@ class CommunicationHandler implements Runnable{
 	 * 
 	 * tcp verbindung steht server wartet auf tcp handshake
 	 */
-	CommunicationHandler(ServerSocket ss, ClientItem c, DataManagerServer dm,DataGuiManagerServer dgm) {
-		serverSocket = ss;
+	CommunicationHandler(ClientItem c, DataManagerServer dm,DataGuiManagerServer dgm) {
 		dataManager = dm;
 		dataGuiManager = dgm;
 		client = c;
@@ -57,7 +54,7 @@ class CommunicationHandler implements Runnable{
 
 		while (!readyForCommunication) {
 			try {
-				String message = getMessageFromClient(client.getSocket()).trim();
+				String message = Methods.getTCPMessage(client.getSocket()).trim();
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(
 								new JSONObject(message)));
@@ -96,7 +93,7 @@ class CommunicationHandler implements Runnable{
 					dataGuiManager.addMsgIn(client.getAdress()+" sends invalid Messages : \n"+checker.getErrString());
 					client.sendMsg(NetworkMessages.error_Msg("you are violating the protokoll due to the following: \n"+checker.getErrString()));
 					client.sendMsg(NetworkMessages.disconnectMsg());
-					client.closingConnection();
+					client.closingConnection(dataManager.getGroupName()+" is closing connection");
 					dataManager.blacklist(client);					
 					
 					readyForCommunication = true; // no further listinenig on this socket
@@ -107,7 +104,7 @@ class CommunicationHandler implements Runnable{
 					dataGuiManager.addMsgIn("unhandled incoming : \n" + message);
 				}
 			} 
-			catch (IOException e) {
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 		}	
@@ -118,7 +115,7 @@ class CommunicationHandler implements Runnable{
 		awaitingLoginAttempt();
 		while (run){
 			try {
-	           String message = getMessageFromClient(client.socket).trim();
+	           String message = Methods.getTCPMessage(client.socket).trim();
 	           CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
 	           checker.validate();
 	           if (!checker.isValid()){
@@ -155,7 +152,7 @@ class CommunicationHandler implements Runnable{
 		       dataGuiManager.addMsgIn(message);
 
 			}
-			catch (IOException e){
+			catch (Exception e){
 				try {
 					closeConnection("closing :"+e.getMessage());
 				}
@@ -172,7 +169,8 @@ class CommunicationHandler implements Runnable{
 		dataManager.notifyAll(
 				NetworkMessages.game_createdMsg(
 						NetworkMessages.player_info(
-								nick, color,PlayerStates.do_nothing.getName()
+								nick, 
+								color,PlayerStates.do_nothing.getName()
 								), 
 						gameID
 						)
@@ -181,23 +179,8 @@ class CommunicationHandler implements Runnable{
 	
 	private void closeConnection(String msg) throws IOException{
 		client.sendMsg(NetworkMessages.disconnectedMsg("bye " +client.getNick()));
-		serverSocket.close();
 		dataGuiManager.closeOn(msg);
 		run = false;
-	}
-	
-	
-	String getMessageFromClient(Socket cs) throws IOException{
-		StringBuffer message = new StringBuffer();
-			try {
-				BufferedReader clientInMessage = new BufferedReader(new InputStreamReader(cs.getInputStream(),StandardCharsets.UTF_8));
-				char[] buffer = new char[Config.MESSAGE_BUFFER];
-			 	int anzahlZeichen = clientInMessage.read(buffer, 0, Config.MESSAGE_BUFFER); // blockiert bis Nachricht empfangen
-				message.append(new String(buffer, 0, anzahlZeichen));
-			}
-			catch(Exception e) {}		
-		 	
-			return message.toString();
 	}
 	
 	public void kill(){

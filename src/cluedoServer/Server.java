@@ -37,7 +37,7 @@ public class Server {
 	public Server(CluedoServerGUI g){
 		gui = g;
 		TCPport = Config.TCP_PORT;	
-		dataManager = new DataManagerServer();
+		dataManager = new DataManagerServer(Config.GROUP_NAME);
 		dataGuiManager = new DataGuiManagerServer(gui,dataManager);
 	
 		run = true;

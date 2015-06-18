@@ -10,7 +10,6 @@ import cluedoNetworkLayer.CluedoGameClient;
 
 public class DataGuiManager   {
 	
-	
 	CluedoNetworkGUI gui;
 	
 	public DataGuiManager(CluedoNetworkGUI gui) {
