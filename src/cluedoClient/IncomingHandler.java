@@ -1,10 +1,6 @@
 package cluedoClient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
+
 import java.util.ArrayList;
 
 import json.CluedoJSON;
@@ -13,7 +9,7 @@ import json.CluedoProtokollChecker;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import staticClasses.Config;
+import staticClasses.Methods;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
@@ -22,8 +18,6 @@ import enums.NetworkHandhakeCodes;
 
 
 class IncomingHandler implements Runnable {
-	
-	Socket cSocket;
 	DataGuiManagerClient dataGuiManager;
 	
 	boolean run = true;
@@ -39,7 +33,7 @@ class IncomingHandler implements Runnable {
 		getGamesList();
 		while (run) {
 			try {
-				String msg = getMessageFromServer(dataGuiManager.getServer().getSocket());
+				String msg = Methods.getTCPMessage(dataGuiManager.getServer().getSocket());
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(new JSONObject(msg)));
 				checker.validate();
@@ -71,7 +65,7 @@ class IncomingHandler implements Runnable {
 	}
 	
 	private void getGamesList(){
-		String msg = getMessageFromServer(dataGuiManager.getServer().getSocket());
+		String msg = Methods.getTCPMessage(dataGuiManager.getServer().getSocket());
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(msg));
 		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error"});
 		
@@ -90,20 +84,7 @@ class IncomingHandler implements Runnable {
 		}
 	}
 	
-	private static String getMessageFromServer(Socket s){
-		try {
-			BufferedReader br = new BufferedReader(
-					new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
-			char[] buffer = new char[Config.MESSAGE_BUFFER];
-			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
-			
-			return new String (buffer, 0, charCount);			
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-			return null;
-	    }		
-	}
+	
 	
 	public void setListener(){}
 	

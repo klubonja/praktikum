@@ -15,6 +15,8 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import staticClasses.Config;
+import staticClasses.Methods;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
@@ -47,7 +49,7 @@ class OutgoingHandler implements Runnable{
 			@Override
 			public void handle(KeyEvent e) {
 			        if (e.getCode() == KeyCode.ENTER){
-			        	sendMsg(gui.inputField.getText());	
+			        	sendInputFieldTextContent(dataGuiManager.getGui());
 						gui.inputField.setText("");
 						e.consume();
 			        }
@@ -68,8 +70,7 @@ class OutgoingHandler implements Runnable{
 		gui.submitMessageButton.setOnAction(new EventHandler<ActionEvent>() {				
 			@Override
 			public void handle(ActionEvent event) {
-				sendMsg(NetworkMessages.chat_to_serverMsg(gui.inputField.getText(), LocalDateTime.now().toString()));	
-				gui.inputField.setText("");				
+				sendInputFieldTextContent(gui);		
 			}
 		});	
 		
@@ -90,18 +91,34 @@ class OutgoingHandler implements Runnable{
 		});		
 	}
 	
+	private void sendInputFieldTextContent(CluedoClientGUI gui){
+		Methods.sendTCPMsg(
+				dataGuiManager.getServer().getSocket(),
+				NetworkMessages.chat_to_serverMsg(
+						gui.inputField.getText(), 
+						LocalDateTime.now().toString()
+						)
+				);
+		gui.inputField.setText("");
+	}
+	
 	void selectGame(SelectionModel<GameVBox> g) {
 		int gameID = g.getSelectedItem().getGameID();
-		sendMsg(NetworkMessages.join_gameMsg("white", gameID));		
+		Methods.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.join_gameMsg("white", gameID));
 	}
 	
 	void createGame(String color){
-		sendMsg(NetworkMessages.create_gameMsg(color));
+		Methods.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.create_gameMsg(color));
 	}
 	
 	private final boolean login(CluedoClientGUI gui){
 		String[] loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
 		String msg;
+		
+//		String[] loginData = new String[]{"",""};
+//		while (loginData[0].equals("") || loginData[1].equals(""))
+//			loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
+//		
 		try {
 			msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
 
@@ -110,33 +127,21 @@ class OutgoingHandler implements Runnable{
 		}
 		if (msg == null)	return false;
 
-		sendMsg(msg);
+		Methods.sendTCPMsg(dataGuiManager.getServer().getSocket(),msg);
 		return true;
-		
-//		String[] loginData = new String[]{"",""};
-//		while (loginData[0].equals("") || loginData[1].equals(""))
-//			loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
-//		
 	}
 	
 	@Override
 	public void run(){
 		while (run){
-			
+			try {
+				Thread.sleep(Config.SECOND);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		System.out.println("CLIENT OutgoingHandlerThread running out");		
 	}
 	
-	private void sendMsg(String msg){
-		try {
-			PrintWriter out = new PrintWriter(
-					   new BufferedWriter(new OutputStreamWriter(
-					        server.getSocket().getOutputStream(), StandardCharsets.UTF_8)), true);
-			 out.print(msg);
-			 out.flush();	
-		}
-		catch (IOException e){
-			dataGuiManager.setStatus(e.getMessage());
-		}			
-	}		
+	
 }
