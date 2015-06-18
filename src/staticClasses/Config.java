@@ -7,9 +7,9 @@ public abstract class Config {
 	/**
 	 * unsere config daten in einer static klasse
 	 * */
-	public final static String GROUP_NAME = "yinyanyolosCIP";
+	//public final static String GROUP_NAME = "yinyanyolosCIP";
+	public final static String GROUP_NAME = Methods.getRandomString(5);
 
-	
 	
 	public final static double PROTOKOLL_VERSION = 1.1;
 	
@@ -35,12 +35,13 @@ public abstract class Config {
 	public final static double LOGIN_PROMPT_WINDOW_WIDTH = 300;
 	public final static double LOGIN_PROMPT_WINDOW_HEIGHT = 200;
 	
-	public final static double CLIENT_WINDOW_WIDTH = 1500;
-	public final static double CLIENT_WINDOW_HEIGHT = 400;
+	public final static double CLIENT_WINDOW_WIDTH = 700;
+	public final static double CLIENT_WINDOW_HEIGHT = 350;
 	
-	public final static double SERVER_WINDOW_WIDTH = 1500;
-	public final static double SERVER_WINDOW_HEIGHT = 400;
+	public final static double SERVER_WINDOW_WIDTH = 700;
+	public final static double SERVER_WINDOW_HEIGHT = 350;
 	public final static double GAME_LIST_ITEM_HEIGHT = 50;
+	public final static double NETWORK_ACTOR_LIST_ITEM_HEIGHT = 40;
 	
 	public final static String BLACKLISTED_MSG = ""
 			+ "you have the ip of some evil known protoksaveollviolator, lets try anyway";

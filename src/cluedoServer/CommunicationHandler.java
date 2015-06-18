@@ -1,11 +1,6 @@
 package cluedoServer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
@@ -78,13 +73,12 @@ class CommunicationHandler implements Runnable{
 							dataManager.getClientPool(), 
 							dataManager.getGameList()));
 					
-					if (dataGuiManager.addNetworkActor(client))
+					if (dataGuiManager.addNetworkActor(client,"logged in"))
 						dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
 					else {
 						client.sendMsg(NetworkMessages.error_Msg(client.getNick()+" already exists, try again with different nick"));
 						readyForCommunication = false;
-					}
-						
+					}						
 					readyForCommunication = true;
 				}
 				else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
@@ -179,7 +173,9 @@ class CommunicationHandler implements Runnable{
 	
 	private void closeConnection(String msg) throws IOException{
 		client.sendMsg(NetworkMessages.disconnectedMsg("bye " +client.getNick()));
-		dataGuiManager.closeOn(msg);
+		dataManager.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
+		
+		dataGuiManager.closeOn(client,msg);
 		run = false;
 	}
 	

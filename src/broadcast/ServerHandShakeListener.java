@@ -47,7 +47,9 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 								checker.getMessage().getString("group"),
 								packet.getAddress(),
 								checker.getMessage().getInt("tcp port")
-								)
+								),
+						"not logged in"
+						
 						);
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR){

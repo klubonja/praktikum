@@ -1,7 +1,5 @@
 package cluedoNetworkGUI;
 
-import com.sun.org.apache.bcel.internal.generic.ConstantPushInstruction;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -19,8 +17,8 @@ import staticClasses.Config;
 
 public abstract class CluedoNetworkGUI {
 	
-	final ObservableList<NetworkActorHBox> networkActors;
-	final ListView<NetworkActorHBox> networkActorsListView;
+	final ObservableList<NetworkActorVBox> networkActors;
+	final ListView<NetworkActorVBox> networkActorsListView;
 	
 	final TabPane tabPane;
 	final ObservableList<GameVBox> games;
@@ -49,7 +47,7 @@ public abstract class CluedoNetworkGUI {
 		 menue.setPrefHeight(30);
 		 
 		 networkActors = FXCollections.observableArrayList();
-		 networkActorsListView = new ListView<NetworkActorHBox>(networkActors);
+		 networkActorsListView = new ListView<NetworkActorVBox>(networkActors);
 		 
 		 
 		 games = FXCollections.observableArrayList();
@@ -77,20 +75,30 @@ public abstract class CluedoNetworkGUI {
 		 		 
 	}  
     
-   	 public boolean addNetworkActor(String name,String ip){
+   	 public boolean addNetworkActor(String name,String ip,String status){
    		 boolean notcontains = true;
-       	for (NetworkActorHBox na: networkActors)
+       	for (NetworkActorVBox na: networkActors)
        		if (na.getIpID().equals(ip) && na.getNameID().equals(name)){
        			notcontains = !notcontains;
        			continue;
        		}
-       	if (notcontains) return networkActors.add(new NetworkActorHBox(name, ip));
+       	if (notcontains) return networkActors.add(new NetworkActorVBox(name, ip,status));
+       	return false;
+   	  } 
+   	 
+   	 public boolean updateNetworkActor(String name,String ip,String status){
+       	for (NetworkActorVBox na: networkActors)
+       		if (na.getIpID().equals(ip) && na.getNameID().equals(name)){
+       			na.setStatusString(status);
+       			na.setIpString(ip);
+       			continue;
+       		}
        	return false;
    	  }   	 
 	  
 	 
 	  public boolean removeNetworkActor(String name,String ip){
-	       	for (NetworkActorHBox na: networkActors){
+	       	for (NetworkActorVBox na: networkActors){
 	       		if (na.getIpID().equals(ip) && na.getNameID().equals(name)){
 	       			return networkActors.remove(na);
 	       		}
@@ -124,7 +132,7 @@ public abstract class CluedoNetworkGUI {
 		  primaryStage.setTitle(label);
 	  }
 	  
-	  public  ListView<NetworkActorHBox> getNetworkActorsView(){
+	  public  ListView<NetworkActorVBox> getNetworkActorsView(){
 		  return networkActorsListView;
 	  }
 	  

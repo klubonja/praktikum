@@ -33,7 +33,8 @@ class OutgoingHandler implements Runnable{
 		dataGuiManager = new DataGuiManagerClient(gui, server);		
 		
 		addClientGUIListener(dataGuiManager.getGui());
-		login(dataGuiManager.getGui());
+		//login(dataGuiManager.getGui());
+		Methods.login(gui, server.getGroupName(), server.getSocket());
 	}
 	
 	public void addClientGUIListener(CluedoClientGUI gui){
@@ -69,7 +70,7 @@ class OutgoingHandler implements Runnable{
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            		createGame("white");	               
+            		createGame(Methods.getRandomPerson());	               
             }
         });	
 		
@@ -96,32 +97,18 @@ class OutgoingHandler implements Runnable{
 	
 	void selectGame(SelectionModel<GameVBox> g) {
 		int gameID = g.getSelectedItem().getGameID();
-		Methods.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.join_gameMsg("white", gameID));
+		Methods.sendTCPMsg(
+				dataGuiManager.getServer().getSocket(),
+				NetworkMessages.join_gameMsg(
+						Methods.getRandomPerson(),
+						gameID)
+				);
 	}
 	
 	void createGame(String color){
 		Methods.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.create_gameMsg(color));
 	}
 	
-	private final boolean login(CluedoClientGUI gui){
-		String[] loginData = gui.loginPrompt("Login to Server: "+dataGuiManager.getServer().getGroupName());
-		String msg;
-		
-//		String[] loginData = new String[]{"",""};
-//		while (loginData[0].equals("") || loginData[1].equals(""))
-//			loginData = gui.loginPrompt("Login to Server: "+dataGuiManager.getServer().getGroupName());
-//		
-		try {
-			msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
-
-		} catch (Exception e) {
-			msg = null;
-		}
-		if (msg == null)	return false;
-
-		Methods.sendTCPMsg(dataGuiManager.getServer().getSocket(),msg);
-		return true;
-	}
 	
 	@Override
 	public void run(){

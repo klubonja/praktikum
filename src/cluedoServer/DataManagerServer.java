@@ -10,13 +10,13 @@ public class DataManagerServer extends DataManager {
 	
 	ClientPool clientPool;
 	ArrayList<ClientItem> blackList;
-	GameListServer gameList;
+	GameListServer gamesList;
 	
 	public DataManagerServer(String groupname) {
 		super(groupname);
 		clientPool = new ClientPool();
 		blackList = new ArrayList<ClientItem>();
-		gameList = new GameListServer();
+		gamesList = new GameListServer();
 	}
 	
 
@@ -28,15 +28,26 @@ public class DataManagerServer extends DataManager {
 		return clientPool;
 	}
 	public GameListServer getGameList() {
-		return gameList;
+		return gamesList;
 	}
 	
+	@Override
 	public CluedoGameServer getGameByIndex(int index) throws ArrayIndexOutOfBoundsException{
-		return gameList.get(index);
+		return gamesList.get(index);
 	}
 	
+	public ArrayList<CluedoGameServer> getGamesByPlayer(String nick){
+		ArrayList<CluedoGameServer> glist = new ArrayList<CluedoGameServer>();
+		for (CluedoGameServer cg: gamesList){
+			cg.getNicksConnected().contains(nick);
+			glist.add(cg);
+		}
+		return glist;
+	}
+	
+	@Override
 	public boolean joinGame(int gameID, String color,String nick){
-		return gameList.joinGame(gameID, color, nick);
+		return gamesList.joinGame(gameID, color, nick);
 	}
 	
 	public boolean addNetworkActor(ClientItem client){
@@ -48,13 +59,14 @@ public class DataManagerServer extends DataManager {
 	}
 	
 	public String getNicksConnectedByGameID(int gameID){
-		return gameList.getGameByGameID(gameID).getNicksConnected();
+		return gamesList.getGameByGameID(gameID).getNicksConnected();
 	}
 	
 	public boolean addGame(CluedoGameServer game){
-		return gameList.add(game);
+		return gamesList.add(game);
 	}
 	
+	@Override
 	public boolean checkIpExists(InetAddress adress){
 		return clientPool.checkForExistingIp(adress);
 	}
@@ -65,6 +77,7 @@ public class DataManagerServer extends DataManager {
 		return false;
 	}
 	
+	@Override
 	public void notifyAll(String msg){
 		clientPool.notifyAll(msg);
 	}
@@ -75,8 +88,9 @@ public class DataManagerServer extends DataManager {
 		return blackList.add(client);
 	}
 	
+	@Override
 	public int getGameCount(){
-		return gameList.size();
+		return gamesList.size();
 	}
 	public boolean addClient(ClientItem client){
 		if (!hasClient(client))
@@ -84,7 +98,7 @@ public class DataManagerServer extends DataManager {
 		return false;
 	}
 	public boolean removeClientfromSystem(ClientItem client){
-		for (CluedoGameServer cgs: gameList){
+		for (CluedoGameServer cgs: gamesList){
 			cgs.findAndRemovePlayer(client);
 		}
 		

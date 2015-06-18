@@ -11,14 +11,14 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
+import staticClasses.Methods;
 import staticClasses.NetworkMessages;
-import sun.security.util.PropertyExpander.ExpandException;
 import broadcast.Multicaster;
 import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
-import cluedoNetworkGUI.DataGuiManager;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
-import cluedoNetworkGUI.NetworkActorHBox;
+import cluedoNetworkGUI.NetworkActorVBox;
+import enums.ServerStatus;
 
 
 
@@ -28,7 +28,6 @@ import cluedoNetworkGUI.NetworkActorHBox;
  */
 public class Client {
 	
-	Socket cSocket;
 	CluedoClientGUI gui;
 	ServerPool serverList;
 	DataGuiManagerClientSpool dataGuiManager;
@@ -68,9 +67,8 @@ public class Client {
 	 */
 	public void startTCPConnection(ServerItem server){	
 		try {				
-			cSocket = new Socket(server.getIp(),server.getPort());
-			server.setSocket(cSocket);
-			dataGuiManager.addServer(server);
+			server.setSocket(new Socket(server.getIp(),server.getPort()));
+			dataGuiManager.addServer(server,"not logged in");
 			Thread t1 = new Thread(new IncomingHandler(gui,server,run));
 			t1.start();
 			Thread t2 = new Thread(new OutgoingHandler(gui,server,run));
@@ -102,7 +100,6 @@ public class Client {
 		          
 		          try {
 		        	   run = false;
-		        	   if (cSocket != null) cSocket.close();
 		               Platform.exit();
 		               System.exit(0);
 		               System.out.println("Terminated");
@@ -124,33 +121,22 @@ public class Client {
 		});	
 	}
 	
-	void selectIp(SelectionModel<NetworkActorHBox> smod) {
+	void selectIp(SelectionModel<NetworkActorVBox> smod) {
 		//String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
 		try {
-			System.out.println("attempting getting from serverpool atr"+smod.getSelectedIndex());
-			NetworkActorHBox nb = smod.getSelectedItem();
-			ServerItem serverInfo = dataGuiManager.getServerByID(
+			ServerItem server = dataGuiManager.getServerByID(
 					smod.getSelectedItem().getNameID(),
 					smod.getSelectedItem().getIpID());
-			if (serverInfo.getSocket() == null){
-				System.out.println("attemtping to create TCP Con wioth"+serverInfo.getIpString());
-				startTCPConnection(serverInfo);
-				System.out.println("slecting"+serverInfo.getGroupName()+" at "+smod.getSelectedIndex());
+			if (server.getSocket() == null){
+				startTCPConnection(server);
 			}
-			else {
-				dataGuiManager.addMsgIn("already connected to Server "+serverInfo.getGroupName());
-				
+			else if (server.getStatus() == ServerStatus.not_connected){
+				Methods.login(dataGuiManager.getGui(), server.getGroupName(), server.getSocket());
 			}
 		}
 		catch (Exception e){
 			e.printStackTrace();
-		}
-		
-		
-		
-		
-		
-		
+		}		
 	}
 }
 

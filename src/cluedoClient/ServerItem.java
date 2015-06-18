@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoServer.GameListClient;
+import enums.ServerStatus;
 
 
 public class ServerItem  {
@@ -14,13 +15,18 @@ public class ServerItem  {
 	int port;
 	GameListClient gameList;
 	Socket socket;
+	ServerStatus status;
 	
 	public ServerItem(String groupName,InetAddress ip, int port) {
 		this.groupName = groupName;
 		this.ip = ip;
 		this.port = port;
 		gameList = new GameListClient();
+		status = ServerStatus.not_connected;
 		
+	}
+	public ServerStatus getStatus() {
+		return status;
 	}
 	
 	public void setSocket(Socket socket) {
@@ -30,9 +36,11 @@ public class ServerItem  {
 	public Socket getSocket() {
 		return socket;
 	}
+	
 	public InetAddress getIp() {
 		return ip;
 	}
+	
 	public String getIpString() {
 		return ip.toString();
 	}

@@ -1,7 +1,7 @@
 package cluedoNetworkGUI;
 
 
-import com.sun.org.apache.bcel.internal.generic.ReturnaddressType;
+import java.util.ArrayList;
 
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoServer.ClientItem;
@@ -18,9 +18,9 @@ public class DataGuiManagerServer extends DataGuiManager {
 		dataManager = datam;		
 	}	
 	
-	public void loginEvent(String ip,String nick,String msg){
+	public void loginEvent(String ip,String nick,String msg,String status){
 		addMsgIn(nick+" says :"+msg);
-		addNetworkActorToGui(nick, ip);
+		addNetworkActorToGui(nick, ip,status);
 	}
 	
 	public CluedoGameServer getGameByIndex(int index){
@@ -53,9 +53,9 @@ public class DataGuiManagerServer extends DataGuiManager {
 		setWindowName(newname);
 	}
 	
-	public boolean addNetworkActor(ClientItem client){
+	public boolean addNetworkActor(ClientItem client,String status){
 		if (dataManager.addClient(client)){
-			addNetworkActorToGui(client.getNick(), client.getIpString());
+			addNetworkActorToGui(client.getNick(), client.getIpString(),status);
 			addMsgIn(client.getNick()+" joined");
 			return true;
 		}
@@ -70,6 +70,10 @@ public class DataGuiManagerServer extends DataGuiManager {
 		return false;				
 	}
 	
+	public ArrayList<CluedoGameServer> getGamesByPlayer(ClientItem client){
+		return dataManager.getGamesByPlayer(client.getNick())	;		
+	}
+	
 	public int createGame(String color, String nick){		
 		int gameId = dataManager.getGameCount();
 		CluedoGameServer newgame = new CluedoGameServer(gameId);
@@ -80,8 +84,9 @@ public class DataGuiManagerServer extends DataGuiManager {
 		return gameId;
 	}
 	
-	public void closeOn(String msg){
+	public void closeOn(ClientItem client,String msg){
 		addMsgIn(msg);
+		removeClient(client);
 	}
 	
 	

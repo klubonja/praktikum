@@ -9,8 +9,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.json.JSONArray;
+
+import cluedoNetworkGUI.CluedoClientGUI;
+import enums.Persons;
 
 public abstract class Methods {
 	
@@ -32,8 +36,7 @@ public abstract class Methods {
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
 			char[] buffer = new char[Config.MESSAGE_BUFFER];
-			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
-			
+			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);			
 			return new String (buffer, 0, charCount);			
 		} 
 		catch (IOException e) {
@@ -53,5 +56,43 @@ public abstract class Methods {
 		catch (IOException e){
 			e.printStackTrace();
 		}			
-	}		
+	}
+	
+	public static boolean login(CluedoClientGUI gui,String servername,Socket socket){
+		String[] loginData = gui.loginPrompt("Login to Server: "+servername);
+		String msg;
+		
+//		String[] loginData = new String[]{"",""};
+//		while (loginData[0].equals("") || loginData[1].equals(""))
+//			loginData = gui.loginPrompt("Login to Server: "+dataGuiManager.getServer().getGroupName());
+//		
+		try {
+			msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
+
+		} catch (Exception e) {
+			msg = null;
+		}
+		if (msg == null)	return false;
+
+		Methods.sendTCPMsg(socket,msg);
+		return true;
+	}
+	
+	public static String getRandomString(int length){
+		Random rand = new Random();
+		StringBuffer sb = new StringBuffer();
+		String cons = "qwrtzuopüsdfghjklöäyxcvbnm";
+		for (int i = 0;i < length; i++)
+			sb.append(cons.charAt(Math.abs(rand.nextInt()%cons.length())));			
+		
+	
+		return sb.toString();		
+	}
+	
+	public static String getRandomPerson(){
+		Persons[] ps = Persons.values();
+		Random rand = new Random();	
+	
+		return ps[Math.abs(rand.nextInt()%ps.length)].getColor();		
+	}
 }

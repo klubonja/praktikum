@@ -49,4 +49,10 @@ public class DataGuiManagerClient extends DataGuiManager{
 		return (CluedoClientGUI) super.getGui();
 	}
 	
+	public void setServerLoggedIn(ArrayList<CluedoGameClient> gameslist,String servername,String serverip,String status){
+		setGames(gameslist);		
+		updateNetworkActorGui(servername,serverip,status);
+	}
+	
+	
 }

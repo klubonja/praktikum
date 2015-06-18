@@ -72,7 +72,15 @@ class IncomingHandler implements Runnable {
 		if (errcode == NetworkHandhakeCodes.OK) {	
 			JSONArray gamearray = checker.getMessage().getJSONArray("game array");	
 			ArrayList<CluedoGameClient> gameslist = NetworkMessages.createGamesFromJSONGameArray(gamearray);
-			dataGuiManager.setGames(gameslist);			
+			
+			dataGuiManager.setServerLoggedIn(
+					gameslist,
+					dataGuiManager.getServer().getGroupName(),
+					dataGuiManager.getServer().getIpString(),
+					"logged in"
+					);
+					
+			
 		}
 		else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
 				|| errcode == NetworkHandhakeCodes.TYPERR){
@@ -82,6 +90,7 @@ class IncomingHandler implements Runnable {
 		else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
 			dataGuiManager.addMsgIn(checker.getMessage().getString("message"));
 		}
+		
 	}
 	
 	

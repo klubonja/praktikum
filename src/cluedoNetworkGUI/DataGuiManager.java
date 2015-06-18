@@ -23,7 +23,7 @@ public class DataGuiManager   {
 		  return date.format(now);
 	}
 	
-	public ListView<NetworkActorHBox> getNetworkActorsListView(){
+	public ListView<NetworkActorVBox> getNetworkActorsListView(){
 		return gui.getNetworkActorsView();
 	}
 	
@@ -50,11 +50,17 @@ public class DataGuiManager   {
 		  });
 	  }
 	  
-	  public void addNetworkActorToGui(String name,String ip){		 
+	  public void addNetworkActorToGui(String name,String ip,String status){		 
 		 Platform.runLater(() -> {
-			 gui.addNetworkActor(name,ip);
+			 gui.addNetworkActor(name,ip,status);
 		  });
 	  }
+	  
+	  public void updateNetworkActorGui(String name,String ip,String status){		 
+			 Platform.runLater(() -> {
+				 gui.updateNetworkActor(name,ip,status);
+			  });
+		  }
 	  
 	  public void addGameToGui(int gameID,String specialInfo, String info){
 		  Platform.runLater(() -> {
