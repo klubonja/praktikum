@@ -1,12 +1,10 @@
 package cluedoNetworkGUI;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
-import cluedoNetworkLayer.CluedoGameClient;
 
 public class DataGuiManager   {
 	
@@ -99,12 +97,7 @@ public class DataGuiManager   {
 		  Platform.runLater(() -> {gui.addGame(gameID, specialinfo, info);});
 	  }
 	  
-	  public void addGamesGui(ArrayList<CluedoGameClient> glist){
-		  Platform.runLater(() -> {
-			  for (CluedoGameClient c: glist)
-					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
-		 });
-	  }
+	  
 	  
 	  public void updateGame(int gameID,String specialinfo, String info){
 		Platform.runLater(() -> {gui.updateGame(gameID, specialinfo, info); 		});

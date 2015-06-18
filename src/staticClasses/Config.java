@@ -41,7 +41,7 @@ public abstract class Config {
 	public final static double SERVER_WINDOW_WIDTH = 700;
 	public final static double SERVER_WINDOW_HEIGHT = 350;
 	public final static double GAME_LIST_ITEM_HEIGHT = 50;
-	public final static double NETWORK_ACTOR_LIST_ITEM_HEIGHT = 40;
+	public final static double NETWORK_ACTOR_LIST_ITEM_HEIGHT = 50;
 	
 	public final static String BLACKLISTED_MSG = ""
 			+ "you have the ip of some evil known protoksaveollviolator, lets try anyway";

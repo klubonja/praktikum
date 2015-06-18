@@ -2,6 +2,7 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
 
@@ -48,6 +49,15 @@ public class DataGuiManagerClient extends DataGuiManager{
 	public CluedoClientGUI getGui() {
 		return (CluedoClientGUI) super.getGui();
 	}
+	
+	
+	
+	public void addGamesGui(ArrayList<CluedoGameClient> glist){
+		  Platform.runLater(() -> {
+			  for (CluedoGameClient c: glist)
+					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
+		 });
+	  }
 	
 	public void setServerLoggedIn(ArrayList<CluedoGameClient> gameslist,String servername,String serverip,String status){
 		setGames(gameslist);		

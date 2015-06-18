@@ -125,7 +125,7 @@ class CommunicationHandler implements Runnable{
 	        	   else if (checker.getType().equals("join game")){
 	        		   int gameID = checker.getMessage().getInt("gameID");
 	        		   String color = checker.getMessage().getString("color");
-	        		   if (dataGuiManager.joinGame(gameID, color, client.getNick())){
+	        		   if (dataGuiManager.joinGame(gameID, color, client)){
 	        			   dataManager.notifyAll(
 		        				   NetworkMessages.player_addedMsg(
 		        						   NetworkMessages.player_info(

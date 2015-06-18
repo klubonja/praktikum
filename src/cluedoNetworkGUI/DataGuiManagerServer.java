@@ -3,9 +3,11 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoServer.ClientItem;
 import cluedoServer.DataManagerServer;
+import cluedoServer.GameListServer;
 
 public class DataGuiManagerServer extends DataGuiManager {
 	
@@ -29,15 +31,16 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean addGame(CluedoGameServer game){
 		if (dataManager.addGame(game)){
-			gui.addGame(game.getGameId(),"(test) Game",game.getNicksConnected());
+			gui.addGame(game.getGameId(),"Game",game.getNicksConnected());
 			return true;
 		};
 		
 		return false;		
 	}
 	
-	public boolean joinGame(int gameID, String color,String nick){
-		 if (dataManager.joinGame(gameID, color, nick)){
+	
+	public boolean joinGame(int gameID, String color,ClientItem client){
+		 if (dataManager.joinGame(gameID, color, client)){
 			updateGame(gameID, "(updated) Game", dataManager.getNicksConnectedByGameID(gameID));
 			return true;
 		 };
@@ -64,14 +67,17 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean removeClient(ClientItem client){
 		if (dataManager.removeClientfromSystem(client)){
-			removeNetworkActorFromGui(client.getNick(),client.getIpString());	
+			//removeNetworkActorFromGui(client.getNick(),client.getIpString());	
+			refreshGamesList();
 			return true;
 		}
 		return false;				
 	}
 	
+	
+	
 	public ArrayList<CluedoGameServer> getGamesByPlayer(ClientItem client){
-		return dataManager.getGamesByPlayer(client.getNick())	;		
+		return dataManager.getGamesByPlayer(client.getNick());		
 	}
 	
 	public int createGame(String color, String nick){		
@@ -85,9 +91,20 @@ public class DataGuiManagerServer extends DataGuiManager {
 	}
 	
 	public void closeOn(ClientItem client,String msg){
-		addMsgIn(msg);
+		addMessageOut(msg);
 		removeClient(client);
 	}
 	
+	public void refreshGamesList(){
+		emptyGamesList();
+		addGamesGui( dataManager.getGameList());
+	}
+	
+	public void addGamesGui(GameListServer glist){
+		  Platform.runLater(() -> {
+			  for (CluedoGameServer c: glist)
+					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
+		 });
+	  }
 	
 }

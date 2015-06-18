@@ -10,10 +10,10 @@ public class GameListServer extends ArrayList<CluedoGameServer> {
 		super();
 	}
 	
-	public boolean joinGame(int gameID, String color, String nick){
+	public boolean joinGame(int gameID, String color, ClientItem client){
 		for (CluedoGameServer cg : this)
 			if (gameID == cg.getGameId()){
-				return cg.joinGame(color, nick);
+				cg.joinGame(color, client);
 			}
 		return false;
 	}

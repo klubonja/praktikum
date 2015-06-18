@@ -31,6 +31,10 @@ public class DataManagerServer extends DataManager {
 		return gamesList;
 	}
 	
+	public ArrayList<CluedoGameServer> getGameListArray() {
+		return gamesList;
+	}
+	
 	@Override
 	public CluedoGameServer getGameByIndex(int index) throws ArrayIndexOutOfBoundsException{
 		return gamesList.get(index);
@@ -45,9 +49,8 @@ public class DataManagerServer extends DataManager {
 		return glist;
 	}
 	
-	@Override
-	public boolean joinGame(int gameID, String color,String nick){
-		return gamesList.joinGame(gameID, color, nick);
+	public boolean joinGame(int gameID, String color,ClientItem client){
+		return gamesList.joinGame(gameID, color, client);
 	}
 	
 	public boolean addNetworkActor(ClientItem client){
@@ -111,6 +114,14 @@ public class DataManagerServer extends DataManager {
 					return true;
 		return false;
  	}
+
+
+
+	@Override
+	public boolean joinGame(int gameID, String color, String nick) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
 	
 

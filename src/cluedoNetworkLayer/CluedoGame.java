@@ -44,8 +44,7 @@ public class CluedoGame {
 					p.setNick(nick);
 					return true;
 				}
-				return false;
-				
+				return false;				
 			}
 		}	
 				
@@ -74,6 +73,18 @@ public class CluedoGame {
 	
 	public ArrayList<CluedoPlayer> getPlayers() {
 		return players;
+	}
+	
+	public boolean removePlayer(String nick){
+		for (CluedoPlayer cp: players)
+			if (cp.getNick().equals(nick)){
+				cp.setNick("");
+				return true;
+			}
+		
+		return false;
+				
+			
 	}
 
 	

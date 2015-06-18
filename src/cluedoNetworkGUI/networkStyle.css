@@ -31,11 +31,15 @@
 
 .gameNameItem {
 	-fx-font: 15px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-fx-text-fill: #000000;
 }
 
 .gameInfoItem {
 	-fx-font: 10px "Tahoma";
     -fx-padding: 0;
+    -fx-background-color: #ffffff;
+	-fx-fx-text-fill: #000000;
     
 }
 
