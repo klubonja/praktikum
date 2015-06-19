@@ -8,6 +8,7 @@ import cluedoNetworkLayer.CluedoGameServer;
 import cluedoServer.ClientItem;
 import cluedoServer.DataManagerServer;
 import cluedoServer.GameListServer;
+import enums.JoinGameStatus;
 
 public class DataGuiManagerServer extends DataGuiManager {
 	
@@ -39,13 +40,12 @@ public class DataGuiManagerServer extends DataGuiManager {
 	}
 	
 	
-	public boolean joinGame(int gameID, String color,ClientItem client){
-		 if (dataManager.joinGame(gameID, color, client)){
-			updateGame(gameID, "(updated) Game", dataManager.getNicksConnectedByGameID(gameID));
-			return true;
-		 };
+	public JoinGameStatus joinGame(int gameID, String color,ClientItem client){
+		JoinGameStatus status =  dataManager.joinGame(gameID, color, client);
+		if (status == JoinGameStatus.added)
+			updateGame(gameID, "Game", dataManager.getNicksConnectedByGameID(gameID));
 		 
-		 return false;
+		return status;
 	}
 	
 	public void setGuiStatus(String status) {

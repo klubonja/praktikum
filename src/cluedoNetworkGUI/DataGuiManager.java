@@ -100,7 +100,10 @@ public class DataGuiManager   {
 	  
 	  
 	  public void updateGame(int gameID,String specialinfo, String info){
-		Platform.runLater(() -> {gui.updateGame(gameID, specialinfo, info); 		});
+		Platform.runLater(() -> {
+			gui.updateGame(gameID, specialinfo, info); 	
+			System.out.println("special info in dataguimanager l105"+info);
+		});
 	  }
 	  
 	  public CluedoNetworkGUI getGui() {

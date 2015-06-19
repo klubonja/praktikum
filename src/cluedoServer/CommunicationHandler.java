@@ -11,6 +11,7 @@ import staticClasses.Config;
 import staticClasses.Methods;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.DataGuiManagerServer;
+import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
 
@@ -47,7 +48,7 @@ class CommunicationHandler implements Runnable{
 		boolean readyForCommunication = false;
 		System.out.println("awaiting");
 
-		while (!readyForCommunication) {
+		while (!readyForCommunication) { // will keep listening for valid login msg
 			try {
 				String message = Methods.getTCPMessage(client.getSocket()).trim();
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
@@ -125,7 +126,8 @@ class CommunicationHandler implements Runnable{
 	        	   else if (checker.getType().equals("join game")){
 	        		   int gameID = checker.getMessage().getInt("gameID");
 	        		   String color = checker.getMessage().getString("color");
-	        		   if (dataGuiManager.joinGame(gameID, color, client)){
+	        		   JoinGameStatus status = dataGuiManager.joinGame(gameID, color, client) ;
+	        		   if (status == JoinGameStatus.added){
 	        			   dataManager.notifyAll(
 		        				   NetworkMessages.player_addedMsg(
 		        						   NetworkMessages.player_info(
@@ -137,9 +139,10 @@ class CommunicationHandler implements Runnable{
 		        						   )
 		        				   );
 	        		   }
-	        		   else {
-	        			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));
-	        		   }	        		  
+	        		   else if (status == JoinGameStatus.already_joined)
+	        			   client.sendMsg(NetworkMessages.error_Msg("you have already joined this game"));
+	        		   else if (status == JoinGameStatus.nick_already_taken)
+	        			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));	        		  
 	        	   }
 	           }	
 	           //nur damit nichts unter den tisch fällt

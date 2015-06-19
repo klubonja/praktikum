@@ -2,6 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
+
 import enums.GameStates;
 import enums.Persons;
 import enums.PlayerStates;
@@ -37,11 +38,33 @@ public class CluedoGame {
 		
 	}
 	
+	public boolean addPlayers(ArrayList<CluedoPlayer> plist){
+			for (CluedoPlayer pl: plist){
+				joinGame(pl.getCluedoPerson().getColor(),pl.getNick());
+			}
+		return false;
+	}
+	
 	public boolean joinGame(String color,String nick){
 		for (CluedoPlayer p: players){
 			if (p.getCluedoPerson().getColor().equals(color)){
 				if (p.getNick().equals("")){
 					p.setNick(nick);
+					return true;
+				}
+				return false;				
+			}
+		}	
+				
+		return false;
+	}
+	
+	public boolean joinGame(String color,String nick,PlayerStates state){
+		for (CluedoPlayer p: players){
+			if (p.getCluedoPerson().getColor().equals(color)){
+				if (p.getNick().equals("")){
+					p.setNick(nick);
+					p.setState(state);
 					return true;
 				}
 				return false;				
@@ -92,9 +115,9 @@ public class CluedoGame {
 		this.gameState = gameState;
 	}
 	
-	public CluedoPlayer getPlayer(String name){
+	public CluedoPlayer getPlayer(String color){
 		for (CluedoPlayer p : players)
-			if (p.getCluedoPerson().getPersonName().equals(name))
+			if (p.getCluedoPerson().getColor().equals(color))
 				return p;
 		
 		return null;

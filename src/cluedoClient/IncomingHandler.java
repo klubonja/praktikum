@@ -56,7 +56,8 @@ class IncomingHandler implements Runnable {
 				}
 			}			
 			catch (Exception e){
-				dataGuiManager.setStatus("Server "+dataGuiManager.getServer().getGroupName()+" hat sich unhöflich verabschiedet\n "+e.getMessage());		
+				dataGuiManager.setStatus("Server "+dataGuiManager.getServer().getGroupName()+" hat sich unhöflich verabschiedet\n "+e.getMessage());	
+				dataGuiManager.refreshGamesList();
 				kill();
 			}			
 		}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
+import cluedoNetworkLayer.CluedoGameServer;
 
 public class DataGuiManagerClient extends DataGuiManager{
 	
@@ -63,6 +64,13 @@ public class DataGuiManagerClient extends DataGuiManager{
 		setGames(gameslist);		
 		updateNetworkActorGui(servername,serverip,status);
 	}
+	
+	public void refreshGamesList(){
+		emptyGamesList();
+		
+	}
+	
+	
 	
 	
 }

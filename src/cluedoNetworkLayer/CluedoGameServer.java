@@ -3,6 +3,7 @@ package cluedoNetworkLayer;
 import java.util.ArrayList;
 
 import cluedoServer.ClientItem;
+import enums.JoinGameStatus;
 
 public class CluedoGameServer extends CluedoGame{
 	ArrayList<ClientItem> participants;
@@ -41,14 +42,35 @@ public class CluedoGameServer extends CluedoGame{
 		return false;
 	}
 	
-	public boolean joinGame(String color,ClientItem client){
+	public JoinGameStatus joinGameServer(String color,ClientItem client){
+		if (participants.contains(client)) return JoinGameStatus.already_joined;
+		
 		for (CluedoPlayer p: players){
 			if (p.getCluedoPerson().getColor().equals(color)){
-				if (p.getNick().equals("") && !participants.contains(client)){
-					p.setNick(client.getNick());
+				if (p.getNick().equals("")){
+					if (participants.add(client)){
+						p.setNick(client.getNick());
+						return JoinGameStatus.added;
+					}
+					return JoinGameStatus.error;
+				}
+				return JoinGameStatus.nick_already_taken;
+			}
+		}	
+		
+		return JoinGameStatus.error;
+	}
+	
+	public boolean leaveGameServer(ClientItem client){
+		for (CluedoPlayer p: players){
+			if (p.getNick().equals(client.getNick())){
+				if (participants.remove(client)){
+					p.setNick("");
 					return true;
 				}
-				return false;				
+				else {
+					return false;
+				}				
 			}
 		}	
 				

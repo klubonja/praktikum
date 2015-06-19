@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import cluedoNetworkGUI.DataManager;
 import cluedoNetworkLayer.CluedoGameServer;
+import enums.JoinGameStatus;
 
 public class DataManagerServer extends DataManager {
 	
@@ -49,7 +50,7 @@ public class DataManagerServer extends DataManager {
 		return glist;
 	}
 	
-	public boolean joinGame(int gameID, String color,ClientItem client){
+	public JoinGameStatus joinGame(int gameID, String color,ClientItem client){
 		return gamesList.joinGame(gameID, color, client);
 	}
 	
@@ -62,7 +63,7 @@ public class DataManagerServer extends DataManager {
 	}
 	
 	public String getNicksConnectedByGameID(int gameID){
-		return gamesList.getGameByGameID(gameID).getNicksConnected();
+		return gamesList.getGameByID(gameID).getNicksConnected();
 	}
 	
 	public boolean addGame(CluedoGameServer game){
@@ -114,9 +115,7 @@ public class DataManagerServer extends DataManager {
 					return true;
 		return false;
  	}
-
-
-
+	
 	@Override
 	public boolean joinGame(int gameID, String color, String nick) {
 		// TODO Auto-generated method stub

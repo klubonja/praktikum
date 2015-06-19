@@ -377,6 +377,7 @@ public abstract class NetworkMessages {
 					p.getState().getName()
 				)
 			);
+			System.out.println(game.getGameId()+"id : playernick"+p.getNick());
 			perspossJSON.put(
 				NetworkMessages.player_pos(
 					p.getCluedoPerson().getColor(), 
@@ -456,15 +457,22 @@ public abstract class NetworkMessages {
 			
 			JSONArray players = gamearray.getJSONObject(i).getJSONArray("players");				
 			for (int n = 0;n < players.length();n++){
-				CluedoPlayer player = new CluedoPlayer(
-						Persons.getPersonByColor(
-								players.getJSONObject(n).getString("color")
-								),
+//				CluedoPlayer player = new CluedoPlayer(
+//						Persons.getPersonByColor(
+//								players.getJSONObject(n).getString("color")
+//								),
+//						PlayerStates.getPlayerState(
+//								players.getJSONObject(n).getString("playerstate")
+//								)									
+//						);	
+//				player.setNick(players.getJSONObject(n).getString("nick"));
+				newgame.joinGame(
+						players.getJSONObject(n).getString("color")
+						,
+						players.getJSONObject(n).getString("nick"), 
 						PlayerStates.getPlayerState(
-								players.getJSONObject(n).getString("playerstate")
-								)									
-						);	
-				player.setNick(players.getJSONObject(n).getString("nick"));
+								players.getJSONObject(n).getString("playerstate"))
+						);
 			}
 			
 			JSONArray watchers = gamearray.getJSONObject(i).getJSONArray("watchers");				
@@ -497,6 +505,7 @@ public abstract class NetworkMessages {
 								);
 				newgame.getWeaponByName(wname).getPosition().setY(wpos.getJSONObject("field").getInt("y"));
 			}	
+			
 			gamelist.add(newgame);
 		}
 		
