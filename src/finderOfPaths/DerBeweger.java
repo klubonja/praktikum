@@ -4,6 +4,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -29,6 +30,11 @@ public class DerBeweger {
 	private int jetzigeSpalte;
 	private int jetzigeReihe;
 	
+	private Kachel raumZielKachel;
+	private Kachel raumAnfangsKachel;
+	
+	private Kachel startKachel;
+	
 	private int yDistanz;
 	private int xDistanz;
 	
@@ -38,6 +44,7 @@ public class DerBeweger {
     private KeyValue keyValueY;
     
     private int schritte;
+    private int nullSchritte;
     
     private Kachel anfangsKachel;
     private Kachel zielKachel;
@@ -53,13 +60,13 @@ public class DerBeweger {
 		spieler = ballEbene.getSpieler();
 	}
 	
-	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe){
+	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe, int nullSchritteEingabe){
 		
 		System.out.println("Beweger active!");
 		
 		this.schritte = schritteEingabe;
 		
-		
+		this.nullSchritte = nullSchritteEingabe;
 		
 		this.anweisungen = anweisungenEingabe;
 		
@@ -79,7 +86,7 @@ public class DerBeweger {
 //		System.out.println("schritte : "+schritte);
 //		System.out.println("momentaneAnweisung : "+momentaneAnweisung);
 
-		momentaneAnweisung = wieVieleAnweisungen - schritte;
+		momentaneAnweisung = wieVieleAnweisungen + nullSchritte - schritte;
 				
 		
 		if (schritte>0){
@@ -123,6 +130,12 @@ public class DerBeweger {
 				xDistanz = -1;
 				yDistanz = 0;
 			}
+			
+			else {
+				xDistanz = 0;
+				yDistanz = 0;
+			}
+			
 			if (jetzigeReihe+yDistanz != 26 && jetzigeSpalte + xDistanz != 25)
 			zielKachel = gui.getKachelArray()[jetzigeReihe+yDistanz][jetzigeSpalte+xDistanz];
 			
@@ -146,7 +159,7 @@ public class DerBeweger {
 				public void handle(ActionEvent e) {
 					anfangsKachel = zielKachel;
 					schritte--;
-					bewegen(anweisungen, schritte);
+					bewegen(anweisungen, schritte, nullSchritte);
 				}
 			});
 			
@@ -173,6 +186,10 @@ public class DerBeweger {
 			System.out.println("anfangs positionen!");
 			System.out.println("player y : " +player.getyCoord() +"   player x : " +player.getxCoord());
 			
+			startKachel = gui.getKachelArray()[player.getyCoord()][player.getxCoord()];
+			
+			System.out.println(" test " + startKachel.getLayoutX());
+			
 			System.out.println("layout y : " +gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutX() +"  layout x : " +gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutY());
 			
 			Path path = new Path();
@@ -180,7 +197,7 @@ public class DerBeweger {
 			path.getElements().add(new LineTo(gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutX(), gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutY()));
 
 			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(Math.abs(player.getyCoord()) * 1000 + Math.abs(player.getxCoord()) * 1000));
+			pathTransition.setDuration(Duration.millis(Math.abs(player.getyCoord()) * 500 + Math.abs(player.getxCoord()) * 500));
 			pathTransition.setNode(spieler);
 			pathTransition.setPath(path);
 			pathTransition.play();
@@ -188,6 +205,41 @@ public class DerBeweger {
 			
 		}
 		
+		public void inRaumBewegen(String raum, Player player){
+			
+			if (raum == "Eingangshalle"){
+				if (player.getColor() == Color.PURPLE){
+					raumZielKachel = gui.getKachelArray()[11][1];
+				}
+			}
+			
+			raumAnfangsKachel = gui.getKachelArray()[player.getyCoord()][player.getxCoord()];
+			
+			System.out.println(" test " + startKachel.getLayoutX());
+			
+			System.out.println("layout y : " +gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutX() +"  layout x : " +gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutY());
+			
+			Path path = new Path();
+			path.getElements().add(new MoveTo(raumAnfangsKachel.getLayoutX(),raumAnfangsKachel.getLayoutY()));
+			path.getElements().add(new LineTo(raumZielKachel.getLayoutX(), raumZielKachel.getLayoutY()));
+
+			PathTransition pathTransition = new PathTransition();
+			pathTransition.setDuration(Duration.millis(2000));
+			pathTransition.setNode(spieler);
+			pathTransition.setPath(path);
+			pathTransition.play();
+			pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent event) {
+					
+					System.out.println("Spieler " +player.getFirstName() + " ist jetzt im Raum " +raum );
+					
+				}
+				
+			});
+
+		}
 	
 	}
 

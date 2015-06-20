@@ -22,6 +22,10 @@ public class WahnsinnigTollerPathfinder {
 	
 	private char hans;
 	
+	private boolean letztesMalTuer;
+	
+	private String tuerRichtung;
+	
 	/**
 	 * Die momentane Position an gegebenem Baum-Level
 	 */
@@ -227,9 +231,12 @@ public class WahnsinnigTollerPathfinder {
 		}
 
 		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
-				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.S)
+				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.N
+				)
 				{
-					//System.out.println("hier ist ein Tür");
+					System.out.println("hier ist ein Tür : " +jetzigeSpalte +"  " +jetzigeReihe + "  " +Orientation.N);
+					letztesMalTuer = true;
+					tuerRichtung = "S";
 					return false;
 				}
 		
@@ -270,9 +277,12 @@ public class WahnsinnigTollerPathfinder {
 		}
 		
 		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
-				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.O)
+				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.W
+				)
 				{
-					//System.out.println("hier ist eine Tür");
+					System.out.println("hier ist eine Tür : " +jetzigeSpalte +"  " +jetzigeReihe+ "  " +Orientation.W);
+					letztesMalTuer = true;
+					tuerRichtung = "E";
 					return false;
 				}
 		
@@ -309,9 +319,12 @@ public class WahnsinnigTollerPathfinder {
 		}
 
 		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
-				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.N)
+				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.S
+				)
 				{
-					//System.out.println("hier ist eine Tür");
+					System.out.println("hier ist eine Tür : " +jetzigeSpalte +"  " +jetzigeReihe+ "  " +Orientation.S);
+					letztesMalTuer = true;
+					tuerRichtung = "N";
 					return false;
 				}
 		
@@ -330,7 +343,6 @@ public class WahnsinnigTollerPathfinder {
 	 */
 	public boolean detectWest(){
 
-		
 		//System.out.println("Er sucht Westen");
 		
 		level = currentEntry.length();;
@@ -341,7 +353,7 @@ public class WahnsinnigTollerPathfinder {
 		}
 		
 		
-		//rootX[level] = rootX[level-1] - 1;
+
 		rootY[level] = rootY[level-1];
 		
 		refreshRoot();
@@ -354,9 +366,12 @@ public class WahnsinnigTollerPathfinder {
 		}
 		
 		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
-				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.W)
+				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.O
+				)
 				{
-					//System.out.println("hier ist eine Tür");
+					System.out.println("hier ist eine Tür : " +jetzigeSpalte +"  " +jetzigeReihe+ "  " +Orientation.O);
+					letztesMalTuer = true;
+					tuerRichtung = "W";
 					return false;
 				}
 		
@@ -394,10 +409,15 @@ public class WahnsinnigTollerPathfinder {
             welcheMoeglichkeit++;
             setMoeglichkeiten(moeglichkeiten);
             
-            for (int i = 1; i<=welcheMoeglichkeit;i++){
+            if (currentEntry == "OONNnullnullnull"){
+            	System.out.println("juchu!");
+            }
+            
+            
+            //for (int i = 1; i<=welcheMoeglichkeit;i++){
             	//System.out.println(currentEntry);
             	//System.out.println(moeglichkeiten[i]);
-            }
+            //}
             // level reduzieren            
             level = currentEntry.length();;
         }    
@@ -411,8 +431,26 @@ public class WahnsinnigTollerPathfinder {
                 currentEntry += himmelsrichtungen[i];
                 
                 if (detectHimmelsrichtung(himmelsrichtungen[i])){
-                	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);
+                	
+                	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);                	
                     
+                }
+                else if (!detectHimmelsrichtung(himmelsrichtungen[i]) && letztesMalTuer){
+                	//currentEntry += tuerRichtung;
+                	tuerRichtung = null;
+                	System.out.println("length: " +currentEntry.length());
+                	for ( int j = currentEntry.length(); j < maximaleSchritte; j++){
+            			currentEntry += "T";
+            		}
+                	System.out.println("length: " +currentEntry.length());
+                	//for (int i = 1; i<=welcheMoeglichkeit;i++){
+                		System.out.println(currentEntry);
+                    	//System.out.println(moeglichkeiten[i]);
+                    //}
+                	
+                	letztesMalTuer = false;
+                	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);
+            	
                 }
                 	currentEntry = oldEntry;
                 }

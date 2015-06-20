@@ -184,9 +184,10 @@ public class WahnsinnigTollerPathfinder {
 		}
 
 		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
-				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.S)
+				//&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.N
+				)
 				{
-					System.out.println("hier ist ein Tür");
+					System.out.println("hier ist ein Tür mit : " +Orientation.N.getOName());
 					return false;
 				}
 		
@@ -222,9 +223,10 @@ public class WahnsinnigTollerPathfinder {
 		}
 		
 		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
-				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.O)
+				//&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.W
+				)
 				{
-					System.out.println("hier ist eine Tür");
+					System.out.println("hier ist eine Tür mit : " +Orientation.W.getOName());
 					return false;
 				}
 		
@@ -258,9 +260,10 @@ public class WahnsinnigTollerPathfinder {
 		}
 
 		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
-				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.N)
+				//&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.S
+				)
 				{
-					System.out.println("hier ist eine Tür");
+					System.out.println("hier ist eine Tür mit : " +Orientation.S.getOName());
 					return false;
 				}
 		
@@ -296,9 +299,10 @@ public class WahnsinnigTollerPathfinder {
 		}
 		
 		else if (gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstRaum() &&  gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].isIstTuer()
-				&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.W)
+				//&& gui.getKachelArray()[jetzigeSpalte][jetzigeReihe].getOrientierung()==Orientation.O
+				)
 				{
-					System.out.println("hier ist eine Tür");
+					System.out.println("hier ist eine Tür mit : " +Orientation.O.getOName());
 					return false;
 				}
 		

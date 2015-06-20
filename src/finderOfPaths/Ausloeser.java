@@ -30,6 +30,8 @@ public class Ausloeser {
 	private Orientation [] anweisungenOrientations = new Orientation [12];
 	private WahnsinnigTollerPathfinder pathfinder;
 	
+	private int nullSchritte;
+	
 	private int schritte;
 	
 	private Player player;
@@ -70,6 +72,7 @@ public class Ausloeser {
 				click(event);
 			}});
 		ballEbene.getWuerfeln().setOnMouseClicked(e -> wuerfeln());
+		ballEbene.getBeginnen().setOnMouseClicked(e -> beweger.anfangsPositionSetzen());
 //		DiceView.roll.setOnMouseClicked(e -> wuerfeln());
 	}
 	
@@ -142,7 +145,8 @@ public class Ausloeser {
 								System.out.println(moeglichkeitenHierher[h]);
 							}
 							
-							beweger.bewegen(anweisungenOrientations, schritte);
+							beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
+							nullSchritte = 0;
 							
 							
 							}
@@ -184,7 +188,12 @@ public class Ausloeser {
 				if (anweisungen[counterInnen] == 'W'){
 					anweisungenOrientations[counterInnen] = Orientation.W;
 				}
-				 
+				
+				if (anweisungen[counterInnen] == 'T'){
+					nullSchritte++;
+					anweisungenOrientations[counterInnen] = null;
+				}
+				  
 			}
 		
 		return anweisungenOrientations;

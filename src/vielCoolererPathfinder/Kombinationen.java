@@ -1,4 +1,4 @@
-package vielCoolererPathfinder;
+ackage vielCoolererPathfinder;
 
 public class Kombinationen {
 	
