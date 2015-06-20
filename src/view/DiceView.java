@@ -1,6 +1,7 @@
 package view;
 
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -40,24 +41,32 @@ public class DiceView extends GridPane{
 		//Edits the layout of the main GridPane.
 		this.setGridLinesVisible(false);
 		this.setVgap(5);
-		this.setHgap(10);
-		this.getRowConstraints().add(new RowConstraints(150));
+		this.setHgap(20);
+		this.getRowConstraints().add(new RowConstraints(120));
+		this.getRowConstraints().add(new RowConstraints(25));
 		this.getColumnConstraints().add(new ColumnConstraints(150));
 		this.getColumnConstraints().add(new ColumnConstraints(150));
+		this.setPadding(new Insets(5));
 		
 		//Create the roll button and edit the layout.
-		rollBtn = new Button("Roll!");
-		GridPane.setConstraints(rollBtn,0,0);
+		rollBtn = new Button("Roll");
+		GridPane.setConstraints(rollBtn,0,1);
 		GridPane.setColumnSpan(rollBtn, 2);
 		GridPane.setHalignment(rollBtn, HPos.CENTER);
 		GridPane.setValignment(rollBtn, VPos.BOTTOM);
+		rollBtn.setPrefSize(80, 25);
+		rollBtn.setMinSize(80, 25);
+		rollBtn.setMaxSize(80, 25);
 		
 		//Create the move button and edit it.
-		moveBtn = new Button("Move");
-		GridPane.setConstraints(moveBtn,0,0);
+		moveBtn = new Button("Move!");
+		GridPane.setConstraints(moveBtn,0,1);
 		GridPane.setColumnSpan(moveBtn, 2);
 		GridPane.setHalignment(moveBtn, HPos.CENTER);
 		GridPane.setValignment(moveBtn, VPos.BOTTOM);
+		moveBtn.setPrefSize(80, 25);
+		moveBtn.setMinSize(80, 25);
+		moveBtn.setMaxSize(80, 25);
 		
 		//Creates an ImageView for the first dice.
 		d1 = new ImageView();
@@ -65,7 +74,7 @@ public class DiceView extends GridPane{
 		d1.setFitHeight(100);
 		d1.setFitWidth(100);
 		GridPane.setConstraints(d1,0,0);
-		GridPane.setHalignment(d1, HPos.CENTER);
+		GridPane.setHalignment(d1, HPos.RIGHT);
 		GridPane.setValignment(d1, VPos.CENTER);
 		
 		//Creates an ImageView for the second dice.
@@ -73,7 +82,7 @@ public class DiceView extends GridPane{
 		d2.setImage(dice1);
 		d2.setFitHeight(100);
 		d2.setFitWidth(100);
-		GridPane.setHalignment(d2, HPos.CENTER);
+		GridPane.setHalignment(d2, HPos.LEFT);
 		GridPane.setValignment(d2, VPos.CENTER);
 		GridPane.setConstraints(d2,1,0);
 		

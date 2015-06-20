@@ -10,7 +10,7 @@ import javafx.util.Duration;
  * @since 26.05.2015
  * @author YinYanYolos
  * 
- * The Class DicePresenter. Makes able to trigger all the events of the DiceView
+ * The class DicePresenter. Makes able to trigger all the events of the DiceView class.
  *
  */
 
