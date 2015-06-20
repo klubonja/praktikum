@@ -121,7 +121,7 @@ class CommunicationHandler implements Runnable{
 	           }
 	           else {
 	        	   if (checker.getType().equals("create game")){
-	        		   createGame(checker.getMessage().getString("color"),client.getNick());
+	        		   createGame(checker.getMessage().getString("color"),client);
 	        	   }
 	        	   else if (checker.getType().equals("join game")){
 	        		   int gameID = checker.getMessage().getInt("gameID");
@@ -161,12 +161,12 @@ class CommunicationHandler implements Runnable{
 		
 	}
 	
-	void createGame(String color,String nick){
-		int gameID = dataGuiManager.createGame(color, nick);
+	void createGame(String color,ClientItem client){
+		int gameID = dataGuiManager.createGame(color, client);
 		dataManager.notifyAll(
 				NetworkMessages.game_createdMsg(
 						NetworkMessages.player_info(
-								nick, 
+								client.getNick(), 
 								color,PlayerStates.do_nothing.getName()
 								), 
 						gameID
