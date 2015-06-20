@@ -91,7 +91,7 @@ public class DiceView extends GridPane{
 	}
 	
 	
-	//Getter and Setters
+	//Getters and Setters
 	public Button getrollBtn() {
 		return rollBtn;
 	}
