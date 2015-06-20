@@ -59,6 +59,7 @@ public class InGameMainMenuView extends GridPane{
 		stage.setFullScreen(false);
 		stage.initStyle(StageStyle.UNDECORATED);
 		stage.toFront();
+		stage.centerOnScreen();
 		stage.show();
 		
 		}

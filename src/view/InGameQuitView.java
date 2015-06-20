@@ -32,7 +32,7 @@ public class InGameQuitView extends GridPane{
 		this.getColumnConstraints().add(new ColumnConstraints(200));
 		this.setHgap(20);
 		
-		question = new Label("Do you want to QUIT the game?");
+		question = new Label("Do you really want to QUIT the game?");
 		yes = new Button("Yes");
 		no = new Button("No");
 		
@@ -59,6 +59,7 @@ public class InGameQuitView extends GridPane{
 		stage.setFullScreen(false);
 		stage.initStyle(StageStyle.UNDECORATED);
 		stage.toFront();
+		stage.centerOnScreen();
 		stage.show();
 		
 		}
