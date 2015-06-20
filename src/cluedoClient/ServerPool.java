@@ -2,6 +2,8 @@ package cluedoClient;
 
 import java.util.ArrayList;
 
+import staticClasses.Methods;
+
 public class ServerPool extends ArrayList<ServerItem> {
 	
 	public ServerPool() {
@@ -21,6 +23,14 @@ public class ServerPool extends ArrayList<ServerItem> {
 		return super.add(e);
 		
 	}
+	
+	public void sendToAll(String msg){
+		for (ServerItem server: this)
+			Methods.sendTCPMsg(server.getSocket(), msg);
+			
+	}
+	
+	
 	
 //	public ClientGameItem getGameById(int gameID,ServerItem server){
 //		for (ServerItem s : this)

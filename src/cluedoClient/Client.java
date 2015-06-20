@@ -100,6 +100,7 @@ public class Client {
 		          
 		          try {
 		        	   run = false;
+		        	   dataGuiManager.sayGoodbye(NetworkMessages.disconnectMsg());
 		               Platform.exit();
 		               System.exit(0);
 		               System.out.println("Terminated");

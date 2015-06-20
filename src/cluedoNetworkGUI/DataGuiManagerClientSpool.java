@@ -46,8 +46,11 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	@Override
 	public CluedoClientGUI getGui() {
-		// TODO Auto-generated method stub
 		return (CluedoClientGUI) super.getGui();
+	}
+	
+	public void sayGoodbye(String msg){
+		serverPool.sendToAll(msg);
 	}
 	
 	
