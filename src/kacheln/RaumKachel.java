@@ -2,6 +2,7 @@ package kacheln;
 
 import javafx.scene.paint.Color;
 import enums.Orientation;
+import enums.Rooms;
 
 /**
  * @since 26.05.2015
@@ -13,9 +14,9 @@ import enums.Orientation;
  */
 public class RaumKachel extends Kachel {
 	
-	private String raum;
+	private Rooms raum;
 	
-	public RaumKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung, String raum, boolean istTuer, char [] moeglichkeiten){
+	public RaumKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung, Rooms raum, boolean istTuer, char [] moeglichkeiten){
 		super(text, xKoordinate, yKoordinate, istRaum, orientierung, istTuer, moeglichkeiten);
 		this.raum = raum;
 		istRaum = true;
@@ -23,11 +24,11 @@ public class RaumKachel extends Kachel {
 
 	}
 
-	public String getRaum() {
+	public Rooms getRaum() {
 		return raum;
 	}
 
-	public void setRaum(String raum) {
+	public void setRaum(Rooms raum) {
 		this.raum = raum;
 	}
 	
