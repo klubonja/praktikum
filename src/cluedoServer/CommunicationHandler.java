@@ -28,6 +28,7 @@ class CommunicationHandler implements Runnable{
 	DataGuiManagerServer dataGuiManager;
 	
 	boolean run = true;	
+	boolean readyForCommunication = false;
 	
 	/**
 	 * @param ss
@@ -45,7 +46,6 @@ class CommunicationHandler implements Runnable{
 	}	
 	
 	private void awaitingLoginAttempt (){
-		boolean readyForCommunication = false;
 		System.out.println("awaiting");
 
 		while (!readyForCommunication) { // will keep listening for valid login msg
@@ -68,11 +68,15 @@ class CommunicationHandler implements Runnable{
 					client.sendMsg(NetworkMessages.login_sucMsg(
 							client.getExpansions(),
 							dataManager.getClientPool(), 
-							dataManager.getGameList()));
+							dataManager.getGameList()
+							)
+					);
 					System.out.println(NetworkMessages.login_sucMsg(
 							client.getExpansions(),
 							dataManager.getClientPool(), 
-							dataManager.getGameList()));
+							dataManager.getGameList()
+							)
+					);
 					
 					if (dataGuiManager.addNetworkActor(client,"logged in"))
 						dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
@@ -91,8 +95,7 @@ class CommunicationHandler implements Runnable{
 					client.closingConnection(dataManager.getGroupName()+" is closing connection");
 					dataManager.blacklist(client);					
 					
-					readyForCommunication = true; // no further listinenig on this socket
-					run = false; // thread will run out without further notice					
+					
 				}
 				
 				else {
@@ -144,6 +147,9 @@ class CommunicationHandler implements Runnable{
 	        		   else if (status == JoinGameStatus.nick_already_taken)
 	        			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));	        		  
 	        	   }
+	        	   else if (checker.getType().equals("disconnect")) {
+	        		  closeProtokollConnection("");
+	        	   }
 	           }	
 	           //nur damit nichts unter den tisch fällt
 		       dataGuiManager.addMsgIn(message);
@@ -151,7 +157,7 @@ class CommunicationHandler implements Runnable{
 			}
 			catch (Exception e){
 				try {
-					closeConnection("closing :"+e.getMessage());
+					closeProtokollConnection("closing :"+e.getMessage());
 				}
 				catch (IOException ex){
 					dataGuiManager.addMsgIn(ex.getMessage());
@@ -174,16 +180,17 @@ class CommunicationHandler implements Runnable{
 				);
 	}
 	
-	private void closeConnection(String msg) throws IOException{
-		client.sendMsg(NetworkMessages.disconnectedMsg("bye " +client.getNick()));
-		dataManager.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
-		
-		dataGuiManager.closeOn(client,msg);
-		run = false;
+	private void closeProtokollConnection(String msg) throws IOException{
+		 //client.sendMsg(NetworkMessages.disconnectedMsg("bye " +client.getNick()));
+		 if (dataGuiManager.removeClient(client)){
+  		   dataManager.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
+  		   killThread();
+		 }			
 	}
 	
-	public void kill(){
-		run = false;
+	public void killThread(){
+		readyForCommunication = true; // no further listinenig on this socket
+		run = false; // thread will run out without further notice					
 	}
 	
 }

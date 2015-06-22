@@ -13,7 +13,7 @@ public class ServerItem  {
 	String groupName;
 	InetAddress ip;
 	int port;
-	GameListClient gameList;
+	GameListClient gamesList;
 	Socket socket;
 	ServerStatus status;
 	
@@ -21,7 +21,7 @@ public class ServerItem  {
 		this.groupName = groupName;
 		this.ip = ip;
 		this.port = port;
-		gameList = new GameListClient();
+		gamesList = new GameListClient();
 		status = ServerStatus.not_connected;
 		
 	}
@@ -54,11 +54,11 @@ public class ServerItem  {
 	}
 	
 	public ArrayList<CluedoGameClient> getGameList() {
-		return gameList;
+		return gamesList;
 	}
 	
 	public void addGame(CluedoGameClient cg){
-		gameList.add(cg);
+		gamesList.add(cg);
 	}
 	
 	public boolean addPlayerByGameID(int gameID, String color,String nick){
@@ -67,15 +67,15 @@ public class ServerItem  {
 		
 	public void addGames(ArrayList<CluedoGameClient> cg){
 		for (CluedoGameClient c : cg)
-			gameList.add(c);
+			gamesList.add(c);
 	}
 	
 	public void removeGame(ClientGameItem cg){
-		gameList.remove(cg);
+		gamesList.remove(cg);
 	}
 	
 	public CluedoGameClient getGameByGameID(int gameID){
-		return gameList.getGameByGameID(gameID);
+		return gamesList.getGameByGameID(gameID);
 	}
 	
 	public void setIp(InetAddress ip) {
@@ -85,5 +85,10 @@ public class ServerItem  {
 	public void setPort(int port) {
 		this.port = port;
 	}
+	
+	public boolean removePlayerFromGames(String nickID){
+		return gamesList.leaveAllGames(nickID);
+	}
+
 	
 }

@@ -50,23 +50,37 @@ class IncomingHandler implements Runnable {
 		        		  JSONObject player = checker.getMessage().getJSONObject("player");
 		        		  dataGuiManager.joinGame(gameID,player.getString("color"),player.getString("nick"));      		   
 					}
+					else if (checker.getType().equals("user left")){
+		        		  String player = checker.getMessage().getString("nick");
+		        		  dataGuiManager.removeClientFromSystem(player); 
+		        		  
+					}
+					else if (checker.getType().equals("disconnect")){
+		        		  dataGuiManager.removeServer();
+		        		  killConnection();
+					}
+					else {
+						dataGuiManager.addMsgIn("UNHANDLED TYPE : "+checker.getMessage().toString());
+					}
 				}		
 				else {
 					dataGuiManager.addMsgIn(checker.getErrString());
+					//dataGuiManager.addMsgIn(checker.getMessage().toString());
 				}
 			}			
 			catch (Exception e){
 				dataGuiManager.setStatus("Server "+dataGuiManager.getServer().getGroupName()+" hat sich unhöflich verabschiedet\n "+e.getMessage());	
-				dataGuiManager.refreshGamesList();
-				kill();
+				killConnection();
+				dataGuiManager.refreshGamesList();// refresh view before running out, its a differnet thread anyway
 			}			
 		}
 		System.out.println("running out client connected to"+dataGuiManager.getServer().getGroupName()+"incoming thread running out");
-		kill();	
+		killConnection();	
 	}
 	
 	private void getGamesList(){
 		String msg = Methods.getTCPMessage(dataGuiManager.getServer().getSocket());
+		System.out.println(msg);
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(msg));
 		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error"});
 		
@@ -86,10 +100,13 @@ class IncomingHandler implements Runnable {
 		else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
 				|| errcode == NetworkHandhakeCodes.TYPERR){
 			dataGuiManager.addMsgIn(dataGuiManager.getServer().getGroupName()+" sends invalid Messages : \n"+checker.getErrString());		
-			kill(); // thread will run out without further notice					
+			killConnection(); // thread will run out without further notice					
 		}
 		else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
 			dataGuiManager.addMsgIn(checker.getMessage().getString("message"));
+		}
+		else {
+			dataGuiManager.addMsgIn(checker.getMessage().toString());
 		}
 		
 	}
@@ -100,8 +117,8 @@ class IncomingHandler implements Runnable {
 	
 	
 	
-	public void kill(){
+	public void killConnection(){
 		run = false;
-		dataGuiManager.kill();	
+		dataGuiManager.removeServer();	
 	}
 }

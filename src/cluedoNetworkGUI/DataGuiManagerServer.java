@@ -67,7 +67,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean removeClient(ClientItem client){
 		if (dataManager.removeClientfromSystem(client)){
-			//removeNetworkActorFromGui(client.getNick(),client.getIpString());	
+			removeNetworkActorFromGui(client.getNick(),client.getIpString());	
 			refreshGamesList();
 			return true;
 		}

@@ -27,6 +27,15 @@ public class GameListClient extends ArrayList<CluedoGameClient>{
 		return false;
 	}
 	
+	public boolean leaveAllGames(String nick){
+		boolean removed = false;
+		for (CluedoGameClient cg : this){
+			 removed = cg.removePlayer(nick);				
+		}
+		
+		return removed;
+	}
+	
 	public CluedoGameClient getGameByGameID(int gameID){
 		for (CluedoGameClient cg : this)
 			if (gameID == cg.getGameId()){

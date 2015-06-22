@@ -102,6 +102,7 @@ public class CluedoGame {
 		for (CluedoPlayer cp: players)
 			if (cp.getNick().equals(nick)){
 				cp.setNick("");
+				System.out.println("removed "+nick);
 				return true;
 			}
 		

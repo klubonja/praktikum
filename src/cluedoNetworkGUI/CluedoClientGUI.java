@@ -3,7 +3,6 @@ package cluedoNetworkGUI;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.ColumnConstraints;
@@ -22,6 +21,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	
 	final public Button submitMessageButton;
 	final public Button createGame;
+	final public Button connectToTestServer;
+
 	final public TextArea inputField;
 	
 	
@@ -29,6 +30,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 super(primaryStage);
 		 submitMessageButton = new Button("Send");
 		 createGame = new Button("Create Game");
+		 connectToTestServer = new Button("TestServerConnection");
 		 inputField = new TextArea();	
 		 width = Config.CLIENT_WINDOW_WIDTH;
 		 height = Config.CLIENT_WINDOW_HEIGHT;
@@ -101,7 +103,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         tabPane.getTabs().add(tab1);
         tabPane.getTabs().add(tab0);  
         
-        menue.getChildren().add(createGame);
+        menue.getChildren().addAll(createGame,connectToTestServer);
         
         
         Text title = new Text(desc);

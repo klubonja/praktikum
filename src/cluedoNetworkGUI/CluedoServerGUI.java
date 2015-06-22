@@ -14,7 +14,6 @@ import staticClasses.Config;
  
 public class CluedoServerGUI extends CluedoNetworkGUI {
 	 
-	
 	 public CluedoServerGUI(Stage s){
 		 super(s);
 		 

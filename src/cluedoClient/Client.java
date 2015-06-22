@@ -2,7 +2,10 @@ package cluedoClient;
 
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -92,6 +95,19 @@ public class Client {
             @Override
             public void handle(ActionEvent event) {
             	sayHello();
+            }
+        });	
+		gui.connectToTestServer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	InetAddress addr;
+				try {
+					addr = InetAddress.getByName("vanuabalavu.pms.ifi.lmu.de");
+					startTCPConnection(new ServerItem("testendeTentakel", addr, 30305));
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
+            	
             }
         });	
 		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {

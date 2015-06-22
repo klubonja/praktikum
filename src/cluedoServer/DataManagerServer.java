@@ -106,6 +106,7 @@ public class DataManagerServer extends DataManager {
 			cgs.findAndRemovePlayer(client);
 		}
 		
+		
 		return clientPool.remove(client);
 	}
 	

@@ -2,6 +2,7 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
+import staticClasses.Config;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -21,7 +22,7 @@ import javafx.stage.Stage;
 public class LoginPrompt extends GridPane {
 	
 	
-	String[] labelNames = {"Nickname","Groupname"};
+	String[] labelNames = {"Nickname",Config.GROUP_NAME};
 	int[] reqLength = {3,1};
 	LoginTextField[] iFields = new LoginTextField[labelNames.length];
 	

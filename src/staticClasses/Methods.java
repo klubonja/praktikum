@@ -36,8 +36,10 @@ public abstract class Methods {
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
 			char[] buffer = new char[Config.MESSAGE_BUFFER];
-			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);			
-			return new String (buffer, 0, charCount);			
+			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
+			String inMsg = new String (buffer, 0, charCount);			
+			System.out.println("RECEIVED : "+ inMsg);
+			return inMsg;
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
@@ -52,6 +54,7 @@ public abstract class Methods {
 					        socket.getOutputStream(), StandardCharsets.UTF_8)), true);
 			 out.print(msg);
 			 out.flush();	
+			 System.out.println(msg+" sent");
 		}
 		catch (IOException e){
 			e.printStackTrace();

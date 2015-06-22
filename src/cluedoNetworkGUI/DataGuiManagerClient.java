@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
-import cluedoNetworkLayer.CluedoGameServer;
 
 public class DataGuiManagerClient extends DataGuiManager{
 	
@@ -29,8 +28,19 @@ public class DataGuiManagerClient extends DataGuiManager{
 		server.addGame(newgame);
 	}
 	
-	public void kill(){
+	public boolean removeClientFromSystem(String nickID){
+	//	if (server.removePlayerFromGames(nickID)){
+			server.removePlayerFromGames(nickID);
+			refreshGamesList();
+			return true;
+		//}
+//		System.out.println("no refreshing");
+//		return false;
+	}
+	
+	public void removeServer(){		
 		removeNetworkActorFromGui(server.getGroupName(), server.getIpString());
+		emptyGamesList();
 	}
 	
 	public boolean joinGame(int gameID,String color,String nick){
@@ -67,7 +77,7 @@ public class DataGuiManagerClient extends DataGuiManager{
 	
 	public void refreshGamesList(){
 		emptyGamesList();
-		
+		addGamesGui(server.getGameList());		
 	}
 	
 	

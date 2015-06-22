@@ -91,12 +91,19 @@ public class Server {
 				e.printStackTrace();
 			}
 			System.out.println("Server running");			
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			gui.addMessageIn(e.getMessage());
+			try {
+				stopServer();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}		
 	}
 	
 	private void stopServer()  throws IOException{
+		dataManager.notifyAll(NetworkMessages.disconnectedMsg("server "+ Config.GROUP_NAME + " says : byebye, and thanks for all the fish"));
 		connector.kill();
 		tcpSocket.close();	
 		run = false;
