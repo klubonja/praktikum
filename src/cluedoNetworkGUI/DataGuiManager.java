@@ -77,8 +77,7 @@ public class DataGuiManager   {
 	  
 	  public void setStartServiceButtonLabel(String label){
 		  Platform.runLater(() -> {gui.setStartServiceButtonLabel(label);});
-	  }
-	  
+	  }	  
 	 
 	  public void setWindowName(String label){
 		  Platform.runLater(() -> {gui.setWindowName(label);});
@@ -86,8 +85,7 @@ public class DataGuiManager   {
 	  
 	  public void removeGame(int gameID){
 		  Platform.runLater(() -> {gui.removeGame(gameID);	 });
-	  }
-	  
+	  }	  
 	
 	  public  void emptyGamesList(){
 		  Platform.runLater(() -> {gui.emptyGamesList();});
@@ -95,14 +93,11 @@ public class DataGuiManager   {
 	  
 	  public void addGame(int gameID,String specialinfo, String info){
 		  Platform.runLater(() -> {gui.addGame(gameID, specialinfo, info);});
-	  }
-	  
-	  
+	  }	  
 	  
 	  public void updateGame(int gameID,String specialinfo, String info){
 		Platform.runLater(() -> {
 			gui.updateGame(gameID, specialinfo, info); 	
-			System.out.println("special info in dataguimanager l105"+info);
 		});
 	  }
 	  
