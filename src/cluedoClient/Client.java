@@ -3,9 +3,9 @@ package cluedoClient;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -14,7 +14,7 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
-import staticClasses.Methods;
+import staticClasses.aux;
 import staticClasses.NetworkMessages;
 import broadcast.Multicaster;
 import broadcast.ServerHandShakeListener;
@@ -41,13 +41,13 @@ public class Client {
 		serverList = new ServerPool();
 		dataGuiManager = new DataGuiManagerClientSpool(gui, serverList);
 		dataGuiManager.setWindowName(Config.GROUP_NAME+ " Client");
-		System.out.println("client started");
+		
 		run = true;
 		setCloseHandler();
 		listenForServersThread();
 		sayHello();
 		
-		
+		aux.log.log(Level.INFO,"CLIENT started");		
 	}	
 	
 	void sayHello(){	
@@ -80,7 +80,7 @@ public class Client {
 			setCloseHandler();
 		}
 		catch (IOException e){
-			System.out.println(e.getMessage());			
+			 aux.log.log(Level.SEVERE,e.getMessage());	
 			dataGuiManager.removeServer("TCP server connection failed"+e.getMessage(),server);
 			run = false;
 			
@@ -117,13 +117,12 @@ public class Client {
 		          try {
 		        	   run = false;
 		        	   dataGuiManager.sayGoodbye(NetworkMessages.disconnectMsg());
+		        	   aux.log.log(Level.INFO,"CLIENT CLOSED");
 		               Platform.exit();
-		               System.exit(0);
-		               System.out.println("Terminated");
-		               
+		               System.exit(0);	               
 		          } 
 		          catch (Exception e1) {
-		               e1.printStackTrace();
+		               aux.log.log(Level.SEVERE,e1.getMessage());
 		          }
 		      }
 		 });
@@ -148,7 +147,7 @@ public class Client {
 				startTCPConnection(server);
 			}
 			else if (server.getStatus() == ServerStatus.not_connected){
-				Methods.login(dataGuiManager.getGui(), server.getGroupName(), server.getSocket());
+				aux.login(dataGuiManager.getGui(), server.getGroupName(), server.getSocket());
 			}
 		}
 		catch (Exception e){

@@ -7,8 +7,11 @@ public abstract class Config {
 	/**
 	 * unsere config daten in einer static klasse
 	 * */
+	
+	
+	
 	//public final static String GROUP_NAME = "yinyanyolosCIP";
-	public final static String GROUP_NAME = Methods.getRandomString(5);
+	public final static String GROUP_NAME = aux.getRandomString(5);
 
 	
 	public final static String PROTOKOLL_VERSION = "1.2.1";
@@ -53,4 +56,13 @@ public abstract class Config {
 
 
 	public static final double COLOR_SELECT_WINDOW_HEIGHT = 200;
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

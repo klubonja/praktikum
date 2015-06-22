@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import staticClasses.Methods;
+import staticClasses.aux;
 import staticClasses.NetworkMessages;
 
 public class ClientItem {
@@ -109,6 +109,6 @@ public class ClientItem {
 //			System.out.println(e.getMessage());
 //		}	
 		
-		Methods.sendTCPMsg(socket, msg);
+		aux.sendTCPMsg(socket, msg);
 	}
 }

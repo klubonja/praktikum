@@ -10,14 +10,33 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONArray;
 
 import cluedoNetworkGUI.CluedoClientGUI;
 import enums.Persons;
 
-public abstract class Methods {
+public abstract class aux {
 	
+	public static final Logger log = Logger.getLogger("mydearliittleloger");
+	
+	public static final void logsevere(String msg){
+		log.log(Level.SEVERE, msg);
+	}
+	
+	public static final void logsevere(String msg,Throwable e){
+		log.log(Level.SEVERE, msg, e);
+	}
+	
+	public static final void loginfo(String msg){
+		log.log(Level.INFO, msg);
+	}
+	
+	public static final void logfine(String msg){
+		log.log(Level.FINE, msg);
+	}
 	
 	public static ArrayList<String> makeConjunction(String[] sa1,JSONArray sa2JSON){
 		ArrayList<String> res = new ArrayList<String>();
@@ -37,9 +56,10 @@ public abstract class Methods {
 					new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
 			char[] buffer = new char[Config.MESSAGE_BUFFER];
 			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
-			String inMsg = new String (buffer, 0, charCount);			
-			System.out.println("RECEIVED : "+ inMsg);
-			return inMsg;
+			String msg = new String (buffer, 0, charCount);			
+			aux.log.log(Level.INFO,"RECEIVED : "+ msg);
+			
+			return msg;
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
@@ -54,7 +74,7 @@ public abstract class Methods {
 					        socket.getOutputStream(), StandardCharsets.UTF_8)), true);
 			 out.print(msg);
 			 out.flush();	
-			 System.out.println(msg+" sent");
+			 aux.log.log(Level.INFO,"SENT : "+ msg);
 		}
 		catch (IOException e){
 			e.printStackTrace();
@@ -77,7 +97,7 @@ public abstract class Methods {
 		}
 		if (msg == null)	return false;
 
-		Methods.sendTCPMsg(socket,msg);
+		aux.sendTCPMsg(socket,msg);
 		return true;
 	}
 	

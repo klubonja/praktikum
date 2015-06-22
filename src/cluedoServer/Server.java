@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
+import staticClasses.aux;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
@@ -36,20 +37,16 @@ public class Server {
 	
 	public Server(CluedoServerGUI g){
 		gui = g;
+		run = true;
 		TCPport = Config.TCP_PORT;	
 		dataManager = new DataManagerServer(Config.GROUP_NAME);
-		dataGuiManager = new DataGuiManagerServer(gui,dataManager);
-	
-		run = true;
+		dataGuiManager = new DataGuiManagerServer(gui,dataManager);	
+		dataGuiManager.setWindowName(Config.GROUP_NAME+" Server");
 		
 		createTestGroups();
 		sayHello();
 		listenForClientsThread();		
-		startTCPServer();		
-		
-		
-		System.out.println("Server Starteeeee");
-		dataGuiManager.setWindowName(Config.GROUP_NAME+" Server");
+		startTCPServer();				
 		
 		setListener();	
 	}
@@ -90,7 +87,8 @@ public class Server {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println("Server running");			
+			
+			aux.loginfo("new TCPSocket created");
 		} 
 		catch (IOException e) {
 			gui.addMessageIn(e.getMessage());
@@ -108,7 +106,7 @@ public class Server {
 		tcpSocket.close();	
 		run = false;
 		
-		System.out.println("Serverservices closed");
+		aux.loginfo("Server will bu shutdown run == false");
 	}
 	
 	private void setListener(){
@@ -125,7 +123,7 @@ public class Server {
 		          try {		        	   
 		               Platform.exit();
 		               System.exit(0);
-		               System.out.println("Terminated");  
+		               aux.loginfo("SERVER Window closed");
 		          } 
 		          catch (Exception e1) {
 		               e1.printStackTrace();

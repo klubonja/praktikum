@@ -9,7 +9,7 @@ import json.CluedoProtokollChecker;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import staticClasses.Methods;
+import staticClasses.aux;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
@@ -33,7 +33,7 @@ class IncomingHandler implements Runnable {
 		getGamesList();
 		while (run) {
 			try {
-				String msg = Methods.getTCPMessage(dataGuiManager.getServer().getSocket());
+				String msg = aux.getTCPMessage(dataGuiManager.getServer().getSocket());
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(new JSONObject(msg)));
 				checker.validate();
@@ -79,7 +79,7 @@ class IncomingHandler implements Runnable {
 	}
 	
 	private void getGamesList(){
-		String msg = Methods.getTCPMessage(dataGuiManager.getServer().getSocket());
+		String msg = aux.getTCPMessage(dataGuiManager.getServer().getSocket());
 		System.out.println(msg);
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(msg));
 		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error"});

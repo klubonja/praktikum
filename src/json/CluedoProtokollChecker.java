@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import staticClasses.Config;
+import staticClasses.aux;
 import enums.CluedoProtokollMessageTypes;
 import enums.Field;
 import enums.GameStates;
@@ -71,32 +72,29 @@ public class CluedoProtokollChecker {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					System.out.println("invoking :"+"val_" + typeNoSpace );
-				} catch (InvocationTargetException e) {
-					System.out.println("invoking :"+"val_" + typeNoSpace +" failed");
-					 Throwable originalException = e.getTargetException();
-					   for (StackTraceElement element : originalException.getStackTrace()) {
-					       System.out.println(element);
-					   }
+					aux.loginfo("invoking :"+"val_" + typeNoSpace);
+				} 
+				catch (InvocationTargetException e) {
+					aux.logsevere("invoking :"+"val_" + typeNoSpace +" failed",e);
 				}
 			} catch (NoSuchMethodException | SecurityException e) {
-				System.out.println("finding :"+"val_" + typeNoSpace +" failed : no such method");
-				//e.printStackTrace();
+				aux.logsevere("invoking :"+"val_" + typeNoSpace +" failed : no such method",e);
 			}
 		}
 	}
 	
 	public boolean validate() {
-		System.out.println(jsonRoot.toString());
 		if (checkType()) { // sets type to check
 			invokeValMethod();
 		};
 
 		if (errs.size() == 0){
-			System.out.println("OK");
+			aux.loginfo("msg OK");
 			return true;
 		}
-		System.out.println("Not OK see : this.getErrString()\n"+getErrString());
+		aux.loginfo("msg NOT OK");
+		aux.loginfo(getErrString());
+		
 		return false;
 	}
 
@@ -475,7 +473,7 @@ public class CluedoProtokollChecker {
 					}					
 				} 
 				catch (Exception e) {
-					System. out.println("BAD : attempting jsonarray : "+key+" loopindex"+ index + " for "+localtype);
+					aux.logsevere("no JSONArray index :"+index, e);
 				}				
 			}		
 			
@@ -524,11 +522,10 @@ public class CluedoProtokollChecker {
 	}
 	
 	public void printErrs() {
-		System.out.println("Missing: ");
 		for (String s : errs)
-			System.out.println(s);
+			aux.loginfo(s);
 		for (String s : msgs)
-			System.out.println(s);
+			aux.loginfo(s);
 	}
 
 	private void setErr(String err) {

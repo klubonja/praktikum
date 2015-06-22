@@ -2,6 +2,7 @@ package cluedoClient;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -12,7 +13,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import staticClasses.Config;
-import staticClasses.Methods;
+import staticClasses.aux;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
@@ -36,7 +37,7 @@ class OutgoingHandler implements Runnable{
 		
 		addClientGUIListener(dataGuiManager.getGui());
 		//login(dataGuiManager.getGui());
-		Methods.login(gui, server.getGroupName(), server.getSocket());
+		aux.login(gui, server.getGroupName(), server.getSocket());
 	}
 	
 	public void addClientGUIListener(CluedoClientGUI gui){
@@ -72,7 +73,7 @@ class OutgoingHandler implements Runnable{
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            		createGame(Methods.getRandomPerson());	               
+            		createGame(aux.getRandomPerson());	               
             }
         });	
 		
@@ -91,7 +92,7 @@ class OutgoingHandler implements Runnable{
 	
 	void selectGame(SelectionModel<GameVBox> g, String color) {
 		int gameID = g.getSelectedItem().getGameID();		
-		Methods.sendTCPMsg(
+		aux.sendTCPMsg(
 				dataGuiManager.getServer().getSocket(),
 				NetworkMessages.join_gameMsg(
 						color,
@@ -101,7 +102,7 @@ class OutgoingHandler implements Runnable{
 	
 	
 	private void sendInputFieldTextContent(CluedoClientGUI gui){
-		Methods.sendTCPMsg(
+		aux.sendTCPMsg(
 				dataGuiManager.getServer().getSocket(),
 				NetworkMessages.chat_to_serverMsg(
 						gui.inputField.getText(), 
@@ -122,7 +123,7 @@ class OutgoingHandler implements Runnable{
 //	}
 	
 	void createGame(String color){
-		Methods.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.create_gameMsg(color));
+		aux.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.create_gameMsg(color));
 	}
 	
 	
@@ -132,10 +133,10 @@ class OutgoingHandler implements Runnable{
 			try {
 				Thread.sleep(Config.SECOND);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				aux.log.log(Level.SEVERE,e.getMessage());
 			}
 		}
-		System.out.println("CLIENT OutgoingHandlerThread running out");		
+		aux.log.log(Level.INFO,"CLIENT OutgoingHandlerThread running out");
 	}
 	
 	
