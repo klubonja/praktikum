@@ -78,6 +78,7 @@ public class GameFramePresenter {
 	
 	
 	public void test(){
+		beweger.anfangsPositionSetzen();
 		System.out.println("test");
 		ausloeser.zuweisung();
 	}
