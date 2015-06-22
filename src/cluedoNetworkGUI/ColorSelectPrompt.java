@@ -1,5 +1,6 @@
 package cluedoNetworkGUI;
 
+import enums.Persons;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -34,11 +35,20 @@ public class ColorSelectPrompt extends GridPane {
 	
 	String selectedColor = null;
 	
+	
 	public ColorSelectPrompt(Stage p){
 		super();
 		setHandler();
 		parent = p;
 		
+//		Persons[] colors = Persons.values();
+//		for (Persons pe: colors){
+//			System.out.println(pe.getColor());
+//			//System.out.println(pe.getPersonName());
+//		}
+//		
+//		Persons p1 = Persons.blue;
+//		p1.getPersonName();
 		
 	}
 
