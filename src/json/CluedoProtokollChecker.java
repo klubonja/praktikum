@@ -27,7 +27,6 @@ public class CluedoProtokollChecker {
 	CluedoJSON jsonRoot;
 	String type;
 	String typeNoSpace;
-	boolean isValid;
 
 	public CluedoProtokollChecker(CluedoJSON j) {
 		jsonRoot = j;
@@ -538,7 +537,7 @@ public class CluedoProtokollChecker {
 	
 	public String getErrString(){
 		StringBuffer sb = new StringBuffer("");
-		if (!isValid)
+		if (!isValid())
 			for (String err : errs) sb.append(err+"\n");
 		return sb.toString();
 	}
