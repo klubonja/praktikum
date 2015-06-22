@@ -85,7 +85,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 		CluedoGameServer newgame = new CluedoGameServer(gameId);
 		newgame.joinGameServer(color, client);
 		dataManager.addGame(newgame);
-		addGame(gameId, "(created by )"+ client.getNick(), client.getNick());
+		addGameToGui(gameId, "(created by )"+ client.getNick(), client.getNick());
 		
 		return gameId;
 	}

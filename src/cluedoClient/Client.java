@@ -149,7 +149,7 @@ public class Client {
 			else if (server.getStatus() == ServerStatus.not_connected){
 				aux.login(dataGuiManager.getGui(), server.getGroupName(), server.getSocket());
 			}
-			else if (server.getStatus() == ServerStatus.not_connected){
+			else if (server.getStatus() == ServerStatus.connected){
 				dataGuiManager.refreshGamesListByServer(server);
 			}
 		}

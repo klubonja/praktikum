@@ -45,6 +45,7 @@ public abstract class CluedoNetworkGUI {
 		 tabPane = new TabPane();
 		 menue = new HBox();
 		 menue.setPrefHeight(30);
+		
 		 
 		 networkActors = FXCollections.observableArrayList();
 		 networkActorsListView = new ListView<NetworkActorVBox>(networkActors);
@@ -184,7 +185,7 @@ public abstract class CluedoNetworkGUI {
 				public void changed(
 						ObservableValue<? extends Number> observable,
 						Number oldValue, Number newValue) {
-							tabPane.setMaxWidth(newValue.doubleValue()/100*20);
+							tabPane.setMaxWidth(newValue.doubleValue()/100*40);
 						}							
 				};
 		  grid.widthProperty().addListener(gridwidthlistener);

@@ -51,12 +51,12 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         ColumnConstraints col0 = new ColumnConstraints();
         col0.setHgrow(Priority.ALWAYS);
-        col0.setPercentWidth(20);
+        col0.setPercentWidth(40);
         grid.getColumnConstraints().add(col0);
         
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setHgrow(Priority.ALWAYS);
-        col1.setPercentWidth(80);
+        col1.setPercentWidth(60);
         grid.getColumnConstraints().add(col1);
         
         RowConstraints row0 = new RowConstraints();
@@ -90,7 +90,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         messagesIn.setWrapText(true);
         messagesOut.setWrapText(true);
-        
+     
         Tab tab0 = new Tab();
         tab0.setText("Spiele");           
         tab0.setContent(gameListView);
