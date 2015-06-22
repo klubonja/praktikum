@@ -80,7 +80,6 @@ class IncomingHandler implements Runnable {
 	
 	private void getGamesList(){
 		String msg = aux.getTCPMessage(dataGuiManager.getServer().getSocket());
-		System.out.println(msg);
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(msg));
 		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error"});
 		

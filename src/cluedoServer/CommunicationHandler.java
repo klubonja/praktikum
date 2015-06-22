@@ -8,8 +8,8 @@ import json.CluedoProtokollChecker;
 import org.json.JSONObject;
 
 import staticClasses.Config;
-import staticClasses.aux;
 import staticClasses.NetworkMessages;
+import staticClasses.aux;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
@@ -71,13 +71,6 @@ class CommunicationHandler implements Runnable{
 							dataManager.getGameList()
 							)
 					);
-					System.out.println(NetworkMessages.login_sucMsg(
-							client.getExpansions(),
-							dataManager.getClientPool(), 
-							dataManager.getGameList()
-							)
-					);
-					
 					if (dataGuiManager.addNetworkActor(client,"logged in"))
 						dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
 					else {
