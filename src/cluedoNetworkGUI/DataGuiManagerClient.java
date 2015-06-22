@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
+import enums.ServerStatus;
 
 public class DataGuiManagerClient extends DataGuiManager{
 	
@@ -18,7 +19,6 @@ public class DataGuiManagerClient extends DataGuiManager{
 		return server;
 	}
 	
-	@Override
 	public void addGame(int gameID, String nick,String color){
 		CluedoGameClient newgame = 
 				new CluedoGameClient(gameID);
@@ -71,6 +71,7 @@ public class DataGuiManagerClient extends DataGuiManager{
 	public void setServerLoggedIn(ArrayList<CluedoGameClient> gameslist,String servername,String serverip,String status){
 		setGames(gameslist);		
 		updateNetworkActorGui(servername,serverip,status);
+		server.setStatus(ServerStatus.connected);
 	}
 	
 	public void refreshGamesList(){

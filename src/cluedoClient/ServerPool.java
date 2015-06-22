@@ -30,6 +30,16 @@ public class ServerPool extends ArrayList<ServerItem> {
 			
 	}
 	
+	public ServerItem getServerItem(ServerItem server) {
+		for (ServerItem si: this){
+			if (si.groupName.equals(server.getGroupName()) &&
+					si.getIpString().equals(server.getIpString()))
+				return si;				
+		}
+		
+		return null;
+	}
+	
 	
 	
 //	public ClientGameItem getGameById(int gameID,ServerItem server){

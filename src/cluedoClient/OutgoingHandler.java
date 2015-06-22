@@ -13,8 +13,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import staticClasses.Config;
-import staticClasses.aux;
 import staticClasses.NetworkMessages;
+import staticClasses.aux;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
 import cluedoNetworkGUI.GameVBox;
@@ -85,6 +85,16 @@ class OutgoingHandler implements Runnable{
 		        	ArrayList<CluedoPlayer> plist = dataGuiManager.getServer().getGameByGameID(gameID).getPlayersConnected();
 		        	//TODO 
 		        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
+		        }
+		    }
+		});		
+		dataGuiManager.getGui().getNetworkActorsView().setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent click) {
+		        if (click.getClickCount() == 2) {
+		        	aux.loginfo(gui.getNetworkActorsView().getSelectionModel().getSelectedItem().getIpID());
+		        	
+		        	
 		        }
 		    }
 		});		

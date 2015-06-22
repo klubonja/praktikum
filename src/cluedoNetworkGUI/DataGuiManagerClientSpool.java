@@ -1,8 +1,11 @@
 package cluedoNetworkGUI;
 
 
+import java.util.ArrayList;
+
 import cluedoClient.ServerItem;
 import cluedoClient.ServerPool;
+import cluedoNetworkLayer.CluedoGameClient;
 
 public class DataGuiManagerClientSpool extends DataGuiManager{
 	
@@ -50,6 +53,20 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	public void sayGoodbye(String msg){
 		serverPool.sendToAll(msg);
 	}
+	
+	public void refreshGamesListByServer(ServerItem server){
+		ServerItem s = serverPool.getServerItem(server);
+		emptyGamesList();
+		addGamesToGui(s.getGameList());
+	}
+	
+	public void addGamesToGui(ArrayList<CluedoGameClient> glist ){
+		for (CluedoGameClient cg: glist){
+			addGameToGui(cg.getGameId(), "Game "+cg.getGameId(), cg.getNicksConnected());
+		}
+	}
+	
+	
 	
 	
 	

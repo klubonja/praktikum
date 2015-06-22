@@ -9,8 +9,8 @@ import json.CluedoProtokollChecker;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import staticClasses.aux;
 import staticClasses.NetworkMessages;
+import staticClasses.aux;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
 import cluedoNetworkLayer.CluedoGameClient;
@@ -87,7 +87,7 @@ class IncomingHandler implements Runnable {
 		if (errcode == NetworkHandhakeCodes.OK) {	
 			JSONArray gamearray = checker.getMessage().getJSONArray("game array");	
 			ArrayList<CluedoGameClient> gameslist = NetworkMessages.createGamesFromJSONGameArray(gamearray);
-			
+		
 			dataGuiManager.setServerLoggedIn(
 					gameslist,
 					dataGuiManager.getServer().getGroupName(),

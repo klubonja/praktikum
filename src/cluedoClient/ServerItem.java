@@ -25,6 +25,11 @@ public class ServerItem  {
 		status = ServerStatus.not_connected;
 		
 	}
+	
+	public void setStatus(ServerStatus status) {
+		this.status = status;
+	}
+	
 	public ServerStatus getStatus() {
 		return status;
 	}

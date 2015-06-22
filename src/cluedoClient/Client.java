@@ -14,8 +14,8 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
-import staticClasses.aux;
 import staticClasses.NetworkMessages;
+import staticClasses.aux;
 import broadcast.Multicaster;
 import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
@@ -148,6 +148,9 @@ public class Client {
 			}
 			else if (server.getStatus() == ServerStatus.not_connected){
 				aux.login(dataGuiManager.getGui(), server.getGroupName(), server.getSocket());
+			}
+			else if (server.getStatus() == ServerStatus.not_connected){
+				dataGuiManager.refreshGamesListByServer(server);
 			}
 		}
 		catch (Exception e){
