@@ -17,10 +17,8 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		if (serverPool.add(server)){
 			addMsgIn("opened TCPSocket to "+server.getGroupName()+" on : "+ server.getIpString());
 			addNetworkActorToGui(server.getGroupName(),server.getIpString(),status);
-			int n = serverPool.size()-1;
-			System.out.println("server added at"+n);
 			return true;
-		};
+		}
 		
 		return false;
 	}

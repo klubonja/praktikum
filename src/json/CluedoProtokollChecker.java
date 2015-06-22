@@ -68,7 +68,6 @@ public class CluedoProtokollChecker {
 					try {
 						m.invoke(this);
 					} catch (IllegalAccessException | IllegalArgumentException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					aux.loginfo("invoking :"+"val_" + typeNoSpace);

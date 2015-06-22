@@ -33,7 +33,6 @@ public class DataGuiManagerClient extends DataGuiManager{
 			refreshGamesList();
 			return true;
 		}
-//		System.out.println("no refreshing");
 		return false;
 	}
 	
