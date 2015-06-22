@@ -136,8 +136,10 @@ public class DerBeweger {
 				yDistanz = 0;
 			}
 			
-			if (jetzigeReihe+yDistanz != 26 && jetzigeSpalte + xDistanz != 25)
-			zielKachel = gui.getKachelArray()[jetzigeReihe+yDistanz][jetzigeSpalte+xDistanz];
+			if (jetzigeReihe+yDistanz != 26 && jetzigeSpalte + xDistanz != 25 && jetzigeReihe+yDistanz >= 0 && jetzigeSpalte + xDistanz >= 0) 
+			{
+				zielKachel = gui.getKachelArray()[jetzigeReihe+yDistanz][jetzigeSpalte+xDistanz];
+			}
 			
 			System.out.println("yDistanz : " +yDistanz +"   xDistanz : " +xDistanz);
 			
@@ -210,6 +212,10 @@ public class DerBeweger {
 			if (raum == "Eingangshalle"){
 				if (player.getColor() == Color.PURPLE){
 					raumZielKachel = gui.getKachelArray()[11][1];
+				}
+				
+				else if (player.getColor() == Color.BLUE){
+					
 				}
 			}
 			

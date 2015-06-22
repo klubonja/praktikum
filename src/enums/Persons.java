@@ -2,9 +2,9 @@ package enums;
 
 public enum Persons {
 	
-	red("red","Fr√§ulein Gloria"),
+	red("red","Fr‰ulein Gloria"),
 	yellow("yellow","Oberts von Gatow"),
-	white("white","Frau Wei√ü"),
+	white("white","Frau Weiﬂ"),
 	green("green","Reverend Green"),
 	blue("blue","Baronin von Porz"),
 	purple("purple","Professor Bloom")
