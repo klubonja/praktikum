@@ -11,7 +11,7 @@ public abstract class Config {
 	public final static String GROUP_NAME = Methods.getRandomString(5);
 
 	
-	public final static double PROTOKOLL_VERSION = 1.1;
+	public final static String PROTOKOLL_VERSION = "1.2.1";
 	
 	public final static long SECOND = 1000;//millis
 	

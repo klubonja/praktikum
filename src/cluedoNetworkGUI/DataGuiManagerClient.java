@@ -29,13 +29,12 @@ public class DataGuiManagerClient extends DataGuiManager{
 	}
 	
 	public boolean removeClientFromSystem(String nickID){
-	//	if (server.removePlayerFromGames(nickID)){
-			server.removePlayerFromGames(nickID);
+	    if (server.removePlayerFromGames(nickID)){
 			refreshGamesList();
 			return true;
-		//}
+		}
 //		System.out.println("no refreshing");
-//		return false;
+		return false;
 	}
 	
 	public void removeServer(){		

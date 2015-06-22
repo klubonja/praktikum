@@ -326,7 +326,7 @@ public class CluedoProtokollChecker {
 	}
 	
 	boolean validateProtokollVersion(JSONObject jsonParent,String key){
-		if (jsonParent.getDouble(key) == Config.PROTOKOLL_VERSION) return true;		
+		if (jsonParent.getString(key).equals(Config.PROTOKOLL_VERSION)) return true;		
 		return false;
  	}
 	
