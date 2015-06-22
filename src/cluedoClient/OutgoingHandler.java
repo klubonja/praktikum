@@ -84,7 +84,7 @@ class OutgoingHandler implements Runnable{
 		    @Override
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
-		        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor(gui));		
+		        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
 		        }
 		    }
 		});		
