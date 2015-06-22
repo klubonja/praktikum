@@ -1,6 +1,7 @@
 package cluedoServer;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
 
@@ -24,7 +25,7 @@ import cluedoNetworkLayer.CluedoGameServer;
 public class Server {
 	
 	Connector connector;
-	public ServerSocket tcpSocket;
+	public ServerSocket TCPServerSocket;
 	int TCPport;
 
 	DataManagerServer dataManager;	
@@ -78,32 +79,37 @@ public class Server {
 	 */
 	private void startTCPServer()  {
 		try {
-			tcpSocket = new ServerSocket(TCPport);	
-			connector = new Connector(tcpSocket,dataManager,dataGuiManager);
+			TCPServerSocket = new ServerSocket();	
+			TCPServerSocket.setReuseAddress(true);
+			TCPServerSocket.bind(new InetSocketAddress(TCPport));
+			connector = new Connector(TCPServerSocket,dataManager,dataGuiManager);
 			connector.start();
+			
 			try {
 				NetworkInterfacesIpManager nm = new NetworkInterfacesIpManager();				 	
 				gui.setStatus("port "+TCPport+ " NInterfaces: "+nm.getServicesFormated()+" "+StandardCharsets.UTF_8);
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
 				e.printStackTrace();
 			}
 			
 			aux.loginfo("new TCPSocket created");
 		} 
 		catch (IOException e) {
-			gui.addMessageIn(e.getMessage());
-			try {
-				stopServer();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			stopServer();
+			aux.logsevere("creating serversocket faild"+ e.getMessage(), e);			
 		}		
 	}
 	
-	private void stopServer()  throws IOException{
+	private void stopServer(){
 		dataManager.notifyAll(NetworkMessages.disconnectedMsg("server "+ Config.GROUP_NAME + " says : byebye, and thanks for all the fish"));
 		connector.kill();
-		tcpSocket.close();	
+		if (TCPServerSocket != null)
+			try {
+				TCPServerSocket.close();
+			} catch (IOException e) {
+				aux.logsevere("destroying serversocket failed ", e);
+			}	
 		run = false;
 		
 		aux.loginfo("Server will bu shutdown run == false");
