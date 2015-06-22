@@ -1,6 +1,7 @@
 package cluedoClient;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,6 +17,7 @@ import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
 import cluedoNetworkGUI.GameVBox;
+import cluedoNetworkLayer.CluedoPlayer;
 
 
 /**
@@ -78,6 +80,9 @@ class OutgoingHandler implements Runnable{
 		    @Override
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
+		        	int gameID = gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID();
+		        	ArrayList<CluedoPlayer> plist = dataGuiManager.getServer().getGameByGameID(gameID).getPlayersConnected();
+		        	//TODO 
 		        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
 		        }
 		    }

@@ -116,6 +116,11 @@ public class CluedoGame {
 		this.gameState = gameState;
 	}
 	
+	//TODO
+//	public ArrayList<String> getAvailableColors(){
+//		
+//	}
+	
 	public CluedoPlayer getPlayer(String color){
 		for (CluedoPlayer p : players)
 			if (p.getCluedoPerson().getColor().equals(color))
