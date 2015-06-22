@@ -20,7 +20,7 @@
 }
 
 
-.gameListItem {
+.gameListItem, .ipListItem {
 	-fx-background-color: #ffffff;
 	-fx-fx-text-fill: #000000;
 	-fx-padding: 5 0 5 5;
@@ -31,12 +31,51 @@
 
 .gameNameItem {
 	-fx-font: 15px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-fx-text-fill: #000000;
 }
 
 .gameInfoItem {
 	-fx-font: 10px "Tahoma";
     -fx-padding: 0;
+    -fx-background-color: #ffffff;
+	-fx-fx-text-fill: #000000;
     
+}
+
+.ipListItem:hover .ipNameItem,  
+.ipListItem:hover .ipIpItem , 
+.ipListItem:hover .ipStatusItem ,
+.ipListItem:hover {
+	-fx-background-color: #000000;
+	-fx-text-fill: #ffffff;		
+}
+
+.ipListItem {
+	-fx-background-color: #ffffff;
+	-fx-fx-text-fill: #000000;
+	-fx-padding: 5 0 5 5;
+	-fx-border-color:  #999999;
+	-fx-border-width: 0 0 1 0;
+	-fx-border-style: solid;	
+}
+
+.ipNameItem {
+	-fx-font: 14px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+}
+
+.ipIpItem {
+	-fx-font: 12px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+}
+
+.ipStatusItem {
+	-fx-font: 10px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
 }
 
 #tabPane:top *.tab-header-area {

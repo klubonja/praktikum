@@ -1,18 +1,12 @@
 package cluedoNetworkGUI;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
-import javax.print.attribute.ResolutionSyntax;
-
-import cluedoClient.ClientGameItem;
-import cluedoNetworkLayer.CluedoGameClient;
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
 
 public class DataGuiManager   {
-	
 	
 	CluedoNetworkGUI gui;
 	
@@ -27,19 +21,13 @@ public class DataGuiManager   {
 		  return date.format(now);
 	}
 	
-	public ListView<String> getIpListView(){
-		return gui.getIpListView();
+	public ListView<NetworkActorVBox> getNetworkActorsListView(){
+		return gui.getNetworkActorsView();
 	}
 	
 	public ListView<GameVBox> getGameListView(){
 		return gui.getGamesListView();
 	}
-	public void addIp(String ip){
-		Platform.runLater(() -> {
-			gui.addIp(ip);
-			System.out.println(ip+" added");
-		});
-   	  }   	 
 	
 	public void addMsgIn(String msg){		
 		Platform.runLater(() -> {
@@ -54,10 +42,28 @@ public class DataGuiManager   {
 	}
 	
 	
-	  public void removeIp(String serverlabel){		 
+	  public void removeNetworkActorFromGui(String name,String ip){		 
 		 Platform.runLater(() -> {
-			 gui.removeIp(serverlabel);
+			 gui.removeNetworkActor(name,ip);
 		  });
+	  }
+	  
+	  public void addNetworkActorToGui(String name,String ip,String status){		 
+		 Platform.runLater(() -> {
+			 gui.addNetworkActor(name,ip,status);
+		  });
+	  }
+	  
+	  public void updateNetworkActorGui(String name,String ip,String status){		 
+			 Platform.runLater(() -> {
+				 gui.updateNetworkActor(name,ip,status);
+			  });
+		  }
+	  
+	  public void addGameToGui(int gameID,String specialInfo, String info){
+		  Platform.runLater(() -> {
+			gui.addGame(gameID, specialInfo, info);
+		});
 	  }
 	  
 	  public  void emptyIpList(){
@@ -91,15 +97,13 @@ public class DataGuiManager   {
 		  Platform.runLater(() -> {gui.addGame(gameID, specialinfo, info);});
 	  }
 	  
-	  public void addGamesGui(ArrayList<CluedoGameClient> glist){
-		  Platform.runLater(() -> {
-			  for (CluedoGameClient c: glist)
-					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
-		 });
-	  }
+	  
 	  
 	  public void updateGame(int gameID,String specialinfo, String info){
-		Platform.runLater(() -> {gui.updateGame(gameID, specialinfo, info); 		});
+		Platform.runLater(() -> {
+			gui.updateGame(gameID, specialinfo, info); 	
+			System.out.println("special info in dataguimanager l105"+info);
+		});
 	  }
 	  
 	  public CluedoNetworkGUI getGui() {

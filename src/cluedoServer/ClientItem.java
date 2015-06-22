@@ -9,6 +9,9 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
+import staticClasses.Methods;
+import staticClasses.NetworkMessages;
+
 public class ClientItem {
 	
 	String id;
@@ -29,6 +32,10 @@ public class ClientItem {
 	
 	public Socket getSocket(){
 		return socket;
+	}
+	
+	public String getIpString(){
+		return adress.toString();
 	}
 	
 	public void setExpansions(ArrayList<String> expansion) {
@@ -78,8 +85,9 @@ public class ClientItem {
 		return adress;
 	}
 	
-	public boolean closingConnection(){
+	public boolean closingConnection(String msg){
 		try {
+			sendMsg(NetworkMessages.disconnectedMsg(msg));
 			socket.close();
 			return true;
 		} catch (IOException e) {
@@ -90,15 +98,17 @@ public class ClientItem {
 	}
 	
 	public void sendMsg(String msg){
-		try {
-			 PrintWriter out = new PrintWriter(
-					   new BufferedWriter(new OutputStreamWriter(
-					        socket.getOutputStream(), StandardCharsets.UTF_8)), true);
-			 out.print(msg);
-			 out.flush();
-		}
-		catch (IOException e){
-			System.out.println(e.getMessage());
-		}	
+//		try {
+//			 PrintWriter out = new PrintWriter(
+//					   new BufferedWriter(new OutputStreamWriter(
+//					        socket.getOutputStream(), StandardCharsets.UTF_8)), true);
+//			 out.print(msg);
+//			 out.flush();
+//		}
+//		catch (IOException e){
+//			System.out.println(e.getMessage());
+//		}	
+		
+		Methods.sendTCPMsg(socket, msg);
 	}
 }

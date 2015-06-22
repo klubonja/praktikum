@@ -2,7 +2,10 @@ package cluedoClient;
 
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -11,13 +14,14 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
+import staticClasses.Methods;
 import staticClasses.NetworkMessages;
-import sun.security.util.PropertyExpander.ExpandException;
 import broadcast.Multicaster;
 import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
-import cluedoNetworkGUI.DataGuiManager;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
+import cluedoNetworkGUI.NetworkActorVBox;
+import enums.ServerStatus;
 
 
 
@@ -27,7 +31,6 @@ import cluedoNetworkGUI.DataGuiManagerClientSpool;
  */
 public class Client {
 	
-	Socket cSocket;
 	CluedoClientGUI gui;
 	ServerPool serverList;
 	DataGuiManagerClientSpool dataGuiManager;
@@ -67,11 +70,8 @@ public class Client {
 	 */
 	public void startTCPConnection(ServerItem server){	
 		try {				
-			cSocket = new Socket(server.getIp(),server.getPort());
-			server.setSocket(cSocket);
-			dataGuiManager.addServer(server);
-			//serverList.add(server);
-			//dataManager.addNe
+			server.setSocket(new Socket(server.getIp(),server.getPort()));
+			dataGuiManager.addServer(server,"not logged in");
 			Thread t1 = new Thread(new IncomingHandler(gui,server,run));
 			t1.start();
 			Thread t2 = new Thread(new OutgoingHandler(gui,server,run));
@@ -80,10 +80,8 @@ public class Client {
 			setCloseHandler();
 		}
 		catch (IOException e){
-			System.out.println(e.getMessage());
-			
+			System.out.println(e.getMessage());			
 			dataGuiManager.removeServer("TCP server connection failed"+e.getMessage(),server);
-			//gui.setStatus("connecting to "+server.getGroupName()+" failed \n"+e.getMessage());
 			run = false;
 			
 		}
@@ -99,13 +97,26 @@ public class Client {
             	sayHello();
             }
         });	
+		gui.connectToTestServer.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	InetAddress addr;
+				try {
+					addr = InetAddress.getByName("vanuabalavu.pms.ifi.lmu.de");
+					startTCPConnection(new ServerItem("testendeTentakel", addr, 30305));
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
+            	
+            }
+        });	
 		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		      @Override
 			public void handle(WindowEvent e){
 		          
 		          try {
 		        	   run = false;
-		        	   if (cSocket != null) cSocket.close();
+		        	   dataGuiManager.sayGoodbye(NetworkMessages.disconnectMsg());
 		               Platform.exit();
 		               System.exit(0);
 		               System.out.println("Terminated");
@@ -117,34 +128,32 @@ public class Client {
 		      }
 		 });
 		
-		gui.getIpListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
+		gui.getNetworkActorsView().setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
-		           selectIp(dataGuiManager.getIpListView().getSelectionModel());		
+		           selectIp(dataGuiManager.getNetworkActorsListView().getSelectionModel());		
 		        }
 		    }
 		});	
 	}
 	
-	void selectIp(SelectionModel<String> smod) {
+	void selectIp(SelectionModel<NetworkActorVBox> smod) {
 		//String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
 		try {
-			System.out.println("attempting getting from serverpool atr"+smod.getSelectedIndex());
-			ServerItem serverInfo = dataGuiManager.getServerByIndex(smod.getSelectedIndex());
-			System.out.println(serverInfo.getIpString());
-			startTCPConnection(serverInfo);
-			System.out.println("slecting"+serverInfo.getGroupName()+" at "+smod.getSelectedIndex());
+			ServerItem server = dataGuiManager.getServerByID(
+					smod.getSelectedItem().getNameID(),
+					smod.getSelectedItem().getIpID());
+			if (server.getSocket() == null){
+				startTCPConnection(server);
+			}
+			else if (server.getStatus() == ServerStatus.not_connected){
+				Methods.login(dataGuiManager.getGui(), server.getGroupName(), server.getSocket());
+			}
 		}
 		catch (Exception e){
 			e.printStackTrace();
-		}
-		
-		
-		
-		
-		
-		
+		}		
 	}
 }
 

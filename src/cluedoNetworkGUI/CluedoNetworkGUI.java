@@ -17,8 +17,8 @@ import staticClasses.Config;
 
 public abstract class CluedoNetworkGUI {
 	
-	final ObservableList<String> ips;
-	final ListView<String> ipListView;
+	final ObservableList<NetworkActorVBox> networkActors;
+	final ListView<NetworkActorVBox> networkActorsListView;
 	
 	final TabPane tabPane;
 	final ObservableList<GameVBox> games;
@@ -46,8 +46,8 @@ public abstract class CluedoNetworkGUI {
 		 menue = new HBox();
 		 menue.setPrefHeight(30);
 		 
-		 ips = FXCollections.observableArrayList();
-		 ipListView = new ListView<String>(ips);
+		 networkActors = FXCollections.observableArrayList();
+		 networkActorsListView = new ListView<NetworkActorVBox>(networkActors);
 		 
 		 
 		 games = FXCollections.observableArrayList();
@@ -75,20 +75,40 @@ public abstract class CluedoNetworkGUI {
 		 		 
 	}  
     
-   	 public void addIp(String ip){
-       	if (!ips.contains(ip))
-       			ips.add(ip);
+   	 public boolean addNetworkActor(String name,String ip,String status){
+   		 boolean notcontains = true;
+       	for (NetworkActorVBox na: networkActors)
+       		if (na.getIpID().equals(ip) && na.getNameID().equals(name)){
+       			notcontains = !notcontains;
+       			continue;
+       		}
+       	if (notcontains) return networkActors.add(new NetworkActorVBox(name, ip,status));
+       	return false;
+   	  } 
+   	 
+   	 public boolean updateNetworkActor(String name,String ip,String status){
+       	for (NetworkActorVBox na: networkActors)
+       		if (na.getIpID().equals(ip) && na.getNameID().equals(name)){
+       			na.setStatusString(status);
+       			na.setIpString(ip);
+       			continue;
+       		}
+       	return false;
    	  }   	 
 	  
-	  public void removeIp(int i){
-		  if (i-1 >= 0)  ips.remove(i-1);
-	  }
-	  public void removeIp(String label){
-		  ips.remove(label);
+	 
+	  public boolean removeNetworkActor(String name,String ip){
+	       	for (NetworkActorVBox na: networkActors){
+	       		if (na.getIpID().equals(ip) && na.getNameID().equals(name)){
+	       			return networkActors.remove(na);
+	       		}
+	       	}       		
+	       	
+	      return false;	      
 	  }
 	  
 	  public  void emptyIpList(){
-		  ipListView.getItems().clear();
+		  networkActorsListView.getItems().clear();
 	  }
 	  
 	  public void setStatus(String stat){
@@ -112,8 +132,8 @@ public abstract class CluedoNetworkGUI {
 		  primaryStage.setTitle(label);
 	  }
 	  
-	  public  ListView<String> getIpListView(){
-		  return ipListView;
+	  public  ListView<NetworkActorVBox> getNetworkActorsView(){
+		  return networkActorsListView;
 	  }
 	  
 	  public  ListView<GameVBox> getGamesListView(){
@@ -172,9 +192,9 @@ public abstract class CluedoNetworkGUI {
 	  
 	public void setStylesheet(String cssFile){
 		tabPane.setId("tabPane");
-		ipListView.setId("ipList");
+		networkActorsListView.setId("ipList");
 		tabPane.getStyleClass().add("listViewC");
-		ipListView.getStyleClass().add("listViewC");
+		networkActorsListView.getStyleClass().add("listViewC");
 		menue.setId("menue");
 		gameListView.setId("gameList");
 		scene.getStylesheets().add(cssFile);

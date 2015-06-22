@@ -1,10 +1,5 @@
 package cluedoClient;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 import javafx.beans.value.ChangeListener;
@@ -15,6 +10,8 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import staticClasses.Config;
+import staticClasses.Methods;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
@@ -28,18 +25,16 @@ import cluedoNetworkGUI.GameVBox;
 
 class OutgoingHandler implements Runnable{
 	
-	DataGuiManagerClient dataGuiManager;
-	ServerItem server;	
-	
+	DataGuiManagerClient dataGuiManager;	
 	boolean run;
 	
-	public OutgoingHandler(CluedoClientGUI gui,ServerItem s, boolean run) {
+	public OutgoingHandler(CluedoClientGUI gui,ServerItem server, boolean run) {
 		this.run = run;
 		dataGuiManager = new DataGuiManagerClient(gui, server);		
-		server = s;		
 		
 		addClientGUIListener(dataGuiManager.getGui());
-		login(dataGuiManager.getGui());
+		//login(dataGuiManager.getGui());
+		Methods.login(gui, server.getGroupName(), server.getSocket());
 	}
 	
 	public void addClientGUIListener(CluedoClientGUI gui){
@@ -47,7 +42,7 @@ class OutgoingHandler implements Runnable{
 			@Override
 			public void handle(KeyEvent e) {
 			        if (e.getCode() == KeyCode.ENTER){
-			        	sendMsg(gui.inputField.getText());	
+			        	sendInputFieldTextContent(dataGuiManager.getGui());
 						gui.inputField.setText("");
 						e.consume();
 			        }
@@ -68,15 +63,14 @@ class OutgoingHandler implements Runnable{
 		gui.submitMessageButton.setOnAction(new EventHandler<ActionEvent>() {				
 			@Override
 			public void handle(ActionEvent event) {
-				sendMsg(NetworkMessages.chat_to_serverMsg(gui.inputField.getText(), LocalDateTime.now().toString()));	
-				gui.inputField.setText("");				
+				sendInputFieldTextContent(gui);		
 			}
 		});	
 		
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            		createGame("white");	               
+            		createGame(Methods.getRandomPerson());	               
             }
         });	
 		
@@ -91,41 +85,53 @@ class OutgoingHandler implements Runnable{
 	}
 	
 	void selectGame(SelectionModel<GameVBox> g, String color) {
-		int gameID = g.getSelectedItem().getGameID();
-		sendMsg(NetworkMessages.join_gameMsg(color, gameID));	
+		int gameID = g.getSelectedItem().getGameID();		
+		Methods.sendTCPMsg(
+				dataGuiManager.getServer().getSocket(),
+				NetworkMessages.join_gameMsg(
+						color,
+						gameID)
+				);
 	}
+	
+	
+	private void sendInputFieldTextContent(CluedoClientGUI gui){
+		Methods.sendTCPMsg(
+				dataGuiManager.getServer().getSocket(),
+				NetworkMessages.chat_to_serverMsg(
+						gui.inputField.getText(), 
+						LocalDateTime.now().toString()
+						)
+				);
+		gui.inputField.setText("");
+	}
+	
+//	void selectGame(SelectionModel<GameVBox> g) {
+//		int gameID = g.getSelectedItem().getGameID();
+//		Methods.sendTCPMsg(
+//				dataGuiManager.getServer().getSocket(),
+//				NetworkMessages.join_gameMsg(
+//						Methods.getRandomPerson(),
+//						gameID)
+//				);
+//	}
 	
 	void createGame(String color){
-		sendMsg(NetworkMessages.create_gameMsg(color));
+		Methods.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.create_gameMsg(color));
 	}
 	
-	private final boolean login(CluedoClientGUI gui){
-		String[] loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
-		String msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
-		sendMsg(msg);
-		
-		return true;
-		
-	}
 	
 	@Override
 	public void run(){
 		while (run){
-			
+			try {
+				Thread.sleep(Config.SECOND);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		System.out.println("CLIENT OutgoingHandlerThread running out");		
 	}
 	
-	private void sendMsg(String msg){
-		try {
-			PrintWriter out = new PrintWriter(
-					   new BufferedWriter(new OutputStreamWriter(
-					        server.getSocket().getOutputStream(), StandardCharsets.UTF_8)), true);
-			 out.print(msg);
-			 out.flush();	
-		}
-		catch (IOException e){
-			dataGuiManager.setStatus(e.getMessage());
-		}			
-	}		
+	
 }

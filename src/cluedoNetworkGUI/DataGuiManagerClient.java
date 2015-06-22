@@ -2,6 +2,7 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
 
@@ -13,13 +14,32 @@ public class DataGuiManagerClient extends DataGuiManager{
 		server = s;
 	}
 	
-	public void addGame(int gameID, String nick,String color,ServerItem server){
+	public ServerItem getServer(){
+		return server;
+	}
+	
+	@Override
+	public void addGame(int gameID, String nick,String color){
 		CluedoGameClient newgame = 
 				new CluedoGameClient(gameID);
 		newgame.joinGame(color, nick);
-		addGameGui(gameID, "(created by "+nick+") Game "+gameID, nick);
+		addGameToGui(gameID, "(created by "+nick+") Game "+gameID, nick);
 		
 		server.addGame(newgame);
+	}
+	
+	public boolean removeClientFromSystem(String nickID){
+	    if (server.removePlayerFromGames(nickID)){
+			refreshGamesList();
+			return true;
+		}
+//		System.out.println("no refreshing");
+		return false;
+	}
+	
+	public void removeServer(){		
+		removeNetworkActorFromGui(server.getGroupName(), server.getIpString());
+		emptyGamesList();
 	}
 	
 	public boolean joinGame(int gameID,String color,String nick){
@@ -28,10 +48,6 @@ public class DataGuiManagerClient extends DataGuiManager{
 			return true;
 		}
 		return false;
-	}
-	
-	public void addGameGui(int gameID,String specialInfo, String info){
-		addGame(gameID, specialInfo, info);
 	}
 	
 	public void setGames(ArrayList<CluedoGameClient> glist){
@@ -43,5 +59,27 @@ public class DataGuiManagerClient extends DataGuiManager{
 	public CluedoClientGUI getGui() {
 		return (CluedoClientGUI) super.getGui();
 	}
+	
+	
+	
+	public void addGamesGui(ArrayList<CluedoGameClient> glist){
+		  Platform.runLater(() -> {
+			  for (CluedoGameClient c: glist)
+					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
+		 });
+	  }
+	
+	public void setServerLoggedIn(ArrayList<CluedoGameClient> gameslist,String servername,String serverip,String status){
+		setGames(gameslist);		
+		updateNetworkActorGui(servername,serverip,status);
+	}
+	
+	public void refreshGamesList(){
+		emptyGamesList();
+		addGamesGui(server.getGameList());		
+	}
+	
+	
+	
 	
 }

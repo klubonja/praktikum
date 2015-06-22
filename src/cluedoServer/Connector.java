@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 import staticClasses.Config;
+import staticClasses.Methods;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.DataGuiManagerServer;
 
@@ -16,13 +17,9 @@ import cluedoNetworkGUI.DataGuiManagerServer;
 class Connector extends Thread{	
 	
 	private ServerSocket serverSocket;
-	
-//	ClientPool clientPool;
-//	ArrayList<ClientItem> blackList;
-//	GameListServer gameList;
 	DataManagerServer dataManger;
 	DataGuiManagerServer dataGuiManager;
-	boolean running = true;	
+	boolean run = true;	
 	
 	
 	Connector (ServerSocket ss, DataManagerServer datam, DataGuiManagerServer dgm) {
@@ -34,19 +31,25 @@ class Connector extends Thread{
 	@Override
 	public void run(){
 		try {			
-			while (running){
+			while (run){
 				Socket clientSocket = serverSocket.accept();
-				if (!dataManger.checkIpExists(clientSocket.getInetAddress())){
+//				if (!dataManger.checkIpExists(clientSocket.getInetAddress())){
 					if (dataManger.isBlacklisted(clientSocket.getInetAddress()))
-						sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
-					Thread newCommunicationThread = new Thread(new CommunicationHandler(
-							serverSocket, new ClientItem(clientSocket),dataManger,dataGuiManager));
+						//sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
+						Methods.sendTCPMsg(clientSocket, NetworkMessages.error_Msg(Config.BLACKLISTED_MSG));
+					Thread newCommunicationThread = 
+							new Thread(
+									new CommunicationHandler(
+											new ClientItem(clientSocket),
+											dataManger,
+											dataGuiManager)
+									);
 					newCommunicationThread.start();	
-				}
-				else {
-					sendMsg(NetworkMessages.error_Msg("already connected"), clientSocket);
-					clientSocket.close();
-				}					 		
+//				}
+//				else {
+//					sendMsg(NetworkMessages.error_Msg("already connected"), clientSocket);
+//					clientSocket.close();
+//				}					 		
 			}					
 		}
 		catch(IOException e){
@@ -55,7 +58,7 @@ class Connector extends Thread{
 			System.out.println(e.getMessage());
 		}
 		finally {
-			System.out.println("thread runningflag: "+running+"");
+			System.out.println("thread runningflag: "+run+"");
 			kill();
 		}		
 	}
@@ -82,7 +85,7 @@ class Connector extends Thread{
 	 * wird vom server aufgerufen zum höflichen schliessen der laufenden verbindungen
 	 */
 	public void kill(){
-		running = false;
+		run = false;
 		System.out.println("networkthread killed");
 	}
 }

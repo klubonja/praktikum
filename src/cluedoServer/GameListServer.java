@@ -3,6 +3,7 @@ package cluedoServer;
 import java.util.ArrayList;
 
 import cluedoNetworkLayer.CluedoGameServer;
+import enums.JoinGameStatus;
 
 public class GameListServer extends ArrayList<CluedoGameServer> {
 	
@@ -10,13 +11,12 @@ public class GameListServer extends ArrayList<CluedoGameServer> {
 		super();
 	}
 	
-	public boolean joinGame(int gameID, String color, String nick){
+	public JoinGameStatus joinGame(int gameID, String color, ClientItem client){
 		for (CluedoGameServer cg : this)
-			if (gameID == cg.getGameId()){
-				cg.joinGame(color, nick);
-				return true;
-			}
-		return false;
+			if (gameID == cg.getGameId())
+				return	cg.joinGameServer(color, client);
+			
+		return JoinGameStatus.game_not_found;
 	}
 	
 	public boolean leaveGame(int gameID, String nick){
@@ -28,7 +28,13 @@ public class GameListServer extends ArrayList<CluedoGameServer> {
 		return false;
 	}
 	
-	public CluedoGameServer getGameByGameID(int gameID){
+	public JoinGameStatus joinGameById(int gameID,String color ,ClientItem client){
+		CluedoGameServer g = getGameByID(gameID);
+		
+		return g.joinGameServer(color,client);
+	}
+	
+	public CluedoGameServer getGameByID(int gameID){
 		for (CluedoGameServer cg : this)
 			if (gameID == cg.getGameId()){
 				

@@ -3,7 +3,6 @@ package cluedoServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -14,7 +13,6 @@ import staticClasses.NetworkMessages;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
-import cluedoNetworkGUI.DataGuiManager;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoGameServer;
 
@@ -27,10 +25,6 @@ public class Server {
 	Connector connector;
 	public ServerSocket tcpSocket;
 	int TCPport;
-	
-//	ClientPool clientPool;
-//	ArrayList<ClientItem> blackList;
-//	public  GameListServer gameList;
 
 	DataManagerServer dataManager;	
 	final CluedoServerGUI gui;
@@ -43,14 +37,9 @@ public class Server {
 	public Server(CluedoServerGUI g){
 		gui = g;
 		TCPport = Config.TCP_PORT;	
-		dataManager = new DataManagerServer();
+		dataManager = new DataManagerServer(Config.GROUP_NAME);
 		dataGuiManager = new DataGuiManagerServer(gui,dataManager);
-		
-//		clientPool = new ClientPool(); 
-//		blackList = new ArrayList<ClientItem>();
-//		gameList = new GameListServer();
-		
-		
+	
 		run = true;
 		
 		createTestGroups();
@@ -102,12 +91,19 @@ public class Server {
 				e.printStackTrace();
 			}
 			System.out.println("Server running");			
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			gui.addMessageIn(e.getMessage());
+			try {
+				stopServer();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}		
 	}
 	
 	private void stopServer()  throws IOException{
+		dataManager.notifyAll(NetworkMessages.disconnectedMsg("server "+ Config.GROUP_NAME + " says : byebye, and thanks for all the fish"));
 		connector.kill();
 		tcpSocket.close();	
 		run = false;
@@ -119,12 +115,7 @@ public class Server {
 		gui.button0.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	//try {            	
-	            	sayHello();
-           // 	}
-//            	catch(IOException e){
-//            		System.out.println(e.getMessage());
-//            	}            		               
+	            sayHello();               
             }
         });	
 		

@@ -5,6 +5,16 @@ import java.net.InetAddress;
 import cluedoNetworkLayer.CluedoGame;
 
 public abstract class DataManager {
+	
+	String groupName;
+	public DataManager(String groupname) {
+		groupName = groupname;
+	}
+	
+	public String getGroupName() {
+		return groupName;
+	}
+	
 	public abstract boolean joinGame(int gameID, String color,String nick);
 	//public abstract boolean addGame(CluedoGame game);
 	public abstract boolean checkIpExists(InetAddress adress);

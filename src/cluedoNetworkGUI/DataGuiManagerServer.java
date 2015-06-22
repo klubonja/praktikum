@@ -1,9 +1,14 @@
 package cluedoNetworkGUI;
 
 
+import java.util.ArrayList;
+
+import javafx.application.Platform;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoServer.ClientItem;
 import cluedoServer.DataManagerServer;
+import cluedoServer.GameListServer;
+import enums.JoinGameStatus;
 
 public class DataGuiManagerServer extends DataGuiManager {
 	
@@ -16,9 +21,9 @@ public class DataGuiManagerServer extends DataGuiManager {
 		dataManager = datam;		
 	}	
 	
-	public void loginEvent(String ip,String nick,String msg){
+	public void loginEvent(String ip,String nick,String msg,String status){
 		addMsgIn(nick+" says :"+msg);
-		addIp(nick+" on "+ip);
+		addNetworkActorToGui(nick, ip,status);
 	}
 	
 	public CluedoGameServer getGameByIndex(int index){
@@ -27,20 +32,20 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean addGame(CluedoGameServer game){
 		if (dataManager.addGame(game)){
-			gui.addGame(game.getGameId(),"(test) Game",game.getNicksConnected());
+			gui.addGame(game.getGameId(),"Game",game.getNicksConnected());
 			return true;
 		};
 		
 		return false;		
 	}
 	
-	public boolean joinGame(int gameID, String color,String nick){
-		 if (dataManager.joinGame(gameID, color, nick)){
-			updateGame(gameID, "(updated) Game", dataManager.getNicksConnectedByGameID(gameID));
-			return true;
-		 };
+	
+	public JoinGameStatus joinGame(int gameID, String color,ClientItem client){
+		JoinGameStatus status =  dataManager.joinGame(gameID, color, client);
+		if (status == JoinGameStatus.added)
+			updateGame(gameID, "Game", dataManager.getNicksConnectedByGameID(gameID));
 		 
-		 return false;
+		return status;
 	}
 	
 	public void setGuiStatus(String status) {
@@ -51,25 +56,55 @@ public class DataGuiManagerServer extends DataGuiManager {
 		setWindowName(newname);
 	}
 	
-	public void addClient(ClientItem client,String msg){
-		addIp(client.getNick()+"("+client.getAdress().toString()+")");
-		addMsgIn(client.getNick()+" joined");
-		dataManager.addNetworkActor(client);
+	public boolean addNetworkActor(ClientItem client,String status){
+		if (dataManager.addClient(client)){
+			addNetworkActorToGui(client.getNick(), client.getIpString(),status);
+			addMsgIn(client.getNick()+" joined");
+			return true;
+		}
+		return false;
 	}
 	
-	public int createGame(String color, String nick){		
+	public boolean removeClient(ClientItem client){
+		if (dataManager.removeClientfromSystem(client)){
+			removeNetworkActorFromGui(client.getNick(),client.getIpString());	
+			refreshGamesList();
+			return true;
+		}
+		return false;				
+	}
+	
+	
+	
+	public ArrayList<CluedoGameServer> getGamesByPlayer(ClientItem client){
+		return dataManager.getGamesByPlayer(client.getNick());		
+	}
+	
+	public int createGame(String color, ClientItem client){		
 		int gameId = dataManager.getGameCount();
 		CluedoGameServer newgame = new CluedoGameServer(gameId);
-		newgame.joinGame(color, nick);
+		newgame.joinGameServer(color, client);
 		dataManager.addGame(newgame);
-		addGame(gameId, "(created by )"+ nick, nick);
+		addGame(gameId, "(created by )"+ client.getNick(), client.getNick());
 		
 		return gameId;
 	}
 	
-	public void closeOn(String msg){
-		addMsgIn(msg);
+	public void closeOn(ClientItem client,String msg){
+		addMessageOut(msg);
+		removeClient(client);
 	}
 	
+	public void refreshGamesList(){
+		emptyGamesList();
+		addGamesGui( dataManager.getGameList());
+	}
+	
+	public void addGamesGui(GameListServer glist){
+		  Platform.runLater(() -> {
+			  for (CluedoGameServer c: glist)
+					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
+		 });
+	  }
 	
 }

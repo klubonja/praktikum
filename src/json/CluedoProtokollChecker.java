@@ -144,7 +144,7 @@ public class CluedoProtokollChecker {
 
 	void val_create_game() {
 		if (validateValue(jsonRoot, "color"))
-			validateColor(jsonRoot.getString("color"));
+			validatePerson(jsonRoot.getString("color"));
 	}
 
 	void val_game_created() {
@@ -158,7 +158,7 @@ public class CluedoProtokollChecker {
 		if (validateValue(jsonRoot, "gameID"))
 			isInt(jsonRoot, "gameID");
 		if (validateValue(jsonRoot, "color"))
-			validateColor(jsonRoot.getString("color"));
+			validatePerson(jsonRoot.getString("color"));
 	}
 
 	void val_player_added() {
@@ -305,7 +305,7 @@ public class CluedoProtokollChecker {
 			setErr(value +" hat nicht protokollgemäßes (java.time.LocalDateTime) Format");
 	}
 	
-	void validatePerson(String personName){
+	void validatePersonName(String personName){
 		if (!Persons.isMemberPersonName(personName))
 			setErr("Person :\" "+personName+ "\" is not a valid Personname in this Game");
 	}
@@ -326,7 +326,7 @@ public class CluedoProtokollChecker {
 	}
 	
 	boolean validateProtokollVersion(JSONObject jsonParent,String key){
-		if (jsonParent.getDouble(key) == Config.PROTOKOLL_VERSION) return true;		
+		if (jsonParent.getString(key).equals(Config.PROTOKOLL_VERSION)) return true;		
 		return false;
  	}
 	
@@ -359,7 +359,7 @@ public class CluedoProtokollChecker {
 			setErr("GameState \""+gameState+ "\" not a valid Gamestate in this Game");
 	}
 	
-	void validateColor(String color){
+	void validatePerson(String color){
 		if (!Persons.isMemberColor(color))
 			setErr("Color \""+color+ "\" not a valid Color in this Game");
 	}
@@ -412,7 +412,7 @@ public class CluedoProtokollChecker {
 	void validatePlayerInfo(JSONObject jsonParent){		
 			validateValue(jsonParent, "nick");			
 			if (validateValue(jsonParent, "color"))
-				validateColor(jsonParent.getString("color"));
+				validatePerson(jsonParent.getString("color"));
 //			if (validateValue(jsonParent, "field"))
 //				validateField(jsonParent, "field");
 //			if (validateValue(jsonParent, "cards"))

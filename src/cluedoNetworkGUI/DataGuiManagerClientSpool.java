@@ -13,10 +13,10 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		serverPool = spool;
 	}
 	
-	public boolean addServer(ServerItem server){
+	public boolean addServer(ServerItem server,String status){
 		if (serverPool.add(server)){
-			addMsgIn("opened connection to "+server.getGroupName()+" on : "+ server.getIpString());
-			addIp(server.getGroupName());
+			addMsgIn("opened TCPSocket to "+server.getGroupName()+" on : "+ server.getIpString());
+			addNetworkActorToGui(server.getGroupName(),server.getIpString(),status);
 			int n = serverPool.size()-1;
 			System.out.println("server added at"+n);
 			return true;
@@ -26,15 +26,32 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public boolean removeServer(String msg,ServerItem server){
-		addMsgIn(msg );
-		return serverPool.remove(server);
+		if (serverPool.remove(server)){
+			addMsgIn(msg );
+			return true;
+		}
+		return false;
 	}
 	
 	public ServerItem getServerByIndex(int index){
 		return serverPool.get(index);
 	}
 	
+	public ServerItem getServerByID(String name, String ip){
+		for (ServerItem s: serverPool)
+			if (s.getGroupName().equals(name) && s.getIpString().equals(ip))
+				return s;
+		return null;
+	}
 	
+	@Override
+	public CluedoClientGUI getGui() {
+		return (CluedoClientGUI) super.getGui();
+	}
+	
+	public void sayGoodbye(String msg){
+		serverPool.sendToAll(msg);
+	}
 	
 	
 	
