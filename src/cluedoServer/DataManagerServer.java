@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import cluedoNetworkGUI.DataManager;
 import cluedoNetworkLayer.CluedoGameServer;
+import enums.GameStates;
 import enums.JoinGameStatus;
 
 public class DataManagerServer extends DataManager {
@@ -70,6 +71,10 @@ public class DataManagerServer extends DataManager {
 		return gamesList.add(game);
 	}
 	
+	public boolean removeGame(CluedoGameServer game){
+		return gamesList.remove(game);
+	}
+	
 	@Override
 	public boolean checkIpExists(InetAddress adress){
 		return clientPool.checkForExistingIp(adress);
@@ -104,6 +109,7 @@ public class DataManagerServer extends DataManager {
 	public boolean removeClientfromSystem(ClientItem client){
 		for (CluedoGameServer cgs: gamesList){
 			cgs.findAndRemovePlayer(client);
+			if (cgs.getGameState() == GameStates.ended)	removeGame(cgs);
 		}
 		
 		

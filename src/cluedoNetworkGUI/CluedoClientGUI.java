@@ -112,14 +112,16 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
       
         grid.setValignment(submitMessageButton, VPos.CENTER);
        
-       //grid.add(node,				col,row,colspan,rowspan)
+       //grid.add(node,				  col,row,colspan,rowspan)
         grid.add(menue, 				0, 0, 2, 1);	  
-	    grid.add(tabPane, 				0, 2, 2, 4);
+	    grid.add(networkActorsListView, 0, 2, 1, 4);
 	    grid.add(submitMessageButton, 	0, 6, 1, 1);
-	    grid.add(inLabel, 				1, 2, 1, 1);
-	    grid.add(messagesIn, 			1, 3, 1, 1);
-	    grid.add(outLabel, 				1, 4, 1, 1);
-	    grid.add(messagesOut, 			1, 5, 1, 1);	    
+	    grid.add(gameListView, 			1, 2, 1, 4);
+	    
+//	    grid.add(inLabel, 				1, 2, 1, 1);
+//	    grid.add(messagesIn, 			1, 3, 1, 1);
+//	    grid.add(outLabel, 				1, 4, 1, 1);
+//	    grid.add(messagesOut, 			1, 5, 1, 1);	    
 	    grid.add(inputField, 			1, 6, 1, 1);
 	    
        

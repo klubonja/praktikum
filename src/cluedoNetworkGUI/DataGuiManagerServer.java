@@ -74,8 +74,6 @@ public class DataGuiManagerServer extends DataGuiManager {
 		return false;				
 	}
 	
-	
-	
 	public ArrayList<CluedoGameServer> getGamesByPlayer(ClientItem client){
 		return dataManager.getGamesByPlayer(client.getNick());		
 	}
