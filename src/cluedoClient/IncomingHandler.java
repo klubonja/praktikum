@@ -48,7 +48,8 @@ class IncomingHandler implements Runnable {
 					else if (checker.getType().equals("player added")){
 						  int gameID = checker.getMessage().getInt("gameID");
 		        		  JSONObject player = checker.getMessage().getJSONObject("player");
-		        		  dataGuiManager.joinGame(gameID,player.getString("color"),player.getString("nick"));      		   
+		        		  dataGuiManager.joinGame(gameID,player.getString("color"),player.getString("nick"));
+		        		  
 					}
 					else if (checker.getType().equals("user left")){
 		        		  String player = checker.getMessage().getString("nick");

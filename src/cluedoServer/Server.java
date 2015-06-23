@@ -90,20 +90,20 @@ public class Server {
 				gui.setStatus("port "+TCPport+ " NInterfaces: "+nm.getServicesFormated()+" "+StandardCharsets.UTF_8);
 			} 
 			catch (Exception e) {
-				e.printStackTrace();
+				aux.logsevere("getting networkserveices failed", e);
 			}
 			
 			aux.loginfo("new TCPSocket created");
 		} 
 		catch (IOException e) {
 			stopServer();
-			aux.logsevere("creating serversocket faild"+ e.getMessage(), e);			
+			aux.logsevere("creating serversocket failed :" + e.getMessage());			
 		}		
 	}
 	
 	private void stopServer(){
 		dataManager.notifyAll(NetworkMessages.disconnectedMsg("server "+ Config.GROUP_NAME + " says : byebye, and thanks for all the fish"));
-		connector.kill();
+		if (connector != null) connector.kill();
 		if (TCPServerSocket != null)
 			try {
 				TCPServerSocket.close();

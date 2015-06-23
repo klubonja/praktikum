@@ -16,6 +16,7 @@ public class ServerItem  {
 	GameListClient gamesList;
 	Socket socket;
 	ServerStatus status;
+	String myNick;
 	
 	public ServerItem(String groupName,InetAddress ip, int port) {
 		this.groupName = groupName;
@@ -24,6 +25,14 @@ public class ServerItem  {
 		gamesList = new GameListClient();
 		status = ServerStatus.not_connected;
 		
+		
+	}
+	
+	public String getMyNick() {
+		return myNick;
+	}
+	public void setMyNick(String myNick) {
+		this.myNick = myNick;
 	}
 	
 	public void setStatus(ServerStatus status) {

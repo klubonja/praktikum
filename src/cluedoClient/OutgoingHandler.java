@@ -18,6 +18,7 @@ import staticClasses.aux;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
 import cluedoNetworkGUI.GameVBox;
+import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 
 
@@ -36,8 +37,6 @@ class OutgoingHandler implements Runnable{
 		dataGuiManager = new DataGuiManagerClient(gui, server);		
 		
 		addClientGUIListener(dataGuiManager.getGui());
-		//login(dataGuiManager.getGui());
-		aux.login(gui, server.getGroupName(), server.getSocket());
 	}
 	
 	public void addClientGUIListener(CluedoClientGUI gui){
@@ -82,12 +81,20 @@ class OutgoingHandler implements Runnable{
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
 		        	int gameID = gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID();
-		        	ArrayList<CluedoPlayer> plist = dataGuiManager.getServer().getGameByGameID(gameID).getPlayersConnected();
-		        	//TODO 
-		        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
+		        	CluedoGameClient game = dataGuiManager.getGameByID(gameID);
+		        	if (game.getNumberConnected() >= 3 && 	game.hasNick(dataGuiManager.getServer().getMyNick())){
+		        		startGame(gameID);
+		        	}
+		        	else {
+		        		ArrayList<CluedoPlayer> plist = dataGuiManager.getServer().getGameByGameID(gameID).getPlayersConnected();
+			        	//TODO 
+			        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
+		        	}
+		        	
 		        }
 		    }
-		});		
+		});	
+		
 		dataGuiManager.getGui().getNetworkActorsView().setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent click) {
@@ -97,7 +104,9 @@ class OutgoingHandler implements Runnable{
 		        	
 		        }
 		    }
-		});		
+		});	
+		
+		
 	}
 	
 	void selectGame(SelectionModel<GameVBox> g, String color) {
@@ -110,13 +119,17 @@ class OutgoingHandler implements Runnable{
 				);
 	}
 	
+	void startGame(int gameID){
+		aux.sendTCPMsg(dataGuiManager.getServer().getSocket(), NetworkMessages.start_gameMsg(gameID));
+	}
+	
 	
 	private void sendInputFieldTextContent(CluedoClientGUI gui){
 		aux.sendTCPMsg(
 				dataGuiManager.getServer().getSocket(),
 				NetworkMessages.chat_to_serverMsg(
 						gui.inputField.getText(), 
-						LocalDateTime.now().toString()
+						LocalDateTime.now().toString() // 2015-04-08T15:16:23.42
 						)
 				);
 		gui.inputField.setText("");

@@ -2,6 +2,7 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
+import staticClasses.aux;
 import javafx.application.Platform;
 import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
@@ -41,8 +42,18 @@ public class DataGuiManagerClient extends DataGuiManager{
 		emptyGamesList();
 	}
 	
+	public CluedoGameClient getGameByID(int gameID){
+		return server.getGameByGameID(gameID);
+	}
+	
 	public boolean joinGame(int gameID,String color,String nick){
 		if (server.addPlayerByGameID(gameID, color, nick)){
+			if (server.getGameByGameID(gameID).getNumberConnected() >= 3) {
+				setReadyGame(gameID, true);
+				
+			}
+			aux.loginfo("connected to game "+gameID+" : "+server.getGameByGameID(gameID).getNumberConnected());
+				
 			updateGame(gameID, "(updated by "+nick+")",server.getGameByGameID(gameID).getNicksConnected());
 			return true;
 		}

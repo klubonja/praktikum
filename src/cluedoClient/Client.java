@@ -143,18 +143,27 @@ public class Client {
 			ServerItem server = dataGuiManager.getServerByID(
 					smod.getSelectedItem().getNameID(),
 					smod.getSelectedItem().getIpID());
-			if (server.getSocket() == null){
-				startTCPConnection(server);
+			if (server.getStatus() == ServerStatus.not_connected){
+				if (server.getSocket() == null){
+					startTCPConnection(server);
+					if (!aux.login(dataGuiManager.getGui(), server));	
+						dataGuiManager.removeServer("TCP server connection gone",server);
+				}
+				else {
+					if (!aux.login(dataGuiManager.getGui(), server));	
+						dataGuiManager.removeServer("TCP server connection gone",server);
+				}
+							
 			}
 			else if (server.getStatus() == ServerStatus.not_connected){
-				aux.login(dataGuiManager.getGui(), server.getGroupName(), server.getSocket());
+				
 			}
 			else if (server.getStatus() == ServerStatus.connected){
 				dataGuiManager.refreshGamesListByServer(server);
 			}
 		}
 		catch (Exception e){
-			e.printStackTrace();
+			aux.logsevere("server isnt connected anymore", e);
 		}		
 	}
 }

@@ -116,11 +116,11 @@ class CommunicationHandler implements Runnable{
 	        	   dataGuiManager.removeClient(client);
 	           }
 	           else {
-	        	   if (checker.getType().equals("create game")){
+	        	   if (checker.getType().equals("create game")){													//CREATE GAME
 	        		   createGame(checker.getMessage().getString("color"),client);
 	        	   }
 	        	   else if (checker.getType().equals("join game")){
-	        		   int gameID = checker.getMessage().getInt("gameID");
+	        		   int gameID = checker.getMessage().getInt("gameID");											//JOIN GAME
 	        		   String color = checker.getMessage().getString("color");
 	        		   JoinGameStatus status = dataGuiManager.joinGame(gameID, color, client) ;
 	        		   if (status == JoinGameStatus.added){
@@ -140,9 +140,15 @@ class CommunicationHandler implements Runnable{
 	        		   else if (status == JoinGameStatus.nick_already_taken)
 	        			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));	        		  
 	        	   }
-	        	   else if (checker.getType().equals("disconnect")) {
+	        	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
 	        		  closeProtokollConnection("");
 	        	   }
+	        	   else if (checker.getType().equals("chat")) {														//CHAT
+	        		   String msg = checker.getMessage().getString("message");
+	        		   String ts = checker.getMessage().getString("timestamp");
+	        		   dataManager.notifyAll(NetworkMessages.chat_to_clientMsg(msg , ts, client.getNick()));
+		           }
+	        	   
 	           }	
 	           //nur damit nichts unter den tisch fällt
 		       dataGuiManager.addMsgIn(message);

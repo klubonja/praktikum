@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import org.json.JSONArray;
 
+import cluedoClient.ServerItem;
 import cluedoNetworkGUI.CluedoClientGUI;
 import enums.Persons;
 
@@ -67,7 +68,7 @@ public abstract class aux {
 	    }		
 	}
 	
-	public static void sendTCPMsg(Socket socket,String msg){
+	public static boolean sendTCPMsg(Socket socket,String msg){
 		try {
 			PrintWriter out = new PrintWriter(
 					   new BufferedWriter(new OutputStreamWriter(
@@ -75,14 +76,16 @@ public abstract class aux {
 			 out.print(msg);
 			 out.flush();	
 			 aux.log.log(Level.INFO,"SENT : "+ msg);
+			 return true;
 		}
 		catch (IOException e){
-			e.printStackTrace();
+			logsevere("sending " + msg + " failed", e);
+			return false;
 		}			
 	}
 	
-	public static boolean login(CluedoClientGUI gui,String servername,Socket socket){
-		String[] loginData = gui.loginPrompt("Login to Server: "+servername);
+	public static boolean login(CluedoClientGUI gui,ServerItem server){
+		String[] loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
 		String msg;
 		
 //		String[] loginData = new String[]{"",""};
@@ -97,8 +100,12 @@ public abstract class aux {
 		}
 		if (msg == null)	return false;
 
-		aux.sendTCPMsg(socket,msg);
-		return true;
+		if (aux.sendTCPMsg(server.getSocket(),msg)){
+			server.setMyNick(loginData[0]);
+			return true;
+		};
+		
+		return false;
 	}
 	
 	public static String getRandomString(int length){

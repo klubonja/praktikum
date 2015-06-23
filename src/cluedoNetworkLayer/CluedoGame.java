@@ -38,6 +38,10 @@ public class CluedoGame {
 		
 	}
 	
+	public void start(){
+		
+	}
+	
 	public boolean addPlayers(ArrayList<CluedoPlayer> plist){
 			for (CluedoPlayer pl: plist){
 				joinGame(pl.getCluedoPerson().getColor(),pl.getNick());
@@ -143,7 +147,7 @@ public class CluedoGame {
 	public int getNumberConnected(){
 		int n = 0;
 		for (CluedoPlayer p : players)
-			if (p != null)
+			if (!p.getNick().equals(""))
 				n++;
 		return n;
 	}
@@ -173,6 +177,13 @@ public class CluedoGame {
 				nb.append(p.getNick()+", ");
 		if (nb.length() > 2) nb.delete(nb.length()-2, nb.length()-1);
 		return nb.toString();
+	}
+	
+	public boolean hasNick(String nick){
+		for (CluedoPlayer p: players)
+			if (p.getNick().equals(nick)) return true;
+		return false;
+			
 	}
 	
 	

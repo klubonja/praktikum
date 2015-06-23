@@ -1,19 +1,28 @@
 package cluedoNetworkGUI;
 
+import staticClasses.aux;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class GameVBox extends VBox{
 	int gameID;
 	StringProperty gameLabelStringProp;
 	StringProperty gameInfoStringProp;
+	BooleanProperty visibilityProp;
+	Button startGame;
 	
 	public GameVBox(int gameid,String label, String info) {
 		super();	
 		gameLabelStringProp = new SimpleStringProperty(label+" :"+gameid);
 		gameInfoStringProp = new SimpleStringProperty(info);
+		visibilityProp = new SimpleBooleanProperty(false);
 		gameID = gameid;
 	
 		getStyleClass().add("gameListItem");
@@ -28,7 +37,16 @@ public class GameVBox extends VBox{
 		gameInfo.getStyleClass().add("gameInfoItem");
 		gameInfo.setLayoutY(14);
 		
-		getChildren().addAll(gameLabel,gameInfo);
+		HBox hb = new HBox();
+		
+//		startGame = new Button("Start Game");
+//		startGame.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+//		startGame.getStyleClass().add("startGameButtonGamesList");
+//		hb.getChildren().add(startGame);
+//		hb.setAlignment(Pos.CENTER_RIGHT);
+//		hb.visibleProperty().bind(visibilityProp);
+		
+		getChildren().addAll(gameLabel,gameInfo,hb);
 	}
 	
 	public int getGameID() {
@@ -48,6 +66,11 @@ public class GameVBox extends VBox{
 	
 	public String getInfoString(){
 		return gameInfoStringProp.get();
+	}
+	
+	public void setReadyGame(boolean value) {
+		setStyle("-fx-text-fill:#fffff; "
+				+ "-fx-background-color: green;");
 	}
 	
 	

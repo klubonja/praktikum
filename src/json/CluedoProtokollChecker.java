@@ -132,7 +132,7 @@ public class CluedoProtokollChecker {
 	}
 
 	void val_chat() {
-		validateValue(jsonRoot, "sender");
+		//validateValue(jsonRoot, "sender");
 		validateValue(jsonRoot, "message");
 		if (validateValue(jsonRoot, "timestamp"))
 			validateLocalTimeFormat(jsonRoot, "timestamp");
@@ -296,8 +296,8 @@ public class CluedoProtokollChecker {
 	
 	
 	void validateLocalTimeFormat(JSONObject jsonParent,String key){
-		String value = jsonParent.getString("key");
-		if (!value.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}\\d{2}\\.\\d{2}"))
+		String value = jsonParent.getString(key);		
+		if (!value.matches("\\d+-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}\\d{1,2}\\.\\d*"))
 			setErr(value +" hat nicht protokollgemäßes (java.time.LocalDateTime) Format");
 	}
 	
