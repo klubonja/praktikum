@@ -2,6 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
+import staticClasses.aux;
 import cluedoServer.ClientItem;
 import enums.JoinGameStatus;
 
@@ -21,6 +22,12 @@ public class CluedoGameServer extends CluedoGame{
 			nicks.add(c.getNick());
 		
 		return nicks;
+	}
+	
+	public void notifyAll(String msg){
+		for (ClientItem c: participants){
+			aux.sendTCPMsg(c.getSocket(), msg);
+		}
 	}
 	
 	public boolean hasPlayerNick(ClientItem client){

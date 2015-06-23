@@ -80,7 +80,7 @@ public class Client {
 			setCloseHandler();
 		}
 		catch (IOException e){
-			 aux.log.log(Level.SEVERE,e.getMessage());	
+			 aux.logsevere("",e);
 			dataGuiManager.removeServer("TCP server connection failed"+e.getMessage(),server);
 			run = false;
 			

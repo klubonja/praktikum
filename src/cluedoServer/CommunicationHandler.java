@@ -87,7 +87,7 @@ class CommunicationHandler implements Runnable{
 					client.sendMsg(NetworkMessages.disconnectMsg());
 					client.closingConnection(dataManager.getGroupName()+" is closing connection");
 					dataManager.blacklist(client);					
-					
+					killThread();
 					
 				}
 				

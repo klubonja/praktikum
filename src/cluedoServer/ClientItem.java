@@ -98,17 +98,6 @@ public class ClientItem {
 	}
 	
 	public void sendMsg(String msg){
-//		try {
-//			 PrintWriter out = new PrintWriter(
-//					   new BufferedWriter(new OutputStreamWriter(
-//					        socket.getOutputStream(), StandardCharsets.UTF_8)), true);
-//			 out.print(msg);
-//			 out.flush();
-//		}
-//		catch (IOException e){
-//			System.out.println(e.getMessage());
-//		}	
-		
 		aux.sendTCPMsg(socket, msg);
 	}
 }

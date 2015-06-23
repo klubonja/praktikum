@@ -132,6 +132,7 @@ class OutgoingHandler implements Runnable{
 						LocalDateTime.now().toString() // 2015-04-08T15:16:23.42
 						)
 				);
+				
 		gui.inputField.setText("");
 	}
 	
