@@ -26,7 +26,8 @@ public class Kachel extends Label {
 	private Orientation orientierung;
 	private Rooms raum;
 	private char [] moeglichkeitenHierher = new char [12];
-	private char [] moeglichkeitenVonHier = new char [12];
+	private char [][] moeglichkeitenVonHier;
+	private Kachel vonHier;
 	
 	private final IntegerProperty xKoordinate = 
 			new SimpleIntegerProperty(this, "xKoordinate", 0);
@@ -45,7 +46,7 @@ public class Kachel extends Label {
 	 * @param istTuer ob die Kachel eine Tür ist
 	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
 	 */
-	public Kachel (String text, int xKoordinate, int yKoordinate, boolean istRaum,Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [] moeglichkeitenVonHier){
+	public Kachel (String text, int xKoordinate, int yKoordinate, boolean istRaum,Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
 		super(text);
 		this.xKoordinate.set(xKoordinate);
 		this.yKoordinate.set(yKoordinate);
@@ -54,7 +55,8 @@ public class Kachel extends Label {
 		this.raum = raum;
 		this.istTuer = istTuer;
 		this.moeglichkeitenHierher = moeglichkeitenHierher;
-		this.moeglichkeitenVonHier = this.moeglichkeitenVonHier;
+		this.moeglichkeitenVonHier = moeglichkeitenVonHier;
+		this.vonHier = vonHier;
 	}
 	
 	public Kachel(){
@@ -142,12 +144,20 @@ public class Kachel extends Label {
 		this.raum = raum;
 	}
 
-	public char[] getMoeglichkeitenVonHier() {
+	public char[][] getMoeglichkeitenVonHier() {
 		return moeglichkeitenVonHier;
 	}
 
-	public void setMoeglichkeitenVonHier(char[] moeglichkeitenVonHier) {
+	public void setMoeglichkeitenVonHier(char[][] moeglichkeitenVonHier) {
 		this.moeglichkeitenVonHier = moeglichkeitenVonHier;
+	}
+
+	public Kachel getVonHier() {
+		return vonHier;
+	}
+
+	public void setVonHier(Kachel vonHier) {
+		this.vonHier = vonHier;
 	}
 	
 	

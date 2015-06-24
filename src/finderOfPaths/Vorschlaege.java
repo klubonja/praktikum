@@ -72,6 +72,7 @@ public class Vorschlaege {
 							for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length;jSpalten++){
 								gui.getKachelArray()[iReihen][jSpalten].setMoeglichkeitenHierher(null);
 								gui.getKachelArray()[iReihen][jSpalten].setMoeglichkeitenVonHier(null);
+								gui.getKachelArray()[iReihen][jSpalten].setVonHier(null);
 							}				
 						}
 			
@@ -80,7 +81,7 @@ public class Vorschlaege {
 				System.out.println("?????????????????????????????");
 				System.out.println((counter+1) +". Durchgang Vorschläge");
 				
-											//this.jetzigeKachel = jetzigeKachelEingabe;
+
 											//jetzigeSpalte = player.getxCoord();
 											//jetzigeReihe = player.getyCoord();
 							//				for (int eins = 0; eins < mehrereMoeglichkeiten.length; eins++){
@@ -132,8 +133,15 @@ public class Vorschlaege {
 							&& gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstRaum() == false)
 					{
 						gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
+						Kachel vonHier = gui.getKachelArray()[yPositionen[counter]][yPositionen[counter]];
+						gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
 							//Mehr oder weniger unnötig:
-						gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].setMoeglichkeitenVonHier(moeglichkeiten[counterAussen]);
+						//char [] [] welchesVonHier = new char [moeglichkeiten.length][];
+						//welchesVonHier[counterAussen] = moeglichkeiten[counterAussen];
+						
+						//ohmygiddygiddygosh++;
+						//System.out.println("oh my giddy giddy gosh : " +ohmygiddygiddygosh);
+						//gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].setMoeglichkeitenVonHier(welchesVonHier);
 						
 						gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], Color.GREEN);
 					}
@@ -147,14 +155,15 @@ public class Vorschlaege {
 							) {
 						gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 							//Mehr oder weniger unnötig:
-						gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].setMoeglichkeitenVonHier(moeglichkeiten[counterAussen]);
+						Kachel vonHier = gui.getKachelArray()[yPositionen[counter]][yPositionen[counter]];
+						gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
 						
 						gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], Color.CORNFLOWERBLUE);
 						
 					}
 					
 				}
-				counterAussen = 0;
+				//counterAussen = 0;
 			
 				
 
@@ -180,6 +189,7 @@ public class Vorschlaege {
 			}
 			
 			for (counterAussen = 0; counterAussen < moeglichkeiten.length; counterAussen++ ){
+				//int ohmygiddygiddygosh = 0;
 				int yDistanz=0;
 				int xDistanz=0;
 				for (counterInnen = 0; counterInnen < moeglichkeiten[counterAussen].length; counterInnen++){
@@ -202,6 +212,7 @@ public class Vorschlaege {
 				}
 				counterInnen = 0;
 				
+				
 	
 				// Erreichbare Kacheln
 				if ( (yDistanz != 0 || xDistanz != 0) && (jetzigeReihe + yDistanz >=0) && (jetzigeSpalte + xDistanz >=0) 
@@ -211,11 +222,10 @@ public class Vorschlaege {
 				{
 					gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 						//Mehr oder weniger unnötig:
-					gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].setMoeglichkeitenVonHier(moeglichkeiten[counterAussen]);
-					//Farbliche Markierung
-						// Buffer
-					//markierteHintergruende[jetzigeSpalte + xDistanz][jetzigeReihe + yDistanz] = gui.getKachelArray()[jetzigeSpalte + xDistanz][jetzigeReihe + yDistanz].getBackground();
-					
+					Kachel vonHier = gui.getKachelArray()[jetzigeReihe][jetzigeSpalte];
+					gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
+
+					//System.out.println("yo");
 					gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], Color.GREEN);
 				}
 				else if( (yDistanz != 0 || xDistanz != 0) && (jetzigeReihe + yDistanz >=0) && (jetzigeSpalte + xDistanz >=0) 
@@ -226,7 +236,8 @@ public class Vorschlaege {
 						) {
 					gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 						//Mehr oder weniger unnötig:
-					gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].setMoeglichkeitenVonHier(moeglichkeiten[counterAussen]);
+					Kachel vonHier = gui.getKachelArray()[jetzigeReihe][jetzigeSpalte];
+					gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
 					
 					gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], Color.CORNFLOWERBLUE);
 					

@@ -115,8 +115,7 @@ public class WahnsinnigTollerPathfinder {
         //System.out.println("jetzt x "+jetzigeReihe);
         //System.out.println("jetzt y "+jetzigeSpalte);
         
-        if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum())
-        {
+        if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
 	        for (welcheKachel = 0; welcheKachel < tuerCounter; welcheKachel++){
 	        	
 	        	Kachel momentaneKachel = suchKacheln[welcheKachel];
@@ -131,9 +130,10 @@ public class WahnsinnigTollerPathfinder {
 	        	xPositionen[welcheKachel] = player.getxCoord();
 	        	yPositionen[welcheKachel] = player.getyCoord();
 	        	
-	        	System.out.println("xPositionen[0] zweiter Versuch : " +xPositionen[0]);
+	        	//System.out.println("xPositionen[welcheKachel] zweiter Versuch : " +xPositionen[welcheKachel]);
 	        	
 	        	System.out.println((welcheKachel+1) +". Durchgang" +" <<<>>> player y : " +player.getyCoord() +"   ||   x : " +player.getxCoord());
+	        	System.out.println("hamana");
 	        	
 	        	ausgangsPosition(jetzigeReihe, jetzigeSpalte);
 	            
@@ -199,7 +199,6 @@ public class WahnsinnigTollerPathfinder {
 		if (hans == ' '){
 			System.out.println("gleich!");
 		}
-		
 		
 		
 		for (int i = 0; i < moeglichkeiten.length; i++){
@@ -488,17 +487,18 @@ public class WahnsinnigTollerPathfinder {
         if(currentEntry.length() == maximaleSchritte) {
             
             moeglichkeiten[welcheMoeglichkeit] = currentEntry.toCharArray();
-            mehrereMoeglichkeiten[welcheKachel] = moeglichkeiten;
+            if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
+            	mehrereMoeglichkeiten[welcheKachel] = moeglichkeiten;
+            	setMehrereMoeglichkeiten(mehrereMoeglichkeiten);
+            	//System.out.println("toll");
+            }
+            
             welcheMoeglichkeit++;
             //System.out.println("welcheKachel" + welcheKachel);
             setMoeglichkeiten(moeglichkeiten);
-            setMehrereMoeglichkeiten(mehrereMoeglichkeiten);
-            
-            if (currentEntry == "OONNnullnullnull"){
-            	System.out.println("juchu!");
-            }
             
             
+           
             //for (int i = 1; i<=welcheMoeglichkeit;i++){
             	//System.out.println(currentEntry);
             	//System.out.println(moeglichkeiten[i]);

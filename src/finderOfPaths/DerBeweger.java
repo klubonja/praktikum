@@ -152,6 +152,7 @@ public class DerBeweger {
 				zielKachel = gui.getKachelArray()[jetzigeReihe+yDistanz][jetzigeSpalte+xDistanz];
 			}
 			
+			
 			System.out.println("yDistanz : " +yDistanz +"   xDistanz : " +xDistanz);
 			
 //			System.out.println("anfangsKachel X : " +anfangsKachel.getLayoutX() +"  anfangsKachel Y : " +anfangsKachel.getLayoutY());
@@ -182,6 +183,7 @@ public class DerBeweger {
 		
 			
 			marker = true;
+			
 			
 		}
 

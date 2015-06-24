@@ -33,6 +33,8 @@ public class Ausloeser {
 	
 	private int nullSchritte;
 	
+	private char [] richtigeAnweisungen;
+	
 	private int schritte;
 	
 	private Player player;
@@ -135,7 +137,8 @@ public class Ausloeser {
 							Kachel momentaneKachel = gui.getKachelArray()[iReihen][jSpalten];
 							System.out.println("Reihe : "+iReihen +"  ||  Spalte : " +jSpalten);
 							char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
-							//char [] moeglichkeitenVonHier = momentaneKachel.getMoeglichkeitenVonHier();
+							
+							Kachel startKachel = momentaneKachel.getVonHier();
 							resetAnweisungen();
 							anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
 							//anweisungenOrientationsVonHier = charToOrientation(moeglichkeitenVonHier);
@@ -147,13 +150,10 @@ public class Ausloeser {
 //							System.out.println("player x " +player.getxCoord());
 //							System.out.println("player y " +player.getyCoord());
 							// Hier: Schon falsch
-							for (int h = 0; h < moeglichkeitenHierher.length; h++){
-								System.out.println(moeglichkeitenHierher[h]);
-							}
 							
 							insgesamteDistanz();
-							xySetzen(momentaneKachel);
-							beweger.anfangsKachelSetzen(gui.getKachelArray()[player.getyCoord()][player.getxCoord()]);
+							
+							beweger.anfangsKachelSetzen(startKachel);
 							
 							beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
 							nullSchritte = 0;
@@ -170,6 +170,23 @@ public class Ausloeser {
 						}
 					}
 				}
+		}
+	}
+	
+	public void checkWhatsOk(char [][] anweisungenVonHierEingabe, char [] anweisungenHierherEingabe){
+		richtigeAnweisungen = new char [anweisungenHierherEingabe.length];
+		int stelle = 0;
+		for (int welcheVersion = 0; welcheVersion < anweisungenVonHierEingabe.length && anweisungenVonHierEingabe[welcheVersion] != null; welcheVersion++){
+			for (int welcheAnweisung = 0; welcheAnweisung < anweisungenVonHierEingabe[welcheVersion].length; welcheAnweisung++){
+				for (int welcherVorschlag = 0; welcherVorschlag < anweisungenHierherEingabe.length; welcherVorschlag++){
+					if (anweisungenVonHierEingabe[welcheVersion][welcheAnweisung] == anweisungenHierherEingabe[welcherVorschlag]){
+						
+						richtigeAnweisungen[stelle] = anweisungenVonHierEingabe[welcheVersion][welcheAnweisung];
+						stelle++;
+					}
+				}
+				
+			}
 		}
 	}
 	
@@ -209,27 +226,7 @@ public class Ausloeser {
 		return anweisungenOrientationsVerarbeitet;
 	}
 
-	public void xySetzen(Kachel momentaneKachel){
 
-		for (int iReihen = 0; iReihen < gui.getKachelArray().length; iReihen++){
-			for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length; jSpalten++){
-				Kachel beginnKachel = gui.getKachelArray()[iReihen][jSpalten];
-				
-				if (beginnKachel.getMoeglichkeitenVonHier()!= null){
-					System.out.println("*********** party");
-					System.out.println("*********** iReihen : " +iReihen +"   ||  jSpalten : " +jSpalten);
-					int yStelle = gui.getRowIndex(momentaneKachel);
-					int xStelle = gui.getColumnIndex(momentaneKachel);
-					if ( ( (xStelle - xInsgesamt) == jSpalten) && ( (yStelle - yInsgesamt) == iReihen) ){
-						System.out.println("muhahahaha");
-						player.setxCoord(jSpalten);
-						player.setyCoord(iReihen);
-					}
-				}
-			}
-		}
-	
-	}
 	
 	public void insgesamteDistanz(){
 		

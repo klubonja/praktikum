@@ -28,8 +28,8 @@ public class FeldKachel extends Kachel {
 	 * @param istTuer ob die Kachel eine Tür ist
 	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
 	 */
-	public FeldKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher,char [] moeglichkeitenVonHier){
-		super(text, xKoordinate, yKoordinate, istRaum, orientierung,raum, istTuer, moeglichkeitenHierher,moeglichkeitenVonHier);
+	public FeldKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher,char [][] moeglichkeitenVonHier, Kachel vonHier){
+		super(text, xKoordinate, yKoordinate, istRaum, orientierung,raum, istTuer, moeglichkeitenHierher,moeglichkeitenVonHier, vonHier);
 		if (peter==hans){
 			
 		}

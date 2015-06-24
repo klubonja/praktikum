@@ -27,8 +27,8 @@ public class RaumKachel extends Kachel {
 	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
 	 */
 	
-	public RaumKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung, Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [] moeglichkeitenVonHier){
-		super(text, xKoordinate, yKoordinate, istRaum, orientierung, raum, istTuer, moeglichkeitenHierher, moeglichkeitenVonHier);
+	public RaumKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung, Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
+		super(text, xKoordinate, yKoordinate, istRaum, orientierung, raum, istTuer, moeglichkeitenHierher, moeglichkeitenVonHier, vonHier);
 		istRaum = true;
 		this.setBackgroundColor(this, Color.LIGHTSALMON);
 

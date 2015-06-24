@@ -24,6 +24,7 @@ public class BallEbene2 extends GridPane{
 	private Kachel [][] kachelArray;
 	
 	private char [] keineMoeglichkeiten;
+	private char [][] keineMoeglichkeiten2;
 	
 	public BallEbene2(){
 		kachelArray = new Kachel[25][24];
@@ -59,7 +60,7 @@ public class BallEbene2 extends GridPane{
 		for (int iReihen = 0; iReihen < kachelArray.length;iReihen++){
 			for (int jSpalten = 0; jSpalten < kachelArray[iReihen].length;jSpalten++ ){
 				String aufschrift = +iReihen +"" +jSpalten;
-				kachelArray[iReihen][jSpalten] = new FeldKachel(aufschrift, iReihen, jSpalten, false, null,null, false, keineMoeglichkeiten, keineMoeglichkeiten);
+				kachelArray[iReihen][jSpalten] = new FeldKachel(aufschrift, iReihen, jSpalten, false, null,null, false, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 				this.add(kachelArray[iReihen][jSpalten], jSpalten, iReihen);
 				
 				kachelArray[iReihen][jSpalten].setMinHeight(29);
