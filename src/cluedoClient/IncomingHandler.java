@@ -89,7 +89,7 @@ class IncomingHandler implements Runnable {
 				dataGuiManager.refreshGamesList();// refresh view before running out, its a differnet thread anyway
 			}			
 		}
-		System.out.println("running out client connected to"+dataGuiManager.getServer().getGroupName()+"incoming thread running out");
+		auxx.logsevere("incomming handler thread runnning out");
 		killConnection();	
 	}
 	
@@ -133,6 +133,6 @@ class IncomingHandler implements Runnable {
 	
 	public void killConnection(){
 		run = false;
-		dataGuiManager.removeServer();	
+		dataGuiManager.removeServer();
 	}
 }
