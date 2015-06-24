@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +22,14 @@ import enums.Persons;
 
 public abstract class aux {
 	
-	public static final Logger log = Logger.getLogger("mydearliittleloger");
+	public static final Logger log = Logger.getLogger("mydearliittlelogger");
+	public static final ConsoleHandler C_HANDLER = new ConsoleHandler();
+
+	public static final void setLoggingLevel(Level level){
+		log.setLevel(level);
+		C_HANDLER.setLevel(level);
+		log.addHandler(C_HANDLER);
+	}
 	
 	public static final void logsevere(String msg){
 		log.log(Level.SEVERE, msg);
@@ -35,7 +43,7 @@ public abstract class aux {
 		log.log(Level.INFO, msg);
 	}
 	
-	public static final void logfine(String msg){
+	public static final void logfine(String msg){		
 		log.log(Level.FINE, msg);
 	}
 	
@@ -58,12 +66,11 @@ public abstract class aux {
 			char[] buffer = new char[Config.MESSAGE_BUFFER];
 			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
 			String msg = new String (buffer, 0, charCount);			
-			aux.log.log(Level.INFO,"RECEIVED : "+ msg);
-			
+			logfine("RECEIVED : "+ msg);
 			return msg;
 		} 
 		catch (IOException e) {
-			e.printStackTrace();
+			logsevere("RECEIVE failed : ", e);
 			return null;
 	    }		
 	}
@@ -75,38 +82,34 @@ public abstract class aux {
 					        socket.getOutputStream(), StandardCharsets.UTF_8)), true);
 			 out.print(msg);
 			 out.flush();	
-			 aux.log.log(Level.INFO,"SENT : "+ msg);
+			 logfine("SENT : "+ msg);
 			 return true;
 		}
-		catch (IOException e){
-			logsevere("sending " + msg + " failed", e);
+		catch (IOException e ){
+			logsevere("SEND failed : " + msg, e);
 			return false;
 		}			
 	}
 	
-	public static boolean login(CluedoClientGUI gui,ServerItem server){
-		String[] loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
-		String msg;
-		
+	public static boolean login(CluedoClientGUI gui,ServerItem server){		
 //		String[] loginData = new String[]{"",""};
 //		while (loginData[0].equals("") || loginData[1].equals(""))
 //			loginData = gui.loginPrompt("Login to Server: "+dataGuiManager.getServer().getGroupName());
 //		
 		try {
-			msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
+			String[] loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
+			if (loginData[0] == null || loginData[1] == null) throw new Exception("some login prompt fields empty") ;
+			String msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
+			if (aux.sendTCPMsg(server.getSocket(),msg)){
+				server.setMyNick(loginData[0]);
+				return true;
+			}	
+			return false;
 		} 
 		catch (Exception e) {
-			msg = null;
-		}
-		
-		if (msg == null)	return false;
-
-		if (aux.sendTCPMsg(server.getSocket(),msg)){
-			server.setMyNick(loginData[0]);
-			return true;
-		}
-		
-		return false;
+			logsevere("getting nick from propmpt failed"+ e.getMessage());
+			return false;
+		}		
 	}
 	
 	public static String getRandomString(int length){

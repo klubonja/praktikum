@@ -142,21 +142,12 @@ public class Client {
 			ServerItem server = dataGuiManager.getServerByID(
 					smod.getSelectedItem().getNameID(),
 					smod.getSelectedItem().getIpID());
-					aux.loginfo("attempting login to serverport : "+server.getPort()+", ip: "+server.getIpString());
+					aux.logfine("attempting login to serverport : "+server.getPort()+", ip: "+server.getIpString());
 			if (server.getStatus() == ServerStatus.not_connected){
-				if (server.getSocket() == null){
-					startTCPConnection(server);
-					if (!aux.login(dataGuiManager.getGui(), server))	
-						dataGuiManager.removeServer("TCP server connection gone",server);
-				}
-				else {
-					if (!aux.login(dataGuiManager.getGui(), server))	
-						dataGuiManager.removeServer("TCP server connection gone",server);
-				}
-							
-			}
-			else if (server.getStatus() == ServerStatus.not_connected){
-				
+				if (server.getSocket() == null)	startTCPConnection(server);
+					
+				if (!aux.login(dataGuiManager.getGui(), server))	
+					dataGuiManager.removeServer("TCP server connection gone",server);							
 			}
 			else if (server.getStatus() == ServerStatus.connected){
 				dataGuiManager.refreshGamesListByServer(server);
