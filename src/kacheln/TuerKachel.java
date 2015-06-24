@@ -12,42 +12,20 @@ import enums.Rooms;
  */
 public class TuerKachel extends Kachel {
 
-	private Orientation orientierung;
-	private Rooms raum;
-	
 	/**
 	 * 
-	 * @param text
-	 * @param xKoordinate
-	 * @param yKoordinate
-	 * @param istRaum
-	 * @param orientierung
-	 * @param raum
-	 * @param istTuer
-	 */
-	public TuerKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung, Rooms raum, boolean istTuer, char [] moeglichkeiten){
-		super(text, xKoordinate, yKoordinate, istRaum, orientierung, istTuer, moeglichkeiten);
-		this.raum = raum;
-		this.orientierung = orientierung;
+	 * @param text die Aufschrift
+	 * @param xKoordinate xKoordinate im Grid
+	 * @param yKoordinate yKoordinate im Grid
+	 * @param istRaum	ob die Kachel ein Raum ist
+	 * @param orientierung falls die Kachel eine Tür ist, die Orientierung
+	 * @param raum welcher Raum es ist
+	 * @param istTuer ob die Kachel eine Tür ist
+	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
+	 */	
+	public TuerKachel(String text, int xKoordinate, int yKoordinate, boolean istRaum, Orientation orientierung, Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [] moeglichkeitenVonHier){
+		super(text, xKoordinate, yKoordinate, istRaum, orientierung, raum, istTuer, moeglichkeitenHierher, moeglichkeitenVonHier);
 		this.setBackgroundColor(this, Color.BLUEVIOLET);
 	}
 
-	public Rooms getRaum() {
-		return raum;
-	}
-
-	public void setRaum(Rooms raum) {
-		this.raum = raum;
-	}
-
-	public Orientation getOrientierung() {
-		return orientierung;
-	}
-
-	public void setOrientierung(Orientation orientierung) {
-		this.orientierung = orientierung;
-	}
-	
-	
-	
 }

@@ -24,11 +24,16 @@ public class DerBeweger {
 	private Player player;
 	
 	private Orientation [] anweisungen;
+	private Orientation [] anweisungenVonHier;
 	private int momentaneAnweisung;
 	private int wieVieleAnweisungen;
 	
 	private int jetzigeSpalte;
 	private int jetzigeReihe;
+	
+	private boolean marker;
+	
+	
 	
 	private Kachel raumZielKachel;
 	private Kachel raumAnfangsKachel;
@@ -70,7 +75,13 @@ public class DerBeweger {
 		
 		this.anweisungen = anweisungenEingabe;
 		
+		//this.anweisungenVonHier = anweisungenEingabeVonHier;
+		
+		
+		
 		wieVieleAnweisungen = 0;
+		
+
 		
 		
 		
@@ -165,22 +176,19 @@ public class DerBeweger {
 				}
 			});
 			
-			player.setyCoord(jetzigeReihe + yDistanz);
-			player.setxCoord(jetzigeSpalte + xDistanz);
-//			System.out.println("///////////////////////////////////");
-//			System.out.println("player x : " +player.getyCoord());
-//			System.out.println("player y : " +player.getxCoord());
-			
+			player.setyCoord(player.getyCoord() + yDistanz);
+			player.setxCoord(player.getxCoord() + xDistanz);	
 			}
 		
-//			for (Orientation momentanesElement : anweisungen){
-//				momentanesElement = null; 
-//			}
-		
 			
-			
+			marker = true;
 			
 		}
+
+		public void anfangsKachelSetzen(Kachel neueAnfangsKachel){
+			anfangsKachel = neueAnfangsKachel;
+		}
+	
 	
 		public void anfangsPositionSetzen(){
 
@@ -247,5 +255,41 @@ public class DerBeweger {
 
 		}
 	
+		/**
+		 * Wandelt char [] mit anweisungen in Orientation [] mit anweisungen um
+		 * @param anweisungen umzuwandeldes char []
+		 * @return umgewandeltes Orientation []
+		 */
+		public Orientation [] charToOrientation(char [] anweisungen){
+			
+			Orientation [] anweisungenOrientationsVerarbeitet = new Orientation [12];
+			
+				for (int counterInnen = 0; counterInnen < anweisungen.length; counterInnen++){
+					if (anweisungen[counterInnen] == 'S'){
+						anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.S;
+					}
+					
+					if (anweisungen[counterInnen] == 'E'){
+						anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.O;
+					}
+					
+					if (anweisungen[counterInnen] == 'N'){
+						anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.N;
+					}
+					
+					if (anweisungen[counterInnen] == 'W'){
+						anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.W;
+					}
+					
+					if (anweisungen[counterInnen] == 'T'){
+						anweisungenOrientationsVerarbeitet[counterInnen] = null;
+					}
+					  
+				}
+			
+			return anweisungenOrientationsVerarbeitet;
+		}
+
+		
 	}
 

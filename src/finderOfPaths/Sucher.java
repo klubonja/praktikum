@@ -18,6 +18,7 @@ public class Sucher {
 	private Player player;
 	
 	private char [][] anweisungen;
+	 
 	
 	public Sucher(BoardView boardView, BallEbene2 ballEbene, KrasserStack krasserStack, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  Player player, char [][]anweisungen){
 		this.boardView = boardView;
@@ -39,12 +40,13 @@ public class Sucher {
 		pathfinder.findThatPathBetter(wuerfelZahl);
 		
 		anweisungen = pathfinder.getMoeglichkeiten();		
+		char [][][] mehrereAnweisungen = pathfinder.getMehrereMoeglichkeiten();
+		int [] xPositionen = pathfinder.getxPositionen();
+		int [] yPositionen = pathfinder.getyPositionen();
+		int tuerCounter = pathfinder.getTuerCounter();
 		
-		
-		
-		
-		vorschlager.vorschlaegeMachen(anweisungen);
-		
+		vorschlager.vorschlaegeMachen(anweisungen, mehrereAnweisungen, xPositionen, yPositionen, tuerCounter);
+		pathfinder.setTuerCounter(0);
 	}
 	
 	

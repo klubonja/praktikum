@@ -28,6 +28,7 @@ public class Ausloeser {
 	private DerBeweger beweger;
 	private char [] moeglichkeiten;
 	private Orientation [] anweisungenOrientations = new Orientation [12];
+	private Orientation [] anweisungenOrientationsVonHier = new Orientation [12];
 	private WahnsinnigTollerPathfinder pathfinder;
 	
 	private int nullSchritte;
@@ -35,6 +36,9 @@ public class Ausloeser {
 	private int schritte;
 	
 	private Player player;
+	
+	private int xInsgesamt;
+	private int yInsgesamt;
 	
 	private Sucher sucher;
 	
@@ -125,14 +129,16 @@ public class Ausloeser {
 						if ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutX() <= event.getX()) && (event.getX() < gui.getKachelArray()[iReihen][jSpalten].getLayoutX()+29)
 						&& ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutY() <= event.getY()) && (event.getY() < gui.getKachelArray()[iReihen][jSpalten].getLayoutY()+29) ) ){
 							
-							try {
+							//try {
 								
 							
 							Kachel momentaneKachel = gui.getKachelArray()[iReihen][jSpalten];
 							System.out.println("Reihe : "+iReihen +"  ||  Spalte : " +jSpalten);
 							char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
+							//char [] moeglichkeitenVonHier = momentaneKachel.getMoeglichkeitenVonHier();
 							resetAnweisungen();
 							anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
+							//anweisungenOrientationsVonHier = charToOrientation(moeglichkeitenVonHier);
 							schritte = wieVieleSchritte(moeglichkeitenHierher);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////Bewegung wird ausgelöst/////////////////////////////////////////////////////////////////////
@@ -145,14 +151,18 @@ public class Ausloeser {
 								System.out.println(moeglichkeitenHierher[h]);
 							}
 							
+							insgesamteDistanz();
+							xySetzen(momentaneKachel);
+							beweger.anfangsKachelSetzen(gui.getKachelArray()[player.getyCoord()][player.getxCoord()]);
+							
 							beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
 							nullSchritte = 0;
 							
 							
-							}
-							catch (NullPointerException e ){
-								
-							}
+							//}
+							//catch (NullPointerException e ){
+							//	
+							//}
 //							System.out.println("???????????????????");
 //							System.out.println("player x " +player.getxCoord());
 //							System.out.println("player y " +player.getyCoord());
@@ -170,35 +180,85 @@ public class Ausloeser {
 	 */
 	public Orientation [] charToOrientation(char [] anweisungen){
 		
-		
+		Orientation [] anweisungenOrientationsVerarbeitet = new Orientation [12];
 		
 			for (int counterInnen = 0; counterInnen < anweisungen.length; counterInnen++){
 				if (anweisungen[counterInnen] == 'S'){
-					anweisungenOrientations[counterInnen] = Orientation.S;
+					anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.S;
 				}
 				
 				if (anweisungen[counterInnen] == 'E'){
-					anweisungenOrientations[counterInnen] = Orientation.O;
+					anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.O;
 				}
 				
 				if (anweisungen[counterInnen] == 'N'){
-					anweisungenOrientations[counterInnen] = Orientation.N;
+					anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.N;
 				}
 				
 				if (anweisungen[counterInnen] == 'W'){
-					anweisungenOrientations[counterInnen] = Orientation.W;
+					anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.W;
 				}
 				
 				if (anweisungen[counterInnen] == 'T'){
 					nullSchritte++;
-					anweisungenOrientations[counterInnen] = null;
+					anweisungenOrientationsVerarbeitet[counterInnen] = null;
 				}
 				  
 			}
 		
-		return anweisungenOrientations;
+		return anweisungenOrientationsVerarbeitet;
 	}
 
+	public void xySetzen(Kachel momentaneKachel){
+
+		for (int iReihen = 0; iReihen < gui.getKachelArray().length; iReihen++){
+			for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length; jSpalten++){
+				Kachel beginnKachel = gui.getKachelArray()[iReihen][jSpalten];
+				
+				if (beginnKachel.getMoeglichkeitenVonHier()!= null){
+					System.out.println("*********** party");
+					System.out.println("*********** iReihen : " +iReihen +"   ||  jSpalten : " +jSpalten);
+					int yStelle = gui.getRowIndex(momentaneKachel);
+					int xStelle = gui.getColumnIndex(momentaneKachel);
+					if ( ( (xStelle - xInsgesamt) == jSpalten) && ( (yStelle - yInsgesamt) == iReihen) ){
+						System.out.println("muhahahaha");
+						player.setxCoord(jSpalten);
+						player.setyCoord(iReihen);
+					}
+				}
+			}
+		}
+	
+	}
+	
+	public void insgesamteDistanz(){
+		
+	xInsgesamt = 0;
+	yInsgesamt = 0;
+			
+		for (int i = 0; i < anweisungenOrientations.length; i++){
+			if (anweisungenOrientations[i] == Orientation.W){
+				xInsgesamt--;
+			}
+			
+			else if (anweisungenOrientations[i] == Orientation.O){
+				xInsgesamt++;
+			}
+			
+			else if (anweisungenOrientations[i] == Orientation.N){
+				yInsgesamt--;
+			}
+			
+			else if (anweisungenOrientations[i] == Orientation.S){
+				yInsgesamt++;
+			}
+			
+			
+		}
+		
+	}
+
+	
 	public int getWuerfelZahl() {
 		return wuerfelZahl;
 	}
@@ -208,6 +268,11 @@ public class Ausloeser {
 	}
 
 	public void resetAnweisungen(){
+		
+		for (int i = 0; i < anweisungenOrientationsVonHier.length; i++){
+			anweisungenOrientationsVonHier[i] = null;
+		}
+		
 		
 		for (int i = 0; i < anweisungenOrientations.length; i++){
 			anweisungenOrientations[i] = null;

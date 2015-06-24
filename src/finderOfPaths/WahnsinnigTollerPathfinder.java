@@ -1,5 +1,8 @@
 package finderOfPaths;
 
+import kacheln.Kachel;
+import kacheln.RaumKachel;
+import kacheln.TuerKachel;
 import model.Player;
 import view.BoardView;
 import enums.Orientation;
@@ -22,9 +25,19 @@ public class WahnsinnigTollerPathfinder {
 	
 	private char hans;
 	
+	private Kachel [] suchKacheln = new Kachel [4];
+	private int tuerCounter;
+	
 	private boolean letztesMalTuer;
+	private int wievieltesMal;
+	private int welcheKachel;
 	
 	private String tuerRichtung;
+	
+	private int [] xPositionen = new int [4];
+	private int [] yPositionen = new int [4];
+	
+	private char [][][] mehrereMoeglichkeiten = new char [4][2440000][12];
 	
 	/**
 	 * Die momentane Position an gegebenem Baum-Level
@@ -92,19 +105,85 @@ public class WahnsinnigTollerPathfinder {
 	public void findThatPathBetter(int wuerfelZahl){
 
         // Die Werte werden auf die Urpsrungsposition gesetzt.
-        reset(player.getyCoord(),player.getxCoord());
+		reset(player.getyCoord(),player.getxCoord());
+        
+        checkForRoom();
         
         //System.out.println("!!!!!!!!!!!!!!!!!!!");
         //System.out.println("player x "+player.getxCoord());
         //System.out.println("player y "+player.getyCoord());
         //System.out.println("jetzt x "+jetzigeReihe);
         //System.out.println("jetzt y "+jetzigeSpalte);
-        ausgangsPosition(jetzigeReihe, jetzigeSpalte);
-        currentEntry = null;
         
-        possibleMoves(wuerfelZahl, himmelsrichtungen,"");
+        if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum())
+        {
+	        for (welcheKachel = 0; welcheKachel < tuerCounter; welcheKachel++){
+	        	
+	        	Kachel momentaneKachel = suchKacheln[welcheKachel];
+	        	
+	        	
+	        	
+	        	player.setyCoord(gui.getRowIndex(momentaneKachel));
+	        	player.setxCoord(gui.getColumnIndex(momentaneKachel));
+	        	
+	        	//reset(player.getyCoord(),player.getxCoord());
+	        	
+	        	xPositionen[welcheKachel] = player.getxCoord();
+	        	yPositionen[welcheKachel] = player.getyCoord();
+	        	
+	        	System.out.println("xPositionen[0] zweiter Versuch : " +xPositionen[0]);
+	        	
+	        	System.out.println((welcheKachel+1) +". Durchgang" +" <<<>>> player y : " +player.getyCoord() +"   ||   x : " +player.getxCoord());
+	        	
+	        	ausgangsPosition(jetzigeReihe, jetzigeSpalte);
+	            
+	            currentEntry = null;
+	            
+	            possibleMoves(wuerfelZahl, himmelsrichtungen,"");
+	        }
+	    
+	    //tuerCounter = 0;
+	    
+	    }
+        else {
+        	ausgangsPosition(jetzigeReihe, jetzigeSpalte);
+            
+            currentEntry = null;
+            
+            possibleMoves(wuerfelZahl, himmelsrichtungen,"");
+        }
+        
 	}
 		
+	public void checkForRoom(){
+		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
+			System.out.println("du bist in einem raum");
+			int welcheKachel = 0;
+		
+
+			for (int iReihen = 0; iReihen < gui.getKachelArray().length; iReihen++){
+				for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length; jSpalten++){
+						Kachel momentanteKachel = gui.getKachelArray()[jetzigeReihe][jetzigeSpalte];
+					if (gui.getKachelArray()[iReihen][jSpalten].isIstTuer()){
+						
+					}
+						Kachel vergleichsKachel = gui.getKachelArray()[iReihen][jSpalten];
+					if (momentanteKachel.getRaum() == vergleichsKachel.getRaum() && vergleichsKachel.isIstTuer()){
+						suchKacheln[welcheKachel] = vergleichsKachel;
+						welcheKachel++;
+						tuerCounter++;
+						System.out.println("oh my giddy giddy gosh");
+						System.out.println("vergleichsKachel y : "+iReihen +"  || x : " +jSpalten);
+					}
+				}
+			}
+		
+		
+		}
+		
+			
+	}
+	
 	/**
 	 * Hier wird die momentane Position (y,x) gesetzt.
 	 * @param reihe hierauf wird die jetzigeSpalte gesetzt
@@ -120,6 +199,9 @@ public class WahnsinnigTollerPathfinder {
 		if (hans == ' '){
 			System.out.println("gleich!");
 		}
+		
+		
+		
 		for (int i = 0; i < moeglichkeiten.length; i++){
 			for (int j = 0; j < moeglichkeiten[i].length; j++){
 				moeglichkeiten[i][j] = hans;
@@ -234,7 +316,7 @@ public class WahnsinnigTollerPathfinder {
 				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.N
 				)
 				{
-					System.out.println("hier ist ein Tür : " +jetzigeSpalte +"  " +jetzigeReihe + "  " +Orientation.N);
+					//System.out.println("hier ist ein Tür : " +jetzigeSpalte +"  " +jetzigeReihe + "  " +Orientation.N);
 					letztesMalTuer = true;
 					tuerRichtung = "S";
 					return false;
@@ -280,7 +362,7 @@ public class WahnsinnigTollerPathfinder {
 				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.W
 				)
 				{
-					System.out.println("hier ist eine Tür : " +jetzigeSpalte +"  " +jetzigeReihe+ "  " +Orientation.W);
+					//System.out.println("hier ist eine Tür : " +jetzigeSpalte +"  " +jetzigeReihe+ "  " +Orientation.W);
 					letztesMalTuer = true;
 					tuerRichtung = "E";
 					return false;
@@ -322,7 +404,7 @@ public class WahnsinnigTollerPathfinder {
 				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.S
 				)
 				{
-					System.out.println("hier ist eine Tür : " +jetzigeSpalte +"  " +jetzigeReihe+ "  " +Orientation.S);
+					//System.out.println("hier ist eine Tür : " +jetzigeSpalte +"  " +jetzigeReihe+ "  " +Orientation.S);
 					letztesMalTuer = true;
 					tuerRichtung = "N";
 					return false;
@@ -369,7 +451,7 @@ public class WahnsinnigTollerPathfinder {
 				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.O
 				)
 				{
-					System.out.println("hier ist eine Tür : " +jetzigeSpalte +"  " +jetzigeReihe+ "  " +Orientation.O);
+					//System.out.println("hier ist eine Tür : " +jetzigeSpalte +"  " +jetzigeReihe+ "  " +Orientation.O);
 					letztesMalTuer = true;
 					tuerRichtung = "W";
 					return false;
@@ -406,8 +488,11 @@ public class WahnsinnigTollerPathfinder {
         if(currentEntry.length() == maximaleSchritte) {
             
             moeglichkeiten[welcheMoeglichkeit] = currentEntry.toCharArray();
+            mehrereMoeglichkeiten[welcheKachel] = moeglichkeiten;
             welcheMoeglichkeit++;
+            //System.out.println("welcheKachel" + welcheKachel);
             setMoeglichkeiten(moeglichkeiten);
+            setMehrereMoeglichkeiten(mehrereMoeglichkeiten);
             
             if (currentEntry == "OONNnullnullnull"){
             	System.out.println("juchu!");
@@ -436,17 +521,17 @@ public class WahnsinnigTollerPathfinder {
                     
                 }
                 else if (!detectHimmelsrichtung(himmelsrichtungen[i]) && letztesMalTuer){
-                	//currentEntry += tuerRichtung;
+                					//currentEntry += tuerRichtung;
                 	tuerRichtung = null;
-                	System.out.println("length: " +currentEntry.length());
+                					//System.out.println("length: " +currentEntry.length());
                 	for ( int j = currentEntry.length(); j < maximaleSchritte; j++){
             			currentEntry += "T";
             		}
-                	System.out.println("length: " +currentEntry.length());
-                	//for (int i = 1; i<=welcheMoeglichkeit;i++){
-                		System.out.println(currentEntry);
-                    	//System.out.println(moeglichkeiten[i]);
-                    //}
+				                	//System.out.println("length: " +currentEntry.length());
+				                	//for (int i = 1; i<=welcheMoeglichkeit;i++){
+				                		//System.out.println(currentEntry);
+				                    	//System.out.println(moeglichkeiten[i]);
+				                    //}
                 	
                 	letztesMalTuer = false;
                 	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);
@@ -505,6 +590,38 @@ public class WahnsinnigTollerPathfinder {
 	 */
 	public void setMoeglichkeiten(char[][] moeglichkeiten) {
 		this.moeglichkeiten = moeglichkeiten;
+	}
+
+	public char[][][] getMehrereMoeglichkeiten() {
+		return mehrereMoeglichkeiten;
+	}
+
+	public void setMehrereMoeglichkeiten(char[][][] mehrereMoeglichkeiten) {
+		this.mehrereMoeglichkeiten = mehrereMoeglichkeiten;
+	}
+
+	public int getTuerCounter() {
+		return tuerCounter;
+	}
+
+	public void setTuerCounter(int tuerCounter) {
+		this.tuerCounter = tuerCounter;
+	}
+
+	public int[] getxPositionen() {
+		return xPositionen;
+	}
+
+	public void setxPositionen(int[] xPositionen) {
+		this.xPositionen = xPositionen;
+	}
+
+	public int[] getyPositionen() {
+		return yPositionen;
+	}
+
+	public void setyPositionen(int[] yPositionen) {
+		this.yPositionen = yPositionen;
 	}
 
 	
