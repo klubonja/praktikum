@@ -500,7 +500,7 @@ public class WahnsinnigTollerPathfinder {
             
            
             //for (int i = 1; i<=welcheMoeglichkeit;i++){
-            	//System.out.println(currentEntry);
+            	System.out.println(currentEntry);
             	//System.out.println(moeglichkeiten[i]);
             //}
             // level reduzieren            
