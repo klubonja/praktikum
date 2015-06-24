@@ -46,6 +46,7 @@ public class Client {
 		setCloseHandler();
 		listenForServersThread();
 		sayHello();
+		setCloseHandler();
 		
 		aux.log.log(Level.INFO,"CLIENT started");		
 	}	
@@ -77,7 +78,6 @@ public class Client {
 			Thread t2 = new Thread(new OutgoingHandler(gui,server,run));
 			t2.start();
 						
-			setCloseHandler();
 		}
 		catch (IOException e){
 			 aux.logsevere("",e);
@@ -100,14 +100,13 @@ public class Client {
 		gui.connectToTestServer.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	InetAddress addr;
 				try {
-					addr = InetAddress.getByName("vanuabalavu.pms.ifi.lmu.de");
+					InetAddress addr = InetAddress.getByName("vanuabalavu.pms.ifi.lmu.de");
 					startTCPConnection(new ServerItem("testendeTentakel", addr, 30305));
-				} catch (UnknownHostException e) {
-					e.printStackTrace();
-				}
-            	
+				} 
+				catch (UnknownHostException e) {
+					aux.logsevere("testserverconnection failed Unknown Host:  ", e);
+				}            	
             }
         });	
 		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -143,14 +142,15 @@ public class Client {
 			ServerItem server = dataGuiManager.getServerByID(
 					smod.getSelectedItem().getNameID(),
 					smod.getSelectedItem().getIpID());
+					aux.loginfo("attempting login to serverport : "+server.getPort()+", ip: "+server.getIpString());
 			if (server.getStatus() == ServerStatus.not_connected){
 				if (server.getSocket() == null){
 					startTCPConnection(server);
-					if (!aux.login(dataGuiManager.getGui(), server));	
+					if (!aux.login(dataGuiManager.getGui(), server))	
 						dataGuiManager.removeServer("TCP server connection gone",server);
 				}
 				else {
-					if (!aux.login(dataGuiManager.getGui(), server));	
+					if (!aux.login(dataGuiManager.getGui(), server))	
 						dataGuiManager.removeServer("TCP server connection gone",server);
 				}
 							

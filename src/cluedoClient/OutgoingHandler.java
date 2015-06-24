@@ -37,6 +37,7 @@ class OutgoingHandler implements Runnable{
 		dataGuiManager = new DataGuiManagerClient(gui, server);		
 		
 		addClientGUIListener(dataGuiManager.getGui());
+	
 	}
 	
 	public void addClientGUIListener(CluedoClientGUI gui){
@@ -95,16 +96,17 @@ class OutgoingHandler implements Runnable{
 		    }
 		});	
 		
-		dataGuiManager.getGui().getNetworkActorsView().setOnMouseClicked(new EventHandler<MouseEvent>() {
-		    @Override
-		    public void handle(MouseEvent click) {
-		        if (click.getClickCount() == 2) {
-		        	aux.loginfo(gui.getNetworkActorsView().getSelectionModel().getSelectedItem().getIpID());
-		        	
-		        	
-		        }
-		    }
-		});	
+//		dataGuiManager.getGui().getNetworkActorsView().setOnMouseClicked(new EventHandler<MouseEvent>() {
+//		    @Override
+//		    public void handle(MouseEvent click) {
+//		        if (click.getClickCount() == 2) {
+//		        	
+//		        	aux.loginfo(gui.getNetworkActorsView().getSelectionModel().getSelectedItem().getIpID());
+//		        	
+//		        	
+//		        }
+//		    }
+//		});	
 		
 		
 	}

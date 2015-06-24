@@ -94,16 +94,17 @@ public abstract class aux {
 //		
 		try {
 			msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
-
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			msg = null;
 		}
+		
 		if (msg == null)	return false;
 
 		if (aux.sendTCPMsg(server.getSocket(),msg)){
 			server.setMyNick(loginData[0]);
 			return true;
-		};
+		}
 		
 		return false;
 	}
@@ -114,7 +115,6 @@ public abstract class aux {
 		String cons = "qwrtzuopüsdfghjklöäyxcvbnm";
 		for (int i = 0;i < length; i++)
 			sb.append(cons.charAt(Math.abs(rand.nextInt()%cons.length())));			
-		
 	
 		return sb.toString();		
 	}
