@@ -14,7 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
-import staticClasses.aux;
+import staticClasses.auxx;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
 import cluedoNetworkGUI.GameVBox;
@@ -73,7 +73,7 @@ class OutgoingHandler implements Runnable{
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            		createGame(aux.getRandomPerson());	               
+            		createGame(auxx.getRandomPerson());	               
             }
         });	
 		
@@ -105,7 +105,7 @@ class OutgoingHandler implements Runnable{
 	
 	void selectGame(SelectionModel<GameVBox> g, String color) {
 		int gameID = g.getSelectedItem().getGameID();		
-		aux.sendTCPMsg(
+		auxx.sendTCPMsg(
 				dataGuiManager.getServer().getSocket(),
 				NetworkMessages.join_gameMsg(
 						color,
@@ -114,12 +114,12 @@ class OutgoingHandler implements Runnable{
 	}
 	
 	void startGame(int gameID){
-		aux.sendTCPMsg(dataGuiManager.getServer().getSocket(), NetworkMessages.start_gameMsg(gameID));
+		auxx.sendTCPMsg(dataGuiManager.getServer().getSocket(), NetworkMessages.start_gameMsg(gameID));
 	}
 	
 	
 	private void sendInputFieldTextContent(CluedoClientGUI gui){
-		aux.sendTCPMsg(
+		auxx.sendTCPMsg(
 				dataGuiManager.getServer().getSocket(),
 				NetworkMessages.chat_to_serverMsg(
 						gui.inputField.getText(), 
@@ -141,7 +141,7 @@ class OutgoingHandler implements Runnable{
 //	}
 	
 	void createGame(String color){
-		aux.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.create_gameMsg(color));
+		auxx.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.create_gameMsg(color));
 	}
 	
 	
@@ -151,10 +151,10 @@ class OutgoingHandler implements Runnable{
 			try {
 				Thread.sleep(Config.SECOND);
 			} catch (InterruptedException e) {
-				aux.log.log(Level.SEVERE,e.getMessage());
+				auxx.log.log(Level.SEVERE,e.getMessage());
 			}
 		}
-		aux.log.log(Level.INFO,"CLIENT OutgoingHandlerThread running out");
+		auxx.log.log(Level.INFO,"CLIENT OutgoingHandlerThread running out");
 	}
 	
 	

@@ -3,7 +3,7 @@ package cluedoNetworkLayer;
 import java.util.ArrayList;
 
 import staticClasses.Config;
-import staticClasses.aux;
+import staticClasses.auxx;
 import enums.GameStates;
 import enums.Persons;
 import enums.PlayerStates;
@@ -124,7 +124,7 @@ public class CluedoGame {
 				if (gameState == GameStates.startable && getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART) setGameState(GameStates.not_started);
 				if (getNumberConnected() == 0) setGameState(GameStates.to_be_deleted);
 
-				aux.loginfo(nick +" removed from Game " +getGameId()+" Gamestate is now : "+gameState.getName());
+				auxx.loginfo(nick +" removed from Game " +getGameId()+" Gamestate is now : "+gameState.getName());
 				return true;
 			}
 		}		

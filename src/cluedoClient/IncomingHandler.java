@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import staticClasses.NetworkMessages;
-import staticClasses.aux;
+import staticClasses.auxx;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
 import cluedoNetworkLayer.CluedoGameClient;
@@ -33,7 +33,7 @@ class IncomingHandler implements Runnable {
 		getGamesList();
 		while (run) {
 			try {
-				String msg = aux.getTCPMessage(dataGuiManager.getServer().getSocket());
+				String msg = auxx.getTCPMessage(dataGuiManager.getServer().getSocket());
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(new JSONObject(msg)));
 				checker.validate();
@@ -52,7 +52,7 @@ class IncomingHandler implements Runnable {
 		        		  
 					}
 					else if (checker.getType().equals("game started")){
-		        		  ArrayList<String> orderlist = aux.jsonArrayToArrayList(checker.getMessage().getJSONArray("order"));
+		        		  ArrayList<String> orderlist = auxx.jsonArrayToArrayList(checker.getMessage().getJSONArray("order"));
 		        		  dataGuiManager.startGame(
 		        				  checker.getMessage().getInt("gameID"),
 		        				  checker.getMessage().getString("gamestate"),
@@ -94,7 +94,7 @@ class IncomingHandler implements Runnable {
 	}
 	
 	private void getGamesList(){
-		String msg = aux.getTCPMessage(dataGuiManager.getServer().getSocket());
+		String msg = auxx.getTCPMessage(dataGuiManager.getServer().getSocket());
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(msg));
 		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error"});
 		

@@ -11,7 +11,7 @@ public abstract class Config {
 	
 	
 	//public final static String GROUP_NAME = "yinyanyolosCIP";
-	public final static String GROUP_NAME = aux.getRandomString(5);
+	public final static String GROUP_NAME = auxx.getRandomString(5);
 
 	
 	public final static String PROTOKOLL_VERSION = "1.2.1";

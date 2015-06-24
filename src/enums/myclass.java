@@ -2,14 +2,14 @@ package enums;
 
 import org.json.JSONObject;
 
-import staticClasses.aux;
+import staticClasses.auxx;
 
 public class myclass {
 	public myclass() {
 		Persons[] persons = Persons.values();
 		for (Persons p: persons){
-			aux.logfine(p.getColor());
-			aux.logfine(p.getPersonName());
+			auxx.logfine(p.getColor());
+			auxx.logfine(p.getPersonName());
 			JSONObject json = new JSONObject();
 			json.put("gameID", 3);
 			json.put("nick", "nick");

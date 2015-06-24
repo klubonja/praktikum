@@ -3,7 +3,7 @@ package cluedoNetworkGUI;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
-import staticClasses.aux;
+import staticClasses.auxx;
 import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
 import enums.GameStates;
@@ -62,7 +62,7 @@ public class DataGuiManagerClient extends DataGuiManager{
 				setReadyGame(gameID);
 				
 			}
-			aux.loginfo("connected to game "+gameID+" : "+server.getGameByGameID(gameID).getNumberConnected());
+			auxx.loginfo("connected to game "+gameID+" : "+server.getGameByGameID(gameID).getNumberConnected());
 				
 			updateGame(gameID, "(updated by "+nick+")",server.getGameByGameID(gameID).getNicksConnected());
 			return true;

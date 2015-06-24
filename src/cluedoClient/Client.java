@@ -15,7 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
-import staticClasses.aux;
+import staticClasses.auxx;
 import broadcast.Multicaster;
 import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
@@ -48,7 +48,7 @@ public class Client {
 		sayHello();
 		setCloseHandler();
 		
-		aux.log.log(Level.INFO,"CLIENT started");		
+		auxx.log.log(Level.INFO,"CLIENT started");		
 	}	
 	
 	void sayHello(){	
@@ -80,7 +80,7 @@ public class Client {
 						
 		}
 		catch (IOException e){
-			 aux.logsevere("TCP server connection failed",e);
+			 auxx.logsevere("TCP server connection failed",e);
 			dataGuiManager.removeServer("",server);
 			run = false;
 			
@@ -105,7 +105,7 @@ public class Client {
 					startTCPConnection(new ServerItem("testendeTentakel", addr, 30305));
 				} 
 				catch (UnknownHostException e) {
-					aux.logsevere("testserverconnection failed Unknown Host:  ", e);
+					auxx.logsevere("testserverconnection failed Unknown Host:  ", e);
 				}            	
             }
         });	
@@ -116,12 +116,12 @@ public class Client {
 		          try {
 		        	   run = false;
 		        	   dataGuiManager.sayGoodbye(NetworkMessages.disconnectMsg());
-		        	   aux.log.log(Level.INFO,"CLIENT CLOSED");
+		        	   auxx.log.log(Level.INFO,"CLIENT CLOSED");
 		               Platform.exit();
 		               System.exit(0);	               
 		          } 
 		          catch (Exception e1) {
-		               aux.log.log(Level.SEVERE,e1.getMessage());
+		               auxx.log.log(Level.SEVERE,e1.getMessage());
 		          }
 		      }
 		 });
@@ -144,11 +144,11 @@ public class Client {
 			ServerItem server = dataGuiManager.getServerByID(
 					smod.getSelectedItem().getNameID(),
 					smod.getSelectedItem().getIpID());
-					aux.logfine("attempting login to serverport : "+server.getPort()+", ip: "+server.getIpString());
+					auxx.logfine("attempting login to serverport : "+server.getPort()+", ip: "+server.getIpString());
 			if (server.getStatus() == ServerStatus.not_connected){
 				if (server.getSocket() == null)	startTCPConnection(server);
 					
-				if (!aux.login(dataGuiManager.getGui(), server))	
+				if (!auxx.login(dataGuiManager.getGui(), server))	
 					dataGuiManager.removeServer("TCP server connection gone",server);							
 			}
 			else if (server.getStatus() == ServerStatus.connected){
@@ -156,7 +156,7 @@ public class Client {
 			}
 		}
 		catch (Exception e){
-			aux.logsevere("server isnt connected anymore", e);
+			auxx.logsevere("server isnt connected anymore", e);
 		}		
 	}
 }

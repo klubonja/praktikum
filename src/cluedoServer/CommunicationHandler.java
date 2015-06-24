@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
-import staticClasses.aux;
+import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
@@ -50,7 +50,7 @@ class CommunicationHandler implements Runnable{
 
 		while (!readyForCommunication) { // will keep listening for valid login msg
 			try {
-				String message = aux.getTCPMessage(client.getSocket()).trim();
+				String message = auxx.getTCPMessage(client.getSocket()).trim();
 				
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(
@@ -59,7 +59,7 @@ class CommunicationHandler implements Runnable{
 
 				if (errcode == NetworkHandhakeCodes.OK) {					
 					client.setExpansions(
-						aux.makeConjunction(
+						auxx.makeConjunction(
 							Config.EXPANSIONS, 
 							checker.getMessage().getJSONArray("expansions")
 						)
@@ -107,7 +107,7 @@ class CommunicationHandler implements Runnable{
 		awaitingLoginAttempt();
 		while (run){
 			try {
-	           String message = aux.getTCPMessage(client.socket).trim();
+	           String message = auxx.getTCPMessage(client.socket).trim();
 	           
 	           CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
 	           checker.validate();
