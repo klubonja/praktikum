@@ -6,6 +6,7 @@ import staticClasses.aux;
 import javafx.application.Platform;
 import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
+import enums.GameStates;
 import enums.ServerStatus;
 
 public class DataGuiManagerClient extends DataGuiManager{
@@ -49,7 +50,7 @@ public class DataGuiManagerClient extends DataGuiManager{
 	public boolean joinGame(int gameID,String color,String nick){
 		if (server.addPlayerByGameID(gameID, color, nick)){
 			if (server.getGameByGameID(gameID).getNumberConnected() >= 3) {
-				setReadyGame(gameID, true);
+				setReadyGame(gameID);
 				
 			}
 			aux.loginfo("connected to game "+gameID+" : "+server.getGameByGameID(gameID).getNumberConnected());
@@ -58,6 +59,14 @@ public class DataGuiManagerClient extends DataGuiManager{
 			return true;
 		}
 		return false;
+	}
+	public void startGame(int gameID,String gameState, ArrayList<String> order){
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		if (game.start()){
+			game.setGameState(GameStates.getState(gameState));
+			game.setOrder(order);
+			setRunningGame(gameID);
+		}
 	}
 	
 	public void setGames(ArrayList<CluedoGameClient> glist){

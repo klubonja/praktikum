@@ -39,6 +39,14 @@ public class DataGuiManagerServer extends DataGuiManager {
 		return false;		
 	}
 	
+	public boolean startGameByID(int gameID, String nick){
+		if (dataManager.startGameByID(gameID,nick)){
+			setRunningGame(gameID);
+			return true;
+		}
+		return false;
+	}
+	
 	
 	public JoinGameStatus joinGame(int gameID, String color,ClientItem client){
 		JoinGameStatus status =  dataManager.joinGame(gameID, color, client);

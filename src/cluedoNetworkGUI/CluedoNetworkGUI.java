@@ -169,9 +169,12 @@ public abstract class CluedoNetworkGUI {
        		}			 		
 	  }
 	 
-	  public void updateGameButtonById(int gameID, boolean value){
-		  GameVBox b = getGame(gameID);
-		  b.setReadyGame(value);
+	  public void updateGameSetReady(int gameID){
+		  getGame(gameID).setReadyGame();
+		  
+	  }
+	  public void updateGameSetRunning(int gameID){
+		  getGame(gameID).setRunningGame();
 	  }
 	  
 	  public GameVBox getGame(int gameID){

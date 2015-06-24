@@ -51,6 +51,15 @@ class IncomingHandler implements Runnable {
 		        		  dataGuiManager.joinGame(gameID,player.getString("color"),player.getString("nick"));
 		        		  
 					}
+					else if (checker.getType().equals("game started")){
+		        		  ArrayList<String> orderlist = aux.jsonArrayToArrayList(checker.getMessage().getJSONArray("order"));
+		        		  dataGuiManager.startGame(
+		        				  checker.getMessage().getInt("gameID"),
+		        				  checker.getMessage().getString("gamestate"),
+		        				  orderlist
+		        				  );
+		        		  
+					}
 					else if (checker.getType().equals("user left")){
 		        		  String player = checker.getMessage().getString("nick");
 		        		  dataGuiManager.removeClientFromSystem(player); 

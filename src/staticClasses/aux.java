@@ -128,4 +128,12 @@ public abstract class aux {
 	
 		return ps[Math.abs(rand.nextInt()%ps.length)].getColor();		
 	}
+	
+	public static ArrayList<String> jsonArrayToArrayList(JSONArray jsonarray){
+		ArrayList<String> list = new ArrayList<String>();
+		for (int i= 0; i < jsonarray.length(); i++)
+			list.add(jsonarray.getString(i));
+		
+		return list;
+	}
 }

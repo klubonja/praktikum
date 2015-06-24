@@ -140,9 +140,24 @@ class CommunicationHandler implements Runnable{
 	        		   else if (status == JoinGameStatus.nick_already_taken)
 	        			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));	        		  
 	        	   }
+	        	   else if (checker.getType().equals("start game")) {												//START GAME
+		        	   int gameID = checker.getMessage().getInt("gameID");
+	        		   if (dataGuiManager.startGameByID(gameID,client.getNick())){
+		        			dataManager.notifyAll(
+		        					NetworkMessages.game_startedMsg(
+		        							gameID, 
+		        							 dataManager.getGameByID(gameID).getConnectedPlayersString()
+		        							 )
+		        					);
+		        		}
+	        		   else {
+	        			   client.sendMsg(NetworkMessages.error_Msg("you cant start this game"));
+	        		   }
+	        	   }
 	        	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
 	        		  closeProtokollConnection("");
 	        	   }
+	        	  
 	        	   else if (checker.getType().equals("chat")) {														//CHAT
 	        		   String msg = checker.getMessage().getString("message");
 	        		   String ts = checker.getMessage().getString("timestamp");

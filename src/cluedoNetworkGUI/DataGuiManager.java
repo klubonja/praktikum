@@ -91,9 +91,15 @@ public class DataGuiManager   {
 		  Platform.runLater(() -> {gui.emptyGamesList();});
 	  }
 	  
-	  public  void setReadyGame(int gameID,boolean value){
+	  public  void setReadyGame(int gameID){
 		  Platform.runLater(() -> {
-			  gui.updateGameButtonById(gameID, value);
+			  gui.updateGameSetReady(gameID);
+		  });
+	  }
+	  
+	  public  void setRunningGame(int gameID){
+		  Platform.runLater(() -> {
+			  gui.updateGameSetRunning(gameID);
 		  });
 	  }
 	  

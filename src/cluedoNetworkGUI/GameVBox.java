@@ -68,11 +68,15 @@ public class GameVBox extends VBox{
 		return gameInfoStringProp.get();
 	}
 	
-	public void setReadyGame(boolean value) {
-		setStyle("-fx-text-fill:#fffff; "
+	public void setReadyGame() {
+		setStyle("-fx-text-fill:#ffffff; "
 				+ "-fx-background-color: green;");
 	}
 	
+	public void setRunningGame() {
+		setStyle("-fx-text-fill:#fffff; "
+				+ "-fx-background-color: red;");
+	}
 	
 	
 	

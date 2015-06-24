@@ -38,8 +38,19 @@ public class CluedoGame {
 		
 	}
 	
-	public void start(){
+	public boolean start(String starterNick){
+		if (hasNick(starterNick)){
+			setGameState(GameStates.started);
+			return true;
+		}
 		
+		return false;
+	}
+	
+	public boolean start(){
+		
+		
+		return true;
 	}
 	
 	public boolean addPlayers(ArrayList<CluedoPlayer> plist){
@@ -154,7 +165,7 @@ public class CluedoGame {
 		ArrayList<CluedoPlayer> cp = new ArrayList<CluedoPlayer>();
 		for (CluedoPlayer p : players)
 			if (!p.getNick().equals(""))
-				cp.add(getConnectedPlayerByName(p.getNick()));
+				cp.add(p);
 		
 		return cp;
 	}
@@ -165,6 +176,16 @@ public class CluedoGame {
 				return p;
 		
 		return null;
+		
+	}
+	
+	public ArrayList<String> getConnectedPlayersString(){
+		ArrayList<String> cp = new ArrayList<String>();
+		for (CluedoPlayer p : players)
+			if (!p.getNick().equals(""))
+				cp.add(p.getNick());
+		
+		return cp;
 		
 	}
 	
@@ -185,6 +206,10 @@ public class CluedoGame {
 			if (p.getNick().equals(nick)) return true;
 		return false;
 			
+	}
+	
+	public void setOrder(ArrayList<String> order){
+		
 	}
 	
 	
