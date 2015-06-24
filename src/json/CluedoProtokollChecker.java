@@ -146,8 +146,8 @@ public class CluedoProtokollChecker {
 	void val_game_created() {
 		if (validateValue(jsonRoot, "gameID"))
 			isInt(jsonRoot, "gameID");
-		if (validateValue(jsonRoot, "player"))
-			validatePlayerInfo(jsonRoot.getJSONObject("player"));
+//		if (validateValue(jsonRoot, "player"))
+//			validatePlayerInfo(jsonRoot.getJSONObject("player"));
 	}
 
 	void val_join_game() {

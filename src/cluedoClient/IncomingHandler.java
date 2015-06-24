@@ -60,10 +60,15 @@ class IncomingHandler implements Runnable {
 		        				  );
 		        		  
 					}
+					else if (checker.getType().equals("game ended")){
+		        		 dataGuiManager.setGameEnded(checker.getMessage().getInt("gameID"));		        		  
+					}
+					else if (checker.getType().equals("game deleted")){
+		        		 dataGuiManager.deleteGame(checker.getMessage().getInt("gameID"));		        		  
+					}
 					else if (checker.getType().equals("user left")){
 		        		  String player = checker.getMessage().getString("nick");
-		        		  dataGuiManager.removeClientFromSystem(player); 
-		        		  
+		        		  dataGuiManager.removeClientFromSystem(player);		        		  
 					}
 					else if (checker.getType().equals("disconnect")){
 		        		  dataGuiManager.removeServer();

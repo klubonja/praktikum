@@ -83,7 +83,7 @@ public class DataGuiManager   {
 		  Platform.runLater(() -> {gui.setWindowName(label);});
 	  }
 	  
-	  public void removeGame(int gameID){
+	  public void removeGameGui(int gameID){
 		  Platform.runLater(() -> {gui.removeGame(gameID);	 });
 	  }	  
 	
@@ -100,6 +100,12 @@ public class DataGuiManager   {
 	  public  void setRunningGame(int gameID){
 		  Platform.runLater(() -> {
 			  gui.updateGameSetRunning(gameID);
+		  });
+	  }
+	  
+	  public  void setGameEndedGui(int gameID){
+		  Platform.runLater(() -> {
+			  gui.updateGameSetEnded(gameID);
 		  });
 	  }
 	  

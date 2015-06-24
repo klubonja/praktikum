@@ -80,8 +80,8 @@ public class Client {
 						
 		}
 		catch (IOException e){
-			 aux.logsevere("",e);
-			dataGuiManager.removeServer("TCP server connection failed"+e.getMessage(),server);
+			 aux.logsevere("TCP server connection failed",e);
+			dataGuiManager.removeServer("",server);
 			run = false;
 			
 		}

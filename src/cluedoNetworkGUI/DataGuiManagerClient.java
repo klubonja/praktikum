@@ -2,8 +2,8 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
-import staticClasses.aux;
 import javafx.application.Platform;
+import staticClasses.aux;
 import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
 import enums.GameStates;
@@ -47,6 +47,15 @@ public class DataGuiManagerClient extends DataGuiManager{
 		return server.getGameByGameID(gameID);
 	}
 	
+	public boolean deleteGame(int gameID){
+		if (server.removeGameByID(gameID)){
+			removeGameGui(gameID);
+			return true;
+		}
+		
+		return false;
+		
+	}
 	public boolean joinGame(int gameID,String color,String nick){
 		if (server.addPlayerByGameID(gameID, color, nick)){
 			if (server.getGameByGameID(gameID).getNumberConnected() >= 3) {
@@ -60,6 +69,7 @@ public class DataGuiManagerClient extends DataGuiManager{
 		}
 		return false;
 	}
+	
 	public void startGame(int gameID,String gameState, ArrayList<String> order){
 		CluedoGameClient game = server.getGameByGameID(gameID);
 		if (game.start()){
@@ -67,6 +77,11 @@ public class DataGuiManagerClient extends DataGuiManager{
 			game.setOrder(order);
 			setRunningGame(gameID);
 		}
+	}
+	
+	public void setGameEnded(int gameID){
+		server.getGameByGameID(gameID).setGameState(GameStates.ended);
+		setGameEndedGui(gameID);
 	}
 	
 	public void setGames(ArrayList<CluedoGameClient> glist){

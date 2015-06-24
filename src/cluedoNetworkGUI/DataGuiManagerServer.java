@@ -4,10 +4,12 @@ package cluedoNetworkGUI;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
+import staticClasses.NetworkMessages;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoServer.ClientItem;
 import cluedoServer.DataManagerServer;
 import cluedoServer.GameListServer;
+import enums.GameStates;
 import enums.JoinGameStatus;
 
 public class DataGuiManagerServer extends DataGuiManager {
@@ -75,11 +77,27 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean removeClient(ClientItem client){
 		if (dataManager.removeClientfromSystem(client)){
-			removeNetworkActorFromGui(client.getNick(),client.getIpString());	
+			removeNetworkActorFromGui(client.getNick(),client.getIpString());
 			refreshGamesList();
 			return true;
 		}
 		return false;				
+	}
+	
+	public boolean removePlayerfromGame(ClientItem client,int gameID){
+			CluedoGameServer game = dataManager.getGameByID(gameID);
+			if (game.getGameState() == GameStates.ended){
+				game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
+				setGameEndedGui(gameID);
+			}
+			else if (game.getGameState() == GameStates.to_be_deleted){
+				game.notifyAll(NetworkMessages.game_deletedMsg(gameID));
+				removeGameGui(gameID);
+				dataManager.removeGame(game);
+			}
+		
+		
+		return true;
 	}
 	
 	public ArrayList<CluedoGameServer> getGamesByPlayer(ClientItem client){
@@ -108,8 +126,13 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public void addGamesGui(GameListServer glist){
 		  Platform.runLater(() -> {
-			  for (CluedoGameServer c: glist)
-					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
+			  for (CluedoGameServer c: glist){
+				  gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
+			  		switch (c.getStatus()) {
+			  		
+			  		}
+			  }
+					
 		 });
 	  }
 	

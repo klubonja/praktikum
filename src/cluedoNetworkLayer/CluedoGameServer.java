@@ -4,17 +4,29 @@ import java.util.ArrayList;
 
 import staticClasses.aux;
 import cluedoServer.ClientItem;
+import enums.GameStates;
 import enums.JoinGameStatus;
+import enums.Persons;
+import enums.Rooms;
+import enums.Weapons;
 
 public class CluedoGameServer extends CluedoGame{
 	ArrayList<ClientItem> participants;
 	ArrayList<ClientItem> watchers;
+	WinningStatement winningStatement;
 	
 	public CluedoGameServer(int gameId) {
 		super(gameId);	
 		participants = new ArrayList<ClientItem>();
 		watchers = new ArrayList<ClientItem>();
+		winningStatement = new WinningStatement(Persons.white, Rooms.kitchen, Weapons.spanner);
 	}
+	
+	public WinningStatement getWinningStatement() {
+		return winningStatement;
+	}
+	
+	
 	
 	public ArrayList<String> getWatchersNicks(){
 		ArrayList<String> nicks = new ArrayList<String>();
@@ -41,11 +53,14 @@ public class CluedoGameServer extends CluedoGame{
 	public boolean findAndRemovePlayer(ClientItem client){
 		for (ClientItem c: participants)
 			if (c == client) {
-				if (removePlayer(client.getNick()))
-					return participants.remove(client);				
-			}
-				
-		
+				if (removePlayer(client.getNick())){
+					boolean removed = participants.remove(client);	
+					if (getGameState() == GameStates.started) setGameState(GameStates.ended);
+					if (participants.size() == 0) setGameState(GameStates.to_be_deleted);
+					
+					return removed;
+				}				
+			}		
 		return false;
 	}
 	

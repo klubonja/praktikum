@@ -177,6 +177,10 @@ public abstract class CluedoNetworkGUI {
 		  getGame(gameID).setRunningGame();
 	  }
 	  
+	  public void updateGameSetEnded(int gameID){
+		  getGame(gameID).setEndedGame();
+	  }
+	  
 	  public GameVBox getGame(int gameID){
 			for (GameVBox p: games)
 	       		if (p.getGameID() == gameID){

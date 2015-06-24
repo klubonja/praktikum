@@ -51,6 +51,7 @@ class CommunicationHandler implements Runnable{
 		while (!readyForCommunication) { // will keep listening for valid login msg
 			try {
 				String message = aux.getTCPMessage(client.getSocket()).trim();
+				
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(
 								new JSONObject(message)));
@@ -153,6 +154,10 @@ class CommunicationHandler implements Runnable{
 	        		   else {
 	        			   client.sendMsg(NetworkMessages.error_Msg("you cant start this game"));
 	        		   }
+	        	   }
+	        	   
+	        	   if (checker.getType().equals("leave game")){													//CREATE GAME
+	        		   dataGuiManager.removePlayerfromGame(client, checker.getMessage().getInt("gameID"));
 	        	   }
 	        	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
 	        		  closeProtokollConnection("");

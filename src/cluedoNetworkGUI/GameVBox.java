@@ -1,14 +1,11 @@
 package cluedoNetworkGUI;
 
-import staticClasses.aux;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class GameVBox extends VBox{
@@ -74,6 +71,11 @@ public class GameVBox extends VBox{
 	}
 	
 	public void setRunningGame() {
+		setStyle("-fx-text-fill:#fffff; "
+				+ "-fx-background-color: blue;");
+	}
+	
+	public void setEndedGame() {
 		setStyle("-fx-text-fill:#fffff; "
 				+ "-fx-background-color: red;");
 	}

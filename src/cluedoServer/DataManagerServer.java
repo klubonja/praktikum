@@ -3,6 +3,7 @@ package cluedoServer;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
+import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.DataManager;
 import cluedoNetworkLayer.CluedoGameServer;
 import enums.GameStates;
@@ -109,17 +110,28 @@ public class DataManagerServer extends DataManager {
 	public int getGameCount(){
 		return gamesList.size();
 	}
+	
 	public boolean addClient(ClientItem client){
 		if (!hasClient(client))
 			return clientPool.add(client);
 		return false;
 	}
+	
 	public boolean removeClientfromSystem(ClientItem client){
 		for (CluedoGameServer cgs: gamesList){
 			cgs.findAndRemovePlayer(client);
-			if (cgs.getGameState() == GameStates.ended)	removeGame(cgs);
-		}
-		
+			if (cgs.getGameState() == GameStates.to_be_deleted){
+				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
+				cgs.notifyAll(NetworkMessages.game_deletedMsg(cgs.getGameId()));				
+				removeGame(cgs);				
+			}
+			else if (cgs.getGameState() == GameStates.ended){
+				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
+			}
+			else if (cgs.getGameState() == GameStates.not_started){
+				cgs.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
+			}		
+		}		
 		
 		return clientPool.remove(client);
 	}
