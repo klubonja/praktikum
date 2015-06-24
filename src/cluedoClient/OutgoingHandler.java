@@ -77,6 +77,13 @@ class OutgoingHandler implements Runnable{
             }
         });	
 		
+		gui.refreshGamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent click) {
+		       dataGuiManager.refreshGamesList();
+		    }
+		});	
+		
 		dataGuiManager.getGui().getGamesListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent click) {
@@ -94,21 +101,7 @@ class OutgoingHandler implements Runnable{
 		        	
 		        }
 		    }
-		});	
-		
-//		dataGuiManager.getGui().getNetworkActorsView().setOnMouseClicked(new EventHandler<MouseEvent>() {
-//		    @Override
-//		    public void handle(MouseEvent click) {
-//		        if (click.getClickCount() == 2) {
-//		        	
-//		        	aux.loginfo(gui.getNetworkActorsView().getSelectionModel().getSelectedItem().getIpID());
-//		        	
-//		        	
-//		        }
-//		    }
-//		});	
-		
-		
+		});			
 	}
 	
 	void selectGame(SelectionModel<GameVBox> g, String color) {

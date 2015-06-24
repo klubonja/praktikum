@@ -22,6 +22,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	final public Button submitMessageButton;
 	final public Button createGame;
 	final public Button connectToTestServer;
+	final public Button refreshGamesList;
 
 	final public TextArea inputField;
 	
@@ -31,6 +32,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 submitMessageButton = new Button("Send");
 		 createGame = new Button("Create Game");
 		 connectToTestServer = new Button("TestServerConnection");
+		 refreshGamesList = new Button("refreshGamesList");
 		 inputField = new TextArea();	
 		 width = Config.CLIENT_WINDOW_WIDTH;
 		 height = Config.CLIENT_WINDOW_HEIGHT;
@@ -103,7 +105,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         tabPane.getTabs().add(tab1);
         tabPane.getTabs().add(tab0);  
         
-        menue.getChildren().addAll(createGame,connectToTestServer);
+        menue.getChildren().addAll(createGame,connectToTestServer,refreshGamesList);
         
         
         Text title = new Text(desc);

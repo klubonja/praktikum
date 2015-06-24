@@ -30,7 +30,7 @@ public class GameListClient extends ArrayList<CluedoGameClient>{
 	public boolean leaveAllGames(String nick){
 		boolean removed = false;
 		for (CluedoGameClient cg : this){
-			 removed = removed || cg.removePlayer(nick);				
+			 removed = cg.removePlayer(nick) || removed; 				
 		}
 		
 		return removed;

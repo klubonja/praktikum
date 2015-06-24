@@ -1,43 +1,39 @@
-
-.listViewC .list-cell:filled:hover,
-.listViewC .list-cell:filled:hover {	
-	-fx-background-color: #000000;
-	-fx-text-fill: #ffffff;		
-}
-
-.listViewC .list-cell,
-.listViewC .list-cell:selected {
-	-fx-padding : 0em;
+.gameListItem, .ipListItem {
 	-fx-background-color: #ffffff;
 	-fx-text-fill: #000000;
+	-fx-padding: 5 0 5 5;
+	-fx-border-color:  #999999;
+	-fx-border-width: 0 0 1 0;
+	-fx-border-style: solid;
+	
 }
 
-.gameListItem:hover .gameInfoItem,  
-.gameListItem:hover .gameNameItem , 
+.gameListItem:hover .gameNameItem,
+.gameListItem:hover .gameInfoItem,
 .gameListItem:hover {
 	-fx-background-color: #000000;
 	-fx-text-fill: #ffffff;		
 }
 
-
-.gameListItem, .ipListItem {
+.gameListItem:focused, .gameListItem:selected, .gameListItem:filled {
 	-fx-background-color: #ffffff;
-	-fx-fx-text-fill: #000000;
-	-fx-padding: 5 0 5 5;
-	-fx-border-color:  #999999;
-	-fx-border-width: 0 0 1 0;
-	-fx-border-style: solid;	
-	
+	-fx-text-fill: #000000;
 }
+
+
 
 .gameNameItem {
 	-fx-font: 15px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
 	
 }
 
 .gameInfoItem {
 	-fx-font: 10px "Tahoma";
     -fx-padding: 0;
+    -fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
 	
     
 }
@@ -80,11 +76,6 @@
     -fx-padding: 10 0 0 0;
     /* -fx-opacity: -fx-disabled-opacity;*/	  
 }
-
-.list-cell {
-	-fx-background-color: #ffffff;
-}
-
 
 #ipList , #gameList{
 	-fx-padding : 0em;

@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 public class LoginPrompt extends GridPane {
 	
 	
-	String[] labelNames = {"Nickname",Config.GROUP_NAME};
+	String[] labelNames = {Config.GROUP_NAME,Config.GROUP_NAME+"_GROUP"};
 	int[] reqLength = {3,1};
 	LoginTextField[] iFields = new LoginTextField[labelNames.length];
 	

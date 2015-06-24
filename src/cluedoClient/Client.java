@@ -136,6 +136,8 @@ public class Client {
 		});	
 	}
 	
+	
+	
 	void selectIp(SelectionModel<NetworkActorVBox> smod) {
 		//String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
 		try {

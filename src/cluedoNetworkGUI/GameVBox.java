@@ -37,7 +37,7 @@ public class GameVBox extends VBox{
 		gameInfo.getStyleClass().add("gameInfoItem");
 		gameInfo.setLayoutY(14);
 		
-		HBox hb = new HBox();
+		//HBox hb = new HBox();
 		
 //		startGame = new Button("Start Game");
 //		startGame.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -46,7 +46,7 @@ public class GameVBox extends VBox{
 //		hb.setAlignment(Pos.CENTER_RIGHT);
 //		hb.visibleProperty().bind(visibilityProp);
 		
-		getChildren().addAll(gameLabel,gameInfo,hb);
+		getChildren().addAll(gameLabel,gameInfo);
 	}
 	
 	public int getGameID() {

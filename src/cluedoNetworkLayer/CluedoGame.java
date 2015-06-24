@@ -103,19 +103,17 @@ public class CluedoGame {
 	}
 	
 	public boolean removePlayer(String nick){
-		for (CluedoPlayer cp: players)
+		for (CluedoPlayer cp: players){
 			if (cp.getNick().equals(nick)){
 				cp.setNick("");
-				if (gameState == GameStates.started)
+				if (gameState == GameStates.started) {
 					gameState = GameStates.ended;
-				
+				}					
 				aux.loginfo(nick +" removed from Game " +getGameId()+" Gamestate is now : "+gameState.getName());
 				return true;
 			}
-		
-		return false;
-				
-			
+		}		
+		return false;			
 	}
 
 	
@@ -172,9 +170,12 @@ public class CluedoGame {
 	
 	public String getNicksConnected(){
 		StringBuffer nb = new StringBuffer();
-		for (CluedoPlayer p : players)
-			if (!p.getNick().equals(""))
+		for (CluedoPlayer p : players){
+			if (!p.getNick().equals("")){
 				nb.append(p.getNick()+", ");
+			}
+		}
+			
 		if (nb.length() > 2) nb.delete(nb.length()-2, nb.length()-1);
 		return nb.toString();
 	}

@@ -44,7 +44,7 @@ public class Server {
 		dataGuiManager = new DataGuiManagerServer(gui,dataManager);	
 		dataGuiManager.setWindowName(Config.GROUP_NAME+" Server");
 		
-		createTestGroups();
+		//createTestGroups();
 		sayHello();
 		listenForClientsThread();		
 		startTCPServer();				
