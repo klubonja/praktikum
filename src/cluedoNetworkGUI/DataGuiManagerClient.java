@@ -25,7 +25,7 @@ public class DataGuiManagerClient extends DataGuiManager{
 		CluedoGameClient newgame = 
 				new CluedoGameClient(gameID);
 		newgame.joinGame(color, nick);
-		addGameToGui(gameID, "(created by "+nick+") Game "+gameID, nick);
+		addGameToGui(gameID, "(created by "+nick+") Game "+gameID, nick,newgame.getGameState());
 		
 		server.addGame(newgame);
 	}
@@ -99,7 +99,7 @@ public class DataGuiManagerClient extends DataGuiManager{
 	public void addGamesGui(ArrayList<CluedoGameClient> glist){
 		  Platform.runLater(() -> {
 			  for (CluedoGameClient c: glist)
-					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
+					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected(),c.getGameState());
 		 });
 	  }
 	

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
+import enums.GameStates;
 
 public class DataGuiManager   {
 	
@@ -60,9 +61,9 @@ public class DataGuiManager   {
 			  });
 		  }
 	  
-	  public void addGameToGui(int gameID,String specialInfo, String info){
+	  public void addGameToGui(int gameID,String specialInfo, String info,GameStates state){
 		  Platform.runLater(() -> {
-			gui.addGame(gameID, specialInfo, info);
+			gui.addGame(gameID, specialInfo, info,state);
 		});
 	  }
 	  

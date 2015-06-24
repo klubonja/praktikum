@@ -12,11 +12,9 @@ import cluedoServer.GameListServer;
 import enums.GameStates;
 import enums.JoinGameStatus;
 
-public class DataGuiManagerServer extends DataGuiManager {
+public class DataGuiManagerServer extends DataGuiManager {	
 	
-	
-	DataManagerServer dataManager;
-	
+	DataManagerServer dataManager;	
 	
 	public DataGuiManagerServer(CluedoServerGUI gui,DataManagerServer datam) {
 		super(gui);
@@ -34,7 +32,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean addGame(CluedoGameServer game){
 		if (dataManager.addGame(game)){
-			gui.addGame(game.getGameId(),"Game",game.getNicksConnected());
+			gui.addGame(game.getGameId(),"Game",game.getNicksConnected(),game.getGameState());
 			return true;
 		};
 		
@@ -109,7 +107,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 		CluedoGameServer newgame = new CluedoGameServer(gameId);
 		newgame.joinGameServer(color, client);
 		dataManager.addGame(newgame);
-		addGameToGui(gameId, "(created by )"+ client.getNick(), client.getNick());
+		addGameToGui(gameId, "", client.getNick(),newgame.getGameState());
 		
 		return gameId;
 	}
@@ -127,12 +125,8 @@ public class DataGuiManagerServer extends DataGuiManager {
 	public void addGamesGui(GameListServer glist){
 		  Platform.runLater(() -> {
 			  for (CluedoGameServer c: glist){
-				  gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected());
-			  		switch (c.getStatus()) {
-			  		
-			  		}
-			  }
-					
+				  gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected(),c.getGameState());
+			  }					
 		 });
 	  }
 	

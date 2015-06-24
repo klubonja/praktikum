@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import staticClasses.Config;
+import enums.GameStates;
 
 public abstract class CluedoNetworkGUI {
 	
@@ -151,11 +152,25 @@ public abstract class CluedoNetworkGUI {
 		  games.clear();
 	  }
 	  
-	  public void addGame(int gameID,String specialinfo, String info){
+	  public void addGame(int gameID,String specialinfo, String info,GameStates state){
 			for (GameVBox p: games)
 	       		if (p.getGameID() == gameID) return;
-			 	
+			
 			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info);
+			switch (state) {
+			case startable:
+				gamelistitem.setReadyGame();
+				break;
+			case started:
+				gamelistitem.setRunningGame();
+				break;
+			case ended:
+				gamelistitem.setEndedGame();
+				break;
+
+			default:
+				break;
+			}
 			gamelistitem.setPrefHeight(Config.GAME_LIST_ITEM_HEIGHT);		
 			games.add(gamelistitem);	
 	  }

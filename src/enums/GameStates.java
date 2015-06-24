@@ -4,6 +4,7 @@ public enum GameStates {
 	
 	started("started"),
 	not_started("not started"),
+	startable("startable"),
 	ended("ended"),
 	to_be_deleted("to be deleted");
 	

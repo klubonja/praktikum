@@ -62,7 +62,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void addGamesToGui(ArrayList<CluedoGameClient> glist ){
 		for (CluedoGameClient cg: glist){
-			addGameToGui(cg.getGameId(), "Game "+cg.getGameId(), cg.getNicksConnected());
+			addGameToGui(cg.getGameId(), "Game "+cg.getGameId(), cg.getNicksConnected(),cg.getGameState());
 		}
 	}
 	
