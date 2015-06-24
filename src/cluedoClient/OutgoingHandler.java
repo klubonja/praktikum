@@ -90,15 +90,14 @@ class OutgoingHandler implements Runnable{
 		        if (click.getClickCount() == 2) {
 		        	int gameID = gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID();
 		        	CluedoGameClient game = dataGuiManager.getGameByID(gameID);
-		        	if (game.getNumberConnected() >= 3 && 	game.hasNick(dataGuiManager.getServer().getMyNick())){
+		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART && 	game.hasNick(dataGuiManager.getServer().getMyNick())){
 		        		startGame(gameID);
 		        	}
 		        	else {
 		        		ArrayList<CluedoPlayer> plist = dataGuiManager.getServer().getGameByGameID(gameID).getPlayersConnected();
 			        	//TODO 
 			        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
-		        	}
-		        	
+		        	}		        	
 		        }
 		    }
 		});			

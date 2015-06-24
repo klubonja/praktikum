@@ -61,7 +61,7 @@ public class DataManagerServer extends DataManager {
 	}
 	
 	public JoinGameStatus joinGame(int gameID, String color,ClientItem client){
-		return gamesList.joinGame(gameID, color, client);
+		return gamesList.joinGameById(gameID, color, client);
 	}
 	
 	public boolean addNetworkActor(ClientItem client){

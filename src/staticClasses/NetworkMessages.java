@@ -262,10 +262,11 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String stateupdateMsg(int gameID,String nick,JSONObject playerstate){
+	
+	public static String stateupdateMsg(int gameID,String nick,PlayerStates state){
 		CluedoJSON json = new CluedoJSON("game started");
 		json.put("nick", nick);
-		json.put("playerstat", playerstate);
+		json.put("playerstate", state.getName());
 		json.put("gameID", gameID);		
 		
 		return json.toString();

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import staticClasses.aux;
 import cluedoServer.ClientItem;
-import enums.GameStates;
 import enums.JoinGameStatus;
 import enums.Persons;
 import enums.Rooms;
@@ -26,7 +25,12 @@ public class CluedoGameServer extends CluedoGame{
 		return winningStatement;
 	}
 	
-	
+	@Override
+	public boolean start() {
+//		for (ClientItem client: participants)
+//			//client.sendMsg(NetworkMessages.player_cardsMsg(gameId, cards));
+		return super.start();
+	}
 	
 	public ArrayList<String> getWatchersNicks(){
 		ArrayList<String> nicks = new ArrayList<String>();
@@ -54,11 +58,7 @@ public class CluedoGameServer extends CluedoGame{
 		for (ClientItem c: participants)
 			if (c == client) {
 				if (removePlayer(client.getNick())){
-					boolean removed = participants.remove(client);	
-					if (getGameState() == GameStates.started) setGameState(GameStates.ended);
-					if (participants.size() == 0) setGameState(GameStates.to_be_deleted);
-					
-					return removed;
+					return participants.remove(client);	
 				}				
 			}		
 		return false;
@@ -80,7 +80,7 @@ public class CluedoGameServer extends CluedoGame{
 			}
 		}	
 		
-		return JoinGameStatus.error;
+		return JoinGameStatus.game_not_found;
 	}
 	
 	public boolean leaveGameServer(ClientItem client){

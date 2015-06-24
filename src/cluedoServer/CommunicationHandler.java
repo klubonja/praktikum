@@ -108,6 +108,7 @@ class CommunicationHandler implements Runnable{
 		while (run){
 			try {
 	           String message = aux.getTCPMessage(client.socket).trim();
+	           
 	           CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
 	           checker.validate();
 	           if (!checker.isValid()){
@@ -167,8 +168,7 @@ class CommunicationHandler implements Runnable{
 	        		   String msg = checker.getMessage().getString("message");
 	        		   String ts = checker.getMessage().getString("timestamp");
 	        		   dataManager.notifyAll(NetworkMessages.chat_to_clientMsg(msg , ts, client.getNick()));
-		           }
-	        	   
+		           }	        	   
 	           }	
 	           //nur damit nichts unter den tisch fällt
 		       dataGuiManager.addMsgIn(message);

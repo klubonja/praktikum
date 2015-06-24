@@ -46,7 +46,9 @@
 	-fx-text-fill: #ffffff;		
 }
 
-
+.list-cell:focus:selected:filled , .list-cell {
+	-fx-background-color: #ffffff;
+}
 
 .ipNameItem {
 	-fx-font: 14px "Tahoma";
