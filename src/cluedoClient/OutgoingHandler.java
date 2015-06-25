@@ -92,11 +92,22 @@ class OutgoingHandler implements Runnable{
 		    @Override
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
-		        	int gameID = gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID();
-		        	String servername = gui.getGamesListView().getSelectionModel().getSelectedItem().getServerName();
-		        	String serverip = gui.getGamesListView().getSelectionModel().getSelectedItem().getServerIp();
+		        	GameVBox guiGame = gui.getGamesListView().getSelectionModel().getSelectedItem();
+		        	int gameID = guiGame.getGameID();
+		        	String servername = guiGame.getServerName();
+		        	String serverip = guiGame.getServerIp();
 		        	ServerItem server = dataGuiManager.getServerByID(servername, serverip);
 		        	CluedoGameClient game = server.getGameByGameID(gameID);
+		        	
+		        	/*
+		        	CluedoGameClient game = dataGuiManager.getServerByID(
+		        			gui.getGamesListView().getSelectionModel().getSelectedItem().getServerName(),
+		        			gui.getGamesListView().getSelectionModel().getSelectedItem().getServerIp()
+		        			).getGameByGameID(
+		        					gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID()
+		        					);
+		        	*/
+		        	
 		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART && game.hasNick(server.getMyNick())){
 		        		sendStartGameRequest(gameID);
 		        	}
