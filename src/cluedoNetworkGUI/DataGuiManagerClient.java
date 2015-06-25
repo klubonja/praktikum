@@ -21,11 +21,11 @@ public class DataGuiManagerClient extends DataGuiManager{
 		return server;
 	}
 	
-	public void addGame(int gameID, String nick,String color){
+	public void addGame(int gameID, String nick,String color,ServerItem server){
 		CluedoGameClient newgame = 
-				new CluedoGameClient(gameID);
+				new CluedoGameClient(gameID,server);
 		newgame.joinGame(color, nick);
-		addGameToGui(gameID, "(created by "+nick+") Game "+gameID, nick,newgame.getGameState());
+		addGameToGui(gameID, "(created by "+nick+") Game "+gameID, nick,newgame.getGameState(),server.getGroupName(),server.getIpString());
 		
 		server.addGame(newgame);
 	}
@@ -99,7 +99,7 @@ public class DataGuiManagerClient extends DataGuiManager{
 	public void addGamesGui(ArrayList<CluedoGameClient> glist){
 		  Platform.runLater(() -> {
 			  for (CluedoGameClient c: glist)
-					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected(),c.getGameState());
+					gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected(),c.getGameState(),c.getServer().getGroupName(),c.getServer().getIpString());
 		 });
 	  }
 	

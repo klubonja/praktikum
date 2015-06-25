@@ -22,9 +22,9 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void addGameToServer(ServerItem server, int gameID, String nick,String color){
 		CluedoGameClient newgame = 
-				new CluedoGameClient(gameID);
+				new CluedoGameClient(gameID,server);
 		newgame.joinGame(color, nick);
-		addGameToGui(gameID, "(created by "+nick+") Game "+gameID, nick,newgame.getGameState());
+		addGameToGui(gameID, "(created by "+nick+") Game "+gameID, nick,newgame.getGameState(),server.getGroupName(),server.getIpString());
 		
 		server.addGame(newgame);
 	}
@@ -128,7 +128,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void addGamesToGui(ArrayList<CluedoGameClient> glist ){
 		for (CluedoGameClient cg: glist){
-			addGameToGui(cg.getGameId(), "Game "+cg.getGameId(), cg.getNicksConnected(),cg.getGameState());
+			addGameToGui(cg.getGameId(), "Game "+cg.getGameId(), cg.getNicksConnected(),cg.getGameState(),cg.getServer().getGroupName(),cg.getServer().getIpString());
 		}
 	}
 	

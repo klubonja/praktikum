@@ -152,11 +152,11 @@ public abstract class CluedoNetworkGUI {
 		  games.clear();
 	  }
 	  
-	  public void addGame(int gameID,String specialinfo, String info,GameStates state){
+	  public void addGame(int gameID,String specialinfo, String info,GameStates state,String servername,String serverip){
 			for (GameVBox p: games)
 	       		if (p.getGameID() == gameID) return;
 			
-			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info);
+			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info,servername,serverip);
 			switch (state) {
 			case started:
 				gamelistitem.setRunningGame();

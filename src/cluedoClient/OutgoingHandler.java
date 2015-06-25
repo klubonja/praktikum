@@ -93,15 +93,19 @@ class OutgoingHandler implements Runnable{
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
 		        	int gameID = gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID();
+		        	String servername = gui.getGamesListView().getSelectionModel().getSelectedItem().getServerName();
+		        	String serverip = gui.getGamesListView().getSelectionModel().getSelectedItem().getServerIp();
+		        	ServerItem server = dataGuiManager.getServerByID(servername, serverip);
 		        	CluedoGameClient game = server.getGameByGameID(gameID);
-		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART && 	game.hasNick(server.getMyNick())){
-		        		startGame(gameID);
+		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART && game.hasNick(server.getMyNick())){
+		        		sendStartGameRequest(gameID);
 		        	}
 		        	else {
 		        		ArrayList<CluedoPlayer> plist = server.getGameByGameID(gameID).getPlayersConnected();
 			        	//TODO 
 			        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
-		        	}		        	
+		        	}	
+		        	auxx.loginfo("clicking on game on: "+serverip+" groupname : "+servername);
 		        }
 		    }
 		});			
@@ -117,7 +121,7 @@ class OutgoingHandler implements Runnable{
 				);
 	}
 	
-	void startGame(int gameID){
+	void sendStartGameRequest(int gameID){
 		auxx.sendTCPMsg(server.getSocket(), NetworkMessages.start_gameMsg(gameID));
 	}
 	

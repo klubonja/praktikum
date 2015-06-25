@@ -7,6 +7,7 @@ import json.CluedoJSON;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -470,11 +471,11 @@ public abstract class NetworkMessages {
 					);
 	}
 	
-	public static ArrayList<CluedoGameClient> createGamesFromJSONGameArray(JSONArray gamearray){
+	public static ArrayList<CluedoGameClient> createGamesFromJSONGameArray(JSONArray gamearray,ServerItem server){
 		ArrayList<CluedoGameClient> gamelist = new ArrayList<CluedoGameClient>();
 		for (int i = 0; i < gamearray.length(); i++){							
 			CluedoGameClient newgame = new CluedoGameClient(
-					gamearray.getJSONObject(i).getInt("gameID"));
+					gamearray.getJSONObject(i).getInt("gameID"),server);
 			newgame.setGameState(
 					GameStates.getState(
 							gamearray.getJSONObject(i).getString("gamestate")

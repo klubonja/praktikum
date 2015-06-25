@@ -61,9 +61,9 @@ public class DataGuiManager   {
 			  });
 		  }
 	  
-	  public void addGameToGui(int gameID,String specialInfo, String info,GameStates state){
+	  public void addGameToGui(int gameID,String specialInfo, String info,GameStates state,String servername,String serverip){
 		  Platform.runLater(() -> {
-			gui.addGame(gameID, specialInfo, info,state);
+			gui.addGame(gameID, specialInfo, info,state,servername,serverip);
 		});
 	  }
 	  

@@ -105,7 +105,7 @@ class IncomingHandler implements Runnable {
 		
 		if (errcode == NetworkHandhakeCodes.OK) {	
 			JSONArray gamearray = checker.getMessage().getJSONArray("game array");	
-			ArrayList<CluedoGameClient> gameslist = NetworkMessages.createGamesFromJSONGameArray(gamearray);
+			ArrayList<CluedoGameClient> gameslist = NetworkMessages.createGamesFromJSONGameArray(gamearray,server);
 		
 			dataGuiManager.setServerLoggedIn(
 					server,

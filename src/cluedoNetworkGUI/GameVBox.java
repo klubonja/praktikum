@@ -13,13 +13,17 @@ public class GameVBox extends VBox{
 	StringProperty gameLabelStringProp;
 	StringProperty gameInfoStringProp;
 	BooleanProperty visibilityProp;
+	String serverIp;
+	String serverName;
 	Button startGame;
 	
-	public GameVBox(int gameid,String label, String info) {
+	public GameVBox(int gameid,String label, String info,String servername,String serverIp) {
 		super();	
 		gameLabelStringProp = new SimpleStringProperty(label+" :"+gameid);
 		gameInfoStringProp = new SimpleStringProperty(info);
 		visibilityProp = new SimpleBooleanProperty(false);
+		serverName = servername;
+		this.serverIp = serverIp;
 		gameID = gameid;
 	
 		getStyleClass().add("gameListItem");
@@ -65,13 +69,21 @@ public class GameVBox extends VBox{
 		return gameInfoStringProp.get();
 	}
 	
+	public String getServerName() {
+		return serverName;
+	}
+	
+	public String getServerIp() {
+		return serverIp;
+	}
+	
 	public void setReadyGame() {
 		setStyle("-fx-text-fill:#ffffff; "
 				+ "-fx-background-color: green;");
 	}
 	
 	public void setRunningGame() {
-		setStyle("-fx-text-fill:#fffff; "
+		setStyle("-fx-text-fill:#ffffff; "
 				+ "-fx-background-color: blue;");
 	}
 	
