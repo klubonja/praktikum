@@ -1,7 +1,6 @@
 package cluedoNetworkGUI;
 
 import java.util.ArrayList;
-
 import javafx.application.Platform;
 import staticClasses.auxx;
 import cluedoClient.ServerItem;

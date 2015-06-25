@@ -84,7 +84,7 @@ public class ZugFenster extends Stage{
 			bottom.setAlignment(Pos.CENTER);
 
 			fenster = new BorderPane();
-			fenster.setStyle("-fx-background-color: #33CC66;");
+			fenster.setStyle("-fx-background-image: url('media/ZugFensterResized.png');");
 			fenster.setCenter(buttons);
 			fenster.setBottom(bottom);
 		}

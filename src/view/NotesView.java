@@ -10,9 +10,20 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
 
 public class NotesView extends TabPane {
 	
@@ -93,6 +104,18 @@ public class NotesView extends TabPane {
 	LinkedList<Label> labels;
 	LinkedList<Button> buttons;
 	LinkedList<TextField> textFlds;
+	
+	Stop[] stops = new Stop[] { new Stop(0, Color.LAVENDER), new Stop(1, Color.GHOSTWHITE)};
+	RadialGradient rg1 = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
+	BackgroundFill	defaultFill = new BackgroundFill(rg1, new CornerRadii(1), new Insets(0.2));
+	Background defaultButton = new Background(defaultFill);
+	BorderStroke defaultStroke = new BorderStroke(Color.DARKSLATEGREY, BorderStrokeStyle.SOLID, 
+			new CornerRadii(4), new BorderWidths(0.5));
+	Border defaultBorder = new Border(defaultStroke);
+	
+	BackgroundFill	defaulttxt = new BackgroundFill(Color.GHOSTWHITE, new CornerRadii(1), new Insets(0.2));
+	Background defaultTxt = new Background(defaulttxt);
+	
 	
 	
 	public NotesView(){
@@ -370,6 +393,8 @@ public class NotesView extends TabPane {
 			button.setMaxSize(39, 19);
 			button.setMinSize(39, 19);
 			button.setPrefSize(39, 19);
+			button.setBackground(defaultButton);
+			button.setBorder(defaultBorder);
 			
 		}
 		
@@ -377,6 +402,9 @@ public class NotesView extends TabPane {
 			txtField.setMaxHeight(20);
 			txtField.setMinHeight(20);
 			txtField.setPrefHeight(20);
+			txtField.setOpacity(0.7);
+			txtField.setBackground(defaultTxt);
+			txtField.setBorder(defaultBorder);
 		}
 		
 	}

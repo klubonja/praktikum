@@ -20,7 +20,7 @@ import javafx.scene.layout.RowConstraints;
 
 public class DiceView extends GridPane{
 
-	Button roll;
+	public static Button roll;
 	ImageView d1;
 	ImageView d2;
 	

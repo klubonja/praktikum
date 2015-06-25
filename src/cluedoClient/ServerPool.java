@@ -2,6 +2,7 @@ package cluedoClient;
 
 import java.util.ArrayList;
 
+
 import staticClasses.auxx;
 
 public class ServerPool extends ArrayList<ServerItem> {
@@ -26,6 +27,7 @@ public class ServerPool extends ArrayList<ServerItem> {
 	
 	public void sendToAll(String msg){
 		for (ServerItem server: this)
+
 			auxx.sendTCPMsg(server.getSocket(), msg);
 			
 	}
