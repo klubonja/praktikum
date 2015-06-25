@@ -71,8 +71,6 @@ public class BoardView extends GridPane {
 	
 	public void resetBackground(){
 
-		System.out.println("reset Background");
-		
 		for( int iSpalten = 0; iSpalten < kachelArray.length;iSpalten++){
 			
 			for (int jReihen = 0; jReihen < kachelArray[iSpalten].length;jReihen++){

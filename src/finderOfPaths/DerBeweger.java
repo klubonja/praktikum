@@ -85,30 +85,7 @@ public class DerBeweger {
 			jetzigeSpalte = player.getxCoord();
 			jetzigeReihe = player.getyCoord();
 			
-			if (anweisungen[momentaneAnweisung] == Orientation.S){
-				yDistanz = 1;
-				xDistanz = 0;
-			}
-			
-			else if (anweisungen[momentaneAnweisung] == Orientation.O){
-				xDistanz = 1;
-				yDistanz = 0;
-			}
-			
-			else if (anweisungen[momentaneAnweisung] == Orientation.N){
-				yDistanz = -1;
-				xDistanz = 0;
-			}
-			
-			else if (anweisungen[momentaneAnweisung] == Orientation.W){
-				xDistanz = -1;
-				yDistanz = 0;
-			}
-			
-			else {
-				xDistanz = 0;
-				yDistanz = 0;
-			}
+			distanzBerechnen();
 			
 			if (jetzigeReihe+yDistanz != 26 && jetzigeSpalte + xDistanz != 25 && jetzigeReihe+yDistanz >= 0 && jetzigeSpalte + xDistanz >= 0) 
 			{
@@ -134,8 +111,8 @@ public class DerBeweger {
 				}
 			});
 			
-			player.setyCoord(player.getyCoord() + yDistanz);
-			player.setxCoord(player.getxCoord() + xDistanz);	
+			positionUpdaten();
+			
 			}
 		}
 
@@ -145,7 +122,39 @@ public class DerBeweger {
 			player.setyCoord(gui.getRowIndex(anfangsKachel));
 		}
 	
-	
+		public void positionUpdaten(){
+			player.setyCoord(player.getyCoord() + yDistanz);
+			player.setxCoord(player.getxCoord() + xDistanz);
+		}
+		
+		public void distanzBerechnen(){
+			if (anweisungen[momentaneAnweisung] == Orientation.S){
+				yDistanz = 1;
+				xDistanz = 0;
+			}
+			
+			else if (anweisungen[momentaneAnweisung] == Orientation.O){
+				xDistanz = 1;
+				yDistanz = 0;
+			}
+			
+			else if (anweisungen[momentaneAnweisung] == Orientation.N){
+				yDistanz = -1;
+				xDistanz = 0;
+			}
+			
+			else if (anweisungen[momentaneAnweisung] == Orientation.W){
+				xDistanz = -1;
+				yDistanz = 0;
+			}
+			
+			else {
+				xDistanz = 0;
+				yDistanz = 0;
+			}
+			
+		}
+		
 		public void anfangsPositionSetzen(){
 
 			startKachel = gui.getKachelArray()[player.getyCoord()][player.getxCoord()];

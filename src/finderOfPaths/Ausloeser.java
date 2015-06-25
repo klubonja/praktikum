@@ -125,25 +125,27 @@ public class Ausloeser {
 							
 							try {
 							
-							Kachel momentaneKachel = gui.getKachelArray()[iReihen][jSpalten];
-							System.out.println("Reihe : "+iReihen +"  ||  Spalte : " +jSpalten);
-							char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
-							
-							Kachel startKachel = momentaneKachel.getVonHier();
-							startKachel.setVonHier(null);
-							
-							resetAnweisungen();
-							anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
-							schritte = wieVieleSchritte(moeglichkeitenHierher);
-							
-							insgesamteDistanz();
-							
-							beweger.anfangsKachelSetzen(startKachel);
-							
-							beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
-							nullSchritte = 0;
-							pathfinder.setWelcheKachel(0);
-							
+								Kachel momentaneKachel = gui.getKachelArray()[iReihen][jSpalten];
+								
+								System.out.println("Reihe : "+iReihen +"  ||  Spalte : " +jSpalten);
+								
+								char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
+								
+								Kachel startKachel = momentaneKachel.getVonHier();
+								startKachel.setVonHier(null);
+								
+								resetAnweisungen();
+								anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
+								schritte = wieVieleSchritte(moeglichkeitenHierher);
+								
+								insgesamteDistanz();
+								
+								beweger.anfangsKachelSetzen(startKachel);
+								
+								beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
+								nullSchritte = 0;
+								pathfinder.setWelcheKachel(0);
+								
 							}catch (NullPointerException e ){}
 							
 						}
