@@ -3,6 +3,13 @@ package finderOfPaths;
 import model.Player;
 import view.BoardView;
 
+/**
+ * @version 25.06.2015
+ * @author Benedikt Mayer
+ *
+ *
+ * Hier werden alle möglichen Sachen zum suchen an den Vorschlager weitergereicht.
+ */
 public class Sucher {
 
 	private BoardView boardView;

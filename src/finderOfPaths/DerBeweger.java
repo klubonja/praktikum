@@ -15,6 +15,12 @@ import model.Player;
 import view.BoardView;
 import enums.Orientation;
 
+/**
+ * @version 25.06.2015
+ * @author Benedikt Mayer
+ *
+ * FÃ¼hrt die Animation bzw. Bewegung der Figur aus.
+ */
 public class DerBeweger {
 
 	private BoardView gui;
@@ -31,10 +37,6 @@ public class DerBeweger {
 	private int jetzigeSpalte;
 	private int jetzigeReihe;
 	
-	private boolean marker;
-	
-	
-	
 	private Kachel raumZielKachel;
 	private Kachel raumAnfangsKachel;
 	
@@ -45,9 +47,6 @@ public class DerBeweger {
 	
 	private Circle spieler;
 	
-    private KeyValue keyValueX;
-    private KeyValue keyValueY;
-    
     private int schritte;
     private int nullSchritte;
     
@@ -67,60 +66,24 @@ public class DerBeweger {
 	
 	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe, int nullSchritteEingabe){
 		
-		System.out.println("Beweger active!");
+		this.schritte = schritteEingabe;		
+		this.nullSchritte = nullSchritteEingabe;		
+		this.anweisungen = anweisungenEingabe;		
 		
-		this.schritte = schritteEingabe;
-		
-		this.nullSchritte = nullSchritteEingabe;
-		
-		this.anweisungen = anweisungenEingabe;
-		
-		//this.anweisungenVonHier = anweisungenEingabeVonHier;
-		
-		
-		
-		wieVieleAnweisungen = 0;
-		
-
-		
-		
-		
+		wieVieleAnweisungen = 0;		
 		for (int i = 0; i < anweisungen.length;i++)
 			{
 				if (anweisungen[i] != null){
 					wieVieleAnweisungen++;
 				}
 			}
-			
-//		System.out.println("§§§§§§§§§§§§§§§§§§§§§§§§§§");
-//		System.out.println("wievieleAnweisungen : " +wieVieleAnweisungen);
-//		System.out.println("schritte : "+schritte);
-//		System.out.println("momentaneAnweisung : "+momentaneAnweisung);
 
 		momentaneAnweisung = wieVieleAnweisungen + nullSchritte - schritte;
-				
 		
 		if (schritte>0){
 			
-			System.out.println("while-anfang");
-			
 			jetzigeSpalte = player.getxCoord();
 			jetzigeReihe = player.getyCoord();
-			
-			System.out.println("??????????????????");
-			
-			for (int i = 0; i < anweisungen.length; i++){
-				
-				System.out.println("null?   " +anweisungen[i]);
-			}
-			
-			
-			System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			System.out.println("player y : " +player.getyCoord());
-			System.out.println("player x : " +player.getxCoord());
-			
-			
-			System.out.println(anweisungen[momentaneAnweisung]);
 			
 			if (anweisungen[momentaneAnweisung] == Orientation.S){
 				yDistanz = 1;
@@ -152,12 +115,6 @@ public class DerBeweger {
 				zielKachel = gui.getKachelArray()[jetzigeReihe+yDistanz][jetzigeSpalte+xDistanz];
 			}
 			
-			
-			System.out.println("yDistanz : " +yDistanz +"   xDistanz : " +xDistanz);
-			
-//			System.out.println("anfangsKachel X : " +anfangsKachel.getLayoutX() +"  anfangsKachel Y : " +anfangsKachel.getLayoutY());
-//			System.out.println("zielKachel X : " +zielKachel.getLayoutX() +"  zielKachel Y : " +zielKachel.getLayoutY());
-			
 			Path path = new Path();
 			path.getElements().add(new MoveTo(anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
 
@@ -180,29 +137,18 @@ public class DerBeweger {
 			player.setyCoord(player.getyCoord() + yDistanz);
 			player.setxCoord(player.getxCoord() + xDistanz);	
 			}
-		
-			
-			marker = true;
-			
-			
 		}
 
 		public void anfangsKachelSetzen(Kachel neueAnfangsKachel){
 			anfangsKachel = neueAnfangsKachel;
+			player.setxCoord(gui.getColumnIndex(anfangsKachel));
+			player.setyCoord(gui.getRowIndex(anfangsKachel));
 		}
 	
 	
 		public void anfangsPositionSetzen(){
 
-			System.out.println("§§§§§§§§§§§§§§§§§§§§");
-			System.out.println("anfangs positionen!");
-			System.out.println("player y : " +player.getyCoord() +"   player x : " +player.getxCoord());
-			
 			startKachel = gui.getKachelArray()[player.getyCoord()][player.getxCoord()];
-			
-			System.out.println(" test " + startKachel.getLayoutX());
-			
-			System.out.println("layout y : " +gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutX() +"  layout x : " +gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutY());
 			
 			Path path = new Path();
 			path.getElements().add(new MoveTo(0,0));
@@ -213,7 +159,6 @@ public class DerBeweger {
 			pathTransition.setNode(spieler);
 			pathTransition.setPath(path);
 			pathTransition.play();
-
 			
 		}
 		

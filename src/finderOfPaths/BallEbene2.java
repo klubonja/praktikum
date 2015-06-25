@@ -11,6 +11,13 @@ import javafx.stage.Stage;
 import kacheln.FeldKachel;
 import kacheln.Kachel;
 
+/**
+ * @version 25.06.2015
+ * @author Benedikt Mayer
+ * 
+ * Die Ebene, in welcher die Figuren sich befinden und in welcher die click-Events stattfinden
+ *
+ */
 public class BallEbene2 extends GridPane{
 
 

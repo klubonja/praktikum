@@ -22,11 +22,11 @@ import enums.Rooms;
 
 /**
  * @since 24.05.2015
- * @version 27.05.2015
- * @author Benedikt
+ * @version 25.06.2015
+ * @author Benedikt Mayer
  *
- * Hier wird die vorläufige GUI - eine GridPane - modelliert.
- * Sie ist 24 x 25 Felder Groß und hat ein labelArray, in welchem
+ * Hier wird die vorlÃ¤ufige GUI - eine GridPane - modelliert.
+ * Sie ist 24 x 25 Felder groÃŸ und hat ein labelArray, in welchem
  * alle Kacheln gespeichert sind, zuerst in Reihen, dann Spalten.
  */
 public class BoardView extends GridPane {
@@ -47,7 +47,7 @@ public class BoardView extends GridPane {
 	private Scene scene;
 	
 	/**
-	 * Der Konstruktor für die GUI. Hier wird die Größe festgelegt und das
+	 * Der Konstruktor fï¿½r die GUI. Hier wird die Grï¿½ï¿½e festgelegt und das
 	 * labelArray erzeugt.
 	 * @param columnSize
 	 * @param rowSize
@@ -99,7 +99,7 @@ public class BoardView extends GridPane {
 	
 	/**
 	 * Hier werden die Kacheln erzeugt und ihnen ein Platz zugewiesen.
-	 * Auch wird die Größe der Kacheln festgelegt auf 29 x 29 und ihnen
+	 * Auch wird die Grï¿½ï¿½e der Kacheln festgelegt auf 29 x 29 und ihnen
 	 * wird eine "Aufschrift" gegeben, je nach Position. 
 	 * setLayout() weist zu, welche Art Kachel an welcher Position ist.
 	 */
@@ -110,7 +110,7 @@ public class BoardView extends GridPane {
 			for (int jSpalten = 0; jSpalten<columnSize;jSpalten++){
 				String aufschrift = +iReihen +"" +jSpalten;
 				
-				//////////////// Außerhalb /////////////////
+				//////////////// Auï¿½erhalb /////////////////
 				
 				if (jSpalten == 24){
 					kachelArray[iReihen][jSpalten] = new RaumKachel(null, iReihen, jSpalten, true, null, null, false, keineMoeglichkeiten, keineMoeglichkeiten2, null);
@@ -126,7 +126,7 @@ public class BoardView extends GridPane {
 				
 				else if ( (iReihen < 4 && jSpalten < 7) //Arbeitszimmer
 						|| (iReihen == 4 && jSpalten == 0) ){
-					if (iReihen == 3 && jSpalten == 6){ /////////////////// TÜR ///////////////////
+					if (iReihen == 3 && jSpalten == 6){ /////////////////// Tï¿½R ///////////////////
 						kachelArray[iReihen][jSpalten] = new TuerKachel(" S ", iReihen, jSpalten, true, Orientation.S, Rooms.study, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 					}
 					
@@ -138,11 +138,11 @@ public class BoardView extends GridPane {
 					else if ( (5 < iReihen && iReihen < 11  && jSpalten < 6) //Bibliothek
 						|| (6 < iReihen && iReihen < 10  && jSpalten == 6)
 						|| (iReihen==11 && jSpalten == 0) ){
-						if (iReihen == 10 && jSpalten == 3){/////////////////// TÜR ///////////////////
+						if (iReihen == 10 && jSpalten == 3){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" S ", iReihen, jSpalten, true, Orientation.S, Rooms.library, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
-						else if (iReihen == 8  && jSpalten == 6){/////////////////// TÜR ///////////////////
+						else if (iReihen == 8  && jSpalten == 6){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" O ", iReihen, jSpalten, true, Orientation.O, Rooms.library, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
@@ -154,11 +154,11 @@ public class BoardView extends GridPane {
 				
 					else if ( (11 < iReihen && iReihen < 17 && jSpalten < 6) //Billardzimmer
 						|| (iReihen == 17 && jSpalten == 0) ){
-						if  (iReihen == 15 && jSpalten == 5){/////////////////// TÜR ///////////////////
+						if  (iReihen == 15 && jSpalten == 5){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" O ", iReihen, jSpalten, true, Orientation.O, Rooms.billiard, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
-						else if(iReihen == 12 && jSpalten == 1) {/////////////////// TÜR ///////////////////
+						else if(iReihen == 12 && jSpalten == 1) {/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" N ", iReihen, jSpalten, true, Orientation.N, Rooms.billiard, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
@@ -172,7 +172,7 @@ public class BoardView extends GridPane {
 						|| (19 < iReihen  && jSpalten < 6)
 						|| (23 == iReihen  && jSpalten == 6)
 						|| (iReihen == 24 && 5 < jSpalten && jSpalten < 9) ){
-						if (iReihen == 19 && jSpalten == 4){/////////////////// TÜR ///////////////////
+						if (iReihen == 19 && jSpalten == 4){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" O ", iReihen, jSpalten, true, Orientation.O, Rooms.conservatory, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
@@ -185,11 +185,11 @@ public class BoardView extends GridPane {
 					else if ( (iReihen < 7  && 8 < jSpalten && jSpalten < 15) //Eingangshalle
 						|| (iReihen == 0 && jSpalten == 8)
 						|| (iReihen == 0 && jSpalten == 15) ){
-						if  (iReihen == 6 && (jSpalten == 11 || jSpalten == 12) ){/////////////////// TÜR ///////////////////
+						if  (iReihen == 6 && (jSpalten == 11 || jSpalten == 12) ){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" S ", iReihen, jSpalten, true, Orientation.S, Rooms.hall, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
-						else if (iReihen == 4 && jSpalten == 9) {/////////////////// TÜR ///////////////////
+						else if (iReihen == 4 && jSpalten == 9) {/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" W ", iReihen, jSpalten, true, Orientation.W, Rooms.hall, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
@@ -200,19 +200,19 @@ public class BoardView extends GridPane {
 					}
 				
 					else if ( (7 < iReihen && iReihen < 15  && 8 < jSpalten && jSpalten < 14) ){//Schwimmbad
-						if  (iReihen == 14 && jSpalten == 11){/////////////////// TÜR ///////////////////
+						if  (iReihen == 14 && jSpalten == 11){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" S ", iReihen, jSpalten, true, Orientation.S, Rooms.pool, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
-						else if(iReihen == 9  && jSpalten == 13){/////////////////// TÜR ///////////////////
+						else if(iReihen == 9  && jSpalten == 13){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" O ", iReihen, jSpalten, true, Orientation.O, Rooms.pool, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
-						else if(iReihen == 8  && jSpalten == 11){/////////////////// TÜR ///////////////////
+						else if(iReihen == 8  && jSpalten == 11){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" N ", iReihen, jSpalten, true, Orientation.N, Rooms.pool, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
-						else if(iReihen == 12 && jSpalten == 9) {/////////////////// TÜR ///////////////////
+						else if(iReihen == 12 && jSpalten == 9) {/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" W ", iReihen, jSpalten, true, Orientation.W, Rooms.pool, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
@@ -223,15 +223,15 @@ public class BoardView extends GridPane {
 				
 					else if ((16 < iReihen && iReihen < 23  && 7 < jSpalten && jSpalten < 16) //Musikzimmer
 						|| (22 < iReihen  && 9 < jSpalten && jSpalten < 14) ){
-						if  (iReihen == 19 && jSpalten == 15){/////////////////// TÜR ///////////////////
+						if  (iReihen == 19 && jSpalten == 15){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" O ", iReihen, jSpalten, true, Orientation.O, Rooms.ballroom, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
-						else if (iReihen == 17 && (jSpalten == 9 || jSpalten == 14) ){/////////////////// TÜR ///////////////////
+						else if (iReihen == 17 && (jSpalten == 9 || jSpalten == 14) ){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" N ", iReihen, jSpalten, true, Orientation.N, Rooms.ballroom, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
-						else if (iReihen == 19 && jSpalten == 8 ) {/////////////////// TÜR ///////////////////
+						else if (iReihen == 19 && jSpalten == 8 ) {/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" W ", iReihen, jSpalten, true, Orientation.W, Rooms.ballroom, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
@@ -243,7 +243,7 @@ public class BoardView extends GridPane {
 					else if ( (iReihen < 6  && 16 < jSpalten) //Salon
 						|| (iReihen == 6 && jSpalten == 23)
 						|| (iReihen == 8 && jSpalten == 23) ){
-						if (iReihen == 5 && jSpalten == 17){/////////////////// TÜR ///////////////////
+						if (iReihen == 5 && jSpalten == 17){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" S ", iReihen, jSpalten, true, Orientation.S, Rooms.lounge, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
@@ -255,11 +255,11 @@ public class BoardView extends GridPane {
 					else if ( (8 < iReihen && iReihen < 15  && 15 < jSpalten) //Speisezimmer
 						|| (iReihen == 15 && 18 < jSpalten)
 						|| (iReihen == 16 && jSpalten==23) ){
-						if (iReihen == 9 && jSpalten == 17){/////////////////// TÜR ///////////////////
+						if (iReihen == 9 && jSpalten == 17){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" N ", iReihen, jSpalten, true, Orientation.N, Rooms.diningroom, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
-						else if (iReihen == 11 && jSpalten == 16){/////////////////// TÜR ///////////////////
+						else if (iReihen == 11 && jSpalten == 16){/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" W ", iReihen, jSpalten, true, Orientation.W, Rooms.diningroom, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						
@@ -271,7 +271,7 @@ public class BoardView extends GridPane {
 					else if ( (17 < iReihen  &&  17 < jSpalten) //Kueche
 						|| (iReihen == 23 && jSpalten == 17)
 						|| (iReihen == 24 && 14 < jSpalten) ){
-						if (iReihen == 18 && jSpalten == 19) {/////////////////// TÜR ///////////////////
+						if (iReihen == 18 && jSpalten == 19) {/////////////////// Tï¿½R ///////////////////
 							kachelArray[iReihen][jSpalten] = new TuerKachel(" N ", iReihen, jSpalten, true, Orientation.N, Rooms.kitchen, true, keineMoeglichkeiten, keineMoeglichkeiten2, null);
 						}
 						

@@ -10,12 +10,12 @@ import view.DiceView;
 import enums.Orientation;
 
 /**
- * Hier werden die MouseEvents der ballEbene ausgelöst und verwaltet. 
+ * Hier werden die MouseEvents der ballEbene ausgelï¿½st und verwaltet. 
  *  ----------------------------------------------
- * || HIER WIRD AUCH DIE BEWEGUNG AUSGELÖST!!!!  ||
+ * || HIER WIRD AUCH DIE BEWEGUNG AUSGELï¿½ST!!!!  ||
  *  ----------------------------------------------
  * @since 13.06.2015
- * @version 13.06.2015 
+ * @version 25.06.2015 
  * @author Benedikt Mayer, Maximilian Lammel
  *
  */
@@ -33,8 +33,6 @@ public class Ausloeser {
 	
 	private int nullSchritte;
 	
-	private char [] richtigeAnweisungen;
-	
 	private int schritte;
 	
 	private Player player;
@@ -46,15 +44,13 @@ public class Ausloeser {
 	
 	private int wuerfelZahl;
 	
-	private UnglaublicheAnwendung anwendung;
-	
 	DicePresenter dice;
 	
 	/**
-	 * Konstruktor für den Ausloeser, welcher ballEbenen-clicks mit Bewegungen verlinkt.
+	 * Konstruktor fï¿½r den Ausloeser, welcher ballEbenen-clicks mit Bewegungen verlinkt.
 	 * @param gui um aufs KachelArray zuzugreifen
 	 * @param beweger um den Spieler/Ball zu bewegen
-	 * @param ballEbene um auf die click-events zugreifen zu können
+	 * @param ballEbene um auf die click-events zugreifen zu kï¿½nnen
 	 * @param pathfinder um den Weg berechnen zu lassen
 	 */
 	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher, Player player){
@@ -79,12 +75,11 @@ public class Ausloeser {
 			}});
 		ballEbene.getWuerfeln().setOnMouseClicked(e -> wuerfeln());
 		ballEbene.getBeginnen().setOnMouseClicked(e -> beweger.anfangsPositionSetzen());
-//		DiceView.roll.setOnMouseClicked(e -> wuerfeln());
 	}
 	
 	/**
 	 * berechnetdie Anzahl der zu gehenden Schritte in jegliche Richtung
-	 * @param moeglichkeitenEingabe das auszuwertende möglichkeiten-Array
+	 * @param moeglichkeitenEingabe das auszuwertende mï¿½glichkeiten-Array
 	 * @return wie viele Schritte zu gehen sind
 	 */
 	public int wieVieleSchritte(char [] moeglichkeitenEingabe){
@@ -99,7 +94,7 @@ public class Ausloeser {
 	}
 	
 	/**
-	 * Testmethode zum Würfeln
+	 * Testmethode zum Wï¿½rfeln
 	 */
 	public void wuerfeln(){
 		gui.resetBackground();
@@ -107,7 +102,7 @@ public class Ausloeser {
 		wuerfelZahl = (1 + (int)(Math.random()*6)) + (1 + (int)(Math.random()*6)) ;
 		System.out.println("==================================");
 		System.out.println("==================================");
-		System.out.println("Würfelzahl : " +wuerfelZahl);
+		System.out.println("WÃ¼rfelzahl : " +wuerfelZahl);
 		System.out.println("==================================");
 		System.out.println("==================================");
 		sucher.suchen(wuerfelZahl);
@@ -116,40 +111,30 @@ public class Ausloeser {
 	}
 	
 	/**
-	 * Wird ausgelöst, wenn irgendwo in der ballEbene geclickt wird
+	 * Wird ausgelï¿½st, wenn irgendwo in der ballEbene geclickt wird
 	 */
 	public void click(MouseEvent event){
 				
 		if (gewuerfelt){
 			gewuerfelt = false;
-				System.out.println("auslöser click");
-				
-				
 				
 				for (int iReihen = 0; iReihen < gui.getKachelArray().length-1; iReihen++){
 					for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length-1; jSpalten++){
 						if ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutX() <= event.getX()) && (event.getX() < gui.getKachelArray()[iReihen][jSpalten].getLayoutX()+29)
 						&& ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutY() <= event.getY()) && (event.getY() < gui.getKachelArray()[iReihen][jSpalten].getLayoutY()+29) ) ){
 							
-							//try {
-								
+							try {
 							
 							Kachel momentaneKachel = gui.getKachelArray()[iReihen][jSpalten];
 							System.out.println("Reihe : "+iReihen +"  ||  Spalte : " +jSpalten);
 							char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
 							
 							Kachel startKachel = momentaneKachel.getVonHier();
+							startKachel.setVonHier(null);
+							
 							resetAnweisungen();
 							anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
-							//anweisungenOrientationsVonHier = charToOrientation(moeglichkeitenVonHier);
 							schritte = wieVieleSchritte(moeglichkeitenHierher);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////Bewegung wird ausgelöst/////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-//							System.out.println("================");
-//							System.out.println("player x " +player.getxCoord());
-//							System.out.println("player y " +player.getyCoord());
-							// Hier: Schon falsch
 							
 							insgesamteDistanz();
 							
@@ -157,36 +142,13 @@ public class Ausloeser {
 							
 							beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
 							nullSchritte = 0;
+							pathfinder.setWelcheKachel(0);
 							
-							
-							//}
-							//catch (NullPointerException e ){
-							//	
-							//}
-//							System.out.println("???????????????????");
-//							System.out.println("player x " +player.getxCoord());
-//							System.out.println("player y " +player.getyCoord());
+							}catch (NullPointerException e ){}
 							
 						}
 					}
 				}
-		}
-	}
-	
-	public void checkWhatsOk(char [][] anweisungenVonHierEingabe, char [] anweisungenHierherEingabe){
-		richtigeAnweisungen = new char [anweisungenHierherEingabe.length];
-		int stelle = 0;
-		for (int welcheVersion = 0; welcheVersion < anweisungenVonHierEingabe.length && anweisungenVonHierEingabe[welcheVersion] != null; welcheVersion++){
-			for (int welcheAnweisung = 0; welcheAnweisung < anweisungenVonHierEingabe[welcheVersion].length; welcheAnweisung++){
-				for (int welcherVorschlag = 0; welcherVorschlag < anweisungenHierherEingabe.length; welcherVorschlag++){
-					if (anweisungenVonHierEingabe[welcheVersion][welcheAnweisung] == anweisungenHierherEingabe[welcherVorschlag]){
-						
-						richtigeAnweisungen[stelle] = anweisungenVonHierEingabe[welcheVersion][welcheAnweisung];
-						stelle++;
-					}
-				}
-				
-			}
 		}
 	}
 	
@@ -230,8 +192,8 @@ public class Ausloeser {
 	
 	public void insgesamteDistanz(){
 		
-	xInsgesamt = 0;
-	yInsgesamt = 0;
+		xInsgesamt = 0;
+		yInsgesamt = 0;
 			
 		for (int i = 0; i < anweisungenOrientations.length; i++){
 			if (anweisungenOrientations[i] == Orientation.W){
@@ -249,10 +211,7 @@ public class Ausloeser {
 			else if (anweisungenOrientations[i] == Orientation.S){
 				yInsgesamt++;
 			}
-			
-			
 		}
-		
 	}
 
 	
@@ -270,11 +229,9 @@ public class Ausloeser {
 			anweisungenOrientationsVonHier[i] = null;
 		}
 		
-		
 		for (int i = 0; i < anweisungenOrientations.length; i++){
 			anweisungenOrientations[i] = null;
 		}
-		
 	}
 	
 }
