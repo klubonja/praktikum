@@ -80,6 +80,11 @@ public class GameVBox extends VBox{
 				+ "-fx-background-color: red;");
 	}
 	
+	public void setGameWaiting() {
+		setStyle("-fx-text-fill:#000000; "
+				+ "-fx-background-color: #ffffff;");
+	}
+	
 	
 	
 }

@@ -4,6 +4,7 @@ package cluedoNetworkGUI;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
+import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoServer.ClientItem;
@@ -84,15 +85,22 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean removePlayerfromGame(ClientItem client,int gameID){
 			CluedoGameServer game = dataManager.getGameByID(gameID);
-			if (game.getGameState() == GameStates.ended){
+			 if (game.getNumberConnected() == 0){
+					game.notifyAll(NetworkMessages.game_deletedMsg(gameID));
+					removeGameGui(gameID);
+					dataManager.removeGame(game);
+			}
+			else if (game.getGameState() == GameStates.not_started && game.getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART){
+				game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
+				setGameWaitingGui(gameID);
+			}
+			else if (game.getGameState() == GameStates.ended){
 				game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
 				setGameEndedGui(gameID);
 			}
-			else if (game.getGameState() == GameStates.to_be_deleted){
-				game.notifyAll(NetworkMessages.game_deletedMsg(gameID));
-				removeGameGui(gameID);
-				dataManager.removeGame(game);
-			}
+			
+			
+			
 		
 		
 		return true;

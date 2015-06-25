@@ -110,6 +110,12 @@ public class DataGuiManager   {
 		  });
 	  }
 	  
+	  public  void setGameWaitingGui(int gameID){
+		  Platform.runLater(() -> {
+			  gui.updateGameSetWaiting(gameID);
+		  });
+	  }
+	  
 	  public void updateGame(int gameID,String specialinfo, String info){
 		Platform.runLater(() -> {
 			gui.updateGame(gameID, specialinfo, info); 	

@@ -158,9 +158,6 @@ public abstract class CluedoNetworkGUI {
 			
 			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info);
 			switch (state) {
-			case startable:
-				gamelistitem.setReadyGame();
-				break;
 			case started:
 				gamelistitem.setRunningGame();
 				break;
@@ -194,6 +191,10 @@ public abstract class CluedoNetworkGUI {
 	  
 	  public void updateGameSetEnded(int gameID){
 		  getGame(gameID).setEndedGame();
+	  }
+	  
+	  public void updateGameSetWaiting(int gameID){
+		  getGame(gameID).setGameWaiting();
 	  }
 	  
 	  public GameVBox getGame(int gameID){

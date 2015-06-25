@@ -66,7 +66,6 @@ public class CluedoGame {
 			if (p.getCluedoPerson().getColor().equals(color)){
 				if (p.getNick().equals("")){
 					p.setNick(nick);
-					if (getNumberConnected() >= 3) setGameState(GameStates.startable);
 					return true;
 				}
 				return false;				
@@ -82,7 +81,6 @@ public class CluedoGame {
 				if (p.getNick().equals("")){
 					p.setNick(nick);
 					p.setState(state);
-					if (getNumberConnected() >= 3) setGameState(GameStates.startable);
 					return true;
 				}
 				return false;				
@@ -121,8 +119,8 @@ public class CluedoGame {
 			if (cp.getNick().equals(nick)){
 				cp.setNick("");
 				if (gameState == GameStates.started) gameState = GameStates.ended;
-				if (gameState == GameStates.startable && getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART) setGameState(GameStates.not_started);
-				if (getNumberConnected() == 0) setGameState(GameStates.to_be_deleted);
+				if (getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART) setGameState(GameStates.not_started);
+				
 
 				auxx.loginfo(nick +" removed from Game " +getGameId()+" Gamestate is now : "+gameState.getName());
 				return true;
