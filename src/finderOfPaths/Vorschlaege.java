@@ -80,16 +80,14 @@ public class Vorschlaege {
 				for (counterAussen = 0; counterAussen < moeglichkeiten.length; counterAussen++ ){
 					
 					distanzenUpdaten();
-		
+					
 					// Erreichbare Kacheln
 					if ( (yDistanz != 0 || xDistanz != 0) && (jetzigeReihe + yDistanz >=0) && (jetzigeSpalte + xDistanz >=0) 
 							&& (jetzigeReihe + yDistanz < 25) && (jetzigeSpalte + xDistanz < 24)
 							&& (moeglichkeiten[counterAussen] != null)
 							&& gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstRaum() == false)
 					{
-
 						moeglichkeitenSetzenMitTueren(Color.GREEN);
-						
 					}
 					
 					// Falls das Ganze zu einer T�r zeigt
@@ -99,9 +97,7 @@ public class Vorschlaege {
 							&& gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstRaum() == true
 							&& gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstTuer() == true)
 					{
-						
 						moeglichkeitenSetzenMitTueren(Color.CORNFLOWERBLUE);
-						
 					}
 				}
 			}
@@ -117,6 +113,8 @@ public class Vorschlaege {
 			
 			for (counterAussen = 0; counterAussen < moeglichkeiten.length; counterAussen++ ){
 	
+				distanzenUpdaten();
+				
 				// Erreichbare Kacheln
 				if ( (yDistanz != 0 || xDistanz != 0) && (jetzigeReihe + yDistanz >=0) && (jetzigeSpalte + xDistanz >=0) 
 						&& (jetzigeReihe + yDistanz < 25) && (jetzigeSpalte + xDistanz < 24)
@@ -131,9 +129,7 @@ public class Vorschlaege {
 						&& gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstRaum() == true
 						&& gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstTuer() == true)
 				{
-					
 					moeglichkeitenSetzenOhneTueren(Color.CORNFLOWERBLUE);
-						
 				}
 			}
 		}
@@ -188,6 +184,7 @@ public class Vorschlaege {
 	}
 	
 	public void moeglichkeitenSetzenMitTueren(Color farbe){
+		
 		gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 
 		Kachel vonHier = gui.getKachelArray()[yPositionen[counter]][xPositionen[counter]];
