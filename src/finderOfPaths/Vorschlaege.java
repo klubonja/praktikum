@@ -183,25 +183,64 @@ public class Vorschlaege {
 		}
 	}
 	
+	public boolean checkForWeirdStuff(){
+		Kachel checkThis = gui.getKachelArray()[jetzigeReihe][jetzigeSpalte];
+		if (checkThis.isIstTuer()){
+			if (checkThis.getOrientierung() == Orientation.S && moeglichkeiten[counterAussen][0] != 'S'){
+				return false;
+			}
+			else if (checkThis.getOrientierung() == Orientation.W && moeglichkeiten[counterAussen][0] != 'W'){
+				return false;
+			}
+			else if (checkThis.getOrientierung() == Orientation.N && moeglichkeiten[counterAussen][0] != 'N'){
+				return false;
+			}
+			else if (checkThis.getOrientierung() == Orientation.O && moeglichkeiten[counterAussen][0] != 'E'){
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+		else {
+			return true;
+		}
+	}
+	
 	public void moeglichkeitenSetzenMitTueren(Color farbe){
-		
-		gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
-
-		Kachel vonHier = gui.getKachelArray()[yPositionen[counter]][xPositionen[counter]];
-		gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
-		
-		gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], farbe);
-
+		if (checkForWeirdStuff()){
+//			System.out.println("moeglichkeiten von : y = " +(jetzigeReihe) +"  ||  x = " +(jetzigeSpalte));
+//			System.out.println("nach : y = " +(jetzigeReihe + yDistanz) +"  ||  x = " +(jetzigeSpalte + xDistanz));
+//			for (int i = 0; i < moeglichkeiten[counterAussen].length && moeglichkeiten[counterAussen] != null;i++){
+//				System.out.print(moeglichkeiten[counterAussen][i]);
+//			}
+//			System.out.println();
+			
+			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
+	
+			Kachel vonHier = gui.getKachelArray()[yPositionen[counter]][xPositionen[counter]];
+			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
+			
+			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], farbe);
+		}
 	}
 	
 	public void moeglichkeitenSetzenOhneTueren(Color farbe){
-		gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
-
-		Kachel vonHier = gui.getKachelArray()[jetzigeReihe][jetzigeSpalte];
-		gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
-
-		gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], farbe);
-
+		if (checkForWeirdStuff()){
+//			System.out.println("moeglichkeiten von : y = " +(jetzigeReihe) +"  ||  x = " +(jetzigeSpalte));
+//			System.out.println("nach : y = " +(jetzigeReihe + yDistanz) +"  ||  x = " +(jetzigeSpalte + xDistanz));
+//			for (int i = 0; i < moeglichkeiten[counterAussen].length && moeglichkeiten[counterAussen] != null;i++){
+//				System.out.print(moeglichkeiten[counterAussen][i]);
+//			}
+//			System.out.println();
+			
+			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
+	
+			Kachel vonHier = gui.getKachelArray()[jetzigeReihe][jetzigeSpalte];
+			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
+	
+			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], farbe);
+		}
 	}
 	
 }

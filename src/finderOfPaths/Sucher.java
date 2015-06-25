@@ -27,6 +27,7 @@ public class Sucher {
 	 
 	
 	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  Player player, char [][]anweisungen){
+
 		this.boardView = boardView;
 		this.ballEbene = ballEbene;
 		this.beweger = beweger;
@@ -34,8 +35,6 @@ public class Sucher {
 		this.pathfinder = pathfinder;
 		this.player = player;
 		this.anweisungen = anweisungen;
-		
-		
 		
 	}
 	
