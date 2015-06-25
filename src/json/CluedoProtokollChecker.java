@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import staticClasses.Config;
+import staticClasses.auxx;
 import enums.CluedoProtokollMessageTypes;
 import enums.Field;
 import enums.GameStates;
@@ -26,7 +27,6 @@ public class CluedoProtokollChecker {
 	CluedoJSON jsonRoot;
 	String type;
 	String typeNoSpace;
-	boolean isValid;
 
 	public CluedoProtokollChecker(CluedoJSON j) {
 		jsonRoot = j;
@@ -34,12 +34,22 @@ public class CluedoProtokollChecker {
 		msgs = new ArrayList<String>();
 	}
 	
+	public CluedoProtokollChecker(JSONObject j) {
+		jsonRoot = new CluedoJSON(j);
+		errs = new ArrayList<String>();
+		msgs = new ArrayList<String>();
+	}
+	
+	public String getType(){
+		return type;
+	}
+	
 	public NetworkHandhakeCodes validateExpectedType(String exptype,String[] ignoredTypes){
 		checkType();
 		if (type.equals(exptype)) 
 			if (validate()) return NetworkHandhakeCodes.OK; //alles OK
 			else return NetworkHandhakeCodes.TYPEOK_MESERR; //typ ok aber andere protokollabweichungen
-		else if (Arrays.asList(ignoredTypes).contains(type)){
+		else if (ignoredTypes != null && Arrays.asList(ignoredTypes).contains(type)){
 			setMsg(type+" is ignored");
 			return NetworkHandhakeCodes.TYPEIGNORED;//ignored
 		}
@@ -55,30 +65,34 @@ public class CluedoProtokollChecker {
 				Method m = CluedoProtokollChecker.class
 						.getDeclaredMethod("val_" + typeNoSpace);
 				try {
-					m.invoke(this);
-					System.out.println("invoking :"+"val_" + typeNoSpace );
-				} catch (IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					System.out.println("invoking :"+"val_" + typeNoSpace +" failed" );
+					try {
+						m.invoke(this);
+					} catch (IllegalAccessException | IllegalArgumentException e) {
+						e.printStackTrace();
+					}
+					auxx.loginfo("invoking :"+"val_" + typeNoSpace);
+				} 
+				catch (InvocationTargetException e) {
+					auxx.logsevere("invoking :"+"val_" + typeNoSpace +" failed",e);
 				}
 			} catch (NoSuchMethodException | SecurityException e) {
-				System.out.println("finding :"+"val_" + typeNoSpace +" failed : no such method");
-				//e.printStackTrace();
+				auxx.logsevere("invoking :"+"val_" + typeNoSpace +" failed : no such method",e);
 			}
 		}
 	}
 	
 	public boolean validate() {
-		System.out.println(jsonRoot.toString());
 		if (checkType()) { // sets type to check
 			invokeValMethod();
 		};
 
 		if (errs.size() == 0){
-			System.out.println("OK");
+			auxx.loginfo("msg OK");
 			return true;
 		}
-		System.out.println("Not OK see : this.printErrs()");
+		auxx.loginfo("msg NOT OK");
+		auxx.loginfo(getErrString());
+		
 		return false;
 	}
 
@@ -118,7 +132,7 @@ public class CluedoProtokollChecker {
 	}
 
 	void val_chat() {
-		validateValue(jsonRoot, "sender");
+		//validateValue(jsonRoot, "sender");
 		validateValue(jsonRoot, "message");
 		if (validateValue(jsonRoot, "timestamp"))
 			validateLocalTimeFormat(jsonRoot, "timestamp");
@@ -126,30 +140,34 @@ public class CluedoProtokollChecker {
 
 	void val_create_game() {
 		if (validateValue(jsonRoot, "color"))
-			validatePerson("color");
+			validatePerson(jsonRoot.getString("color"));
 	}
 
 	void val_game_created() {
-		if (validateValue(jsonRoot, "gameId"))
-			isInt(jsonRoot, "gameId");
-		validateValue(jsonRoot, "nick");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
+//		if (validateValue(jsonRoot, "player"))
+//			validatePlayerInfo(jsonRoot.getJSONObject("player"));
 	}
 
 	void val_join_game() {
-		if (validateValue(jsonRoot, "gameId"))
-			isInt(jsonRoot, "gameId");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
 		if (validateValue(jsonRoot, "color"))
-			validatePerson("color");
+			validatePerson(jsonRoot.getString("color"));
 	}
 
 	void val_player_added() {
-		val_join_game();
-		validateValue(jsonRoot, "nick");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
+		if (validateValue(jsonRoot, "player"))
+			validatePlayerInfo(jsonRoot.getJSONObject("player"));
+		
 	}
 
 	void val_watch_game() {
-		if (validateValue(jsonRoot, "gameId"))
-			isInt(jsonRoot, "gameId");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
 	}
 
 	void val_watcher_added() {
@@ -278,12 +296,12 @@ public class CluedoProtokollChecker {
 	
 	
 	void validateLocalTimeFormat(JSONObject jsonParent,String key){
-		String value = jsonParent.getString("key");
-		if (!value.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}\\d{2}\\.\\d{2}"))
+		String value = jsonParent.getString(key);		
+		if (!value.matches("\\d+-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}\\d{1,2}\\.\\d*"))
 			setErr(value +" hat nicht protokollgemäßes (java.time.LocalDateTime) Format");
 	}
 	
-	void validatePerson(String personName){
+	void validatePersonName(String personName){
 		if (!Persons.isMemberPersonName(personName))
 			setErr("Person :\" "+personName+ "\" is not a valid Personname in this Game");
 	}
@@ -293,9 +311,9 @@ public class CluedoProtokollChecker {
 			setErr("Weapon : \""+weaponName+ "\" is not a valid Weapon in this Game");
 	}
 	
-	void validateRoom(String personName){
-		if (!Persons.isMember(personName))
-			setErr("Room  : \""+personName+ "\" not a valid Room in this Game");
+	void validateRoom(String roomName){
+		if (!Rooms.isMember(roomName))
+			setErr("Room  : \""+roomName+ "\" not a valid Room in this Game");
 	}
 	
 	void validatePlayerState(String playerState){
@@ -304,7 +322,7 @@ public class CluedoProtokollChecker {
 	}
 	
 	boolean validateProtokollVersion(JSONObject jsonParent,String key){
-		if (jsonParent.getString(key).equals((String.valueOf(Config.PROTOKOLL_VERSION)))) return true;		
+		if (jsonParent.getString(key).equals(Config.PROTOKOLL_VERSION)) return true;		
 		return false;
  	}
 	
@@ -337,14 +355,14 @@ public class CluedoProtokollChecker {
 			setErr("GameState \""+gameState+ "\" not a valid Gamestate in this Game");
 	}
 	
-	void validateColor(String color){
-		if (!Persons.isMember(color))
+	void validatePerson(String color){
+		if (!Persons.isMemberColor(color))
 			setErr("Color \""+color+ "\" not a valid Color in this Game");
 	}
 	
 	void validateStatement(JSONObject jsonParent){
 		String[] expectedFields = {"person","weapon","room"};
-		if (validateValue(jsonParent, "parent"))
+		if (validateValue(jsonParent, "person"))
 			validatePerson(jsonParent.getString("person"));
 		if (validateValue(jsonParent, "weapon"))
 			validateWeapon(jsonParent.getString("weapon"));
@@ -374,7 +392,7 @@ public class CluedoProtokollChecker {
 	
 	boolean validateCards(String value){
 		Persons[] persons = Persons.values();
-		for(Persons p : persons) if (value.equals(p.getName())) return true;
+		for(Persons p : persons) if (value.equals(p.getColor())) return true;
 		Weapons[] weapons = Weapons.values();
 		for(Weapons w : weapons) if (value.equals(w.getName())) return true;
 		Rooms[] rooms = Rooms.values();
@@ -391,10 +409,10 @@ public class CluedoProtokollChecker {
 			validateValue(jsonParent, "nick");			
 			if (validateValue(jsonParent, "color"))
 				validatePerson(jsonParent.getString("color"));
-			if (validateValue(jsonParent, "field"))
-				validateField(jsonParent, "field");
-			if (validateValue(jsonParent, "cards"))
-				isInt(jsonParent, "cards");
+//			if (validateValue(jsonParent, "field"))
+//				validateField(jsonParent, "field");
+//			if (validateValue(jsonParent, "cards"))
+//				isInt(jsonParent, "cards");
 			if (validateValue(jsonParent, "playerstate"))
 				validatePlayerState(jsonParent.getString("playerstate"));		
 	}
@@ -453,7 +471,7 @@ public class CluedoProtokollChecker {
 					}					
 				} 
 				catch (Exception e) {
-					System. out.println("BAD : attempting jsonarray : "+key+" loopindex"+ index + " for "+localtype);
+					auxx.logsevere("no JSONArray index :"+index, e);
 				}				
 			}		
 			
@@ -502,11 +520,10 @@ public class CluedoProtokollChecker {
 	}
 	
 	public void printErrs() {
-		System.out.println("Missing: ");
 		for (String s : errs)
-			System.out.println(s);
+			auxx.loginfo(s);
 		for (String s : msgs)
-			System.out.println(s);
+			auxx.loginfo(s);
 	}
 
 	private void setErr(String err) {
@@ -519,7 +536,7 @@ public class CluedoProtokollChecker {
 	
 	public String getErrString(){
 		StringBuffer sb = new StringBuffer("");
-		if (!isValid)
+		if (!isValid())
 			for (String err : errs) sb.append(err+"\n");
 		return sb.toString();
 	}

@@ -1,9 +1,21 @@
 package staticClasses;
 
+import java.util.ArrayList;
+
 import json.CluedoJSON;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import cluedoNetworkLayer.CluedoGameClient;
+import cluedoNetworkLayer.CluedoGameServer;
+import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoWeapon;
+import cluedoNetworkLayer.WinningStatement;
+import cluedoServer.ClientItem;
+import enums.GameStates;
+import enums.PlayerStates;
+
 
 public abstract class NetworkMessages {
 	
@@ -31,14 +43,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String login_sucMsg(String[] nickArray,JSONArray gameArray){
-		CluedoJSON json = new CluedoJSON("login successful");
-		json.put("expansions", new JSONArray(Config.EXPANSIONS));
-		json.put("game array", gameArray);
-		json.put("nick array", nickArray);
-		
-		return json.toString();
-	}
+	
 	
 	public static String user_addedMsg(String nick){
 		CluedoJSON json = new CluedoJSON("user added");
@@ -67,16 +72,16 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String statement(String person,String room,String weapon){
+	public static JSONObject statement(String person,String room,String weapon){
 		JSONObject json = new JSONObject();
 		json.put("person", person);
 		json.put("weapon", weapon);
 		json.put("room", room);
 		
-		return json.toString();
+		return json;
 	}
 	
-	public static String game_info(int gameId,String gamestate,JSONArray playerInfos,JSONArray watchers,JSONArray personposes,JSONArray weaponposes){
+	public static JSONObject gameinfo(int gameId,String gamestate,JSONArray playerInfos,JSONArray watchers,JSONArray personposes,JSONArray weaponposes){
 		JSONObject json = new JSONObject();
 		json.put("gameID",gameId);
 		json.put("gamestate",gamestate);
@@ -85,32 +90,40 @@ public abstract class NetworkMessages {
 		json.put("person positions", personposes);
 		json.put("weapon positions", weaponposes);
 		
-		return json.toString();
+		return json;
 	}
 	
-	public static String player_info(String nick,String color,String playerstate){
+	public static JSONObject player_info(String nick,String color,String playerstate){
 		JSONObject json = new JSONObject();
 		json.put("nick", nick);
 		json.put("color", color);
 		json.put("playerstate", playerstate);
 		
-		return json.toString();
+		return json;
 	}
 	
-	public static String player_pos(String person,String field){
+	public static JSONObject field(int x, int y){
+		JSONObject json = new JSONObject();
+		json.put("x", x);
+		json.put("y", y);
+		
+		return json;
+	}
+	
+	public static JSONObject player_pos(String person,JSONObject field){
 		JSONObject json = new JSONObject();
 		json.put("person", person);
 		json.put("field", field);
 		
-		return json.toString();
+		return json;
 	}
 	
-	public static String weapon_pos(String weapon,String field){
+	public static JSONObject weapon_pos(String weapon,JSONObject field){
 		JSONObject json = new JSONObject();
 		json.put("weapon", weapon);
 		json.put("field", field);
 		
-		return json.toString();
+		return json;
 	}
 	
 	public static String okMsg(){
@@ -224,7 +237,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String player_cardsMsg(int gameID,String[] cards){
+	public static String player_cardsMsg(int gameID,JSONArray cards){
 		CluedoJSON json = new CluedoJSON("player cards");
 		json.put("gameID", gameID);
 		json.put("cards", cards);		
@@ -232,7 +245,15 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String game_startedMsg(int gameID,String[] order){
+	public static String game_startedMsg(int gameID,ArrayList<String> order){
+		JSONArray orderJSON = new JSONArray();
+		for (String nick: order)
+			orderJSON.put(nick);
+		
+		return make_game_startedMsg(gameID, orderJSON);
+	}
+	
+	public static String make_game_startedMsg(int gameID,JSONArray order){
 		CluedoJSON json = new CluedoJSON("game started");
 		json.put("order", order);
 		json.put("gamestate", "started");
@@ -241,10 +262,11 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String stateupdateMsg(int gameID,String nick,JSONObject playerstate){
+	
+	public static String stateupdateMsg(int gameID,String nick,PlayerStates state){
 		CluedoJSON json = new CluedoJSON("game started");
 		json.put("nick", nick);
-		json.put("playerstat", playerstate);
+		json.put("playerstate", state.getName());
 		json.put("gameID", gameID);		
 		
 		return json.toString();
@@ -253,6 +275,23 @@ public abstract class NetworkMessages {
 	public static String game_endedMsg(int gameID,String nick,JSONObject statement){
 		CluedoJSON json = new CluedoJSON("game ended");
 		json.put("nick", nick);
+		json.put("statement", statement);
+		json.put("gameID", gameID);		
+		
+		return json.toString();
+	}
+	
+	public static String game_endedMsg(int gameID,WinningStatement statement){
+		JSONObject statementJSON = new JSONObject();
+		statementJSON.put("person", statement.getPerson().getColor());
+		statementJSON.put("weapon", statement.getWeapon().getName());
+		statementJSON.put("room", statement.getRoom().getName());
+
+		return make_game_endedMsg(gameID, statementJSON);
+	}
+	
+	public static String make_game_endedMsg(int gameID,JSONObject statement){
+		CluedoJSON json = new CluedoJSON("game ended");
 		json.put("statement", statement);
 		json.put("gameID", gameID);		
 		
@@ -351,8 +390,154 @@ public abstract class NetworkMessages {
 		
 		return json.toString();
 	}
-
-
+	
+	public static JSONObject gameInfo(CluedoGameServer game){
+		JSONArray playerInfosJSON = new JSONArray();
+		JSONArray perspossJSON = new JSONArray();
+		ArrayList<CluedoPlayer> playerInfos = game.getPlayersConnected();
+		for (CluedoPlayer p : playerInfos){
+			playerInfosJSON.put(
+				NetworkMessages.player_info(
+					p.getNick(), 
+					p.getCluedoPerson().getColor(), 
+					p.getState().getName()
+				)
+			);
+			System.out.println(game.getGameId()+"id : playernick"+p.getNick());
+			perspossJSON.put(
+				NetworkMessages.player_pos(
+					p.getCluedoPerson().getColor(), 
+					NetworkMessages.field(
+						p.getPosition().getX(), 
+						p.getPosition().getY()
+					)
+				)
+			);
+		}
+		JSONArray watchersJSON = new JSONArray();
+		ArrayList<String> watchers = game.getWatchersNicks();
+		for (String w : watchers)
+			watchersJSON.put(w);
+		
+		JSONArray weaponpossJSON = new JSONArray();
+		ArrayList<CluedoWeapon> weaponPoss = game.getWeapons();
+		for (CluedoWeapon wp : weaponPoss){
+			weaponpossJSON.put(
+				NetworkMessages.weapon_pos(
+					wp.getWeapon().getName(), 
+					NetworkMessages.field(
+						wp.getPosition().getX(),
+						wp.getPosition().getY()
+					)
+				)
+			);
+		}
+		
+		return NetworkMessages.gameinfo(
+				game.getGameId(), 
+				game.getGameState().getName(), 
+				playerInfosJSON, 
+				watchersJSON, 
+				perspossJSON,
+				weaponpossJSON
+			  );		
+	}
+	
+	public static String make_login_sucMsg(JSONArray nickArray,JSONArray gameArray,JSONArray expansions){
+		CluedoJSON json = new CluedoJSON("login successful");
+		json.put("expansions", expansions);
+		json.put("game array", gameArray);
+		json.put("nick array", nickArray);
+		
+		return json.toString();
+	}
+	
+	public static String login_sucMsg(ArrayList<String> expansions, ArrayList<ClientItem> clientList, ArrayList<CluedoGameServer> gameList ){
+		JSONArray nickArray = new JSONArray();
+		JSONArray gameArray = new JSONArray();
+		JSONArray expansionsJSON = new JSONArray();
+		for (ClientItem c : clientList)
+			nickArray.put(c.getNick());
+		for (CluedoGameServer g : gameList)
+			gameArray.put(gameInfo(g));
+		for (String ex: expansions)
+			expansionsJSON.put(ex);
+			
+		return NetworkMessages.make_login_sucMsg(
+						nickArray, 
+						gameArray,
+						expansionsJSON
+					);
+	}
+	
+	public static ArrayList<CluedoGameClient> createGamesFromJSONGameArray(JSONArray gamearray){
+		ArrayList<CluedoGameClient> gamelist = new ArrayList<CluedoGameClient>();
+		for (int i = 0; i < gamearray.length(); i++){							
+			CluedoGameClient newgame = new CluedoGameClient(
+					gamearray.getJSONObject(i).getInt("gameID"));
+			newgame.setGameState(
+					GameStates.getState(
+							gamearray.getJSONObject(i).getString("gamestate")
+							)
+						);
+			
+			JSONArray players = gamearray.getJSONObject(i).getJSONArray("players");				
+			for (int n = 0;n < players.length();n++){
+//				CluedoPlayer player = new CluedoPlayer(
+//						Persons.getPersonByColor(
+//								players.getJSONObject(n).getString("color")
+//								),
+//						PlayerStates.getPlayerState(
+//								players.getJSONObject(n).getString("playerstate")
+//								)									
+//						);	
+//				player.setNick(players.getJSONObject(n).getString("nick"));
+				newgame.joinGame(
+						players.getJSONObject(n).getString("color")
+						,
+						players.getJSONObject(n).getString("nick"), 
+						PlayerStates.getPlayerState(
+								players.getJSONObject(n).getString("playerstate"))
+						);
+			}
+			
+			JSONArray watchers = gamearray.getJSONObject(i).getJSONArray("watchers");				
+			for (int n = 0;n < watchers.length();n++){
+				//wofür?
+			}
+			
+			JSONArray personposs = gamearray.getJSONObject(i).getJSONArray("person positions");				
+			for (int n = 0;n < personposs.length();n++){						
+				JSONObject ppos = personposs.getJSONObject(n);
+				String pname = ppos.getString("person");
+				newgame.
+					getPlayer(pname).
+						getPosition().
+							setX(ppos.getJSONObject("field").
+									getInt("x"));
+				newgame.getPlayer(pname).getPosition().setY(ppos.getJSONObject("field").getInt("y"));
+			}
+			
+			JSONArray weaponposs = gamearray.getJSONObject(i).getJSONArray("weapon positions");				
+			for (int n = 0;n < weaponposs.length();n++){						
+				JSONObject wpos = weaponposs.getJSONObject(n);
+				String wname = wpos.getString("weapon");
+				newgame.
+					getWeaponByName(wname).
+						getPosition().
+							setX(
+									wpos.getJSONObject("field").
+									getInt("x")
+								);
+				newgame.getWeaponByName(wname).getPosition().setY(wpos.getJSONObject("field").getInt("y"));
+			}	
+			
+			gamelist.add(newgame);
+		}
+		
+		return gamelist;
+	}
+	
 	
 	
 	

@@ -1,9 +1,9 @@
 package cluedoServer;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -11,9 +11,12 @@ import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
+import staticClasses.auxx;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkGUI.DataGuiManagerServer;
+import cluedoNetworkLayer.CluedoGameServer;
 
 /**
  * @author guldener
@@ -22,13 +25,12 @@ import cluedoNetworkGUI.CluedoServerGUI;
 public class Server {
 	
 	Connector connector;
-	public ServerSocket tcpSocket;
-	ArrayList<ClientItem> clientList;
-	ArrayList<ClientItem> blackList;
+	public ServerSocket TCPServerSocket;
 	int TCPport;
-	
+
+	DataManagerServer dataManager;	
 	final CluedoServerGUI gui;
-	public CluedoGame[] games;
+	public DataGuiManagerServer dataGuiManager;
 	
 	boolean run;
 	
@@ -36,37 +38,38 @@ public class Server {
 	
 	public Server(CluedoServerGUI g){
 		gui = g;
-		TCPport = Config.TCP_PORT;	
-		clientList = new ArrayList<ClientItem>();
-		blackList = new ArrayList<ClientItem>();
 		run = true;
-			
+		TCPport = Config.TCP_PORT;	
+		dataManager = new DataManagerServer(Config.GROUP_NAME);
+		dataGuiManager = new DataGuiManagerServer(gui,dataManager);	
+		dataGuiManager.setWindowName(Config.GROUP_NAME+" Server");
+		
+		//createTestGroups();
 		sayHello();
-		listenForClientsThread();
+		listenForClientsThread();		
+		startTCPServer();				
 		
-		startServer();		
 		setListener();	
-		
-		System.out.println("Server Starteeeee");
-		gui.setWindowName(Config.GROUP_NAME+" Server");
 	}
 	
 	private void sayHello() {
 		String msg = NetworkMessages.udp_serverMsg(Config.GROUP_NAME, TCPport);				
-		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, gui, msg);
+		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, dataGuiManager, msg);
 		bc.sendBrodcast();				
 	}
 	
 	void listenForClientsThread(){
 		String answer = NetworkMessages.udp_serverMsg(Config.GROUP_NAME, TCPport);				
 		ClientHandShakeListener cl = 
-				new ClientHandShakeListener(answer.toString(),"udp client",Config.BROADCAST_PORT,gui,run);
+				new ClientHandShakeListener(answer.toString(),"udp client",Config.BROADCAST_PORT,dataGuiManager,run);
 		cl.start();
 	}
 	
 	
-	private void createGroups(){
-		for(int i = 0; i < 4; i++) games[i] = new CluedoGame(6,"reduzierterHund"+i);
+	private void createTestGroups(){
+		for(int i = 0; i < 4; i++) {
+			dataGuiManager.addGame(new CluedoGameServer(i));
+		}
 	}
 	
 	/**
@@ -74,41 +77,49 @@ public class Server {
 	 * aufgebaute verbindungen werden auf eigenen threads ausgeführt
 	 * @throws IOException
 	 */
-	private void startServer()  {
+	private void startTCPServer()  {
 		try {
-			tcpSocket = new ServerSocket(TCPport);	
-			connector = new Connector(tcpSocket, gui,clientList,blackList);
+			TCPServerSocket = new ServerSocket();	
+			TCPServerSocket.setReuseAddress(true);
+			TCPServerSocket.bind(new InetSocketAddress(TCPport));
+			connector = new Connector(TCPServerSocket,dataManager,dataGuiManager);
 			connector.start();
+			
 			try {
 				NetworkInterfacesIpManager nm = new NetworkInterfacesIpManager();				 	
 				gui.setStatus("port "+TCPport+ " NInterfaces: "+nm.getServicesFormated()+" "+StandardCharsets.UTF_8);
-			} catch (Exception e) {
-				e.printStackTrace();
+			} 
+			catch (Exception e) {
+				auxx.logsevere("getting networkserveices failed", e);
 			}
-			System.out.println("Server running");			
-		} catch (IOException e) {
-			gui.addMessageIn(e.getMessage());
+			
+			auxx.loginfo("new TCPSocket created");
+		} 
+		catch (IOException e) {
+			stopServer();
+			auxx.logsevere("creating serversocket failed :" + e.getMessage());			
 		}		
 	}
 	
-	private void stopServer()  throws IOException{
-		connector.kill();
-		tcpSocket.close();	
+	private void stopServer(){
+		dataManager.notifyAll(NetworkMessages.disconnectedMsg("server "+ Config.GROUP_NAME + " says : byebye, and thanks for all the fish"));
+		if (connector != null) connector.kill();
+		if (TCPServerSocket != null)
+			try {
+				TCPServerSocket.close();
+			} catch (IOException e) {
+				auxx.logsevere("destroying serversocket failed ", e);
+			}	
 		run = false;
 		
-		System.out.println("Serverservices closed");
+		auxx.loginfo("Server will bu shutdown run == false");
 	}
 	
 	private void setListener(){
-		gui.startService.setOnAction(new EventHandler<ActionEvent>() {
+		gui.button0.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            	//try {            	
-	            	sayHello();
-           // 	}
-//            	catch(IOException e){
-//            		System.out.println(e.getMessage());
-//            	}            		               
+	            sayHello();               
             }
         });	
 		
@@ -118,7 +129,7 @@ public class Server {
 		          try {		        	   
 		               Platform.exit();
 		               System.exit(0);
-		               System.out.println("Terminated");  
+		               auxx.loginfo("SERVER Window closed");
 		          } 
 		          catch (Exception e1) {
 		               e1.printStackTrace();

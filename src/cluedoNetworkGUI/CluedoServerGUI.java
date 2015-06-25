@@ -2,8 +2,7 @@ package cluedoNetworkGUI;
 
 
 
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
@@ -14,17 +13,19 @@ import javafx.stage.Stage;
 import staticClasses.Config;
  
 public class CluedoServerGUI extends CluedoNetworkGUI {
-	
-	Button sendHandshake;
-	
+	 
 	 public CluedoServerGUI(Stage s){
 		 super(s);
-		 setStartServiceButtonLabel("StartServer");	
-		 sendHandshake = new Button("sendhandshake");
-		 startUp();	 
+		 
 		 width = Config.SERVER_WINDOW_WIDTH;
 		 height = Config.SERVER_WINDOW_HEIGHT;
 		 
+		 setStylesheet("cluedoNetworkGUI/networkStyle.css");
+
+		 setStartServiceButtonLabel("sendhandshake");	
+		 startUp();	 
+		 setStageWidth(width);
+		 setStageHeight(height);
 	}
     
     @Override
@@ -35,16 +36,16 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
 	    
 	    ColumnConstraints col0 = new ColumnConstraints();
 	    col0.setHgrow(Priority.ALWAYS);
-	    col0.setPercentWidth(20);
+	    col0.setPercentWidth(40);
 	    grid.getColumnConstraints().add(col0);
 	    
 	    ColumnConstraints col1 = new ColumnConstraints();
 	    col1.setHgrow(Priority.ALWAYS);
-	    col1.setPercentWidth(80);
+	    col1.setPercentWidth(60);
 	    grid.getColumnConstraints().add(col1);
 	    
 	    RowConstraints row0 = new RowConstraints();
-	    row0.setPercentHeight(5);        
+	    row0.setPrefHeight(30);       
 	    grid.getRowConstraints().add(row0);
 	    
 	    RowConstraints row1 = new RowConstraints();
@@ -71,27 +72,38 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
 	    messagesOut.setWrapText(true);
 		messagesIn.setEditable(false);
 		messagesOut.setEditable(false);
-
-
-	    
+        
+        Tab tab0 = new Tab();
+        tab0.setText("Spiele");           
+        tab0.setContent(gameListView);
+        
+        
+        Tab tab1 = new Tab();
+        tab1.setText("Clients");           
+        tab1.setContent(networkActorsListView);
+        
+        tabPane.getTabs().add(tab1);
+        tabPane.getTabs().add(tab0);    
 	    
 	    Text title = new Text(desc);
 	    title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 	    status.setFont(Font.font("Tahoma", FontWeight.NORMAL, 10));
 	    
 	   //grid.add(node,				col,row,colspan,rowspan)
-	    grid.add(title, 			0, 0, 2, 1);
-	    grid.add(startService, 		0, 1);
-	    grid.add(ipListView, 		0, 2, 2, 4);
-	    
-	    grid.add(status, 			1, 1);
+	    grid.add(menue, 			0, 0, 2, 1);
+	    grid.add(tabPane, 			0, 2, 2, 4);
 	    grid.add(inLabel, 			1, 2, 1, 1);
 	    grid.add(messagesIn, 		1, 3, 1, 1);
 	    grid.add(outLabel, 			1, 4, 1, 1);
 	    grid.add(messagesOut, 		1, 5, 1, 1);
 	   
 	
-	    primaryStage.setScene(new Scene(grid, width, height));
+	    primaryStage.setScene(scene);
 	    primaryStage.show();
-      }  
+     }   
+    
+	void setAdditionalListener(){
+			  
+		  
+	  }
 }

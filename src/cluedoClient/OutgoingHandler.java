@@ -1,22 +1,25 @@
 package cluedoClient;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.logging.Level;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import staticClasses.Config;
 import staticClasses.NetworkMessages;
+import staticClasses.auxx;
 import cluedoNetworkGUI.CluedoClientGUI;
+import cluedoNetworkGUI.DataGuiManagerClient;
+import cluedoNetworkGUI.GameVBox;
+import cluedoNetworkLayer.CluedoGameClient;
+import cluedoNetworkLayer.CluedoPlayer;
 
 
 /**
@@ -26,33 +29,29 @@ import cluedoNetworkGUI.CluedoClientGUI;
 
 class OutgoingHandler implements Runnable{
 	
-	Socket cSocket;
-	CluedoClientGUI gui;
-	String serverName;
-	
+	DataGuiManagerClient dataGuiManager;	
 	boolean run;
 	
-	public OutgoingHandler(Socket cs,CluedoClientGUI g,String sName,boolean run) {
-		cSocket = cs;
-		gui = g;
-		serverName = sName;
+	public OutgoingHandler(CluedoClientGUI gui,ServerItem server, boolean run) {
 		this.run = run;
-		login();
-		addClientGUIListener();
+		dataGuiManager = new DataGuiManagerClient(gui, server);		
+		
+		addClientGUIListener(dataGuiManager.getGui());
+	
 	}
 	
-	public void addClientGUIListener(){
+	public void addClientGUIListener(CluedoClientGUI gui){
 		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
 			@Override
 			public void handle(KeyEvent e) {
 			        if (e.getCode() == KeyCode.ENTER){
-			        	sendMsg(gui.inputField.getText());	
+			        	sendInputFieldTextContent(dataGuiManager.getGui());
 						gui.inputField.setText("");
 						e.consume();
 			        }
 			    }
 			};	
-		gui.inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
+		dataGuiManager.getGui().inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
 		    @Override
 		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
 		    	if (hasFocus){ 
@@ -67,38 +66,96 @@ class OutgoingHandler implements Runnable{
 		gui.submitMessageButton.setOnAction(new EventHandler<ActionEvent>() {				
 			@Override
 			public void handle(ActionEvent event) {
-				sendMsg(NetworkMessages.chat_to_serverMsg(gui.inputField.getText(), LocalDateTime.now().toString()));	
-				gui.inputField.setText("");				
+				sendInputFieldTextContent(gui);		
 			}
 		});	
+		
+		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            		createGame(auxx.getRandomPerson());	               
+            }
+        });	
+		
+		gui.refreshGamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent click) {
+		       dataGuiManager.refreshGamesList();
+		    }
+		});	
+		
+		dataGuiManager.getGui().getGamesListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent click) {
+		        if (click.getClickCount() == 2) {
+		        	int gameID = gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID();
+		        	CluedoGameClient game = dataGuiManager.getGameByID(gameID);
+		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART && 	game.hasNick(dataGuiManager.getServer().getMyNick())){
+		        		startGame(gameID);
+		        	}
+		        	else {
+		        		ArrayList<CluedoPlayer> plist = dataGuiManager.getServer().getGameByGameID(gameID).getPlayersConnected();
+			        	//TODO 
+			        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
+		        	}		        	
+		        }
+		    }
+		});			
 	}
 	
-	private final boolean login(){
-		String[] loginData = gui.loginPrompt("Login to Server: " +serverName);
-		String msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
-		sendMsg(msg);
-		
-		return true;
-		
+	void selectGame(SelectionModel<GameVBox> g, String color) {
+		int gameID = g.getSelectedItem().getGameID();		
+		auxx.sendTCPMsg(
+				dataGuiManager.getServer().getSocket(),
+				NetworkMessages.join_gameMsg(
+						color,
+						gameID)
+				);
 	}
+	
+	void startGame(int gameID){
+		auxx.sendTCPMsg(dataGuiManager.getServer().getSocket(), NetworkMessages.start_gameMsg(gameID));
+	}
+	
+	
+	private void sendInputFieldTextContent(CluedoClientGUI gui){
+		auxx.sendTCPMsg(
+				dataGuiManager.getServer().getSocket(),
+				NetworkMessages.chat_to_serverMsg(
+						gui.inputField.getText(), 
+						LocalDateTime.now().toString() // 2015-04-08T15:16:23.42
+						)
+				);
+				
+		gui.inputField.setText("");
+	}
+	
+//	void selectGame(SelectionModel<GameVBox> g) {
+//		int gameID = g.getSelectedItem().getGameID();
+//		Methods.sendTCPMsg(
+//				dataGuiManager.getServer().getSocket(),
+//				NetworkMessages.join_gameMsg(
+//						Methods.getRandomPerson(),
+//						gameID)
+//				);
+//	}
+	
+	void createGame(String color){
+		auxx.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.create_gameMsg(color));
+	}
+	
 	
 	@Override
 	public void run(){
-		Platform.runLater(() -> {
-			
-		});		
+		while (run){
+			try {
+				Thread.sleep(Config.SECOND);
+			} catch (InterruptedException e) {
+				auxx.log.log(Level.SEVERE,e.getMessage());
+			}
+		}
+		auxx.log.log(Level.INFO,"CLIENT OutgoingHandlerThread running out");
 	}
 	
-	private void sendMsg(String msg){
-		try {
-			PrintWriter out = new PrintWriter(
-					   new BufferedWriter(new OutputStreamWriter(
-					        cSocket.getOutputStream(), StandardCharsets.UTF_8)), true);
-			 out.print(msg);
-			 out.flush();	
-		}
-		catch (IOException e){
-			gui.setStatus(e.getMessage());
-		}			
-	}		
+	
 }

@@ -4,93 +4,68 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import staticClasses.Config;
+import staticClasses.auxx;
 import staticClasses.NetworkMessages;
-import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkGUI.DataGuiManagerServer;
 
 
 class Connector extends Thread{	
 	
-	final CluedoServerGUI gui;
 	private ServerSocket serverSocket;
+	DataManagerServer dataManger;
+	DataGuiManagerServer dataGuiManager;
+	boolean run = true;	
 	
-	ArrayList<ClientItem> clientList;
-	ArrayList<ClientItem> blackList;
-	boolean running = true;	
 	
-	
-	Connector (ServerSocket ss, CluedoServerGUI g,ArrayList<ClientItem> cList,ArrayList<ClientItem> bList) {
-		gui = g;
+	Connector (ServerSocket ss, DataManagerServer datam, DataGuiManagerServer dgm) {
 		serverSocket = ss;
-		clientList = cList;
-		blackList = bList;
+		dataManger = datam;
+		dataGuiManager = dgm;
 	}
 	
 	@Override
 	public void run(){
 		try {			
-			while (running){
+			while (run){
 				Socket clientSocket = serverSocket.accept();
-				if (!checkForExistingIp(clientSocket.getInetAddress())){
-					if (isBlacklisted(clientSocket.getInetAddress()))
-						sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
-					Thread newCommunicationThread = new Thread(new CommunicationHandler(
-							serverSocket, new ClientItem(clientSocket), gui,clientList,blackList));
+//				if (!dataManger.checkIpExists(clientSocket.getInetAddress())){
+					if (dataManger.isBlacklisted(clientSocket.getInetAddress()))
+						//sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
+						auxx.sendTCPMsg(clientSocket, NetworkMessages.error_Msg(Config.BLACKLISTED_MSG));
+					Thread newCommunicationThread = 
+							new Thread(
+									new CommunicationHandler(
+											new ClientItem(clientSocket),
+											dataManger,
+											dataGuiManager)
+									);
 					newCommunicationThread.start();	
-				}
-				else {
-					sendMsg(NetworkMessages.error_Msg("already connected"), clientSocket);
-					clientSocket.close();
-				}
-					 		
+//				}
+//				else {
+//					sendMsg(NetworkMessages.error_Msg("already connected"), clientSocket);
+//					clientSocket.close();
+//				}					 		
 			}					
 		}
 		catch(IOException e){
-			gui.setStatus(e.getMessage());
+			//gui.setStatus(e.getMessage());
+			dataGuiManager.addMsgIn("connector says :fuck "+e.getMessage());
 			System.out.println(e.getMessage());
 		}
 		finally {
-			System.out.println("thread runningflag: "+running+"");
-			notifyAllClients("CLOSE");
+			System.out.println("thread runningflag: "+run+"");
+			kill();
 		}		
 	}
 	
-	public void notifyAllClients(String msg){
-		for (int i = 0;i < clientList.size();i++)
-			clientList.get(i).sendMsg(msg);
-		
-	}
 	
-	public void notifyAllClientsButSender(String msg,ClientItem c){
-		for (int i = 0;i < clientList.size(); i++)
-			if (c.id != clientList.get(i).id) 
-				clientList.get(i).sendMsg(msg);
-		
-	}
 	
-	public void notifyClient(String msg,ClientItem c){
-		for (int i = 0;i < clientList.size();i++)
-			if (c.id == clientList.get(i).id) 
-				clientList.get(i).sendMsg(msg);
-	}
 	
-	private boolean checkForExistingIp(InetAddress adress){
-		for (ClientItem c : clientList)
-			if (adress.equals(c.getAdress())) return true;
-		return false;
-	}
-	
-	boolean isBlacklisted(InetAddress adress){
-		for (ClientItem c : blackList)
-			if (adress.equals(c.getAdress())) return true;
-		return false;
-	}
 	
 	public static void sendMsg(String msg,Socket socket){
 		try {
@@ -110,7 +85,7 @@ class Connector extends Thread{
 	 * wird vom server aufgerufen zum höflichen schliessen der laufenden verbindungen
 	 */
 	public void kill(){
-		running = false;
+		run = false;
 		System.out.println("networkthread killed");
 	}
 }

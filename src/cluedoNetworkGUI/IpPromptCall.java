@@ -11,7 +11,7 @@ public class IpPromptCall implements Callable<String> {
 	public String call() throws Exception {
     	Stage ipPrompt = new Stage();
     	IpPromptGrid ipr = new IpPromptGrid(ipPrompt);
-		Scene secondary = new Scene(ipr,200,200);		
+		Scene secondary = new Scene(ipr,300,300);		
 		ipPrompt.setScene(secondary);
 		ipPrompt.showAndWait();	
 		
