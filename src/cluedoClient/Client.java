@@ -34,7 +34,7 @@ public class Client {
 	CluedoClientGUI gui;
 	ServerPool serverList;
 	DataGuiManagerClientSpool dataGuiManager;
-	boolean run;
+	boolean globalRun;
 		
 	public Client(CluedoClientGUI g) {
 		gui = g;
@@ -42,7 +42,7 @@ public class Client {
 		dataGuiManager = new DataGuiManagerClientSpool(gui, serverList);
 		dataGuiManager.setWindowName(Config.GROUP_NAME+ " Client");
 		
-		run = true;
+		globalRun = true;
 		setCloseHandler();
 		listenForServersThread();
 		sayHello();
@@ -61,7 +61,7 @@ public class Client {
 		String answer = NetworkMessages.udp_clientMsg(Config.GROUP_NAME);
 		ServerHandShakeListener cl = 
 				new ServerHandShakeListener(
-						dataGuiManager,answer,"udp server",Config.BROADCAST_PORT,this,run);
+						dataGuiManager,answer,"udp server",Config.BROADCAST_PORT,this,globalRun);
 		cl.start();
 	}
 	
@@ -70,20 +70,20 @@ public class Client {
 	 * 
 	 */
 	public void startTCPConnection(ServerItem server){	
-		try {				
+		boolean localRun = true;
+		try {	
 			server.setSocket(new Socket(server.getIp(),server.getPort()));
 			dataGuiManager.addServer(server,"not logged in");
-			Thread t1 = new Thread(new IncomingHandler(gui,server,run));
+			Thread t1 = new Thread(new IncomingHandler(dataGuiManager,server,globalRun,localRun));
 			t1.start();
-			Thread t2 = new Thread(new OutgoingHandler(gui,server,run));
+			Thread t2 = new Thread(new OutgoingHandler(dataGuiManager,server,globalRun,localRun));
 			t2.start();
 						
 		}
 		catch (IOException e){
 			 auxx.logsevere("TCP server connection failed",e);
-			dataGuiManager.removeServer("",server);
-			run = false;
-			
+			dataGuiManager.removeServer(server);
+			localRun = false;
 		}
 		finally {}	
 	}	
@@ -112,10 +112,9 @@ public class Client {
 		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		      @Override
 			public void handle(WindowEvent e){
-		          
 		          try {
-		        	   run = false;
-		        	   dataGuiManager.sayGoodbye(NetworkMessages.disconnectMsg());
+		        	  dataGuiManager.sayGoodbye(NetworkMessages.disconnectMsg());
+		        	   globalRun = false;
 		        	   auxx.log.log(Level.INFO,"CLIENT CLOSED");
 		               Platform.exit();
 		               System.exit(0);	               
@@ -149,10 +148,10 @@ public class Client {
 				if (server.getSocket() == null)	startTCPConnection(server);
 					
 				if (!auxx.login(dataGuiManager.getGui(), server))	
-					dataGuiManager.removeServer("TCP server connection gone",server);							
+					dataGuiManager.removeServer(server);							
 			}
 			else if (server.getStatus() == ServerStatus.connected){
-				dataGuiManager.refreshGamesListByServer(server);
+				dataGuiManager.refreshGamesListServer(server);
 			}
 		}
 		catch (Exception e){

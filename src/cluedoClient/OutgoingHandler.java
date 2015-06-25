@@ -17,6 +17,7 @@ import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClient;
+import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkGUI.GameVBox;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -29,13 +30,16 @@ import cluedoNetworkLayer.CluedoPlayer;
 
 class OutgoingHandler implements Runnable{
 	
-	DataGuiManagerClient dataGuiManager;	
-	boolean run;
+	DataGuiManagerClientSpool dataGuiManager;	
+	ServerItem server;
+	boolean localRun;
+	boolean globalRun;
 	
-	public OutgoingHandler(CluedoClientGUI gui,ServerItem server, boolean run) {
-		this.run = run;
-		dataGuiManager = new DataGuiManagerClient(gui, server);		
-		
+	public OutgoingHandler(DataGuiManagerClientSpool dataGuiManager,ServerItem server,boolean globalRun, boolean localRun) {
+		this.localRun = localRun;
+		this.globalRun = globalRun;
+		this.dataGuiManager = dataGuiManager;
+		this.server = server;
 		addClientGUIListener(dataGuiManager.getGui());
 	
 	}
@@ -80,7 +84,7 @@ class OutgoingHandler implements Runnable{
 		gui.refreshGamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent click) {
-		       dataGuiManager.refreshGamesList();
+		       dataGuiManager.refreshGamesListServer(server);
 		    }
 		});	
 		
@@ -89,12 +93,12 @@ class OutgoingHandler implements Runnable{
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
 		        	int gameID = gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID();
-		        	CluedoGameClient game = dataGuiManager.getGameByID(gameID);
-		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART && 	game.hasNick(dataGuiManager.getServer().getMyNick())){
+		        	CluedoGameClient game = server.getGameByGameID(gameID);
+		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART && 	game.hasNick(server.getMyNick())){
 		        		startGame(gameID);
 		        	}
 		        	else {
-		        		ArrayList<CluedoPlayer> plist = dataGuiManager.getServer().getGameByGameID(gameID).getPlayersConnected();
+		        		ArrayList<CluedoPlayer> plist = server.getGameByGameID(gameID).getPlayersConnected();
 			        	//TODO 
 			        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
 		        	}		        	
@@ -106,7 +110,7 @@ class OutgoingHandler implements Runnable{
 	void selectGame(SelectionModel<GameVBox> g, String color) {
 		int gameID = g.getSelectedItem().getGameID();		
 		auxx.sendTCPMsg(
-				dataGuiManager.getServer().getSocket(),
+				server.getSocket(),
 				NetworkMessages.join_gameMsg(
 						color,
 						gameID)
@@ -114,13 +118,13 @@ class OutgoingHandler implements Runnable{
 	}
 	
 	void startGame(int gameID){
-		auxx.sendTCPMsg(dataGuiManager.getServer().getSocket(), NetworkMessages.start_gameMsg(gameID));
+		auxx.sendTCPMsg(server.getSocket(), NetworkMessages.start_gameMsg(gameID));
 	}
 	
 	
 	private void sendInputFieldTextContent(CluedoClientGUI gui){
 		auxx.sendTCPMsg(
-				dataGuiManager.getServer().getSocket(),
+				server.getSocket(),
 				NetworkMessages.chat_to_serverMsg(
 						gui.inputField.getText(), 
 						LocalDateTime.now().toString() // 2015-04-08T15:16:23.42
@@ -141,15 +145,15 @@ class OutgoingHandler implements Runnable{
 //	}
 	
 	void createGame(String color){
-		auxx.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.create_gameMsg(color));
+		auxx.sendTCPMsg(server.getSocket(),NetworkMessages.create_gameMsg(color));
 	}
 	
 	
 	@Override
 	public void run(){
-		while (run){
+		while (localRun && globalRun){
 			try {
-				Thread.sleep(Config.SECOND);
+				Thread.sleep(Config.SECOND*10);
 			} catch (InterruptedException e) {
 				auxx.log.log(Level.SEVERE,e.getMessage());
 			}
