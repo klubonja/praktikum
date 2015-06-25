@@ -114,7 +114,7 @@ class OutgoingHandler implements Runnable{
 		        	else {
 		        		ArrayList<CluedoPlayer> plist = server.getGameByGameID(gameID).getPlayersConnected();
 			        	//TODO 
-			        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
+			        	selectGame(game, gui.selectColor());		
 		        	}	
 		        	auxx.loginfo("clicking on game on: "+serverip+" groupname : "+servername);
 		        }
@@ -122,13 +122,12 @@ class OutgoingHandler implements Runnable{
 		});			
 	}
 	
-	void selectGame(SelectionModel<GameVBox> g, String color) {
-		int gameID = g.getSelectedItem().getGameID();		
+	void selectGame(CluedoGameClient game, String color) {	
 		auxx.sendTCPMsg(
-				server.getSocket(),
+				game.getServer().getSocket(),
 				NetworkMessages.join_gameMsg(
 						color,
-						gameID)
+						game.getGameId())
 				);
 	}
 	
