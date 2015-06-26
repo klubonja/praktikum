@@ -156,18 +156,7 @@ public abstract class CluedoNetworkGUI {
 			for (GameVBox p: games)
 	       		if (p.getGameID() == gameID) return;
 			
-			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info,servername,serverip);
-			switch (state) {
-			case started:
-				gamelistitem.setRunningGame();
-				break;
-			case ended:
-				gamelistitem.setEndedGame();
-				break;
-
-			default:
-				break;
-			}
+			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info,servername,serverip,state);
 			gamelistitem.setPrefHeight(Config.GAME_LIST_ITEM_HEIGHT);		
 			games.add(gamelistitem);	
 	  }

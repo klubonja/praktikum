@@ -48,8 +48,7 @@ public abstract class auxx {
 	}
 	
 	public static ArrayList<String> makeConjunction(String[] sa1,JSONArray sa2JSON){
-		ArrayList<String> res = new ArrayList<String>();
-		
+		ArrayList<String> res = new ArrayList<String>();		
 		for (String s1 : sa1)
 			for (Object s2o : sa2JSON)
 				if (s1.equals(s2o.toString()))
@@ -135,5 +134,10 @@ public abstract class auxx {
 			list.add(jsonarray.getString(i));
 		
 		return list;
+	}
+	
+	public static int getRandInt(int min,int max){
+		Random rint = new Random();		
+		return rint.nextInt(max-min + 1)+min;				
 	}
 }

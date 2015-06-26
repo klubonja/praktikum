@@ -1,6 +1,7 @@
 package cluedoServer;
 
 import java.io.IOException;
+import java.net.SocketException;
 
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
@@ -173,13 +174,8 @@ class CommunicationHandler implements Runnable{
 		       dataGuiManager.addMsgIn(message);
 
 			}
-			catch (Exception e){
-				try {
-					closeProtokollConnection("closing :"+e.getMessage());
-				}
-				catch (IOException ex){
-					dataGuiManager.addMsgIn(ex.getMessage());
-				}				
+			catch (Exception e ){				
+				closeProtokollConnection("closing :"+e.getMessage());			
 			}
 		}
 		
@@ -198,7 +194,7 @@ class CommunicationHandler implements Runnable{
 				);
 	}
 	
-	private void closeProtokollConnection(String msg) throws IOException{
+	private void closeProtokollConnection(String msg) {
 		 //client.sendMsg(NetworkMessages.disconnectedMsg("bye " +client.getNick()));
 		 if (dataGuiManager.removeClient(client)){
   		   dataManager.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));

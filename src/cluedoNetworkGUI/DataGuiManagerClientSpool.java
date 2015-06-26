@@ -32,6 +32,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void setSelectedServer(ServerItem selectedServer) {
 		this.selectedServer = selectedServer;
+		setWindowName("selected : "+selectedServer.getGroupName());
 	}
 	
 	public ServerItem getSelectedServer() {
@@ -104,6 +105,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		if (serverPool.add(server)){
 			addMsgIn("opened TCPSocket to "+server.getGroupName()+" on : "+ server.getIpString());
 			addNetworkActorToGui(server.getGroupName(),server.getIpString(),status);
+			setSelectedServer(server);
 			return true;
 		}
 		

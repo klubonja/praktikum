@@ -6,7 +6,7 @@ import java.net.InetAddress;
 
 import staticClasses.Config;
 import staticClasses.auxx;
-import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoNetworkGUI.DataGuiManagerServer;
 
 
 public class BroadcastServerThread extends Thread {
@@ -20,15 +20,15 @@ public class BroadcastServerThread extends Thread {
 	InetAddress groupAdress;
 	int port;
 	
-	CluedoServerGUI gui;
+	DataGuiManagerServer dataGuiManager;
 	
 	String broadcastMessage;
 	
 	
-	public BroadcastServerThread(String name,String targetIp,String msg,CluedoServerGUI g) {
+	public BroadcastServerThread(String name,String targetIp,String msg,DataGuiManagerServer dgm) {
 		super(name);
 		try {
-			gui = g;
+			dataGuiManager = dgm;
 			groupAdress = InetAddress.getByName(targetIp);
 			port = Config.BROADCAST_PORT;
 			broadcastMessage = msg;
@@ -55,7 +55,7 @@ public class BroadcastServerThread extends Thread {
 			}
 			finally {
 				try {
-					gui.addMessageOut("Sending UDPMessage :"+broadcastMessage);
+					auxx.loginfo("sending Broadcast ");
 					sleep(Config.SECOND*Config.BROADCAST_INTERVAL);
 					
 				} catch (InterruptedException e2) {

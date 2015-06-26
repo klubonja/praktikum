@@ -1,5 +1,6 @@
 package cluedoNetworkGUI;
 
+import enums.GameStates;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,7 +18,7 @@ public class GameVBox extends VBox{
 	String serverName;
 	Button startGame;
 	
-	public GameVBox(int gameid,String label, String info,String servername,String serverIp) {
+	public GameVBox(int gameid,String label, String info,String servername,String serverIp,GameStates state) {
 		super();	
 		gameLabelStringProp = new SimpleStringProperty(label+" :"+gameid);
 		gameInfoStringProp = new SimpleStringProperty(info);
@@ -46,7 +47,14 @@ public class GameVBox extends VBox{
 //		hb.getChildren().add(startGame);
 //		hb.setAlignment(Pos.CENTER_RIGHT);
 //		hb.visibleProperty().bind(visibilityProp);
-		
+		switch (state) {
+			case started :
+				setRunningGame();
+				break;
+			case ended :
+				setRunningGame();
+				break;
+		}
 		getChildren().addAll(gameLabel,gameInfo);
 	}
 	

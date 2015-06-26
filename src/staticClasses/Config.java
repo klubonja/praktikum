@@ -32,7 +32,8 @@ public abstract class Config {
 	public final static int MESSAGE_BUFFER = 4096*2;
 	
 	
-	public final static int TCP_PORT = 1200;	
+	//public final static int TCP_PORT = 1200;	
+	public final static int TCP_PORT = auxx.getRandInt(1025,49151);	
 	
 	public final static String[] EXPANSIONS= {"Chat","Pumping Oil in the Antarctica, fuck yeah!"};
 	

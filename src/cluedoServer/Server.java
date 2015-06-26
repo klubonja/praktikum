@@ -60,7 +60,7 @@ public class Server {
 		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, dataGuiManager, msg);
 		bc.sendBrodcast();	
 		BroadcastServerThread permanentBroadcaster = new BroadcastServerThread(
-				Config.GROUP_NAME, Config.BROADCAST_WILDCARD_IP, msg, dataGuiManager.getGui());
+				Config.GROUP_NAME, Config.BROADCAST_WILDCARD_IP, msg, dataGuiManager);
 		permanentBroadcaster.start();
 	}
 	
