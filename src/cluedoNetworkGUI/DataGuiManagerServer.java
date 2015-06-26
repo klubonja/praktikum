@@ -3,6 +3,7 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
+import staticClasses.aux;
 import javafx.application.Platform;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoServer.ClientItem;
@@ -42,8 +43,11 @@ public class DataGuiManagerServer extends DataGuiManager {
 	public boolean startGameByID(int gameID, String nick){
 		if (dataManager.startGameByID(gameID,nick)){
 			setRunningGame(gameID);
+			
 			return true;
+			
 		}
+		
 		return false;
 	}
 	
