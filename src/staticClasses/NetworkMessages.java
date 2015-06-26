@@ -1,6 +1,7 @@
 package staticClasses;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import json.CluedoJSON;
 
@@ -404,7 +405,6 @@ public abstract class NetworkMessages {
 					p.getState().getName()
 				)
 			);
-			System.out.println(game.getGameId()+"id : playernick"+p.getNick());
 			perspossJSON.put(
 				NetworkMessages.player_pos(
 					p.getCluedoPerson().getColor(), 
@@ -453,7 +453,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String login_sucMsg(ArrayList<String> expansions, ArrayList<ClientItem> clientList, ArrayList<CluedoGameServer> gameList ){
+	public static String login_sucMsg(ArrayList<String> expansions, ArrayList<ClientItem> clientList, Vector<CluedoGameServer> gameList ){
 		JSONArray nickArray = new JSONArray();
 		JSONArray gameArray = new JSONArray();
 		JSONArray expansionsJSON = new JSONArray();

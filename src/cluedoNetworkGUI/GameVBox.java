@@ -1,6 +1,5 @@
 package cluedoNetworkGUI;
 
-import enums.GameStates;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -8,6 +7,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import enums.GameStates;
 
 public class GameVBox extends VBox{
 	int gameID;
@@ -96,7 +96,7 @@ public class GameVBox extends VBox{
 	}
 	
 	public void setEndedGame() {
-		setStyle("-fx-text-fill:#fffff; "
+		setStyle("-fx-text-fill:#ffffff; "
 				+ "-fx-background-color: red;");
 	}
 	

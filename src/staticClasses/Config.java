@@ -22,7 +22,7 @@ public abstract class Config {
 	
 	public final static long SECOND = 1000;//millis
 	
-	public final static int BROADCAST_INTERVAL = 3;//SECONDS
+	public final static int BROADCAST_INTERVAL = 10;//SECONDS
 	
 	
 	public final static int BROADCAST_PORT = 30303;

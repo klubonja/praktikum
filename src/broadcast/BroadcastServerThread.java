@@ -55,7 +55,7 @@ public class BroadcastServerThread extends Thread {
 			}
 			finally {
 				try {
-					auxx.loginfo("sending Broadcast ");
+					auxx.logfine("sending Broadcast ");
 					sleep(Config.SECOND*Config.BROADCAST_INTERVAL);
 					
 				} catch (InterruptedException e2) {

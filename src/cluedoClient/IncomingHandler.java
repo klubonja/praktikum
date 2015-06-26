@@ -80,12 +80,15 @@ class IncomingHandler implements Runnable {
 		        		  killConnection();
 					}
 					else {
-						dataGuiManager.addMsgIn("UNHANDLED TYPE : "+checker.getMessage().toString());
+						auxx.loginfo("INCOMING unchecked type: "+checker.getType());
 					}
 				}		
 				else {
-					dataGuiManager.addMsgIn(checker.getErrString());
+					auxx.loginfo("INCOMING invalid : "+checker.getErrString());
 				}
+				
+				auxx.loginfo("INCOMING anyway:  "+checker.getMessage().toString());
+				
 			}			
 			catch (Exception e){
 				killConnection();

@@ -2,7 +2,6 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
-import staticClasses.Config;
 import staticClasses.auxx;
 import enums.GameStates;
 import enums.Persons;
@@ -119,10 +118,8 @@ public class CluedoGame {
 			if (cp.getNick().equals(nick)){
 				cp.setNick("");
 				if (gameState == GameStates.started) gameState = GameStates.ended;
-				if (getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART) setGameState(GameStates.not_started);
-				
-
-				auxx.loginfo(nick +" removed from Game " +getGameId()+" Gamestate is now : "+gameState.getName());
+				//if (getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART && gameState != GameStates.ended) setGameState(GameStates.not_started);
+				auxx.loginfo(nick +" removed from Game " +getGameId()+" Gamestate is now : " + gameState.getName());
 				return true;
 			}
 		}		

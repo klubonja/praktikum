@@ -1,8 +1,5 @@
 package cluedoServer;
 
-import java.io.IOException;
-import java.net.SocketException;
-
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
@@ -89,15 +86,12 @@ class CommunicationHandler implements Runnable{
 					client.closingConnection(dataManager.getGroupName()+" is closing connection");
 					dataManager.blacklist(client);					
 					killThread();
-					
 				}
 				
-				else {
-					dataGuiManager.addMsgIn("unhandled incoming : \n" + message);
-				}
+				auxx.loginfo("login attempt :"+ checker.getMessage().toString());				
 			} 
 			catch (Exception e) {
-				e.printStackTrace();
+				auxx.logsevere("communcitationhandler of client"+ client.getNick(), e);
 			}
 		}	
 	}
@@ -111,13 +105,7 @@ class CommunicationHandler implements Runnable{
 	           
 	           CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
 	           checker.validate();
-	           if (!checker.isValid()){
-	        	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()+ " \n "
-	        	   		+ "bye "+client.getNick()+" and "+client.getGroupName()+" is a shitty group"));
-	        	   client.sendMsg(NetworkMessages.disconnectMsg());
-	        	   dataGuiManager.removeClient(client);
-	           }
-	           else {
+	           if (checker.isValid()){
 	        	   if (checker.getType().equals("create game")){													//CREATE GAME
 	        		   createGame(checker.getMessage().getString("color"),client);
 	        	   }
@@ -155,13 +143,12 @@ class CommunicationHandler implements Runnable{
 	        		   else {
 	        			   client.sendMsg(NetworkMessages.error_Msg("you cant start this game"));
 	        		   }
-	        	   }
-	        	   
-	        	   if (checker.getType().equals("leave game")){													//CREATE GAME
+	        	   }	        	   
+	        	   else  if (checker.getType().equals("leave game")){													//CREATE GAME
 	        		   dataGuiManager.removePlayerfromGame(client, checker.getMessage().getInt("gameID"));
 	        	   }
 	        	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
-	        		  closeProtokollConnection("");
+	        		  closeProtokollConnection();
 	        	   }
 	        	  
 	        	   else if (checker.getType().equals("chat")) {														//CHAT
@@ -169,13 +156,21 @@ class CommunicationHandler implements Runnable{
 	        		   String ts = checker.getMessage().getString("timestamp");
 	        		   dataManager.notifyAll(NetworkMessages.chat_to_clientMsg(msg , ts, client.getNick()));
 		           }	        	   
-	           }	
-	           //nur damit nichts unter den tisch fällt
-		       dataGuiManager.addMsgIn(message);
+	           }
+	           else {
+	        	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()+ " \n "
+		        	   		+ "bye "+client.getNick()+" and "+client.getGroupName()+" is a shitty group"));
+		        	   client.sendMsg(NetworkMessages.disconnectMsg());
+		        	   dataGuiManager.removeClient(client);
+		        	   auxx.loginfo("INCOMING INVALID : "+ checker.getErrString());
+	           }
+	           
+	           auxx.loginfo("INCOMING anyway : "+ checker.getMessage().toString());
 
 			}
-			catch (Exception e ){				
-				closeProtokollConnection("closing :"+e.getMessage());			
+			catch (Exception e ){	
+				auxx.logsevere("communicationhandler for client :"+ client.getNick()+ "running out", e);
+				closeProtokollConnection();			
 			}
 		}
 		
@@ -194,8 +189,7 @@ class CommunicationHandler implements Runnable{
 				);
 	}
 	
-	private void closeProtokollConnection(String msg) {
-		 //client.sendMsg(NetworkMessages.disconnectedMsg("bye " +client.getNick()));
+	private void closeProtokollConnection() {
 		 if (dataGuiManager.removeClient(client)){
   		   dataManager.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
   		   killThread();

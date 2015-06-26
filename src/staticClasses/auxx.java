@@ -26,6 +26,7 @@ public abstract class auxx {
 	public static final ConsoleHandler C_HANDLER = new ConsoleHandler();
 
 	public static final void setLoggingLevel(Level level){
+		log.setUseParentHandlers(false);
 		log.setLevel(level);
 		C_HANDLER.setLevel(level);
 		log.addHandler(C_HANDLER);
@@ -68,7 +69,7 @@ public abstract class auxx {
 			logfine("RECEIVED : "+ msg);
 			return msg;
 		} 
-		catch (IOException e) {
+		catch (Exception e) {
 			logsevere("RECEIVE failed : ", e);
 			return null;
 	    }		
