@@ -46,8 +46,7 @@ class CommunicationHandler implements Runnable{
 	}	
 	
 	private void awaitingLoginAttempt (){
-		System.out.println("awaiting");
-
+		auxx.logfine("awaiting login from client");
 		while (!readyForCommunication) { // will keep listening for valid login msg
 			try {
 				String message = auxx.getTCPMessage(client.getSocket()).trim();

@@ -6,6 +6,8 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import staticClasses.auxx;
+
 	
 /**
  * @author guldener
@@ -47,9 +49,9 @@ public final class NetworkInterfacesIpManager  {
 					}
 				}			
 			}
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} 
+		catch (SocketException e) {
+			auxx.logsevere("SERVER getting interfaces failed", e);
 		}
 	}
 	

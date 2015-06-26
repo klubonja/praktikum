@@ -159,8 +159,7 @@ class OutgoingHandler implements Runnable{
 	
 	void createGame(String color){
 		auxx.sendTCPMsg(dataGuiManager.getSelectedServer().getSocket(),NetworkMessages.create_gameMsg(color));
-	}
-	
+	}	
 	
 	@Override
 	public void run(){
@@ -172,7 +171,5 @@ class OutgoingHandler implements Runnable{
 			}
 		}
 		auxx.log.log(Level.INFO,"CLIENT OutgoingHandlerThread running out");
-	}
-	
-	
+	}	
 }

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
-import cluedoClient.ServerItem;
-import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoServer.ClientItem;
 import cluedoServer.DataManagerServer;
@@ -139,5 +137,10 @@ public class DataGuiManagerServer extends DataGuiManager {
 			  }					
 		 });
 	  }
+	
+	@Override
+	public CluedoServerGUI getGui(){
+		return getGui();
+	}
 	
 }
