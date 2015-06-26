@@ -113,7 +113,7 @@ public class Client {
 		      @Override
 			public void handle(WindowEvent e){
 		          try {
-		        	  dataGuiManager.sayGoodbye(NetworkMessages.disconnectMsg());
+		        	  dataGuiManager.sayGoodbye();
 		        	   globalRun = false;
 		        	   auxx.log.log(Level.INFO,"CLIENT CLOSED");
 		               Platform.exit();

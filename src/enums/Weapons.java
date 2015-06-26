@@ -1,5 +1,7 @@
 package enums;
 
+import java.util.ArrayList;
+
 public enum Weapons {
 	
 	dagger("dagger"),
@@ -27,4 +29,12 @@ public enum Weapons {
                 return true;
         return false;
     }
+	 
+	 public static ArrayList<String> getWeaponsString() {        
+	        Weapons[] weapons = Weapons.values();
+	        ArrayList<String> names = new ArrayList<String>();
+	        for (Weapons r: weapons)
+	        	names.add(r.getName());
+	        return names;
+	    }
 }
