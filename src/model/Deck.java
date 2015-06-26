@@ -139,7 +139,7 @@ public class Deck {
 	}
 	
 	public String choseRandom() {
-		if (deck.size() <= 0) return null;
+		if (deck.size() < 0) return null;
 		int index = auxx.getRandInt(0, deck.size()-1);
 		String card =  deck.get(index);
 		//auxx.loginfo(card);
