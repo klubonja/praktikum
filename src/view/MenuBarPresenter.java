@@ -25,8 +25,8 @@ public class MenuBarPresenter {
 	}
 	
 	public void activateEvents(){
-		view.quit.setOnAction(e -> exitGame());
-		view.main.setOnAction(e -> goToMain());
+		view.getQuit().setOnAction(e -> exitGame());
+		view.getMain().setOnAction(e -> goToMain());
 		
 	}
 	

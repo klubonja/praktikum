@@ -9,10 +9,10 @@ import javafx.scene.layout.StackPane;
 
 public class HandFrameView extends StackPane{
 	
-	ImageView firstCard;
-	ImageView secondCard;
-	ImageView thirdCard;
-	Label title;
+	private ImageView firstCard;
+	private ImageView secondCard;
+	private ImageView thirdCard;
+	private Label title;
 	
 	final Image img =
 		      new Image("http://vignette3.wikia.nocookie.net/ageofempires/images/2/23/Hades.jpg/revision/latest?cb=20110606234954");
@@ -40,6 +40,39 @@ public class HandFrameView extends StackPane{
 		this.getChildren().addAll(title, thirdCard, secondCard, firstCard);
 		
 		
+	}
+
+	//Getters and Setters
+	public ImageView getFirstCard() {
+		return firstCard;
+	}
+
+	public void setFirstCard(ImageView firstCard) {
+		this.firstCard = firstCard;
+	}
+
+	public ImageView getSecondCard() {
+		return secondCard;
+	}
+
+	public void setSecondCard(ImageView secondCard) {
+		this.secondCard = secondCard;
+	}
+
+	public ImageView getThirdCard() {
+		return thirdCard;
+	}
+
+	public void setThirdCard(ImageView thirdCard) {
+		this.thirdCard = thirdCard;
+	}
+
+	public Label getTitle() {
+		return title;
+	}
+
+	public void setTitle(Label title) {
+		this.title = title;
 	}
 	
 	

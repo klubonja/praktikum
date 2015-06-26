@@ -609,5 +609,231 @@ public class NotesPresenter {
 			
 		}
 	}
+	
+	
+    //Getters and Setters
+	public NotesView getView() {
+		return view;
+	}
+
+	public void setView(NotesView view) {
+		this.view = view;
+	}
+
+	public Stop[] getRedlist() {
+		return redlist;
+	}
+
+	public void setRedlist(Stop[] redlist) {
+		this.redlist = redlist;
+	}
+
+	public RadialGradient getRedGrad() {
+		return redGrad;
+	}
+
+	public void setRedGrad(RadialGradient redGrad) {
+		this.redGrad = redGrad;
+	}
+
+	public Stop[] getBluelist() {
+		return bluelist;
+	}
+
+	public void setBluelist(Stop[] bluelist) {
+		this.bluelist = bluelist;
+	}
+
+	public RadialGradient getBlueGrad() {
+		return blueGrad;
+	}
+
+	public void setBlueGrad(RadialGradient blueGrad) {
+		this.blueGrad = blueGrad;
+	}
+
+	public Stop[] getGreenlist() {
+		return greenlist;
+	}
+
+	public void setGreenlist(Stop[] greenlist) {
+		this.greenlist = greenlist;
+	}
+
+	public RadialGradient getGreenGrad() {
+		return greenGrad;
+	}
+
+	public void setGreenGrad(RadialGradient greenGrad) {
+		this.greenGrad = greenGrad;
+	}
+
+	public BackgroundFill getRedFill() {
+		return redFill;
+	}
+
+	public void setRedFill(BackgroundFill redFill) {
+		this.redFill = redFill;
+	}
+
+	public BackgroundFill getBlueFill() {
+		return blueFill;
+	}
+
+	public void setBlueFill(BackgroundFill blueFill) {
+		this.blueFill = blueFill;
+	}
+
+	public BackgroundFill getGreenFill() {
+		return greenFill;
+	}
+
+	public void setGreenFill(BackgroundFill greenFill) {
+		this.greenFill = greenFill;
+	}
+
+	public Background getRed() {
+		return red;
+	}
+
+	public void setRed(Background red) {
+		this.red = red;
+	}
+
+	public Background getBlue() {
+		return blue;
+	}
+
+	public void setBlue(Background blue) {
+		this.blue = blue;
+	}
+
+	public Background getGreen() {
+		return green;
+	}
+
+	public void setGreen(Background green) {
+		this.green = green;
+	}
+
+	public Background getDefaultButton() {
+		return defaultButton;
+	}
+
+	public void setDefaultButton(Background defaultButton) {
+		this.defaultButton = defaultButton;
+	}
+
+	public Border getDefaultBorder() {
+		return defaultBorder;
+	}
+
+	public void setDefaultBorder(Border defaultBorder) {
+		this.defaultBorder = defaultBorder;
+	}
+
+	public Background getDefaultTxt() {
+		return defaultTxt;
+	}
+
+	public void setDefaultTxt(Background defaultTxt) {
+		this.defaultTxt = defaultTxt;
+	}
+
+	public BorderStroke getRedStroke() {
+		return redStroke;
+	}
+
+	public void setRedStroke(BorderStroke redStroke) {
+		this.redStroke = redStroke;
+	}
+
+	public Border getRedBorder() {
+		return redBorder;
+	}
+
+	public void setRedBorder(Border redBorder) {
+		this.redBorder = redBorder;
+	}
+
+	public BorderStroke getBlueStroke() {
+		return blueStroke;
+	}
+
+	public void setBlueStroke(BorderStroke blueStroke) {
+		this.blueStroke = blueStroke;
+	}
+
+	public Border getBlueBorder() {
+		return blueBorder;
+	}
+
+	public void setBlueBorder(Border blueBorder) {
+		this.blueBorder = blueBorder;
+	}
+
+	public BorderStroke getGreenStroke() {
+		return greenStroke;
+	}
+
+	public void setGreenStroke(BorderStroke greenStroke) {
+		this.greenStroke = greenStroke;
+	}
+
+	public Border getGreenBorder() {
+		return greenBorder;
+	}
+
+	public void setGreenBorder(Border greenBorder) {
+		this.greenBorder = greenBorder;
+	}
+
+	public BackgroundFill getRedtxt() {
+		return redtxt;
+	}
+
+	public void setRedtxt(BackgroundFill redtxt) {
+		this.redtxt = redtxt;
+	}
+
+	public BackgroundFill getBluetxt() {
+		return bluetxt;
+	}
+
+	public void setBluetxt(BackgroundFill bluetxt) {
+		this.bluetxt = bluetxt;
+	}
+
+	public BackgroundFill getGreentxt() {
+		return greentxt;
+	}
+
+	public void setGreentxt(BackgroundFill greentxt) {
+		this.greentxt = greentxt;
+	}
+
+	public Background getRedTxt() {
+		return redTxt;
+	}
+
+	public void setRedTxt(Background redTxt) {
+		this.redTxt = redTxt;
+	}
+
+	public Background getBlueTxt() {
+		return blueTxt;
+	}
+
+	public void setBlueTxt(Background blueTxt) {
+		this.blueTxt = blueTxt;
+	}
+
+	public Background getGreenTxt() {
+		return greenTxt;
+	}
+
+	public void setGreenTxt(Background greenTxt) {
+		this.greenTxt = greenTxt;
+	}
 
 }
