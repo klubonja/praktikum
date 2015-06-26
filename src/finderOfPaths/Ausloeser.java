@@ -140,6 +140,10 @@ public class Ausloeser {
 								
 								insgesamteDistanz();
 								
+								for (int i = 0; i<anweisungenOrientations.length && anweisungenOrientations[i] != null;i++){
+									System.out.println("anweisungen : " +anweisungenOrientations[i]);
+								}
+								
 								beweger.anfangsKachelSetzen(startKachel);
 								
 								beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);

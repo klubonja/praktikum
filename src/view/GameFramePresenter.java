@@ -3,7 +3,6 @@ package view;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.DerBeweger;
 import finderOfPaths.Sucher;
-import finderOfPaths.UnglaublicheAnwendung;
 import finderOfPaths.Vorschlaege;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 import javafx.scene.layout.GridPane;
@@ -60,11 +59,11 @@ public class GameFramePresenter {
 		// creates the Player Area and the Movement
 		player = new Player("Hans",4,5, Color.AQUAMARINE);
 		
-		beweger = new DerBeweger(gfv.board, gfv.komplettesFeld, gfv.ballEbene, player);
+		beweger = new DerBeweger(gfv.board, gfv.ballEbene, player);
 		vorschlager = new Vorschlaege(gfv.board, player);
 		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene, player);
 		
-		sucher = new Sucher(gfv.board, gfv.ballEbene, gfv.komplettesFeld, beweger, vorschlager, pathfinder,  player, anweisungen);
+		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,  player, anweisungen);
 		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher, player);
 		
 		test();

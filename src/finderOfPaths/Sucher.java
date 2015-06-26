@@ -14,7 +14,6 @@ public class Sucher {
 
 	private BoardView boardView;
 	private BallEbene2 ballEbene;
-	private KrasserStack krasserStack;
 	
 	private DerBeweger beweger;
 	private Vorschlaege vorschlager;
@@ -27,17 +26,15 @@ public class Sucher {
 	private char [][] anweisungen;
 	 
 	
-	public Sucher(BoardView boardView, BallEbene2 ballEbene, KrasserStack krasserStack, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  Player player, char [][]anweisungen){
+	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  Player player, char [][]anweisungen){
+
 		this.boardView = boardView;
 		this.ballEbene = ballEbene;
-		this.krasserStack = krasserStack;
 		this.beweger = beweger;
 		this.vorschlager = vorschlager;
 		this.pathfinder = pathfinder;
 		this.player = player;
 		this.anweisungen = anweisungen;
-		
-		
 		
 	}
 	

@@ -1,153 +1,173 @@
 package json;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.lang.reflect.*;
+import java.util.Arrays;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import enums.*;
+import staticClasses.Config;
+import staticClasses.auxx;
+import enums.CluedoProtokollMessageTypes;
+import enums.Field;
+import enums.GameStates;
+import enums.NetworkHandhakeCodes;
+import enums.Persons;
+import enums.PlayerStates;
+import enums.Rooms;
+import enums.Weapons;
 
 public class CluedoProtokollChecker {
 	
 	private ArrayList<String> errs;
-	CluedoJSON json;
+	private ArrayList<String> msgs;
+	CluedoJSON jsonRoot;
 	String type;
 	String typeNoSpace;
-	boolean isValid;
-	double protokollVersion = 1;
-	Map<String, Method> methodMap = new HashMap<String, Method>();
 
 	public CluedoProtokollChecker(CluedoJSON j) {
-		json = j;
-		isValid = false;
+		jsonRoot = j;
 		errs = new ArrayList<String>();
+		msgs = new ArrayList<String>();
 	}
-
-	public boolean validate() {
-		if (checkType()) { // sets type to check
+	
+	public CluedoProtokollChecker(JSONObject j) {
+		jsonRoot = new CluedoJSON(j);
+		errs = new ArrayList<String>();
+		msgs = new ArrayList<String>();
+	}
+	
+	public String getType(){
+		return type;
+	}
+	
+	public NetworkHandhakeCodes validateExpectedType(String exptype,String[] ignoredTypes){
+		checkType();
+		if (type.equals(exptype)) 
+			if (validate()) return NetworkHandhakeCodes.OK; //alles OK
+			else return NetworkHandhakeCodes.TYPEOK_MESERR; //typ ok aber andere protokollabweichungen
+		else if (ignoredTypes != null && Arrays.asList(ignoredTypes).contains(type)){
+			setMsg(type+" is ignored");
+			return NetworkHandhakeCodes.TYPEIGNORED;//ignored
+		}
+		
+			
+		setErr(exptype +" : is expected, found :"+type);		
+		return NetworkHandhakeCodes.TYPERR; // falscher typ
+	}
+	
+	private void invokeValMethod(){
+		if (type != null){
 			try {
 				Method m = CluedoProtokollChecker.class
 						.getDeclaredMethod("val_" + typeNoSpace);
 				try {
-					m.invoke(this);
-					System.out.println("invoking :"+"val_" + typeNoSpace );
-				} catch (IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					System.out.println("invoking :"+"val_" + typeNoSpace +" failed" );
+					try {
+						m.invoke(this);
+					} catch (IllegalAccessException | IllegalArgumentException e) {
+						e.printStackTrace();
+					}
+					auxx.loginfo("invoking :"+"val_" + typeNoSpace);
+				} 
+				catch (InvocationTargetException e) {
+					auxx.logsevere("invoking :"+"val_" + typeNoSpace +" failed",e);
 				}
 			} catch (NoSuchMethodException | SecurityException e) {
-				System.out.println("finding :"+"val_" + typeNoSpace +" failed : no such method");
-				//e.printStackTrace();
+				auxx.logsevere("invoking :"+"val_" + typeNoSpace +" failed : no such method",e);
 			}
-
-			// CluedoJSONTypes[] types = CluedoJSONTypes.values();
-			// for (CluedoJSONTypes t : types){
-			// try {//maps cluedotypes to val_methods
-			// methodMap.put(t.getNameNoSpace(),
-			// CluedoProtokollChecker.class.getDeclaredMethod("val_"+t.getNameNoSpace()));
-			// } catch (NoSuchMethodException | SecurityException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
-
-			// for (CluedoJSONTypes t : types){
-			// try {
-			// methodMap.get(t.getNameNoSpace()).invoke(this);
-			// } catch (IllegalAccessException | IllegalArgumentException
-			// | InvocationTargetException e) {
-			//
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-			// }
-
 		}
-		;
+	}
+	
+	public boolean validate() {
+		if (checkType()) { // sets type to check
+			invokeValMethod();
+		};
 
 		if (errs.size() == 0){
-			System.out.println("OK");
+			auxx.loginfo("msg OK");
 			return true;
 		}
-		System.out.println("Not OK see : this.printErrs()");
+		auxx.loginfo("msg NOT OK");
+		auxx.loginfo(getErrString());
+		
 		return false;
 	}
 
 	// type is set
 	void val_login() {
-		validateField(json, "nick");
-		validateField(json, "group");
-		if (validateField(json, "version"))
-			validateProtokollVersion(json,"version");
-		isJSONArrayOfType(json, "expansions", "string");
+		validateValue(jsonRoot, "nick");
+		validateValue(jsonRoot, "group");
+		if (validateValue(jsonRoot, "version"))
+			validateProtokollVersion(jsonRoot,"version");
+		isJSONArrayOfType(jsonRoot, "expansions", "string");
 	}
 
 	void val_login_successful() {		
-		isJSONArrayOfType(json, "expansions", "string");
-		isJSONArrayOfType(json, "nick array", "string");
-		isJSONArrayOfType(json, "game array", "gameinfo");
+		isJSONArrayOfType(jsonRoot, "expansions", "string");
+		isJSONArrayOfType(jsonRoot, "nick array", "string");
+		isJSONArrayOfType(jsonRoot, "game array", "gameinfo");
 	}
 
 	void val_user_added() {
-		validateField(json, "nick");
+		validateValue(jsonRoot, "nick");
 	}
 
 	void val_disconnect() {}
 
 	void val_disconnected() {
-		validateField(json, "message");
+		validateValue(jsonRoot, "message");
 	}
 
 	void val_user_left() {
-		validateField(json, "nick");
+		validateValue(jsonRoot, "nick");
 	}
 
-	void val_ok() {
-
-	}
+	void val_ok() {}
 
 	void val_error() {
-		validateField(json, "message");
+		validateValue(jsonRoot, "message");
 	}
 
 	void val_chat() {
-		validateField(json, "sender");
-		validateField(json, "message");
-		if (validateField(json, "timestamp"))
-			validateLocalTimeFormat(json, "timestamp");
+		//validateValue(jsonRoot, "sender");
+		validateValue(jsonRoot, "message");
+		if (validateValue(jsonRoot, "timestamp"))
+			validateLocalTimeFormat(jsonRoot, "timestamp");
 	}
 
 	void val_create_game() {
-		if (validateField(json, "color"))
-			validatePerson("color");
+		if (validateValue(jsonRoot, "color"))
+			validatePerson(jsonRoot.getString("color"));
 	}
 
 	void val_game_created() {
-		if (validateField(json, "gameId"))
-			isInt(json, "gameId");
-		validateField(json, "nick");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
+//		if (validateValue(jsonRoot, "player"))
+//			validatePlayerInfo(jsonRoot.getJSONObject("player"));
 	}
 
 	void val_join_game() {
-		if (validateField(json, "gameId"))
-			isInt(json, "gameId");
-		if (validateField(json, "color"))
-			validatePerson("color");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
+		if (validateValue(jsonRoot, "color"))
+			validatePerson(jsonRoot.getString("color"));
 	}
 
 	void val_player_added() {
-		val_join_game();
-		validateField(json, "nick");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
+		if (validateValue(jsonRoot, "player"))
+			validatePlayerInfo(jsonRoot.getJSONObject("player"));
+		
 	}
 
 	void val_watch_game() {
-		if (validateField(json, "gameId"))
-			isInt(json, "gameId");
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
 	}
 
 	void val_watcher_added() {
@@ -172,54 +192,53 @@ public class CluedoProtokollChecker {
 
 	void val_game_started() {
 		val_watch_game();
-		if (validateField(json, "gamestate"))
-			validateGameState(json.getString("gamestate"), "started");
-		isJSONArrayOfType(json, "order", "string");
+		if (validateValue(jsonRoot, "gamestate"))
+			validateGameState(jsonRoot.getString("gamestate"), "started");
+		isJSONArrayOfType(jsonRoot, "order", "string");
 	}
 
 	void val_game_ended() {
 		val_game_created();
-		if (validateField(json, "statement"))
-			validateStatement(json.getJSONObject("statement"));
+		if (validateValue(jsonRoot, "statement"))
+			validateStatement(jsonRoot.getJSONObject("statement"));
 
 	}
 
 	void val_stateupdate() {
 		val_game_created();
-		if (validateField(json, "playerstate"))
-			validatePlayerState(json.getString("playerstate"));		
+		if (validateValue(jsonRoot, "playerstate"))
+			validatePlayerState(jsonRoot.getString("playerstate"));		
 	}
 	
 	void val_player_cards(){
 		val_watch_game();
-		if (validateField(json, "cards"))
-			isJSONArrayOfType(json, "cards", "cards");
+		if (validateValue(jsonRoot, "cards"))
+			isJSONArrayOfType(jsonRoot, "cards", "cards");
 	}
 
 	void val_dice_result() {
 		val_watch_game();
-		if (validateField(json,"result"))
-			validateDiceResult(json,"result");
+		if (validateValue(jsonRoot,"result"))
+			validateDiceResult(jsonRoot,"result");
 	}
 
 	void val_moved() {
 		val_watch_game();
-		if (validateField(json, "color"))
-			validatePerson(json.getString("color"));
-		validateField(json,"field");
+		if (validateValue(jsonRoot, "field"))
+			validateField(jsonRoot, "field");
 	}
 
 	void val_suspicion() {
 		val_watch_game();
-		if (validateField(json, "statement"))
-			validateStatement(json.getJSONObject("statement"));
+		if (validateValue(jsonRoot, "statement"))
+			validateStatement(jsonRoot.getJSONObject("statement"));
 		
 	}
 
 	void val_disproved() {
 		val_game_created();
-		if (validateField(json, "card"))
-			validateCards(json.getString("cards"));
+		if (validateValue(jsonRoot, "card"))
+			validateCards(jsonRoot.getString("cards"));
 	}
 
 	void val_no_disprove() {
@@ -236,7 +255,8 @@ public class CluedoProtokollChecker {
 
 	void val_move() {
 		val_watch_game();
-		validateField(json,"field");
+		if (validateValue(jsonRoot, "field"))
+			validateField(jsonRoot, "field");
 	}
 
 	void val_secret_passage() {
@@ -245,7 +265,7 @@ public class CluedoProtokollChecker {
 
 	void val_suspect() {
 		val_watch_game();
-		validateStatement(json);
+		validateStatement(jsonRoot);
 	}
 
 	void val_disprove() {
@@ -261,48 +281,48 @@ public class CluedoProtokollChecker {
 		val_suspicion();		
 	}
 	
-	void val_upd_server(){
-		validateField(json,"group");
-		if (validateField(json,"tcp port"))
-			isInt(json, "tcp port");
+	void val_udp_server(){
+		validateValue(jsonRoot,"group");
+		if (validateValue(jsonRoot,"tcp port"))
+			isInt(jsonRoot, "tcp port");
 		
 	}
 	
-	void val_upd_client(){
-		validateField(json,"group");		
+	void val_udp_client(){
+		validateValue(jsonRoot,"group");		
 	}
 	
 	
 	
 	
 	void validateLocalTimeFormat(JSONObject jsonParent,String key){
-		String value = jsonParent.getString("key");
-		if (!value.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}\\d{2}\\.\\d{2}"))
+		String value = jsonParent.getString(key);		
+		if (!value.matches("\\d+-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}\\d{1,2}\\.\\d*"))
 			setErr(value +" hat nicht protokollgemäßes (java.time.LocalDateTime) Format");
 	}
 	
-	void validatePerson(String personName){
+	void validatePersonName(String personName){
 		if (!Persons.isMemberPersonName(personName))
-			setErr("Personname "+personName+ " not part of this Game");
+			setErr("Person :\" "+personName+ "\" is not a valid Personname in this Game");
 	}
 	
 	void validateWeapon(String weaponName){
 		if (!Weapons.isMember(weaponName))
-			setErr("Weapon"+weaponName+ " not part of this Game");
+			setErr("Weapon : \""+weaponName+ "\" is not a valid Weapon in this Game");
 	}
 	
-	void validateRoom(String personName){
-		if (!Persons.isMember(personName))
-			setErr("Personname "+personName+ " not part of this Game");
+	void validateRoom(String roomName){
+		if (!Rooms.isMember(roomName))
+			setErr("Room  : \""+roomName+ "\" not a valid Room in this Game");
 	}
 	
 	void validatePlayerState(String playerState){
 		if (!PlayerStates.isMember(playerState))
-			setErr("PlayerState "+playerState+ " not a valid PlayerState in this Game");
+			setErr("PlayerState : \""+playerState+ "\" not a valid PlayerState in this Game");
 	}
 	
 	boolean validateProtokollVersion(JSONObject jsonParent,String key){
-		if (jsonParent.getString(key).equals(protokollVersion)) return true;		
+		if (jsonParent.getString(key).equals(Config.PROTOKOLL_VERSION)) return true;		
 		return false;
  	}
 	
@@ -312,11 +332,11 @@ public class CluedoProtokollChecker {
 			JSONArray diceres = new JSONArray(jsonParent.getJSONArray(key));
 			for (int i = 0; i < amountDices;i++)
 				if (!isInt(jsonParent, diceres.getString(i)))
-					setErr("JSONArray : in JSONArray "+key+" on index "+i+" : noInt");
+					setErr("JSONArray : in JSONArray \""+key+"\" on index "+i+" : noInt");
 			
 		}
 		catch (JSONException je){
-			setErr("JSONArray expected : "+key+" is not JSONArray");
+			setErr("JSONArray expected : \""+key+"\" is not JSONArray");
 		}
 	}
 	
@@ -327,42 +347,52 @@ public class CluedoProtokollChecker {
 	 */
 	void validateGameState(String gameState,String expectedState){
 			if (!gameState.equals(expectedState))
-				setErr("expected State :"+ expectedState);
+				setErr("expected State :\""+ expectedState+"\"");
 	}
 	
 	void validateGameState(String gameState){
 		if (!GameStates.isMember(gameState))
-			setErr("GameState "+gameState+ " not a valid Gamestate in this Game");
+			setErr("GameState \""+gameState+ "\" not a valid Gamestate in this Game");
 	}
 	
-	void validateColor(String color){
-		if (!Persons.isMember(color))
-			setErr("Color "+color+ " not a valid Color in this Game");
+	void validatePerson(String color){
+		if (!Persons.isMemberColor(color))
+			setErr("Color \""+color+ "\" not a valid Color in this Game");
 	}
 	
 	void validateStatement(JSONObject jsonParent){
 		String[] expectedFields = {"person","weapon","room"};
-		for (String fieldName : expectedFields){
-			if (validateField(jsonParent, fieldName))
-				validatePerson(jsonParent.getString(fieldName));
-		}
+		if (validateValue(jsonParent, "person"))
+			validatePerson(jsonParent.getString("person"));
+		if (validateValue(jsonParent, "weapon"))
+			validateWeapon(jsonParent.getString("weapon"));
+		if (validateValue(jsonParent, "room"))
+			validateRoom(jsonParent.getString("room"));
 	}
 	
-	boolean validateField(JSONObject jsonParent, String key) {
+	void validateField(JSONObject jsonParent, String key){
+		JSONObject json = jsonParent.getJSONObject(key);
+		if (validateValue(json, "x"))
+			Field.isValidX(json.getInt("x"));
+		if (validateValue(json, "y"))
+			Field.isValidY(json.getInt("y"));
+	}
+	
+	boolean validateValue(JSONObject jsonParent, String key) {
 		if (jsonParent.has(key))
 			if (jsonParent.get(key).toString().length() > 0)
 				return true;
 			else
-				setErr(key + " is empty");
+				setErr("value of key : \""+ key + "\" is empty");
 		else
-			setErr(key + " expected");
+			setErr("key : \""+key + "\" expected in :\n"+jsonParent.toString());
 
 		return false;
 	}
 	
 	boolean validateCards(String value){
 		Persons[] persons = Persons.values();
-		for(Persons p : persons) if (value.equals(p.getName())) return true;
+		for(Persons p : persons) if (value.equals(p.getColor())) return true;
 		Weapons[] weapons = Weapons.values();
 		for(Weapons w : weapons) if (value.equals(w.getName())) return true;
 		Rooms[] rooms = Rooms.values();
@@ -372,29 +402,44 @@ public class CluedoProtokollChecker {
 	}
 	/**
 	 * @param jsonParent
-	 * ich weis noch nicht als was field kommt
+	 * 
 	 * 	
 	 *  */
 	void validatePlayerInfo(JSONObject jsonParent){		
-			validateField(jsonParent, "nick");			
-			if (validateField(jsonParent, "color"))
+			validateValue(jsonParent, "nick");			
+			if (validateValue(jsonParent, "color"))
 				validatePerson(jsonParent.getString("color"));
-			validateField(jsonParent, "fields");
-			if (validateField(jsonParent, "cards"))
-				isInt(jsonParent, "cards");
-			if (validateField(jsonParent, "playerstate"))
+//			if (validateValue(jsonParent, "field"))
+//				validateField(jsonParent, "field");
+//			if (validateValue(jsonParent, "cards"))
+//				isInt(jsonParent, "cards");
+			if (validateValue(jsonParent, "playerstate"))
 				validatePlayerState(jsonParent.getString("playerstate"));		
 	}
 	
 	void validateGameInfo(JSONObject jsonParent) throws JSONException{
-		if (validateField(jsonParent, "gameID"))
+		if (validateValue(jsonParent, "gameID"))
 			isInt(jsonParent, "gameID");
 		validateGameState(jsonParent.getString("gamestate"));
 		isJSONArrayOfType(jsonParent,"players", "playerinfo");
-//		isJSONArrayOfType(jsonParent,"watchers", "string");
-//		isJSONArrayOfType(jsonParent,"person positions", "personpos");
-//		isJSONArrayOfType(jsonParent,"weapon positions", "weaponpos");			
+		isJSONArrayOfType(jsonParent,"watchers", "string");
+		isJSONArrayOfType(jsonParent,"person positions", "personpos");
+		isJSONArrayOfType(jsonParent,"weapon positions", "weaponpos");			
 
+	}
+	
+	void validatePersonPos(JSONObject jsonParent, String key){
+		if (validateValue(jsonParent, "person"))
+			validatePerson(jsonParent.getString("person"));
+		if (validateValue(jsonParent, "field"))
+			validateField(jsonParent, "field");
+	}
+	
+	void validateWeaponPos(JSONObject jsonParent, String key){
+		if (validateValue(jsonParent, "weapon"))
+			validateWeapon(jsonParent.getString("weapon"));
+		if (validateValue(jsonParent, "field"))
+			validateField(jsonParent, "field");
 	}
 	
 	boolean isJSONArrayOfType(JSONObject jsonParent, String key,String localtype) {
@@ -413,21 +458,20 @@ public class CluedoProtokollChecker {
 						case  "cards" :
 							validateCards(jar.getString(index));
 							break;
-						case "string" :
-							;
-							break;
 						case "weaponpos" :
-							;
+							validateWeaponPos(jar.getJSONObject(index), key);
 							break;
 						case "personpos" :
-							;
+							validatePersonPos(jar.getJSONObject(index), key);
 							break;
+						case "string" :
+							;
 						default :
 							;
 					}					
 				} 
 				catch (Exception e) {
-					System. out.println("BAD : attempting jsonarray : "+key+" loopindex"+ index + " for "+localtype);
+					auxx.logsevere("no JSONArray index :"+index, e);
 				}				
 			}		
 			
@@ -436,7 +480,7 @@ public class CluedoProtokollChecker {
 		catch (JSONException e) {
 		//	System. out.println("VERYBAD :JSONArray expected on : "+key+" loopindex"+ index + " for "+localtype+" value \n"+jsonParent.toString());
 			//e.printStackTrace();
-			setErr("JSONArray: "+key+" expected  ");
+			setErr("JSONArray: \""+key+"\" expected  ");
 			return false;
 		}		
 	}
@@ -446,34 +490,66 @@ public class CluedoProtokollChecker {
 			jsonParent.getInt(key);
 			return true;
 		} catch (JSONException je) {
-			setErr("value of " + key + " is not of type int");
+			setErr("value of \"" + key + "\" is not of type int");
 			return false;
 		}
 	}
 
 	boolean checkType() {
-		if (!json.has("type")) {
+		if (!jsonRoot.has("type")) {
 			errs.add("message type not set");
 			return false;
 		} 
-		else if (!CluedoProtokollMessageTypes.isMember(json.getString("type"))) {
-			errs.add("type " + json.getString("type")
-					+ " is not part of protokoll v." + protokollVersion);
+		else if (!CluedoProtokollMessageTypes.isMember(jsonRoot.getString("type"))) {
+			errs.add("type " + jsonRoot.getString("type")
+					+ " is not part of protokoll v." + Config.PROTOKOLL_VERSION);
 			return false;
 		}
 
-		this.typeNoSpace = json.getString("type").replaceAll(" ", "_");
-		this.type = json.getString("type");
+		this.typeNoSpace = jsonRoot.getString("type").replaceAll(" ", "_");
+		this.type = jsonRoot.getString("type");
 		return true;
 	}
-
+	
+	public ArrayList getErrs(){
+		return errs;
+	}
+	
+	public boolean isValid(){
+		return errs.size() == 0;
+	}
+	
 	public void printErrs() {
-		System.out.println("Missing: ");
 		for (String s : errs)
-			System.out.println(s);
+			auxx.loginfo(s);
+		for (String s : msgs)
+			auxx.loginfo(s);
 	}
 
 	private void setErr(String err) {
 		errs.add(err);
+	}
+	
+	private void setMsg(String msg) {
+		errs.add(msg);
+	}
+	
+	public String getErrString(){
+		StringBuffer sb = new StringBuffer("");
+		if (!isValid())
+			for (String err : errs) sb.append(err+"\n");
+		return sb.toString();
+	}
+	
+	public String getAllString(){
+		StringBuffer sb = new StringBuffer("");
+		sb.append(getErrString());		
+			for (String msg : msgs) sb.append(msg+"\n");
+		
+		return sb.toString();
+	}
+	
+	public JSONObject getMessage(){
+		return jsonRoot;
 	}
 }

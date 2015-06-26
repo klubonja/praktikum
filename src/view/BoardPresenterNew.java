@@ -30,7 +30,7 @@ public class BoardPresenterNew {
 	private int columnSize = 25;
 
 	private Color [] farben = new Color [30];
-	private int farbenzähler;
+	private int farbenzÃ¤hler;
 	
 	private int xDistanz;
 	private int yDistanz;
@@ -68,7 +68,7 @@ public class BoardPresenterNew {
 	ZugFenster viewImRaum = new ZugFenster();
 
 	/**
-	 * Hier wird die Stage gestartet und den Kacheln eine Methode für
+	 * Hier wird die Stage gestartet und den Kacheln eine Methode fï¿½r
 	 * setOnMouseClicked zugewiesen.
 	 * 
 	 * @param primaryStage
@@ -119,7 +119,7 @@ public class BoardPresenterNew {
 	}
 
 	/**
-	 * Hier werden den Kacheln Methoden für ClickEvents zugewiesen
+	 * Hier werden den Kacheln Methoden fï¿½r ClickEvents zugewiesen
 	 */
 	public void zuweisung() {
 		dice(view.getKachelArray()[player.getyCoord()][player.getxCoord()]);
@@ -142,7 +142,7 @@ public class BoardPresenterNew {
 	}
 
 	/**
-	 * Färbt die Kachel ein bzw. setzt den Text auf "nope".
+	 * Fï¿½rbt die Kachel ein bzw. setzt den Text auf "nope".
 	 * 
 	 * @param momentaneKachel
 	 */
@@ -168,7 +168,7 @@ public class BoardPresenterNew {
 	}
 
 	/**
-	 * Färbt die begehbaren Kacheln ein
+	 * Fï¿½rbt die begehbaren Kacheln ein
 	 * 
 	 * @param begehbareKachel
 	 */
@@ -202,33 +202,33 @@ public class BoardPresenterNew {
 	}
 
 	/**
-	 * Wird von der Kachel.OnClick aufgerufen und löst die movePlayer Methode
+	 * Wird von der Kachel.OnClick aufgerufen und lï¿½st die movePlayer Methode
 	 * aus.
 	 */
 	public void dasIstEinFeld(Kachel ziel) {
-		farbenzähler = 0;
+		farbenzÃ¤hler = 0;
 		movePlayer(ziel);
 	}
 
 	/**
-	 * Wird ausgelöst, wenn jemand auf einen Raum clickt und gibt eine nette
-	 * Nachricht zurück.
+	 * Wird ausgelï¿½st, wenn jemand auf einen Raum clickt und gibt eine nette
+	 * Nachricht zurï¿½ck.
 	 */
 	public void dasIsEinRaum() {
 		System.out.println("Das ist ein Raum, alter");
 	}
 
 	/**
-	 * Wird ausgelöst, wenn jemand auf einen Raum clickt und
-	 * löst den Vermutungs-Screen aus.
+	 * Wird ausgelï¿½st, wenn jemand auf einen Raum clickt und
+	 * lï¿½st den Vermutungs-Screen aus.
 	 */
 	public void dasIstEineTuer(){
 		viewImRaum.show();
 	}
 	
 	/**
-	 * Die Methode, welche durch das ClickEvent ausgelöst wird. hier wird
-	 * pathfinder und moveWithPath ausgelöst.
+	 * Die Methode, welche durch das ClickEvent ausgelï¿½st wird. hier wird
+	 * pathfinder und moveWithPath ausgelï¿½st.
 	 * 
 	 * @param PlayerDarstellung
 	 *            Der zu bewegende Player
@@ -291,7 +291,7 @@ public class BoardPresenterNew {
 	}
 
 	/**
-	 * Setzt die Werte wieder zurück.
+	 * Setzt die Werte wieder zurï¿½ck.
 	 * 
 	 * @param PlayerDarstellung
 	 * @param ziel
@@ -313,7 +313,7 @@ public class BoardPresenterNew {
 	}
 
 	/**
-	 * Eine Blaupause für den Neuen Pathfinder
+	 * Eine Blaupause fï¿½r den Neuen Pathfinder
 	 * @param xDistanzeingegeben
 	 * @param yDistanzeingegeben
 	 * @param jetzigesFeld
@@ -413,16 +413,16 @@ public class BoardPresenterNew {
 	}
 
 	/**
-	 * Erhöht / Verringert die yDistanz
-	 * @param yChange Wie viel die yDistanz verändert wird.
+	 * Erhï¿½ht / Verringert die yDistanz
+	 * @param yChange Wie viel die yDistanz verï¿½ndert wird.
 	 */
 	public void updateYDistanz(int yChange){
 		yDistanz = yDistanz + yChange;
 	}
 	
 	/**
-	 * Erhöht / Verringert die xDistanz
-	 * @param xChange Wie viel die xDistanz verändert wird.
+	 * Erhï¿½ht / Verringert die xDistanz
+	 * @param xChange Wie viel die xDistanz verï¿½ndert wird.
 	 */
 	public void updateXDistanz(int xChange){
 		xDistanz = xDistanz + xChange;
@@ -432,9 +432,9 @@ public class BoardPresenterNew {
 	 * Berechnet die Erlaubte x und y Distanz bis zum Ziel
 	 * 
 	 * @param xDistanzeingegeben
-	 *            Die übermittelte Distanz in X Richtung
+	 *            Die ï¿½bermittelte Distanz in X Richtung
 	 * @param yDistanzeingegeben
-	 *            Die übermittelte Distanz in Y Richtung
+	 *            Die ï¿½bermittelte Distanz in Y Richtung
 	 * @param jetzigesFeld
 	 */
 	public void pathfinder(int xDistanzeingegeben, int yDistanzeingegeben,
@@ -564,7 +564,7 @@ public class BoardPresenterNew {
 	}
 
 	/**
-	 * setzt die Kacheln wieder in den Ausgangszustand zurück
+	 * setzt die Kacheln wieder in den Ausgangszustand zurï¿½ck
 	 * 
 	 * @param jetzigesFeld
 	 */
@@ -589,7 +589,7 @@ public class BoardPresenterNew {
 	}
 
 	/**
-	 * Augenzahl -> Felder die man erreichen kann werden eingefärbt
+	 * Augenzahl -> Felder die man erreichen kann werden eingefï¿½rbt
 	 */
 	public void dice(Kachel jetzigesFeld) {
 
@@ -645,15 +645,15 @@ public class BoardPresenterNew {
 	/**
 	 * Updatet das jetzigeFeld um den jeweiligen Wert
 	 * 
-	 * @param y  Der Wert um welchen die Reihe erhöht wird
-	 * @param x  Der Wert um welchen die Spalte erhöht wird
+	 * @param y  Der Wert um welchen die Reihe erhï¿½ht wird
+	 * @param x  Der Wert um welchen die Spalte erhï¿½ht wird
 	 */
 	public void updateCurrentField(int y, int x) {
 		this.jetzigesFeld = view.getKachelArray()[this.jetzigeReihe + y][this.jetzigeColumn + x];
 	}
 
 	/**
-	 * Hier wird überprüft, ob die nächstgelegene Kachel in X Richtung ein Raum
+	 * Hier wird ï¿½berprï¿½ft, ob die nï¿½chstgelegene Kachel in X Richtung ein Raum
 	 * ist.
 	 * 
 	 * @return true falls dort keine Raumkachel ist. false falls dort eine
@@ -686,7 +686,7 @@ public class BoardPresenterNew {
 	}
 
 	/**	
-	 * Hier wird überprüft, ob die nächstgelegene Kachel in Y Richtung ein Raum
+	 * Hier wird ï¿½berprï¿½ft, ob die nï¿½chstgelegene Kachel in Y Richtung ein Raum
 	 * ist.
 	 * 
 	 * @return true falls dort keine Raumkachel ist. false falls dort eine
@@ -830,8 +830,8 @@ public class BoardPresenterNew {
 
 		System.out.println(" player x vorher : " + player.getxCoord());
 		System.out.println(" player y vorher : " + player.getyCoord());
-		System.out.println(" x Position für path : " + xPositionFuerPath);
-		System.out.println(" y Position für path : " + yPositionFuerPath);
+		System.out.println(" x Position fï¿½r path : " + xPositionFuerPath);
+		System.out.println(" y Position fï¿½r path : " + yPositionFuerPath);
 
 		System.out.println(" playerDarstellung X vorher : "
 				+ playerDarstellung.getLayoutX());

@@ -2,7 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
-import staticClasses.aux;
+import staticClasses.auxx;
 import cluedoServer.ClientItem;
 import enums.JoinGameStatus;
 import enums.Persons;
@@ -42,7 +42,7 @@ public class CluedoGameServer extends CluedoGame{
 	
 	public void notifyAll(String msg){
 		for (ClientItem c: participants){
-			aux.sendTCPMsg(c.getSocket(), msg);
+			auxx.sendTCPMsg(c.getSocket(), msg);
 		}
 	}
 	

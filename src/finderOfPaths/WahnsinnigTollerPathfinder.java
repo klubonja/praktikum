@@ -107,8 +107,8 @@ public class WahnsinnigTollerPathfinder {
 	        	
 	        	Kachel momentaneKachel = suchKacheln[welcheKachel];
 	        	
-	        	player.setyCoord(gui.getRowIndex(momentaneKachel));
-	        	player.setxCoord(gui.getColumnIndex(momentaneKachel));
+	        	player.setyCoord(momentaneKachel.getyKoordinate());
+	        	player.setxCoord(momentaneKachel.getxKoordinate());
 	        	
 	        	xPositionen[welcheKachel] = player.getxCoord();
 	        	yPositionen[welcheKachel] = player.getyCoord();

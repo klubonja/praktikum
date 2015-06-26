@@ -1,5 +1,5 @@
 package json;
-import org.json.*;
+import org.json.JSONObject;
 
 import enums.CluedoProtokollMessageTypes;
 
@@ -12,9 +12,14 @@ public class CluedoJSON extends JSONObject{
 		super();
 	}
 	
-	public CluedoJSON(String message){
-		super(message);
+	public CluedoJSON(String typeValue){
+		super();
+		this.put("type", typeValue);
 		
+	}
+	
+	public CluedoJSON(JSONObject json){
+		super(json, JSONObject.getNames(json));		
 	}
 	
 	public String getType(){
