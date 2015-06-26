@@ -14,6 +14,7 @@ import enums.ServerStatus;
 public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	ServerPool serverPool;
+	ServerItem selectedServer;
 	
 	public DataGuiManagerClientSpool(CluedoClientGUI gui,ServerPool spool) {
 		super(gui);
@@ -27,6 +28,14 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		addGameToGui(gameID, "(created by "+nick+") Game "+gameID, nick,newgame.getGameState(),server.getGroupName(),server.getIpString());
 		
 		server.addGame(newgame);
+	}
+	
+	public void setSelectedServer(ServerItem selectedServer) {
+		this.selectedServer = selectedServer;
+	}
+	
+	public ServerItem getSelectedServer() {
+		return selectedServer;
 	}
 	
 	public boolean joinGameOnServer(ServerItem server,int gameID,String color,String nick){

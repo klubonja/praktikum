@@ -152,6 +152,7 @@ public class Client {
 			}
 			else if (server.getStatus() == ServerStatus.connected){
 				dataGuiManager.refreshGamesListServer(server);
+				dataGuiManager.setSelectedServer(server);
 			}
 		}
 		catch (Exception e){

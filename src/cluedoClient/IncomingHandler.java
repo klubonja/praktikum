@@ -11,8 +11,6 @@ import org.json.JSONObject;
 
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
-import cluedoNetworkGUI.CluedoClientGUI;
-import cluedoNetworkGUI.DataGuiManagerClient;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkLayer.CluedoGameClient;
 import enums.NetworkHandhakeCodes;

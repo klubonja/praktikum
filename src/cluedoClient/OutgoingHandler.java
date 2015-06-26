@@ -8,7 +8,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.SelectionModel;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -16,7 +15,6 @@ import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.CluedoClientGUI;
-import cluedoNetworkGUI.DataGuiManagerClient;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkGUI.GameVBox;
 import cluedoNetworkLayer.CluedoGameClient;
@@ -88,6 +86,7 @@ class OutgoingHandler implements Runnable{
 		    }
 		});	
 		
+		//clickonagame event
 		dataGuiManager.getGui().getGamesListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent click) {
@@ -159,7 +158,7 @@ class OutgoingHandler implements Runnable{
 //	}
 	
 	void createGame(String color){
-		auxx.sendTCPMsg(server.getSocket(),NetworkMessages.create_gameMsg(color));
+		auxx.sendTCPMsg(dataGuiManager.getSelectedServer().getSocket(),NetworkMessages.create_gameMsg(color));
 	}
 	
 	
