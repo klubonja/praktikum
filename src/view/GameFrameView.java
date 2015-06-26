@@ -94,16 +94,8 @@ public class GameFrameView extends GridPane{
 		ballEbene = new BallEbene2();
 		komplettesFeld = new KrasserStack(ballEbene, board);
 		
-		//figuren = new FigurenView();
-
-//		komplettesFeld = new SpielfeldUndFiguren(board, krasserStack);
-		
-//		komplettesFeld.start();
-
 		hand = new HandFrameView();
 		
-
-
 		// Adds the frame for the cards in hand.
 		hand = new HandFrameView();
 		
@@ -113,8 +105,6 @@ public class GameFrameView extends GridPane{
 		view4 = new Button("View 4");
 		view5 = new Button("View 5");
 		view6 = new Button("View 6");
-		
-
 		
 		/**
 		 * Left part of the whole GameFrame,
