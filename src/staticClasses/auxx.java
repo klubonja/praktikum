@@ -20,7 +20,7 @@ import cluedoClient.ServerItem;
 import cluedoNetworkGUI.CluedoClientGUI;
 import enums.Persons;
 
-public abstract class aux {
+public abstract class auxx {
 	
 	public static final Logger log = Logger.getLogger("mydearliittlelogger");
 	public static final ConsoleHandler C_HANDLER = new ConsoleHandler();
@@ -100,7 +100,7 @@ public abstract class aux {
 			String[] loginData = gui.loginPrompt("Login to Server: "+server.getGroupName());
 			if (loginData[0] == null || loginData[1] == null) throw new Exception("some login prompt fields empty") ;
 			String msg = NetworkMessages.loginMsg(loginData[0],loginData[1]);
-			if (aux.sendTCPMsg(server.getSocket(),msg)){
+			if (auxx.sendTCPMsg(server.getSocket(),msg)){
 				server.setMyNick(loginData[0]);
 				return true;
 			}	

@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import staticClasses.Config;
-import staticClasses.aux;
+import staticClasses.auxx;
 import enums.CluedoProtokollMessageTypes;
 import enums.Field;
 import enums.GameStates;
@@ -70,13 +70,13 @@ public class CluedoProtokollChecker {
 					} catch (IllegalAccessException | IllegalArgumentException e) {
 						e.printStackTrace();
 					}
-					aux.loginfo("invoking :"+"val_" + typeNoSpace);
+					auxx.logfine("invoking :"+"val_" + typeNoSpace);
 				} 
 				catch (InvocationTargetException e) {
-					aux.logsevere("invoking :"+"val_" + typeNoSpace +" failed",e);
+					auxx.logsevere("invoking :"+"val_" + typeNoSpace +" failed",e);
 				}
 			} catch (NoSuchMethodException | SecurityException e) {
-				aux.logsevere("invoking :"+"val_" + typeNoSpace +" failed : no such method",e);
+				auxx.logsevere("invoking :"+"val_" + typeNoSpace +" failed : no such method",e);
 			}
 		}
 	}
@@ -87,11 +87,11 @@ public class CluedoProtokollChecker {
 		};
 
 		if (errs.size() == 0){
-			aux.loginfo("msg OK");
+			auxx.logfine("msg OK");
 			return true;
 		}
-		aux.loginfo("msg NOT OK");
-		aux.loginfo(getErrString());
+		auxx.loginfo("msg NOT OK");
+		auxx.loginfo(getErrString());
 		
 		return false;
 	}
@@ -146,8 +146,8 @@ public class CluedoProtokollChecker {
 	void val_game_created() {
 		if (validateValue(jsonRoot, "gameID"))
 			isInt(jsonRoot, "gameID");
-		if (validateValue(jsonRoot, "player"))
-			validatePlayerInfo(jsonRoot.getJSONObject("player"));
+//		if (validateValue(jsonRoot, "player"))
+//			validatePlayerInfo(jsonRoot.getJSONObject("player"));
 	}
 
 	void val_join_game() {
@@ -471,7 +471,7 @@ public class CluedoProtokollChecker {
 					}					
 				} 
 				catch (Exception e) {
-					aux.logsevere("no JSONArray index :"+index, e);
+					auxx.logsevere("no JSONArray index :"+index, e);
 				}				
 			}		
 			
@@ -521,9 +521,9 @@ public class CluedoProtokollChecker {
 	
 	public void printErrs() {
 		for (String s : errs)
-			aux.loginfo(s);
+			auxx.loginfo(s);
 		for (String s : msgs)
-			aux.loginfo(s);
+			auxx.loginfo(s);
 	}
 
 	private void setErr(String err) {

@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
-import staticClasses.aux;
+import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
@@ -46,11 +46,11 @@ class CommunicationHandler implements Runnable{
 	}	
 	
 	private void awaitingLoginAttempt (){
-		System.out.println("awaiting");
-
+		auxx.logfine("awaiting login from client");
 		while (!readyForCommunication) { // will keep listening for valid login msg
 			try {
-				String message = aux.getTCPMessage(client.getSocket()).trim();
+				String message = auxx.getTCPMessage(client.getSocket()).trim();
+				
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(
 								new JSONObject(message)));
@@ -58,7 +58,7 @@ class CommunicationHandler implements Runnable{
 
 				if (errcode == NetworkHandhakeCodes.OK) {					
 					client.setExpansions(
-						aux.makeConjunction(
+						auxx.makeConjunction(
 							Config.EXPANSIONS, 
 							checker.getMessage().getJSONArray("expansions")
 						)
@@ -106,7 +106,8 @@ class CommunicationHandler implements Runnable{
 		awaitingLoginAttempt();
 		while (run){
 			try {
-	           String message = aux.getTCPMessage(client.socket).trim();
+	           String message = auxx.getTCPMessage(client.socket).trim();
+	           
 	           CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
 	           checker.validate();
 	           if (!checker.isValid()){
@@ -154,6 +155,10 @@ class CommunicationHandler implements Runnable{
 	        			   client.sendMsg(NetworkMessages.error_Msg("you cant start this game"));
 	        		   }
 	        	   }
+	        	   
+	        	   if (checker.getType().equals("leave game")){													//CREATE GAME
+	        		   dataGuiManager.removePlayerfromGame(client, checker.getMessage().getInt("gameID"));
+	        	   }
 	        	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
 	        		  closeProtokollConnection("");
 	        	   }
@@ -162,8 +167,7 @@ class CommunicationHandler implements Runnable{
 	        		   String msg = checker.getMessage().getString("message");
 	        		   String ts = checker.getMessage().getString("timestamp");
 	        		   dataManager.notifyAll(NetworkMessages.chat_to_clientMsg(msg , ts, client.getNick()));
-		           }
-	        	   
+		           }	        	   
 	           }	
 	           //nur damit nichts unter den tisch fällt
 		       dataGuiManager.addMsgIn(message);

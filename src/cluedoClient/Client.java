@@ -15,7 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
-import staticClasses.aux;
+import staticClasses.auxx;
 import broadcast.Multicaster;
 import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
@@ -34,7 +34,7 @@ public class Client {
 	CluedoClientGUI gui;
 	ServerPool serverList;
 	DataGuiManagerClientSpool dataGuiManager;
-	boolean run;
+	boolean globalRun;
 		
 	public Client(CluedoClientGUI g) {
 		gui = g;
@@ -42,13 +42,13 @@ public class Client {
 		dataGuiManager = new DataGuiManagerClientSpool(gui, serverList);
 		dataGuiManager.setWindowName(Config.GROUP_NAME+ " Client");
 		
-		run = true;
+		globalRun = true;
 		setCloseHandler();
 		listenForServersThread();
 		sayHello();
 		setCloseHandler();
 		
-		aux.log.log(Level.INFO,"CLIENT started");		
+		auxx.log.log(Level.INFO,"CLIENT started");		
 	}	
 	
 	void sayHello(){	
@@ -61,7 +61,7 @@ public class Client {
 		String answer = NetworkMessages.udp_clientMsg(Config.GROUP_NAME);
 		ServerHandShakeListener cl = 
 				new ServerHandShakeListener(
-						dataGuiManager,answer,"udp server",Config.BROADCAST_PORT,this,run);
+						dataGuiManager,answer,"udp server",Config.BROADCAST_PORT,this,globalRun);
 		cl.start();
 	}
 	
@@ -70,20 +70,20 @@ public class Client {
 	 * 
 	 */
 	public void startTCPConnection(ServerItem server){	
-		try {				
+		boolean localRun = true;
+		try {	
 			server.setSocket(new Socket(server.getIp(),server.getPort()));
 			dataGuiManager.addServer(server,"not logged in");
-			Thread t1 = new Thread(new IncomingHandler(gui,server,run));
+			Thread t1 = new Thread(new IncomingHandler(dataGuiManager,server,globalRun,localRun));
 			t1.start();
-			Thread t2 = new Thread(new OutgoingHandler(gui,server,run));
+			Thread t2 = new Thread(new OutgoingHandler(dataGuiManager,server,globalRun,localRun));
 			t2.start();
 						
 		}
 		catch (IOException e){
-			 aux.logsevere("",e);
-			dataGuiManager.removeServer("TCP server connection failed"+e.getMessage(),server);
-			run = false;
-			
+			 auxx.logsevere("TCP server connection failed",e);
+			dataGuiManager.removeServer(server);
+			localRun = false;
 		}
 		finally {}	
 	}	
@@ -105,23 +105,22 @@ public class Client {
 					startTCPConnection(new ServerItem("testendeTentakel", addr, 30305));
 				} 
 				catch (UnknownHostException e) {
-					aux.logsevere("testserverconnection failed Unknown Host:  ", e);
+					auxx.logsevere("testserverconnection failed Unknown Host:  ", e);
 				}            	
             }
         });	
 		gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		      @Override
 			public void handle(WindowEvent e){
-		          
 		          try {
-		        	   run = false;
-		        	   dataGuiManager.sayGoodbye(NetworkMessages.disconnectMsg());
-		        	   aux.log.log(Level.INFO,"CLIENT CLOSED");
+		        	  dataGuiManager.sayGoodbye(NetworkMessages.disconnectMsg());
+		        	   globalRun = false;
+		        	   auxx.log.log(Level.INFO,"CLIENT CLOSED");
 		               Platform.exit();
 		               System.exit(0);	               
 		          } 
 		          catch (Exception e1) {
-		               aux.log.log(Level.SEVERE,e1.getMessage());
+		               auxx.log.log(Level.SEVERE,e1.getMessage());
 		          }
 		      }
 		 });
@@ -144,19 +143,20 @@ public class Client {
 			ServerItem server = dataGuiManager.getServerByID(
 					smod.getSelectedItem().getNameID(),
 					smod.getSelectedItem().getIpID());
-					aux.logfine("attempting login to serverport : "+server.getPort()+", ip: "+server.getIpString());
+					auxx.logfine("attempting login to serverport : "+server.getPort()+", ip: "+server.getIpString());
 			if (server.getStatus() == ServerStatus.not_connected){
 				if (server.getSocket() == null)	startTCPConnection(server);
 					
-				if (!aux.login(dataGuiManager.getGui(), server))	
-					dataGuiManager.removeServer("TCP server connection gone",server);							
+				if (!auxx.login(dataGuiManager.getGui(), server))	
+					dataGuiManager.removeServer(server);							
 			}
 			else if (server.getStatus() == ServerStatus.connected){
-				dataGuiManager.refreshGamesListByServer(server);
+				dataGuiManager.refreshGamesListServer(server);
+				dataGuiManager.setSelectedServer(server);
 			}
 		}
 		catch (Exception e){
-			aux.logsevere("server isnt connected anymore", e);
+			auxx.logsevere("server isnt connected anymore", e);
 		}		
 	}
 }

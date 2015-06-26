@@ -5,6 +5,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 import staticClasses.Config;
+import staticClasses.auxx;
 import cluedoNetworkGUI.CluedoServerGUI;
 
 
@@ -58,12 +59,10 @@ public class BroadcastServerThread extends Thread {
 					sleep(Config.SECOND*Config.BROADCAST_INTERVAL);
 					
 				} catch (InterruptedException e2) {
-					// TODO: handle exception
+					auxx.logsevere("server broadcaster thread sleep :", e2);
 				}
 			}
-		}
-	
-		
+		}		
 	}
 	
 	public void setBroadCastMsg(String msg){

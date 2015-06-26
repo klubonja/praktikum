@@ -11,7 +11,8 @@ import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
-import staticClasses.aux;
+import staticClasses.auxx;
+import broadcast.BroadcastServerThread;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
@@ -46,16 +47,21 @@ public class Server {
 		
 		//createTestGroups();
 		sayHello();
-		listenForClientsThread();		
+		listenForClientsThread();
+		
 		startTCPServer();				
 		
 		setListener();	
 	}
 	
+	
 	private void sayHello() {
 		String msg = NetworkMessages.udp_serverMsg(Config.GROUP_NAME, TCPport);				
 		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, dataGuiManager, msg);
-		bc.sendBrodcast();				
+		bc.sendBrodcast();	
+		BroadcastServerThread permanentBroadcaster = new BroadcastServerThread(
+				Config.GROUP_NAME, Config.BROADCAST_WILDCARD_IP, msg, dataGuiManager.getGui());
+		permanentBroadcaster.start();
 	}
 	
 	void listenForClientsThread(){
@@ -90,14 +96,14 @@ public class Server {
 				gui.setStatus("port "+TCPport+ " NInterfaces: "+nm.getServicesFormated()+" "+StandardCharsets.UTF_8);
 			} 
 			catch (Exception e) {
-				aux.logsevere("getting networkserveices failed", e);
+				auxx.logsevere("getting networkserveices failed", e);
 			}
 			
-			aux.loginfo("new TCPSocket created");
+			auxx.loginfo("new TCPSocket created");
 		} 
 		catch (IOException e) {
 			stopServer();
-			aux.logsevere("creating serversocket failed :" + e.getMessage());			
+			auxx.logsevere("creating serversocket failed :" + e.getMessage());			
 		}		
 	}
 	
@@ -108,11 +114,11 @@ public class Server {
 			try {
 				TCPServerSocket.close();
 			} catch (IOException e) {
-				aux.logsevere("destroying serversocket failed ", e);
+				auxx.logsevere("destroying serversocket failed ", e);
 			}	
 		run = false;
 		
-		aux.loginfo("Server will bu shutdown run == false");
+		auxx.loginfo("Server will bu shutdown run == false");
 	}
 	
 	private void setListener(){
@@ -129,7 +135,7 @@ public class Server {
 		          try {		        	   
 		               Platform.exit();
 		               System.exit(0);
-		               aux.loginfo("SERVER Window closed");
+		               auxx.loginfo("SERVER Window closed");
 		          } 
 		          catch (Exception e1) {
 		               e1.printStackTrace();

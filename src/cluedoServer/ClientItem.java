@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import staticClasses.aux;
+import staticClasses.auxx;
 import staticClasses.NetworkMessages;
 
 public class ClientItem {
@@ -98,6 +98,6 @@ public class ClientItem {
 	}
 	
 	public void sendMsg(String msg){
-		aux.sendTCPMsg(socket, msg);
+		auxx.sendTCPMsg(socket, msg);
 	}
 }

@@ -84,8 +84,16 @@ public class ServerItem  {
 			gamesList.add(c);
 	}
 	
-	public void removeGame(ClientGameItem cg){
+	public void removeGame(CluedoGameClient cg){
 		gamesList.remove(cg);
+	}
+	
+	public boolean removeGameByID(int gameID){
+		for (CluedoGameClient cg: gamesList)
+			if (cg.getGameId() == gameID)
+				return gamesList.remove(cg);
+		
+		return false;
 	}
 	
 	public CluedoGameClient getGameByGameID(int gameID){

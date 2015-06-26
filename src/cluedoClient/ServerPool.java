@@ -1,8 +1,9 @@
 package cluedoClient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-import staticClasses.aux;
+import staticClasses.auxx;
 
 public class ServerPool extends ArrayList<ServerItem> {
 	
@@ -26,7 +27,7 @@ public class ServerPool extends ArrayList<ServerItem> {
 	
 	public void sendToAll(String msg){
 		for (ServerItem server: this)
-			aux.sendTCPMsg(server.getSocket(), msg);
+			auxx.sendTCPMsg(server.getSocket(), msg);
 			
 	}
 	
@@ -38,6 +39,16 @@ public class ServerPool extends ArrayList<ServerItem> {
 		}
 		
 		return null;
+	}
+	
+	public boolean remove(ServerItem server){
+		try {
+			server.getSocket().close();
+			return super.remove(server);
+		} catch (IOException e) {
+			auxx.logsevere("Closing Socket of Server"+server.getGroupName()+" failed", e);
+		}
+		return false;
 	}
 	
 	

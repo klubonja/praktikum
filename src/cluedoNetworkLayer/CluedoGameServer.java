@@ -2,18 +2,34 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
-import staticClasses.aux;
+import staticClasses.auxx;
 import cluedoServer.ClientItem;
 import enums.JoinGameStatus;
+import enums.Persons;
+import enums.Rooms;
+import enums.Weapons;
 
 public class CluedoGameServer extends CluedoGame{
 	ArrayList<ClientItem> participants;
 	ArrayList<ClientItem> watchers;
+	WinningStatement winningStatement;
 	
 	public CluedoGameServer(int gameId) {
 		super(gameId);	
 		participants = new ArrayList<ClientItem>();
 		watchers = new ArrayList<ClientItem>();
+		winningStatement = new WinningStatement(Persons.white, Rooms.kitchen, Weapons.spanner);
+	}
+	
+	public WinningStatement getWinningStatement() {
+		return winningStatement;
+	}
+	
+	@Override
+	public boolean start() {
+//		for (ClientItem client: participants)
+//			//client.sendMsg(NetworkMessages.player_cardsMsg(gameId, cards));
+		return super.start();
 	}
 	
 	public ArrayList<String> getWatchersNicks(){
@@ -26,7 +42,7 @@ public class CluedoGameServer extends CluedoGame{
 	
 	public void notifyAll(String msg){
 		for (ClientItem c: participants){
-			aux.sendTCPMsg(c.getSocket(), msg);
+			auxx.sendTCPMsg(c.getSocket(), msg);
 		}
 	}
 	
@@ -41,11 +57,10 @@ public class CluedoGameServer extends CluedoGame{
 	public boolean findAndRemovePlayer(ClientItem client){
 		for (ClientItem c: participants)
 			if (c == client) {
-				if (removePlayer(client.getNick()))
-					return participants.remove(client);				
-			}
-				
-		
+				if (removePlayer(client.getNick())){
+					return participants.remove(client);	
+				}				
+			}		
 		return false;
 	}
 	
@@ -65,7 +80,7 @@ public class CluedoGameServer extends CluedoGame{
 			}
 		}	
 		
-		return JoinGameStatus.error;
+		return JoinGameStatus.game_not_found;
 	}
 	
 	public boolean leaveGameServer(ClientItem client){
