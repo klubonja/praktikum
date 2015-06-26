@@ -2,12 +2,10 @@ package view;
 
 import javafx.scene.effect.Glow;
 import javafx.scene.effect.PerspectiveTransform;
-import javafx.scene.image.ImageView;
 
 public class HandFramePresenter {
 	
 	HandFrameView view;
-	Glow cardEffect = new Glow(0.5);
 	
 	PerspectiveTransform perspectiveTrasform = new PerspectiveTransform();
 	 
@@ -35,15 +33,16 @@ public class HandFramePresenter {
 		view.firstCard.setOnMouseEntered(e -> showFirstCard());
 		view.secondCard.setOnMouseEntered(e -> showSecondCard());
 		view.thirdCard.setOnMouseEntered(e -> showThirdCard());
-		view.firstCard.setOnMouseExited(e -> removeEffect(view.firstCard));
-		view.secondCard.setOnMouseExited(e -> removeEffect(view.secondCard));
-		view.thirdCard.setOnMouseExited(e -> removeEffect(view.thirdCard));
+		view.firstCard.setOnMouseExited(e -> removeEffectFirst());
+		view.secondCard.setOnMouseExited(e -> removeEffectSecond());
+		view.thirdCard.setOnMouseExited(e -> removeEffectThird());
 		
 	}
 	
 	public void showFirstCard(){
 		view.getChildren().removeAll(view.firstCard, view.secondCard, view.thirdCard);
 		view.getChildren().addAll(view.thirdCard, view.secondCard, view.firstCard);
+		Glow cardEffect = new Glow(0.3);
 		view.firstCard.setEffect(cardEffect);
 		
 	}
@@ -51,6 +50,7 @@ public class HandFramePresenter {
 	public void showSecondCard(){
 		view.getChildren().removeAll(view.firstCard, view.secondCard, view.thirdCard);
 		view.getChildren().addAll(view.thirdCard, view.firstCard, view.secondCard);
+		Glow cardEffect = new Glow(0.3);
 		view.secondCard.setEffect(cardEffect);
 		
 	}
@@ -58,13 +58,24 @@ public class HandFramePresenter {
 	public void showThirdCard(){
 		view.getChildren().removeAll(view.firstCard, view.secondCard, view.thirdCard);
 		view.getChildren().addAll(view.firstCard, view.secondCard, view.thirdCard);
+		Glow cardEffect = new Glow(0.3);
 		view.thirdCard.setEffect(cardEffect);
 		
 	}
 	
-	public void removeEffect(ImageView card){
-		card.setEffect(null);
+	public void removeEffectFirst(){
 		
+		view.firstCard.setEffect(null);
+	}
+	
+	public void removeEffectSecond(){
+		
+		view.secondCard.setEffect(null);
+	}
+	
+	public void removeEffectThird(){
+	
+		view.thirdCard.setEffect(null);
 	}
 
 }
