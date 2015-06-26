@@ -122,23 +122,12 @@ public class DerBeweger {
 				public void handle(ActionEvent e) {
 					anfangsKachel = zielKachel;
 					schritte--;
-//					System.out.println("Schritte: "+schritte);
-//					System.out.println("NullSchritte: " +nullSchritte);
 					if((schritte == 0 && anfangsKachel.isIstTuer()) || (schritte != 0 && nullSchritte != 0 && anfangsKachel.isIstTuer())) {
-//						System.out.println("---------anfangsKachelx-----------" + anfangsKachel.getxKoordinate());
-//						System.out.println("---------anfangsKachely-----------" + anfangsKachel.getyKoordinate());
-//						
-//						anfangsTuerKachel.setKoordinate(anfangsKachel.getxKoordinate());
-//						anfangsTuerKachel.setyKoordinate(anfangsKachel.getyKoordinate());
-//						System.out.println("---------anfangsTuerKachelx-----------" + anfangsTuerKachel.getxKoordinate());
-//						System.out.println("---------anfangsTuerKachely-----------" + anfangsTuerKachel.getyKoordinate());
 						anfangsTuerKachel = (TuerKachel) gui.getKachelArray()[anfangsKachel.getxKoordinate()][anfangsKachel.getyKoordinate()];
 						RaumBeweger rB = new RaumBeweger(gui, player, anfangsTuerKachel);
 						Rooms room = rB.checkRaum(anfangsTuerKachel);
 						raumZielKachel = rB.positionInRaum(player, room);
 						inRaumBewegen();
-//						player.setxCoord(raumZielKachel.getyKoordinate());
-//						player.setyCoord(raumZielKachel.getxKoordinate());
 					}
 					bewegen(anweisungen, schritte, nullSchritte);
 				}
@@ -151,8 +140,8 @@ public class DerBeweger {
 
 		public void anfangsKachelSetzen(Kachel neueAnfangsKachel){
 			anfangsKachel = neueAnfangsKachel;
-			player.setxCoord(gui.getColumnIndex(anfangsKachel));
-			player.setyCoord(gui.getRowIndex(anfangsKachel));
+			player.setxCoord(anfangsKachel.getxKoordinate());
+			player.setyCoord(anfangsKachel.getyKoordinate());
 		}
 	
 		public void positionUpdaten(){
