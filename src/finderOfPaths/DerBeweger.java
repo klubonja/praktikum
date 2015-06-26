@@ -15,6 +15,7 @@ import javafx.util.Duration;
 import kacheln.Kachel;
 import kacheln.TuerKachel;
 import model.Player;
+import staticClasses.auxx;
 import view.BoardView;
 import enums.Orientation;
 import enums.Rooms;
@@ -105,7 +106,7 @@ public class DerBeweger {
 				zielKachel = gui.getKachelArray()[jetzigeReihe+yDistanz][jetzigeSpalte+xDistanz];
 			}
 			
-			
+			auxx.logsevere("Beweger y = " +jetzigeReihe +"   ||  x = " +jetzigeSpalte);
 			
 			Path path = new Path();
 			path.getElements().add(new MoveTo(anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));

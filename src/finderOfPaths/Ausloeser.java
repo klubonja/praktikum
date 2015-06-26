@@ -44,7 +44,7 @@ public class Ausloeser {
 	
 	private int wuerfelZahl;
 	
-	DicePresenter dice;
+	private DicePresenter dicePresenter;
 	
 	/**
 	 * Konstruktor f�r den Ausloeser, welcher ballEbenen-clicks mit Bewegungen verlinkt.
@@ -53,14 +53,14 @@ public class Ausloeser {
 	 * @param ballEbene um auf die click-events zugreifen zu k�nnen
 	 * @param pathfinder um den Weg berechnen zu lassen
 	 */
-	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher, Player player){
+	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher, Player player, DicePresenter dicePresenter){
 		this.gui = gui;
 		this.ballEbene = ballEbene;
 		this.beweger = beweger;
 		this.pathfinder = pathfinder;
 		this.sucher = sucher;
 		this.player = player;
-		
+		this.dicePresenter = dicePresenter;
 	}
 	
 	/**
@@ -100,6 +100,7 @@ public class Ausloeser {
 		gui.resetBackground();
 		gui.resetMoeglichkeiten();
 		wuerfelZahl = (1 + (int)(Math.random()*6)) + (1 + (int)(Math.random()*6)) ;
+		//wuerfelZahl = dicePresenter.getMove();
 		System.out.println("==================================");
 		System.out.println("==================================");
 		System.out.println("Würfelzahl : " +wuerfelZahl);

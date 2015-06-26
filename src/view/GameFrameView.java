@@ -26,8 +26,6 @@ public class GameFrameView extends GridPane{
 	ChatView chat;
 	BoardView board;
 
-
-
 	//private SpielfeldUndFiguren komplettesFeld;
 	//private FigurenView figuren;
 	KrasserStack komplettesFeld;
@@ -67,16 +65,11 @@ public class GameFrameView extends GridPane{
 		 */
 		board = new BoardView(25,26);
 
-		
-		
 		//Adds the Notes frame.
 		notes = new NotesView();
 		
-		
 		//Adds the Chat frame.
 		chat = new ChatView();
-		
-		
 
 		//Adds the Dices frame.
 		dice = new DiceView();
@@ -88,16 +81,8 @@ public class GameFrameView extends GridPane{
 		ballEbene = new BallEbene2();
 		komplettesFeld = new KrasserStack(ballEbene, board);
 		
-		//figuren = new FigurenView();
-
-//		komplettesFeld = new SpielfeldUndFiguren(board, krasserStack);
-		
-//		komplettesFeld.start();
-		
 		//Adds the frame for the Cards in hand.
 		hand = new HandFrameView();
-
-	
 		
 		/* Left part of the whole GameFrame,
 		   only for a better organising of objects. */
@@ -107,7 +92,6 @@ public class GameFrameView extends GridPane{
 		rightGrid.getColumnConstraints().add(new ColumnConstraints(300));
 		rightGrid.setVgap(2);
 		rightGrid.setHgap(4);
-		//rightGrid.setGridLinesVisible(true);
 
 		// VBox and HBox for dividing elements in two columns
 		VBox leftColumn = new VBox(10);

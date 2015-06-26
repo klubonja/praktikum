@@ -40,17 +40,7 @@ public class GameFramePresenter {
 	@SuppressWarnings("unused")
 	public void startEvents(){
 		
-//		GridPane.setConstraints(playerCircle, this.player.getxCoord(), this.player.getyCoord());
-//		gfv.board.getChildren().add(playerCircle);
-		
-
 		DicePresenter dice = new DicePresenter(gfv.dice);
-		
-//		UnglaublicheAnwendung wow = new UnglaublicheAnwendung(gfv.board, gfv.ballEbene, gfv.komplettesFeld);
-//		wow.test();
-
-//		BoardPresenter board = new BoardPresenter(gfv.board, playerCircle, this.player);
-
 	
 		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		HandFramePresenter hand = new HandFramePresenter(gfv.hand);
@@ -65,7 +55,7 @@ public class GameFramePresenter {
 		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene, player);
 		
 		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,  player, anweisungen);
-		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher, player);
+		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher, player, dice);
 		
 		test();
 		

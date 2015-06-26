@@ -182,18 +182,13 @@ public class IntroPresenter {
 		if(view.pl6.isSelected()){ 
 			this.player = player6;
 		}
-		
 
+		view.close();
+		
 		GameFrameView gameView = new GameFrameView(this.player);
 		gameView.start();
 		GameFramePresenter pres = new GameFramePresenter(gameView, this.player);
 
-	//	GameFramePresenter pres2 = new GameFramePresenter(gameView, player2);
-
-
-		//viewPl1 = new GameFrameView(this.player);
-		
-		view.close();
 		}
 		
 		catch(NullPointerException e){
