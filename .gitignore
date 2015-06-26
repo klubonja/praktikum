@@ -236,3 +236,6 @@ Temporary Items
 ### NotepadPP template
 # Notepad++ backups #�
 *.bak�
+
+#prohectspecific
+#Config.java

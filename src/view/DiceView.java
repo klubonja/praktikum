@@ -20,10 +20,12 @@ import javafx.scene.layout.RowConstraints;
 
 public class DiceView extends GridPane{
 
+
 	private Button rollBtn;
 	private Button moveBtn;
 	private ImageView d1;
 	private ImageView d2;
+	
 	
 	private final Image dice1 = new Image("http://dobbelsteen.virtuworld.net/img/1c.gif");
 	private final Image dice2 = new Image("http://dobbelsteen.virtuworld.net/img/2c.gif");

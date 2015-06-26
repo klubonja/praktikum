@@ -13,6 +13,6 @@ public class CluedoServerMain extends Application{
 	 @Override
 	 public void start(Stage primaryStage) {
 		 CluedoServerGUI gui = new CluedoServerGUI(primaryStage);
-		 TCPServer server = new TCPServer(gui);		  
+		 Server server = new Server(gui);		  
 	 }
 }

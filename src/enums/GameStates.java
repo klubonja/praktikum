@@ -4,7 +4,9 @@ public enum GameStates {
 	
 	started("started"),
 	not_started("not started"),
-	ended("ended");
+	startable("startable"),
+	ended("ended"),
+	to_be_deleted("to be deleted");
 	
 	private String name;
 	
@@ -23,4 +25,11 @@ public enum GameStates {
                 return true;
         return false;
     }
+	 static public GameStates getState(String aName) {
+	        GameStates[] gameStates = GameStates.values();
+	        for (GameStates gameState  : gameStates)
+	            if (gameState.getName().equals(aName))
+	                return gameState;
+	        return null;
+	    }
 }

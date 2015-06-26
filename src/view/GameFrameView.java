@@ -11,7 +11,8 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Player;
-import figuren.FigurenView;
+import finderOfPaths.BallEbene2;
+import finderOfPaths.KrasserStack;
 
 
 
@@ -24,11 +25,15 @@ public class GameFrameView extends GridPane{
 	DiceView dice;
 	ChatView chat;
 	BoardView board;
-	HandFrameView hand;
-	
-	private SpielfeldUndFiguren komplettesFeld;
-	private FigurenView figuren;
 
+
+
+	//private SpielfeldUndFiguren komplettesFeld;
+	//private FigurenView figuren;
+	KrasserStack komplettesFeld;
+	BallEbene2 ballEbene;
+
+	HandFrameView hand;
 	Player player;
 	
 	private Stage stage;
@@ -57,9 +62,11 @@ public class GameFrameView extends GridPane{
 		//Adds the MenuBar and Menus at the top of the screen.
 		menu = new MenuBarView();
 		
-		
-		//Adds the Game Board frame.
-		board = new BoardView(24,25);
+		/**
+		 * Adds the Game Board frame.
+		 */
+		board = new BoardView(25,26);
+
 		
 		
 		//Adds the Notes frame.
@@ -70,18 +77,26 @@ public class GameFrameView extends GridPane{
 		chat = new ChatView();
 		
 		
+
 		//Adds the Dices frame.
 		dice = new DiceView();
 		
+		/**
+		 *  Adds the Stackpane with the field
+		 */
+		
+		ballEbene = new BallEbene2();
+		komplettesFeld = new KrasserStack(ballEbene, board);
+		
+		//figuren = new FigurenView();
+
+//		komplettesFeld = new SpielfeldUndFiguren(board, krasserStack);
+		
+//		komplettesFeld.start();
 		
 		//Adds the frame for the Cards in hand.
 		hand = new HandFrameView();
 
-		
-		
-		figuren = new FigurenView();
-		komplettesFeld = new SpielfeldUndFiguren(board, figuren);
-		komplettesFeld.start();
 	
 		
 		/* Left part of the whole GameFrame,
@@ -131,7 +146,7 @@ public class GameFrameView extends GridPane{
 		stage = new Stage();
 		stage.setScene(scene);
 		stage.setResizable(true);
-		stage.setFullScreen(true);
+		//stage.setFullScreen(true);
 		stage.setTitle("Cluedo");
 		stage.show();
 		
@@ -211,26 +226,6 @@ public class GameFrameView extends GridPane{
 
 	public void setHand(HandFrameView hand) {
 		this.hand = hand;
-	}
-
-
-	public SpielfeldUndFiguren getKomplettesFeld() {
-		return komplettesFeld;
-	}
-
-
-	public void setKomplettesFeld(SpielfeldUndFiguren komplettesFeld) {
-		this.komplettesFeld = komplettesFeld;
-	}
-
-
-	public FigurenView getFiguren() {
-		return figuren;
-	}
-
-
-	public void setFiguren(FigurenView figuren) {
-		this.figuren = figuren;
 	}
 
 

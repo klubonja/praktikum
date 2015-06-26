@@ -20,8 +20,11 @@ public class IpPromptGrid extends GridPane {
 	final int fieldNumber = 4;
 	final Button submit = new Button("Submit");
 	String inputIp = new String();
+	String port;
 	ArrayList<IpTextField> iFields = new ArrayList<>();
+	ArrayList<PortTextField> pField = new ArrayList<>();
 	Text title = new Text("Connect to Server IP:");
+	Text portNumber = new Text("Enter Port:");
 	Stage parent;
 	
 	public IpPromptGrid(Stage p) {
@@ -57,8 +60,13 @@ public class IpPromptGrid extends GridPane {
 		for (int i = 0; i < iFields.size(); i++){
 			this.add(iFields.get(i),i,1);
 		}
+		portNumber.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+		pField.add(new PortTextField());
+		this.add(portNumber, 0, 2);
+		this.add(pField.get(0), 0, 3, 1, 1);
+		
 		this.add(title, 0, 0,fieldNumber,1);
-		this.add(submit, 0, 2);
+		this.add(submit, 0, 4);
 		
 		this.setPadding(new Insets(25, 25, 25, 25));
         this.setGridLinesVisible(false);		
@@ -68,15 +76,22 @@ public class IpPromptGrid extends GridPane {
 		return inputIp;
 	}
 	
+	public String returnPort(){
+		return port;
+	}
+	
 	private final void getIp(){
 		StringBuffer b = new StringBuffer();
 		for (int i = 0; i < fieldNumber; i++){
 			b.append(iFields.get(i).getText());
 			if (i < fieldNumber-1) b.append(".");					
-		}		
+		}	
+		
+		port = pField.get(0).getText();
 		
 		inputIp =  b.toString();
-		System.out.println(inputIp);
+		System.out.println("InputIP: " + inputIp);
+		System.out.println("Port: " + port);
 		parent.close();
 	}
 	
