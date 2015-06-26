@@ -139,6 +139,6 @@ public abstract class auxx {
 	
 	public static int getRandInt(int min,int max){
 		Random rint = new Random();		
-		return rint.nextInt(max-min + 1) + min;				
+		return rint.nextInt(Math.max(max-min + 1,0)) + min;				
 	}
 }

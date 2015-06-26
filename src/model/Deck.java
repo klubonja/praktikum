@@ -21,61 +21,42 @@ public class Deck {
 	String[] poolCards;
 	String[][] playerHands;
 	String[] winningHand;
-//	private final String GRUEN = "GRUEN";
-//	private final String GATOW = "GATOW";
-//	private final String PORZ = "PORZ";
-//	private final String BLOOM = "BLOOM";
-//	private final String GLORIA = "GLORIA";
-//	private final String WEISS = "WEISS";
-//	private final String ROHRZANGE = "ROHRZANGE";
-//	private final String LEUCHTER = "LEUCHTER";
-//	private final String DOLCH = "DOLCH";
-//	private final String PISTOLE = "PISTOLE";
-//	private final String HEIZUNGSROHR = "HEIZUNGSROHR";
-//	private final String SEIL = "SEIL";
-//	private final String BADEZIMMER = "BADEZIMMER";
-//	private final String ARBEITSZIMMER = "ARBEITSZIMMER";
-//	private final String SPEISEZIMMER = "SPEISEZIMMER";
-//	private final String SPIELERAUM = "SPIELERAUM";
-//	private final String GARAGE = "GARAGE";
-//	private final String SCHLAFZIMMER = "SCHLAFZIMMER";
-//	private final String WOHNZIMMER = "WOHNZIMMER";
-//	private final String KUECHE = "KUECHE";
-//	private final String HOF = "HOF";
-
-//	private List<String> personen = new ArrayList<String>();
-//	private List<String> waffen = new ArrayList<String>();
-//	private List<String> zimmer = new ArrayList<String>();
+	
+	private List<String> persons = new ArrayList<String>();
+	private List<String> weapons = new ArrayList<String>();
+	private List<String> rooms = new ArrayList<String>();
 	private List<String> deck;
-//	private List<String> personenOrdered;
-//	private List<String> waffenOrdered;
-//	private List<String> zimmerOrdered;
-
-//	public Deck() {
-//		deck = new ArrayList<String>();
-//		deck.addAll(Rooms.getRoomsString());
-//		deck.addAll(Persons.getPersonsString());
-//		deck.addAll(Weapons.getWeaponsString());
-//		chooseThree();
-//	}
 	
 	public Deck(int amtp) {
 		amountPlayers = amtp;
 		deck = new ArrayList<String>();
-		deck.addAll(Rooms.getRoomsString());
-		deck.addAll(Persons.getPersonsString());
-		deck.addAll(Weapons.getWeaponsString());	
+		rooms = Rooms.getRoomsString();
+		persons = Persons.getPersonsString();
+		weapons = Weapons.getWeaponsString();	
+	}
+	
+	public void makeDeck(){
+		deck.addAll(rooms);
+		deck.addAll(weapons);
+		deck.addAll(persons);
 	}
 	
 	public void dealCluedoCards(){
-		winningHand = choseNRandom(3);
+		
+		winningHand = new String[3];
+		winningHand[0] = choseRandom(persons);
+		winningHand[1] = choseRandom(weapons);
+		winningHand[2] = choseRandom(rooms);
+		
+		makeDeck();
+		
 		int playerModulo = deck.size()%amountPlayers;		
-		poolCards = choseNRandom(playerModulo);
+		poolCards = choseNRandom(playerModulo,deck);
 		
 		int handSize = deck.size()/amountPlayers;
 		playerHands = new String[amountPlayers][handSize];
 		for (int i = 0; i < amountPlayers; i++)
-			playerHands[i] = choseNRandom(handSize);		
+			playerHands[i] = choseNRandom(handSize,deck);		
 	}
 	
 	public String[] getPoolCards() {
@@ -90,106 +71,27 @@ public class Deck {
 		return winningHand;
 	}
 
-	/**
-	 * Fuegt den jeweiligen Typ von Karten in den jeweiligen Stapel ein.
-	 */
-	public void addKartenTypen() {
-//		personen.add(GRUEN);
-//		personen.add(GATOW);
-//		personen.add(PORZ);
-//		personen.add(BLOOM);
-//		personen.add(GLORIA);
-//		personen.add(WEISS);
-//		waffen.add(ROHRZANGE);
-//		waffen.add(LEUCHTER);
-//		waffen.add(DOLCH);
-//		waffen.add(PISTOLE);
-//		waffen.add(HEIZUNGSROHR);
-//		waffen.add(SEIL);
-//		zimmer.add(BADEZIMMER);
-//		zimmer.add(ARBEITSZIMMER);
-//		zimmer.add(SPEISEZIMMER);
-//		zimmer.add(SPIELERAUM);
-//		zimmer.add(GARAGE);
-//		zimmer.add(SCHLAFZIMMER);
-//		zimmer.add(WOHNZIMMER);
-//		zimmer.add(KUECHE);
-//		zimmer.add(HOF);
-//
-//		personenOrdered = new ArrayList<String>(personen);
-//		waffenOrdered = new ArrayList<String>(waffen);
-//		zimmerOrdered = new ArrayList<String>(zimmer);
-	}
-
-	/**
-	 * Waehlt die ersten 3 Karten, die den Mord repraesentieren und speichert
-	 * sie in einem Array.
-	 */
-	public void chooseThree() {
-//		addKartenTypen();
-//		Collections.shuffle(personen);
-//		Collections.shuffle(waffen);
-//		Collections.shuffle(zimmer);
-//		antwort[0] = personen.get(0);
-//		antwort[1] = waffen.get(0);
-//		antwort[2] = zimmer.get(0);
-//		personen.remove(0);
-//		waffen.remove(0);
-//		zimmer.remove(0);
-	}
-	
-	public String choseRandom() {
-		if (deck.size() < 0) return null;
-		int index = auxx.getRandInt(0, deck.size()-1);
-		String card =  deck.get(index);
-		//auxx.loginfo(card);
-		deck.remove(index);
+	public String choseRandom(List<String> list) {
+		if (list.size() < 0) return null;
+		int index = auxx.getRandInt(0, list.size()-1);
+		String card =  list.get(index);
+		list.remove(index);
 		
 		return card;
 	}
 	
-	public String[] choseNRandom(int n){
+	public String[] choseNRandom(int n,List<String> list){
 		if (n > deck.size()) return null;
 		String[] dieantwoord = new String[n];
 		while (n > 0) {
-			dieantwoord[n-1] = choseRandom();
+			dieantwoord[n-1] = choseRandom(list);
 			n--;
 		}
 		
 		return dieantwoord;
 	}
-	
-	
-
-	/**
-	 * Intialisiert ein Deck und mischt es.
-	 */
-//	public void deckShullfe() {
-//		deck.addAll(personen);
-//		deck.addAll(waffen);
-//		deck.addAll(zimmer);
-//		Collections.shuffle(deck);
-//		Collections.shuffle(deck);
-//	}
-
-//	public void getAntwort() {
-//		System.out.println("Gewinner Karten: " + this.antwort[0] + ", "
-//				+ this.antwort[1] + ", " + this.antwort[2] + ".");
-//	}
 
 	public List<String> getDeck() {
 		return this.deck;
 	}
-
-//	public List<String> getPersonenOrdered() {
-//		return this.personenOrdered;
-//	}
-//
-//	public List<String> getWaffenOrdered() {
-//		return this.waffenOrdered;
-//	}
-//
-//	public List<String> getZimmerOrdered() {
-//		return this.zimmerOrdered;
-//	}
 }
