@@ -24,8 +24,8 @@ public class MenuBarView extends MenuBar{
 	public MenuBarView(){
 		
 		
-	this.setPrefWidth(1200);
-	this.setMaxWidth(1200);
+	this.setPrefWidth(1400);
+	this.setMaxWidth(1400);
 	options = new Menu("Options");
 	help = new Menu("Help");
 	sounds = new MenuItem("Sound");
