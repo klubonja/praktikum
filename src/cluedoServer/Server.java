@@ -12,6 +12,7 @@ import javafx.stage.WindowEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
+import broadcast.BroadcastServerThread;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
@@ -46,16 +47,21 @@ public class Server {
 		
 		//createTestGroups();
 		sayHello();
-		listenForClientsThread();		
+		listenForClientsThread();
+		
 		startTCPServer();				
 		
 		setListener();	
 	}
 	
+	
 	private void sayHello() {
 		String msg = NetworkMessages.udp_serverMsg(Config.GROUP_NAME, TCPport);				
 		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, dataGuiManager, msg);
-		bc.sendBrodcast();				
+		bc.sendBrodcast();	
+		BroadcastServerThread permanentBroadcaster = new BroadcastServerThread(
+				Config.GROUP_NAME, Config.BROADCAST_WILDCARD_IP, msg, dataGuiManager);
+		permanentBroadcaster.start();
 	}
 	
 	void listenForClientsThread(){

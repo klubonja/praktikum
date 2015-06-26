@@ -22,7 +22,7 @@ public abstract class Config {
 	
 	public final static long SECOND = 1000;//millis
 	
-	public final static int BROADCAST_INTERVAL = 3;//SECONDS
+	public final static int BROADCAST_INTERVAL = 10;//SECONDS
 	
 	
 	public final static int BROADCAST_PORT = 30303;
@@ -32,7 +32,8 @@ public abstract class Config {
 	public final static int MESSAGE_BUFFER = 4096*2;
 	
 	
-	public final static int TCP_PORT = 1200;	
+	//public final static int TCP_PORT = 1200;	
+	public final static int TCP_PORT = auxx.getRandInt(1025,49151);	
 	
 	public final static String[] EXPANSIONS= {"Chat","Pumping Oil in the Antarctica, fuck yeah!"};
 	

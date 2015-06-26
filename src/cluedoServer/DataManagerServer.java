@@ -2,6 +2,7 @@ package cluedoServer;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.DataManager;
@@ -34,7 +35,7 @@ public class DataManagerServer extends DataManager {
 		return gamesList;
 	}
 	
-	public ArrayList<CluedoGameServer> getGameListArray() {
+	public Vector<CluedoGameServer> getGameListArray() {
 		return gamesList;
 	}
 	
@@ -120,10 +121,10 @@ public class DataManagerServer extends DataManager {
 	public boolean removeClientfromSystem(ClientItem client){
 		for (CluedoGameServer cgs: gamesList){
 			cgs.findAndRemovePlayer(client);
-			if (cgs.getGameState() == GameStates.to_be_deleted){
+			if (cgs.getNumberConnected() == 0){
 				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
-				cgs.notifyAll(NetworkMessages.game_deletedMsg(cgs.getGameId()));				
-				removeGame(cgs);				
+				if (removeGame(cgs)) cgs.notifyAll(NetworkMessages.game_deletedMsg(cgs.getGameId()));				
+							
 			}
 			else if (cgs.getGameState() == GameStates.ended){
 				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
