@@ -50,7 +50,7 @@ public class BallEbene2 extends GridPane{
 		
 		wuerfeln = new Button("");
 		this.add(wuerfeln, 1, 1);
-		this.add(beginnen, 2, 2);
+//		this.add(beginnen, 2, 2);
 		wuerfeln.setMaxHeight(29);
 		wuerfeln.setMaxWidth(29);
 		wuerfeln.setMinHeight(29);
