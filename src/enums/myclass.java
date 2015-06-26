@@ -31,7 +31,7 @@ public class myclass {
 	public static void main(String [] args)		{
 		Deck cdeck = new Deck(5);
 		cdeck.dealCluedoCards();
-		cdeck.
+		
 		auxx.loginfo(Arrays.toString(cdeck.getWinningHand()));
 	}
 }
