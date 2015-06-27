@@ -1,5 +1,8 @@
 package enums;
 
+import java.util.ArrayList;
+
+
 public enum Rooms {
 	
 	hall("Hall"),
@@ -23,6 +26,14 @@ public enum Rooms {
 	
 	public String getName() {
         return this.name;
+    }
+	
+	public static ArrayList<String> getRoomsString() {        
+        Rooms[] rooms = Rooms.values();
+        ArrayList<String> rnames = new ArrayList<String>();
+        for (Rooms r: rooms)
+        	rnames.add(r.getName());
+        return rnames;
     }
 	
 	 static public boolean isMember(String aName) {

@@ -4,6 +4,7 @@ package cluedoNetworkGUI;
 import java.util.ArrayList;
 
 import staticClasses.Config;
+import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoClient.ServerItem;
 import cluedoClient.ServerPool;
@@ -133,8 +134,9 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		return (CluedoClientGUI) super.getGui();
 	}
 	
-	public void sayGoodbye(String msg){
-		serverPool.sendToAll(msg);
+	public void sayGoodbye(){
+		leaveAllGames();
+		serverPool.sendToAll(NetworkMessages.disconnectMsg());
 	}
 	
 	public void addGamesToGui(ArrayList<CluedoGameClient> glist ){
@@ -143,6 +145,11 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		}
 	}
 	
+	public void leaveAllGames(){
+		ArrayList<CluedoGameClient> glist = serverPool.getGamesConnected();
+		for (CluedoGameClient g: glist)
+			auxx.sendTCPMsg(g.getServer().getSocket(), NetworkMessages.leave_gameMsg(g.getGameId()));
+	}
 	
 	
 	

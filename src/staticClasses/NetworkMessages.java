@@ -239,10 +239,13 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String player_cardsMsg(int gameID,JSONArray cards){
+	public static String player_cardsMsg(int gameID,ArrayList<String> cards){
 		CluedoJSON json = new CluedoJSON("player cards");
 		json.put("gameID", gameID);
-		json.put("cards", cards);		
+		JSONArray cardsJSON = new JSONArray();
+		for (String s: cards)
+			cardsJSON.put(s);
+		json.put("cards", cardsJSON);		
 		
 		return json.toString();
 	}

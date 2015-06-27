@@ -77,7 +77,7 @@ class IncomingHandler implements Runnable {
 		        		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
 					}
 					else if (checker.getType().equals("disconnect")){
-		        		  killConnection();
+		        		  killConnection();   
 					}
 					else {
 						auxx.loginfo("INCOMING unchecked type: "+checker.getType());

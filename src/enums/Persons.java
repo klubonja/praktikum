@@ -1,5 +1,7 @@
 package enums;
 
+import java.util.ArrayList;
+
 import cluedoNetworkLayer.CluedoPosition;
 
 public enum Persons {
@@ -65,5 +67,12 @@ public enum Persons {
 	            if (person.getColor().equals(color))
 	                return person;
 	        return null;
+	    }
+	 public static ArrayList<String> getPersonsString() {        
+	        Persons[] persons = Persons.values();
+	        ArrayList<String> pnames = new ArrayList<String>();
+	        for (Persons p: persons)
+	        	pnames.add(p.getPersonName());
+	        return pnames;
 	    }
 }
