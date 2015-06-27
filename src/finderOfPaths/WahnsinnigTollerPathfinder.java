@@ -18,7 +18,8 @@ public class WahnsinnigTollerPathfinder {
 	/**
 	 * Alle M�glichkeiten, welche an Wegen ausgegeben werden.
 	 */
-	private char [][] moeglichkeiten = new char [5000000][12];
+	//private char [][] moeglichkeiten = new char [5000000][12];
+	private char [][] moeglichkeiten = new char [1000000][12];
 	private int welcheMoeglichkeit; 
 	
 	private char hans;
@@ -34,7 +35,8 @@ public class WahnsinnigTollerPathfinder {
 	private int [] xPositionen = new int [4];
 	private int [] yPositionen = new int [4];
 	
-	private char [][][] mehrereMoeglichkeiten = new char [4][5000000][12];
+	//private char [][][] mehrereMoeglichkeiten = new char [4][5000000][12];
+	private char [][][] mehrereMoeglichkeiten = new char [4][1000000][12];
 	
 	/**
 	 * Die momentane Position an gegebenem Baum-Level

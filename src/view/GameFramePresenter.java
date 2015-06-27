@@ -77,11 +77,7 @@ public class GameFramePresenter {
 	public void setGfv(GameFrameView gfv) {
 		this.gfv = gfv;
 	}
-	
 		
-		
-	
-	
 	public void test(){
 		beweger.anfangsPositionSetzen();
 		System.out.println("test");

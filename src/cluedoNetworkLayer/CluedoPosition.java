@@ -9,7 +9,7 @@ public class CluedoPosition {
 	
 	public CluedoPosition(int x, int y) {
 		this.x = new SimpleIntegerProperty(x);
-		this.y = new SimpleIntegerProperty(x);
+		this.y = new SimpleIntegerProperty(y);
 	}
 	
 	public int getX() {
