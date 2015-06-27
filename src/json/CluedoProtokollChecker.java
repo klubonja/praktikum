@@ -70,7 +70,7 @@ public class CluedoProtokollChecker {
 					} catch (IllegalAccessException | IllegalArgumentException e) {
 						e.printStackTrace();
 					}
-					auxx.loginfo("invoking :"+"val_" + typeNoSpace);
+					auxx.logfine("invoking :"+"val_" + typeNoSpace);
 				} 
 				catch (InvocationTargetException e) {
 					auxx.logsevere("invoking :"+"val_" + typeNoSpace +" failed",e);
@@ -87,7 +87,7 @@ public class CluedoProtokollChecker {
 		};
 
 		if (errs.size() == 0){
-			auxx.loginfo("msg OK");
+			auxx.logfine("msg OK");
 			return true;
 		}
 		auxx.loginfo("msg NOT OK");

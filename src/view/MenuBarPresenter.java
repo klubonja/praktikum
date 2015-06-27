@@ -1,14 +1,19 @@
 package view;
 
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public class MenuBarPresenter {
 	
-	MenuBarView view;
+	private MenuBarView view;
+	
 	private GameFrameView gameFrameView;
 	
+	private InGameMainMenuView menu;
+	@SuppressWarnings("unused")
+	private InGameMainMenuPresenter inGameMainMenuPresenter;
+	
+	private InGameQuitView quitMenu;
+	@SuppressWarnings("unused")
+	private InGameQuitPresenter inGameQuitPresenter;
 	
 	
 	public MenuBarPresenter(MenuBarView view, GameFrameView gameFrameView){
@@ -22,18 +27,53 @@ public class MenuBarPresenter {
 	public void activateEvents(){
 		view.quit.setOnAction(e -> exitGame());
 		view.main.setOnAction(e -> goToMain());
+		
 	}
 	
-	@SuppressWarnings("unused")
+
 	public void goToMain(){
-		IntroView intro = new IntroView();
-		IntroPresenter presMain = new IntroPresenter(intro);
-       intro.start();
-       gameFrameView.close();
-	}
+		
+		menu = new InGameMainMenuView(gameFrameView);
+		inGameMainMenuPresenter = new InGameMainMenuPresenter(menu);
+		
+		gameFrameView.getStage().toFront();
+		menu.start();
+		}
+	
 	
 	public void exitGame(){
-		Platform.exit();
+		
+		quitMenu = new InGameQuitView(gameFrameView);
+		inGameQuitPresenter = new InGameQuitPresenter(quitMenu);
+		
+		gameFrameView.getStage().toFront();
+		quitMenu.start();
+		}
+
+	
+	//Getter and Setters
+	public MenuBarView getView() {
+		return view;
+	}
+
+	public void setView(MenuBarView view) {
+		this.view = view;
+	}
+
+	public GameFrameView getGameFrameView() {
+		return gameFrameView;
+	}
+
+	public void setGameFrameView(GameFrameView gameFrameView) {
+		this.gameFrameView = gameFrameView;
+	}
+
+	public InGameMainMenuView getMenu() {
+		return menu;
+	}
+
+	public void setMenu(InGameMainMenuView menu) {
+		this.menu = menu;
 	}
 
 }

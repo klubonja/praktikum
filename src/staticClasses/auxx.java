@@ -26,6 +26,7 @@ public abstract class auxx {
 	public static final ConsoleHandler C_HANDLER = new ConsoleHandler();
 
 	public static final void setLoggingLevel(Level level){
+		log.setUseParentHandlers(false);
 		log.setLevel(level);
 		C_HANDLER.setLevel(level);
 		log.addHandler(C_HANDLER);
@@ -48,8 +49,7 @@ public abstract class auxx {
 	}
 	
 	public static ArrayList<String> makeConjunction(String[] sa1,JSONArray sa2JSON){
-		ArrayList<String> res = new ArrayList<String>();
-		
+		ArrayList<String> res = new ArrayList<String>();		
 		for (String s1 : sa1)
 			for (Object s2o : sa2JSON)
 				if (s1.equals(s2o.toString()))
@@ -69,7 +69,7 @@ public abstract class auxx {
 			logfine("RECEIVED : "+ msg);
 			return msg;
 		} 
-		catch (IOException e) {
+		catch (Exception e) {
 			logsevere("RECEIVE failed : ", e);
 			return null;
 	    }		
@@ -135,5 +135,10 @@ public abstract class auxx {
 			list.add(jsonarray.getString(i));
 		
 		return list;
+	}
+	
+	public static int getRandInt(int min,int max){
+		Random rint = new Random();		
+		return rint.nextInt(Math.max(max-min + 1,0)) + min;				
 	}
 }

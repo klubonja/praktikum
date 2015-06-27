@@ -17,7 +17,17 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
@@ -62,13 +72,49 @@ public class IntroView extends StackPane{
 	private Stage stage;
 	private Scene scene;
 	
-	final ImageView imageView = new ImageView(
-		      new Image("http://vignette3.wikia.nocookie.net/ageofempires/images/2/23/Hades.jpg/revision/latest?cb=20110606234954"));
+	BorderStroke defaultStroke = new BorderStroke(Color.DARKSLATEGREY, BorderStrokeStyle.SOLID, 
+			new CornerRadii(4), new BorderWidths(0.5));
+	Border defaultBorder = new Border(defaultStroke);
+	
+	final Image player1 = new Image("http://vignette3.wikia.nocookie.net/ageofempires/images/2/23/Hades.jpg/revision/latest?cb=20110606234954");
+	Image player2 = new Image("http://www.davidrevoy.com/data/images/blog/2012/01/boromir_speedpainting_david-revoy_net.jpg");
+	final Image player3 = new Image("http://vignette3.wikia.nocookie.net/ageofempires/images/2/23/Hades.jpg/revision/latest?cb=20110606234954");
+	final Image player4 = new Image("http://vignette3.wikia.nocookie.net/ageofempires/images/2/23/Hades.jpg/revision/latest?cb=20110606234954");
+	final Image player5 = new Image("http://vignette3.wikia.nocookie.net/ageofempires/images/2/23/Hades.jpg/revision/latest?cb=20110606234954");
+	final Image player6 = new Image("http://vignette3.wikia.nocookie.net/ageofempires/images/2/23/Hades.jpg/revision/latest?cb=20110606234954");
+	
+	final ImageView imageView = new ImageView(player1);
+	
+	final BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
+			false, false, true, false);
+	
+	final BackgroundImage playerOne = new BackgroundImage(player1, BackgroundRepeat.NO_REPEAT, 
+			BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+	final Background playerOneBackground = new Background(playerOne);
+	
+	final BackgroundImage playerTwo = new BackgroundImage(player2, BackgroundRepeat.NO_REPEAT, 
+			BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+	final Background playerTwoBackground = new Background(playerTwo);
+	
+	final BackgroundImage playerThree = new BackgroundImage(player3, BackgroundRepeat.NO_REPEAT, 
+			BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+	final Background playerThreeBackground = new Background(playerThree);
+	
+	final BackgroundImage playerFour = new BackgroundImage(player4, BackgroundRepeat.NO_REPEAT, 
+			BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+	final Background playerFourBackground = new Background(playerFour);
+	
+	final BackgroundImage playerFive = new BackgroundImage(player5, BackgroundRepeat.NO_REPEAT, 
+			BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+	final Background playerFiveBackground = new Background(playerFive);
+	
+	final BackgroundImage playerSix = new BackgroundImage(player6, BackgroundRepeat.NO_REPEAT, 
+			BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+	final Background playerSixBackground = new Background(playerSix);
+	
 	
 	//Constructor of the Class
 	public IntroView(){
-		
-		
 		
 		primary = new GridPane();	
 		primary.setAlignment(Pos.CENTER);
@@ -116,21 +162,25 @@ public class IntroView extends StackPane{
 		selectChar.setStyle("-fx-font-size: 20; -fx-font-weight: bold;");
 		
 		char1 = new Button("");
-		char1.setGraphic(imageView);
-		imageView.setFitHeight(200);
-		imageView.setFitWidth(150);
-		imageView.setPreserveRatio(true);
+		char1.setBackground(playerOneBackground);
 		char1.setPrefSize(150, 200);
 		char1.setMaxSize(150, 200);
-		char2 = new Button("Pl1");
+		//char1.setBorder(defaultBorder);
+		char2 = new Button("");
+		char2.setBackground(playerTwoBackground);
 		char2.setMaxSize(200, 200);
-		char3 = new Button("Pl1");
+		//char2.setBorder(defaultBorder);
+		char3 = new Button("");
+		char3.setBackground(playerThreeBackground);
 		char3.setMaxSize(300, 200);
-		char4 = new Button("Pl1");
+		char4 = new Button("");
+		char4.setBackground(playerFourBackground);
 		char4.setPrefSize(200, 200);
-		char5 = new Button("Pl1");
+		char5 = new Button("");
+		char5.setBackground(playerFiveBackground);
 		char5.setPrefSize(200, 200);
-		char6 = new Button("Pl1");
+		char6 = new Button("");
+		char6.setBackground(playerSixBackground);
 		char6.setPrefSize(200, 200);
 		
 		nickname = new Label("Enter your nickname:");

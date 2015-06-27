@@ -2,6 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
+import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoServer.ClientItem;
 import enums.JoinGameStatus;
@@ -99,8 +100,24 @@ public class CluedoGameServer extends CluedoGame{
 		return false;
 	}
 	
+	public CluedoPlayer getPlayerByClient(ClientItem client){
+		for (CluedoPlayer p: players){
+			if (client.getNick().equals(p.getNick()))
+				return p; 
+		}
+		
+		return null;
+	}
+	
 	public void addWatcher(ClientItem c){
 		watchers.add(c);
+	}
+	
+	public void notifyInit(){
+		for (ClientItem client: participants){
+			CluedoPlayer p = getPlayerByClient(client);
+			client.sendMsg(NetworkMessages.player_cardsMsg(getGameId(),p.getCards()));
+		}
 	}
 	
 	

@@ -1,11 +1,11 @@
 package cluedoServer;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 import cluedoNetworkLayer.CluedoGameServer;
 import enums.JoinGameStatus;
 
-public class GameListServer extends ArrayList<CluedoGameServer> {
+public class GameListServer extends Vector<CluedoGameServer> {
 	
 	public GameListServer() {
 		super();

@@ -1,9 +1,10 @@
 package cluedoClient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-
 import staticClasses.auxx;
+import cluedoNetworkLayer.CluedoGameClient;
 
 public class ServerPool extends ArrayList<ServerItem> {
 	
@@ -25,6 +26,16 @@ public class ServerPool extends ArrayList<ServerItem> {
 		
 	}
 	
+	public ArrayList<CluedoGameClient> getGamesConnected(){
+		ArrayList<CluedoGameClient> assocgames = new ArrayList<CluedoGameClient>();
+		for (ServerItem server: this){
+			assocgames.addAll(server.getGamesByNick(server.getMyNick()));
+		}
+		
+		return assocgames;
+	}
+	
+	
 	public void sendToAll(String msg){
 		for (ServerItem server: this)
 
@@ -41,6 +52,18 @@ public class ServerPool extends ArrayList<ServerItem> {
 		
 		return null;
 	}
+	
+	public boolean remove(ServerItem server){
+		try {
+			server.getSocket().close();
+			return super.remove(server);
+		} catch (IOException e) {
+			auxx.logsevere("Closing Socket of Server"+server.getGroupName()+" failed", e);
+		}
+		return false;
+	}
+	
+	
 	
 	
 	

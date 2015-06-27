@@ -10,6 +10,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Deck;
+import enums.Persons;
+import enums.Weapons;
 
 public class ZugFenster extends Stage{
 
@@ -19,7 +21,7 @@ public class ZugFenster extends Stage{
 	 * @author NedkoChulev
 	 *
 	 */
-		private Deck deck = new Deck();
+		private Deck deck = new Deck(5);
 
 		private Scene scene;
 		private BorderPane fenster;
@@ -52,9 +54,9 @@ public class ZugFenster extends Stage{
 		 * 
 		 */
 		public void setLayout() {
-			personen.getItems().addAll(deck.getPersonenOrdered());
+			personen.getItems().addAll(Persons.getPersonsString());
 			personen.setValue("Taeter");
-			waffen.getItems().addAll(deck.getWaffenOrdered());
+			waffen.getItems().addAll(Weapons.getWeaponsString());
 			waffen.setValue("Waffe");
 			// zimmer.getItems().addAll(deck.getZimmerOrdered());
 			zimmer.setValue("Raum");

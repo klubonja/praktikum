@@ -106,9 +106,6 @@ public class DerBeweger {
 				zielKachel = gui.getKachelArray()[jetzigeReihe+yDistanz][jetzigeSpalte+xDistanz];
 			}
 			
-			auxx.logsevere("y im beweger : " +player.getyCoord() + " ||  x im beweger : " +player.getxCoord());
-			
-			auxx.loginfo("momentane Anweisung laut beweger" +anweisungen[momentaneAnweisung]);
 			
 			Path path = new Path();
 			path.getElements().add(new MoveTo(anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
