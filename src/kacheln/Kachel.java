@@ -42,11 +42,11 @@ public class Kachel extends Label {
 	 * @param xKoordinate xKoordinate im Grid
 	 * @param yKoordinate yKoordinate im Grid
 	 * @param istRaum	ob die Kachel ein Raum ist
-	 * @param orientierung falls die Kachel eine Tür ist, die Orientierung
-	 * @param istTuer ob die Kachel eine Tür ist
+	 * @param orientierung falls die Kachel eine Tï¿½r ist, die Orientierung
+	 * @param istTuer ob die Kachel eine Tï¿½r ist
 	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
 	 */
-	public Kachel (String text, int xKoordinate, int yKoordinate, boolean istRaum,Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
+	public Kachel (String text, int yKoordinate, int xKoordinate, boolean istRaum,Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
 		super(text);
 		this.xKoordinate.set(xKoordinate);
 		this.yKoordinate.set(yKoordinate);
