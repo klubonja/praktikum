@@ -1,9 +1,12 @@
 package view;
 
-import javafx.scene.paint.Color;
+import staticClasses.auxx;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import model.Player;
+import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
+import enums.Persons;
+import enums.PlayerStates;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.DerBeweger;
 import finderOfPaths.Sucher;
@@ -13,7 +16,7 @@ import finderOfPaths.WahnsinnigTollerPathfinder;
 public class GameFramePresenter {
 	
 	private GameFrameView gfv;
-	Player player;
+	private CluedoPlayer player;
 	Circle playerCircle;
 	private Stage stage;
 	
@@ -25,13 +28,12 @@ public class GameFramePresenter {
 	private char [][] anweisungen;
 	
 	
-	public GameFramePresenter(GameFrameView gfv , Player player){
+	public GameFramePresenter(GameFrameView gfv , CluedoPlayer player){
 		
 		this.gfv = gfv;
 		this.player = player;
 		this.playerCircle = new Circle(12);
-		this.playerCircle.setFill(player.getColor());
-		//this.primaryStage = primaryStage;
+		//this.playerCircle.setFill(player.getColor());
 		
 		startEvents();
 		
@@ -40,7 +42,7 @@ public class GameFramePresenter {
 	@SuppressWarnings("unused")
 	public void startEvents(){
 		
-		
+		auxx.logsevere("null? : " +player.getPosition().getY() +player.getPosition().getX());
 	
 		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		HandFramePresenter hand = new HandFramePresenter(gfv.hand);
@@ -48,7 +50,7 @@ public class GameFramePresenter {
 		
 
 		// creates the Player Area and the Movement
-		player = new Player("Hans",4,5, Color.AQUAMARINE);
+		//player = new CluedoPlayer(Persons.red, PlayerStates.do_nothing, new CluedoPosition(5,5));
 		
 		beweger = new DerBeweger(gfv.board, gfv.ballEbene, player);
 		vorschlager = new Vorschlaege(gfv.board, player);

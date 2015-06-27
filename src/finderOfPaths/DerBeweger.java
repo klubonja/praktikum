@@ -2,11 +2,9 @@ package finderOfPaths;
 
 
 
-import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -17,9 +15,9 @@ import kacheln.TuerKachel;
 import model.Player;
 import staticClasses.auxx;
 import view.BoardView;
+import cluedoNetworkLayer.CluedoPlayer;
 import enums.Orientation;
 import enums.Rooms;
-import finderOfPaths.RaumBeweger;
 
 /**
  * @version 25.06.2015
@@ -32,7 +30,7 @@ public class DerBeweger {
 	private BoardView gui;
 	private BallEbene2 ballEbene;
 	
-	private Player player;
+	private CluedoPlayer player;
 	
 	private Orientation [] anweisungen;
 	private Orientation [] anweisungenVonHier;
@@ -64,11 +62,11 @@ public class DerBeweger {
     private Kachel zielKachel;
 	
 	
-	public DerBeweger(BoardView gui, BallEbene2 ballEbene, Player player){
+	public DerBeweger(BoardView gui, BallEbene2 ballEbene, CluedoPlayer player){
 		this.gui = gui;
 		this.ballEbene = ballEbene;
 		this.player = player;
-		anfangsKachel = gui.getKachelArray()[player.getyCoord()][player.getxCoord()];
+		anfangsKachel = gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()];
 
 //		if(anfangsKachel.isIstTuer()){
 //			ausRaumBewegen();
@@ -95,8 +93,8 @@ public class DerBeweger {
 		
 		if (schritte>0){
 			
-			jetzigeSpalte = player.getxCoord();
-			jetzigeReihe = player.getyCoord();
+			jetzigeSpalte = player.getPosition().getX();
+			jetzigeReihe = player.getPosition().getY();
 			
 			distanzBerechnen();
 			
@@ -142,13 +140,13 @@ public class DerBeweger {
 			
 			anfangsKachel = neueAnfangsKachel;
 			auxx.logsevere("anfangs Kachel x : " +anfangsKachel.getxKoordinate() + " ||  y : " +anfangsKachel.getyKoordinate());
-			player.setxCoord(anfangsKachel.getxKoordinate());
-			player.setyCoord(anfangsKachel.getyKoordinate());
+			player.getPosition().setX(anfangsKachel.getxKoordinate());
+			player.getPosition().setY(anfangsKachel.getyKoordinate());
 		}
 	
 		public void positionUpdaten(){
-			player.setyCoord(player.getyCoord() + yDistanz);
-			player.setxCoord(player.getxCoord() + xDistanz);
+			player.getPosition().setY(player.getPosition().getY() + yDistanz);
+			player.getPosition().setX(player.getPosition().getX() + xDistanz);
 		}
 		
 		public void distanzBerechnen(){
@@ -181,14 +179,16 @@ public class DerBeweger {
 		
 		public void anfangsPositionSetzen(){
 
-			startKachel = gui.getKachelArray()[player.getyCoord()][player.getxCoord()];
+			auxx.logsevere("hamana");
+			
+			startKachel = gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()];
 			
 			Path path = new Path();
 			path.getElements().add(new MoveTo(0,0));
-			path.getElements().add(new LineTo(gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutX(), gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutY()));
+			path.getElements().add(new LineTo(gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutX(), gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutY()));
 
 			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(Math.abs(player.getyCoord()) * 500 + Math.abs(player.getxCoord()) * 500));
+			pathTransition.setDuration(Duration.millis(Math.abs(player.getPosition().getY()) * 500 + Math.abs(player.getPosition().getX()) * 500));
 			pathTransition.setNode(spieler);
 			pathTransition.setPath(path);
 			pathTransition.play();
@@ -202,11 +202,11 @@ public class DerBeweger {
 		public void inRaumBewegen(){
 			
 			
-			raumAnfangsKachel = gui.getKachelArray()[player.getyCoord()][player.getxCoord()];
+			raumAnfangsKachel = gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()];
 			
 			System.out.println(" test " + startKachel.getLayoutX());
 			
-			System.out.println("layout y : " + gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutX() +"  layout x : " +gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutY());
+			System.out.println("layout y : " + gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutX() +"  layout x : " +gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutY());
 			
 			Path path = new Path();
 			path.getElements().add(new MoveTo(raumAnfangsKachel.getLayoutX(),raumAnfangsKachel.getLayoutY()));
@@ -224,7 +224,7 @@ public class DerBeweger {
 		public void ausRaumBewegen(){
 			
 			Path path = new Path();
-			path.getElements().add(new MoveTo(gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutX(), gui.getKachelArray()[player.getyCoord()][player.getxCoord()].getLayoutY()));
+			path.getElements().add(new MoveTo(gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutX(), gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutY()));
 			path.getElements().add(new LineTo(anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
 
 			PathTransition pathTransition = new PathTransition();

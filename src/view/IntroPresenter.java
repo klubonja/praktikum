@@ -2,6 +2,7 @@ package view;
 
 import java.util.LinkedList;
 
+import staticClasses.auxx;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -10,19 +11,22 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import model.Player;
+import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
+import enums.Persons;
+import enums.PlayerStates;
 
 public class IntroPresenter {
 	
 	 IntroView view;
-	 Player player;
-	 LinkedList<Player> players;
-	 Player player1;
-	 Player player2;
-	 Player player3;
-	 Player player4;
-	 Player player5;
-	 Player player6;
+	 CluedoPlayer player;
+	 LinkedList<CluedoPlayer> players;
+	 CluedoPlayer player1;
+	 CluedoPlayer player2;
+	 CluedoPlayer player3;
+	 CluedoPlayer player4;
+	 CluedoPlayer player5;
+	 CluedoPlayer player6;
 	 GameFrameView viewPl1;
 	 GameFrameView viewPl2;
 	 GameFrameView viewPl3;
@@ -38,19 +42,6 @@ public class IntroPresenter {
 		
 		this.view = view;
 
-		player1 = new Player("Player1", 0, 0, Color.RED);
-		player2 = new Player("Player2", 0, 0, Color.GREEN);
-		player3 = new Player("Player3", 0, 0, Color.BLUE);
-		player4 = new Player("Player4", 0, 0, Color.YELLOW);
-		player5 = new Player("Player5", 0, 0, Color.WHITE);
-		player6 = new Player("Player6", 0, 0, Color.PURPLE);
-		players = new LinkedList<Player>();
-		players.add(player1);
-		players.add(player2);
-		players.add(player3);
-		players.add(player4);
-		players.add(player5);
-		players.add(player6);
 		
 		view.error.textProperty().bind(errorStr);
 	
@@ -78,8 +69,8 @@ public class IntroPresenter {
 		view.char4.setOnMouseExited(e -> removeEffect(view.char4));
 		view.char5.setOnMouseExited(e -> removeEffect(view.char5));
 		view.char6.setOnMouseExited(e -> removeEffect(view.char6));
-		view.newGame.setOnMouseExited(e -> removeEffect(view.newGame));
-		view.newGame.setOnAction(e -> startNewGame());
+		//view.getNewGame().setOnMouseExited(e -> removeEffect(view.newGame));
+		view.getNewGame().setOnAction(e -> startNewGame());
 		view.quit.setOnAction(e -> quitGame());
 		view.options.setOnAction(e -> optionsFrame());
 		view.back.setOnAction(e -> mainFrame());
@@ -158,17 +149,23 @@ public class IntroPresenter {
 	}
 
 	
-	@SuppressWarnings("unused")
 	public void startNewGame(){
 		
-		try{
+		System.out.println("!!!");
 		
-
-		if(view.pl1.isSelected()){ 
-			this.player = player1;
-		}
+		
+		//auxx.logsevere("null? : " +player.getPosition().getY() +player.getPosition().getX());
+		
+		//try{
+		
+			addPlayers();
+			this.player1 = new CluedoPlayer(Persons.blue, PlayerStates.do_nothing, new CluedoPosition(0,18));
+		//if(view.pl1.isSelected()){ 
+			this.player = this.player1;
+			auxx.logsevere("null im Intro? : " +player1.getPosition().getY() +player1.getPosition().getX());
+		//}
 		if(view.pl2.isSelected()){ 
-			this.player = player2;
+			this.player = this.player2;
 		}
 		if(view.pl3.isSelected()){ 
 			this.player = player3;
@@ -185,18 +182,40 @@ public class IntroPresenter {
 
 		view.close();
 		
-		GameFrameView gameView = new GameFrameView(this.player);
+		auxx.logsevere("null im Intro? : " +player.getPosition().getY() +player.getPosition().getX());
+		
+		//CluedoPlayer playerHans = new CluedoPlayer(Persons.red, PlayerStates.do_nothing, new CluedoPosition(5,5));
+		
+		GameFrameView gameView = new GameFrameView(player1);
 		gameView.start();
-		GameFramePresenter pres = new GameFramePresenter(gameView, this.player);
+		GameFramePresenter pres = new GameFramePresenter(gameView, player1);
 
+//		}
+//		
+//		catch(NullPointerException e){
+//			errorStr.set("Please select a character!"); 
+//			}
+//		
+		
 		}
-		
-		catch(NullPointerException e){
-			errorStr.set("Please select a character!"); 
-			}
-		
-		
-		}
+	
+	public void addPlayers(){
+		this.player1 = new CluedoPlayer(Persons.blue, PlayerStates.do_nothing, new CluedoPosition(0,18));
+		this.player2 = new CluedoPlayer(Persons.green, PlayerStates.do_nothing, new CluedoPosition(9,24));
+		this.player3 = new CluedoPlayer(Persons.purple, PlayerStates.do_nothing, new CluedoPosition(0,5));
+		this.player4 = new CluedoPlayer(Persons.red, PlayerStates.do_nothing, new CluedoPosition(16,0));
+		this.player5 = new CluedoPlayer(Persons.white, PlayerStates.do_nothing, new CluedoPosition(23,17));
+		this.player6 = new CluedoPlayer(Persons.yellow, PlayerStates.do_nothing, new CluedoPosition(23,7));
+		players = new LinkedList<CluedoPlayer>();
+		players.add(player1);
+		players.add(player2);
+		players.add(player3);
+		players.add(player4);
+		players.add(player5);
+		players.add(player6);
+
+	}
+	
 	
 	public void quitGame(){
 		Platform.exit();

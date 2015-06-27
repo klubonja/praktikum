@@ -1,10 +1,8 @@
 package finderOfPaths;
 
 import kacheln.Kachel;
-import kacheln.RaumKachel;
-import kacheln.TuerKachel;
-import model.Player;
 import view.BoardView;
+import cluedoNetworkLayer.CluedoPlayer;
 import enums.Orientation;
 
 /**
@@ -70,7 +68,7 @@ public class WahnsinnigTollerPathfinder {
 	/**
 	 * Der Model-Spieler
 	 */
-	private Player player;
+	private CluedoPlayer player;
 	
 	private int schritte;
 	
@@ -84,7 +82,7 @@ public class WahnsinnigTollerPathfinder {
 	 * @param gui
 	 * @param ballEbene
 	 */
-	public WahnsinnigTollerPathfinder(BoardView gui, BallEbene2 ballEbene, Player player){
+	public WahnsinnigTollerPathfinder(BoardView gui, BallEbene2 ballEbene, CluedoPlayer player){
 		
 		this.gui = gui;
 		this.ballEbene = ballEbene;
@@ -98,7 +96,7 @@ public class WahnsinnigTollerPathfinder {
 	public void findThatPathBetter(int wuerfelZahl){
 
         // Die Werte werden auf die Urpsrungsposition gesetzt.
-		reset(player.getyCoord(),player.getxCoord());
+		reset(player.getPosition().getY(),player.getPosition().getX());
         
         checkForRoom();
         
@@ -107,16 +105,16 @@ public class WahnsinnigTollerPathfinder {
 	        	
 	        	Kachel momentaneKachel = suchKacheln[welcheKachel];
 	        	
-	        	player.setyCoord(momentaneKachel.getyKoordinate());
-	        	player.setxCoord(momentaneKachel.getxKoordinate());
+	        	player.getPosition().setY(momentaneKachel.getyKoordinate());
+	        	player.getPosition().setX(momentaneKachel.getxKoordinate());
 	        	
-	        	xPositionen[welcheKachel] = player.getxCoord();
-	        	yPositionen[welcheKachel] = player.getyCoord();
+	        	xPositionen[welcheKachel] = player.getPosition().getX();
+	        	yPositionen[welcheKachel] = player.getPosition().getY();
 	        	
-	        	jetzigeReihe = player.getyCoord();
-	        	jetzigeSpalte = player.getxCoord();
+	        	jetzigeReihe = player.getPosition().getY();
+	        	jetzigeSpalte = player.getPosition().getX();
 	        	
-	        	System.out.println((welcheKachel+1) +". Durchgang" +" <<<>>> player y : " +player.getyCoord() +"   ||   x : " +player.getxCoord());
+	        	System.out.println((welcheKachel+1) +". Durchgang" +" <<<>>> player y : " +player.getPosition().getY() +"   ||   x : " +player.getPosition().getX());
 	        	
 	        	ausgangsPosition(jetzigeReihe, jetzigeSpalte);
 	            

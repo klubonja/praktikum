@@ -1,29 +1,22 @@
 package finderOfPaths;
 
 
-import view.BoardView;
-import javafx.animation.PathTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
-import javafx.util.Duration;
-import enums.Rooms;
 import kacheln.Kachel;
 import kacheln.TuerKachel;
 import model.Player;
+import view.BoardView;
+import cluedoNetworkLayer.CluedoPlayer;
+import enums.Rooms;
 
 public class RaumBeweger {
 
 private BoardView gui;
-private Player player;
+private CluedoPlayer player;
 private TuerKachel aufenthalt;
 private Kachel zielImRaum;
 
 
-	public RaumBeweger(BoardView gui, Player player, TuerKachel aufenthalt){
+	public RaumBeweger(BoardView gui, CluedoPlayer player, TuerKachel aufenthalt){
 		this.gui = gui;
 		this.player = player;
 		this.aufenthalt = aufenthalt;
@@ -69,8 +62,8 @@ private Kachel zielImRaum;
 		}
 	}
 	
-	public Kachel positionInRaum(Player player2, Rooms raum) {
-		if(player.getFirstName() == "Hans"){
+	public Kachel positionInRaum(CluedoPlayer player2, Rooms raum) {
+		if(player.getCluedoPerson().getColor() == "Hans"){
 			if(raum == Rooms.hall){
 				System.out.println("haaaaaaaaaaaaall");
 				zielImRaum.setKoordinate(11);
@@ -132,7 +125,7 @@ private Kachel zielImRaum;
 				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
 			}
 		}
-		else if(player.getFirstName() == "blue"){
+		else if(player.getCluedoPerson().getColor() == "blue"){
 			if(raum == Rooms.hall){
 				zielImRaum.setKoordinate(11);
 				zielImRaum.setyKoordinate(2);
@@ -185,7 +178,7 @@ private Kachel zielImRaum;
 			}
 		
 		}
-		else if(player.getFirstName() == "green"){
+		else if(player.getCluedoPerson().getColor() == "green"){
 			if(raum == Rooms.hall){
 				zielImRaum.setKoordinate(11);
 				zielImRaum.setyKoordinate(3);
@@ -238,7 +231,7 @@ private Kachel zielImRaum;
 			}
 		
 		}
-		else if(player.getFirstName() == "white"){
+		else if(player.getCluedoPerson().getColor() == "white"){
 			if(raum == Rooms.hall){
 				zielImRaum.setKoordinate(12);
 				zielImRaum.setyKoordinate(1);
@@ -291,7 +284,7 @@ private Kachel zielImRaum;
 			}
 		
 		}
-		else if(player.getFirstName() == "yellow"){
+		else if(player.getCluedoPerson().getColor() == "yellow"){
 			if(raum == Rooms.hall){
 				zielImRaum.setKoordinate(12);
 				zielImRaum.setyKoordinate(2);
@@ -344,7 +337,7 @@ private Kachel zielImRaum;
 			}
 		
 		}
-		else if(player.getFirstName() == "red"  || player.getFirstName() == "Peter"){
+		else if(player.getCluedoPerson().getColor() == "red"  || player.getCluedoPerson().getColor() == "Peter"){
 			if(raum == Rooms.hall){
 				zielImRaum.setKoordinate(12);
 				zielImRaum.setyKoordinate(3);

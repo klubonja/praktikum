@@ -3,11 +3,9 @@ package finderOfPaths;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import kacheln.Kachel;
-import model.Player;
 import staticClasses.auxx;
 import view.BoardView;
-import view.DicePresenter;
-import view.DiceView;
+import cluedoNetworkLayer.CluedoPlayer;
 import enums.Orientation;
 
 /**
@@ -36,7 +34,7 @@ public class Ausloeser {
 	
 	private int schritte;
 	
-	private Player player;
+	private CluedoPlayer player;
 	
 	private int xInsgesamt;
 	private int yInsgesamt;
@@ -52,7 +50,7 @@ public class Ausloeser {
 	 * @param ballEbene um auf die click-events zugreifen zu k�nnen
 	 * @param pathfinder um den Weg berechnen zu lassen
 	 */
-	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher, Player player){
+	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher, CluedoPlayer player){
 		this.gui = gui;
 		this.ballEbene = ballEbene;
 		this.beweger = beweger;

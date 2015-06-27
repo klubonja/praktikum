@@ -1,7 +1,7 @@
 package finderOfPaths;
 
-import model.Player;
 import view.BoardView;
+import cluedoNetworkLayer.CluedoPlayer;
 
 /**
  * @version 25.06.2015
@@ -21,12 +21,12 @@ public class Sucher {
 	
 	private int wuerfelZahl;
 	
-	private Player player;
+	private CluedoPlayer player;
 	
 	private char [][] anweisungen;
 	 
 	
-	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  Player player, char [][]anweisungen){
+	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  CluedoPlayer player, char [][]anweisungen){
 
 		this.boardView = boardView;
 		this.ballEbene = ballEbene;

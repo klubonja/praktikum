@@ -1,12 +1,12 @@
 package finderOfPaths;
 
-import enums.Orientation;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import kacheln.Kachel;
 import model.Player;
-import staticClasses.auxx;
 import view.BoardView;
+import cluedoNetworkLayer.CluedoPlayer;
+import enums.Orientation;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class Vorschlaege {
 	private int xDistanz;
 	private int yDistanz;
 	
-	private Player player;
+	private CluedoPlayer player;
 	
 	private Background [][] markierteHintergruende = new Background [25][24];
 	
@@ -44,7 +44,7 @@ public class Vorschlaege {
 	 * Erstellt einen Vorschlager, welcher eine gui braucht, um den Kacheln M�glichkeiten zuzuweisen.
 	 * @param gui die GUI, in welcher Kacheln informationen zugewiesen bekommen.
 	 */
-	public Vorschlaege(BoardView gui, Player player){
+	public Vorschlaege(BoardView gui, CluedoPlayer player){
 		
 		this.gui = gui;
 		this.player = player;
@@ -108,8 +108,8 @@ public class Vorschlaege {
 		}
 		
 		else {
-			jetzigeSpalte = player.getxCoord();
-			jetzigeReihe = player.getyCoord();
+			jetzigeSpalte = player.getPosition().getX();
+			jetzigeReihe = player.getPosition().getY();
 			
 			this.moeglichkeiten = moeglichkeitenEingabe;
 			

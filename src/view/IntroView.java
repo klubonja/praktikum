@@ -55,7 +55,7 @@ public class IntroView extends StackPane{
 	RadioButton pl6;
 	Label nickname;
 	TextField nick;
-	Button newGame;
+	private Button newGame;
 	Button options;
 	Button quit;
 	DropShadow labelShadow;
