@@ -21,12 +21,12 @@ public class IntroPresenter {
 	 IntroView view;
 	 CluedoPlayer player;
 	 LinkedList<CluedoPlayer> players;
-	 CluedoPlayer player1;
-	 CluedoPlayer player2;
-	 CluedoPlayer player3;
-	 CluedoPlayer player4;
-	 CluedoPlayer player5;
-	 CluedoPlayer player6;
+//	 CluedoPlayer player1;
+//	 CluedoPlayer player2;
+//	 CluedoPlayer player3;
+//	 CluedoPlayer player4;
+//	 CluedoPlayer player5;
+//	 CluedoPlayer player6;
 	 GameFrameView viewPl1;
 	 GameFrameView viewPl2;
 	 GameFrameView viewPl3;
@@ -157,38 +157,43 @@ public class IntroPresenter {
 		//auxx.logsevere("null? : " +player.getPosition().getY() +player.getPosition().getX());
 		
 		//try{
-		
-			addPlayers();
-			this.player1 = new CluedoPlayer(Persons.blue, PlayerStates.do_nothing, new CluedoPosition(0,18));
-		//if(view.pl1.isSelected()){ 
-			this.player = this.player1;
-			auxx.logsevere("null im Intro? : " +player1.getPosition().getY() +player1.getPosition().getX());
+		CluedoPlayer playerHans = new CluedoPlayer(null,null,null);
+			//addPlayers();
+		CluedoPlayer player1 = new CluedoPlayer(Persons.blue, PlayerStates.do_nothing, new CluedoPosition(0,18));
+		CluedoPlayer player2 = new CluedoPlayer(Persons.green, PlayerStates.do_nothing, new CluedoPosition(9,24));
+		CluedoPlayer player3 = new CluedoPlayer(Persons.purple, PlayerStates.do_nothing, new CluedoPosition(0,5));
+		CluedoPlayer player4 = new CluedoPlayer(Persons.red, PlayerStates.do_nothing, new CluedoPosition(16,0));
+		CluedoPlayer player5 = new CluedoPlayer(Persons.white, PlayerStates.do_nothing, new CluedoPosition(23,17));
+		CluedoPlayer player6 = new CluedoPlayer(Persons.yellow, PlayerStates.do_nothing, new CluedoPosition(23,7));
 		//}
+		if(view.pl1.isSelected()){ 
+			playerHans = new CluedoPlayer(Persons.blue, PlayerStates.do_nothing, new CluedoPosition(0,18));
+		}
 		if(view.pl2.isSelected()){ 
-			this.player = this.player2;
+			playerHans = player2;
 		}
 		if(view.pl3.isSelected()){ 
-			this.player = player3;
+			playerHans = player3;
 		}
 		if(view.pl4.isSelected()){ 
-			this.player = player4;
+			playerHans = player4;
 		}
 		if(view.pl5.isSelected()){ 
-			this.player = player5;
+			playerHans = player5;
 		}
 		if(view.pl6.isSelected()){ 
-			this.player = player6;
+			playerHans = player6;
 		}
 
 		view.close();
 		
-		auxx.logsevere("null im Intro? : " +player.getPosition().getY() +player.getPosition().getX());
+		auxx.logsevere("null im Intro? : " +playerHans.getPosition().getY() +playerHans.getPosition().getX());
 		
 		//CluedoPlayer playerHans = new CluedoPlayer(Persons.red, PlayerStates.do_nothing, new CluedoPosition(5,5));
 		
-		GameFrameView gameView = new GameFrameView(player1);
+		GameFrameView gameView = new GameFrameView(playerHans);
 		gameView.start();
-		GameFramePresenter pres = new GameFramePresenter(gameView, player1);
+		GameFramePresenter pres = new GameFramePresenter(gameView, playerHans);
 
 //		}
 //		
@@ -199,22 +204,22 @@ public class IntroPresenter {
 		
 		}
 	
-	public void addPlayers(){
-		this.player1 = new CluedoPlayer(Persons.blue, PlayerStates.do_nothing, new CluedoPosition(0,18));
-		this.player2 = new CluedoPlayer(Persons.green, PlayerStates.do_nothing, new CluedoPosition(9,24));
-		this.player3 = new CluedoPlayer(Persons.purple, PlayerStates.do_nothing, new CluedoPosition(0,5));
-		this.player4 = new CluedoPlayer(Persons.red, PlayerStates.do_nothing, new CluedoPosition(16,0));
-		this.player5 = new CluedoPlayer(Persons.white, PlayerStates.do_nothing, new CluedoPosition(23,17));
-		this.player6 = new CluedoPlayer(Persons.yellow, PlayerStates.do_nothing, new CluedoPosition(23,7));
-		players = new LinkedList<CluedoPlayer>();
-		players.add(player1);
-		players.add(player2);
-		players.add(player3);
-		players.add(player4);
-		players.add(player5);
-		players.add(player6);
-
-	}
+//	public void addPlayers(){
+//		this.player1 = new CluedoPlayer(Persons.blue, PlayerStates.do_nothing, new CluedoPosition(0,18));
+//		this.player2 = new CluedoPlayer(Persons.green, PlayerStates.do_nothing, new CluedoPosition(9,24));
+//		this.player3 = new CluedoPlayer(Persons.purple, PlayerStates.do_nothing, new CluedoPosition(0,5));
+//		this.player4 = new CluedoPlayer(Persons.red, PlayerStates.do_nothing, new CluedoPosition(16,0));
+//		this.player5 = new CluedoPlayer(Persons.white, PlayerStates.do_nothing, new CluedoPosition(23,17));
+//		this.player6 = new CluedoPlayer(Persons.yellow, PlayerStates.do_nothing, new CluedoPosition(23,7));
+//		players = new LinkedList<CluedoPlayer>();
+//		players.add(player1);
+//		players.add(player2);
+//		players.add(player3);
+//		players.add(player4);
+//		players.add(player5);
+//		players.add(player6);
+//
+//	}
 	
 	
 	public void quitGame(){
