@@ -123,7 +123,7 @@ public class DerBeweger {
 					anfangsKachel = zielKachel;
 					schritte--;
 					if((schritte == 0 && anfangsKachel.isIstTuer()) || (schritte != 0 && nullSchritte != 0 && anfangsKachel.isIstTuer())) {
-						anfangsTuerKachel = (TuerKachel) gui.getKachelArray()[anfangsKachel.getxKoordinate()][anfangsKachel.getyKoordinate()];
+						anfangsTuerKachel = (TuerKachel) gui.getKachelArray()[anfangsKachel.getyKoordinate()][anfangsKachel.getxKoordinate()];
 						RaumBeweger rB = new RaumBeweger(gui, player, anfangsTuerKachel);
 						Rooms room = rB.checkRaum(anfangsTuerKachel);
 						raumZielKachel = rB.positionInRaum(player, room);

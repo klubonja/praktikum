@@ -80,7 +80,6 @@ public class Vorschlaege {
 				jetzigeReihe = yPositionen[counter];
 				moeglichkeiten = mehrereMoeglichkeiten[counter];
 		
-				auxx.logsevere("y im vorschlager : " +jetzigeReihe + " ||  x im vorschlager : " +jetzigeSpalte);
 				
 				for (counterAussen = 0; counterAussen < moeglichkeiten.length; counterAussen++ ){
 					
@@ -111,8 +110,6 @@ public class Vorschlaege {
 		else {
 			jetzigeSpalte = player.getxCoord();
 			jetzigeReihe = player.getyCoord();
-			
-			auxx.logsevere("y im vorschlager : " +jetzigeReihe + " ||  x im vorschlager : " +jetzigeSpalte);
 			
 			this.moeglichkeiten = moeglichkeitenEingabe;
 			
@@ -224,7 +221,7 @@ public class Vorschlaege {
 //			System.out.println();
 			
 			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
-	
+			
 			Kachel vonHier = gui.getKachelArray()[yPositionen[counter]][xPositionen[counter]];
 			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
 			
@@ -240,8 +237,6 @@ public class Vorschlaege {
 //				System.out.print(moeglichkeiten[counterAussen][i]);
 //			}
 //			System.out.println();
-			
-			auxx.loginfo("vorschlager sagt y = " +jetzigeReihe +"  ||  x = " +jetzigeSpalte);
 			
 			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 	

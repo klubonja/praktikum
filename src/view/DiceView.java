@@ -22,7 +22,6 @@ public class DiceView extends GridPane{
 
 
 	private Button rollBtn;
-	private Button moveBtn;
 	private ImageView d1;
 	private ImageView d2;
 	
@@ -60,15 +59,6 @@ public class DiceView extends GridPane{
 		rollBtn.setMinSize(80, 25);
 		rollBtn.setMaxSize(80, 25);
 		
-		//Create the move button and edit it.
-		moveBtn = new Button("Move!");
-		GridPane.setConstraints(moveBtn,0,1);
-		GridPane.setColumnSpan(moveBtn, 2);
-		GridPane.setHalignment(moveBtn, HPos.CENTER);
-		GridPane.setValignment(moveBtn, VPos.BOTTOM);
-		moveBtn.setPrefSize(80, 25);
-		moveBtn.setMinSize(80, 25);
-		moveBtn.setMaxSize(80, 25);
 		
 		//Creates an ImageView for the first dice.
 		d1 = new ImageView();
@@ -103,14 +93,6 @@ public class DiceView extends GridPane{
 		this.rollBtn = rollBtn;
 	}
 
-
-	public Button getmoveBtn() {
-		return moveBtn;
-	}
-
-	public void setmoveBtn(Button moveBtn) {
-		this.moveBtn = moveBtn;
-	}
 
 	public ImageView getD1() {
 		return d1;

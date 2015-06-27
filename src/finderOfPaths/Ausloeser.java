@@ -45,8 +45,6 @@ public class Ausloeser {
 	
 	private int wuerfelZahl;
 	
-	private DicePresenter dicePresenter;
-	
 	/**
 	 * Konstruktor f�r den Ausloeser, welcher ballEbenen-clicks mit Bewegungen verlinkt.
 	 * @param gui um aufs KachelArray zuzugreifen
@@ -54,14 +52,13 @@ public class Ausloeser {
 	 * @param ballEbene um auf die click-events zugreifen zu k�nnen
 	 * @param pathfinder um den Weg berechnen zu lassen
 	 */
-	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher, Player player, DicePresenter dicePresenter){
+	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher, Player player){
 		this.gui = gui;
 		this.ballEbene = ballEbene;
 		this.beweger = beweger;
 		this.pathfinder = pathfinder;
 		this.sucher = sucher;
 		this.player = player;
-		this.dicePresenter = dicePresenter;
 	}
 	
 	/**
@@ -74,8 +71,6 @@ public class Ausloeser {
 			public void handle(MouseEvent event) {
 				click(event);
 			}});
-		ballEbene.getWuerfeln().setOnMouseClicked(e -> wuerfeln());
-		ballEbene.getBeginnen().setOnMouseClicked(e -> beweger.anfangsPositionSetzen());
 	}
 	
 	/**
@@ -92,26 +87,6 @@ public class Ausloeser {
 			}
 		}
 		return counter;
-	}
-	
-	/**
-	 * Testmethode zum W�rfeln
-	 */
-	public void wuerfeln(){
-		gui.resetBackground();
-		gui.resetMoeglichkeiten();
-		wuerfelZahl = (1 + (int)(Math.random()*6)) + (1 + (int)(Math.random()*6)) ;
-		//wuerfelZahl = dicePresenter.getMove();
-		System.out.println("==================================");
-		System.out.println("==================================");
-		System.out.println("Würfelzahl : " +wuerfelZahl);
-		System.out.println("==================================");
-		System.out.println("==================================");
-		
-		
-		sucher.suchen(wuerfelZahl);
-		zuweisung();
-		gewuerfelt = true;
 	}
 	
 	/**
@@ -245,5 +220,15 @@ public class Ausloeser {
 			anweisungenOrientations[i] = null;
 		}
 	}
+
+	public boolean isGewuerfelt() {
+		return gewuerfelt;
+	}
+
+	public void setGewuerfelt(boolean gewuerfelt) {
+		this.gewuerfelt = gewuerfelt;
+	}
+
+	
 	
 }

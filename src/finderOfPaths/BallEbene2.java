@@ -25,9 +25,6 @@ public class BallEbene2 extends GridPane{
 	private Stage stage;
 	private Scene scene;
 	
-	private Button wuerfeln;
-	private Button beginnen;
-	
 	private Kachel [][] kachelArray;
 	
 	private char [] keineMoeglichkeiten;
@@ -46,19 +43,7 @@ public class BallEbene2 extends GridPane{
 	
 	public void layoutStuff(){
 		
-		beginnen = new Button("!");
 		
-		wuerfeln = new Button("");
-		this.add(wuerfeln, 1, 1);
-//		this.add(beginnen, 2, 2);
-		wuerfeln.setMaxHeight(29);
-		wuerfeln.setMaxWidth(29);
-		wuerfeln.setMinHeight(29);
-		wuerfeln.setMinWidth(29);
-		beginnen.setMaxHeight(29);
-		beginnen.setMaxWidth(29);
-		beginnen.setMinHeight(29);
-		beginnen.setMinWidth(29);
 		
 		BackgroundFill fills = new BackgroundFill(Color.TRANSPARENT, null, null);
 		Background hintergrund = new Background(fills);
@@ -90,24 +75,4 @@ public class BallEbene2 extends GridPane{
 		this.spieler = spieler;
 	}
 
-	public Button getWuerfeln() {
-		return wuerfeln;
-	}
-
-	public void setWuerfeln(Button wuerfeln) {
-		this.wuerfeln = wuerfeln;
-	}
-
-	public Button getBeginnen() {
-		return beginnen;
-	}
-
-	public void setBeginnen(Button beginnen) {
-		this.beginnen = beginnen;
-	}
-
-	
-	
-
-	
 }

@@ -40,7 +40,7 @@ public class GameFramePresenter {
 	@SuppressWarnings("unused")
 	public void startEvents(){
 		
-		DicePresenter dice = new DicePresenter(gfv.dice);
+		
 	
 		NotesPresenter notes = new NotesPresenter(gfv.notes);
 		HandFramePresenter hand = new HandFramePresenter(gfv.hand);
@@ -55,7 +55,9 @@ public class GameFramePresenter {
 		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene, player);
 		
 		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,  player, anweisungen);
-		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher, player, dice);
+		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher, player);
+		
+		DicePresenter dice = new DicePresenter(gfv.dice, ausloeser, gfv.board, sucher);
 		
 		test();
 		

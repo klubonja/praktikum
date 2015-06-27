@@ -4,6 +4,8 @@ package view;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import finderOfPaths.Ausloeser;
+import finderOfPaths.Sucher;
 
 /**
  * 
@@ -18,18 +20,25 @@ public class DicePresenter {
 	
 	public static int diceCounter = 0;
 	
+	private int [] dice = new int [2];
+	
 	DiceView view;
 	
-	public DicePresenter(DiceView view){
-		
+	private Ausloeser ausloeser;
+	private BoardView gui;
+	private Sucher sucher;
+	
+	public DicePresenter(DiceView view, Ausloeser ausloeser, BoardView gui, Sucher sucher){
+		this.ausloeser = ausloeser;
 		this.view = view;
+		this.sucher = sucher;
+		this.gui = gui;
 		startEvents();
 	}
 	
 	public void startEvents(){
 		
 		view.getrollBtn().setOnMouseClicked(e -> rollTheDice());
-		view.getmoveBtn().setOnAction(e -> getMove());
 	}
 	
 	public void rollTheDice(){
@@ -50,6 +59,11 @@ public class DicePresenter {
 		
 		int first = 1 + (int)(Math.random()*6);
 		int second = 1 + (int)(Math.random()*6);
+		if (diceCounter == 10){
+			dice[0] = first;
+			dice[1] = second;
+			wuerfeln();
+		}
 		
 		switch(first){
 		case 1: view.getD1().setImage(view.getDice1());break;
@@ -70,68 +84,38 @@ public class DicePresenter {
 		
 		view.getChildren().addAll(view.getD1(), view.getD2());
 		
-		if (diceCounter == 10){
-			
-			view.getChildren().remove(view.getrollBtn());
-			view.getChildren().add(view.getmoveBtn());
-			}
-		
 		}
 	
+
+	/**
+	 * Testmethode zum Würfeln
+	 */
+	public void wuerfeln(){
+		gui.resetBackground();
+		gui.resetMoeglichkeiten();
+		ausloeser.setWuerfelZahl(dice[0] + dice[1]);
+		System.out.println("==================================");
+		System.out.println("==================================");
+		System.out.println("Würfelzahl : " +ausloeser.getWuerfelZahl());
+		System.out.println("==================================");
+		System.out.println("==================================");
+		
+		
+		sucher.suchen(ausloeser.getWuerfelZahl());
+		ausloeser.zuweisung();
+		ausloeser.setGewuerfelt(true);
+	}
 	
-	public int getMove(){
-		 
-		int a = 0;
-		int b = 0;
-		
-		if(view.getD1().getImage().equals(view.getDice1())){
-			a=1;
-		}
-		if(view.getD1().getImage().equals(view.getDice2())){
-			a=2;
-		}
-		if(view.getD1().getImage().equals(view.getDice3())){
-			a=3;
-		}
-		if(view.getD1().getImage().equals(view.getDice4())){
-			a=4;
-		}
-		if(view.getD1().getImage().equals(view.getDice5())){
-			a=5;
-		}
-		if(view.getD1().getImage().equals(view.getDice6())){
-			a=6;
-		}
-		
-		if(view.getD2().getImage().equals(view.getDice1())){
-			b=1;
-		}
-		if(view.getD2().getImage().equals(view.getDice2())){
-			b=2;
-		}
-		if(view.getD2().getImage().equals(view.getDice3())){
-			b=3;
-		}
-		if(view.getD2().getImage().equals(view.getDice4())){
-			b=4;
-		}
-		if(view.getD2().getImage().equals(view.getDice5())){
-			b=5;
-		}
-		if(view.getD2().getImage().equals(view.getDice6())){
-			b=6;
-		}
-		
-		
-		
-		System.out.println(a + b);
-		view.getChildren().remove(view.getmoveBtn());
-		view.getChildren().add(view.getrollBtn());
-		return a + b;
-		
-		
-		
+
+	public int[] getDice() {
+		return dice;
 	}
 
+	public void setDice(int[] dice) {
+		this.dice = dice;
+	}
+
+	
+	
 }
 

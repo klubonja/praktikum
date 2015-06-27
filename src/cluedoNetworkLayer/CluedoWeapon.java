@@ -25,6 +25,7 @@ public class CluedoWeapon {
 	}
 	
 	
+	
 	public void setPosition(int x, int y) {
 		this.position.setX(x);
 		this.position.setY(y);
