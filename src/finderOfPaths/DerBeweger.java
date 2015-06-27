@@ -15,6 +15,7 @@ import javafx.util.Duration;
 import kacheln.Kachel;
 import kacheln.TuerKachel;
 import model.Player;
+import staticClasses.auxx;
 import view.BoardView;
 import enums.Orientation;
 import enums.Rooms;
@@ -105,7 +106,9 @@ public class DerBeweger {
 				zielKachel = gui.getKachelArray()[jetzigeReihe+yDistanz][jetzigeSpalte+xDistanz];
 			}
 			
+			auxx.logsevere("y im beweger : " +player.getyCoord() + " ||  x im beweger : " +player.getxCoord());
 			
+			auxx.loginfo("momentane Anweisung laut beweger" +anweisungen[momentaneAnweisung]);
 			
 			Path path = new Path();
 			path.getElements().add(new MoveTo(anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
@@ -113,8 +116,8 @@ public class DerBeweger {
 			path.getElements().add(new LineTo(zielKachel.getLayoutX(), zielKachel.getLayoutY()));
 
 			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 100 + Math.abs(xDistanz)
-					* 100));
+			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 300 + Math.abs(xDistanz)
+					 * 300));
 			pathTransition.setNode(spieler);
 			pathTransition.setPath(path);
 			pathTransition.play();
@@ -139,7 +142,9 @@ public class DerBeweger {
 		}
 
 		public void anfangsKachelSetzen(Kachel neueAnfangsKachel){
+			
 			anfangsKachel = neueAnfangsKachel;
+			auxx.logsevere("anfangs Kachel x : " +anfangsKachel.getxKoordinate() + " ||  y : " +anfangsKachel.getyKoordinate());
 			player.setxCoord(anfangsKachel.getxKoordinate());
 			player.setyCoord(anfangsKachel.getyKoordinate());
 		}

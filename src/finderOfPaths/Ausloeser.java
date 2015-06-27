@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import kacheln.Kachel;
 import model.Player;
+import staticClasses.auxx;
 import view.BoardView;
 import view.DicePresenter;
 import view.DiceView;
@@ -105,6 +106,8 @@ public class Ausloeser {
 		System.out.println("Würfelzahl : " +wuerfelZahl);
 		System.out.println("==================================");
 		System.out.println("==================================");
+		
+		
 		sucher.suchen(wuerfelZahl);
 		zuweisung();
 		gewuerfelt = true;
@@ -133,6 +136,8 @@ public class Ausloeser {
 								
 								Kachel startKachel = momentaneKachel.getVonHier();
 								startKachel.setVonHier(null);
+								
+								auxx.logsevere("anfangs Kachel laut Auslöser x : " +gui.getColumnIndex(startKachel) +"  ||  y : " +gui.getRowIndex(startKachel));
 								
 								resetAnweisungen();
 								anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
