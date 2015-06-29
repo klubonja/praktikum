@@ -94,6 +94,10 @@ public class Communicater {
 		/////////////////////////////////////
 	}
 	
+	public void kill(){
+		gameView.close();
+	}
+	
 	/*
 	 * (check) start game 
 	 * roll dice --> letztes Bild ihre Würfel-Kombination und dann pathfinder / sucher / vorschlager "losschicken"

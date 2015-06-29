@@ -221,7 +221,9 @@ public class CluedoGame {
 		
 	}
 	
-	
+	public void killGame(){
+		communicater.kill();
+	}
 	
 	
 	
