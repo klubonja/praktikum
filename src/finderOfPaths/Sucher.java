@@ -21,19 +21,20 @@ public class Sucher {
 	
 	private int wuerfelZahl;
 	
-	private CluedoPlayer player;
+	private CluedoPlayer currentPlayer;
 	
 	private char [][] anweisungen;
 	 
 	
-	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  CluedoPlayer player, char [][]anweisungen){
+	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  char [][]anweisungen){
 
 		this.boardView = boardView;
 		this.ballEbene = ballEbene;
 		this.beweger = beweger;
 		this.vorschlager = vorschlager;
 		this.pathfinder = pathfinder;
-		this.player = player;
+		this.currentPlayer = (CluedoPlayer) 
+		GanzTolleSpielerliste.playerManager.get(0);
 		this.anweisungen = anweisungen;
 		
 	}
@@ -41,6 +42,9 @@ public class Sucher {
 	
 	public void suchen(int wuerfelZahlEingabe){
 		this.wuerfelZahl = wuerfelZahlEingabe;
+		
+		setToNextPlayer();
+		
 		pathfinder.findThatPathBetter(wuerfelZahl);
 		
 		anweisungen = pathfinder.getMoeglichkeiten();		
@@ -53,6 +57,10 @@ public class Sucher {
 		pathfinder.setTuerCounter(0);
 	}
 	
-	
+	public void setToNextPlayer(){
+		pathfinder.setCurrentPlayer((CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject());
+		vorschlager.setCurrentPlayer((CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject());
+		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject();
+	}
 	
 }

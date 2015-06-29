@@ -28,6 +28,9 @@ public class DicePresenter {
 	private BoardView gui;
 	private Sucher sucher;
 	
+	private int zielWuerfelEins;
+	private int zielWuerfelZwei;
+	
 	public DicePresenter(DiceView view, Ausloeser ausloeser, BoardView gui, Sucher sucher){
 		this.ausloeser = ausloeser;
 		this.view = view;
@@ -43,14 +46,25 @@ public class DicePresenter {
 	
 	public void rollTheDice(){
 		diceCounter = 0;
-		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame());
+		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("yourself"));
 		Timeline t = new Timeline(keyFrame);
 		t.setCycleCount(10);
 		t.play();
 		
 		}
 	
-	public void changeFrame(){
+	public void rollTheDiceForSomeone(int ersterWuerfel, int zweiterWuerfel){
+		this.zielWuerfelEins = ersterWuerfel;
+		this.zielWuerfelZwei = zweiterWuerfel;
+		diceCounter = 0;
+		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("someone"));
+		Timeline t = new Timeline(keyFrame);
+		t.setCycleCount(10);
+		t.play();
+		
+	}
+	
+	public void changeFrame(String who){
 		
 		diceCounter = diceCounter + 1;
 		
@@ -59,6 +73,12 @@ public class DicePresenter {
 		
 		int first = 1 + (int)(Math.random()*6);
 		int second = 1 + (int)(Math.random()*6);
+		
+		if (who == "someone" && diceCounter == 10){
+			first = zielWuerfelEins;
+			second = zielWuerfelZwei;
+		}
+		
 		if (diceCounter == 10){
 			dice[0] = first;
 			dice[1] = second;

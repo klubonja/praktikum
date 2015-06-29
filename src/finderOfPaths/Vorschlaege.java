@@ -3,7 +3,6 @@ package finderOfPaths;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import kacheln.Kachel;
-import model.Player;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Orientation;
@@ -36,7 +35,7 @@ public class Vorschlaege {
 	private int xDistanz;
 	private int yDistanz;
 	
-	private CluedoPlayer player;
+	private CluedoPlayer currentPlayer;
 	
 	private Background [][] markierteHintergruende = new Background [25][24];
 	
@@ -44,12 +43,12 @@ public class Vorschlaege {
 	 * Erstellt einen Vorschlager, welcher eine gui braucht, um den Kacheln M�glichkeiten zuzuweisen.
 	 * @param gui die GUI, in welcher Kacheln informationen zugewiesen bekommen.
 	 */
-	public Vorschlaege(BoardView gui, CluedoPlayer player){
+	public Vorschlaege(BoardView gui){
 		
 		this.gui = gui;
-		this.player = player;
-		
 		markierteHintergruendeUpdaten();
+		
+		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(0);
 		
 	}
 	
@@ -91,7 +90,7 @@ public class Vorschlaege {
 							&& (moeglichkeiten[counterAussen] != null)
 							&& gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstRaum() == false)
 					{
-						moeglichkeitenSetzenMitTueren(Color.GREEN);
+						moeglichkeitenSetzenMitTueren(Color.GREY);
 					}
 					
 					// Falls das Ganze zu einer T�r zeigt
@@ -108,8 +107,8 @@ public class Vorschlaege {
 		}
 		
 		else {
-			jetzigeSpalte = player.getPosition().getX();
-			jetzigeReihe = player.getPosition().getY();
+			jetzigeSpalte = currentPlayer.getPosition().getX();
+			jetzigeReihe = currentPlayer.getPosition().getY();
 			
 			this.moeglichkeiten = moeglichkeitenEingabe;
 			
@@ -125,7 +124,7 @@ public class Vorschlaege {
 						&& (moeglichkeiten[counterAussen] != null)
 						&& gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstRaum() == false)
 				{
-					moeglichkeitenSetzenOhneTueren(Color.GREEN);
+					moeglichkeitenSetzenOhneTueren(Color.GREY);
 				}
 				else if( (yDistanz != 0 || xDistanz != 0) && (jetzigeReihe + yDistanz >=0) && (jetzigeSpalte + xDistanz >=0) 
 						&& (jetzigeReihe + yDistanz < 25) && (jetzigeSpalte + xDistanz < 24)
@@ -246,5 +245,15 @@ public class Vorschlaege {
 			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], farbe);
 		}
 	}
+
+	public CluedoPlayer getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+	
+	
 	
 }

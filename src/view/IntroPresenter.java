@@ -1,8 +1,8 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
-import staticClasses.auxx;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -11,29 +11,29 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.Persons;
 import enums.PlayerStates;
+import finderOfPaths.GanzTolleSpielerliste;
 
 public class IntroPresenter {
 	
 	 IntroView view;
-	 CluedoPlayer player;
-	 LinkedList<CluedoPlayer> players;
-//	 CluedoPlayer player1;
-//	 CluedoPlayer player2;
-//	 CluedoPlayer player3;
-//	 CluedoPlayer player4;
-//	 CluedoPlayer player5;
-//	 CluedoPlayer player6;
-	 GameFrameView viewPl1;
-	 GameFrameView viewPl2;
-	 GameFrameView viewPl3;
-	 GameFrameView viewPl4;
-	 GameFrameView viewPl5;
-	 GameFrameView viewPl6;
-	 StackPane gameStack;
+	 private CluedoPlayer player1;
+	 private CluedoPlayer player2;
+	 private CluedoPlayer player3;
+	 private CluedoPlayer player4;
+	 private CluedoPlayer player5;
+	 private CluedoPlayer player6;
+	 private Circle spieler1;
+	 private Circle spieler2;
+	 private Circle spieler3;
+	 private Circle spieler4;
+	 private Circle spieler5;
+	 private Circle spieler6;
 	 
 	 StringProperty errorStr = new SimpleStringProperty("");
 	 
@@ -151,75 +151,78 @@ public class IntroPresenter {
 	
 	public void startNewGame(){
 		
-		System.out.println("!!!");
 		
+		if(view.pl1.isSelected()){
+			// GANZ TOLLE AUSWAHL
+		}
+		if(view.pl2.isSelected()){ 
+			// GANZ TOLLE AUSWAHL
+		}
+		if(view.pl3.isSelected()){
+			// GANZ TOLLE AUSWAHL
+		}
+		if(view.pl4.isSelected()){
+			// GANZ TOLLE AUSWAHL
+		}
+		if(view.pl5.isSelected()){
+			// GANZ TOLLE AUSWAHL
+		}
+		if(view.pl6.isSelected()){
+			// GANZ TOLLE AUSWAHL
+		}
 		
-		//auxx.logsevere("null? : " +player.getPosition().getY() +player.getPosition().getX());
+		view.close();
 		
-		//try{
-		CluedoPlayer playerHans = new CluedoPlayer(null,null,null);
-			//addPlayers();
+		addPeople();
+		
+		GameFrameView gameView = new GameFrameView();
+		
+		// HIER BEGINNT DAS SPIEL
+		gameView.start();
+		GameFramePresenter pres = new GameFramePresenter(gameView);
+
+		}
+	
+	public void addPeople(){
+		
 		CluedoPlayer player1 = new CluedoPlayer(Persons.blue, PlayerStates.do_nothing, new CluedoPosition(0,18));
 		CluedoPlayer player2 = new CluedoPlayer(Persons.green, PlayerStates.do_nothing, new CluedoPosition(9,24));
 		CluedoPlayer player3 = new CluedoPlayer(Persons.purple, PlayerStates.do_nothing, new CluedoPosition(0,5));
 		CluedoPlayer player4 = new CluedoPlayer(Persons.red, PlayerStates.do_nothing, new CluedoPosition(16,0));
 		CluedoPlayer player5 = new CluedoPlayer(Persons.white, PlayerStates.do_nothing, new CluedoPosition(23,17));
 		CluedoPlayer player6 = new CluedoPlayer(Persons.yellow, PlayerStates.do_nothing, new CluedoPosition(23,7));
-		//}
-		if(view.pl1.isSelected()){ 
-			playerHans = new CluedoPlayer(Persons.blue, PlayerStates.do_nothing, new CluedoPosition(0,18));
-		}
-		if(view.pl2.isSelected()){ 
-			playerHans = player2;
-		}
-		if(view.pl3.isSelected()){ 
-			playerHans = player3;
-		}
-		if(view.pl4.isSelected()){ 
-			playerHans = player4;
-		}
-		if(view.pl5.isSelected()){ 
-			playerHans = player5;
-		}
-		if(view.pl6.isSelected()){ 
-			playerHans = player6;
-		}
+		Circle spieler1 = new Circle(0,0,14);
+		spieler1.setFill(Color.BLUE);
+		Circle spieler2 = new Circle(0,0,14);
+		spieler2.setFill(Color.GREEN);
+		Circle spieler3 = new Circle(0,0,14);
+		spieler3.setFill(Color.PURPLE);
+		Circle spieler4 = new Circle(0,0,14);
+		spieler4.setFill(Color.RED);
+		Circle spieler5 = new Circle(0,0,14);
+		spieler5.setFill(Color.WHITE);
+		Circle spieler6 = new Circle(0,0,14);
+		spieler6.setFill(Color.YELLOW);
 
-		view.close();
-		
-		auxx.logsevere("null im Intro? : " +playerHans.getPosition().getY() +playerHans.getPosition().getX());
-		
-		//CluedoPlayer playerHans = new CluedoPlayer(Persons.red, PlayerStates.do_nothing, new CluedoPosition(5,5));
-		
-		GameFrameView gameView = new GameFrameView(playerHans);
-		gameView.start();
-		GameFramePresenter pres = new GameFramePresenter(gameView, playerHans);
 
-//		}
-//		
-//		catch(NullPointerException e){
-//			errorStr.set("Please select a character!"); 
-//			}
-//		
+		GanzTolleSpielerliste.playerManager.add(player1);
+		GanzTolleSpielerliste.playerManager.add(player2);
+		GanzTolleSpielerliste.playerManager.add(player3);
+		GanzTolleSpielerliste.playerManager.add(player4);
+		GanzTolleSpielerliste.playerManager.add(player5);
+		GanzTolleSpielerliste.playerManager.add(player6);
+		GanzTolleSpielerliste.playerManager.setCurrentObject(player1);
 		
-		}
-	
-//	public void addPlayers(){
-//		this.player1 = new CluedoPlayer(Persons.blue, PlayerStates.do_nothing, new CluedoPosition(0,18));
-//		this.player2 = new CluedoPlayer(Persons.green, PlayerStates.do_nothing, new CluedoPosition(9,24));
-//		this.player3 = new CluedoPlayer(Persons.purple, PlayerStates.do_nothing, new CluedoPosition(0,5));
-//		this.player4 = new CluedoPlayer(Persons.red, PlayerStates.do_nothing, new CluedoPosition(16,0));
-//		this.player5 = new CluedoPlayer(Persons.white, PlayerStates.do_nothing, new CluedoPosition(23,17));
-//		this.player6 = new CluedoPlayer(Persons.yellow, PlayerStates.do_nothing, new CluedoPosition(23,7));
-//		players = new LinkedList<CluedoPlayer>();
-//		players.add(player1);
-//		players.add(player2);
-//		players.add(player3);
-//		players.add(player4);
-//		players.add(player5);
-//		players.add(player6);
-//
-//	}
+		GanzTolleSpielerliste.circleManager.add(spieler1);
+		GanzTolleSpielerliste.circleManager.add(spieler2);
+		GanzTolleSpielerliste.circleManager.add(spieler3);
+		GanzTolleSpielerliste.circleManager.add(spieler4);
+		GanzTolleSpielerliste.circleManager.add(spieler5);
+		GanzTolleSpielerliste.circleManager.add(spieler6);
+		GanzTolleSpielerliste.circleManager.setCurrentObject(spieler1);
+		
+		
+	}
 	
 	
 	public void quitGame(){

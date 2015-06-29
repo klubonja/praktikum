@@ -2,7 +2,9 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import staticClasses.auxx;
+import view.Communicater;
 import enums.GameStates;
 import enums.Persons;
 import enums.PlayerStates;
@@ -17,6 +19,7 @@ public class CluedoGame {
 	
 	ArrayList<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
+	Communicater communicater;
 		
 	public CluedoGame(int gameId){
 		this.gameId = gameId; 
@@ -48,7 +51,13 @@ public class CluedoGame {
 	}
 	
 	public boolean start(){
-		
+		Platform.runLater(() -> {
+			communicater = new Communicater(getPlayersConnected());
+			communicater.startGame();
+			
+			auxx.loginfo("kommt er hin?");
+			
+		});
 		
 		return true;
 	}

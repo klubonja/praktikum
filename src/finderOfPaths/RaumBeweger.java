@@ -63,330 +63,330 @@ private Kachel zielImRaum;
 	}
 	
 	public Kachel positionInRaum(CluedoPlayer player2, Rooms raum) {
-		if(player.getCluedoPerson().getColor() == "Hans"){
+		if(player.getCluedoPerson().getColor() == "yellow"){
 			if(raum == Rooms.hall){
 				System.out.println("haaaaaaaaaaaaall");
-				zielImRaum.setKoordinate(11);
-				zielImRaum.setyKoordinate(1);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(11);
+				zielImRaum.getPosition().setY(1);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.lounge){
 				System.out.println("loooooounge");
-				zielImRaum.setKoordinate(19);
-				zielImRaum.setyKoordinate(2);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(19);
+				zielImRaum.getPosition().setY(2);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.diningroom){
 				System.out.println("diningrooom");
-				zielImRaum.setKoordinate(19);
-				zielImRaum.setyKoordinate(11);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(19);
+				zielImRaum.getPosition().setY(11);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.kitchen){
 				System.out.println("kiiiiiiiitchen");
-				zielImRaum.setKoordinate(20);
-				zielImRaum.setyKoordinate(20);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(20);
+				zielImRaum.getPosition().setY(20);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.ballroom){
 				System.out.println("baaaaaaaallroom");
-				zielImRaum.setKoordinate(11);
-				zielImRaum.setyKoordinate(19);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(11);
+				zielImRaum.getPosition().setY(19);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.conservatory){
 				System.out.println("cooooonservaaatory");
-				zielImRaum.setKoordinate(2);
-				zielImRaum.setyKoordinate(21);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(2);
+				zielImRaum.getPosition().setY(21);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.billiard){
 				System.out.println("biiiilliiard");
-				zielImRaum.setKoordinate(2);
-				zielImRaum.setyKoordinate(13);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(2);
+				zielImRaum.getPosition().setY(13);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.library){
 				System.out.println("libraryyyyyy");
-				zielImRaum.setKoordinate(2);
-				zielImRaum.setyKoordinate(7);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(2);
+				zielImRaum.getPosition().setY(7);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.study){
 				System.out.println("stuuuuuuuuuuudy");
-				zielImRaum.setKoordinate(2);
-				zielImRaum.setyKoordinate(1);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(2);
+				zielImRaum.getPosition().setY(1);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.pool){
 				System.out.println("poooooooooool");
-				zielImRaum.setKoordinate(10);
-				zielImRaum.setyKoordinate(9);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(10);
+				zielImRaum.getPosition().setY(9);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 		}
 		else if(player.getCluedoPerson().getColor() == "blue"){
 			if(raum == Rooms.hall){
-				zielImRaum.setKoordinate(11);
-				zielImRaum.setyKoordinate(2);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(11);
+				zielImRaum.getPosition().setY(2);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.lounge){
-				zielImRaum.setKoordinate(20);
-				zielImRaum.setyKoordinate(2);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(20);
+				zielImRaum.getPosition().setY(2);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.diningroom){
-				zielImRaum.setKoordinate(19);
-				zielImRaum.setyKoordinate(12);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(19);
+				zielImRaum.getPosition().setY(12);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.kitchen){
-				zielImRaum.setKoordinate(21);
-				zielImRaum.setyKoordinate(20);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(21);
+				zielImRaum.getPosition().setY(20);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.ballroom){
-				zielImRaum.setKoordinate(11);
-				zielImRaum.setyKoordinate(20);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(11);
+				zielImRaum.getPosition().setY(20);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.conservatory){
-				zielImRaum.setKoordinate(3);
-				zielImRaum.setyKoordinate(21);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(3);
+				zielImRaum.getPosition().setY(21);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.billiard){
-				zielImRaum.setKoordinate(2);
-				zielImRaum.setyKoordinate(14);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(2);
+				zielImRaum.getPosition().setY(14);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.library){
-				zielImRaum.setKoordinate(2);
-				zielImRaum.setyKoordinate(8);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(2);
+				zielImRaum.getPosition().setY(8);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.study){
-				zielImRaum.setKoordinate(3);
-				zielImRaum.setyKoordinate(1);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(3);
+				zielImRaum.getPosition().setY(1);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.pool){
-				zielImRaum.setKoordinate(11);
-				zielImRaum.setyKoordinate(9);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(11);
+				zielImRaum.getPosition().setY(9);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 		
 		}
 		else if(player.getCluedoPerson().getColor() == "green"){
 			if(raum == Rooms.hall){
-				zielImRaum.setKoordinate(11);
-				zielImRaum.setyKoordinate(3);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(11);
+				zielImRaum.getPosition().setY(3);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.lounge){
-				zielImRaum.setKoordinate(21);
-				zielImRaum.setyKoordinate(2);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(21);
+				zielImRaum.getPosition().setY(2);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.diningroom){
-				zielImRaum.setKoordinate(19);
-				zielImRaum.setyKoordinate(13);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(19);
+				zielImRaum.getPosition().setY(13);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.kitchen){
-				zielImRaum.setKoordinate(22);
-				zielImRaum.setyKoordinate(20);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(22);
+				zielImRaum.getPosition().setY(20);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.ballroom){
-				zielImRaum.setKoordinate(11);
-				zielImRaum.setyKoordinate(21);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(11);
+				zielImRaum.getPosition().setY(21);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.conservatory){
-				zielImRaum.setKoordinate(4);
-				zielImRaum.setyKoordinate(21);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(4);
+				zielImRaum.getPosition().setY(21);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.billiard){
-				zielImRaum.setKoordinate(2);
-				zielImRaum.setyKoordinate(15);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(2);
+				zielImRaum.getPosition().setY(15);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.library){
-				zielImRaum.setKoordinate(2);
-				zielImRaum.setyKoordinate(9);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(2);
+				zielImRaum.getPosition().setY(9);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.study){
-				zielImRaum.setKoordinate(4);
-				zielImRaum.setyKoordinate(1);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(4);
+				zielImRaum.getPosition().setY(1);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.pool){
-				zielImRaum.setKoordinate(12);
-				zielImRaum.setyKoordinate(9);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(12);
+				zielImRaum.getPosition().setY(9);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 		
 		}
 		else if(player.getCluedoPerson().getColor() == "white"){
 			if(raum == Rooms.hall){
-				zielImRaum.setKoordinate(12);
-				zielImRaum.setyKoordinate(1);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(12);
+				zielImRaum.getPosition().setY(1);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.lounge){
-				zielImRaum.setKoordinate(19);
-				zielImRaum.setyKoordinate(3);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(19);
+				zielImRaum.getPosition().setY(3);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.diningroom){
-				zielImRaum.setKoordinate(20);
-				zielImRaum.setyKoordinate(11);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(20);
+				zielImRaum.getPosition().setY(11);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.kitchen){
-				zielImRaum.setKoordinate(20);
-				zielImRaum.setyKoordinate(21);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(20);
+				zielImRaum.getPosition().setY(21);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.ballroom){
-				zielImRaum.setKoordinate(12);
-				zielImRaum.setyKoordinate(19);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(12);
+				zielImRaum.getPosition().setY(19);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.conservatory){
-				zielImRaum.setKoordinate(2);
-				zielImRaum.setyKoordinate(22);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(2);
+				zielImRaum.getPosition().setY(22);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.billiard){
-				zielImRaum.setKoordinate(3);
-				zielImRaum.setyKoordinate(13);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(3);
+				zielImRaum.getPosition().setY(13);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.library){
-				zielImRaum.setKoordinate(3);
-				zielImRaum.setyKoordinate(7);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(3);
+				zielImRaum.getPosition().setY(7);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.study){
-				zielImRaum.setKoordinate(2);
-				zielImRaum.setyKoordinate(2);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(2);
+				zielImRaum.getPosition().setY(2);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.pool){
-				zielImRaum.setKoordinate(10);
-				zielImRaum.setyKoordinate(13);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(10);
+				zielImRaum.getPosition().setY(13);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 		
 		}
 		else if(player.getCluedoPerson().getColor() == "yellow"){
 			if(raum == Rooms.hall){
-				zielImRaum.setKoordinate(12);
-				zielImRaum.setyKoordinate(2);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(12);
+				zielImRaum.getPosition().setY(2);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.lounge){
-				zielImRaum.setKoordinate(20);
-				zielImRaum.setyKoordinate(3);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(20);
+				zielImRaum.getPosition().setY(3);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.diningroom){
-				zielImRaum.setKoordinate(20);
-				zielImRaum.setyKoordinate(12);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(20);
+				zielImRaum.getPosition().setY(12);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.kitchen){
-				zielImRaum.setKoordinate(21);
-				zielImRaum.setyKoordinate(21);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(21);
+				zielImRaum.getPosition().setY(21);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.ballroom){
-				zielImRaum.setKoordinate(12);
-				zielImRaum.setyKoordinate(20);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(12);
+				zielImRaum.getPosition().setY(20);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.conservatory){
-				zielImRaum.setKoordinate(3);
-				zielImRaum.setyKoordinate(22);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(3);
+				zielImRaum.getPosition().setY(22);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.billiard){
-				zielImRaum.setKoordinate(3);
-				zielImRaum.setyKoordinate(14);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(3);
+				zielImRaum.getPosition().setY(14);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.library){
-				zielImRaum.setKoordinate(3);
-				zielImRaum.setyKoordinate(8);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(3);
+				zielImRaum.getPosition().setY(8);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.study){
-				zielImRaum.setKoordinate(3);
-				zielImRaum.setyKoordinate(2);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(3);
+				zielImRaum.getPosition().setY(2);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.pool){
-				zielImRaum.setKoordinate(11);
-				zielImRaum.setyKoordinate(13);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(11);
+				zielImRaum.getPosition().setY(13);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 		
 		}
 		else if(player.getCluedoPerson().getColor() == "red"  || player.getCluedoPerson().getColor() == "Peter"){
 			if(raum == Rooms.hall){
-				zielImRaum.setKoordinate(12);
-				zielImRaum.setyKoordinate(3);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(12);
+				zielImRaum.getPosition().setY(3);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.lounge){
-				zielImRaum.setKoordinate(21);
-				zielImRaum.setyKoordinate(3);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(21);
+				zielImRaum.getPosition().setY(3);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.diningroom){
-				zielImRaum.setKoordinate(20);
-				zielImRaum.setyKoordinate(13);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(20);
+				zielImRaum.getPosition().setY(13);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.kitchen){
-				zielImRaum.setKoordinate(22);
-				zielImRaum.setyKoordinate(21);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(22);
+				zielImRaum.getPosition().setY(21);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.ballroom){
-				zielImRaum.setKoordinate(12);
-				zielImRaum.setyKoordinate(21);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(12);
+				zielImRaum.getPosition().setY(21);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.conservatory){
-				zielImRaum.setKoordinate(4);
-				zielImRaum.setyKoordinate(22);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(4);
+				zielImRaum.getPosition().setY(22);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.billiard){
-				zielImRaum.setKoordinate(3);
-				zielImRaum.setyKoordinate(15);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(3);
+				zielImRaum.getPosition().setY(15);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.library){
-				zielImRaum.setKoordinate(3);
-				zielImRaum.setyKoordinate(9);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(3);
+				zielImRaum.getPosition().setY(9);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.study){
-				zielImRaum.setKoordinate(4);
-				zielImRaum.setyKoordinate(2);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(4);
+				zielImRaum.getPosition().setY(2);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 			else if(raum == Rooms.pool){
-				zielImRaum.setKoordinate(12);
-				zielImRaum.setyKoordinate(13);
-				zielImRaum = gui.getKachelArray()[zielImRaum.getyKoordinate()][zielImRaum.getxKoordinate()];
+				zielImRaum.getPosition().setX(12);
+				zielImRaum.getPosition().setY(13);
+				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 		
 		}

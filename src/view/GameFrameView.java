@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import cluedoNetworkLayer.CluedoPlayer;
 import finderOfPaths.BallEbene2;
 import finderOfPaths.KrasserStack;
+import finderOfPaths.GanzTolleSpielerliste;
 
 
 
@@ -32,18 +33,13 @@ public class GameFrameView extends GridPane{
 	BallEbene2 ballEbene;
 
 	HandFrameView hand;
-	CluedoPlayer player;
 	
 	private Stage stage;
 	private Scene scene;
 
 
 	
-	public GameFrameView(CluedoPlayer player){
-		
-		//We need the reference to the player so that we can get the player's cards
-		this.player = player;
-		
+	public GameFrameView(){
 		
 		/*Adds the size and number of the Rows and Columns of the main GridPane
 		(2 Rows x 2 Columns). */
@@ -212,17 +208,6 @@ public class GameFrameView extends GridPane{
 	public void setHand(HandFrameView hand) {
 		this.hand = hand;
 	}
-
-
-	public CluedoPlayer getCluedoPlayer() {
-		return player;
-	}
-
-
-	public void setCluedoPlayer(CluedoPlayer player) {
-		this.player = player;
-	}
-
 
 	public Stage getStage() {
 		return stage;

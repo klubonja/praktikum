@@ -91,6 +91,7 @@ class IncomingHandler implements Runnable {
 				
 			}			
 			catch (Exception e){
+				auxx.logsevere("fuxk !!!!!!!!!!!", e);
 				killConnection();
 				dataGuiManager.refreshGamesListServer(server);// refresh view before running out, its a differnet thread anyway
 			}			

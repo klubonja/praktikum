@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
 import enums.Rooms;
 
@@ -28,28 +29,20 @@ public class Kachel extends Label {
 	private char [] moeglichkeitenHierher = new char [12];
 	private char [][] moeglichkeitenVonHier;
 	private Kachel vonHier;
-	
-	private final IntegerProperty xKoordinate = 
-			new SimpleIntegerProperty(this, "xKoordinate", 0);
-	
-
-	private final IntegerProperty yKoordinate = 
-			new SimpleIntegerProperty(this, "yKoordinate", 0);
+	private CluedoPosition position; 
 	
 	/**
 	 * 
 	 * @param text die Aufschrift
-	 * @param xKoordinate xKoordinate im Grid
-	 * @param yKoordinate yKoordinate im Grid
+	 * @param position die CluedoPosition der Kachel
 	 * @param istRaum	ob die Kachel ein Raum ist
 	 * @param orientierung falls die Kachel eine T�r ist, die Orientierung
 	 * @param istTuer ob die Kachel eine T�r ist
 	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
 	 */
-	public Kachel (String text, int yKoordinate, int xKoordinate, boolean istRaum,Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
+	public Kachel (String text, CluedoPosition position, boolean istRaum,Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
 		super(text);
-		this.xKoordinate.set(xKoordinate);
-		this.yKoordinate.set(yKoordinate);
+		this.position = position;
 		this.istRaum = istRaum;
 		this.orientierung = orientierung;
 		this.raum = raum;
@@ -101,33 +94,6 @@ public class Kachel extends Label {
 		this.istTuer = istTuer;
 	}
 	
-
-	public int getxKoordinate() {
-		return xKoordinate.get();
-	}
-
-	public void setKoordinate(int n) {
-		this.xKoordinate.set(n);;
-	}
-
-
-	public final IntegerProperty xKoordinateProperty(){
-        return xKoordinate;
-    }
-	
-	public int getyKoordinate() {
-		return yKoordinate.get();
-	}
-
-	public void setyKoordinate(int n) {
-		this.yKoordinate.set(n);;
-	}
-
-
-	public final IntegerProperty yKoordinateProperty(){
-        return yKoordinate;
-    }
-
 	public char[] getMoeglichkeitenHierher() {
 		return moeglichkeitenHierher;
 	}
@@ -158,6 +124,14 @@ public class Kachel extends Label {
 
 	public void setVonHier(Kachel vonHier) {
 		this.vonHier = vonHier;
+	}
+
+	public CluedoPosition getPosition() {
+		return position;
+	}
+
+	public void setPosition(CluedoPosition position) {
+		this.position = position;
 	}
 	
 	

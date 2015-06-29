@@ -1,5 +1,6 @@
 package kacheln;
 
+import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
 import enums.Rooms;
 
@@ -28,11 +29,8 @@ public class FeldKachel extends Kachel {
 	 * @param istTuer ob die Kachel eine T�r ist
 	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
 	 */
-	public FeldKachel(String text, int yKoordinate, int xKoordinate, boolean istRaum, Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher,char [][] moeglichkeitenVonHier, Kachel vonHier){
-		super(text, yKoordinate, xKoordinate, istRaum, orientierung,raum, istTuer, moeglichkeitenHierher,moeglichkeitenVonHier, vonHier);
-		if (peter==hans){
-			
-		}
+	public FeldKachel(String text, CluedoPosition position, boolean istRaum, Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher,char [][] moeglichkeitenVonHier, Kachel vonHier){
+		super(text, position, istRaum, orientierung,raum, istTuer, moeglichkeitenHierher,moeglichkeitenVonHier, vonHier);
 	}
 	
 	

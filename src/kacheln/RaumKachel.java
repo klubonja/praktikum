@@ -1,6 +1,7 @@
 package kacheln;
 
 import javafx.scene.paint.Color;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
 import enums.Rooms;
 
@@ -27,8 +28,8 @@ public class RaumKachel extends Kachel {
 	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
 	 */
 	
-	public RaumKachel(String text, int yKoordinate, int xKoordinate, boolean istRaum, Orientation orientierung, Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
-		super(text, yKoordinate, xKoordinate, istRaum, orientierung, raum, istTuer, moeglichkeitenHierher, moeglichkeitenVonHier, vonHier);
+	public RaumKachel(String text,CluedoPosition position, boolean istRaum, Orientation orientierung, Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
+		super(text, position, istRaum, orientierung, raum, istTuer, moeglichkeitenHierher, moeglichkeitenVonHier, vonHier);
 		istRaum = true;
 		this.setBackgroundColor(this, Color.LIGHTSALMON);
 

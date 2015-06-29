@@ -12,7 +12,6 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import kacheln.Kachel;
 import kacheln.TuerKachel;
-import model.Player;
 import staticClasses.auxx;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -30,7 +29,9 @@ public class DerBeweger {
 	private BoardView gui;
 	private BallEbene2 ballEbene;
 	
-	private CluedoPlayer player;
+	private int zaehler;
+	
+	private CluedoPlayer currentPlayer;
 	
 	private Orientation [] anweisungen;
 	private Orientation [] anweisungenVonHier;
@@ -53,26 +54,23 @@ public class DerBeweger {
 	private int yDistanz;
 	private int xDistanz;
 	
-	private Circle spieler;
+	private Circle currentCircle;
 	
     private int schritte;
     private int nullSchritte;
     
     private Kachel anfangsKachel;
     private Kachel zielKachel;
-	
-	
-	public DerBeweger(BoardView gui, BallEbene2 ballEbene, CluedoPlayer player){
+    
+	public DerBeweger(BoardView gui, BallEbene2 ballEbene){
 		this.gui = gui;
 		this.ballEbene = ballEbene;
-		this.player = player;
-		anfangsKachel = gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()];
-
-//		if(anfangsKachel.isIstTuer()){
-//			ausRaumBewegen();
-//		}
 		
-		spieler = ballEbene.getSpieler();
+		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(0);
+		
+		anfangsKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
+		currentCircle = (Circle) GanzTolleSpielerliste.circleManager.get(0);
+		
 	}
 	
 	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe, int nullSchritteEingabe){
@@ -93,8 +91,8 @@ public class DerBeweger {
 		
 		if (schritte>0){
 			
-			jetzigeSpalte = player.getPosition().getX();
-			jetzigeReihe = player.getPosition().getY();
+			jetzigeSpalte = currentPlayer.getPosition().getX();
+			jetzigeReihe = currentPlayer.getPosition().getY();
 			
 			distanzBerechnen();
 			
@@ -113,7 +111,7 @@ public class DerBeweger {
 			PathTransition pathTransition = new PathTransition();
 			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 300 + Math.abs(xDistanz)
 					 * 300));
-			pathTransition.setNode(spieler);
+			pathTransition.setNode(currentCircle);
 			pathTransition.setPath(path);
 			pathTransition.play();
 			pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
@@ -121,154 +119,195 @@ public class DerBeweger {
 					anfangsKachel = zielKachel;
 					schritte--;
 					if((schritte == 0 && anfangsKachel.isIstTuer()) || (schritte != 0 && nullSchritte != 0 && anfangsKachel.isIstTuer())) {
-						anfangsTuerKachel = (TuerKachel) gui.getKachelArray()[anfangsKachel.getyKoordinate()][anfangsKachel.getxKoordinate()];
-						RaumBeweger rB = new RaumBeweger(gui, player, anfangsTuerKachel);
+						anfangsTuerKachel = (TuerKachel) gui.getKachelArray()[anfangsKachel.getPosition().getY()][anfangsKachel.getPosition().getX()];
+						RaumBeweger rB = new RaumBeweger(gui, currentPlayer, anfangsTuerKachel);
 						Rooms room = rB.checkRaum(anfangsTuerKachel);
-						raumZielKachel = rB.positionInRaum(player, room);
+						raumZielKachel = rB.positionInRaum(currentPlayer, room);
 						inRaumBewegen();
+						
 					}
+					
+					
 					bewegen(anweisungen, schritte, nullSchritte);
+					
+					//currentCircle = (Circle) circleManager.getCurrentObject();
+					//currentPlayer = (CluedoPlayer) playerManager.getCurrentObject();
 				}
 			});
 			
 			positionUpdaten();
 			
 			}
+			
+		//currentCircle = (Circle) circleManager.getCurrentObject();
+		//currentPlayer = (CluedoPlayer) playerManager.getCurrentObject();
+		
 		}
 
-		public void anfangsKachelSetzen(Kachel neueAnfangsKachel){
-			
-			anfangsKachel = neueAnfangsKachel;
-			auxx.logsevere("anfangs Kachel x : " +anfangsKachel.getxKoordinate() + " ||  y : " +anfangsKachel.getyKoordinate());
-			player.getPosition().setX(anfangsKachel.getxKoordinate());
-			player.getPosition().setY(anfangsKachel.getyKoordinate());
-		}
+	public void anfangsKachelSetzen(Kachel neueAnfangsKachel){
+		
+		anfangsKachel = neueAnfangsKachel;
+		auxx.logsevere("anfangs Kachel x : " +anfangsKachel.getPosition().getX() + " ||  y : " +anfangsKachel.getPosition().getY());
+		currentPlayer.getPosition().setX(anfangsKachel.getPosition().getX());
+		currentPlayer.getPosition().setY(anfangsKachel.getPosition().getY());
+	}
 	
-		public void positionUpdaten(){
-			player.getPosition().setY(player.getPosition().getY() + yDistanz);
-			player.getPosition().setX(player.getPosition().getX() + xDistanz);
+	public void positionUpdaten(){
+		currentPlayer.getPosition().setY(currentPlayer.getPosition().getY() + yDistanz);
+		currentPlayer.getPosition().setX(currentPlayer.getPosition().getX() + xDistanz);
+	}
+		
+	public void distanzBerechnen(){
+		if (anweisungen[momentaneAnweisung] == Orientation.S){
+			yDistanz = 1;
+			xDistanz = 0;
 		}
 		
-		public void distanzBerechnen(){
-			if (anweisungen[momentaneAnweisung] == Orientation.S){
-				yDistanz = 1;
-				xDistanz = 0;
-			}
-			
-			else if (anweisungen[momentaneAnweisung] == Orientation.O){
-				xDistanz = 1;
-				yDistanz = 0;
-			}
-			
-			else if (anweisungen[momentaneAnweisung] == Orientation.N){
-				yDistanz = -1;
-				xDistanz = 0;
-			}
-			
-			else if (anweisungen[momentaneAnweisung] == Orientation.W){
-				xDistanz = -1;
-				yDistanz = 0;
-			}
-			
-			else {
-				xDistanz = 0;
-				yDistanz = 0;
-			}
-			
+		else if (anweisungen[momentaneAnweisung] == Orientation.O){
+			xDistanz = 1;
+			yDistanz = 0;
 		}
 		
-		public void anfangsPositionSetzen(){
-
-			auxx.logsevere("hamana");
-			
-			startKachel = gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()];
-			
-			Path path = new Path();
-			path.getElements().add(new MoveTo(0,0));
-			path.getElements().add(new LineTo(gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutX(), gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutY()));
-
-			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(Math.abs(player.getPosition().getY()) * 500 + Math.abs(player.getPosition().getX()) * 500));
-			pathTransition.setNode(spieler);
-			pathTransition.setPath(path);
-			pathTransition.play();
-			
+		else if (anweisungen[momentaneAnweisung] == Orientation.N){
+			yDistanz = -1;
+			xDistanz = 0;
 		}
 		
-		
-		/**
-		 * animiert die Bewegung zu dem Platz des Spielers im Raum
-		 */
-		public void inRaumBewegen(){
-			
-			
-			raumAnfangsKachel = gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()];
-			
-			System.out.println(" test " + startKachel.getLayoutX());
-			
-			System.out.println("layout y : " + gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutX() +"  layout x : " +gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutY());
-			
-			Path path = new Path();
-			path.getElements().add(new MoveTo(raumAnfangsKachel.getLayoutX(),raumAnfangsKachel.getLayoutY()));
-			path.getElements().add(new LineTo(raumZielKachel.getLayoutX(), raumZielKachel.getLayoutY()));
-
-			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(2000));
-			pathTransition.setNode(spieler);
-			pathTransition.setPath(path);
-			pathTransition.play();
-
+		else if (anweisungen[momentaneAnweisung] == Orientation.W){
+			xDistanz = -1;
+			yDistanz = 0;
 		}
 		
-		/**
-		public void ausRaumBewegen(){
-			
-			Path path = new Path();
-			path.getElements().add(new MoveTo(gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutX(), gui.getKachelArray()[player.getPosition().getY()][player.getPosition().getX()].getLayoutY()));
-			path.getElements().add(new LineTo(anfangsKachel.getLayoutX(), anfangsKachel.getLayoutY()));
-
-			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(2000));
-			pathTransition.setNode(spieler);
-			pathTransition.setPath(path);
-			pathTransition.play();
+		else {
+			xDistanz = 0;
+			yDistanz = 0;
 		}
-		*/
-		/**
-		 * Wandelt char [] mit anweisungen in Orientation [] mit anweisungen um
-		 * @param anweisungen umzuwandeldes char []
-		 * @return umgewandeltes Orientation []
-		 */
-		public Orientation [] charToOrientation(char [] anweisungen){
-			
-			Orientation [] anweisungenOrientationsVerarbeitet = new Orientation [12];
-			
-				for (int counterInnen = 0; counterInnen < anweisungen.length; counterInnen++){
-					if (anweisungen[counterInnen] == 'S'){
-						anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.S;
-					}
-					
-					if (anweisungen[counterInnen] == 'E'){
-						anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.O;
-					}
-					
-					if (anweisungen[counterInnen] == 'N'){
-						anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.N;
-					}
-					
-					if (anweisungen[counterInnen] == 'W'){
-						anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.W;
-					}
-					
-					if (anweisungen[counterInnen] == 'T'){
-						anweisungenOrientationsVerarbeitet[counterInnen] = null;
-					}
-					  
-				}
-			
-			return anweisungenOrientationsVerarbeitet;
-		}
-
 		
 	}
+	
+	public void anfangsPositionSetzen(int iEingabe){
+		zaehler = iEingabe;
+		
+		if (zaehler < GanzTolleSpielerliste.playerManager.size()){
+		
+			auxx.logsevere("hamana");
+			
+			startKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
+			
+			currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(zaehler);
+			currentCircle = (Circle) GanzTolleSpielerliste.circleManager.get(zaehler);
+			
+			
+			Path path = new Path();
+			path.getElements().add(new MoveTo(gui.getKachelArray()[11][12].getLayoutX(),gui.getKachelArray()[11][12].getLayoutY()));
+			path.getElements().add(new LineTo(gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()].getLayoutX(), gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()].getLayoutY()));
 
+			PathTransition pathTransition = new PathTransition();
+			pathTransition.setDuration(Duration.millis(1000));
+			pathTransition.setNode(currentCircle);
+			pathTransition.setPath(path);
+			pathTransition.play();
+			
+				
+				pathTransition.setOnFinished(new EventHandler <ActionEvent> (){
+
+					@Override
+					public void handle(ActionEvent event) {
+						zaehler++;
+						anfangsPositionSetzen(zaehler);
+					}
+					
+				});
+			}
+			else {
+				
+				currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject();
+				currentCircle = (Circle) GanzTolleSpielerliste.circleManager.getCurrentObject();
+				GanzTolleSpielerliste.playerManager.next();
+				GanzTolleSpielerliste.circleManager.next();
+			}
+				
+		}
+		
+		
+	/**
+	 * animiert die Bewegung zu dem Platz des Spielers im Raum
+	 */
+	public void inRaumBewegen(){
+		
+		
+		raumAnfangsKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
+		
+		System.out.println(" test " + startKachel.getLayoutX());
+		
+		System.out.println("layout y : " + gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()].getLayoutX() +"  layout x : " +gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()].getLayoutY());
+		
+		Path path = new Path();
+		path.getElements().add(new MoveTo(raumAnfangsKachel.getLayoutX(),raumAnfangsKachel.getLayoutY()));
+		path.getElements().add(new LineTo(raumZielKachel.getLayoutX(), raumZielKachel.getLayoutY()));
+		PathTransition pathTransition = new PathTransition();
+		pathTransition.setDuration(Duration.millis(2000));
+		pathTransition.setNode(currentCircle);
+		pathTransition.setPath(path);
+		pathTransition.play();
+	}
+		
+	/**
+	 * Wandelt char [] mit anweisungen in Orientation [] mit anweisungen um
+	 * @param anweisungen umzuwandeldes char []
+	 * @return umgewandeltes Orientation []
+	 */
+	public Orientation [] charToOrientation(char [] anweisungen){
+		
+		Orientation [] anweisungenOrientationsVerarbeitet = new Orientation [12];
+		
+		for (int counterInnen = 0; counterInnen < anweisungen.length; counterInnen++){
+			if (anweisungen[counterInnen] == 'S'){
+				anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.S;
+			}
+			
+			if (anweisungen[counterInnen] == 'E'){
+				anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.O;
+			}
+					
+			if (anweisungen[counterInnen] == 'N'){
+				anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.N;
+			}
+			
+			if (anweisungen[counterInnen] == 'W'){
+				anweisungenOrientationsVerarbeitet[counterInnen] = Orientation.W;
+			}
+			
+			if (anweisungen[counterInnen] == 'T'){
+				anweisungenOrientationsVerarbeitet[counterInnen] = null;
+			}
+	}
+		
+		return anweisungenOrientationsVerarbeitet;
+	}
+
+	public void useSecretPassage(){
+	///////////////////////////////
+	////////BRAUCHT PERSONEN///////
+	///////////////////////////////
+	}
+		
+	public CluedoPlayer getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public Circle getCurrentCircle() {
+		return currentCircle;
+	}
+
+	public void setCurrentCircle(Circle circle) {
+		this.currentCircle = circle;
+	}
+		
+	
+	
+}

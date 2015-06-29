@@ -2,6 +2,7 @@ package finderOfPaths;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
 import kacheln.Kachel;
 import staticClasses.auxx;
 import view.BoardView;
@@ -34,7 +35,7 @@ public class Ausloeser {
 	
 	private int schritte;
 	
-	private CluedoPlayer player;
+	private CluedoPlayer currentPlayer;
 	
 	private int xInsgesamt;
 	private int yInsgesamt;
@@ -50,13 +51,12 @@ public class Ausloeser {
 	 * @param ballEbene um auf die click-events zugreifen zu k�nnen
 	 * @param pathfinder um den Weg berechnen zu lassen
 	 */
-	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher, CluedoPlayer player){
+	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher){
 		this.gui = gui;
 		this.ballEbene = ballEbene;
 		this.beweger = beweger;
 		this.pathfinder = pathfinder;
 		this.sucher = sucher;
-		this.player = player;
 	}
 	
 	/**
@@ -123,11 +123,18 @@ public class Ausloeser {
 									System.out.println("anweisungen : " +anweisungenOrientations[i]);
 								}
 								
+								beweger.setCurrentCircle((Circle) GanzTolleSpielerliste.circleManager.getCurrentObject());
+								beweger.setCurrentPlayer((CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject());
+								
 								beweger.anfangsKachelSetzen(startKachel);
 								
 								beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
+								
 								nullSchritte = 0;
 								pathfinder.setWelcheKachel(0);
+								
+								GanzTolleSpielerliste.playerManager.next();
+								GanzTolleSpielerliste.circleManager.next();
 								
 							}catch (NullPointerException e ){}
 							

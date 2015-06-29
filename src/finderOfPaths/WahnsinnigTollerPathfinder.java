@@ -1,7 +1,6 @@
 package finderOfPaths;
 
 import kacheln.Kachel;
-import staticClasses.auxx;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Orientation;
@@ -73,7 +72,7 @@ public class WahnsinnigTollerPathfinder {
 	/**
 	 * Der Model-Spieler
 	 */
-	private CluedoPlayer player;
+	private CluedoPlayer currentPlayer;
 	
 	private int schritte;
 	
@@ -87,11 +86,12 @@ public class WahnsinnigTollerPathfinder {
 	 * @param gui
 	 * @param ballEbene
 	 */
-	public WahnsinnigTollerPathfinder(BoardView gui, BallEbene2 ballEbene, CluedoPlayer player){
+	public WahnsinnigTollerPathfinder(BoardView gui, BallEbene2 ballEbene){
 		
 		this.gui = gui;
 		this.ballEbene = ballEbene;
-		this.player = player;
+		
+		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(0);
 		
 	}
 	
@@ -103,7 +103,7 @@ public class WahnsinnigTollerPathfinder {
 		refreshChecks();
 
         // Die Werte werden auf die Urpsrungsposition gesetzt.
-		reset(player.getPosition().getY(),player.getPosition().getX());
+		reset(currentPlayer.getPosition().getY(),currentPlayer.getPosition().getX());
         
         checkForRoom();
         
@@ -114,16 +114,16 @@ public class WahnsinnigTollerPathfinder {
 	        	
 	        	Kachel momentaneKachel = suchKacheln[welcheKachel];
 	        	
-	        	player.getPosition().setY(momentaneKachel.getyKoordinate());
-	        	player.getPosition().setX(momentaneKachel.getxKoordinate());
+	        	currentPlayer.getPosition().setY(momentaneKachel.getPosition().getY());
+	        	currentPlayer.getPosition().setX(momentaneKachel.getPosition().getX());
 	        	
-	        	xPositionen[welcheKachel] = player.getPosition().getX();
-	        	yPositionen[welcheKachel] = player.getPosition().getY();
+	        	xPositionen[welcheKachel] = currentPlayer.getPosition().getX();
+	        	yPositionen[welcheKachel] = currentPlayer.getPosition().getY();
 	        	
-	        	jetzigeReihe = player.getPosition().getY();
-	        	jetzigeSpalte = player.getPosition().getX();
+	        	jetzigeReihe = currentPlayer.getPosition().getY();
+	        	jetzigeSpalte = currentPlayer.getPosition().getX();
 	        	
-	        	System.out.println((welcheKachel+1) +". Durchgang" +" <<<>>> player y : " +player.getPosition().getY() +"   ||   x : " +player.getPosition().getX());
+	        	System.out.println((welcheKachel+1) +". Durchgang" +" <<<>>> player y : " +currentPlayer.getPosition().getY() +"   ||   x : " +currentPlayer.getPosition().getX());
 	        	
 	        	ausgangsPosition(jetzigeReihe, jetzigeSpalte);
 	            
@@ -588,5 +588,14 @@ public class WahnsinnigTollerPathfinder {
 	public void setWelcheKachel(int welcheKachel) {
 		this.welcheKachel = welcheKachel;
 	}
+
+	public CluedoPlayer getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+	
 	
 }
