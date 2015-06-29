@@ -1,6 +1,7 @@
 package finderOfPaths;
 
 import kacheln.Kachel;
+import staticClasses.auxx;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Orientation;
@@ -18,9 +19,12 @@ public class WahnsinnigTollerPathfinder {
 	/**
 	 * Alle M�glichkeiten, welche an Wegen ausgegeben werden.
 	 */
-	//private char [][] moeglichkeiten = new char [5000000][12];
-	private char [][] moeglichkeiten = new char [1000000][12];
+	private char [][] moeglichkeiten = new char [1000][12];
 	private int welcheMoeglichkeit; 
+	
+	private int [] xCheck = new int [144];
+	private int [] yCheck = new int [144];
+	private int checkIndex;
 	
 	private char hans;
 	
@@ -35,8 +39,7 @@ public class WahnsinnigTollerPathfinder {
 	private int [] xPositionen = new int [4];
 	private int [] yPositionen = new int [4];
 	
-	//private char [][][] mehrereMoeglichkeiten = new char [4][5000000][12];
-	private char [][][] mehrereMoeglichkeiten = new char [4][1000000][12];
+	private char [][][] mehrereMoeglichkeiten = new char [4][1000][12];
 	
 	/**
 	 * Die momentane Position an gegebenem Baum-Level
@@ -96,6 +99,8 @@ public class WahnsinnigTollerPathfinder {
 	 * Hauptmethode, mit welcher die ganzen checks aufgerufen werden.
 	 */
 	public void findThatPathBetter(int wuerfelZahl){
+		
+		refreshChecks();
 
         // Die Werte werden auf die Urpsrungsposition gesetzt.
 		reset(player.getPosition().getY(),player.getPosition().getX());
@@ -104,6 +109,8 @@ public class WahnsinnigTollerPathfinder {
         
         if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
 	        for (welcheKachel = 0; welcheKachel < tuerCounter; welcheKachel++){
+	        	
+	        	refreshChecks();
 	        	
 	        	Kachel momentaneKachel = suchKacheln[welcheKachel];
 	        	
@@ -212,19 +219,19 @@ public class WahnsinnigTollerPathfinder {
 		
 		level = currentEntry.length();
 		
-		if (richtung == 'S'){
+		if (richtung == 'S' && jetzigeReihe < 25){
 			return detectSouth();
 		}
 		
-		else if (richtung == 'E'){
+		else if (richtung == 'E' && jetzigeSpalte < 25){
 			return detectEast();
 		}
 		
-		else if (richtung == 'N'){
+		else if (richtung == 'N' && jetzigeReihe > 0){
 			return detectNorth();
 		}
 		
-		else if (richtung == 'W'){
+		else if (richtung == 'W' && jetzigeSpalte > 0){
 			return detectWest();
 		}
 		
@@ -399,16 +406,20 @@ public class WahnsinnigTollerPathfinder {
 		
         // Falls wir bei der maximalen Anzahl an Schritten angekommen sind
         if(currentEntry.length() == maximaleSchritte) {
-            
-            moeglichkeiten[welcheMoeglichkeit] = currentEntry.toCharArray();
-            if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
-            	mehrereMoeglichkeiten[welcheKachel] = moeglichkeiten;
-            	setMehrereMoeglichkeiten(mehrereMoeglichkeiten);
+            if (checkThatPlace(currentEntry)){
+            	moeglichkeiten[welcheMoeglichkeit] = currentEntry.toCharArray();
+                if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
+                	mehrereMoeglichkeiten[welcheKachel] = moeglichkeiten;
+                	setMehrereMoeglichkeiten(mehrereMoeglichkeiten);
+                }
+                
+                welcheMoeglichkeit++;
+                setMoeglichkeiten(moeglichkeiten);
+
+            }
+            else {
             }
             
-            welcheMoeglichkeit++;
-            setMoeglichkeiten(moeglichkeiten);
-
             // level reduzieren            
             level = currentEntry.length();;
         }    
@@ -441,6 +452,53 @@ public class WahnsinnigTollerPathfinder {
         }
 	}
 
+	public boolean checkThatPlace(String entry){
+		char [] entries = entry.toCharArray();
+		
+		int xSaved = 0;
+		int ySaved = 0;
+		
+		for (int i = 0; i < entries.length; i++){
+			if (entries[i] == 'W'){
+				xSaved--;
+			}
+			else if (entries[i] == 'E'){
+				xSaved++;
+			}
+			else if (entries[i] == 'N'){
+				ySaved--;
+			}
+			else if (entries[i] == 'S'){
+				ySaved++;
+			}
+		}
+		
+		for (int x = 0; x < xCheck.length; x++){
+			if (xCheck[x] == xSaved && yCheck[x] == ySaved){
+				return false;
+			}
+		}
+		
+			xCheck[checkIndex] = xSaved;
+			yCheck[checkIndex] = ySaved;
+			checkIndex++;
+		return true;
+		
+		
+		
+	}
+	
+	public void refreshChecks(){
+		for (int x = 0; x < xCheck.length; x++){
+			for (int y = 0; y < yCheck.length; y++){
+				xCheck[x] = 200;
+				yCheck[y] = 200;
+			}			
+		}
+		checkIndex = 0;
+
+	}
+	
 	/**
 	 * 
 	 * @return die momentan zu-�berpr�fende Reihe
