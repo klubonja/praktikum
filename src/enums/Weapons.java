@@ -30,6 +30,15 @@ public enum Weapons {
         return false;
     }
 	 
+	static public Weapons getWeaponByName(String aName) {
+	        Weapons[] weapons = Weapons.values();
+	        for (Weapons weapon  : weapons)
+	            if (weapon.getName().equals(aName))
+	                return weapon;
+	        
+	        return null;
+	   }
+	 
 	 public static ArrayList<String> getWeaponsString() {        
 	        Weapons[] weapons = Weapons.values();
 	        ArrayList<String> names = new ArrayList<String>();

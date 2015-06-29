@@ -49,7 +49,7 @@ public class DataManagerServer extends DataManager {
 	}
 	
 	public boolean startGameByID(int gameID,String nick){
-		return gamesList.getGameByID(gameID).start(nick);
+		return gamesList.getGameByID(gameID).start();
 	}
 	
 	public ArrayList<CluedoGameServer> getGamesByPlayer(String nick){

@@ -19,11 +19,17 @@ public class CluedoPlayer {
 		state = s;
 		position = p;
 		nick = "";
-		setCards(new ArrayList<String>(Arrays.asList("conservatory", "pipe", "purple", "blue", "study", "ballroom")));
+		cards = new ArrayList<String>();
+		//setCards(new ArrayList<String>(Arrays.asList("conservatory", "pipe", "purple", "blue", "study", "ballroom")));
 	}
 	
 	public void setCards(ArrayList<String> cards) {
 		this.cards = cards;
+	}
+	
+	public void setCards(String[] cardsIN) {
+		for (String c: cardsIN)
+			cards.add(c);
 	}
 	
 	public ArrayList<String> getCards() {

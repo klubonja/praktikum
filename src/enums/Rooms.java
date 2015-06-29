@@ -43,4 +43,12 @@ public enum Rooms {
                 return true;
         return false;
     }
+	 
+	 static public Rooms getRoomByName(String aName) {
+        Rooms[] rooms = Rooms.values();
+        for (Rooms room  : rooms)
+            if (room.getName().equals(aName))
+              return room;
+       return null;
+    }
 }

@@ -67,7 +67,7 @@ public class Deck {
 		return playerHands;
 	}
 	
-	public String[] getWinningHand() {
+	public String[] getWinningHand() { // person,weapon,room
 		return winningHand;
 	}
 

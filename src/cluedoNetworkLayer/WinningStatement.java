@@ -9,7 +9,7 @@ public class WinningStatement {
 	Rooms room;
 	Weapons weapon;
 	
-	public WinningStatement(Persons p, Rooms r, Weapons w) {
+	public WinningStatement(Persons p, Weapons w,Rooms r) {
 		person = p;
 		weapon = w;
 		room = r;

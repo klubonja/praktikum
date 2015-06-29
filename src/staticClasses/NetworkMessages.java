@@ -240,7 +240,7 @@ public abstract class NetworkMessages {
 	}
 	
 	public static String player_cardsMsg(int gameID,ArrayList<String> cards){
-		CluedoJSON json = new CluedoJSON("player cards");
+		CluedoJSON json = new CluedoJSON("player_cards");
 		json.put("gameID", gameID);
 		JSONArray cardsJSON = new JSONArray();
 		for (String s: cards)

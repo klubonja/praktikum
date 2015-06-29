@@ -19,6 +19,7 @@ import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkGUI.GameVBox;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
+import enums.GameStates;
 
 
 /**
@@ -97,25 +98,18 @@ class OutgoingHandler implements Runnable{
 		        	String serverip = guiGame.getServerIp();
 		        	ServerItem server = dataGuiManager.getServerByID(servername, serverip);
 		        	CluedoGameClient game = server.getGameByGameID(gameID);
-		        	
-		        	/*
-		        	CluedoGameClient game = dataGuiManager.getServerByID(
-		        			gui.getGamesListView().getSelectionModel().getSelectedItem().getServerName(),
-		        			gui.getGamesListView().getSelectionModel().getSelectedItem().getServerIp()
-		        			).getGameByGameID(
-		        					gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID()
-		        					);
-		        	*/
-		        	
-		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART && game.hasNick(server.getMyNick())){
+		      
+		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART 
+		        			&& game.hasNick(server.getMyNick())
+		        			&& game.getGameState() == GameStates.not_started){
 		        		sendStartGameRequest(gameID);
 		        	}
-		        	else {
+		        	else if (game.getGameState() != GameStates.ended)  {
 		        		ArrayList<CluedoPlayer> plist = server.getGameByGameID(gameID).getPlayersConnected();
-			        	//TODO 
 			        	selectGame(game, gui.selectColor());		
 		        	}	
-		        	auxx.loginfo("clicking on game on: "+serverip+" groupname : "+servername);
+		        	
+		        	auxx.logfine("game on: "+serverip+" groupname : "+servername+" gamestate : "+game.getGameState());
 		        }
 		    }
 		});			
