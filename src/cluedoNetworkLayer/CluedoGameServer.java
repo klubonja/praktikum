@@ -2,6 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
+import model.Deck;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoServer.ClientItem;
@@ -18,8 +19,7 @@ public class CluedoGameServer extends CluedoGame{
 	public CluedoGameServer(int gameId) {
 		super(gameId);	
 		participants = new ArrayList<ClientItem>();
-		watchers = new ArrayList<ClientItem>();
-		winningStatement = new WinningStatement(Persons.white, Rooms.kitchen, Weapons.spanner);
+		watchers = new ArrayList<ClientItem>();		
 	}
 	
 	public WinningStatement getWinningStatement() {
@@ -30,7 +30,25 @@ public class CluedoGameServer extends CluedoGame{
 	public boolean start() {
 //		for (ClientItem client: participants)
 //			//client.sendMsg(NetworkMessages.player_cardsMsg(gameId, cards));
+		
+		dealCardsNetwork();
 		return super.start();
+	}
+	
+	public void dealCardsNetwork(){
+		Deck deck = new Deck(getNumberConnected());
+		deck.dealCluedoCards();
+		String [] wh = deck.getWinningHand();
+		winningStatement = new WinningStatement(
+				Persons.getPersonByColor(wh[0]), 
+				Weapons.getWeaponByName(wh[1]),
+				Rooms.getRoomByName(wh[2])
+		);
+		
+		ArrayList<CluedoPlayer> playersCon  = getPlayersConnected();
+		String[][] playerHands = deck.getPlayerHands();
+		for (int i= 0;i < playersCon.size();i++)
+			playersCon.get(i).setCards(playerHands[i]);
 	}
 	
 	public ArrayList<String> getWatchersNicks(){

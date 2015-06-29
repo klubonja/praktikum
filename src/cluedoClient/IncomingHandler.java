@@ -82,6 +82,8 @@ class IncomingHandler implements Runnable {
 					else {
 						auxx.loginfo("INCOMING unchecked type: "+checker.getType());
 					}
+					
+					auxx.loginfo("INCOMING : handeled type : "+checker.getType());
 				}		
 				else {
 					auxx.loginfo("INCOMING invalid : "+checker.getErrString());
