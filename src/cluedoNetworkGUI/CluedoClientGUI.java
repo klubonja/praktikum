@@ -1,5 +1,7 @@
 package cluedoNetworkGUI;
 
+import java.util.ArrayList;
+
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -161,9 +163,9 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		  messagesIn.setText("");
 	  }
 	  
-	  public String selectColor() {
+	  public String selectColor(ArrayList<String> colors) {
 			Stage selectNewColor = new Stage();
-	    	ColorSelectPrompt select = new ColorSelectPrompt(selectNewColor);
+			IntroColorPrompt select = new IntroColorPrompt(selectNewColor, colors);
 	    	Scene secondary = new Scene(select, Config.COLOR_SELECT_WINDOW_WIDTH, Config.COLOR_SELECT_WINDOW_HEIGHT);
 	    	selectNewColor.setScene(secondary);
 	    	selectNewColor.showAndWait();

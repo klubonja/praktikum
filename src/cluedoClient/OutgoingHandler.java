@@ -81,9 +81,11 @@ class OutgoingHandler implements Runnable{
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
 		        	int gameID = gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID();
-		        	ArrayList<CluedoPlayer> plist = dataGuiManager.getServer().getGameByGameID(gameID).getPlayersConnected();
-		        	//TODO 
-		        	selectGame(gui.getGamesListView().getSelectionModel(), gui.selectColor());		
+		        	ArrayList<String> colors = dataGuiManager.getServer().getGameByGameID(gameID).getAvailableColors();
+		        	String color = gui.selectColor(colors);
+		        	if(!(color == null)){
+		        	selectGame(gui.getGamesListView().getSelectionModel(), color);
+		        	}
 		        }
 		    }
 		});		
