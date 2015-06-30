@@ -262,7 +262,7 @@ public class WahnsinnigTollerPathfinder {
 			return false;
 		}
 		
-		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()==false){
+		if ( !gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
 			
 			if (jetzigeReihe == 25 && jetzigeSpalte == 9){
 				System.out.println("Cheater");
@@ -302,7 +302,7 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 
-		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()==false){
+		if ( !gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
 			return true;
 		}
 		
@@ -335,7 +335,7 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 		
-		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()==false){
+		if ( !gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
 			return true;
 		}
 
@@ -371,7 +371,7 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 		
-		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()==false){
+		if ( !gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
 			return true;
 		}
 		
@@ -390,6 +390,23 @@ public class WahnsinnigTollerPathfinder {
 				
 	}
 	
+	/**
+	 * 
+	 * @param reihe zu überprüfende Reihe
+	 * @param spalte zu überprüfende Spalte
+	 * @return true wenn ein Spieler im Weg ist.
+	 */
+	public boolean detectPlayer(int reihe, int spalte){
+		
+		for (int spieler = 0; spieler < GanzTolleSpielerliste.playerManager.size(); spieler++){
+			CluedoPlayer momentanerPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(spieler);
+			if (momentanerPlayer.getPosition().getX() == spalte && momentanerPlayer.getPosition().getY() == reihe){
+				return true;
+			}
+		}
+		return false;
+		
+	}
 
 	/**
 	 * Hier wird der liste moeglichkeiten mit Himmelsrichtungen gef�llt.

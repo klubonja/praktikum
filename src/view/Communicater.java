@@ -27,8 +27,8 @@ public class Communicater {
 	private DerBeweger beweger;
 	private ArrayList <CluedoPlayer> players;
 	
-	public static GanzTolleSpielerliste<CluedoPlayer> playerManager = new GanzTolleSpielerliste<CluedoPlayer>();
-	public static GanzTolleSpielerliste<Circle> circleManager = new GanzTolleSpielerliste<Circle>();
+	//public static GanzTolleSpielerliste<CluedoPlayer> playerManager = new GanzTolleSpielerliste<CluedoPlayer>();
+	//public static GanzTolleSpielerliste<Circle> circleManager = new GanzTolleSpielerliste<Circle>();
 	
 	public Communicater(ArrayList <CluedoPlayer> players){
 		
@@ -53,6 +53,7 @@ public class Communicater {
 
 		ausloeser = presenterContainer.getAusloeser();
 		beweger = presenterContainer.getBeweger();
+		//raumBeweger = presenterContainer.getr
 		pathfinder = presenterContainer.getPathfinder();
 		sucher = presenterContainer.getSucher();
 		
@@ -62,7 +63,7 @@ public class Communicater {
 		///////////////////////////////
 		/////////BRAUCHT INPUT/////////
 		///////////////////////////////
-		 dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
+		// dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
 	}
 	
 	public void useSecretPassage(){
@@ -86,8 +87,8 @@ public class Communicater {
 	}
 	
 	public void endTurn(){
-		Communicater.playerManager.next();
-		Communicater.circleManager.next();
+		GanzTolleSpielerliste.playerManager.next();
+		GanzTolleSpielerliste.circleManager.next();
 		/////////////////////////////////////
 		///BENACHRICHTUGUNG, DASS NÄCHSTER///
 		/////////ZUG ANGEFANGEN HAT//////////

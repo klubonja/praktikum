@@ -2,8 +2,8 @@ package finderOfPaths;
 
 
 import kacheln.Kachel;
+import kacheln.RaumKachel;
 import kacheln.TuerKachel;
-import model.Player;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Rooms;
@@ -11,59 +11,31 @@ import enums.Rooms;
 public class RaumBeweger {
 
 private BoardView gui;
-private CluedoPlayer player;
-private TuerKachel aufenthalt;
+private CluedoPlayer currentPlayer;
+private Kachel aufenthalt;
 private Kachel zielImRaum;
 
 
-	public RaumBeweger(BoardView gui, CluedoPlayer player, TuerKachel aufenthalt){
+	public RaumBeweger(BoardView gui){
 		this.gui = gui;
-		this.player = player;
-		this.aufenthalt = aufenthalt;
-		
+		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject();
 		zielImRaum = gui.getKachelArray()[0][0];
-		
-		
 	}
 
-	public Rooms checkRaum(TuerKachel aufenthalt2) {
-		if(aufenthalt.getRaum() == Rooms.hall){
-			return Rooms.hall;
-		}
-		else if(aufenthalt.getRaum() == Rooms.lounge){
-			return Rooms.lounge;
-		}
-		else if(aufenthalt.getRaum() == Rooms.diningroom){
-			return Rooms.diningroom;
-		}
-		else if(aufenthalt.getRaum() == Rooms.kitchen){
-			return Rooms.kitchen;
-		}
-		else if(aufenthalt.getRaum() == Rooms.ballroom){
-			return Rooms.ballroom;
-		}
-		else if(aufenthalt.getRaum() == Rooms.conservatory){
-			return Rooms.conservatory;
-		}
-		else if(aufenthalt.getRaum() == Rooms.billiard){
-			return Rooms.billiard;
-		}
-		else if(aufenthalt.getRaum() == Rooms.library){
-			return Rooms.library;
-		}
-		else if(aufenthalt.getRaum() == Rooms.study){
-			return Rooms.study;
-		}
-		else if(aufenthalt.getRaum() == Rooms.pool){
-			return Rooms.pool;
+	public Rooms checkRaum( CluedoPlayer currentPlayer, Kachel aufenthalt) {
+		this.aufenthalt = aufenthalt;
+		this.currentPlayer = currentPlayer;
+		if(aufenthalt.getRaum() != null){
+			return aufenthalt.getRaum();
 		}
 		else{
 			return null;
 		}
 	}
 	
+	
 	public Kachel positionInRaum(CluedoPlayer player2, Rooms raum) {
-		if(player.getCluedoPerson().getColor() == "yellow"){
+		if(currentPlayer.getCluedoPerson().getColor() == "yellow"){
 			if(raum == Rooms.hall){
 				System.out.println("haaaaaaaaaaaaall");
 				zielImRaum.getPosition().setX(11);
@@ -125,7 +97,7 @@ private Kachel zielImRaum;
 				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 		}
-		else if(player.getCluedoPerson().getColor() == "blue"){
+		else if(currentPlayer.getCluedoPerson().getColor() == "blue"){
 			if(raum == Rooms.hall){
 				zielImRaum.getPosition().setX(11);
 				zielImRaum.getPosition().setY(2);
@@ -178,7 +150,7 @@ private Kachel zielImRaum;
 			}
 		
 		}
-		else if(player.getCluedoPerson().getColor() == "green"){
+		else if(currentPlayer.getCluedoPerson().getColor() == "green"){
 			if(raum == Rooms.hall){
 				zielImRaum.getPosition().setX(11);
 				zielImRaum.getPosition().setY(3);
@@ -231,7 +203,7 @@ private Kachel zielImRaum;
 			}
 		
 		}
-		else if(player.getCluedoPerson().getColor() == "white"){
+		else if(currentPlayer.getCluedoPerson().getColor() == "white"){
 			if(raum == Rooms.hall){
 				zielImRaum.getPosition().setX(12);
 				zielImRaum.getPosition().setY(1);
@@ -284,7 +256,7 @@ private Kachel zielImRaum;
 			}
 		
 		}
-		else if(player.getCluedoPerson().getColor() == "yellow"){
+		else if(currentPlayer.getCluedoPerson().getColor() == "yellow"){
 			if(raum == Rooms.hall){
 				zielImRaum.getPosition().setX(12);
 				zielImRaum.getPosition().setY(2);
@@ -337,7 +309,7 @@ private Kachel zielImRaum;
 			}
 		
 		}
-		else if(player.getCluedoPerson().getColor() == "red"  || player.getCluedoPerson().getColor() == "Peter"){
+		else if(currentPlayer.getCluedoPerson().getColor() == "red"  || currentPlayer.getCluedoPerson().getColor() == "Peter"){
 			if(raum == Rooms.hall){
 				zielImRaum.getPosition().setX(12);
 				zielImRaum.getPosition().setY(3);
@@ -394,26 +366,3 @@ private Kachel zielImRaum;
 	}
 }	
 
-//	public void xySetzen(Kachel momentaneKachel){
-//
-//		for (int iReihen = 0; iReihen < gui.getKachelArray().length; iReihen++){
-//			for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length; jSpalten++){
-//				Kachel beginnKachel = gui.getKachelArray()[iReihen][jSpalten];
-//				
-//				if (beginnKachel.getMoeglichkeitenVonHier()!= null){
-//					System.out.println("*********** party");
-//					System.out.println("*********** iReihen : " +iReihen +"   ||  jSpalten : " +jSpalten);
-//					int yStelle = gui.getRowIndex(momentaneKachel);
-//					int xStelle = gui.getColumnIndex(momentaneKachel);
-//					if ( ( (xStelle - xInsgesamt) == jSpalten) && ( (yStelle - yInsgesamt) == iReihen) ){
-//						System.out.println("muhahahaha");
-//						player.setxCoord(jSpalten);
-//						player.setyCoord(iReihen);
-//					}
-//				}
-//			}
-//		}
-//	
-//	}
-//	
-//}

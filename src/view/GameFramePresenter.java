@@ -1,7 +1,5 @@
 package view;
 
-import java.util.ArrayList;
-
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import staticClasses.auxx;
@@ -9,6 +7,7 @@ import cluedoNetworkLayer.CluedoPlayer;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.DerBeweger;
 import finderOfPaths.GanzTolleSpielerliste;
+import finderOfPaths.RaumBeweger;
 import finderOfPaths.Sucher;
 import finderOfPaths.Vorschlaege;
 import finderOfPaths.WahnsinnigTollerPathfinder;
@@ -24,6 +23,7 @@ public class GameFramePresenter {
 	private Ausloeser ausloeser;
 	private Sucher sucher;
 	private DerBeweger beweger;
+	private RaumBeweger raumBeweger;
 	private Vorschlaege vorschlager;
 	private WahnsinnigTollerPathfinder pathfinder;
 	private char [][] anweisungen;
@@ -52,7 +52,8 @@ public class GameFramePresenter {
 		handFramePresenter = new HandFramePresenter(gfv.hand);
 		menuBarPresenter = new MenuBarPresenter(gfv.menu, gfv);
 		
-		beweger = new DerBeweger(gfv.board, gfv.ballEbene);
+		raumBeweger = new RaumBeweger(gfv.board);		
+		beweger = new DerBeweger(gfv.board, gfv.ballEbene, raumBeweger);
 		vorschlager = new Vorschlaege(gfv.board);
 		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene);
 		
