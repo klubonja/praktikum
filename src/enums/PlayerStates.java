@@ -3,12 +3,14 @@ package enums;
 public enum PlayerStates {
 	
 	do_nothing("do nothing"),
+	use_secret_passage("use secret passage"),
 	roll_dice("roll dice"),
-	roll_dice_or_use_secret_passage("roll dice or use secret passage"),
 	move("move"),
 	suspect("suspect"),
 	disprove("disprove"),
-	end_turn("end turn");
+	end_turn("end turn"),
+	disprove_trap("disprove trap"),
+	do_nothing_trap("do nothing trap");
 	
 	private String name;
 	
