@@ -19,7 +19,9 @@ public class CluedoGame {
 	
 	ArrayList<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
+	ArrayList<String> availableColors = new ArrayList<String>();
 	Communicater communicater;
+
 		
 	public CluedoGame(int gameId){
 		this.gameId = gameId; 
@@ -141,10 +143,20 @@ public class CluedoGame {
 		this.gameState = gameState;
 	}
 	
-	//TODO
-//	public ArrayList<String> getAvailableColors(){
-//		
-//	}
+	public ArrayList<String> getAvailableColors(){
+			
+			for (CluedoPlayer p: players){
+				
+					if (p.getNick().equals("")){
+						availableColors.add(p.getCluedoPerson().getColor());
+						System.out.println(p.getCluedoPerson().getColor());
+					}
+								
+				
+			}
+			return availableColors;
+			
+	}
 	
 	public CluedoPlayer getPlayer(String color){
 		for (CluedoPlayer p : players)
