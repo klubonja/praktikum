@@ -4,56 +4,138 @@ package view;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import finderOfPaths.Ausloeser;
+import finderOfPaths.Sucher;
+
+/**
+ * 
+ * @since 26.05.2015
+ * @author YinYanYolos
+ * 
+ * The class DicePresenter. Makes able to trigger all the events of the DiceView class.
+ *
+ */
 
 public class DicePresenter {
 	
-	DiceView dice;
+	public static int diceCounter = 0;
 	
-	public DicePresenter(DiceView dice){
-		
-		this.dice = dice;
+	private int [] dice = new int [2];
+	
+	DiceView view;
+	
+	private Ausloeser ausloeser;
+	private BoardView gui;
+	private Sucher sucher;
+	
+	private int zielWuerfelEins;
+	private int zielWuerfelZwei;
+	
+	public DicePresenter(DiceView view, Ausloeser ausloeser, BoardView gui, Sucher sucher){
+		this.ausloeser = ausloeser;
+		this.view = view;
+		this.sucher = sucher;
+		this.gui = gui;
 		startEvents();
 	}
 	
 	public void startEvents(){
-		dice.roll.setOnMouseClicked(e -> rollTheDice());
+		
+		view.getrollBtn().setOnMouseClicked(e -> rollTheDice());
 	}
 	
 	public void rollTheDice(){
-		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame());
+		diceCounter = 0;
+		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("yourself"));
 		Timeline t = new Timeline(keyFrame);
 		t.setCycleCount(10);
 		t.play();
-
+		
+		}
+	
+	public void rollTheDiceForSomeone(int ersterWuerfel, int zweiterWuerfel){
+		this.zielWuerfelEins = ersterWuerfel;
+		this.zielWuerfelZwei = zweiterWuerfel;
+		diceCounter = 0;
+		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("someone"));
+		Timeline t = new Timeline(keyFrame);
+		t.setCycleCount(10);
+		t.play();
+		
 	}
 	
-	public void changeFrame(){
+	public void changeFrame(String who){
 		
-		dice.getChildren().remove(dice.d1);
-		dice.getChildren().remove(dice.d2);
+		diceCounter = diceCounter + 1;
+		
+		view.getChildren().remove(view.getD1());
+		view.getChildren().remove(view.getD2());
 		
 		int first = 1 + (int)(Math.random()*6);
 		int second = 1 + (int)(Math.random()*6);
 		
-		switch(first){
-		case 1: dice.d1.setImage(dice.dice1);break;
-		case 2: dice.d1.setImage(dice.dice2);break;
-		case 3: dice.d1.setImage(dice.dice3);break;
-		case 4: dice.d1.setImage(dice.dice4);break;
-		case 5: dice.d1.setImage(dice.dice5);break;
-		case 6: dice.d1.setImage(dice.dice6);break;
-		}
-		switch(second){
-		case 1: dice.d2.setImage(dice.dice1);break;
-		case 2: dice.d2.setImage(dice.dice2);break;
-		case 3: dice.d2.setImage(dice.dice3);break;
-		case 4: dice.d2.setImage(dice.dice4);break;
-		case 5: dice.d2.setImage(dice.dice5);break;
-		case 6: dice.d2.setImage(dice.dice6);break;
+		if (who == "someone" && diceCounter == 10){
+			first = zielWuerfelEins;
+			second = zielWuerfelZwei;
 		}
 		
-		dice.getChildren().addAll(dice.d1, dice.d2);
+		if (diceCounter == 10){
+			dice[0] = first;
+			dice[1] = second;
+			wuerfeln();
 		}
+		
+		switch(first){
+		case 1: view.getD1().setImage(view.getDice1());break;
+		case 2: view.getD1().setImage(view.getDice2());break;
+		case 3: view.getD1().setImage(view.getDice3());break;
+		case 4: view.getD1().setImage(view.getDice4());break;
+		case 5: view.getD1().setImage(view.getDice5());break;
+		case 6: view.getD1().setImage(view.getDice6());break;
+		}
+		switch(second){
+		case 1: view.getD2().setImage(view.getDice1());break;
+		case 2: view.getD2().setImage(view.getDice2());break;
+		case 3: view.getD2().setImage(view.getDice3());break;
+		case 4: view.getD2().setImage(view.getDice4());break;
+		case 5: view.getD2().setImage(view.getDice5());break;
+		case 6: view.getD2().setImage(view.getDice6());break;
+		}
+		
+		view.getChildren().addAll(view.getD1(), view.getD2());
+		
+		}
+	
 
+	/**
+	 * Testmethode zum Würfeln
+	 */
+	public void wuerfeln(){
+		gui.resetBackground();
+		gui.resetMoeglichkeiten();
+		ausloeser.setWuerfelZahl(dice[0] + dice[1]);
+		System.out.println("==================================");
+		System.out.println("==================================");
+		System.out.println("Würfelzahl : " +ausloeser.getWuerfelZahl());
+		System.out.println("==================================");
+		System.out.println("==================================");
+		
+		
+		sucher.suchen(ausloeser.getWuerfelZahl());
+		ausloeser.zuweisung();
+		ausloeser.setGewuerfelt(true);
+	}
+	
+
+	public int[] getDice() {
+		return dice;
+	}
+
+	public void setDice(int[] dice) {
+		this.dice = dice;
+	}
+
+	
+	
 }
 

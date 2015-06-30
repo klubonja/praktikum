@@ -1,15 +1,13 @@
 package cluedoServer;
 
-import java.io.IOException;
-
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
 import org.json.JSONObject;
 
 import staticClasses.Config;
-import staticClasses.Methods;
 import staticClasses.NetworkMessages;
+import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
@@ -46,11 +44,11 @@ class CommunicationHandler implements Runnable{
 	}	
 	
 	private void awaitingLoginAttempt (){
-		System.out.println("awaiting");
-
+		auxx.logfine("awaiting login from client");
 		while (!readyForCommunication) { // will keep listening for valid login msg
 			try {
-				String message = Methods.getTCPMessage(client.getSocket()).trim();
+				String message = auxx.getTCPMessage(client.getSocket()).trim();
+				
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(
 								new JSONObject(message)));
@@ -58,7 +56,7 @@ class CommunicationHandler implements Runnable{
 
 				if (errcode == NetworkHandhakeCodes.OK) {					
 					client.setExpansions(
-						Methods.makeConjunction(
+						auxx.makeConjunction(
 							Config.EXPANSIONS, 
 							checker.getMessage().getJSONArray("expansions")
 						)
@@ -71,13 +69,6 @@ class CommunicationHandler implements Runnable{
 							dataManager.getGameList()
 							)
 					);
-					System.out.println(NetworkMessages.login_sucMsg(
-							client.getExpansions(),
-							dataManager.getClientPool(), 
-							dataManager.getGameList()
-							)
-					);
-					
 					if (dataGuiManager.addNetworkActor(client,"logged in"))
 						dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
 					else {
@@ -94,16 +85,13 @@ class CommunicationHandler implements Runnable{
 					client.sendMsg(NetworkMessages.disconnectMsg());
 					client.closingConnection(dataManager.getGroupName()+" is closing connection");
 					dataManager.blacklist(client);					
-					
-					
+					killThread();
 				}
 				
-				else {
-					dataGuiManager.addMsgIn("unhandled incoming : \n" + message);
-				}
+				auxx.loginfo("login attempt :"+ checker.getMessage().toString());				
 			} 
 			catch (Exception e) {
-				e.printStackTrace();
+				auxx.logsevere("communcitationhandler of client"+ client.getNick(), e);
 			}
 		}	
 	}
@@ -113,21 +101,16 @@ class CommunicationHandler implements Runnable{
 		awaitingLoginAttempt();
 		while (run){
 			try {
-	           String message = Methods.getTCPMessage(client.socket).trim();
+	           String message = auxx.getTCPMessage(client.socket).trim();
+	           
 	           CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
 	           checker.validate();
-	           if (!checker.isValid()){
-	        	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()+ " \n "
-	        	   		+ "bye "+client.getNick()+" and "+client.getGroupName()+" is a shitty group"));
-	        	   client.sendMsg(NetworkMessages.disconnectMsg());
-	        	   dataGuiManager.removeClient(client);
-	           }
-	           else {
-	        	   if (checker.getType().equals("create game")){
+	           if (checker.isValid()){
+	        	   if (checker.getType().equals("create game")){													//CREATE GAME
 	        		   createGame(checker.getMessage().getString("color"),client);
 	        	   }
 	        	   else if (checker.getType().equals("join game")){
-	        		   int gameID = checker.getMessage().getInt("gameID");
+	        		   int gameID = checker.getMessage().getInt("gameID");											//JOIN GAME
 	        		   String color = checker.getMessage().getString("color");
 	        		   JoinGameStatus status = dataGuiManager.joinGame(gameID, color, client) ;
 	        		   if (status == JoinGameStatus.added){
@@ -147,21 +130,48 @@ class CommunicationHandler implements Runnable{
 	        		   else if (status == JoinGameStatus.nick_already_taken)
 	        			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));	        		  
 	        	   }
-	        	   else if (checker.getType().equals("disconnect")) {
-	        		  closeProtokollConnection("");
+	        	   else if (checker.getType().equals("start game")) {												//START GAME
+		        	   int gameID = checker.getMessage().getInt("gameID");
+	        		   if (dataGuiManager.startGameByID(gameID,client.getNick())){
+		        			dataManager.notifyAll(
+		        					NetworkMessages.game_startedMsg(
+		        							gameID, 
+		        							 dataManager.getGameByID(gameID).getConnectedPlayersString()
+		        							 )
+		        					);
+		        			dataGuiManager.getGameByIndex(gameID).notifyInit();
+		        		}
+	        		   else {
+	        			   client.sendMsg(NetworkMessages.error_Msg("you cant start this game"));
+	        		   }
+	        	   }	        	   
+	        	   else  if (checker.getType().equals("leave game")){													//CREATE GAME
+	        		   dataGuiManager.removePlayerfromGame(client, checker.getMessage().getInt("gameID"));
 	        	   }
-	           }	
-	           //nur damit nichts unter den tisch fällt
-		       dataGuiManager.addMsgIn(message);
+	        	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
+	        		  closeProtokollConnection();
+	        	   }
+	        	  
+	        	   else if (checker.getType().equals("chat")) {														//CHAT
+	        		   String msg = checker.getMessage().getString("message");
+	        		   String ts = checker.getMessage().getString("timestamp");
+	        		   dataManager.notifyAll(NetworkMessages.chat_to_clientMsg(msg , ts, client.getNick()));
+		           }	        	   
+	           }
+	           else {
+	        	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()+ " \n "
+		        	   		+ "bye "+client.getNick()+" and "+client.getGroupName()+" is a shitty group"));
+		        	   client.sendMsg(NetworkMessages.disconnectMsg());
+		        	   dataGuiManager.removeClient(client);
+		        	   auxx.loginfo("INCOMING INVALID : "+ checker.getErrString());
+	           }
+	           
+	           auxx.loginfo("INCOMING anyway : "+ checker.getMessage().toString());
 
 			}
-			catch (Exception e){
-				try {
-					closeProtokollConnection("closing :"+e.getMessage());
-				}
-				catch (IOException ex){
-					dataGuiManager.addMsgIn(ex.getMessage());
-				}				
+			catch (Exception e ){	
+				auxx.logsevere("communicationhandler for client :"+ client.getNick()+ "running out", e);
+				closeProtokollConnection();			
 			}
 		}
 		
@@ -180,8 +190,7 @@ class CommunicationHandler implements Runnable{
 				);
 	}
 	
-	private void closeProtokollConnection(String msg) throws IOException{
-		 //client.sendMsg(NetworkMessages.disconnectedMsg("bye " +client.getNick()));
+	private void closeProtokollConnection() {
 		 if (dataGuiManager.removeClient(client)){
   		   dataManager.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
   		   killThread();

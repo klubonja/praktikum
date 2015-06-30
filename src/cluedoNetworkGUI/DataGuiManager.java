@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
+import enums.GameStates;
 
 public class DataGuiManager   {
 	
@@ -60,9 +61,9 @@ public class DataGuiManager   {
 			  });
 		  }
 	  
-	  public void addGameToGui(int gameID,String specialInfo, String info){
+	  public void addGameToGui(int gameID,String specialInfo, String info,GameStates state,String servername,String serverip){
 		  Platform.runLater(() -> {
-			gui.addGame(gameID, specialInfo, info);
+			gui.addGame(gameID, specialInfo, info,state,servername,serverip);
 		});
 	  }
 	  
@@ -77,32 +78,47 @@ public class DataGuiManager   {
 	  
 	  public void setStartServiceButtonLabel(String label){
 		  Platform.runLater(() -> {gui.setStartServiceButtonLabel(label);});
-	  }
-	  
+	  }	  
 	 
 	  public void setWindowName(String label){
 		  Platform.runLater(() -> {gui.setWindowName(label);});
 	  }
 	  
-	  public void removeGame(int gameID){
+	  public void removeGameGui(int gameID){
 		  Platform.runLater(() -> {gui.removeGame(gameID);	 });
-	  }
-	  
+	  }	  
 	
 	  public  void emptyGamesList(){
 		  Platform.runLater(() -> {gui.emptyGamesList();});
 	  }
 	  
-	  public void addGame(int gameID,String specialinfo, String info){
-		  Platform.runLater(() -> {gui.addGame(gameID, specialinfo, info);});
+	  public  void setReadyGame(int gameID){
+		  Platform.runLater(() -> {
+			  gui.updateGameSetReady(gameID);
+		  });
 	  }
 	  
+	  public  void setRunningGame(int gameID){
+		  Platform.runLater(() -> {
+			  gui.updateGameSetRunning(gameID);
+		  });
+	  }
 	  
+	  public  void setGameEndedGui(int gameID){
+		  Platform.runLater(() -> {
+			  gui.updateGameSetEnded(gameID);
+		  });
+	  }
+	  
+	  public  void setGameWaitingGui(int gameID){
+		  Platform.runLater(() -> {
+			  gui.updateGameSetWaiting(gameID);
+		  });
+	  }
 	  
 	  public void updateGame(int gameID,String specialinfo, String info){
 		Platform.runLater(() -> {
 			gui.updateGame(gameID, specialinfo, info); 	
-			System.out.println("special info in dataguimanager l105"+info);
 		});
 	  }
 	  

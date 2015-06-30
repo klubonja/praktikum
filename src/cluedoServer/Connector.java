@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 import staticClasses.Config;
-import staticClasses.Methods;
+import staticClasses.auxx;
 import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.DataGuiManagerServer;
 
@@ -36,7 +36,7 @@ class Connector extends Thread{
 //				if (!dataManger.checkIpExists(clientSocket.getInetAddress())){
 					if (dataManger.isBlacklisted(clientSocket.getInetAddress()))
 						//sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
-						Methods.sendTCPMsg(clientSocket, NetworkMessages.error_Msg(Config.BLACKLISTED_MSG));
+						auxx.sendTCPMsg(clientSocket, NetworkMessages.error_Msg(Config.BLACKLISTED_MSG));
 					Thread newCommunicationThread = 
 							new Thread(
 									new CommunicationHandler(

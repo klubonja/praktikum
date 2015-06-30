@@ -2,7 +2,9 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
-
+import javafx.application.Platform;
+import staticClasses.auxx;
+import view.Communicater;
 import enums.GameStates;
 import enums.Persons;
 import enums.PlayerStates;
@@ -18,6 +20,8 @@ public class CluedoGame {
 	ArrayList<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
 	ArrayList<String> availableColors = new ArrayList<String>();
+	Communicater communicater;
+
 		
 	public CluedoGame(int gameId){
 		this.gameId = gameId; 
@@ -37,6 +41,28 @@ public class CluedoGame {
 		for(Weapons w : weaponsEnum) 
 			weapons.add(new CluedoWeapon(w, new CluedoPosition(11, 11)) ); //11,11 ist schwimmbad	
 		
+	}
+	
+	public boolean start(String starterNick){
+		if (hasNick(starterNick)){
+			setGameState(GameStates.started);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	// WIRD GENUTZT
+	public boolean start(){
+		Platform.runLater(() -> {
+			communicater = new Communicater(getPlayersConnected());
+			communicater.startGame();
+			
+			auxx.loginfo("kommt er hin?");
+			
+		});
+		
+		return true;
 	}
 	
 	public boolean addPlayers(ArrayList<CluedoPlayer> plist){
@@ -100,16 +126,16 @@ public class CluedoGame {
 	}
 	
 	public boolean removePlayer(String nick){
-		for (CluedoPlayer cp: players)
+		for (CluedoPlayer cp: players){
 			if (cp.getNick().equals(nick)){
 				cp.setNick("");
-				System.out.println("removed "+nick);
+				if (gameState == GameStates.started) gameState = GameStates.ended;
+				//if (getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART && gameState != GameStates.ended) setGameState(GameStates.not_started);
+				auxx.loginfo(nick +" removed from Game " +getGameId()+" Gamestate is now : " + gameState.getName());
 				return true;
 			}
-		
-		return false;
-				
-			
+		}		
+		return false;			
 	}
 
 	
@@ -151,7 +177,7 @@ public class CluedoGame {
 	public int getNumberConnected(){
 		int n = 0;
 		for (CluedoPlayer p : players)
-			if (p != null)
+			if (!p.getNick().equals(""))
 				n++;
 		return n;
 	}
@@ -160,7 +186,7 @@ public class CluedoGame {
 		ArrayList<CluedoPlayer> cp = new ArrayList<CluedoPlayer>();
 		for (CluedoPlayer p : players)
 			if (!p.getNick().equals(""))
-				cp.add(getConnectedPlayerByName(p.getNick()));
+				cp.add(p);
 		
 		return cp;
 	}
@@ -174,16 +200,42 @@ public class CluedoGame {
 		
 	}
 	
-	public String getNicksConnected(){
-		StringBuffer nb = new StringBuffer();
+	public ArrayList<String> getConnectedPlayersString(){
+		ArrayList<String> cp = new ArrayList<String>();
 		for (CluedoPlayer p : players)
 			if (!p.getNick().equals(""))
+				cp.add(p.getNick());
+		
+		return cp;
+		
+	}
+	
+	public String getNicksConnected(){
+		StringBuffer nb = new StringBuffer();
+		for (CluedoPlayer p : players){
+			if (!p.getNick().equals("")){
 				nb.append(p.getNick()+", ");
+			}
+		}
+			
 		if (nb.length() > 2) nb.delete(nb.length()-2, nb.length()-1);
 		return nb.toString();
 	}
 	
+	public boolean hasNick(String nick){
+		for (CluedoPlayer p: players)
+			if (p.getNick().equals(nick)) return true;
+		return false;
+			
+	}
 	
+	public void setOrder(ArrayList<String> order){
+		
+	}
+	
+	public void killGame(){
+		communicater.kill();
+	}
 	
 	
 	

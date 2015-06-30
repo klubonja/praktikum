@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import staticClasses.Config;
+import enums.GameStates;
 
 public abstract class CluedoNetworkGUI {
 	
@@ -45,6 +46,7 @@ public abstract class CluedoNetworkGUI {
 		 tabPane = new TabPane();
 		 menue = new HBox();
 		 menue.setPrefHeight(30);
+		
 		 
 		 networkActors = FXCollections.observableArrayList();
 		 networkActorsListView = new ListView<NetworkActorVBox>(networkActors);
@@ -150,11 +152,11 @@ public abstract class CluedoNetworkGUI {
 		  games.clear();
 	  }
 	  
-	  public void addGame(int gameID,String specialinfo, String info){
+	  public void addGame(int gameID,String specialinfo, String info,GameStates state,String servername,String serverip){
 			for (GameVBox p: games)
 	       		if (p.getGameID() == gameID) return;
-			 	
-			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info);
+			
+			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info,servername,serverip,state);
 			gamelistitem.setPrefHeight(Config.GAME_LIST_ITEM_HEIGHT);		
 			games.add(gamelistitem);	
 	  }
@@ -168,6 +170,22 @@ public abstract class CluedoNetworkGUI {
        		}			 		
 	  }
 	 
+	  public void updateGameSetReady(int gameID){
+		  getGame(gameID).setReadyGame();
+		  
+	  }
+	  public void updateGameSetRunning(int gameID){
+		  getGame(gameID).setRunningGame();
+	  }
+	  
+	  public void updateGameSetEnded(int gameID){
+		  getGame(gameID).setEndedGame();
+	  }
+	  
+	  public void updateGameSetWaiting(int gameID){
+		  getGame(gameID).setGameWaiting();
+	  }
+	  
 	  public GameVBox getGame(int gameID){
 			for (GameVBox p: games)
 	       		if (p.getGameID() == gameID){
@@ -184,7 +202,7 @@ public abstract class CluedoNetworkGUI {
 				public void changed(
 						ObservableValue<? extends Number> observable,
 						Number oldValue, Number newValue) {
-							tabPane.setMaxWidth(newValue.doubleValue()/100*20);
+							tabPane.setMaxWidth(newValue.doubleValue()/100*40);
 						}							
 				};
 		  grid.widthProperty().addListener(gridwidthlistener);

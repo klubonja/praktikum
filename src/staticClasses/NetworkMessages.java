@@ -1,19 +1,21 @@
 package staticClasses;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import json.CluedoJSON;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import cluedoClient.ServerItem;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoWeapon;
+import cluedoNetworkLayer.WinningStatement;
 import cluedoServer.ClientItem;
 import enums.GameStates;
-import enums.Persons;
 import enums.PlayerStates;
 
 
@@ -237,15 +239,26 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String player_cardsMsg(int gameID,JSONArray cards){
-		CluedoJSON json = new CluedoJSON("player cards");
+	public static String player_cardsMsg(int gameID,ArrayList<String> cards){
+		CluedoJSON json = new CluedoJSON("player_cards");
 		json.put("gameID", gameID);
-		json.put("cards", cards);		
+		JSONArray cardsJSON = new JSONArray();
+		for (String s: cards)
+			cardsJSON.put(s);
+		json.put("cards", cardsJSON);		
 		
 		return json.toString();
 	}
 	
-	public static String game_startedMsg(int gameID,JSONArray order){
+	public static String game_startedMsg(int gameID,ArrayList<String> order){
+		JSONArray orderJSON = new JSONArray();
+		for (String nick: order)
+			orderJSON.put(nick);
+		
+		return make_game_startedMsg(gameID, orderJSON);
+	}
+	
+	public static String make_game_startedMsg(int gameID,JSONArray order){
 		CluedoJSON json = new CluedoJSON("game started");
 		json.put("order", order);
 		json.put("gamestate", "started");
@@ -254,10 +267,11 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String stateupdateMsg(int gameID,String nick,JSONObject playerstate){
+	
+	public static String stateupdateMsg(int gameID,String nick,PlayerStates state){
 		CluedoJSON json = new CluedoJSON("game started");
 		json.put("nick", nick);
-		json.put("playerstat", playerstate);
+		json.put("playerstate", state.getName());
 		json.put("gameID", gameID);		
 		
 		return json.toString();
@@ -266,6 +280,23 @@ public abstract class NetworkMessages {
 	public static String game_endedMsg(int gameID,String nick,JSONObject statement){
 		CluedoJSON json = new CluedoJSON("game ended");
 		json.put("nick", nick);
+		json.put("statement", statement);
+		json.put("gameID", gameID);		
+		
+		return json.toString();
+	}
+	
+	public static String game_endedMsg(int gameID,WinningStatement statement){
+		JSONObject statementJSON = new JSONObject();
+		statementJSON.put("person", statement.getPerson().getColor());
+		statementJSON.put("weapon", statement.getWeapon().getName());
+		statementJSON.put("room", statement.getRoom().getName());
+
+		return make_game_endedMsg(gameID, statementJSON);
+	}
+	
+	public static String make_game_endedMsg(int gameID,JSONObject statement){
+		CluedoJSON json = new CluedoJSON("game ended");
 		json.put("statement", statement);
 		json.put("gameID", gameID);		
 		
@@ -377,7 +408,6 @@ public abstract class NetworkMessages {
 					p.getState().getName()
 				)
 			);
-			System.out.println(game.getGameId()+"id : playernick"+p.getNick());
 			perspossJSON.put(
 				NetworkMessages.player_pos(
 					p.getCluedoPerson().getColor(), 
@@ -426,7 +456,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String login_sucMsg(ArrayList<String> expansions, ArrayList<ClientItem> clientList, ArrayList<CluedoGameServer> gameList ){
+	public static String login_sucMsg(ArrayList<String> expansions, ArrayList<ClientItem> clientList, Vector<CluedoGameServer> gameList ){
 		JSONArray nickArray = new JSONArray();
 		JSONArray gameArray = new JSONArray();
 		JSONArray expansionsJSON = new JSONArray();
@@ -444,11 +474,11 @@ public abstract class NetworkMessages {
 					);
 	}
 	
-	public static ArrayList<CluedoGameClient> createGamesFromJSONGameArray(JSONArray gamearray){
+	public static ArrayList<CluedoGameClient> createGamesFromJSONGameArray(JSONArray gamearray,ServerItem server){
 		ArrayList<CluedoGameClient> gamelist = new ArrayList<CluedoGameClient>();
 		for (int i = 0; i < gamearray.length(); i++){							
 			CluedoGameClient newgame = new CluedoGameClient(
-					gamearray.getJSONObject(i).getInt("gameID"));
+					gamearray.getJSONObject(i).getInt("gameID"),server);
 			newgame.setGameState(
 					GameStates.getState(
 							gamearray.getJSONObject(i).getString("gamestate")

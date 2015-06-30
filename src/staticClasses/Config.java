@@ -7,15 +7,22 @@ public abstract class Config {
 	/**
 	 * unsere config daten in einer static klasse
 	 * */
+
+	//public final static String GROUP_NAME = "yinyanyolosMAC";
+
+
+	
+	
+	
 	//public final static String GROUP_NAME = "yinyanyolosCIP";
-	public final static String GROUP_NAME = Methods.getRandomString(5);
+	public final static String GROUP_NAME = auxx.getRandomString(5);
 
 	
 	public final static String PROTOKOLL_VERSION = "1.2.1";
 	
 	public final static long SECOND = 1000;//millis
 	
-	public final static int BROADCAST_INTERVAL = 3;//SECONDS
+	public final static int BROADCAST_INTERVAL = 10;//SECONDS
 	
 	
 	public final static int BROADCAST_PORT = 30303;
@@ -25,7 +32,8 @@ public abstract class Config {
 	public final static int MESSAGE_BUFFER = 4096*2;
 	
 	
-	public final static int TCP_PORT = 1200;	
+	//public final static int TCP_PORT = 1200;	
+	public final static int TCP_PORT = auxx.getRandInt(1025,49151);	
 	
 	public final static String[] EXPANSIONS= {"Chat","Pumping Oil in the Antarctica, fuck yeah!"};
 	
@@ -52,5 +60,20 @@ public abstract class Config {
 
 
 
-	public static final double COLOR_SELECT_WINDOW_HEIGHT = 400;
+
+	
+
+	public static final double COLOR_SELECT_WINDOW_HEIGHT = 200;
+	
+	public static final int MIN_CLIENTS_FOR_GAMESTART = 1;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }

@@ -1,6 +1,7 @@
 package cluedoServer;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
 
@@ -10,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
+import staticClasses.auxx;
+import broadcast.BroadcastServerThread;
 import broadcast.ClientHandShakeListener;
 import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
@@ -23,7 +26,7 @@ import cluedoNetworkLayer.CluedoGameServer;
 public class Server {
 	
 	Connector connector;
-	public ServerSocket tcpSocket;
+	public ServerSocket TCPServerSocket;
 	int TCPport;
 
 	DataManagerServer dataManager;	
@@ -36,28 +39,29 @@ public class Server {
 	
 	public Server(CluedoServerGUI g){
 		gui = g;
+		run = true;
 		TCPport = Config.TCP_PORT;	
 		dataManager = new DataManagerServer(Config.GROUP_NAME);
-		dataGuiManager = new DataGuiManagerServer(gui,dataManager);
-	
-		run = true;
-		
-		createTestGroups();
-		sayHello();
-		listenForClientsThread();		
-		startTCPServer();		
-		
-		
-		System.out.println("Server Starteeeee");
+		dataGuiManager = new DataGuiManagerServer(gui,dataManager);	
 		dataGuiManager.setWindowName(Config.GROUP_NAME+" Server");
+		
+		//createTestGroups();
+		sayHello();
+		listenForClientsThread();
+		
+		startTCPServer();				
 		
 		setListener();	
 	}
 	
+	
 	private void sayHello() {
 		String msg = NetworkMessages.udp_serverMsg(Config.GROUP_NAME, TCPport);				
 		Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, dataGuiManager, msg);
-		bc.sendBrodcast();				
+		bc.sendBrodcast();	
+		BroadcastServerThread permanentBroadcaster = new BroadcastServerThread(
+				Config.GROUP_NAME, Config.BROADCAST_WILDCARD_IP, msg, dataGuiManager);
+		permanentBroadcaster.start();
 	}
 	
 	void listenForClientsThread(){
@@ -81,34 +85,40 @@ public class Server {
 	 */
 	private void startTCPServer()  {
 		try {
-			tcpSocket = new ServerSocket(TCPport);	
-			connector = new Connector(tcpSocket,dataManager,dataGuiManager);
+			TCPServerSocket = new ServerSocket();	
+			TCPServerSocket.setReuseAddress(true);
+			TCPServerSocket.bind(new InetSocketAddress(TCPport));
+			connector = new Connector(TCPServerSocket,dataManager,dataGuiManager);
 			connector.start();
+			
 			try {
 				NetworkInterfacesIpManager nm = new NetworkInterfacesIpManager();				 	
 				gui.setStatus("port "+TCPport+ " NInterfaces: "+nm.getServicesFormated()+" "+StandardCharsets.UTF_8);
-			} catch (Exception e) {
-				e.printStackTrace();
+			} 
+			catch (Exception e) {
+				auxx.logsevere("getting networkserveices failed", e);
 			}
-			System.out.println("Server running");			
+			
+			auxx.loginfo("new TCPSocket created");
 		} 
 		catch (IOException e) {
-			gui.addMessageIn(e.getMessage());
-			try {
-				stopServer();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			stopServer();
+			auxx.logsevere("creating serversocket failed :" + e.getMessage());			
 		}		
 	}
 	
-	private void stopServer()  throws IOException{
+	private void stopServer(){
 		dataManager.notifyAll(NetworkMessages.disconnectedMsg("server "+ Config.GROUP_NAME + " says : byebye, and thanks for all the fish"));
-		connector.kill();
-		tcpSocket.close();	
+		if (connector != null) connector.kill();
+		if (TCPServerSocket != null)
+			try {
+				TCPServerSocket.close();
+			} catch (IOException e) {
+				auxx.logsevere("destroying serversocket failed ", e);
+			}	
 		run = false;
 		
-		System.out.println("Serverservices closed");
+		auxx.loginfo("Server will bu shutdown run == false");
 	}
 	
 	private void setListener(){
@@ -125,7 +135,7 @@ public class Server {
 		          try {		        	   
 		               Platform.exit();
 		               System.exit(0);
-		               System.out.println("Terminated");  
+		               auxx.loginfo("SERVER Window closed");
 		          } 
 		          catch (Exception e1) {
 		               e1.printStackTrace();

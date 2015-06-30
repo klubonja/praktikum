@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import staticClasses.Config;
+import staticClasses.auxx;
 import enums.CluedoProtokollMessageTypes;
 import enums.Field;
 import enums.GameStates;
@@ -26,7 +27,6 @@ public class CluedoProtokollChecker {
 	CluedoJSON jsonRoot;
 	String type;
 	String typeNoSpace;
-	boolean isValid;
 
 	public CluedoProtokollChecker(CluedoJSON j) {
 		jsonRoot = j;
@@ -68,35 +68,31 @@ public class CluedoProtokollChecker {
 					try {
 						m.invoke(this);
 					} catch (IllegalAccessException | IllegalArgumentException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					System.out.println("invoking :"+"val_" + typeNoSpace );
-				} catch (InvocationTargetException e) {
-					System.out.println("invoking :"+"val_" + typeNoSpace +" failed");
-					 Throwable originalException = e.getTargetException();
-					   for (StackTraceElement element : originalException.getStackTrace()) {
-					       System.out.println(element);
-					   }
+					auxx.logfine("invoking :"+"val_" + typeNoSpace);
+				} 
+				catch (InvocationTargetException e) {
+					auxx.logsevere("invoking :"+"val_" + typeNoSpace +" failed",e);
 				}
 			} catch (NoSuchMethodException | SecurityException e) {
-				System.out.println("finding :"+"val_" + typeNoSpace +" failed : no such method");
-				//e.printStackTrace();
+				auxx.logsevere("invoking :"+"val_" + typeNoSpace +" failed : no such method",e);
 			}
 		}
 	}
 	
 	public boolean validate() {
-		System.out.println(jsonRoot.toString());
 		if (checkType()) { // sets type to check
 			invokeValMethod();
 		};
 
 		if (errs.size() == 0){
-			System.out.println("OK");
+			auxx.logfine("msg OK");
 			return true;
 		}
-		System.out.println("Not OK see : this.getErrString()\n"+getErrString());
+		auxx.loginfo("msg NOT OK");
+		auxx.loginfo(getErrString());
+		
 		return false;
 	}
 
@@ -136,7 +132,7 @@ public class CluedoProtokollChecker {
 	}
 
 	void val_chat() {
-		validateValue(jsonRoot, "sender");
+		//validateValue(jsonRoot, "sender");
 		validateValue(jsonRoot, "message");
 		if (validateValue(jsonRoot, "timestamp"))
 			validateLocalTimeFormat(jsonRoot, "timestamp");
@@ -150,8 +146,8 @@ public class CluedoProtokollChecker {
 	void val_game_created() {
 		if (validateValue(jsonRoot, "gameID"))
 			isInt(jsonRoot, "gameID");
-		if (validateValue(jsonRoot, "player"))
-			validatePlayerInfo(jsonRoot.getJSONObject("player"));
+//		if (validateValue(jsonRoot, "player"))
+//			validatePlayerInfo(jsonRoot.getJSONObject("player"));
 	}
 
 	void val_join_game() {
@@ -300,8 +296,8 @@ public class CluedoProtokollChecker {
 	
 	
 	void validateLocalTimeFormat(JSONObject jsonParent,String key){
-		String value = jsonParent.getString("key");
-		if (!value.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}\\d{2}\\.\\d{2}"))
+		String value = jsonParent.getString(key);		
+		if (!value.matches("\\d+-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}\\d{1,2}\\.\\d*"))
 			setErr(value +" hat nicht protokollgemäßes (java.time.LocalDateTime) Format");
 	}
 	
@@ -475,7 +471,7 @@ public class CluedoProtokollChecker {
 					}					
 				} 
 				catch (Exception e) {
-					System. out.println("BAD : attempting jsonarray : "+key+" loopindex"+ index + " for "+localtype);
+					auxx.logsevere("no JSONArray index :"+index, e);
 				}				
 			}		
 			
@@ -524,11 +520,10 @@ public class CluedoProtokollChecker {
 	}
 	
 	public void printErrs() {
-		System.out.println("Missing: ");
 		for (String s : errs)
-			System.out.println(s);
+			auxx.loginfo(s);
 		for (String s : msgs)
-			System.out.println(s);
+			auxx.loginfo(s);
 	}
 
 	private void setErr(String err) {
@@ -541,7 +536,7 @@ public class CluedoProtokollChecker {
 	
 	public String getErrString(){
 		StringBuffer sb = new StringBuffer("");
-		if (!isValid)
+		if (!isValid())
 			for (String err : errs) sb.append(err+"\n");
 		return sb.toString();
 	}

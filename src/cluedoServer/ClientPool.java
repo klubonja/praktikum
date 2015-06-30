@@ -26,11 +26,6 @@ public class ClientPool extends ArrayList<ClientItem> {
 		
 	}
 	
-	public void notifyClient(String msg,ClientItem c){
-		for (int i = 0;i < this.size();i++)
-			if (c.id == this.get(i).id) 
-				this.get(i).sendMsg(msg);
-	}
 	
 	boolean checkForExistingIp(InetAddress adress){
 		for (ClientItem c : this)

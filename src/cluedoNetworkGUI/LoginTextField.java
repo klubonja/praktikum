@@ -45,7 +45,6 @@ public class LoginTextField extends TextField{
 //			return false;
 //			
 //		}
-		System.out.println(""+getText().length()+"");
 		return true;	
 		
 	}

@@ -4,8 +4,10 @@ public enum GameStates {
 	
 	started("started"),
 	not_started("not started"),
-	ended("ended");
-	
+	//startable("startable"),
+	ended("ended")
+	//to_be_deleted("to be deleted");
+	;
 	private String name;
 	
 	GameStates(String name){

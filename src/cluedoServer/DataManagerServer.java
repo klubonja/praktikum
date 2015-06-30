@@ -2,9 +2,12 @@ package cluedoServer;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Vector;
 
+import staticClasses.NetworkMessages;
 import cluedoNetworkGUI.DataManager;
 import cluedoNetworkLayer.CluedoGameServer;
+import enums.GameStates;
 import enums.JoinGameStatus;
 
 public class DataManagerServer extends DataManager {
@@ -32,13 +35,21 @@ public class DataManagerServer extends DataManager {
 		return gamesList;
 	}
 	
-	public ArrayList<CluedoGameServer> getGameListArray() {
+	public Vector<CluedoGameServer> getGameListArray() {
 		return gamesList;
 	}
 	
 	@Override
 	public CluedoGameServer getGameByIndex(int index) throws ArrayIndexOutOfBoundsException{
 		return gamesList.get(index);
+	}
+	
+	public CluedoGameServer getGameByID(int gameID){
+		return gamesList.getGameByID(gameID);
+	}
+	
+	public boolean startGameByID(int gameID,String nick){
+		return gamesList.getGameByID(gameID).start();
 	}
 	
 	public ArrayList<CluedoGameServer> getGamesByPlayer(String nick){
@@ -51,7 +62,7 @@ public class DataManagerServer extends DataManager {
 	}
 	
 	public JoinGameStatus joinGame(int gameID, String color,ClientItem client){
-		return gamesList.joinGame(gameID, color, client);
+		return gamesList.joinGameById(gameID, color, client);
 	}
 	
 	public boolean addNetworkActor(ClientItem client){
@@ -68,6 +79,10 @@ public class DataManagerServer extends DataManager {
 	
 	public boolean addGame(CluedoGameServer game){
 		return gamesList.add(game);
+	}
+	
+	public boolean removeGame(CluedoGameServer game){
+		return gamesList.remove(game);
 	}
 	
 	@Override
@@ -96,16 +111,28 @@ public class DataManagerServer extends DataManager {
 	public int getGameCount(){
 		return gamesList.size();
 	}
+	
 	public boolean addClient(ClientItem client){
 		if (!hasClient(client))
 			return clientPool.add(client);
 		return false;
 	}
+	
 	public boolean removeClientfromSystem(ClientItem client){
 		for (CluedoGameServer cgs: gamesList){
 			cgs.findAndRemovePlayer(client);
-		}
-		
+			if (cgs.getNumberConnected() == 0){
+				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
+				if (removeGame(cgs)) cgs.notifyAll(NetworkMessages.game_deletedMsg(cgs.getGameId()));				
+							
+			}
+			else if (cgs.getGameState() == GameStates.ended){
+				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
+			}
+			else if (cgs.getGameState() == GameStates.not_started){
+				cgs.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
+			}		
+		}		
 		
 		return clientPool.remove(client);
 	}

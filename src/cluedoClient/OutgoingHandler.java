@@ -2,22 +2,24 @@ package cluedoClient;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.SelectionModel;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import staticClasses.Config;
-import staticClasses.Methods;
 import staticClasses.NetworkMessages;
+import staticClasses.auxx;
 import cluedoNetworkGUI.CluedoClientGUI;
-import cluedoNetworkGUI.DataGuiManagerClient;
+import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkGUI.GameVBox;
+import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
+import enums.GameStates;
 
 
 /**
@@ -27,16 +29,18 @@ import cluedoNetworkLayer.CluedoPlayer;
 
 class OutgoingHandler implements Runnable{
 	
-	DataGuiManagerClient dataGuiManager;	
-	boolean run;
+	DataGuiManagerClientSpool dataGuiManager;	
+	ServerItem server;
+	boolean localRun;
+	boolean globalRun;
 	
-	public OutgoingHandler(CluedoClientGUI gui,ServerItem server, boolean run) {
-		this.run = run;
-		dataGuiManager = new DataGuiManagerClient(gui, server);		
-		
+	public OutgoingHandler(DataGuiManagerClientSpool dataGuiManager,ServerItem server,boolean globalRun, boolean localRun) {
+		this.localRun = localRun;
+		this.globalRun = globalRun;
+		this.dataGuiManager = dataGuiManager;
+		this.server = server;
 		addClientGUIListener(dataGuiManager.getGui());
-		//login(dataGuiManager.getGui());
-		Methods.login(gui, server.getGroupName(), server.getSocket());
+	
 	}
 	
 	public void addClientGUIListener(CluedoClientGUI gui){
@@ -72,44 +76,72 @@ class OutgoingHandler implements Runnable{
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            		createGame(Methods.getRandomPerson());	               
+            		createGame(auxx.getRandomPerson());	               
             }
         });	
 		
+		gui.refreshGamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent click) {
+		       dataGuiManager.refreshGamesListServer(server);
+		    }
+		});	
+		
+		//clickonagame event
 		dataGuiManager.getGui().getGamesListView().setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
-		        	int gameID = gui.getGamesListView().getSelectionModel().getSelectedItem().getGameID();
-		        	ArrayList<String> colors = dataGuiManager.getServer().getGameByGameID(gameID).getAvailableColors();
+
+		        	GameVBox guiGame = gui.getGamesListView().getSelectionModel().getSelectedItem();
+		        	int gameID = guiGame.getGameID();
+		        	String servername = guiGame.getServerName();
+		        	String serverip = guiGame.getServerIp();
+		        	ServerItem server = dataGuiManager.getServerByID(servername, serverip);
+		        	CluedoGameClient game = server.getGameByGameID(gameID);
+		        	ArrayList<String> colors = dataGuiManager.getSelectedServer().getGameByGameID(gameID).getAvailableColors();
 		        	String color = gui.selectColor(colors);
-		        	if(!(color == null)){
-		        	selectGame(gui.getGamesListView().getSelectionModel(), color);
+		      
+		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART 
+		        			&& game.hasNick(server.getMyNick())
+		        			&& game.getGameState() == GameStates.not_started){
+		        		sendStartGameRequest(gameID);
 		        	}
+		        	else if (game.getGameState() != GameStates.ended && !(color == null))  {
+		        		
+		        		selectGame(game, color);		
+		        	}	
+		        	
+		        	auxx.logfine("game on: "+serverip+" groupname : "+servername+" gamestate : "+game.getGameState());
+
 		        }
 		    }
-		});		
+		});			
 	}
 	
-	void selectGame(SelectionModel<GameVBox> g, String color) {
-		int gameID = g.getSelectedItem().getGameID();		
-		Methods.sendTCPMsg(
-				dataGuiManager.getServer().getSocket(),
+	void selectGame(CluedoGameClient game, String color) {	
+		auxx.sendTCPMsg(
+				game.getServer().getSocket(),
 				NetworkMessages.join_gameMsg(
 						color,
-						gameID)
+						game.getGameId())
 				);
+	}
+	
+	void sendStartGameRequest(int gameID){
+		auxx.sendTCPMsg(server.getSocket(), NetworkMessages.start_gameMsg(gameID));
 	}
 	
 	
 	private void sendInputFieldTextContent(CluedoClientGUI gui){
-		Methods.sendTCPMsg(
-				dataGuiManager.getServer().getSocket(),
+		auxx.sendTCPMsg(
+				server.getSocket(),
 				NetworkMessages.chat_to_serverMsg(
 						gui.inputField.getText(), 
-						LocalDateTime.now().toString()
+						LocalDateTime.now().toString() // 2015-04-08T15:16:23.42
 						)
 				);
+				
 		gui.inputField.setText("");
 	}
 	
@@ -124,21 +156,18 @@ class OutgoingHandler implements Runnable{
 //	}
 	
 	void createGame(String color){
-		Methods.sendTCPMsg(dataGuiManager.getServer().getSocket(),NetworkMessages.create_gameMsg(color));
-	}
-	
+		auxx.sendTCPMsg(dataGuiManager.getSelectedServer().getSocket(),NetworkMessages.create_gameMsg(color));
+	}	
 	
 	@Override
 	public void run(){
-		while (run){
+		while (localRun && globalRun){
 			try {
-				Thread.sleep(Config.SECOND);
+				Thread.sleep(Config.SECOND*10);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				auxx.log.log(Level.SEVERE,e.getMessage());
 			}
 		}
-		System.out.println("CLIENT OutgoingHandlerThread running out");		
-	}
-	
-	
+		auxx.log.log(Level.INFO,"CLIENT OutgoingHandlerThread running out");
+	}	
 }
