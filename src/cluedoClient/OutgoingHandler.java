@@ -141,16 +141,6 @@ class OutgoingHandler implements Runnable{
 		gui.inputField.setText("");
 	}
 	
-//	void selectGame(SelectionModel<GameVBox> g) {
-//		int gameID = g.getSelectedItem().getGameID();
-//		Methods.sendTCPMsg(
-//				dataGuiManager.getServer().getSocket(),
-//				NetworkMessages.join_gameMsg(
-//						Methods.getRandomPerson(),
-//						gameID)
-//				);
-//	}
-	
 	void createGame(String color){
 		auxx.sendTCPMsg(dataGuiManager.getSelectedServer().getSocket(),NetworkMessages.create_gameMsg(color));
 	}	
