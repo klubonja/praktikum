@@ -29,7 +29,7 @@ public class FigurenPresenter {
 	private int columnSize = 24;
 
 	private Color [] farben = new Color [30];
-	private int farbenzähler;
+	private int farbenzaehler;
 	
 	private int xDistanz;
 	private int yDistanz;
@@ -112,25 +112,25 @@ public class FigurenPresenter {
 
 
 		/**
-		 * Wird von der Kachel.OnClick aufgerufen und l�st die movePlayer Methode
+		 * Wird von der Kachel.OnClick aufgerufen und l�ｿｽst die movePlayer Methode
 		 * aus.
 		 */
 		public void dasIstEinFeld(Kachel ziel) {
-			farbenzähler = 0;
+			farbenzaehler = 0;
 			movePlayer(ziel);
 		}
 
 		/**
-		 * Wird ausgel�st, wenn jemand auf einen Raum clickt und gibt eine nette
-		 * Nachricht zur�ck.
+		 * Wird ausgel�ｿｽst, wenn jemand auf einen Raum clickt und gibt eine nette
+		 * Nachricht zur�ｿｽck.
 		 */
 		public void dasIsEinRaum() {
 			System.out.println("Das ist ein Raum, alter");
 		}
 
 		/**
-		 * Wird ausgel�st, wenn jemand auf einen Raum clickt und
-		 * l�st den Vermutungs-Screen aus.
+		 * Wird ausgel�ｿｽst, wenn jemand auf einen Raum clickt und
+		 * l�ｿｽst den Vermutungs-Screen aus.
 		 */
 		public void dasIstEineTuer(){
 			viewImRaum.show();
@@ -138,8 +138,8 @@ public class FigurenPresenter {
 
 		
 		/**
-		 * Die Methode, welche durch das ClickEvent ausgel�st wird. hier wird
-		 * pathfinder und moveWithPath ausgel�st.
+		 * Die Methode, welche durch das ClickEvent ausgel�ｿｽst wird. hier wird
+		 * pathfinder und moveWithPath ausgel�ｿｽst.
 		 * 
 		 * @param PlayerDarstellung
 		 *            Der zu bewegende Player
@@ -202,7 +202,7 @@ public class FigurenPresenter {
 		}
 
 		/**
-		 * Setzt die Werte wieder zur�ck.
+		 * Setzt die Werte wieder zur�ｿｽck.
 		 * 
 		 * @param PlayerDarstellung
 		 * @param ziel
@@ -224,7 +224,7 @@ public class FigurenPresenter {
 		}
 
 		/**
-		 * Eine Blaupause f�r den Neuen Pathfinder
+		 * Eine Blaupause f�ｿｽr den Neuen Pathfinder
 		 * @param xDistanzeingegeben
 		 * @param yDistanzeingegeben
 		 * @param jetzigesFeld
@@ -324,16 +324,16 @@ public class FigurenPresenter {
 		}
 
 		/**
-		 * Erh�ht / Verringert die yDistanz
-		 * @param yChange Wie viel die yDistanz ver�ndert wird.
+		 * Erh�ｿｽht / Verringert die yDistanz
+		 * @param yChange Wie viel die yDistanz ver�ｿｽndert wird.
 		 */
 		public void updateYDistanz(int yChange){
 			yDistanz = yDistanz + yChange;
 		}
 		
 		/**
-		 * Erh�ht / Verringert die xDistanz
-		 * @param xChange Wie viel die xDistanz ver�ndert wird.
+		 * Erh�ｿｽht / Verringert die xDistanz
+		 * @param xChange Wie viel die xDistanz ver�ｿｽndert wird.
 		 */
 		public void updateXDistanz(int xChange){
 			xDistanz = xDistanz + xChange;
@@ -343,9 +343,9 @@ public class FigurenPresenter {
 		 * Berechnet die Erlaubte x und y Distanz bis zum Ziel
 		 * 
 		 * @param xDistanzeingegeben
-		 *            Die �bermittelte Distanz in X Richtung
+		 *            Die �ｿｽbermittelte Distanz in X Richtung
 		 * @param yDistanzeingegeben
-		 *            Die �bermittelte Distanz in Y Richtung
+		 *            Die �ｿｽbermittelte Distanz in Y Richtung
 		 * @param jetzigesFeld
 		 */
 		public void pathfinder(int xDistanzeingegeben, int yDistanzeingegeben,
@@ -491,15 +491,15 @@ public class FigurenPresenter {
 		/**
 		 * Updatet das jetzigeFeld um den jeweiligen Wert
 		 * 
-		 * @param y  Der Wert um welchen die Reihe erh�ht wird
-		 * @param x  Der Wert um welchen die Spalte erh�ht wird
+		 * @param y  Der Wert um welchen die Reihe erh�ｿｽht wird
+		 * @param x  Der Wert um welchen die Spalte erh�ｿｽht wird
 		 */
 		public void updateCurrentField(int y, int x) {
 			this.jetzigesFeld = spielfeld.getKachelArray()[this.jetzigeReihe + y][this.jetzigeColumn + x];
 		}
 
 		/**
-		 * Hier wird �berpr�ft, ob die n�chstgelegene Kachel in X Richtung ein Raum
+		 * Hier wird �ｿｽberpr�ｿｽft, ob die n�ｿｽchstgelegene Kachel in X Richtung ein Raum
 		 * ist.
 		 * 
 		 * @return true falls dort keine Raumkachel ist. false falls dort eine
@@ -532,7 +532,7 @@ public class FigurenPresenter {
 		}
 
 		/**	
-		 * Hier wird �berpr�ft, ob die n�chstgelegene Kachel in Y Richtung ein Raum
+		 * Hier wird �ｿｽberpr�ｿｽft, ob die n�ｿｽchstgelegene Kachel in Y Richtung ein Raum
 		 * ist.
 		 * 
 		 * @return true falls dort keine Raumkachel ist. false falls dort eine
@@ -642,8 +642,8 @@ public class FigurenPresenter {
 
 			System.out.println(" player x vorher : " + player.getxCoord());
 			System.out.println(" player y vorher : " + player.getyCoord());
-			System.out.println(" x Position f�r path : " + xPositionFuerPath);
-			System.out.println(" y Position f�r path : " + yPositionFuerPath);
+			System.out.println(" x Position f�ｿｽr path : " + xPositionFuerPath);
+			System.out.println(" y Position f�ｿｽr path : " + yPositionFuerPath);
 
 			System.out.println(" playerDarstellung X vorher : "
 					+ playerDarstellung.getLayoutX());

@@ -20,6 +20,7 @@ import cluedoNetworkGUI.GameVBox;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.GameStates;
+import enums.Persons;
 
 
 /**
@@ -76,7 +77,14 @@ class OutgoingHandler implements Runnable{
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            		createGame(auxx.getRandomPerson());	               
+            	ArrayList<String> colors = new ArrayList<String>();
+            	for(Persons p : Persons.values()){
+            		colors.add(p.getColor());
+            	}
+	        	String color = gui.selectColor(colors);
+	        	if(!(color == null)){
+            		createGame(color);	  
+	        	}
             }
         });	
 		
