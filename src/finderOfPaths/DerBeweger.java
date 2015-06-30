@@ -127,11 +127,8 @@ public class DerBeweger {
 						
 					}
 					
-					
 					bewegen(anweisungen, schritte, nullSchritte);
 					
-					//currentCircle = (Circle) circleManager.getCurrentObject();
-					//currentPlayer = (CluedoPlayer) playerManager.getCurrentObject();
 				}
 			});
 			
@@ -139,9 +136,6 @@ public class DerBeweger {
 			
 			}
 			
-		//currentCircle = (Circle) circleManager.getCurrentObject();
-		//currentPlayer = (CluedoPlayer) playerManager.getCurrentObject();
-		
 		}
 
 	public void anfangsKachelSetzen(Kachel neueAnfangsKachel){

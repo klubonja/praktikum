@@ -64,12 +64,6 @@ public class BallEbene2 extends GridPane{
 			this.add( (Circle) GanzTolleSpielerliste.circleManager.get(i), 0, 0);
 		}
 		
-//		this.add((Circle) GanzTolleSpielerliste.circleManager.get(0), 0, 0);
-//		this.add((Circle) GanzTolleSpielerliste.circleManager.get(1), 0, 0);
-//		this.add((Circle) GanzTolleSpielerliste.circleManager.get(2), 0, 0);
-//		this.add((Circle) GanzTolleSpielerliste.circleManager.get(3), 0, 0);
-//		this.add((Circle) GanzTolleSpielerliste.circleManager.get(4), 0, 0);
-//		this.add((Circle) GanzTolleSpielerliste.circleManager.get(5), 0, 0);
 	}
 	
 }

@@ -64,8 +64,6 @@ public class Vorschlaege {
 		this.yPositionen = yPositionenEingabe;
 		this.tuerCounter = tuerCounterEingabe;
 		
-		
-		
 		gui.resetBackground();
 		
 		if (tuerCounter != 0){
@@ -212,12 +210,6 @@ public class Vorschlaege {
 	
 	public void moeglichkeitenSetzenMitTueren(Color farbe){
 		if (checkForWeirdStuff()){
-//			System.out.println("moeglichkeiten von : y = " +(jetzigeReihe) +"  ||  x = " +(jetzigeSpalte));
-//			System.out.println("nach : y = " +(jetzigeReihe + yDistanz) +"  ||  x = " +(jetzigeSpalte + xDistanz));
-//			for (int i = 0; i < moeglichkeiten[counterAussen].length && moeglichkeiten[counterAussen] != null;i++){
-//				System.out.print(moeglichkeiten[counterAussen][i]);
-//			}
-//			System.out.println();
 			
 			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 			
@@ -230,12 +222,6 @@ public class Vorschlaege {
 	
 	public void moeglichkeitenSetzenOhneTueren(Color farbe){
 		if (checkForWeirdStuff()){
-//			System.out.println("moeglichkeiten von : y = " +(jetzigeReihe) +"  ||  x = " +(jetzigeSpalte));
-//			System.out.println("nach : y = " +(jetzigeReihe + yDistanz) +"  ||  x = " +(jetzigeSpalte + xDistanz));
-//			for (int i = 0; i < moeglichkeiten[counterAussen].length && moeglichkeiten[counterAussen] != null;i++){
-//				System.out.print(moeglichkeiten[counterAussen][i]);
-//			}
-//			System.out.println();
 			
 			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 	

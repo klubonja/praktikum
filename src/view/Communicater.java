@@ -62,7 +62,7 @@ public class Communicater {
 		///////////////////////////////
 		/////////BRAUCHT INPUT/////////
 		///////////////////////////////
-		// dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
+		 dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
 	}
 	
 	public void useSecretPassage(){

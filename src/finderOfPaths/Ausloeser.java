@@ -133,6 +133,7 @@ public class Ausloeser {
 								nullSchritte = 0;
 								pathfinder.setWelcheKachel(0);
 								
+								// HIER WIRD NEXT GEMACHT
 								GanzTolleSpielerliste.playerManager.next();
 								GanzTolleSpielerliste.circleManager.next();
 								

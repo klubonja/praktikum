@@ -50,7 +50,7 @@ public class CluedoGame {
 		return false;
 	}
 	
-
+	// WIRD GENUTZT
 	public boolean start(){
 		Platform.runLater(() -> {
 			communicater = new Communicater(getPlayersConnected());
