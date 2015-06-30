@@ -317,8 +317,10 @@ public class DerBeweger {
 		
 		gangKachel = geheimGangKachel(raum, "anfang");
 		
+		
+		
 		Path path = new Path();
-		path.getElements().add(new MoveTo(currentCircle.getLayoutX(), currentCircle.getLayoutY()));
+		path.getElements().add(new MoveTo(raumZielKachel.getLayoutX(), raumZielKachel.getLayoutY()));
 		path.getElements().add(new LineTo(gangKachel.getLayoutX(), gangKachel.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
@@ -361,33 +363,33 @@ public class DerBeweger {
 				currentPlayer.getPosition().setY(18);
 			}
 			else if(raum == Rooms.kitchen){
-				geheimGangKachel = gui.getKachelArray()[23][24];
+				geheimGangKachel = gui.getKachelArray()[24][23];
 				currentPlayer.getPosition().setX(6);
 				currentPlayer.getPosition().setY(3);
 			}
 			else if(raum == Rooms.lounge){
-				geheimGangKachel = gui.getKachelArray()[23][0];
+				geheimGangKachel = gui.getKachelArray()[0][23];
 				currentPlayer.getPosition().setX(4);
 				currentPlayer.getPosition().setY(19);
 			}
 			else if(raum == Rooms.conservatory){
-				geheimGangKachel = gui.getKachelArray()[0][24];
+				geheimGangKachel = gui.getKachelArray()[24][0];
 				currentPlayer.getPosition().setX(17);
 				currentPlayer.getPosition().setY(5);
 			}
 		}
 		else {
 			if (raum == Rooms.study){
-				geheimGangKachel = gui.getKachelArray()[23][24];
+				geheimGangKachel = gui.getKachelArray()[24][23];
 			}
 			else if(raum == Rooms.kitchen){
 				geheimGangKachel = gui.getKachelArray()[0][0];
 			}
 			else if(raum == Rooms.lounge){
-				geheimGangKachel = gui.getKachelArray()[0][24];
+				geheimGangKachel = gui.getKachelArray()[24][0];
 			}
 			else if(raum == Rooms.conservatory){
-				geheimGangKachel = gui.getKachelArray()[23][0];
+				geheimGangKachel = gui.getKachelArray()[0][23];
 			}
 		}
 		
