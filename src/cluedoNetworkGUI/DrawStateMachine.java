@@ -27,7 +27,8 @@ public class DrawStateMachine {
  	
  	private static boolean contains(int n,int[] ar){
  		for (int i = 0;i < ar.length; i++)
- 			if (n == ar[i]) return true;
+ 			if (n == ar[i]) 
+ 				return true;
  		return false;
  	}
 }
