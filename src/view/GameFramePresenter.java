@@ -91,16 +91,16 @@ public class GameFramePresenter {
 			    }
 			};	
 			gfv.chat.chatField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
-		    @Override
-		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
-		    	if (hasFocus){ 
-		    		gfv.chat.chatField.addEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );        	        	
-		    	}
-		    	else {
-		    		gfv.chat.chatField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );   
-		    	}
-		    }
-		});
+			    @Override
+			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
+			    	if (hasFocus){ 
+			    		gfv.chat.chatField.addEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );        	        	
+			    	}
+			    	else {
+			    		gfv.chat.chatField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );   
+			    	}
+			    }
+			});
 	}
 	
 	
