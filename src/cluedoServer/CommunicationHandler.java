@@ -139,7 +139,8 @@ class CommunicationHandler implements Runnable{
 		        							 dataManager.getGameByID(gameID).getConnectedPlayersString()
 		        							 )
 		        					);
-		        			dataGuiManager.getGameByIndex(gameID).notifyInit();
+		        		//	dataGuiManager.getGameByIndex(gameID).notifyInit();
+		        			
 		        		}
 	        		   else {
 	        			   client.sendMsg(NetworkMessages.error_Msg("you cant start this game"));

@@ -1,25 +1,24 @@
 package cluedoNetworkLayer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-import javafx.application.Platform;
 import staticClasses.auxx;
-import view.Communicater;
 import enums.GameStates;
 import enums.Persons;
 import enums.PlayerStates;
 import enums.Weapons;
 
-public class CluedoGame {
+public abstract class CluedoGame {
 		
 	int size;
 	int gameId;
 	
+	abstract boolean start();
 	GameStates gameState;
 	
 	ArrayList<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
-	Communicater communicater;
 		
 	public CluedoGame(int gameId){
 		this.gameId = gameId; 
@@ -41,27 +40,11 @@ public class CluedoGame {
 		
 	}
 	
-	public boolean start(String starterNick){
-		if (hasNick(starterNick)){
-			setGameState(GameStates.started);
-			return true;
-		}
-		
-		return false;
-	}
+	
+	
 	
 
-	public boolean start(){
-		Platform.runLater(() -> {
-			communicater = new Communicater(getPlayersConnected());
-			communicater.startGame();
-			
-			auxx.loginfo("kommt er hin?");
-			
-		});
-		
-		return true;
-	}
+	
 	
 	public boolean addPlayers(ArrayList<CluedoPlayer> plist){
 			for (CluedoPlayer pl: plist){
@@ -218,13 +201,20 @@ public class CluedoGame {
 	}
 	
 	public void setOrder(ArrayList<String> order){
+		for (int i = 0;i < order.size(); i++){
+			Collections.swap(players,i,getIndexByNick(order.get(i)));
+		}
+	}
+	
+	
+	
+	int getIndexByNick(String nick) {
+		for (int i = 0; i < players.size();i++)
+			if (players.get(i).getNick().equals(nick))
+				return i;
 		
+		return -1;
 	}
-	
-	public void killGame(){
-		communicater.kill();
-	}
-	
 	
 	
 	

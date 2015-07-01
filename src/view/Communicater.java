@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javafx.scene.shape.Circle;
 import staticClasses.auxx;
+import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.DerBeweger;
@@ -26,12 +27,14 @@ public class Communicater {
 	private WahnsinnigTollerPathfinder pathfinder;
 	private DerBeweger beweger;
 	private ArrayList <CluedoPlayer> players;
+	private CluedoGameClient networkGame;
 	
 	public static GanzTolleSpielerliste<CluedoPlayer> playerManager = new GanzTolleSpielerliste<CluedoPlayer>();
 	public static GanzTolleSpielerliste<Circle> circleManager = new GanzTolleSpielerliste<Circle>();
 	
-	public Communicater(ArrayList <CluedoPlayer> players){
-		
+	public Communicater(CluedoGameClient game){
+		networkGame = game;
+		players = game.getPlayersConnected();
 		for (CluedoPlayer p : players){
 			GanzTolleSpielerliste.playerManager.add(p);
 			GanzTolleSpielerliste.circleManager.add(new Circle(0,0,14,p.getCluedoPerson().getFarbe()));

@@ -6,8 +6,10 @@ import model.Deck;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoServer.ClientItem;
+import enums.GameStates;
 import enums.JoinGameStatus;
 import enums.Persons;
+import enums.PlayerStates;
 import enums.Rooms;
 import enums.Weapons;
 
@@ -15,6 +17,7 @@ public class CluedoGameServer extends CluedoGame{
 	ArrayList<ClientItem> participants;
 	ArrayList<ClientItem> watchers;
 	WinningStatement winningStatement;
+	int currentPlayer = 0;
 	
 	public CluedoGameServer(int gameId) {
 		super(gameId);	
@@ -27,12 +30,13 @@ public class CluedoGameServer extends CluedoGame{
 	}
 	
 	@Override
-	public boolean start() {
-//		for (ClientItem client: participants)
-//			//client.sendMsg(NetworkMessages.player_cardsMsg(gameId, cards));
-		
+	public boolean start() {	
 		dealCardsNetwork();
-		return super.start();
+		notifyInit();
+		notifyNextRound();
+		setGameState(GameStates.started);
+		
+		return true;
 	}
 	
 	public void dealCardsNetwork(){
@@ -136,6 +140,22 @@ public class CluedoGameServer extends CluedoGame{
 			CluedoPlayer p = getPlayerByClient(client);
 			client.sendMsg(NetworkMessages.player_cardsMsg(getGameId(),p.getCards()));
 		}
+	}
+	
+	public void setNextRound(){
+		setCurrentPlayerNext();
+		notifyNextRound();
+	}
+	
+	public void notifyNextRound() {		
+		notifyAll(NetworkMessages.stateupdateMsg(
+				getGameId(), players.get(currentPlayer).getNick(), PlayerStates.roll_dice
+				)
+		);
+	}
+	
+	private void setCurrentPlayerNext(){
+		currentPlayer = (currentPlayer + 1)%participants.size();
 	}
 	
 	
