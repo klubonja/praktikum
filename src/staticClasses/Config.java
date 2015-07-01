@@ -56,9 +56,12 @@ public abstract class Config {
 
 
 
-	public static final double COLOR_SELECT_WINDOW_WIDTH = 500;
+	public static double COLOR_SELECT_WINDOW_WIDTH = 0;
 
 
+
+
+	
 
 	public static final double COLOR_SELECT_WINDOW_HEIGHT = 200;
 	
@@ -72,4 +75,5 @@ public abstract class Config {
 	
 	
 	
+
 }

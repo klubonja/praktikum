@@ -1,15 +1,11 @@
 package cluedoClient;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+
 import javafx.scene.input.MouseEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
@@ -18,8 +14,8 @@ import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkGUI.GameVBox;
 import cluedoNetworkLayer.CluedoGameClient;
-import cluedoNetworkLayer.CluedoPlayer;
 import enums.GameStates;
+import enums.Persons;
 
 
 /**
@@ -47,7 +43,14 @@ class OutgoingHandler implements Runnable{
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-            		createGame(auxx.getRandomPerson());	               
+            	ArrayList<String> colors = new ArrayList<String>();
+            	for(Persons p : Persons.values()){
+            		colors.add(p.getColor());
+            	}
+	        	String color = gui.selectColor(colors);
+	        	if(!(color == null)){
+            		createGame(color);	  
+	        	}
             }
         });	
 		
@@ -63,24 +66,28 @@ class OutgoingHandler implements Runnable{
 		    @Override
 		    public void handle(MouseEvent click) {
 		        if (click.getClickCount() == 2) {
+
 		        	GameVBox guiGame = gui.getGamesListView().getSelectionModel().getSelectedItem();
 		        	int gameID = guiGame.getGameID();
 		        	String servername = guiGame.getServerName();
 		        	String serverip = guiGame.getServerIp();
 		        	ServerItem server = dataGuiManager.getServerByID(servername, serverip);
 		        	CluedoGameClient game = server.getGameByGameID(gameID);
+		        	ArrayList<String> colors = dataGuiManager.getSelectedServer().getGameByGameID(gameID).getAvailableColors();
+		        	String color = gui.selectColor(colors);
 		      
 		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART 
 		        			&& game.hasNick(server.getMyNick())
 		        			&& game.getGameState() == GameStates.not_started){
 		        		sendStartGameRequest(gameID);
 		        	}
-		        	else if (game.getGameState() != GameStates.ended)  {
-		        		ArrayList<CluedoPlayer> plist = server.getGameByGameID(gameID).getPlayersConnected();
-			        	selectGame(game, gui.selectColor());		
+		        	else if (game.getGameState() != GameStates.ended && !(color == null))  {
+		        		
+		        		selectGame(game, color);		
 		        	}	
 		        	
 		        	auxx.logfine("game on: "+serverip+" groupname : "+servername+" gamestate : "+game.getGameState());
+
 		        }
 		    }
 		});			
@@ -109,6 +116,7 @@ class OutgoingHandler implements Runnable{
 //						gameID)
 //				);
 //	}
+
 	
 	void createGame(String color){
 		auxx.sendTCPMsg(dataGuiManager.getSelectedServer().getSocket(),NetworkMessages.create_gameMsg(color));

@@ -29,8 +29,8 @@ public class Communicator {
 	private ArrayList <CluedoPlayer> players;
 	private CluedoGameClient network;
 	
-	public static GanzTolleSpielerliste<CluedoPlayer> playerManager = new GanzTolleSpielerliste<CluedoPlayer>();
-	public static GanzTolleSpielerliste<Circle> circleManager = new GanzTolleSpielerliste<Circle>();
+	//public static GanzTolleSpielerliste<CluedoPlayer> playerManager = new GanzTolleSpielerliste<CluedoPlayer>();
+	//public static GanzTolleSpielerliste<Circle> circleManager = new GanzTolleSpielerliste<Circle>();
 	
 	public Communicator(CluedoGameClient ngame){
 		network = ngame;
@@ -102,8 +102,11 @@ public class Communicator {
 	}
 	
 	public void endTurn(){
-		Communicator.playerManager.next();
-		Communicator.circleManager.next();
+
+//		Communicator.playerManager.next();
+//		Communicator.circleManager.next();
+		GanzTolleSpielerliste.playerManager.next();
+		GanzTolleSpielerliste.circleManager.next();
 		/////////////////////////////////////
 		///BENACHRICHTUGUNG, DASS NÄCHSTER///
 		/////////ZUG ANGEFANGEN HAT//////////

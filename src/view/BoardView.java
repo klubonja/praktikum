@@ -301,21 +301,6 @@ public class BoardView extends GridPane {
 
 			}
 		}
-		/*
-		//Startpunkte
-		blue = new Kachel("B",0,18,false, false);
-		blue.setBackgroundColor(labelArray[18][0], Color.BLUE);
-		pink = new Kachel("P",0,5,false, false);
-		pink.setBackgroundColor(labelArray[5][0], Color.MAGENTA);
-		white = new Kachel("W",14,24,false, false);
-		white.setBackgroundColor(labelArray[24][14], Color.WHITE);
-		red = new Kachel("R",16,0,false, false);
-		red.setBackgroundColor(labelArray[0][16], Color.MAROON);
-		yellow = new Kachel("Y",23,7,false, false);
-		yellow.setBackgroundColor(labelArray[7][23], Color.YELLOW);
-		green = new Kachel("G",9,24,false, false);
-		green.setBackgroundColor(labelArray[24][9], Color.GREEN);
-*/
 		
 	}
 	
@@ -324,7 +309,6 @@ public class BoardView extends GridPane {
 		this.stage = new Stage();
 		this.scene = new Scene(this, 700, 700);
 		this.stage.setScene(scene);
-		// this.stage.show();
 	}
 
 

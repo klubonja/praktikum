@@ -64,6 +64,7 @@ public class Ausloeser {
 	 */
 	public void zuweisung(){
 		System.out.println("zuweisung");
+		ballEbene.getTollerKnopf().setOnAction(e -> beweger.useSecretPassage());
 		ballEbene.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
@@ -133,6 +134,7 @@ public class Ausloeser {
 								nullSchritte = 0;
 								pathfinder.setWelcheKachel(0);
 								
+								// HIER WIRD NEXT GEMACHT
 								GanzTolleSpielerliste.playerManager.next();
 								GanzTolleSpielerliste.circleManager.next();
 								

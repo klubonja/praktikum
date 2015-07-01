@@ -11,10 +11,12 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import kacheln.Kachel;
+import kacheln.RaumKachel;
 import kacheln.TuerKachel;
 import staticClasses.auxx;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
 import enums.Rooms;
 
@@ -28,8 +30,11 @@ public class DerBeweger {
 
 	private BoardView gui;
 	private BallEbene2 ballEbene;
+	private RaumBeweger raumBeweger;
 	
 	private int zaehler;
+	
+	private Kachel geheimGangKachel;
 	
 	private CluedoPlayer currentPlayer;
 	
@@ -44,10 +49,12 @@ public class DerBeweger {
 	private Kachel raumZielKachel;
 	private Kachel raumAnfangsKachel;
 	
+	private Kachel gangKachel;
+	
 	private Kachel tuerZielKachel;
-	private TuerKachel anfangsTuerKachel;
+	private Kachel anfangsRaumKachel;
 	private Rooms room;
-	private RaumBeweger rB;
+	private Rooms zielRaum;
 
 	private Kachel startKachel;
 	
@@ -62,9 +69,10 @@ public class DerBeweger {
     private Kachel anfangsKachel;
     private Kachel zielKachel;
     
-	public DerBeweger(BoardView gui, BallEbene2 ballEbene){
+	public DerBeweger(BoardView gui, BallEbene2 ballEbene, RaumBeweger raumBeweger){
 		this.gui = gui;
 		this.ballEbene = ballEbene;
+		this.raumBeweger = raumBeweger;
 		
 		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(0);
 		
@@ -119,19 +127,15 @@ public class DerBeweger {
 					anfangsKachel = zielKachel;
 					schritte--;
 					if((schritte == 0 && anfangsKachel.isIstTuer()) || (schritte != 0 && nullSchritte != 0 && anfangsKachel.isIstTuer())) {
-						anfangsTuerKachel = (TuerKachel) gui.getKachelArray()[anfangsKachel.getPosition().getY()][anfangsKachel.getPosition().getX()];
-						RaumBeweger rB = new RaumBeweger(gui, currentPlayer, anfangsTuerKachel);
-						Rooms room = rB.checkRaum(anfangsTuerKachel);
-						raumZielKachel = rB.positionInRaum(currentPlayer, room);
+						anfangsRaumKachel = gui.getKachelArray()[anfangsKachel.getPosition().getY()][anfangsKachel.getPosition().getX()];
+						Rooms room = raumBeweger.checkRaum(currentPlayer,anfangsRaumKachel);
+						raumZielKachel = raumBeweger.positionInRaum(currentPlayer, room);
 						inRaumBewegen();
 						
 					}
 					
-					
 					bewegen(anweisungen, schritte, nullSchritte);
 					
-					//currentCircle = (Circle) circleManager.getCurrentObject();
-					//currentPlayer = (CluedoPlayer) playerManager.getCurrentObject();
 				}
 			});
 			
@@ -139,9 +143,6 @@ public class DerBeweger {
 			
 			}
 			
-		//currentCircle = (Circle) circleManager.getCurrentObject();
-		//currentPlayer = (CluedoPlayer) playerManager.getCurrentObject();
-		
 		}
 
 	public void anfangsKachelSetzen(Kachel neueAnfangsKachel){
@@ -287,11 +288,115 @@ public class DerBeweger {
 	}
 
 	public void useSecretPassage(){
-	///////////////////////////////
-	////////BRAUCHT PERSONEN///////
-	///////////////////////////////
-	}
 		
+		auxx.logsevere("PAAAAAAAAAAANIIIIIIIIIIIK");
+		System.out.println(currentPlayer.getPosition().getX());
+		System.out.println(currentPlayer.getPosition().getY());
+		CluedoPosition position = currentPlayer.getPosition();
+		if (position.getX() == 6 && position.getY() == 3){
+			auxx.logsevere("study");
+			geheimgangBewegerEingang(Rooms.study);
+		}
+		else if (position.getX() == 19 && position.getY() == 18){
+			auxx.logsevere("kitchen");
+			geheimgangBewegerEingang(Rooms.kitchen);
+		}
+		else if (position.getX() == 17 && position.getY() == 5){
+			auxx.logsevere("lounge");
+			geheimgangBewegerEingang(Rooms.lounge);
+		}
+		else if (position.getX() == 4 && position.getY() == 19){
+			auxx.logsevere("conservatory");
+			geheimgangBewegerEingang(Rooms.conservatory);
+		}
+	}
+	
+	public void geheimgangBewegerEingang(Rooms raum){
+		
+		
+		
+		gangKachel = geheimGangKachel(raum, "anfang");
+		
+		
+		
+		Path path = new Path();
+		path.getElements().add(new MoveTo(raumZielKachel.getLayoutX(), raumZielKachel.getLayoutY()));
+		path.getElements().add(new LineTo(gangKachel.getLayoutX(), gangKachel.getLayoutY()));
+		PathTransition pathTransition = new PathTransition();
+		pathTransition.setDuration(Duration.millis(2000));
+		pathTransition.setNode(currentCircle);
+		pathTransition.setPath(path);
+		pathTransition.play();
+		pathTransition.setOnFinished(new EventHandler <ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				anfangsRaumKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
+				Rooms room = raumBeweger.checkRaum(currentPlayer,anfangsRaumKachel);
+				raumZielKachel = raumBeweger.positionInRaum(currentPlayer, room);
+				geheimgangBewegerAusgang(raumZielKachel,raum);
+				
+			}
+			
+		});
+	}
+
+	public void geheimgangBewegerAusgang(Kachel raumZielKachel, Rooms raum){
+		
+		gangKachel = geheimGangKachel(raum, "ziel");
+		
+		Path path = new Path();
+		path.getElements().add(new MoveTo(gangKachel.getLayoutX(), gangKachel.getLayoutY()));
+		path.getElements().add(new LineTo(raumZielKachel.getLayoutX(), raumZielKachel.getLayoutY()));
+		PathTransition pathTransition = new PathTransition();
+		pathTransition.setDuration(Duration.millis(2000));
+		pathTransition.setNode(currentCircle);
+		pathTransition.setPath(path);
+		pathTransition.play();	}
+	
+	public Kachel geheimGangKachel(Rooms raum, String vonWo){
+		
+		if (vonWo == "anfang"){
+			if (raum == Rooms.study){
+				geheimGangKachel = gui.getKachelArray()[0][0];
+				currentPlayer.getPosition().setX(19);
+				currentPlayer.getPosition().setY(18);
+			}
+			else if(raum == Rooms.kitchen){
+				geheimGangKachel = gui.getKachelArray()[24][23];
+				currentPlayer.getPosition().setX(6);
+				currentPlayer.getPosition().setY(3);
+			}
+			else if(raum == Rooms.lounge){
+				geheimGangKachel = gui.getKachelArray()[0][23];
+				currentPlayer.getPosition().setX(4);
+				currentPlayer.getPosition().setY(19);
+			}
+			else if(raum == Rooms.conservatory){
+				geheimGangKachel = gui.getKachelArray()[24][0];
+				currentPlayer.getPosition().setX(17);
+				currentPlayer.getPosition().setY(5);
+			}
+		}
+		else {
+			if (raum == Rooms.study){
+				geheimGangKachel = gui.getKachelArray()[24][23];
+			}
+			else if(raum == Rooms.kitchen){
+				geheimGangKachel = gui.getKachelArray()[0][0];
+			}
+			else if(raum == Rooms.lounge){
+				geheimGangKachel = gui.getKachelArray()[24][0];
+			}
+			else if(raum == Rooms.conservatory){
+				geheimGangKachel = gui.getKachelArray()[0][23];
+			}
+		}
+		
+		GanzTolleSpielerliste.playerManager.setCurrentObject(currentPlayer);
+		return geheimGangKachel;
+	}
+	
 	public CluedoPlayer getCurrentPlayer() {
 		return currentPlayer;
 	}

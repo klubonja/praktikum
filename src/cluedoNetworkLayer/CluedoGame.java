@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import staticClasses.auxx;
+import view.Communicator;
 import enums.GameStates;
 import enums.Persons;
 import enums.PlayerStates;
@@ -19,6 +20,9 @@ public abstract class CluedoGame {
 	
 	ArrayList<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
+	ArrayList<String> availableColors = new ArrayList<String>();
+	Communicator communicator;
+
 		
 	public CluedoGame(int gameId){
 		this.gameId = gameId; 
@@ -39,12 +43,6 @@ public abstract class CluedoGame {
 			weapons.add(new CluedoWeapon(w, new CluedoPosition(11, 11)) ); //11,11 ist schwimmbad	
 		
 	}
-	
-	
-	
-	
-
-	
 	
 	public boolean addPlayers(ArrayList<CluedoPlayer> plist){
 			for (CluedoPlayer pl: plist){
@@ -124,10 +122,20 @@ public abstract class CluedoGame {
 		this.gameState = gameState;
 	}
 	
-	//TODO
-//	public ArrayList<String> getAvailableColors(){
-//		
-//	}
+	public ArrayList<String> getAvailableColors(){
+			
+			for (CluedoPlayer p: players){
+				
+					if (p.getNick().equals("")){
+						availableColors.add(p.getCluedoPerson().getColor());
+						System.out.println(p.getCluedoPerson().getColor());
+					}
+								
+				
+			}
+			return availableColors;
+			
+	}
 	
 	public CluedoPlayer getPlayer(String color){
 		for (CluedoPlayer p : players)
