@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.logging.ConsoleHandler;
@@ -111,6 +112,8 @@ public abstract class auxx {
 			return false;
 		}		
 	}
+	
+	
 	
 	public static String getRandomString(int length){
 		Random rand = new Random();

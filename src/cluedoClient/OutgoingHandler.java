@@ -43,36 +43,7 @@ class OutgoingHandler implements Runnable{
 	
 	}
 	
-	public void addClientGUIListener(CluedoClientGUI gui){
-		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
-			@Override
-			public void handle(KeyEvent e) {
-			        if (e.getCode() == KeyCode.ENTER){
-			        	sendInputFieldTextContent(dataGuiManager.getGui());
-						gui.inputField.setText("");
-						e.consume();
-			        }
-			    }
-			};	
-		dataGuiManager.getGui().inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
-		    @Override
-		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
-		    	if (hasFocus){ 
-		        	gui.inputField.addEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );        	        	
-		    	}
-		    	else {
-		    		gui.inputField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );   
-		    	}
-		    }
-		});
-		
-		gui.submitMessageButton.setOnAction(new EventHandler<ActionEvent>() {				
-			@Override
-			public void handle(ActionEvent event) {
-				sendInputFieldTextContent(gui);		
-			}
-		});	
-		
+	public void addClientGUIListener(CluedoClientGUI gui){		
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -128,18 +99,6 @@ class OutgoingHandler implements Runnable{
 		auxx.sendTCPMsg(server.getSocket(), NetworkMessages.start_gameMsg(gameID));
 	}
 	
-	
-	private void sendInputFieldTextContent(CluedoClientGUI gui){
-		auxx.sendTCPMsg(
-				server.getSocket(),
-				NetworkMessages.chat_to_serverMsg(
-						gui.inputField.getText(), 
-						LocalDateTime.now().toString() // 2015-04-08T15:16:23.42
-						)
-				);
-				
-		gui.inputField.setText("");
-	}
 	
 //	void selectGame(SelectionModel<GameVBox> g) {
 //		int gameID = g.getSelectedItem().getGameID();

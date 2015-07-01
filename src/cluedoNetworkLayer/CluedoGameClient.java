@@ -2,7 +2,7 @@ package cluedoNetworkLayer;
 
 import javafx.application.Platform;
 import staticClasses.auxx;
-import view.Communicater;
+import view.Communicator;
 import cluedoClient.ServerItem;
 import enums.GameStates;
 
@@ -10,7 +10,7 @@ public class CluedoGameClient extends CluedoGame {
 	
 	ServerItem server;
 	String myNick;
-	Communicater communicater;
+	Communicator communicator;
 
 
 	public CluedoGameClient(int gameId,ServerItem server) {
@@ -21,12 +21,16 @@ public class CluedoGameClient extends CluedoGame {
 	public ServerItem getServer() {
 		return server;
 	}
+	
+	public Communicator getCommunicator() {
+		return communicator;
+	}
 		
 	@Override
 	public boolean start(){
 		Platform.runLater(() -> {
-			communicater = new Communicater(this);
-			communicater.startGame();			
+			communicator = new Communicator(this);
+			communicator.startGame();			
 			auxx.loginfo("kommt er hin?");
 			
 		});
@@ -37,5 +41,13 @@ public class CluedoGameClient extends CluedoGame {
 	
 	public void setMyNick(String myNick) {
 		this.myNick = myNick;
+	}
+	
+	public void sendMsgToServer(String msg){
+		auxx.sendTCPMsg(server.getSocket(), msg);
+	}
+	
+	public void addChatMsg(String msg){
+		communicator.addChatMsg(msg);
 	}
 }

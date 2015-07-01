@@ -13,7 +13,7 @@ import finderOfPaths.GanzTolleSpielerliste;
 import finderOfPaths.Sucher;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 
-public class Communicater {
+public class Communicator {
 
 	private GameFrameView gameView;
 	private BoardView boardView;
@@ -27,14 +27,14 @@ public class Communicater {
 	private WahnsinnigTollerPathfinder pathfinder;
 	private DerBeweger beweger;
 	private ArrayList <CluedoPlayer> players;
-	private CluedoGameClient networkGame;
+	private CluedoGameClient network;
 	
 	public static GanzTolleSpielerliste<CluedoPlayer> playerManager = new GanzTolleSpielerliste<CluedoPlayer>();
 	public static GanzTolleSpielerliste<Circle> circleManager = new GanzTolleSpielerliste<Circle>();
 	
-	public Communicater(CluedoGameClient game){
-		networkGame = game;
-		players = game.getPlayersConnected();
+	public Communicator(CluedoGameClient ngame){
+		network = ngame;
+		players = ngame.getPlayersConnected();
 		for (CluedoPlayer p : players){
 			GanzTolleSpielerliste.playerManager.add(p);
 			GanzTolleSpielerliste.circleManager.add(new Circle(0,0,14,p.getCluedoPerson().getFarbe()));
@@ -46,20 +46,33 @@ public class Communicater {
 		
 		auxx.loginfo("Communicater");
 
-		GameFrameView gameView = new GameFrameView();
+		gameView = new GameFrameView();
 		gameView.start();
-		GameFramePresenter presenterContainer = new GameFramePresenter(gameView);
-		dicePresenter = presenterContainer.getDicePresenter();
+		gamePresenter = new GameFramePresenter(gameView,network);
+		dicePresenter = gamePresenter.getDicePresenter();
 		
 		diceView = gameView.getDice();
 		boardView = gameView.getBoard();
 
-		ausloeser = presenterContainer.getAusloeser();
-		beweger = presenterContainer.getBeweger();
-		pathfinder = presenterContainer.getPathfinder();
-		sucher = presenterContainer.getSucher();
+		ausloeser = gamePresenter.getAusloeser();
+		beweger = gamePresenter.getBeweger();
+		pathfinder = gamePresenter.getPathfinder();
+		sucher = gamePresenter.getSucher();
 		
 	}
+	
+	public void addChatMsg(String msg){
+		gamePresenter.getGfv().chat.chatArea.appendText(msg);
+	}
+	
+	public GameFrameView getGameView() {
+		return gameView;
+	}
+	
+	public GameFramePresenter getGamePresenter() {
+		return gamePresenter;
+	}
+	
 	
 	public void rollDice(){
 		///////////////////////////////
@@ -89,8 +102,8 @@ public class Communicater {
 	}
 	
 	public void endTurn(){
-		Communicater.playerManager.next();
-		Communicater.circleManager.next();
+		Communicator.playerManager.next();
+		Communicator.circleManager.next();
 		/////////////////////////////////////
 		///BENACHRICHTUGUNG, DASS NÄCHSTER///
 		/////////ZUG ANGEFANGEN HAT//////////

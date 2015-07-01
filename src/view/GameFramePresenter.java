@@ -1,10 +1,20 @@
 package view;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import javafx.scene.control.TextArea;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import staticClasses.NetworkMessages;
 import staticClasses.auxx;
+import cluedoNetworkGUI.CluedoClientGUI;
+import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.DerBeweger;
@@ -15,6 +25,8 @@ import finderOfPaths.WahnsinnigTollerPathfinder;
 
 public class GameFramePresenter {
 	
+	
+	private CluedoGameClient networkGame;
 	private GameFrameView gfv;
 	private CluedoPlayer currentPlayer;
 	private int playerIndex;
@@ -33,8 +45,8 @@ public class GameFramePresenter {
 	private MenuBarPresenter menuBarPresenter;
 	private DicePresenter dicePresenter;
 	
-	public GameFramePresenter(GameFrameView gfv){
-		
+	public GameFramePresenter(GameFrameView gfv,CluedoGameClient game){
+		networkGame = game;
 		this.gfv = gfv;
 		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(0);
 		this.playerCircle = (Circle) GanzTolleSpielerliste.circleManager.get(0);
@@ -66,6 +78,32 @@ public class GameFramePresenter {
 		System.out.println("test vorbei");
 
 	}
+	
+	public void setHandler(){
+		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
+			@Override
+			public void handle(KeyEvent e) {
+			        if (e.getCode() == KeyCode.ENTER){
+			        	networkGame.sendMsgToServer(gfv.chat.chatField.getText());
+			        	gfv.chat.chatField.setText("");
+						e.consume();
+			        }
+			    }
+			};	
+			gfv.chat.chatField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
+		    @Override
+		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
+		    	if (hasFocus){ 
+		    		gfv.chat.chatField.addEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );        	        	
+		    	}
+		    	else {
+		    		gfv.chat.chatField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );   
+		    	}
+		    }
+		});
+	}
+	
+	
 
 	//Getter and Setters
 	public GameFrameView getGfv() {

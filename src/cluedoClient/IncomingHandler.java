@@ -76,6 +76,25 @@ class IncomingHandler implements Runnable {
 		        		  String player = checker.getMessage().getString("nick");
 		        		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
 					}
+					else if (checker.getType().equals("chat")){
+						  JSONObject chatmsg = checker.getMessage();
+		        		  if (chatmsg.has("gameID")){
+		        			  server.getGameByGameID(chatmsg.getInt("gameID")).addChatMsg(chatmsg.getString("timestamp")+" : "+chatmsg.getString("message"));
+		        			  
+		        		  }
+		        		  else if (checker.getMessage().has("nick")){
+		        			  dataGuiManager.addMsgIn(
+		        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
+		        							  chatmsg.getString("message")
+		        					  );
+		        		  }
+	        			  else {
+	        				  dataGuiManager.addMsgIn(
+		        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says : \n"+
+		        							  chatmsg.getString("message")
+		        					  );
+	        			  }
+					}
 					else if (checker.getType().equals("disconnect")){
 		        		  killConnection();   
 					}
