@@ -14,124 +14,220 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
+import cluedoNetworkLayer.CluedoPlayer;
 
 
+/**
+ * 
+ * @author YinYanYolos
+ * 
+ * Presenter for the NotesView Class.
+ *
+ */
 public class NotesPresenter {
 	
-	NotesView view;
+	private NotesView view;
 	
-	//Creating new Radial Gradients for the color of the Buttons
-	Stop[] redlist = new Stop[] { new Stop(0, Color.CRIMSON), new Stop(1, Color.TOMATO)};
-	RadialGradient redGrad = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, redlist);
-	Stop[] bluelist = new Stop[] { new Stop(0, Color.ROYALBLUE), new Stop(1, Color.LIGHTSKYBLUE)};
-	RadialGradient blueGrad = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, bluelist);
-	Stop[] greenlist = new Stop[] { new Stop(0, Color.LIMEGREEN), new Stop(1, Color.MEDIUMSPRINGGREEN)};
-	RadialGradient greenGrad = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, greenlist);
+	private CluedoPlayer currentPlayer;
 	
-	//Creates three different BackgroundFills
-	BackgroundFill redFill = new BackgroundFill(redGrad, 
+	//Creating new Radial Gradients for the color of the Buttons.
+	private final Stop[] redlist = new Stop[] { new Stop(0, Color.CRIMSON), new Stop(1, Color.TOMATO)};
+	private final RadialGradient redGrad = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, redlist);
+	private final Stop[] bluelist = new Stop[] { new Stop(0, Color.ROYALBLUE), new Stop(1, Color.LIGHTSKYBLUE)};
+	private final RadialGradient blueGrad = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, bluelist);
+	private final Stop[] greenlist = new Stop[] { new Stop(0, Color.LIMEGREEN), new Stop(1, Color.MEDIUMSPRINGGREEN)};
+	private final RadialGradient greenGrad = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, greenlist);
+	
+	//Creates three different BackgroundFills.
+	private final BackgroundFill redFill = new BackgroundFill(redGrad, 
 			new CornerRadii(4), new Insets(0.2));
-	BackgroundFill blueFill = new BackgroundFill(blueGrad, 
+	private final BackgroundFill blueFill = new BackgroundFill(blueGrad, 
 			new CornerRadii(4), new Insets(0.2));
-	BackgroundFill greenFill = new BackgroundFill(greenGrad, 
+	private final BackgroundFill greenFill = new BackgroundFill(greenGrad, 
 			new CornerRadii(4), new Insets(0.2));
 	
-	// Assigns the created Background Fills to Backgrounds
-	Background red = new Background(redFill);
-	Background blue = new Background(blueFill);
-	Background green = new Background(greenFill);
+	// Assigns the created Background Fills to Backgrounds.
+	private final Background red = new Background(redFill);
+	private final Background blue = new Background(blueFill);
+	private final Background green = new Background(greenFill);
 	
-	// Default Button Fill and Border from class IntroView
-	Background defaultButton;
-	Border defaultBorder;
-	Background defaultTxt;
+	// Default Button Fill and Border from class IntroView.
+	private final Background defaultButton;
+	@SuppressWarnings("unused")
+	private final Border defaultBorder;
+	private final Background defaultTxt;
 	
-	// Creates new BorderStrokes for the three types of buttons and assigns them to the Borders
-	BorderStroke redStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, 
+	// Creates new BorderStrokes for the three types of buttons and assigns them to the Borders.
+	private final BorderStroke redStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, 
 			new CornerRadii(4), new BorderWidths(0.7));
-	Border redBorder = new Border(redStroke);
-	BorderStroke blueStroke = new BorderStroke(Color.DARKSLATEBLUE, BorderStrokeStyle.SOLID, 
+	private final Border redBorder = new Border(redStroke);
+	private final BorderStroke blueStroke = new BorderStroke(Color.DARKSLATEBLUE, BorderStrokeStyle.SOLID, 
 			new CornerRadii(4), new BorderWidths(0.7));
-	Border blueBorder = new Border(blueStroke);
-	BorderStroke greenStroke = new BorderStroke(Color.DARKGREEN, BorderStrokeStyle.SOLID, 
+	private final Border blueBorder = new Border(blueStroke);
+	private final BorderStroke greenStroke = new BorderStroke(Color.DARKGREEN, BorderStrokeStyle.SOLID, 
 			new CornerRadii(4), new BorderWidths(0.7));
-	Border greenBorder = new Border(greenStroke);
+	private final Border greenBorder = new Border(greenStroke);
 	
 	//Creates the Background Fills for the TextFields
-	BackgroundFill redtxt = new BackgroundFill(Color.TOMATO, 
+	private final BackgroundFill redtxt = new BackgroundFill(Color.TOMATO, 
 			new CornerRadii(4), new Insets(0.2));
-	BackgroundFill bluetxt = new BackgroundFill(Color.LIGHTSKYBLUE, 
+	private final BackgroundFill bluetxt = new BackgroundFill(Color.LIGHTSKYBLUE, 
 			new CornerRadii(4), new Insets(0.2));
-	BackgroundFill greentxt = new BackgroundFill(Color.MEDIUMSPRINGGREEN, 
+	private final BackgroundFill greentxt = new BackgroundFill(Color.MEDIUMSPRINGGREEN, 
 			new CornerRadii(4), new Insets(0.2));
-	Background redTxt = new Background(redtxt);
-	Background blueTxt = new Background(bluetxt);
-	Background greenTxt = new Background(greentxt);
+	private final Background redTxt = new Background(redtxt);
+	private final Background blueTxt = new Background(bluetxt);
+	private final Background greenTxt = new Background(greentxt);
 	
 	
 	
-	public NotesPresenter(NotesView view){
+	public NotesPresenter(NotesView view, CluedoPlayer currentPlayer){
 		
 		this.view = view;
-		defaultButton = view.defaultButton;
-		defaultBorder = view.defaultBorder;
-		defaultTxt = view.defaultTxt;
+		this.currentPlayer = currentPlayer;
+		this.defaultButton = view.getDefaultButton();
+		this.defaultBorder = view.getDefaultBorder();
+		this.defaultTxt = view.getDefaultTxt();
 		
 		startEvents();
 		
 	}
 	
+	/**
+	 * Triggers the events.
+	 */
 	public void startEvents(){
 		
-		for(Button button : view.buttons){
+		for(Button button : view.getButtons()){
 			button.setOnMouseClicked(e -> redBack(button));
 			button.setOnMouseEntered(e -> glowButton(button));
 			button.setOnMouseExited(e -> removeGlow(button));
+			
+			updateNotes();
 		}
 		
 	}
 	
+	/**
+	 * Highlights the buttons that correspond to the actual cards in hand.
+	 */
+	public void updateNotes(){
+		for(String card : currentPlayer.getCards()){
+			
+			if(card.equals("green")){
+				redBack(view.getButton1());
+				
+			}if(card.equals("red")){
+				redBack(view.getButton2());
+				
+			}if(card.equals("blue")){
+				redBack(view.getButton3());
+				
+			}if(card.equals("purple")){
+				redBack(view.getButton4());
+				
+			}if(card.equals("yellow")){
+				redBack(view.getButton5());
+				
+			}if(card.equals("white")){
+				redBack(view.getButton6());
+				
+			}if(card.equals("dagger")){
+				redBack(view.getButton7());
+				
+			}if(card.equals("candlestick")){
+				redBack(view.getButton8());
+				
+			}if(card.equals("revolver")){
+				redBack(view.getButton9());
+				
+			}if(card.equals("rope")){
+				redBack(view.getButton10());
+				
+			}if(card.equals("pipe")){
+				redBack(view.getButton11());
+				
+			}if(card.equals("spanner")){
+				redBack(view.getButton12());
+				
+			}if(card.equals("hall")){
+				redBack(view.getButton13());
+				
+			}if(card.equals("loungue")){
+				redBack(view.getButton14());
+				
+			}if(card.equals("diningroom")){
+				redBack(view.getButton15());
+				
+			}if(card.equals("kitchen")){
+				redBack(view.getButton16());
+				
+			}if(card.equals("ballroom")){
+				redBack(view.getButton17());
+				
+			}if(card.equals("conservatory")){
+				redBack(view.getButton18());
+				
+			}if(card.equals("billiard")){
+				redBack(view.getButton19());
+				
+			}if(card.equals("library")){
+				redBack(view.getButton20());
+				
+			}if(card.equals("study")){
+				redBack(view.getButton21());
+				
+			}
+		}
+		
+	}
+	
+	/**
+	 * Sets the background of a selected Button and of the corresponding TextField to red.
+	 * @param button 
+	 * 	The Button, which background has to be colored in red.
+	 */
 	public void redBack(Button button){
 		
 		button.setBackground(red);
 		button.setBorder(redBorder);
-		if(button.equals(view.button1)){
+		if(button.equals(view.getButton1())){
+			view.getTxt1().setBackground(redTxt);
+			view.getTxt1().setBorder(redBorder);
+		}
+		if(button.equals(view.getButton1())){
 			view.txt1.setBackground(redTxt);
 			view.txt1.setBorder(redBorder);
 		}
-		if(button.equals(view.button1)){
-			view.txt1.setBackground(redTxt);
-			view.txt1.setBorder(redBorder);
-		}
-		if(button.equals(view.button2)){
+		if(button.equals(view.getButton2())){
 			view.txt2.setBackground(redTxt);
 			view.txt2.setBorder(redBorder);
 		}
-		if(button.equals(view.button3)){
+		if(button.equals(view.getButton3())){
 			view.txt3.setBackground(redTxt);
 			view.txt3.setBorder(redBorder);
 		}
-		if(button.equals(view.button4)){
+		if(button.equals(view.getButton4())){
 			view.txt4.setBackground(redTxt);
 			view.txt4.setBorder(redBorder);
 		}
-		if(button.equals(view.button5)){
+		if(button.equals(view.getButton5())){
 			view.txt5.setBackground(redTxt);
 			view.txt5.setBorder(redBorder);
 		}
-		if(button.equals(view.button6)){
+		if(button.equals(view.getButton6())){
 			view.txt6.setBackground(redTxt);
 			view.txt6.setBorder(redBorder);
 		}
-		if(button.equals(view.button7)){
+		if(button.equals(view.getButton7())){
 			view.txt7.setBackground(redTxt);
 			view.txt7.setBorder(redBorder);
 		}
-		if(button.equals(view.button8)){
+		if(button.equals(view.getButton8())){
 			view.txt8.setBackground(redTxt);
 			view.txt8.setBorder(redBorder);
 		}
-		if(button.equals(view.button9)){
+		if(button.equals(view.getButton9())){
 			view.txt9.setBackground(redTxt);
 			view.txt9.setBorder(redBorder);
 		}
@@ -190,43 +286,47 @@ public class NotesPresenter {
 			}
 		}
 	
+	/**
+	 * Sets the background of a selected Button and of the corresponding TextField to blue.
+	 * @param button The Button, which background has to be colored in blue.
+	 */
 	public void blueBack(Button button){
 		button.setBackground(blue);
 		button.setBorder(blueBorder);
 		
-		if(button.equals(view.button1)){
+		if(button.equals(view.getButton1())){
 			view.txt1.setBackground(blueTxt);
 			view.txt1.setBorder(redBorder);
 		}
-		if(button.equals(view.button2)){
+		if(button.equals(view.getButton2())){
 			view.txt2.setBackground(blueTxt);
 			view.txt2.setBorder(redBorder);
 		}
-		if(button.equals(view.button3)){
+		if(button.equals(view.getButton3())){
 			view.txt3.setBackground(blueTxt);
 			view.txt3.setBorder(redBorder);
 		}
-		if(button.equals(view.button4)){
+		if(button.equals(view.getButton4())){
 			view.txt4.setBackground(blueTxt);
 			view.txt4.setBorder(redBorder);
 		}
-		if(button.equals(view.button5)){
+		if(button.equals(view.getButton5())){
 			view.txt5.setBackground(blueTxt);
 			view.txt5.setBorder(redBorder);
 		}
-		if(button.equals(view.button6)){
+		if(button.equals(view.getButton6())){
 			view.txt6.setBackground(blueTxt);
 			view.txt6.setBorder(redBorder);
 		}
-		if(button.equals(view.button7)){
+		if(button.equals(view.getButton7())){
 			view.txt7.setBackground(blueTxt);
 			view.txt7.setBorder(redBorder);
 		}
-		if(button.equals(view.button8)){
+		if(button.equals(view.getButton8())){
 			view.txt8.setBackground(blueTxt);
 			view.txt8.setBorder(redBorder);
 		}
-		if(button.equals(view.button9)){
+		if(button.equals(view.getButton9())){
 			view.txt9.setBackground(blueTxt);
 			view.txt9.setBorder(redBorder);
 		}
@@ -284,43 +384,48 @@ public class NotesPresenter {
 			}
 	}
 	
+	/**
+	 * Sets the background of a selected Button and of the corresponding TextField to green.
+	 * @param button 
+	 * 	The Button, which background has to be colored in green.
+	 */
 	public void greenBack(Button button){
 		button.setBackground(green);
 		button.setBorder(greenBorder);
 		
-		if(button.equals(view.button1)){
-			view.txt1.setBackground(greenTxt);
-			view.txt1.setBorder(redBorder);
+		if(button.equals(view.getButton1())){
+			view.getTxt1().setBackground(greenTxt);
+			view.getTxt1().setBorder(redBorder);
 		}
-		if(button.equals(view.button2)){
+		if(button.equals(view.getButton2())){
 			view.txt2.setBackground(greenTxt);
 			view.txt2.setBorder(redBorder);
 		}
-		if(button.equals(view.button3)){
+		if(button.equals(view.getButton3())){
 			view.txt3.setBackground(greenTxt);
 			view.txt3.setBorder(redBorder);
 		}
-		if(button.equals(view.button4)){
+		if(button.equals(view.getButton4())){
 			view.txt4.setBackground(greenTxt);
 			view.txt4.setBorder(redBorder);
 		}
-		if(button.equals(view.button5)){
+		if(button.equals(view.getButton5())){
 			view.txt5.setBackground(greenTxt);
 			view.txt5.setBorder(redBorder);
 		}
-		if(button.equals(view.button6)){
+		if(button.equals(view.getButton6())){
 			view.txt6.setBackground(greenTxt);
 			view.txt6.setBorder(redBorder);
 		}
-		if(button.equals(view.button7)){
+		if(button.equals(view.getButton7())){
 			view.txt7.setBackground(greenTxt);
 			view.txt7.setBorder(redBorder);
 		}
-		if(button.equals(view.button8)){
+		if(button.equals(view.getButton8())){
 			view.txt8.setBackground(greenTxt);
 			view.txt8.setBorder(redBorder);
 		}
-		if(button.equals(view.button9)){
+		if(button.equals(view.getButton9())){
 			view.txt9.setBackground(greenTxt);
 			view.txt9.setBorder(redBorder);
 		}
@@ -378,43 +483,48 @@ public class NotesPresenter {
 			}
 	}
 	
+	/**
+	 * Sets the background of a selected Button and of the corresponding TextField to default.
+	 * @param button 
+	 * 	The Button, which background has to be set to default color.
+	 */
 	public void defaultBack(Button button){
 		button.setBackground(defaultButton);
 		button.setBorder(redBorder);
 		
-		if(button.equals(view.button1)){
+		if(button.equals(view.getButton1())){
 			view.txt1.setBackground(defaultTxt);
 			view.txt1.setBorder(redBorder);
 		}
-		if(button.equals(view.button2)){
+		if(button.equals(view.getButton2())){
 			view.txt2.setBackground(defaultTxt);
 			view.txt2.setBorder(redBorder);
 		}
-		if(button.equals(view.button3)){
+		if(button.equals(view.getButton3())){
 			view.txt3.setBackground(defaultTxt);
 			view.txt3.setBorder(redBorder);
 		}
-		if(button.equals(view.button4)){
+		if(button.equals(view.getButton4())){
 			view.txt4.setBackground(defaultTxt);
 			view.txt4.setBorder(redBorder);
 		}
-		if(button.equals(view.button5)){
+		if(button.equals(view.getButton5())){
 			view.txt5.setBackground(defaultTxt);
 			view.txt5.setBorder(redBorder);
 		}
-		if(button.equals(view.button6)){
+		if(button.equals(view.getButton6())){
 			view.txt6.setBackground(defaultTxt);
 			view.txt6.setBorder(redBorder);
 		}
-		if(button.equals(view.button7)){
+		if(button.equals(view.getButton7())){
 			view.txt7.setBackground(defaultTxt);
 			view.txt7.setBorder(redBorder);
 		}
-		if(button.equals(view.button8)){
+		if(button.equals(view.getButton8())){
 			view.txt8.setBackground(defaultTxt);
 			view.txt8.setBorder(redBorder);
 		}
-		if(button.equals(view.button9)){
+		if(button.equals(view.getButton9())){
 			view.txt9.setBackground(defaultTxt);
 			view.txt9.setBorder(redBorder);
 		}
@@ -472,34 +582,39 @@ public class NotesPresenter {
 			}
 	}
 	
+	/**
+	 * Add a glow effect to the selected Button.
+	 * @param button 
+	 * 	The Button, which the glow effect should be added.
+	 */
 	public void glowButton(Button button){
 		button.setEffect(new Glow(0.4));
 		
-		if(button.equals(view.button1)){
+		if(button.equals(view.getButton1())){
 			view.txt1.setEffect(new Glow(3.0));
 		}
-		if(button.equals(view.button2)){
+		if(button.equals(view.getButton2())){
 			view.txt2.setEffect(new Glow(3.0));
 		}
-		if(button.equals(view.button3)){
+		if(button.equals(view.getButton3())){
 			view.txt3.setEffect(new Glow(3.0));
 		}
-		if(button.equals(view.button4)){
+		if(button.equals(view.getButton4())){
 			view.txt4.setEffect(new Glow(3.0));
 		}
-		if(button.equals(view.button5)){
+		if(button.equals(view.getButton5())){
 			view.txt5.setEffect(new Glow(3.0));
 		}
-		if(button.equals(view.button6)){
+		if(button.equals(view.getButton6())){
 			view.txt6.setEffect(new Glow(3.0));
 		}
-		if(button.equals(view.button7)){
+		if(button.equals(view.getButton7())){
 			view.txt7.setEffect(new Glow(3.0));
 		}
-		if(button.equals(view.button8)){
+		if(button.equals(view.getButton8())){
 			view.txt8.setEffect(new Glow(3.0));
 		}
-		if(button.equals(view.button9)){
+		if(button.equals(view.getButton9())){
 			view.txt9.setEffect(new Glow(3.0));
 		}
 		if(button.equals(view.button10)){
@@ -541,34 +656,39 @@ public class NotesPresenter {
 		}
 	}
 	
+	/**
+	 * Removes the glow effect to the selected Button.
+	 * @param button 
+	 * 	The Button, which the glow effect should be removed.
+	 */
 	public void removeGlow(Button button){
 		button.setEffect(null);
 		
-		if(button.equals(view.button1)){
+		if(button.equals(view.getButton1())){
 			view.txt1.setEffect(null);
 		}
-		if(button.equals(view.button2)){
+		if(button.equals(view.getButton2())){
 			view.txt2.setEffect(null);
 		}
-		if(button.equals(view.button3)){
+		if(button.equals(view.getButton3())){
 			view.txt3.setEffect(null);
 		}
-		if(button.equals(view.button4)){
+		if(button.equals(view.getButton4())){
 			view.txt4.setEffect(null);
 		}
-		if(button.equals(view.button5)){
+		if(button.equals(view.getButton5())){
 			view.txt5.setEffect(null);
 		}
-		if(button.equals(view.button6)){
+		if(button.equals(view.getButton6())){
 			view.txt6.setEffect(null);
 		}
-		if(button.equals(view.button7)){
+		if(button.equals(view.getButton7())){
 			view.txt7.setEffect(null);
 		}
-		if(button.equals(view.button8)){
+		if(button.equals(view.getButton8())){
 			view.txt8.setEffect(null);
 		}
-		if(button.equals(view.button9)){
+		if(button.equals(view.getButton9())){
 			view.txt9.setEffect(null);
 		}
 		if(button.equals(view.button10)){

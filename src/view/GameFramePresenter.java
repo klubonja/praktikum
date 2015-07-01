@@ -48,7 +48,7 @@ public class GameFramePresenter {
 		
 		auxx.logsevere("null? : " +currentPlayer.getPosition().getY() +currentPlayer.getPosition().getX());
 	
-		notesPresenter = new NotesPresenter(gfv.notes);
+		notesPresenter = new NotesPresenter(gfv.notes, currentPlayer);
 		handFramePresenter = new HandFramePresenter(gfv.hand);
 		menuBarPresenter = new MenuBarPresenter(gfv.menu, gfv);
 		
@@ -62,11 +62,14 @@ public class GameFramePresenter {
 		
 		dicePresenter = new DicePresenter(gfv.dice, ausloeser, gfv.board, sucher);
 		
+		
 		test();
 		
 		System.out.println("test vorbei");
 
 	}
+	
+	
 
 	//Getter and Setters
 	public GameFrameView getGfv() {
