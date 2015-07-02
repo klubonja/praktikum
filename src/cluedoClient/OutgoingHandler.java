@@ -105,11 +105,14 @@ class OutgoingHandler implements Runnable{
 		        			&& game.getGameState() == GameStates.not_started){
 		        		sendStartGameRequest(gameID);
 		        	}
+		        	else if (game.getGameState() == GameStates.started && game.hasNick(server.getMyNick()))  {
+			        	dataGuiManager.leaveGame(game.getGameId());	
+		        	}		
 		        	else if (game.getGameState() != GameStates.ended)  {
 			        	ArrayList<String> colors = dataGuiManager.getSelectedServer().getGameByGameID(gameID).getAvailableColors();
 		        		selectGame(game, gui.selectColor(colors));		
-		        	}			        	
-		        	auxx.logfine("game on: "+serverip+" groupname : "+servername+" gamestate : "+game.getGameState());
+		        	}
+		        	auxx.logfine("game on: "+serverip+" groupname : "+servername+" mynick : "+server.getMyNick()+" gamestate : "+game.getGameState());
 
 		        }
 		    }

@@ -65,6 +65,17 @@ class IncomingHandler implements Runnable {
 		        				  );
 		        		  
 					}
+					else if (checker.getType().equals("player cards")){						 
+		        		 server.getGameByGameID(
+		        				 checker.getMessage().getInt("gameId")
+		        				 ).getConnectedPlayerByName(
+		        						 server.getMyNick()
+		        						 ).setCards(
+		        								 auxx.jsonArrayToArrayList(
+		        										 checker.getMessage().getJSONArray("cards")
+		        										 )
+		        							);	        		  
+					}
 					else if (checker.getType().equals("game ended")){
 		        		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
 					}
@@ -167,6 +178,9 @@ class IncomingHandler implements Runnable {
 	
 	public void killConnection(){
 		localRun = false;
+		globalRun = false;
+		dataGuiManager.removeServer(server);
+		
 		auxx.logsevere("incomming handler thread runnning outon server : "+server.getGroupName());
 	}
 }

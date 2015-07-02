@@ -1,5 +1,7 @@
 package cluedoNetworkGUI;
 
+import java.util.ArrayList;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,6 +19,7 @@ public class GameVBox extends VBox{
 	String serverIp;
 	String serverName;
 	Button startGame;
+	ArrayList<Label> kids;
 	
 	public GameVBox(int gameid,String label, String info,String servername,String serverIp,GameStates state) {
 		super();	
@@ -28,16 +31,19 @@ public class GameVBox extends VBox{
 		gameID = gameid;
 	
 		getStyleClass().add("gameListItem");
-		
+		kids = new ArrayList<Label>();
 				
 		Label gameLabel = new Label(label+" :"+gameid);
+		kids.add(gameLabel);
 		gameLabel.textProperty().bind(gameLabelStringProp);
 		gameLabel.getStyleClass().add("gameNameItem");
 		
 		Label gameInfo = new Label("Connected :" +info);
+		kids.add(gameInfo);
 		gameInfo.textProperty().bind(gameInfoStringProp);
 		gameInfo.getStyleClass().add("gameInfoItem");
 		gameInfo.setLayoutY(14);
+		
 		
 		//HBox hb = new HBox();
 		
@@ -86,23 +92,35 @@ public class GameVBox extends VBox{
 	}
 	
 	public void setReadyGame() {
-		setStyle("-fx-text-fill:#ffffff; "
-				+ "-fx-background-color: green;");
+		String style = "-fx-text-fill:#ffffff; "
+				+ "-fx-background-color: green;";
+		for (Label l: kids)
+			l.setStyle(style);
+		setStyle(style);
 	}
 	
 	public void setRunningGame() {
-		setStyle("-fx-text-fill:#ffffff; "
-				+ "-fx-background-color: blue;");
+		String style = "-fx-text-fill:#ffffff; "
+				+ "-fx-background-color: blue;";
+		for (Label l: kids)
+			l.setStyle(style);
+		setStyle(style);
 	}
 	
 	public void setEndedGame() {
-		setStyle("-fx-text-fill:#ffffff; "
-				+ "-fx-background-color: red;");
+		String style = "-fx-text-fill:#ffffff; "
+				+ "-fx-background-color: red;";
+		for (Label l: kids)
+			l.setStyle(style);
+		setStyle(style);
 	}
 	
 	public void setGameWaiting() {
-		setStyle("-fx-text-fill:#000000; "
-				+ "-fx-background-color: #ffffff;");
+		String style = "-fx-text-fill:#000000; "
+				+ "-fx-background-color: #ffffff;";
+		for (Label l: kids)
+			l.setStyle(style);
+		setStyle(style);
 	}
 	
 	

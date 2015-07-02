@@ -46,7 +46,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 			if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART) {
 				setReadyGame(gameID);				
 			}				
-			updateGame(gameID, "",game.getNicksConnected());
+			updateGame(gameID, "Game "+gameID,game.getNicksConnected());
 			auxx.loginfo("connected to game "+gameID+" : number Nicks connected : "+game.getNumberConnected());
 
 			return true;
@@ -115,7 +115,13 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public boolean removeServer(ServerItem server){
 		auxx.loginfo("trying to remove server "+server.getGroupName());
-		return serverPool.remove(server);
+		if (serverPool.remove(server)){
+			emptyGamesList();
+			return true;
+		}
+		
+		return false;
+			
 	}
 	
 	public ServerItem getServerByIndex(int index){
@@ -149,6 +155,10 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		ArrayList<CluedoGameClient> glist = serverPool.getGamesConnected();
 		for (CluedoGameClient g: glist)
 			auxx.sendTCPMsg(g.getServer().getSocket(), NetworkMessages.leave_gameMsg(g.getGameId()));
+	}
+	
+	public void leaveGame(int gameID){
+		selectedServer.getGameByGameID(gameID).kill();
 	}
 	
 	

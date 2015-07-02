@@ -1,4 +1,4 @@
-package cluedoNetworkGUI;
+package cluedoServer;
 
 import enums.PlayerStates;
 
@@ -20,8 +20,6 @@ public class DrawDFA {
  		return false;
  	}
 
-	private static void killyou(){
-	}
  	private static boolean contains(int n,int[] ar){
  		for (int i = 0;i < ar.length; i++)
  			if (n == ar[i]) return true;

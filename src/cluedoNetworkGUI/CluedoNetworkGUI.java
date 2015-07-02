@@ -73,8 +73,7 @@ public abstract class CluedoNetworkGUI {
 		 menue.getChildren().addAll(button0,status);
 		 
 		 messagesIn.setEditable(false);
-	     messagesOut.setEditable(false);
-		 		 
+	     messagesOut.setEditable(false);		 		 
 	}  
     
    	 public boolean addNetworkActor(String name,String ip,String status){
