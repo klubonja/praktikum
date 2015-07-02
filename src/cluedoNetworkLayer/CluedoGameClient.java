@@ -25,6 +25,10 @@ public class CluedoGameClient extends CluedoGame {
 	public Communicator getCommunicator() {
 		return communicator;
 	}
+	
+	public String getMyNick() {
+		return myNick;
+	}
 		
 	@Override
 	public boolean start(){

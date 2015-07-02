@@ -62,7 +62,7 @@ public abstract class auxx {
 	}
 	
 	public static String now(){
-		SimpleDateFormat date = new SimpleDateFormat("hh:mm:ss");
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS"); //2015-04-08T15:16:23.42"
 		  Date now = new Date();
 		  
 		  return date.format(now);

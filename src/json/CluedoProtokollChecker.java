@@ -297,7 +297,7 @@ public class CluedoProtokollChecker {
 	
 	void validateLocalTimeFormat(JSONObject jsonParent,String key){
 		String value = jsonParent.getString(key);		
-		if (!value.matches("\\d+-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}\\d{1,2}\\.\\d*"))
+		if (!value.matches("\\d+-\\d{1,2}-\\d{1,2}T\\d{1,2}:\\d{1,2}:\\d{1,2}\\.\\d*")) //"2015-04-08T15:16:23.42"
 			setErr(value +" hat nicht protokollgemäßes (java.time.LocalDateTime) Format");
 	}
 	

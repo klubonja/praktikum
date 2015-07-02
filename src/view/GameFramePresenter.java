@@ -7,9 +7,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -51,6 +51,7 @@ public class GameFramePresenter {
 		this.playerCircle = (Circle) GanzTolleSpielerliste.circleManager.get(0);
 		
 		startEvents();
+		setHandler();
 		
 	}
 	
@@ -84,9 +85,15 @@ public class GameFramePresenter {
 			@Override
 			public void handle(KeyEvent e) {
 			        if (e.getCode() == KeyCode.ENTER){
-			        	networkGame.sendMsgToServer(gfv.chat.chatField.getText());
+			        	networkGame.sendMsgToServer(
+			        			NetworkMessages.chatMsg(
+			        					gfv.chat.chatField.getText(), 
+			        					networkGame.getGameId(), 
+			        					networkGame.getMyNick(),
+			        					auxx.now()
+			        			)
+			        	);
 			        	gfv.chat.chatField.setText("");
-						e.consume();
 			        }
 			    }
 			};	
@@ -94,10 +101,10 @@ public class GameFramePresenter {
 			    @Override
 			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
 			    	if (hasFocus){ 
-			    		gfv.chat.chatField.addEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );        	        	
+			    		gfv.chat.chatField.addEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );  
 			    	}
 			    	else {
-			    		gfv.chat.chatField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );   
+			    		gfv.chat.chatField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );  
 			    	}
 			    }
 			});

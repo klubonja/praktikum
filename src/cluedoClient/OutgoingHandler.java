@@ -62,7 +62,7 @@ class OutgoingHandler implements Runnable{
 			@Override
 			public void handle(KeyEvent e) {
 			        if (e.getCode() == KeyCode.ENTER){
-			        	auxx.sendTCPMsg(server.getSocket(),NetworkMessages.chatMsg(gui.inputField.getText()));
+			        	auxx.sendTCPMsg(server.getSocket(),NetworkMessages.chatMsg(gui.inputField.getText(),auxx.now()));
 			        	gui.inputField.setText("");
 						e.consume();
 			        }

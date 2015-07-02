@@ -27,6 +27,7 @@ class CommunicationHandler implements Runnable{
 	
 	boolean run = true;	
 	boolean readyForCommunication = false;
+	String currentMsg;
 	
 	/**
 	 * @param ss
@@ -48,7 +49,6 @@ class CommunicationHandler implements Runnable{
 		while (!readyForCommunication) { // will keep listening for valid login msg
 			try {
 				String message = auxx.getTCPMessage(client.getSocket()).trim();
-				
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(
 								new JSONObject(message)));
@@ -102,7 +102,8 @@ class CommunicationHandler implements Runnable{
 		while (run){
 			try {
 	           String message = auxx.getTCPMessage(client.socket).trim();
-	           
+			   currentMsg = message;
+
 	           CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
 	           checker.validate();
 	           if (checker.isValid()){
@@ -169,7 +170,7 @@ class CommunicationHandler implements Runnable{
 								chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
 								chatmsg.getString("message")
 							);
-							dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg));
+							dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg,ts));
 						}
 						else {							  
 							dataManager.notifyAll(NetworkMessages.chatMsg(msg , ts));
@@ -178,7 +179,10 @@ class CommunicationHandler implements Runnable{
 								msg
 							);
 						}
-		          }	        	   
+		          }
+	        	  else  {											
+	        		   auxx.loginfo("SERVER INCOMING valid unchecked : \n"+ checker.getMessage());
+	        	  } 
 	           }
 	           else {
 	        	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()+ " \n "
@@ -187,12 +191,11 @@ class CommunicationHandler implements Runnable{
 		        	   dataGuiManager.removeClient(client);
 		        	   auxx.loginfo("INCOMING INVALID : "+ checker.getErrString());
 	           }
-	           
-	           auxx.loginfo("INCOMING anyway : "+ checker.getMessage().toString());
-
 			}
 			catch (Exception e ){	
-				auxx.logsevere("communicationhandler for client :"+ client.getNick()+ "running out", e);
+				auxx.logsevere("communicationhandler for client : "+ client.getNick()+ "running out", e);
+				auxx.logsevere("last message :"+ currentMsg);
+
 				closeProtokollConnection();			
 			}
 		}
