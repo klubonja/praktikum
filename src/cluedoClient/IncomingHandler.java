@@ -78,18 +78,27 @@ class IncomingHandler implements Runnable {
 					else if (checker.getType().equals("chat")){
 						  JSONObject chatmsg = checker.getMessage();
 		        		  if (chatmsg.has("gameID")){
-		        			  server.getGameByGameID(chatmsg.getInt("gameID")).addChatMsg(chatmsg.getString("timestamp")+" : "+chatmsg.getString("message"));
-		        			  
+		        			  server.getGameByGameID(
+		        					  	chatmsg.getInt("gameID")
+		        					  ).addChatMsg(
+		        							  auxx.convertTs(chatmsg.getString("timestamp"))+" : "+chatmsg.getString("message")
+		        						);
 		        		  }
-		        		  else if (checker.getMessage().has("nick")){
+		        		  if (checker.getMessage().has("nick")){
 		        			  dataGuiManager.addMsgIn(
 		        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
 		        							  chatmsg.getString("message")
 		        					  );
 		        		  }
+//	        			  else if (chatmsg.has("sender")){
+//	        				  dataGuiManager.addMsgIn(
+//		        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says : \n"+
+//		        							  chatmsg.getString("message")
+//		        					  );
+//	        			  }
 	        			  else {
 	        				  dataGuiManager.addMsgIn(
-		        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says : \n"+
+		        					  chatmsg.getString("timestamp")+" : \n"+
 		        							  chatmsg.getString("message")
 		        					  );
 	        			  }

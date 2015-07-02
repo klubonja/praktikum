@@ -163,7 +163,8 @@ class CommunicationHandler implements Runnable{
 					   String msg = checker.getMessage().getString("message");
 					   String ts = checker.getMessage().getString("timestamp");
 						if (chatmsg.has("gameID")){
-							  dataManager.getGameByID(chatmsg.getInt("gameID")).notifyAll(NetworkMessages.chatMsg(msg,ts));
+							int gameID = chatmsg.getInt("gameID");
+							  dataManager.getGameByID(gameID).notifyAll(NetworkMessages.chatMsg(msg,gameID,ts));
 						}
 						else if (checker.getMessage().has("nick")){
 							dataGuiManager.addMsgIn(

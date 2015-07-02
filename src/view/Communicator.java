@@ -2,8 +2,11 @@ package view;
 
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
+import javafx.event.EventHandler;
 import javafx.scene.shape.Circle;
+import javafx.stage.WindowEvent;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -60,9 +63,12 @@ public class Communicator {
 		sucher = gamePresenter.getSucher();
 		
 	}
+	public void setTitle(String newtitle){
+		gameView.setStageTitle(newtitle);
+	}
 	
 	public void addChatMsg(String msg){
-		gamePresenter.getGfv().chat.chatArea.appendText(msg);
+		gamePresenter.getGfv().chat.chatArea.appendText(msg+"\n");
 	}
 	
 	public GameFrameView getGameView() {
@@ -117,6 +123,19 @@ public class Communicator {
 		gameView.close();
 	}
 	
+	public void setHandler(){
+		gameView.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+		      @Override
+			public void handle(WindowEvent e){
+		          try {
+		        	  network.kill();
+		          } 
+		          catch (Exception e1) {
+		               auxx.log.log(Level.SEVERE,e1.getMessage());
+		          }
+		      }
+		 });
+	}
 	/*
 	 * (check) start game 
 	 * roll dice --> letztes Bild ihre Würfel-Kombination und dann pathfinder / sucher / vorschlager "losschicken"

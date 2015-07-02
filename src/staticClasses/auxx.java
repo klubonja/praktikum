@@ -9,8 +9,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -66,6 +70,22 @@ public abstract class auxx {
 		  Date now = new Date();
 		  
 		  return date.format(now);
+	}
+	
+	public static String convertTs(String localDateTime){
+		
+		
+		
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss",  Locale.GERMAN);
+			LocalDate date = LocalDate.parse(localDateTime, formatter);
+			return date.toString();
+		} 
+		catch (DateTimeParseException e) {
+			logsevere("converting time failed :",e);
+			return localDateTime;
+		}
+		
 	}
 	
 	public static String getTCPMessage(Socket s){

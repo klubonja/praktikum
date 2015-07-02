@@ -10,10 +10,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import cluedoNetworkLayer.CluedoPlayer;
 import finderOfPaths.BallEbene2;
 import finderOfPaths.KrasserStack;
-import finderOfPaths.GanzTolleSpielerliste;
 
 
 
@@ -40,7 +38,8 @@ public class GameFrameView extends GridPane{
 
 	
 	public GameFrameView(){
-		
+		scene = new Scene (this, 1300,700);
+		stage = new Stage();
 		/*Adds the size and number of the Rows and Columns of the main GridPane
 		(2 Rows x 2 Columns). */
 		this.getRowConstraints().add(new RowConstraints(25));
@@ -123,14 +122,17 @@ public class GameFrameView extends GridPane{
 	
 	
 	public void start(){
-		scene = new Scene (this, 1300,700);
-		stage = new Stage();
+		
 		stage.setScene(scene);
 		stage.setResizable(true);
 		//stage.setFullScreen(true);
 		stage.setTitle("Cluedo");
 		stage.show();
 		
+	}
+	
+	public void setStageTitle(String title){
+		stage.setTitle(title);
 	}
 	
 	public void close(){

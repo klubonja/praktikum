@@ -158,6 +158,14 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
+	public static String chatMsg(String msg,int gameID,String ts){
+		CluedoJSON json = new CluedoJSON("chat");
+		json.put("gameID", gameID);
+		json.put("message", msg);
+		json.put("timestamp", ts);	
+		
+		return json.toString();
+	}
 	public static String chatMsg(String msg,int gameID,String sender,String ts){
 		CluedoJSON json = new CluedoJSON("chat");
 		json.put("sender", sender);

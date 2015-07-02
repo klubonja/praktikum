@@ -95,6 +95,7 @@ public class CluedoGameServer extends CluedoGame{
 				if (p.getNick().equals("")){
 					if (participants.add(client)){
 						p.setNick(client.getNick());
+						client.setPlayer(p);
 						return JoinGameStatus.added;
 					}
 					return JoinGameStatus.error;
@@ -152,9 +153,9 @@ public class CluedoGameServer extends CluedoGame{
 		notifyAll(NetworkMessages.stateupdateMsg(
 				getGameId(),
 				NetworkMessages.player_info(
-						players.get(currentPlayer).getNick(), 
-						players.get(currentPlayer).getCluedoPerson().getColor(), 
-						players.get(currentPlayer).getState().getName())
+						participants.get(currentPlayer).getNick(), 
+						participants.get(currentPlayer).getPlayer().getCluedoPerson().getColor(), 
+						participants.get(currentPlayer).getPlayer().getState().getName())
 				
 				)
 		);

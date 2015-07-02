@@ -126,9 +126,7 @@ public abstract class CluedoGame {
 			for (CluedoPlayer p: players){				
 					if (p.getNick().equals("")){
 						availableColors.add(p.getCluedoPerson().getColor());
-					}
-								
-				
+					}				
 			}
 			return availableColors;			
 	}
@@ -219,6 +217,8 @@ public abstract class CluedoGame {
 		
 		return -1;
 	}
+	
+	
 	
 	
 	
