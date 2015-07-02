@@ -124,11 +124,14 @@ class CommunicationHandler implements Runnable{
 		        						   gameID
 		        						   )
 		        				   );
+	        			   auxx.logfine(status.name());
 	        		   }
 	        		   else if (status == JoinGameStatus.already_joined)
 	        			   client.sendMsg(NetworkMessages.error_Msg("you have already joined this game"));
 	        		   else if (status == JoinGameStatus.nick_already_taken)
-	        			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));	        		  
+	        			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));
+	        		   else if (status == JoinGameStatus.not_joinable)
+	        			   client.sendMsg(NetworkMessages.error_Msg("you can't join this game"));	        		  
 	        	   }
 	        	   else if (checker.getType().equals("start game")) {												//START GAME
 		        	   int gameID = checker.getMessage().getInt("gameID");
@@ -155,10 +158,27 @@ class CommunicationHandler implements Runnable{
 	        	   }
 	        	  
 	        	   else if (checker.getType().equals("chat")) {														//CHAT
-	        		   String msg = checker.getMessage().getString("message");
-	        		   String ts = checker.getMessage().getString("timestamp");
-	        		   dataManager.notifyAll(NetworkMessages.chat_to_clientMsg(msg , ts, client.getNick()));
-		           }	        	   
+					   JSONObject chatmsg = checker.getMessage();
+					   String msg = checker.getMessage().getString("message");
+					   String ts = checker.getMessage().getString("timestamp");
+						if (chatmsg.has("gameID")){
+							  dataManager.getGameByID(chatmsg.getInt("gameID")).notifyAll(NetworkMessages.chatMsg(msg,ts));
+						}
+						else if (checker.getMessage().has("nick")){
+							dataGuiManager.addMsgIn(
+								chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
+								chatmsg.getString("message")
+							);
+							dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg));
+						}
+						else {							  
+							dataManager.notifyAll(NetworkMessages.chatMsg(msg , ts));
+							dataGuiManager.addMsgIn(
+								ts+" "+chatmsg.getString("sender")+" says : \n"+
+								msg
+							);
+						}
+		          }	        	   
 	           }
 	           else {
 	        	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()+ " \n "

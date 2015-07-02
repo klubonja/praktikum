@@ -20,7 +20,6 @@ public abstract class CluedoGame {
 	
 	ArrayList<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
-	ArrayList<String> availableColors = new ArrayList<String>();
 	Communicator communicator;
 
 		
@@ -123,18 +122,15 @@ public abstract class CluedoGame {
 	}
 	
 	public ArrayList<String> getAvailableColors(){
-			
-			for (CluedoPlayer p: players){
-				
+			ArrayList<String> availableColors = new ArrayList<String>();
+			for (CluedoPlayer p: players){				
 					if (p.getNick().equals("")){
 						availableColors.add(p.getCluedoPerson().getColor());
-						System.out.println(p.getCluedoPerson().getColor());
 					}
 								
 				
 			}
-			return availableColors;
-			
+			return availableColors;			
 	}
 	
 	public CluedoPlayer getPlayer(String color){

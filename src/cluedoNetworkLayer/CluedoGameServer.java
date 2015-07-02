@@ -9,7 +9,6 @@ import cluedoServer.ClientItem;
 import enums.GameStates;
 import enums.JoinGameStatus;
 import enums.Persons;
-import enums.PlayerStates;
 import enums.Rooms;
 import enums.Weapons;
 
@@ -89,6 +88,7 @@ public class CluedoGameServer extends CluedoGame{
 	
 	public JoinGameStatus joinGameServer(String color,ClientItem client){
 		if (participants.contains(client)) return JoinGameStatus.already_joined;
+		if (getGameState() != GameStates.not_started) return JoinGameStatus.not_joinable;
 		
 		for (CluedoPlayer p: players){
 			if (p.getCluedoPerson().getColor().equals(color)){
@@ -147,9 +147,15 @@ public class CluedoGameServer extends CluedoGame{
 		notifyNextRound();
 	}
 	
-	public void notifyNextRound() {		
+	public void notifyNextRound() {	
+		auxx.loginfo(getNicksConnected());
 		notifyAll(NetworkMessages.stateupdateMsg(
-				getGameId(), players.get(currentPlayer).getNick(), PlayerStates.roll_dice
+				getGameId(),
+				NetworkMessages.player_info(
+						players.get(currentPlayer).getNick(), 
+						players.get(currentPlayer).getCluedoPerson().getColor(), 
+						players.get(currentPlayer).getState().getName())
+				
 				)
 		);
 	}

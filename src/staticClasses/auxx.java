@@ -8,8 +8,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -58,6 +59,13 @@ public abstract class auxx {
 		
 		
 		return res;
+	}
+	
+	public static String now(){
+		SimpleDateFormat date = new SimpleDateFormat("hh:mm:ss");
+		  Date now = new Date();
+		  
+		  return date.format(now);
 	}
 	
 	public static String getTCPMessage(Socket s){

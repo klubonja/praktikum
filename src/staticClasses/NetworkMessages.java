@@ -141,19 +141,29 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String chat_to_serverMsg(String msg,String timestamp){
+	public static String chatMsg(String msg){
 		CluedoJSON json = new CluedoJSON("chat");
 		json.put("message", msg);
-		json.put("timestamp", timestamp);	
+		json.put("timestamp", auxx.now());	
 		
 		return json.toString();
 	}
 	
-	public static String chat_to_clientMsg(String msg,String timestamp,String sender){
+	public static String chatMsg(String msg,String sender){
 		CluedoJSON json = new CluedoJSON("chat");
 		json.put("sender", sender);
 		json.put("message", msg);
-		json.put("timestamp", timestamp);	
+		json.put("timestamp", auxx.now());	
+		
+		return json.toString();
+	}
+	
+	public static String chatMsg(String msg,int gameID,String sender){
+		CluedoJSON json = new CluedoJSON("chat");
+		json.put("sender", sender);
+		json.put("gameID", gameID);
+		json.put("message", msg);
+		json.put("timestamp", auxx.now());	
 		
 		return json.toString();
 	}
@@ -268,10 +278,9 @@ public abstract class NetworkMessages {
 	}
 	
 	
-	public static String stateupdateMsg(int gameID,String nick,PlayerStates state){
-		CluedoJSON json = new CluedoJSON("game started");
-		json.put("nick", nick);
-		json.put("playerstate", state.getName());
+	public static String stateupdateMsg(int gameID,JSONObject playerinfo){
+		CluedoJSON json = new CluedoJSON("stateupdate");
+		json.put("player", playerinfo);
 		json.put("gameID", gameID);		
 		
 		return json.toString();
@@ -540,10 +549,6 @@ public abstract class NetworkMessages {
 		}
 		
 		return gamelist;
-	}
-	
-	
-	
-	
+	}	
 	
 }

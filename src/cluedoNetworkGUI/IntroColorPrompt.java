@@ -1,5 +1,7 @@
 package cluedoNetworkGUI;
 
+import java.util.ArrayList;
+
 import javafx.event.EventHandler;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
@@ -9,11 +11,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-
-import staticClasses.Config;
-import cluedoNetworkLayer.CluedoGame;
 
 public class IntroColorPrompt extends GridPane{
 	Stage parent;
@@ -34,11 +31,12 @@ public class IntroColorPrompt extends GridPane{
 	private void setHandler() {
 		int counter = 0;
 		for(String temp : colors){
-			Config.COLOR_SELECT_WINDOW_WIDTH += 250;
+			//Config.COLOR_SELECT_WINDOW_WIDTH += 250;
 			Image imageButton = new Image ("media/" + temp + ".jpg");
 			tempButton = new ToggleButton("", new ImageView(imageButton));
 			this.add(tempButton, counter, 0);
 			tempButton.setOnMouseClicked(new EventHandler<MouseEvent>(){
+				@Override
 				public void handle (MouseEvent arg0){
 					selectedColor = temp;
 					parent.close();

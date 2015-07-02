@@ -43,7 +43,6 @@ class IncomingHandler implements Runnable {
 						new CluedoJSON(new JSONObject(msg)));
 				checker.validate();
 				if (checker.isValid()){				
-					dataGuiManager.addMsgIn(checker.getMessage().toString());
 					if (checker.getType().equals("game created")){
 						int gameID = checker.getMessage().getInt("gameID");
 						JSONObject playerJSON = checker.getMessage().getJSONObject("player");
@@ -98,21 +97,19 @@ class IncomingHandler implements Runnable {
 					else if (checker.getType().equals("disconnect")){
 		        		  killConnection();   
 					}
-					else {
-						auxx.loginfo("INCOMING unchecked type: "+checker.getType());
+					else if (checker.getType().equals("error")){
+		        		  dataGuiManager.setStatus("ERROR : "+checker.getMessage().getString("message")); 
 					}
-					
-					auxx.loginfo("INCOMING : handeled type : "+checker.getType());
+					else {
+						auxx.loginfo("INCOMING unchecked valid type: "+checker.getType());
+					}
 				}		
 				else {
 					auxx.loginfo("INCOMING invalid : "+checker.getErrString());
-				}
-				
-				auxx.loginfo("INCOMING anyway:  "+checker.getMessage().toString());
-				
+				}				
 			}			
 			catch (Exception e){
-				auxx.logsevere("fuxk !!!!!!!!!!!", e);
+				auxx.logsevere("error on incomming handler client", e);
 				killConnection();
 				dataGuiManager.refreshGamesListServer(server);// refresh view before running out, its a differnet thread anyway
 			}			

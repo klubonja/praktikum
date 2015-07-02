@@ -41,14 +41,14 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public boolean joinGameOnServer(ServerItem server,int gameID,String color,String nick){
-		if (server.addPlayerByGameID(gameID, color, nick)){
-			if (server.getGameByGameID(gameID).getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART) {
-				setReadyGame(gameID);
-				
-			}
-			auxx.loginfo("connected to game "+gameID+" : "+server.getGameByGameID(gameID).getNumberConnected());
-				
-			updateGame(gameID, "(updated by "+nick+")",server.getGameByGameID(gameID).getNicksConnected());
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		if (game.joinGame(color, nick)){
+			if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART) {
+				setReadyGame(gameID);				
+			}				
+			updateGame(gameID, "",game.getNicksConnected());
+			auxx.loginfo("connected to game "+gameID+" : number Nicks connected : "+game.getNumberConnected());
+
 			return true;
 		}
 		return false;

@@ -3,7 +3,6 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
-import staticClasses.auxx;
 import javafx.application.Platform;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
@@ -52,7 +51,6 @@ public class DataGuiManagerServer extends DataGuiManager {
 		JoinGameStatus status =  dataManager.joinGame(gameID, color, client);
 		if (status == JoinGameStatus.added)
 			updateGame(gameID, "Game", dataManager.getNicksConnectedByGameID(gameID));
-		 
 		return status;
 	}
 	

@@ -126,7 +126,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 //	    grid.add(messagesIn, 			1, 3, 1, 1);
 //	    grid.add(outLabel, 				1, 4, 1, 1);
 //	    grid.add(messagesOut, 			1, 5, 1, 1);	    
-	    grid.add(inputField, 			1, 6, 1, 1);
+	    grid.add(inputField, 			0, 6, 1, 1);
+	    grid.add(messagesIn,			1, 6, 1, 1);
 	    
        
 
@@ -170,7 +171,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	  public String selectColor(ArrayList<String> colors) {
 			Stage selectNewColor = new Stage();
 			IntroColorPrompt select = new IntroColorPrompt(selectNewColor, colors);
-	    	Scene secondary = new Scene(select, Config.COLOR_SELECT_WINDOW_WIDTH, Config.COLOR_SELECT_WINDOW_HEIGHT);
+	    	Scene secondary = new Scene(select, Config.COLOR_SELECT_WINDOW_WIDTH*colors.size(), Config.COLOR_SELECT_WINDOW_HEIGHT);
 	    	selectNewColor.setScene(secondary);
 	    	selectNewColor.showAndWait();
 	    	return select.returnColor();

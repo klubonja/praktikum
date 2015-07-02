@@ -26,7 +26,7 @@ public abstract class Config {
 	
 	
 	public final static int BROADCAST_PORT = 30303;
-	public final static int NETWORK_BUFFER_SIZE = 265;
+	public final static int NETWORK_BUFFER_SIZE = 256;
 	public final static String BROADCAST_WILDCARD_IP = "255.255.255.255";
 	
 	public final static int MESSAGE_BUFFER = 4096*2;
@@ -56,7 +56,7 @@ public abstract class Config {
 
 
 
-	public static double COLOR_SELECT_WINDOW_WIDTH = 0;
+	public static double COLOR_SELECT_WINDOW_WIDTH = 150;
 
 
 

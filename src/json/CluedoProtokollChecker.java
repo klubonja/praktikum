@@ -206,8 +206,8 @@ public class CluedoProtokollChecker {
 
 	void val_stateupdate() {
 		val_game_created();
-		if (validateValue(jsonRoot, "playerstate"))
-			validatePlayerState(jsonRoot.getString("playerstate"));		
+		if (validateValue(jsonRoot, "player"))
+			validatePlayerInfo(jsonRoot.getJSONObject("player"));
 	}
 	
 	void val_player_cards(){
@@ -316,7 +316,7 @@ public class CluedoProtokollChecker {
 			setErr("Room  : \""+roomName+ "\" not a valid Room in this Game");
 	}
 	
-	void validatePlayerState(String playerState){
+	void validatePlayer(String playerState){
 		if (!PlayerStates.isMember(playerState))
 			setErr("PlayerState : \""+playerState+ "\" not a valid PlayerState in this Game");
 	}
@@ -414,7 +414,7 @@ public class CluedoProtokollChecker {
 //			if (validateValue(jsonParent, "cards"))
 //				isInt(jsonParent, "cards");
 			if (validateValue(jsonParent, "playerstate"))
-				validatePlayerState(jsonParent.getString("playerstate"));		
+				validatePlayer(jsonParent.getString("playerstate"));		
 	}
 	
 	void validateGameInfo(JSONObject jsonParent) throws JSONException{
