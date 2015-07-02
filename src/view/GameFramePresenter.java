@@ -76,9 +76,6 @@ public class GameFramePresenter {
 		
 		
 		test();
-		
-		System.out.println("test vorbei");
-
 	}
 	
 	public void setHandler(){
