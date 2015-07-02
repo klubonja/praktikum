@@ -4,6 +4,7 @@ package view;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import staticClasses.Sounds;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.Sucher;
 
@@ -22,7 +23,8 @@ public class DicePresenter {
 	
 	private int [] dice = new int [2];
 	
-	DiceView view;
+	private GameFrameView view;
+	private DiceView dices;
 	
 	private Ausloeser ausloeser;
 	private BoardView gui;
@@ -31,9 +33,10 @@ public class DicePresenter {
 	private int zielWuerfelEins;
 	private int zielWuerfelZwei;
 	
-	public DicePresenter(DiceView view, Ausloeser ausloeser, BoardView gui, Sucher sucher){
+	public DicePresenter(DiceView dices, GameFrameView view, Ausloeser ausloeser, BoardView gui, Sucher sucher){
 		this.ausloeser = ausloeser;
 		this.view = view;
+		this.dices = dices;
 		this.sucher = sucher;
 		this.gui = gui;
 		startEvents();
@@ -41,10 +44,12 @@ public class DicePresenter {
 	
 	public void startEvents(){
 		
-		view.getrollBtn().setOnMouseClicked(e -> rollTheDice());
+		view.getKomplettesFeld().getZug().YESwurfelImage.setOnMouseClicked(e -> rollTheDice());
 	}
 	
 	public void rollTheDice(){
+		Sounds.diceSound();
+		view.getKomplettesFeld().getChildren().remove(view.getKomplettesFeld().getZug());
 		diceCounter = 0;
 		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("yourself"));
 		Timeline t = new Timeline(keyFrame);
@@ -68,8 +73,8 @@ public class DicePresenter {
 		
 		diceCounter = diceCounter + 1;
 		
-		view.getChildren().remove(view.getD1());
-		view.getChildren().remove(view.getD2());
+		dices.getChildren().remove(dices.getD1());
+		dices.getChildren().remove(dices.getD2());
 		
 		int first = 1 + (int)(Math.random()*6);
 		int second = 1 + (int)(Math.random()*6);
@@ -86,23 +91,23 @@ public class DicePresenter {
 		}
 		
 		switch(first){
-		case 1: view.getD1().setImage(view.getDice1());break;
-		case 2: view.getD1().setImage(view.getDice2());break;
-		case 3: view.getD1().setImage(view.getDice3());break;
-		case 4: view.getD1().setImage(view.getDice4());break;
-		case 5: view.getD1().setImage(view.getDice5());break;
-		case 6: view.getD1().setImage(view.getDice6());break;
+		case 1: dices.getD1().setImage(dices.getDice1());break;
+		case 2: dices.getD1().setImage(dices.getDice2());break;
+		case 3: dices.getD1().setImage(dices.getDice3());break;
+		case 4: dices.getD1().setImage(dices.getDice4());break;
+		case 5: dices.getD1().setImage(dices.getDice5());break;
+		case 6: dices.getD1().setImage(dices.getDice6());break;
 		}
 		switch(second){
-		case 1: view.getD2().setImage(view.getDice1());break;
-		case 2: view.getD2().setImage(view.getDice2());break;
-		case 3: view.getD2().setImage(view.getDice3());break;
-		case 4: view.getD2().setImage(view.getDice4());break;
-		case 5: view.getD2().setImage(view.getDice5());break;
-		case 6: view.getD2().setImage(view.getDice6());break;
+		case 1: dices.getD2().setImage(dices.getDice1());break;
+		case 2: dices.getD2().setImage(dices.getDice2());break;
+		case 3: dices.getD2().setImage(dices.getDice3());break;
+		case 4: dices.getD2().setImage(dices.getDice4());break;
+		case 5: dices.getD2().setImage(dices.getDice5());break;
+		case 6: dices.getD2().setImage(dices.getDice6());break;
 		}
 		
-		view.getChildren().addAll(view.getD1(), view.getD2());
+		dices.getChildren().addAll(dices.getD1(), dices.getD2());
 		
 		}
 	

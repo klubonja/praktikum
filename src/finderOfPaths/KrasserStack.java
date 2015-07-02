@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import view.BoardView;
+import view.AussergewohnlichesZugfenster;
 
 public class KrasserStack extends StackPane {
 
@@ -13,6 +14,7 @@ public class KrasserStack extends StackPane {
 	
 	private BallEbene2 ballEbene;
 	private BoardView boardView;
+	private AussergewohnlichesZugfenster zug;
 	
 	public KrasserStack(BallEbene2 ballEbeneEingabe, BoardView guiEingabe){
 		
@@ -35,11 +37,11 @@ public class KrasserStack extends StackPane {
 	}
 	
 	public void layoutStuff(){
-		
+		zug = new AussergewohnlichesZugfenster();
 		StackPane.setMargin(boardView, new Insets(0,0,0,0));
 		StackPane.setMargin(ballEbene, new Insets(0,0,0,0));
 		
-		this.getChildren().addAll(boardView, ballEbene);
+		this.getChildren().addAll(boardView, ballEbene, zug);
 		
 		
 	}
@@ -47,6 +49,14 @@ public class KrasserStack extends StackPane {
 	
 	public void doThatTitleThang(String title){
 		this.stage.setTitle(title);
+	}
+
+	public AussergewohnlichesZugfenster getZug() {
+		return zug;
+	}
+
+	public void setZug(AussergewohnlichesZugfenster zug) {
+		this.zug = zug;
 	}
 
 	

@@ -16,7 +16,6 @@ public class GameFramePresenter {
 	
 	private GameFrameView gfv;
 	private CluedoPlayer currentPlayer;
-	private int playerIndex;
 	Circle playerCircle;
 	private Stage stage;
 	
@@ -60,7 +59,7 @@ public class GameFramePresenter {
 		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,   anweisungen);
 		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher);
 		
-		dicePresenter = new DicePresenter(gfv.dice, ausloeser, gfv.board, sucher);
+		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher);
 		
 		
 		test();

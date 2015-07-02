@@ -82,7 +82,7 @@ class OutgoingHandler implements Runnable{
             		colors.add(p.getColor());
             	}
 	        	String color = gui.selectColor(colors);
-	        	if(!(color == null)){
+	        	if(color != null){
             		createGame(color);	  
 	        	}
             }

@@ -1,5 +1,6 @@
-package nedkosTestPackage;
+package view;
 
+import model.Deck;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -15,8 +16,8 @@ import javafx.scene.layout.VBox;
  * @author NedkoChulev
  *
  */
-public class Zug_V1 extends BorderPane {
-	Deck deck = new Deck();
+public class AussergewohnlichesZugfenster extends BorderPane {
+	private Deck deck = new Deck(6);
 
 	private HBox buttons;
 	private HBox bottom;
@@ -42,26 +43,16 @@ public class Zug_V1 extends BorderPane {
 			"media/ONvermuten.png"));
 
 	private Button close = new Button("Close");
-	private Button klagen = new Button("Anklage Aeussern");
 
-	boolean anklageControl = false;
-	boolean wurfelControl = false;
-	boolean gangControl = false;
-	boolean klagenControl = false;
-	boolean vermutenControl = false;
-
-	@SuppressWarnings("rawtypes")
-	private final ComboBox personen = new ComboBox();
-	@SuppressWarnings("rawtypes")
-	private final ComboBox waffen = new ComboBox();
-	@SuppressWarnings("rawtypes")
-	final ComboBox zimmer = new ComboBox();
+	private ComboBox<String> personen = new ComboBox<String>();
+	private ComboBox<String> waffen = new ComboBox<String>();
+	private ComboBox<String> zimmer = new ComboBox<String>();
 
 	/**
 	 * Constructor fuer die erste Version von einem Spielerzug
 	 * 
 	 */
-	public Zug_V1() {
+	public AussergewohnlichesZugfenster() {
 		setLayout();
 	}
 
@@ -69,12 +60,11 @@ public class Zug_V1 extends BorderPane {
 	 * Baut den Layout Manager auf und fuegt ide Buttons usw. ein
 	 * 
 	 */
-	@SuppressWarnings("unchecked")
 	public void setLayout() {
-		personen.getItems().addAll(deck.getPersonenOrdered());
+		personen.getItems().addAll(deck.getPersons());
 		personen.setValue("Taeter");
 		personen.setMaxWidth(110);
-		waffen.getItems().addAll(deck.getWaffenOrdered());
+		waffen.getItems().addAll(deck.getWeapons());
 		waffen.setValue("Waffe");
 		waffen.setMaxWidth(110);
 		// zimmer.getItems().addAll(deck.getZimmerOrdered());
@@ -97,7 +87,7 @@ public class Zug_V1 extends BorderPane {
 		organizer.setAlignment(Pos.CENTER);
 		organizer.getChildren().addAll(buttons, bottom, close);
 
-		this.setStyle("-fx-background-image: url('media/ZugFensterResized2.png');");
+		this.setStyle("-fx-background-image: url('media/ZugFensterResized3.png');");
 		this.setCenter(organizer);
 		this.setWidth(450);
 		this.setHeight(300);
@@ -105,8 +95,9 @@ public class Zug_V1 extends BorderPane {
 
 	public void killEmAll() {
 		removeButtons();
-		buttons.getChildren().removeAll(ONanklage, ONvermuten, OFFanklage,
-				OFFvermuten, personen, waffen, zimmer);
+		buttons.getChildren().removeAll(personen, waffen, zimmer);
+		bottom.getChildren().removeAll(ONanklage, ONvermuten, OFFanklage,
+				OFFvermuten, close);
 	}
 
 	public void removeButtons() {
@@ -119,10 +110,6 @@ public class Zug_V1 extends BorderPane {
 				NOgangImage);
 	}
 
-	public Button getAnklageButton() {
-		return klagen;
-	}
-
 	public HBox getButtonsBox() {
 		return this.buttons;
 	}
@@ -131,18 +118,15 @@ public class Zug_V1 extends BorderPane {
 		return bottom;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public ComboBox getPersonenListe() {
+	public ComboBox<String> getPersonenListe() {
 		return this.personen;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public ComboBox getWaffenListe() {
+	public ComboBox<String> getWaffenListe() {
 		return this.waffen;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public ComboBox getZimmerListe() {
+	public ComboBox<String> getZimmerListe() {
 		return this.zimmer;
 	}
 

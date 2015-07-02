@@ -26,10 +26,11 @@ public class GameFrameView extends GridPane{
 	DiceView dice;
 	ChatView chat;
 	BoardView board;
+	CluedoPlayer player;
 
 	//private SpielfeldUndFiguren komplettesFeld;
 	//private FigurenView figuren;
-	KrasserStack komplettesFeld;
+	private KrasserStack komplettesFeld;
 	BallEbene2 ballEbene;
 
 	HandFrameView hand;
@@ -39,7 +40,9 @@ public class GameFrameView extends GridPane{
 
 
 	
-	public GameFrameView(){
+	public GameFrameView(CluedoPlayer player){
+		
+		this.player = player;
 		
 		/*Adds the size and number of the Rows and Columns of the main GridPane
 		(2 Rows x 2 Columns). */
@@ -78,7 +81,7 @@ public class GameFrameView extends GridPane{
 		komplettesFeld = new KrasserStack(ballEbene, board);
 		
 		//Adds the frame for the Cards in hand.
-		hand = new HandFrameView();
+		hand = new HandFrameView(player);
 		
 		/* Left part of the whole GameFrame,
 		   only for a better organising of objects. */
@@ -226,6 +229,16 @@ public class GameFrameView extends GridPane{
 
 	public void setScene(Scene scene) {
 		this.scene = scene;
+	}
+
+
+	public KrasserStack getKomplettesFeld() {
+		return komplettesFeld;
+	}
+
+
+	public void setKomplettesFeld(KrasserStack komplettesFeld) {
+		this.komplettesFeld = komplettesFeld;
 	}
 	
 }
