@@ -97,7 +97,7 @@ class IncomingHandler implements Runnable {
 		        		  }
 		        		  if (checker.getMessage().has("nick")){
 		        			  dataGuiManager.addMsgIn(
-		        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
+		        					  auxx.convertTs(chatmsg.getString("timestamp"))+" "+chatmsg.getString("sender")+" says (privately) : \n"+
 		        							  chatmsg.getString("message")
 		        					  );
 		        		  }
@@ -109,7 +109,7 @@ class IncomingHandler implements Runnable {
 //	        			  }
 	        			  else {
 	        				  dataGuiManager.addMsgIn(
-		        					  chatmsg.getString("timestamp")+" : \n"+
+	        						  auxx.convertTs(chatmsg.getString("timestamp"))+" : \n"+
 		        							  chatmsg.getString("message")
 		        					  );
 	        			  }

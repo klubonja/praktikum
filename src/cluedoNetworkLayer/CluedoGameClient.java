@@ -34,6 +34,7 @@ public class CluedoGameClient extends CluedoGame {
 		
 	@Override
 	public boolean start(){
+		auxx.loginfo("game "+ getGameId()+ " started");
 		Platform.runLater(() -> {
 			communicator = new Communicator(this);
 			communicator.startGame();		
@@ -58,6 +59,12 @@ public class CluedoGameClient extends CluedoGame {
 	
 	public void kill() {
   	    auxx.sendTCPMsg(server.getSocket(), NetworkMessages.leave_gameMsg(gameId)); 
-  	    communicator.kill();
+  	    killCommunicator();
+	}
+	
+	public void killCommunicator() {
+		Platform.runLater(() -> {
+			communicator.kill();			
+		});  	    
 	}
 }

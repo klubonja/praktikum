@@ -25,7 +25,7 @@ public class DataGuiManager   {
 	
 	public void addMsgIn(String msg){		
 		Platform.runLater(() -> {
-			gui.addMessageIn(auxx.now()+" : "+msg+"\n");
+			gui.addMessageIn(msg+"\n");
 		});
 	}
 	

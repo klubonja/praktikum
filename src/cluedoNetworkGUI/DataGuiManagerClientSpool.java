@@ -93,7 +93,9 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public void setGameEndedOnServer(ServerItem server,int gameID){
-		server.getGameByGameID(gameID).setGameState(GameStates.ended);
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		game.killCommunicator();
+		game.setGameState(GameStates.ended);
 		setGameEndedGui(gameID);
 	}
 	
@@ -104,7 +106,6 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public boolean addServer(ServerItem server,String status){
 		if (serverPool.add(server)){
-			addMsgIn("opened TCPSocket to "+server.getGroupName()+" on : "+ server.getIpString());
 			addNetworkActorToGui(server.getGroupName(),server.getIpString(),status);
 			setSelectedServer(server);
 			return true;

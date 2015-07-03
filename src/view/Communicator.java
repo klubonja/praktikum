@@ -62,6 +62,8 @@ public class Communicator {
 		pathfinder = gamePresenter.getPathfinder();
 		sucher = gamePresenter.getSucher();
 		
+		setHandler();
+		
 	}
 	public void setTitle(String newtitle){
 		gameView.setStageTitle(newtitle);
