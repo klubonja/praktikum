@@ -54,12 +54,10 @@ public abstract class CluedoNetworkGUI {
 		 statusContainer.setFillHeight(true);
 		 tabPane = new TabPane();
 		 menue = new HBox();
-		 menue.setPrefHeight(30);
-		
+		 menue.setPrefHeight(30);		
 		 
 		 networkActors = FXCollections.observableArrayList();
-		 networkActorsListView = new ListView<NetworkActorVBox>(networkActors);
-		 
+		 networkActorsListView = new ListView<NetworkActorVBox>(networkActors);		 
 		 
 		 games = FXCollections.observableArrayList();
 		 gameListView = new ListView<GameVBox>(games);
@@ -226,6 +224,7 @@ public abstract class CluedoNetworkGUI {
 		networkActorsListView.getStyleClass().add("listViewC");
 		menue.setId("menue");
 		gameListView.setId("gameList");
+		status.setId("status");
 		scene.getStylesheets().add(cssFile);
 	}
 	 

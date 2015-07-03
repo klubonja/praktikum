@@ -112,3 +112,9 @@
 
 }
 
+#status {
+	-fx-font: 16px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #0000000;
+}
+

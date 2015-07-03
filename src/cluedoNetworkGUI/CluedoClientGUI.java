@@ -64,11 +64,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         grid.getColumnConstraints().add(col1);
         
         RowConstraints row0 = new RowConstraints(); //menue
-	    row0.setPercentHeight(10); 
+	    row0.setPercentHeight(6); 
 	    grid.getRowConstraints().add(row0);
 	    
 	    RowConstraints row1 = new RowConstraints();
-	    row1.setPercentHeight(10);        
+	    row1.setPercentHeight(6);        
 	    grid.getRowConstraints().add(row1);
 	    
 //	    RowConstraints row2 = new RowConstraints();
@@ -76,7 +76,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 //	    grid.getRowConstraints().add(row2);
 	    
 	    RowConstraints row3 = new RowConstraints();
-	    row3.setPercentHeight(35);        
+	    row3.setPercentHeight(52);        
 	    grid.getRowConstraints().add(row3);
 	    
 	    RowConstraints row4 = new RowConstraints();

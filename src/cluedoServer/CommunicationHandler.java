@@ -138,12 +138,12 @@ class CommunicationHandler implements Runnable{
 		        	   int gameID = checker.getMessage().getInt("gameID");
 		        	   if (dataManager.getGameByID(gameID).hasNick(client.getNick())){
 		        		   
-		        			dataManager.notifyAll(
-		        					NetworkMessages.game_startedMsg(
-		        							gameID, 
-		        							 dataManager.getGameByID(gameID).getConnectedPlayersString()
-		        							 )
-		        					);
+//		        			dataManager.notifyAll(
+//		        					NetworkMessages.game_startedMsg(
+//		        							gameID, 
+//		        							 dataManager.getGameByID(gameID).getConnectedPlayersString()
+//		        							 )
+//		        					);
 		        		//	dataGuiManager.getGameByIndex(gameID).notifyInit();	
 		        			dataGuiManager.startGameByID(gameID,client.getNick());
 		        			dataGuiManager.addMsgIn("game "+checker.getMessage().getInt("gameID")+ " started");

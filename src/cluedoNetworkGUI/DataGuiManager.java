@@ -86,7 +86,7 @@ public class DataGuiManager   {
 			} 
 			catch (Exception e) {
 				try {
-					wait(Config.SECOND/10);
+					wait(Config.SECOND/10); //naive workaround for not beeing threadsafe
 					removeGameGui(gameID);
 				} 
 				catch (InterruptedException e1) {

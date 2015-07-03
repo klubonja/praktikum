@@ -43,8 +43,8 @@ public abstract class Config {
 	public final static double LOGIN_PROMPT_WINDOW_WIDTH = 300;
 	public final static double LOGIN_PROMPT_WINDOW_HEIGHT = 200;
 	
-	public final static double CLIENT_WINDOW_WIDTH = 700;
-	public final static double CLIENT_WINDOW_HEIGHT = 350;
+	public final static double CLIENT_WINDOW_WIDTH = 800;
+	public final static double CLIENT_WINDOW_HEIGHT = 600;
 	
 	public final static double SERVER_WINDOW_WIDTH = 700;
 	public final static double SERVER_WINDOW_HEIGHT = 350;
