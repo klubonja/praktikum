@@ -59,5 +59,21 @@ public class KrasserStack extends StackPane {
 		this.zug = zug;
 	}
 
+	public BallEbene2 getBallEbene() {
+		return ballEbene;
+	}
+
+	public BoardView getBoardView() {
+		return boardView;
+	}
+
+	public void setBallEbene(BallEbene2 ballEbene) {
+		this.ballEbene = ballEbene;
+	}
+
+	public void setBoardView(BoardView boardView) {
+		this.boardView = boardView;
+	}
+
 	
 }

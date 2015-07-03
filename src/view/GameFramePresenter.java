@@ -52,12 +52,12 @@ public class GameFramePresenter {
 		menuBarPresenter = new MenuBarPresenter(gfv.menu, gfv);
 		
 		raumBeweger = new RaumBeweger(gfv.board);		
-		beweger = new DerBeweger(gfv.board, gfv.ballEbene, raumBeweger);
+		beweger = new DerBeweger(gfv, gfv.board, gfv.ballEbene, raumBeweger);
 		vorschlager = new Vorschlaege(gfv.board);
 		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene);
 		
 		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,   anweisungen);
-		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher);
+		ausloeser = new Ausloeser(gfv, gfv.board, beweger, gfv.ballEbene, pathfinder, sucher);
 		
 		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher);
 		

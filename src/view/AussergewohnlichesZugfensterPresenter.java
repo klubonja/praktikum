@@ -20,23 +20,16 @@ public class AussergewohnlichesZugfensterPresenter {
 				.setOnMouseClicked(e -> {
 					gameView.getKomplettesFeld().getZug().removeButtons();
 					gameView.getKomplettesFeld().getZug().killEmAll();
-					// gameView.getKomplettesFeld()
-					// .getZug()
-					// .getButtonsBox()
-					// .getChildren()
-					// .addAll(gameView.getKomplettesFeld().getZug()
-					// .getPersonenListe(),
-					// gameView.getKomplettesFeld().getZug()
-					// .getWaffenListe(),
-					// gameView.getKomplettesFeld().getZug()
-					// .getZimmerListe());
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getBottomBox()
-							.getChildren()
-							.removeAll(
-									gameView.getKomplettesFeld().getZug().OFFanklage,
-									gameView.getKomplettesFeld().getZug().ONanklage);
+					 gameView.getKomplettesFeld()
+					 .getZug()
+					 .getButtonsBox()
+					 .getChildren()
+					 .addAll(gameView.getKomplettesFeld().getZug()
+					 .getPersonenListe(),
+					 gameView.getKomplettesFeld().getZug()
+					 .getWaffenListe(),
+					 gameView.getKomplettesFeld().getZug()
+					 .getZimmerListe());
 					gameView.getKomplettesFeld()
 							.getZug()
 							.getBottomBox()
