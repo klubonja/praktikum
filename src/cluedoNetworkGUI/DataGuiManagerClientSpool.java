@@ -23,9 +23,11 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public void setServer(){
-		if (serverPool.get(0) != null){
-			selectedServer = serverPool.get(0);
-			refreshGamesListServer(selectedServer);
+		try {
+			refreshGamesListServer(serverPool.get(0));
+			
+		} catch (Exception e) {
+			auxx.loginfo("no server to refresh gamelist from");
 		}
 	}
 	
