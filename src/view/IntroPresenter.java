@@ -1,26 +1,22 @@
 package view;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.Persons;
 import enums.PlayerStates;
-import finderOfPaths.GanzTolleSpielerliste;
+import finderOfPaths.PlayerCircleManager;
 
 public class IntroPresenter {
 	
+	 PlayerCircleManager pcManager;
 	 IntroView view;
 	 private CluedoPlayer player1;
 	 private CluedoPlayer player2;
@@ -175,11 +171,11 @@ public class IntroPresenter {
 		
 		addPeople();
 		
-		GameFrameView gameView = new GameFrameView();
+		GameFrameView gameView = new GameFrameView(pcManager);
 		
 		// HIER BEGINNT DAS SPIEL
 		gameView.start();
-		GameFramePresenter pres = new GameFramePresenter(gameView,null); // hier muss das netzwerk rein null ist nur verlegenheitslösung
+		GameFramePresenter pres = new GameFramePresenter(gameView,null,pcManager); // hier muss das netzwerk rein null ist nur verlegenheitslösung
 
 		}
 	
@@ -205,21 +201,21 @@ public class IntroPresenter {
 		spieler6.setFill(Color.YELLOW);
 
 
-		GanzTolleSpielerliste.playerManager.add(player1);
-		GanzTolleSpielerliste.playerManager.add(player2);
-		GanzTolleSpielerliste.playerManager.add(player3);
-		GanzTolleSpielerliste.playerManager.add(player4);
-		GanzTolleSpielerliste.playerManager.add(player5);
-		GanzTolleSpielerliste.playerManager.add(player6);
-		GanzTolleSpielerliste.playerManager.setCurrentObject(player1);
-		
-		GanzTolleSpielerliste.circleManager.add(spieler1);
-		GanzTolleSpielerliste.circleManager.add(spieler2);
-		GanzTolleSpielerliste.circleManager.add(spieler3);
-		GanzTolleSpielerliste.circleManager.add(spieler4);
-		GanzTolleSpielerliste.circleManager.add(spieler5);
-		GanzTolleSpielerliste.circleManager.add(spieler6);
-		GanzTolleSpielerliste.circleManager.setCurrentObject(spieler1);
+//		GanzTolleSpielerliste.playerManager.add(player1);
+//		GanzTolleSpielerliste.playerManager.add(player2);
+//		GanzTolleSpielerliste.playerManager.add(player3);
+//		GanzTolleSpielerliste.playerManager.add(player4);
+//		GanzTolleSpielerliste.playerManager.add(player5);
+//		GanzTolleSpielerliste.playerManager.add(player6);
+//		GanzTolleSpielerliste.playerManager.setCurrentObject(player1);
+//		
+//		GanzTolleSpielerliste.circleManager.add(spieler1);
+//		GanzTolleSpielerliste.circleManager.add(spieler2);
+//		GanzTolleSpielerliste.circleManager.add(spieler3);
+//		GanzTolleSpielerliste.circleManager.add(spieler4);
+//		GanzTolleSpielerliste.circleManager.add(spieler5);
+//		GanzTolleSpielerliste.circleManager.add(spieler6);
+//		GanzTolleSpielerliste.circleManager.setCurrentObject(spieler1);
 		
 		
 	}

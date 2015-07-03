@@ -2,6 +2,7 @@ package cluedoNetworkGUI;
 
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
+import staticClasses.Config;
 import staticClasses.auxx;
 import enums.GameStates;
 
@@ -78,9 +79,20 @@ public class DataGuiManager   {
 	  }
 	  
 	  public void removeGameGui(int gameID){
-		  Platform.runLater(() -> {
-			  gui.removeGame(gameID);	 
-		});
+			try {
+				 Platform.runLater(() -> {
+					  gui.removeGame(gameID);					  
+				  });	
+			} 
+			catch (Exception e) {
+				try {
+					wait(Config.SECOND/100);
+					removeGameGui(gameID);
+				} 
+				catch (InterruptedException e1) {
+					auxx.logsevere("nasty business on multithread javafxobserablelist update", e1);					
+				}
+		  }		 
 	  }	  
 	
 	  public  void emptyGamesList(){

@@ -24,17 +24,17 @@ public class Sucher {
 	private CluedoPlayer currentPlayer;
 	
 	private char [][] anweisungen;
+	public final PlayerCircleManager pcManager;
 	 
 	
-	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  char [][]anweisungen){
-
+	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  char [][]anweisungen,PlayerCircleManager pcm){
+		pcManager = pcm;
 		this.boardView = boardView;
 		this.ballEbene = ballEbene;
 		this.beweger = beweger;
 		this.vorschlager = vorschlager;
 		this.pathfinder = pathfinder;
-		this.currentPlayer = (CluedoPlayer) 
-		GanzTolleSpielerliste.playerManager.get(0);
+		this.currentPlayer = pcManager.getCurrentPlayer();
 		this.anweisungen = anweisungen;
 		
 	}
@@ -58,9 +58,9 @@ public class Sucher {
 	}
 	
 	public void setToNextPlayer(){
-		pathfinder.setCurrentPlayer((CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject());
-		vorschlager.setCurrentPlayer((CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject());
-		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject();
+		pathfinder.setCurrentPlayer(pcManager.getCurrentPlayer());
+		vorschlager.setCurrentPlayer(pcManager.getCurrentPlayer());
+		this.currentPlayer = pcManager.getCurrentPlayer();
 	}
 	
 }

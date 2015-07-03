@@ -41,8 +41,14 @@ public class ServerItem  {
 	public String getMyNick() {
 		return myNick;
 	}
+	
 	public void setMyNick(String myNick) {
 		this.myNick = myNick;
+	}
+	
+	public void killAllGames(){
+		for (CluedoGameClient cg: gamesList)
+			cg.kill();
 	}
 	
 	public void setStatus(ServerStatus status) {

@@ -11,8 +11,6 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import kacheln.Kachel;
-import kacheln.RaumKachel;
-import kacheln.TuerKachel;
 import staticClasses.auxx;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -69,15 +67,18 @@ public class DerBeweger {
     private Kachel anfangsKachel;
     private Kachel zielKachel;
     
-	public DerBeweger(BoardView gui, BallEbene2 ballEbene, RaumBeweger raumBeweger){
+    public final PlayerCircleManager pcManager;
+    
+	public DerBeweger(BoardView gui, BallEbene2 ballEbene, RaumBeweger raumBeweger,PlayerCircleManager pcm){
+		pcManager = pcm;
 		this.gui = gui;
 		this.ballEbene = ballEbene;
 		this.raumBeweger = raumBeweger;
 		
-		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(0);
+		this.currentPlayer = pcManager.getCurrentPlayer();
 		
 		anfangsKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
-		currentCircle = (Circle) GanzTolleSpielerliste.circleManager.get(0);
+		currentCircle = pcManager.getCurrentCircle();
 		
 	}
 	
@@ -123,6 +124,7 @@ public class DerBeweger {
 			pathTransition.setPath(path);
 			pathTransition.play();
 			pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
+				@Override
 				public void handle(ActionEvent e) {
 					anfangsKachel = zielKachel;
 					schritte--;
@@ -188,15 +190,15 @@ public class DerBeweger {
 	
 	public void anfangsPositionSetzen(int iEingabe){
 		zaehler = iEingabe;
-		
-		if (zaehler < GanzTolleSpielerliste.playerManager.size()){
+		int size = pcManager.getSize();
+		if (zaehler < size){
 		
 			auxx.logsevere("hamana");
 			
 			startKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
 			
-			currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(zaehler);
-			currentCircle = (Circle) GanzTolleSpielerliste.circleManager.get(zaehler);
+			currentPlayer = pcManager.getPlayerByIndex(zaehler);
+			currentCircle = pcManager.getCircleByIndex(zaehler);
 			
 			
 			Path path = new Path();
@@ -222,10 +224,9 @@ public class DerBeweger {
 			}
 			else {
 				
-				currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject();
-				currentCircle = (Circle) GanzTolleSpielerliste.circleManager.getCurrentObject();
-				GanzTolleSpielerliste.playerManager.next();
-				GanzTolleSpielerliste.circleManager.next();
+				currentPlayer = pcManager.getCurrentPlayer();
+				currentCircle = pcManager.getCurrentCircle();
+				pcManager.next();
 			}
 				
 		}
@@ -393,7 +394,7 @@ public class DerBeweger {
 			}
 		}
 		
-		GanzTolleSpielerliste.playerManager.setCurrentObject(currentPlayer);
+		pcManager.setIndexByPlayer(currentPlayer);
 		return geheimGangKachel;
 	}
 	

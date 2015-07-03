@@ -15,7 +15,7 @@ import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.DerBeweger;
-import finderOfPaths.GanzTolleSpielerliste;
+import finderOfPaths.PlayerCircleManager;
 import finderOfPaths.RaumBeweger;
 import finderOfPaths.Sucher;
 import finderOfPaths.Vorschlaege;
@@ -43,12 +43,14 @@ public class GameFramePresenter {
 	private HandFramePresenter handFramePresenter;
 	private MenuBarPresenter menuBarPresenter;
 	private DicePresenter dicePresenter;
+	public final PlayerCircleManager pcManager;
 	
-	public GameFramePresenter(GameFrameView gfv,CluedoGameClient game){
+	public GameFramePresenter(GameFrameView gfv,CluedoGameClient game,PlayerCircleManager pcm){
 		networkGame = game;
 		this.gfv = gfv;
-		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(0);
-		this.playerCircle = (Circle) GanzTolleSpielerliste.circleManager.get(0);
+		pcManager = pcm;
+		this.currentPlayer = pcManager.getCurrentPlayer();
+		this.playerCircle = pcManager.getCurrentCircle();
 		
 		startEvents();
 		setHandler();
@@ -64,13 +66,13 @@ public class GameFramePresenter {
 		handFramePresenter = new HandFramePresenter(gfv.hand);
 		menuBarPresenter = new MenuBarPresenter(gfv.menu, gfv);
 		
-		raumBeweger = new RaumBeweger(gfv.board);		
-		beweger = new DerBeweger(gfv.board, gfv.ballEbene, raumBeweger);
-		vorschlager = new Vorschlaege(gfv.board);
-		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene);
+		raumBeweger = new RaumBeweger(gfv.board,pcManager);		
+		beweger = new DerBeweger(gfv.board, gfv.ballEbene, raumBeweger,pcManager);
+		vorschlager = new Vorschlaege(gfv.board,pcManager);
+		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene,pcManager);
 		
-		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,   anweisungen);
-		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher);
+		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,   anweisungen,pcManager);
+		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager);
 		
 		dicePresenter = new DicePresenter(gfv.dice, ausloeser, gfv.board, sucher);
 		

@@ -22,6 +22,15 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		serverPool = spool;
 	}
 	
+	public void setServer(){
+		if (serverPool.get(0) != null){
+			selectedServer = serverPool.get(0);
+			refreshGamesListServer(selectedServer);
+		}
+	}
+	
+	
+	
 	public void addGameToServer(ServerItem server, int gameID, String nick,String color){
 		CluedoGameClient newgame = 
 				new CluedoGameClient(gameID,server);
@@ -122,7 +131,9 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public boolean removeServer(ServerItem server){
 		auxx.loginfo("trying to remove server "+server.getGroupName());
+		killAllGamesOnServer(server);
 		if (serverPool.remove(server)){
+			removeNetworkActorFromGui(server.getGroupName(), server.getIpString());
 			emptyGamesList();
 			return true;
 		}
@@ -130,6 +141,11 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		return false;
 			
 	}
+	
+	public void killAllGamesOnServer(ServerItem server){
+		server.killAllGames();
+	}
+	
 	
 	public ServerItem getServerByIndex(int index){
 		return serverPool.get(index);

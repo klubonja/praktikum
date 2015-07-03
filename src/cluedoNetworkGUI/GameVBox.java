@@ -58,7 +58,7 @@ public class GameVBox extends VBox{
 				setRunningGame();
 				break;
 			case ended :
-				setRunningGame();
+				setEndedGame();
 				break;
 		}
 		getChildren().addAll(gameLabel,gameInfo);

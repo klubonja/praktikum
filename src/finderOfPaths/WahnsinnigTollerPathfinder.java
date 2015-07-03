@@ -86,12 +86,14 @@ public class WahnsinnigTollerPathfinder {
 	 * @param gui
 	 * @param ballEbene
 	 */
-	public WahnsinnigTollerPathfinder(BoardView gui, BallEbene2 ballEbene){
-		
+    
+    public final PlayerCircleManager pcManager;
+	public WahnsinnigTollerPathfinder(BoardView gui, BallEbene2 ballEbene,PlayerCircleManager pcm){
+		pcManager = pcm;
 		this.gui = gui;
 		this.ballEbene = ballEbene;
 		
-		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(0);
+		this.currentPlayer = pcm.getCurrentPlayer();
 		
 	}
 	
@@ -397,9 +399,9 @@ public class WahnsinnigTollerPathfinder {
 	 * @return true wenn ein Spieler im Weg ist.
 	 */
 	public boolean detectPlayer(int reihe, int spalte){
-		
-		for (int spieler = 0; spieler < GanzTolleSpielerliste.playerManager.size(); spieler++){
-			CluedoPlayer momentanerPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(spieler);
+		int size = pcManager.getSize();
+		for (int spieler = 0; spieler < size; spieler++){
+			CluedoPlayer momentanerPlayer = pcManager.getPlayerByIndex(spieler);
 			if (momentanerPlayer.getPosition().getX() == spalte && momentanerPlayer.getPosition().getY() == reihe){
 				return true;
 			}

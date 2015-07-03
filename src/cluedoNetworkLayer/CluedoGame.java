@@ -15,22 +15,22 @@ public abstract class CluedoGame {
 	int size;
 	int gameId;
 	
-	abstract boolean start();
 	GameStates gameState;
 	
 	ArrayList<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
+	
 	Communicator communicator;
-
+	
+	abstract boolean start();
 		
 	public CluedoGame(int gameId){
-		this.gameId = gameId; 
-		gameState = GameStates.not_started;
-		
+		this.gameId = gameId; 		
 		init();
 	}
 	
-	void init(){
+	void init(){		
+		gameState = GameStates.not_started;
 		players = new ArrayList<CluedoPlayer>();
 		weapons = new ArrayList<CluedoWeapon> ();
 		

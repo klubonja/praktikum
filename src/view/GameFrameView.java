@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import finderOfPaths.BallEbene2;
 import finderOfPaths.KrasserStack;
+import finderOfPaths.PlayerCircleManager;
 
 
 
@@ -34,10 +35,12 @@ public class GameFrameView extends GridPane{
 	
 	private Stage stage;
 	private Scene scene;
+	public final PlayerCircleManager pcManager;
 
 
 	
-	public GameFrameView(){
+	public GameFrameView(PlayerCircleManager pcm){
+		pcManager = pcm;
 		scene = new Scene (this, 1300,700);
 		stage = new Stage();
 		/*Adds the size and number of the Rows and Columns of the main GridPane
@@ -73,7 +76,7 @@ public class GameFrameView extends GridPane{
 		 *  Adds the Stackpane with the field
 		 */
 		
-		ballEbene = new BallEbene2();
+		ballEbene = new BallEbene2(pcManager);
 		komplettesFeld = new KrasserStack(ballEbene, board);
 		
 		//Adds the frame for the Cards in hand.

@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import javafx.event.EventHandler;
-import javafx.scene.shape.Circle;
 import javafx.stage.WindowEvent;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.DerBeweger;
-import finderOfPaths.GanzTolleSpielerliste;
+import finderOfPaths.PlayerCircleManager;
 import finderOfPaths.Sucher;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 
@@ -31,6 +30,7 @@ public class Communicator {
 	private DerBeweger beweger;
 	private ArrayList <CluedoPlayer> players;
 	private CluedoGameClient network;
+	public final PlayerCircleManager pcManager;
 	
 	//public static GanzTolleSpielerliste<CluedoPlayer> playerManager = new GanzTolleSpielerliste<CluedoPlayer>();
 	//public static GanzTolleSpielerliste<Circle> circleManager = new GanzTolleSpielerliste<Circle>();
@@ -38,20 +38,16 @@ public class Communicator {
 	public Communicator(CluedoGameClient ngame){
 		network = ngame;
 		players = ngame.getPlayersConnected();
-		for (CluedoPlayer p : players){
-			GanzTolleSpielerliste.playerManager.add(p);
-			GanzTolleSpielerliste.circleManager.add(new Circle(0,0,14,p.getCluedoPerson().getFarbe()));
-		}
-		
+		pcManager = new PlayerCircleManager(players);		
 	}
 	
 	public void startGame(){
 		
 		auxx.loginfo("Communicater");
 
-		gameView = new GameFrameView();
+		gameView = new GameFrameView(pcManager);
 		gameView.start();
-		gamePresenter = new GameFramePresenter(gameView,network);
+		gamePresenter = new GameFramePresenter(gameView,network,pcManager);
 		dicePresenter = gamePresenter.getDicePresenter();
 		
 		diceView = gameView.getDice();
@@ -113,8 +109,7 @@ public class Communicator {
 
 //		Communicator.playerManager.next();
 //		Communicator.circleManager.next();
-		GanzTolleSpielerliste.playerManager.next();
-		GanzTolleSpielerliste.circleManager.next();
+		pcManager.next();//erhöht den index und sonst nix
 		/////////////////////////////////////
 		///BENACHRICHTUGUNG, DASS NÄCHSTER///
 		/////////ZUG ANGEFANGEN HAT//////////

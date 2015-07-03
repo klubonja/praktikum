@@ -32,9 +32,13 @@ public class BallEbene2 extends GridPane{
 	private char [] keineMoeglichkeiten;
 	private char [][] keineMoeglichkeiten2;
 	
-	public BallEbene2(){
+	public PlayerCircleManager pcManager;
+	
+	public BallEbene2(PlayerCircleManager pcm){
+		pcManager = pcm;
 		kachelArray = new Kachel[25][24];
 		layoutStuff();
+		
 	}
 	
 	public void start(){
@@ -61,8 +65,9 @@ public class BallEbene2 extends GridPane{
 				
 			}
 		}
-		for (int i = 0; i < GanzTolleSpielerliste.circleManager.size();i++){
-			this.add( (Circle) GanzTolleSpielerliste.circleManager.get(i), 0, 0);
+		int size = pcManager.getSize();
+		for (int i = 0; i < size;i++){
+			this.add( pcManager.getCircleByIndex(i), 0, 0);
 		}
 		
 		tollerKnopf = new Button();

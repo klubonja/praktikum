@@ -189,7 +189,10 @@ class IncomingHandler implements Runnable {
 	public void killConnection(){
 		localRun = false;
 		globalRun = false;
+		dataGuiManager.setStatus(server.getGroupName()+" said FUCKOFF (kindof)");
 		dataGuiManager.removeServer(server);
+		dataGuiManager.setServer();
+		
 		
 		auxx.logsevere("incomming handler thread runnning outon server : "+server.getGroupName());
 	}

@@ -2,7 +2,6 @@ package finderOfPaths;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Circle;
 import kacheln.Kachel;
 import staticClasses.auxx;
 import view.BoardView;
@@ -44,6 +43,8 @@ public class Ausloeser {
 	
 	private int wuerfelZahl;
 	
+	public final PlayerCircleManager pcManager;
+	
 	/**
 	 * Konstruktor f�r den Ausloeser, welcher ballEbenen-clicks mit Bewegungen verlinkt.
 	 * @param gui um aufs KachelArray zuzugreifen
@@ -51,12 +52,13 @@ public class Ausloeser {
 	 * @param ballEbene um auf die click-events zugreifen zu k�nnen
 	 * @param pathfinder um den Weg berechnen zu lassen
 	 */
-	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher){
+	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher,PlayerCircleManager pcm){
 		this.gui = gui;
 		this.ballEbene = ballEbene;
 		this.beweger = beweger;
 		this.pathfinder = pathfinder;
 		this.sucher = sucher;
+		pcManager = pcm;
 	}
 	
 	/**
@@ -124,8 +126,8 @@ public class Ausloeser {
 									System.out.println("anweisungen : " +anweisungenOrientations[i]);
 								}
 								
-								beweger.setCurrentCircle((Circle) GanzTolleSpielerliste.circleManager.getCurrentObject());
-								beweger.setCurrentPlayer((CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject());
+								beweger.setCurrentCircle(pcManager.getCurrentCircle());
+								beweger.setCurrentPlayer(pcManager.getCurrentPlayer());
 								
 								beweger.anfangsKachelSetzen(startKachel);
 								
@@ -135,10 +137,10 @@ public class Ausloeser {
 								pathfinder.setWelcheKachel(0);
 								
 								// HIER WIRD NEXT GEMACHT
-								GanzTolleSpielerliste.playerManager.next();
-								GanzTolleSpielerliste.circleManager.next();
+								pcManager.next();
 								
-							}catch (NullPointerException e ){}
+							}
+							catch (NullPointerException e ){}
 							
 						}
 					}

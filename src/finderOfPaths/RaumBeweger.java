@@ -2,23 +2,24 @@ package finderOfPaths;
 
 
 import kacheln.Kachel;
-import kacheln.RaumKachel;
-import kacheln.TuerKachel;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Rooms;
 
 public class RaumBeweger {
 
-private BoardView gui;
-private CluedoPlayer currentPlayer;
-private Kachel aufenthalt;
-private Kachel zielImRaum;
+	private BoardView gui;
+	private CluedoPlayer currentPlayer;
+	private Kachel aufenthalt;
+	private Kachel zielImRaum;
+	
+	public final PlayerCircleManager pcManager;
 
 
-	public RaumBeweger(BoardView gui){
+	public RaumBeweger(BoardView gui,PlayerCircleManager pcm){
+		pcManager = pcm;
 		this.gui = gui;
-		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject();
+		this.currentPlayer = pcManager.getCurrentPlayer();
 		zielImRaum = gui.getKachelArray()[0][0];
 	}
 

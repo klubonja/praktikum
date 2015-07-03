@@ -36,6 +36,7 @@ public class Vorschlaege {
 	private int yDistanz;
 	
 	private CluedoPlayer currentPlayer;
+	public final PlayerCircleManager pcManager;
 	
 	private Background [][] markierteHintergruende = new Background [25][24];
 	
@@ -43,12 +44,12 @@ public class Vorschlaege {
 	 * Erstellt einen Vorschlager, welcher eine gui braucht, um den Kacheln M�glichkeiten zuzuweisen.
 	 * @param gui die GUI, in welcher Kacheln informationen zugewiesen bekommen.
 	 */
-	public Vorschlaege(BoardView gui){
-		
+	public Vorschlaege(BoardView gui,PlayerCircleManager pcm){
+		pcManager = pcm;
 		this.gui = gui;
 		markierteHintergruendeUpdaten();
 		
-		this.currentPlayer = (CluedoPlayer) GanzTolleSpielerliste.playerManager.get(0);
+		this.currentPlayer = pcManager.getCurrentPlayer();
 		
 	}
 	
