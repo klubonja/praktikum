@@ -20,6 +20,7 @@ public class Communicater {
 	
 	private GameFramePresenter gamePresenter;
 	private DicePresenter dicePresenter;
+	private NotesPresenter notesPresenter;
 	
 	private Ausloeser ausloeser;
 	private Sucher sucher;
@@ -47,6 +48,7 @@ public class Communicater {
 		gameView.start();
 		GameFramePresenter presenterContainer = new GameFramePresenter(gameView);
 		dicePresenter = presenterContainer.getDicePresenter();
+		notesPresenter = presenterContainer.getNotesPresenter();
 		
 		diceView = gameView.getDice();
 		boardView = gameView.getBoard();
@@ -56,6 +58,8 @@ public class Communicater {
 		//raumBeweger = presenterContainer.getr
 		pathfinder = presenterContainer.getPathfinder();
 		sucher = presenterContainer.getSucher();
+		
+		
 		
 	}
 	
