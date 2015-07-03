@@ -86,7 +86,7 @@ public class DataGuiManager   {
 			} 
 			catch (Exception e) {
 				try {
-					wait(Config.SECOND/100);
+					wait(Config.SECOND/10);
 					removeGameGui(gameID);
 				} 
 				catch (InterruptedException e1) {
