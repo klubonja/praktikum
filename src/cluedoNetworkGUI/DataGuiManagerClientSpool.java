@@ -40,6 +40,12 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		return selectedServer;
 	}
 	
+	public void removePlayerFromGameOnServer(int gameID,String nick,ServerItem server){
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		game.removePlayer(nick);	
+		if (server == selectedServer) refreshGamesListServer(server);
+	}
+	
 	public boolean joinGameOnServer(ServerItem server,int gameID,String color,String nick){
 		CluedoGameClient game = server.getGameByGameID(gameID);
 		if (game.joinGame(color, nick)){

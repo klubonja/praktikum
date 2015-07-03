@@ -79,6 +79,15 @@ class IncomingHandler implements Runnable {
 					else if (checker.getType().equals("game ended")){
 		        		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
 					}
+					else if (checker.getType().equals("left game")){
+//		        		 CluedoGameClient game = server.getGameByGameID(checker.getMessage().getInt("gameID"));
+//		        		 game.removePlayer(checker.getMessage().getString("nick"));	
+//		        		 dataGuiManager.refreshGamesListServer(server);
+		        		 dataGuiManager.removePlayerFromGameOnServer(
+		        				 checker.getMessage().getInt("gameID"),
+		        				 checker.getMessage().getString("nick"),
+		        				 server);
+					}
 					else if (checker.getType().equals("game deleted")){
 		        		 dataGuiManager.deleteGameOnServer(server,checker.getMessage().getInt("gameID"));		        		  
 					}

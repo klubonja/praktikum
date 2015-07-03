@@ -105,7 +105,10 @@ class OutgoingHandler implements Runnable{
 		        			&& game.getGameState() == GameStates.not_started){
 		        		sendStartGameRequest(gameID);
 		        	}
-		        	else if (game.getGameState() == GameStates.started && game.hasNick(server.getMyNick()))  {
+		        	else if (
+		        			game.getGameState() == GameStates.started && game.hasNick(server.getMyNick())
+		        			|| game.getGameState() == GameStates.ended
+		        			)  {
 			        	dataGuiManager.leaveGame(game.getGameId());	
 		        	}		
 		        	else if (game.getGameState() != GameStates.ended)  {

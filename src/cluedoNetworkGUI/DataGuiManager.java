@@ -78,7 +78,9 @@ public class DataGuiManager   {
 	  }
 	  
 	  public void removeGameGui(int gameID){
-		  Platform.runLater(() -> {gui.removeGame(gameID);	 });
+		  Platform.runLater(() -> {
+			  gui.removeGame(gameID);	 
+		});
 	  }	  
 	
 	  public  void emptyGamesList(){

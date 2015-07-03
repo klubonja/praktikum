@@ -82,6 +82,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean removePlayerfromGame(ClientItem client,int gameID){
 		CluedoGameServer game = dataManager.getGameByID(gameID);
+		GameStates stateBefore = game.getGameState();
 		game.removePlayer(client.getNick());
 		 if (game.getNumberConnected() == 0){
 				game.notifyAll(NetworkMessages.game_deletedMsg(gameID));
@@ -92,7 +93,11 @@ public class DataGuiManagerServer extends DataGuiManager {
 			//game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
 			game.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
 			setGameWaitingGui(gameID);
-		}		 
+		}	
+		else if (game.getGameState() == GameStates.ended && GameStates.ended == stateBefore){
+			game.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
+			setGameEndedGui(gameID);
+		}
 		else if (game.getGameState() == GameStates.ended){
 			game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
 			setGameEndedGui(gameID);
