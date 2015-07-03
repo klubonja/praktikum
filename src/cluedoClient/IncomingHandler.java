@@ -154,6 +154,7 @@ class IncomingHandler implements Runnable {
 					server.getIpString(),
 					"logged in"
 					);
+			dataGuiManager.setStatus("server "+server.getGroupName()+" status :"+server.getStatus());
 					
 		}
 		else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
@@ -162,10 +163,10 @@ class IncomingHandler implements Runnable {
 			killConnection(); // thread will run out without further notice					
 		}
 		else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
-			dataGuiManager.addMsgIn(checker.getMessage().getString("message"));
+			//dataGuiManager.addMsgIn(checker.getMessage().getString("message"));
 		}
 		else {
-			dataGuiManager.addMsgIn(checker.getMessage().toString());
+			//dataGuiManager.addMsgIn(checker.getMessage().toString());
 		}
 		
 	}

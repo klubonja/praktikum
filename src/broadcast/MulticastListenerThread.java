@@ -5,7 +5,9 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.net.SocketAddress;
+
 import staticClasses.Config;
+import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManager;
 
 public abstract class MulticastListenerThread extends Thread{
@@ -54,8 +56,7 @@ public abstract class MulticastListenerThread extends Thread{
 			try {
 				listen();
 			} catch (Exception e) {
-				//gui.addMessageIn("Listening Thread: failed to listen :\n"+e.getMessage());
-				dataGuiManager.addMsgIn("Listening Thread: failed to listen :\n"+e.getMessage());
+				auxx.logsevere("listen to handshake failed",e);
 			}
 		}		
 	}

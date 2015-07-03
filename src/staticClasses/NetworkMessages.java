@@ -305,9 +305,17 @@ public abstract class NetworkMessages {
 	
 	public static String game_endedMsg(int gameID,WinningStatement statement){
 		JSONObject statementJSON = new JSONObject();
-		statementJSON.put("person", statement.getPerson().getColor());
-		statementJSON.put("weapon", statement.getWeapon().getName());
-		statementJSON.put("room", statement.getRoom().getName());
+		try {
+			statementJSON.put("person", statement.getPerson().getColor());
+			statementJSON.put("weapon", statement.getWeapon().getName());
+			statementJSON.put("room", statement.getRoom().getName());
+			
+		} catch (NullPointerException e) {
+			statementJSON.put("person", auxx.getRandomPerson());
+			statementJSON.put("weapon",auxx.getRandomWeapon());
+			statementJSON.put("room", auxx.getRandomRoom());
+		}
+		
 
 		return make_game_endedMsg(gameID, statementJSON);
 	}

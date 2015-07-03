@@ -8,6 +8,7 @@ import json.CluedoProtokollChecker;
 
 import org.json.JSONObject;
 
+import staticClasses.auxx;
 import cluedoClient.Client;
 import cluedoClient.ServerItem;
 import cluedoClient.ServerPool;
@@ -53,15 +54,14 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 						);
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR){
-				dataGuiManager.addMsgIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
+				//dataGuiManager.addMsgIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
-				dataGuiManager.addMsgIn(ip.toString()+" is client and is ignored : \n"+checker.getErrString());			
+				//dataGuiManager.addMsgIn(ip.toString()+" is client and is ignored : \n"+checker.getErrString());			
 			}
 		} 
 		catch (Exception e) {
-			dataGuiManager.addMsgIn(e.toString());
-			e.printStackTrace();
+			auxx.logsevere("server handshake error",e);
 		}		
 	}
 	

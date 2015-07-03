@@ -154,6 +154,8 @@ public class Client {
 				dataGuiManager.refreshGamesListServer(server);
 				dataGuiManager.setSelectedServer(server);
 			}
+			
+			
 		}
 		catch (Exception e){
 			auxx.logsevere("server isnt connected anymore", e);

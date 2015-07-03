@@ -33,7 +33,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void setSelectedServer(ServerItem selectedServer) {
 		this.selectedServer = selectedServer;
-		setWindowName("selected : "+selectedServer.getGroupName());
+		setStatus("selected server : "+selectedServer.getGroupName());
 	}
 	
 	public ServerItem getSelectedServer() {

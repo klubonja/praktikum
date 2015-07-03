@@ -21,6 +21,8 @@ import org.json.JSONArray;
 import cluedoClient.ServerItem;
 import cluedoNetworkGUI.CluedoClientGUI;
 import enums.Persons;
+import enums.Rooms;
+import enums.Weapons;
 
 public abstract class auxx {
 	
@@ -155,6 +157,20 @@ public abstract class auxx {
 		Random rand = new Random();	
 	
 		return ps[Math.abs(rand.nextInt()%ps.length)].getColor();		
+	}
+	
+	public static String getRandomWeapon(){
+		Weapons[] ps = Weapons.values();
+		Random rand = new Random();	
+	
+		return ps[Math.abs(rand.nextInt()%ps.length)].getName();		
+	}
+	
+	public static String getRandomRoom(){
+		Rooms[] ps = Rooms.values();
+		Random rand = new Random();	
+	
+		return ps[Math.abs(rand.nextInt()%ps.length)].getName();		
 	}
 	
 	public static ArrayList<String> jsonArrayToArrayList(JSONArray jsonarray){

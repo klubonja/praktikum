@@ -5,6 +5,7 @@ import java.net.InetAddress;
 import java.net.MulticastSocket;
 
 import staticClasses.Config;
+import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManager;
 
 public class Multicaster {
@@ -31,7 +32,7 @@ public class Multicaster {
 			broadcastMessage = msg;
 		}
 		catch (Exception e) {
-			dataGuiManager.addMsgIn(e.getMessage());
+			auxx.logsevere("broadcasting init failed",e);
 		}	
 	}
 	
@@ -46,17 +47,14 @@ public class Multicaster {
 				buf = broadcastMessage.getBytes();
 				packet = new DatagramPacket(buf, buf.length, groupAdress, port);				
 				socket.send(packet);
-									
-				dataGuiManager.addMessageOut("Sending UDPMessage :"+broadcastMessage);				
 				return true;				
 			} 
 			catch (Exception e) {
-				System.out.println(e.getMessage());	
-				dataGuiManager.addMsgIn(e.getMessage());
+				auxx.logsevere("broadcasting failed",e);
 			}
 		}
 		else {
-			dataGuiManager.addMsgIn("single Brodcast msg not set");
+			auxx.loginfo("broadcastmessage not set");
 		}
 		
 		

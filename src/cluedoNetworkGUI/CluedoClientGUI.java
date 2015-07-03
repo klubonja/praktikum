@@ -63,34 +63,34 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         col1.setPercentWidth(60);
         grid.getColumnConstraints().add(col1);
         
-        RowConstraints row0 = new RowConstraints();
-	    row0.setPrefHeight(30);    
+        RowConstraints row0 = new RowConstraints(); //menue
+	    row0.setPercentHeight(10); 
 	    grid.getRowConstraints().add(row0);
 	    
 	    RowConstraints row1 = new RowConstraints();
-	    row1.setPercentHeight(5);        
+	    row1.setPercentHeight(10);        
 	    grid.getRowConstraints().add(row1);
 	    
-	    RowConstraints row2 = new RowConstraints();
-	    row1.setPercentHeight(5);        
-	    grid.getRowConstraints().add(row2);
+//	    RowConstraints row2 = new RowConstraints();
+//	    row1.setPercentHeight(5);        
+//	    grid.getRowConstraints().add(row2);
 	    
 	    RowConstraints row3 = new RowConstraints();
-	    row3.setPercentHeight(40);        
+	    row3.setPercentHeight(35);        
 	    grid.getRowConstraints().add(row3);
 	    
 	    RowConstraints row4 = new RowConstraints();
-	    row1.setPercentHeight(5);        
+	    row4.setPercentHeight(35);        
 	    grid.getRowConstraints().add(row4);
 	    
-	    RowConstraints row5 = new RowConstraints();
-	    row5.setPercentHeight(40);        
-	    grid.getRowConstraints().add(row5);
+//	    RowConstraints row5 = new RowConstraints();
+//	    row5.setPercentHeight(40);        
+//	    grid.getRowConstraints().add(row5);
 	    
-	    RowConstraints row6 = new RowConstraints();
-	    row6.setPercentHeight(10);
-	    //row6.setVgrow(Priority.ALWAYS);
-	    grid.getRowConstraints().add(row6);
+//	    RowConstraints row6 = new RowConstraints();
+//	    row6.setPercentHeight(10);
+//	    //row6.setVgrow(Priority.ALWAYS);
+//	    grid.getRowConstraints().add(row6);
         
         messagesIn.setWrapText(true);
         messagesOut.setWrapText(true);
@@ -113,21 +113,24 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         Text title = new Text(desc);
         title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         status.setFont(Font.font("Tahoma", FontWeight.NORMAL, 10));
+        
+        //messagesIn.setPrefHeight(150);
       
         grid.setValignment(submitMessageButton, VPos.CENTER);
        
        //grid.add(node,				  col,row,colspan,rowspan)
-        grid.add(menue, 				0, 0, 2, 1);	  
-	    grid.add(networkActorsListView, 0, 2, 1, 4);
-	    grid.add(submitMessageButton, 	0, 6, 1, 1);
-	    grid.add(gameListView, 			1, 2, 1, 4);
+        grid.add(menue, 				0, 0, 	2, 		1);
+        grid.add(statusContainer,   	0, 1, 	2, 		1);
+	    grid.add(networkActorsListView, 0, 2, 	1, 		1);
+	    //grid.add(submitMessageButton, 0, 5, 	1, 		1);
+	    grid.add(gameListView, 			1, 2,	1, 		1);
 	    
-//	    grid.add(inLabel, 				1, 2, 1, 1);
-//	    grid.add(messagesIn, 			1, 3, 1, 1);
+//	    grid.add(inLabel, 				1, 2, 	1, 		1);
+//	    grid.add(messagesIn, 			1, 3, 	1, 		1);
 //	    grid.add(outLabel, 				1, 4, 1, 1);
 //	    grid.add(messagesOut, 			1, 5, 1, 1);	    
-	    grid.add(inputField, 			0, 6, 1, 1);
-	    grid.add(messagesIn,			1, 6, 1, 1);
+	    grid.add(inputField, 			0, 3, 	1, 		1);
+	    grid.add(messagesIn,			1, 3, 	1, 		1);
 	    
        
 
