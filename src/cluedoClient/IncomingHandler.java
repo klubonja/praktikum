@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
-import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.NetworkHandhakeCodes;
@@ -69,7 +68,7 @@ class IncomingHandler implements Runnable {
 					}
 					else if (checker.getType().equals("player_cards")){						 
 		        		 server.getGameByGameID(
-		        				 checker.getMessage().getInt("gameId")
+		        				 checker.getMessage().getInt("gameID")
 		        				 ).getConnectedPlayerByName(
 		        						 server.getMyNick()
 		        						 ).setCards(
