@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import kacheln.Kachel;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
 
 /**
@@ -264,12 +265,12 @@ public class Vorschlaege {
 	 * @param yKoordinate zu überprüfende y Koordinate
 	 * @return true, falls diese Position gültig ist.
 	 */
-	public boolean hierHerValide(int xKoordinate, int yKoordinate){
+	public boolean hierHerValide(CluedoPosition position){
 		
 		for (int iReihen = 0; iReihen < gui.getKachelArray().length; iReihen++){
 			for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length; jSpalten++){
 				if (gui.getKachelArray()[iReihen][jSpalten].getBackground().getFills().get(0) == new BackgroundFill(Color.GREY, null, null)){
-					if (xKoordinate == jSpalten && yKoordinate == iReihen){
+					if (position.getX() == jSpalten && position.getY() == iReihen){
 						return true;
 					}
 				}

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javafx.scene.shape.Circle;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.BallEbene2;
 import finderOfPaths.DerBeweger;
@@ -122,13 +123,9 @@ public class Communicater {
 		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
 	}
 	
-	public boolean checkForValidMovement(int xKoordinate, int yKoordinate){
-		if (vorschlager.hierHerValide(xKoordinate, yKoordinate)){
-			return true;
-		}
-		else {
-			return false;
-		}
+	public boolean checkForValidMovement(CluedoPosition position){
+		return vorschlager.hierHerValide(position);
+		
 	}
 	
 	
