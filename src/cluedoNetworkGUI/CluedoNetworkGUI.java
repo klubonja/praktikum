@@ -1,9 +1,13 @@
 package cluedoNetworkGUI;
 
+import java.util.ArrayList;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -26,6 +30,7 @@ public abstract class CluedoNetworkGUI {
 	final ListView<GameVBox> gameListView;
 	
 	final HBox menue;
+	final HBox statusContainer;
 	final TextArea messagesIn;
 	final TextArea messagesOut;
 	final Text status;
@@ -35,14 +40,18 @@ public abstract class CluedoNetworkGUI {
 	final public GridPane grid;
 	final public Stage primaryStage;
 	final public Scene scene;
+	final public ArrayList<Button> blist;
 	double width;
 	double height;
 	
 	String desc;
 	
-	public abstract void startUp();
+	public abstract void startUp(); 
 	
 	 public CluedoNetworkGUI(Stage s){
+		 blist = new ArrayList<Button>();
+		 statusContainer = new HBox();
+		 statusContainer.setFillHeight(true);
 		 tabPane = new TabPane();
 		 menue = new HBox();
 		 menue.setPrefHeight(30);
@@ -66,15 +75,18 @@ public abstract class CluedoNetworkGUI {
 		 
 		 inLabel = new Text("IN");
 		 outLabel = new Text("OUT");
-		 status = new Text("down");
+		 status = new Text("NO CONNECTION");
+		 statusContainer.getChildren().add(status);
+		 statusContainer.setAlignment(Pos.CENTER);
+		 statusContainer.setPadding(new Insets(10, 0, 10, 0));
+		 
 		 
 		 setListener();
 		 
-		 menue.getChildren().addAll(button0,status);
+		 menue.getChildren().addAll(button0);
 		 
 		 messagesIn.setEditable(false);
-	     messagesOut.setEditable(false);
-		 		 
+	     messagesOut.setEditable(false);		 		 
 	}  
     
    	 public boolean addNetworkActor(String name,String ip,String status){
@@ -145,8 +157,7 @@ public abstract class CluedoNetworkGUI {
 	  public void removeGame(int gameID){		  
 			for (GameVBox gameListItem: games)
 	       		if (gameListItem.getGameID() == gameID) games.remove(gameListItem);		 
-	  }
-	  
+	  }	  
 	
 	  public  void emptyGamesList(){
 		  games.clear();

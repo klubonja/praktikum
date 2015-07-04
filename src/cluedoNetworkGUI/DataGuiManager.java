@@ -1,10 +1,8 @@
 package cluedoNetworkGUI;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
+import staticClasses.auxx;
 import enums.GameStates;
 
 public class DataGuiManager   {
@@ -15,12 +13,7 @@ public class DataGuiManager   {
 		this.gui = gui;
 	}
 	
-	private String now(){
-		SimpleDateFormat date = new SimpleDateFormat("hh:mm:ss");
-		  Date now = new Date();
-		  
-		  return date.format(now);
-	}
+	
 	
 	public ListView<NetworkActorVBox> getNetworkActorsListView(){
 		return gui.getNetworkActorsView();
@@ -32,13 +25,13 @@ public class DataGuiManager   {
 	
 	public void addMsgIn(String msg){		
 		Platform.runLater(() -> {
-			gui.addMessageIn(now()+" : "+msg+"\n");
+			gui.addMessageIn(msg+"\n");
 		});
 	}
 	
 	public void addMessageOut(String msg){		
 		Platform.runLater(() -> {
-			gui.addMessageOut(now()+" : "+msg+"\n");
+			gui.addMessageOut(auxx.now()+" : "+msg+"\n");
 		});
 	}
 	
@@ -85,7 +78,9 @@ public class DataGuiManager   {
 	  }
 	  
 	  public void removeGameGui(int gameID){
-		  Platform.runLater(() -> {gui.removeGame(gameID);	 });
+		  Platform.runLater(() -> {
+			  gui.removeGame(gameID);	 
+		});
 	  }	  
 	
 	  public  void emptyGamesList(){

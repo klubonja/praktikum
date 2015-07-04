@@ -2,9 +2,13 @@ package view;
 
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
+import javafx.event.EventHandler;
 import javafx.scene.shape.Circle;
+import javafx.stage.WindowEvent;
 import staticClasses.auxx;
+import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import finderOfPaths.Ausloeser;
@@ -16,7 +20,7 @@ import finderOfPaths.Sucher;
 import finderOfPaths.Vorschlaege;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 
-public class Communicater {
+public class Communicator {
 
 	private GameFrameView gameView;
 	private BoardView boardView;
@@ -33,9 +37,12 @@ public class Communicater {
 	private DerBeweger beweger;
 	private RaumBeweger raumBeweger;
 	private ArrayList <CluedoPlayer> players;
+	private CluedoGameClient network;
 	
-	public Communicater(ArrayList <CluedoPlayer> players){
 		
+	public Communicator(CluedoGameClient ngame){
+		network = ngame;
+		players = ngame.getPlayersConnected();
 		for (CluedoPlayer p : players){
 			GanzTolleSpielerliste.playerManager.add(p);
 			GanzTolleSpielerliste.circleManager.add(new Circle(0,0,14,p.getCluedoPerson().getFarbe()));
@@ -47,25 +54,43 @@ public class Communicater {
 		
 		auxx.loginfo("Communicater");
 
-		GameFrameView gameView = new GameFrameView();
+		gameView = new GameFrameView();
 		gameView.start();
-		GameFramePresenter presenterContainer = new GameFramePresenter(gameView);
-		dicePresenter = presenterContainer.getDicePresenter();
+		gamePresenter = new GameFramePresenter(gameView,network);
+		dicePresenter = gamePresenter.getDicePresenter();
 		
 		diceView = gameView.getDice();
 		boardView = gameView.getBoard();
 		ballEbene = gameView.getBallEbene();
 		
-		ausloeser = presenterContainer.getAusloeser();
-		beweger = presenterContainer.getBeweger();
-		vorschlager = presenterContainer.getVorschlager();
-		raumBeweger = presenterContainer.getRaumBeweger();
-		pathfinder = presenterContainer.getPathfinder();
-		sucher = presenterContainer.getSucher();
+		ausloeser = gamePresenter.getAusloeser();
+		beweger = gamePresenter.getBeweger();
+		vorschlager = gamePresenter.getVorschlager();
+		raumBeweger = gamePresenter.getRaumBeweger();
+		pathfinder = gamePresenter.getPathfinder();
+		sucher = gamePresenter.getSucher();
+		
+		setHandler();
 		
 		testButtons();
 		
 	}
+	public void setTitle(String newtitle){
+		gameView.setStageTitle(newtitle);
+	}
+	
+	public void addChatMsg(String msg){
+		gamePresenter.getGfv().chat.chatArea.appendText(msg+"\n");
+	}
+	
+	public GameFrameView getGameView() {
+		return gameView;
+	}
+	
+	public GameFramePresenter getGamePresenter() {
+		return gamePresenter;
+	}
+	
 	
 	public void rollDice(){
 		int [] testWuerfelWurf = {6,6};
@@ -105,6 +130,9 @@ public class Communicater {
 	}
 	
 	public void endTurn(){
+
+//		Communicator.playerManager.next();
+//		Communicator.circleManager.next();
 		GanzTolleSpielerliste.playerManager.next();
 		GanzTolleSpielerliste.circleManager.next();
 		/////////////////////////////////////
@@ -129,6 +157,19 @@ public class Communicater {
 	}
 	
 	
+	public void setHandler(){
+		gameView.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+		      @Override
+			public void handle(WindowEvent e){
+		          try {
+		        	  network.kill();
+		          } 
+		          catch (Exception e1) {
+		               auxx.log.log(Level.SEVERE,e1.getMessage());
+		          }
+		      }
+		 });
+	}
 	/*
 	 * (check) start game 
 	 * (check) roll dice --> letztes Bild ihre Würfel-Kombination und dann pathfinder / sucher / vorschlager "losschicken"

@@ -86,8 +86,14 @@ public class ServerItem  {
 	}
 	
 	public boolean addPlayerByGameID(int gameID, String color,String nick){
-		return getGameByGameID(gameID).joinGame(color, nick);
+		CluedoGameClient game = getGameByGameID(gameID);
+		if (nick.equals(myNick)){
+			game.setMyNick(nick);
+			return game.joinGame(color, nick);
+		}
+		return false;
 	}
+		
 		
 	public void addGames(ArrayList<CluedoGameClient> cg){
 		for (CluedoGameClient c : cg)

@@ -2,10 +2,10 @@ package cluedoServer;
 
 import java.util.logging.Level;
 
-import staticClasses.auxx;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import cluedoNetworkGUI.*;
+import staticClasses.auxx;
+import cluedoNetworkGUI.CluedoServerGUI;
 
 public class CluedoServerMain extends Application{
 

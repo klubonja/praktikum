@@ -10,10 +10,9 @@ import cluedoNetworkGUI.CluedoClientGUI;
 public class CluedoClientMain extends Application {
 
 	public static void main(String[] args) {
-		auxx.setLoggingLevel(Level.INFO);
+		auxx.setLoggingLevel(Level.ALL);
 		launch(args);
 	}
-	// der Client berechnet das ganze spiel
 	@Override
 	 public void start(Stage primaryStage) {		
 		CluedoClientGUI gui = new CluedoClientGUI(primaryStage);

@@ -8,7 +8,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -19,6 +21,8 @@ import org.json.JSONArray;
 import cluedoClient.ServerItem;
 import cluedoNetworkGUI.CluedoClientGUI;
 import enums.Persons;
+import enums.Rooms;
+import enums.Weapons;
 
 public abstract class auxx {
 	
@@ -57,6 +61,30 @@ public abstract class auxx {
 		
 		
 		return res;
+	}
+	
+	public static String now(){
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS"); //2015-04-08T15:16:23.42"
+		  Date now = new Date();
+		  
+		  return date.format(now);
+	}
+	
+	public static String convertTs(String localDateTime){
+		String[] datetimestring = localDateTime.split("T");
+		return datetimestring[1];
+		
+		
+//		try {
+//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss",  Locale.GERMAN);
+//			LocalDate date = LocalDate.parse(localDateTime, formatter);
+//			return date.toString();
+//		} 
+//		catch (DateTimeParseException e) {
+//			logsevere("converting time failed :",e);
+//			return localDateTime;
+//		}
+		
 	}
 	
 	public static String getTCPMessage(Socket s){
@@ -112,6 +140,8 @@ public abstract class auxx {
 		}		
 	}
 	
+	
+	
 	public static String getRandomString(int length){
 		Random rand = new Random();
 		StringBuffer sb = new StringBuffer();
@@ -127,6 +157,20 @@ public abstract class auxx {
 		Random rand = new Random();	
 	
 		return ps[Math.abs(rand.nextInt()%ps.length)].getColor();		
+	}
+	
+	public static String getRandomWeapon(){
+		Weapons[] ps = Weapons.values();
+		Random rand = new Random();	
+	
+		return ps[Math.abs(rand.nextInt()%ps.length)].getName();		
+	}
+	
+	public static String getRandomRoom(){
+		Rooms[] ps = Rooms.values();
+		Random rand = new Random();	
+	
+		return ps[Math.abs(rand.nextInt()%ps.length)].getName();		
 	}
 	
 	public static ArrayList<String> jsonArrayToArrayList(JSONArray jsonarray){

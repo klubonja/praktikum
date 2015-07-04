@@ -9,6 +9,7 @@ import json.CluedoProtokollChecker;
 import org.json.JSONObject;
 
 import staticClasses.Config;
+import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import enums.NetworkHandhakeCodes;
 
@@ -33,7 +34,7 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 			NetworkHandhakeCodes errcode = checker.validateExpectedType(expType,ignoredTypes);
 			
 			if (errcode == NetworkHandhakeCodes.OK) {
-				dataGuiManager.addMsgIn(ip.toString()+" sends handshake");
+				//dataGuiManager.addMsgIn(ip.toString()+" sends handshake");
 				Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, dataGuiManager,answer);
 				bc.sendBrodcast();			
 			}
@@ -41,16 +42,16 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 				dataGuiManager.addMsgIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
-				dataGuiManager.addMsgIn(ip.toString()+" is server and is ignored");
+				//dataGuiManager.addMsgIn(ip.toString()+" is server and is ignored");
 			}
 			else {
-				dataGuiManager.addMsgIn("TODO : unhandled incoming : \n" + msg);
+				//dataGuiManager.addMsgIn("TODO : unhandled incoming : \n" + msg);
 			}			
 			
 		} 
 		catch (Exception e) {
-			dataGuiManager.addMsgIn(e.getMessage());
-			e.printStackTrace();
+			//dataGuiManager.addMsgIn(e.getMessage());
+			auxx.logsevere("client handshake error", e);
 		}
 		
 	}
