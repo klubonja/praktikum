@@ -44,6 +44,7 @@ class CommunicationHandler implements Runnable{
 		client = c;
 	}	
 	
+	
 	private void awaitingLoginAttempt (){
 		auxx.logfine("awaiting login from client");
 		while (!readyForCommunication) { // will keep listening for valid login msg
