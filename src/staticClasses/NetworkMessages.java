@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import cluedoClient.ServerItem;
+import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -345,7 +346,7 @@ public abstract class NetworkMessages {
 	}
 	
 	public static String suspicionMsg(int gameID,JSONObject statement){
-		CluedoJSON json = new CluedoJSON("suspition");
+		CluedoJSON json = new CluedoJSON("suspicion");
 		json.put("statement", statement);
 		json.put("gameID", gameID);		
 		
@@ -382,8 +383,8 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String moveMsg(int gameID,JSONObject field){
-		CluedoJSON json = new CluedoJSON("roll dice");
+	public static String moveMsg(int gameID, CluedoField field){
+		CluedoJSON json = new CluedoJSON("move");
 		json.put("gameID", gameID);	
 		json.put("field", field);	
 		

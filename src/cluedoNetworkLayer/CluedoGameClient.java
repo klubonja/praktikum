@@ -45,6 +45,10 @@ public class CluedoGameClient extends CluedoGame {
 		return true;
 	}
 	
+	public void move(CluedoPosition position){
+		communicator.move(position);
+	}
+	
 	public void setMyNick(String myNick) {
 		this.myNick = myNick;
 	}

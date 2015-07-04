@@ -40,10 +40,12 @@ public class Communicator {
 	private ArrayList <CluedoPlayer> players;
 	private CluedoGameClient network;
 	public final PlayerCircleManager pcManager;
+	public final int gameid;
 	
 		
 	public Communicator(CluedoGameClient ngame){
 		network = ngame;
+		gameid = ngame.getGameId();
 		players = ngame.getPlayersConnected();
 		pcManager = new PlayerCircleManager(players);		
 	}
@@ -54,7 +56,7 @@ public class Communicator {
 
 		gameView = new GameFrameView(pcManager);
 		gameView.start();
-		gamePresenter = new GameFramePresenter(gameView,network,pcManager);
+		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid);
 		dicePresenter = gamePresenter.getDicePresenter();
 		zugPresenter = gamePresenter.getZugPresenter();
 		
@@ -100,15 +102,13 @@ public class Communicator {
 	}
 	
 	public void useSecretPassage(){
-		auxx.logsevere("\\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n ");
+		
 		beweger.useSecretPassage();
 	}
 	
-	public void move(int [] bewegungen){
-		//bewegungen = z.B. {5,9};
-		int [] testBewegung = bewegungen;
-		int xKoordinate = testBewegung[0];
-		int yKoordinate = testBewegung[1];
+	public void move(CluedoPosition position){
+		int yKoordinate = position.getY();
+		int xKoordinate = position.getX();
 		ausloeser.ausloesen(yKoordinate, xKoordinate);
 	}
 	

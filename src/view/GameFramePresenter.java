@@ -44,10 +44,12 @@ public class GameFramePresenter {
 	private DicePresenter dicePresenter;
 	private AussergewohnlichesZugfensterPresenter zugPresenter;
 	public final PlayerCircleManager pcManager;
+	private int gameid;
 
-	public GameFramePresenter(GameFrameView gfv,CluedoGameClient game,PlayerCircleManager pcm){
+	public GameFramePresenter(GameFrameView gfv,CluedoGameClient game,PlayerCircleManager pcm, int gameid){
 		networkGame = game;
 		this.gfv = gfv;
+		this.gameid = gameid;
 		pcManager = pcm;
 		this.currentPlayer = pcManager.getCurrentPlayer();
 		this.playerCircle = pcManager.getCurrentCircle();
@@ -74,7 +76,7 @@ public class GameFramePresenter {
 		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene,pcManager);
 		
 		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,   anweisungen,pcManager);
-		ausloeser = new Ausloeser(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager);
+		ausloeser = new Ausloeser(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager, gameid);
 
 		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher);
 		

@@ -12,7 +12,9 @@ import org.json.JSONObject;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
+import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.NetworkHandhakeCodes;
 
 
@@ -94,6 +96,11 @@ class IncomingHandler implements Runnable {
 					else if (checker.getType().equals("user left")){
 		        		  String player = checker.getMessage().getString("nick");
 		        		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
+					}
+					else if (checker.getType().equals("moved")){
+						CluedoField field = (CluedoField) checker.getMessage().getJSONObject("field");
+						CluedoPosition position = new CluedoPosition(field.getInt("x"), field.getInt("y"));
+						server.getGameByGameID(checker.getMessage().getInt("gameID"));
 					}
 					else if (checker.getType().equals("chat")){
 						  JSONObject chatmsg = checker.getMessage();

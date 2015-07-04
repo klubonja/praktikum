@@ -9,6 +9,7 @@ import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
+import cluedoNetworkLayer.CluedoField;
 import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
@@ -158,6 +159,19 @@ class CommunicationHandler implements Runnable{
 	        	   }
 	        	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
 	        		  closeProtokollConnection();
+	        	   }
+	        	   
+	        	   else if(checker.getType().equals("move")){
+	        		   CluedoField field = (CluedoField) checker.getMessage().getJSONObject("field");
+	        		   int gameID = checker.getMessage().getInt("gameID");
+	        		   // TODO: Position checken dataManager.getGameByID(gameID)
+	        		   
+	        		   client.sendMsg(NetworkMessages.okMsg());
+	        		   JSONObject personpos = new JSONObject();
+	        		   personpos.put("person",client.getPlayer().getCluedoPerson()); 
+	        		   personpos.put("field", field);
+	        		   dataManager.notifyAll(NetworkMessages.movedMsg(gameID, personpos));
+	        		   
 	        	   }
 	        	  
 	        	   else if (checker.getType().equals("chat")) {														//CHAT
