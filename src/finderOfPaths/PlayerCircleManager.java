@@ -60,6 +60,26 @@ public class PlayerCircleManager {
 		return circleManager.get(i);
 	}
 	
+	public CluedoPlayer getPlayerByNick(String nick){
+		for (CluedoPlayer p:playerManager){
+			if (p.getNick().equals(nick))
+				return p;
+		}
+		
+		return null;
+	}
+	
+	public Circle getCircleByNick(String nick){
+		for (int i = 0; i < getSize(); i++){
+			if (playerManager.get(i).getNick().equals(nick))
+				return circleManager.get(i);
+		}
+		
+		return null;
+	}
+	
+	
+	
 	public void setIndexByPlayer(CluedoPlayer p){
 		for (int i = 0; i < getSize(); i++)
 			if (p == playerManager.get(i)){
