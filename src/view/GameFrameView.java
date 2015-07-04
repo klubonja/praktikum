@@ -227,6 +227,17 @@ public class GameFrameView extends GridPane{
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
+
+
+	public BallEbene2 getBallEbene() {
+		return ballEbene;
+	}
+
+
+	public void setBallEbene(BallEbene2 ballEbene) {
+		this.ballEbene = ballEbene;
+	}
+	
 	
 }
 

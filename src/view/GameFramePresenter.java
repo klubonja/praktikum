@@ -166,6 +166,15 @@ public class GameFramePresenter {
 	public void setDicePresenter(DicePresenter dicePresenter) {
 		this.dicePresenter = dicePresenter;
 	}
+
+	public RaumBeweger getRaumBeweger() {
+		return raumBeweger;
+	}
+
+	public void setRaumBeweger(RaumBeweger raumBeweger) {
+		this.raumBeweger = raumBeweger;
+	}
+	
 	
 	
 	

@@ -7,9 +7,12 @@ import javafx.scene.shape.Circle;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoPlayer;
 import finderOfPaths.Ausloeser;
+import finderOfPaths.BallEbene2;
 import finderOfPaths.DerBeweger;
 import finderOfPaths.GanzTolleSpielerliste;
+import finderOfPaths.RaumBeweger;
 import finderOfPaths.Sucher;
+import finderOfPaths.Vorschlaege;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 
 public class Communicater {
@@ -17,18 +20,18 @@ public class Communicater {
 	private GameFrameView gameView;
 	private BoardView boardView;
 	private DiceView diceView;
+	private BallEbene2 ballEbene;
 	
 	private GameFramePresenter gamePresenter;
 	private DicePresenter dicePresenter;
 	
 	private Ausloeser ausloeser;
 	private Sucher sucher;
+	private Vorschlaege vorschlager;
 	private WahnsinnigTollerPathfinder pathfinder;
 	private DerBeweger beweger;
+	private RaumBeweger raumBeweger;
 	private ArrayList <CluedoPlayer> players;
-	
-	//public static GanzTolleSpielerliste<CluedoPlayer> playerManager = new GanzTolleSpielerliste<CluedoPlayer>();
-	//public static GanzTolleSpielerliste<Circle> circleManager = new GanzTolleSpielerliste<Circle>();
 	
 	public Communicater(ArrayList <CluedoPlayer> players){
 		
@@ -50,28 +53,38 @@ public class Communicater {
 		
 		diceView = gameView.getDice();
 		boardView = gameView.getBoard();
-
+		ballEbene = gameView.getBallEbene();
+		
 		ausloeser = presenterContainer.getAusloeser();
 		beweger = presenterContainer.getBeweger();
-		//raumBeweger = presenterContainer.getr
+		vorschlager = presenterContainer.getVorschlager();
+		raumBeweger = presenterContainer.getRaumBeweger();
 		pathfinder = presenterContainer.getPathfinder();
 		sucher = presenterContainer.getSucher();
+		
+		testButtons();
 		
 	}
 	
 	public void rollDice(){
-		///////////////////////////////
-		/////////BRAUCHT INPUT/////////
-		///////////////////////////////
-		// dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
+		int [] testWuerfelWurf = {6,6};
+		int ersterWuerfel = testWuerfelWurf[0];
+		int zweiterWuerfel = testWuerfelWurf[1];
+		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
 	}
 	
 	public void useSecretPassage(){
+		
+		auxx.logsevere("\\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n ");
 		beweger.useSecretPassage();
 	}
 	
-	public void move(){
-		
+	public void move(int [] bewegungen){
+		//bewegungen = z.B. {5,9};
+		int [] testBewegung = bewegungen;
+		int xKoordinate = testBewegung[0];
+		int yKoordinate = testBewegung[1];
+		ausloeser.ausloesen(yKoordinate, xKoordinate);
 	}
 	
 	public void suspect(){
@@ -83,6 +96,10 @@ public class Communicater {
 	}
 	
 	public void disprove(){
+		
+	}
+	
+	public void showPoolCards(){
 		
 	}
 	
@@ -99,16 +116,33 @@ public class Communicater {
 		gameView.close();
 	}
 	
+	public void testButtons(){
+//		ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans = new int {5,9}));
+		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice());
+		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
+	}
+	
+	public boolean checkForValidMovement(int xKoordinate, int yKoordinate){
+		if (vorschlager.hierHerValide(xKoordinate, yKoordinate)){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	
 	/*
 	 * (check) start game 
-	 * roll dice --> letztes Bild ihre Würfel-Kombination und dann pathfinder / sucher / vorschlager "losschicken"
-	 * use secret passage --> beweger muss position neu setzen
-	 * move --> ausloeser und beweger an diese position bewegen (neue methoden) / mit pathfinder ergebnissen vergleichen
+	 * (check) roll dice --> letztes Bild ihre Würfel-Kombination und dann pathfinder / sucher / vorschlager "losschicken"
+	 * (check) use secret passage --> beweger muss position neu setzen
+	 * (check) move --> ausloeser und beweger an diese position bewegen (neue methoden) / mit pathfinder ergebnissen vergleichen
 	 * suspect --> nedko
 	 * accuse --> nedko
 	 * disprove --> nedko
+	 * showPoolCards --> nedko
 	 * (check) end turn PlayerManager.playerManager.next() UND PlayerManager.circleManager.next() 
-	 * 
+	 * (check) check for valid moves.
 	 */
 	
 	
