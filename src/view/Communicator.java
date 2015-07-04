@@ -45,11 +45,11 @@ public class Communicator {
 	public Communicator(CluedoGameClient ngame){
 		network = ngame;
 		players = ngame.getPlayersConnected();
-		pcManager = new PlayerCircleManager(players);		
+		pcManager = new PlayerCircleManager(players);
+		System.out.println(players.get(0).getCards());
 	}
 	
 	public void startGame(){
-		
 		auxx.loginfo("Communicater");
 
 		gameView = new GameFrameView(pcManager);

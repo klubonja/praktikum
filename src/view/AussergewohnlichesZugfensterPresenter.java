@@ -109,54 +109,44 @@ public class AussergewohnlichesZugfensterPresenter {
 
 		// Schliesst das Zugfenster (nur fuer Developing gedacht
 		// nicht fuer das eigentliche Spiel)
-		gameView
-
-		.getClose().setOnMouseClicked(e -> {
+		gameView.getClose().setOnMouseClicked(e -> {
 			removeButtons();
 			gameView.killEmAll();
 			gameView.getChildren().remove(gameView);
+			gameView.visibleProperty().set(false);
 		});
 	}
 
 	@SuppressWarnings("unchecked")
 	public void vermutungButtonManager() {
-		gameView.ONanklage
-				.setOnMouseClicked(e -> {
-					Iterator<CluedoPlayer> iter = pcManager.playerManager
-							.iterator();
-					CluedoPlayer buffer = (CluedoPlayer) pcManager.getCurrentPlayer();
-					CluedoPlayer current = iter.next();
-					if (iter.hasNext()) {
-						for (String card : current.getCards()) {
-							//SPIELER HAT MOMENTAN KEINE KARTEN IN DER HAND?? SEARCH ME
-							if (card.equals(gameView.getPersonenListe()
-									.getValue())
-									|| card.equals(gameView.getWaffenListe()
-											.getValue())) {
-								System.out.println(current.getCluedoPerson()
-										+ " Hat was!");
-							} else {
-								System.out.println(current.getCluedoPerson()
-										+ " Hat nix!");
-							}
-						}
-						current = iter.next();
-					} else {
-						current = pcManager.playerManager
-								.get(0);
-						for (String card : current.getCards()) {
-							if (card.equals(gameView.getPersonenListe()
-									.getValue())
-									|| card.equals(gameView.getWaffenListe()
-											.getValue())) {
-							}
-						}
-						current = iter.next();
-						if (current == buffer) {
-							System.out.println("Keiner hat die Karten.");
-						}
-					}
-				});
+		gameView.ONanklage.setOnMouseClicked(e -> {
+			Iterator<CluedoPlayer> iter = pcManager.playerManager.iterator();
+			CluedoPlayer buffer = (CluedoPlayer) pcManager.getCurrentPlayer();
+			CluedoPlayer current = iter.next();
+			if (iter.hasNext()) {
+				for (String card : current.getCards()) {
+					// SPIELER HAT MOMENTAN KEINE KARTEN IN DER HAND?? SEARCH ME
+				if (card.equals(gameView.getPersonenListe().getValue())
+						|| card.equals(gameView.getWaffenListe().getValue())) {
+					System.out.println(current.getCluedoPerson() + " Hat was!");
+				} else {
+					System.out.println(current.getCluedoPerson() + " Hat nix!");
+				}
+			}
+			current = iter.next();
+		} else {
+			current = pcManager.playerManager.get(0);
+			for (String card : current.getCards()) {
+				if (card.equals(gameView.getPersonenListe().getValue())
+						|| card.equals(gameView.getWaffenListe().getValue())) {
+				}
+			}
+			current = iter.next();
+			if (current == buffer) {
+				System.out.println("Keiner hat die Karten.");
+			}
+		}
+	})	;
 
 		// Der Button fuer die aeusserung der Vermutung
 		gameView.OFFanklage.setOnMouseEntered(e -> {

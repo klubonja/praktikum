@@ -44,7 +44,7 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 	public ImageView ONvermuten = new ImageView(new Image(
 			"media/ONvermuten.png"));
 
-	private Button close = new Button("Close");
+	private Button close = new Button("Better not click me, I close the window");
 
 	private ComboBox<String> personen = new ComboBox<String>();
 	private ComboBox<String> waffen = new ComboBox<String>();

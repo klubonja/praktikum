@@ -43,13 +43,14 @@ public class Deck {
 	}
 	
 	public void dealCluedoCards(){
+
+		makeDeck();
 		
 		winningHand = new String[3];
 		winningHand[0] = choseRandom(persons);
 		winningHand[1] = choseRandom(weapons);
 		winningHand[2] = choseRandom(rooms);
 		
-		makeDeck();
 		
 		int playerModulo = deck.size()%amountPlayers;		
 		poolCards = choseNRandom(playerModulo,deck);
