@@ -26,9 +26,11 @@ public class Communicator {
 	private BoardView boardView;
 	private DiceView diceView;
 	private BallEbene2 ballEbene;
+	private AussergewohnlichesZugfenster zugView;
 	
 	private GameFramePresenter gamePresenter;
 	private DicePresenter dicePresenter;
+	private AussergewohnlichesZugfensterPresenter zugPresenter;
 	
 	private Ausloeser ausloeser;
 	private Sucher sucher;
@@ -58,10 +60,12 @@ public class Communicator {
 		gameView.start();
 		gamePresenter = new GameFramePresenter(gameView,network);
 		dicePresenter = gamePresenter.getDicePresenter();
+		zugPresenter = gamePresenter.getZugPresenter();
 		
 		diceView = gameView.getDice();
 		boardView = gameView.getBoard();
 		ballEbene = gameView.getBallEbene();
+		zugView = gameView.getZugView();
 		
 		ausloeser = gamePresenter.getAusloeser();
 		beweger = gamePresenter.getBeweger();

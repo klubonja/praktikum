@@ -2,7 +2,6 @@ package figuren;
 
 import javafx.scene.shape.Circle;
 import view.BoardView;
-import view.ZugFenster;
 import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
@@ -63,9 +62,6 @@ public class FigurenPresenter {
 	private int second;
 	private int augenzahl;
 
-	ZugFenster viewImRaum = new ZugFenster();
-
-	
 	public FigurenPresenter(BoardView spielfeld, Circle playerDarstellung){
 		this.player = player;
 		this.spielfeld = spielfeld;
@@ -133,7 +129,6 @@ public class FigurenPresenter {
 		 * l�ｿｽst den Vermutungs-Screen aus.
 		 */
 		public void dasIstEineTuer(){
-			viewImRaum.show();
 		}
 
 		

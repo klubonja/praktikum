@@ -1,6 +1,5 @@
 package nedkosTestPackage;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,16 +8,13 @@ import javafx.animation.RotateTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import staticClasses.Sounds;
 
 /**
  * Die Presenter Klasse, die fuer die Logik des Verteilen der Karten und des
@@ -111,7 +107,7 @@ public class PresenterMitKarten extends Application {
 				pathTransition.setNode(view.rects[kartenZaehler]);
 				pathTransition.setCycleCount(1);
 				pathTransition.setAutoReverse(true);
-				cardSound();
+				Sounds.cardSound();
 				pathTransition.play();
 				pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
@@ -134,7 +130,7 @@ public class PresenterMitKarten extends Application {
 				pathTransition.setNode(view.rects[kartenZaehler]);
 				pathTransition.setCycleCount(1);
 				pathTransition.setAutoReverse(true);
-				cardSound();
+				Sounds.cardSound();
 				pathTransition.play();
 				pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
@@ -165,7 +161,7 @@ public class PresenterMitKarten extends Application {
 				pathTransition.setNode(view.rects[kartenZaehler]);
 				pathTransition.setCycleCount(1);
 				pathTransition.setAutoReverse(true);
-				cardSound();
+				Sounds.cardSound();
 				pathTransition.play();
 				pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
@@ -200,7 +196,7 @@ public class PresenterMitKarten extends Application {
 				pathTransition.setNode(view.rects[kartenZaehler]);
 				pathTransition.setCycleCount(1);
 				pathTransition.setAutoReverse(true);
-				cardSound();
+				Sounds.cardSound();
 				pathTransition.play();
 				pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
@@ -239,7 +235,7 @@ public class PresenterMitKarten extends Application {
 				pathTransition.setNode(view.rects[kartenZaehler]);
 				pathTransition.setCycleCount(1);
 				pathTransition.setAutoReverse(true);
-				cardSound();
+				Sounds.cardSound();
 				pathTransition.play();
 				pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
@@ -278,7 +274,7 @@ public class PresenterMitKarten extends Application {
 				pathTransition.setNode(view.rects[kartenZaehler]);
 				pathTransition.setCycleCount(1);
 				pathTransition.setAutoReverse(true);
-				cardSound();
+				Sounds.cardSound();
 				pathTransition.play();
 				pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
 					public void handle(ActionEvent e) {
@@ -438,49 +434,7 @@ public class PresenterMitKarten extends Application {
 
 	}
 
-	/**
-	 * Spielt ein Geraeusch, waehrend die Karten verteilt werden.
-	 */
-	public void cardSound() {
-		String sound = "media/card.wav";
-		Media mediaFile = new Media(new File(sound).toURI().toString());
-		MediaPlayer mediaplayer = new MediaPlayer(mediaFile);
-		mediaplayer.setAutoPlay(true);
-		mediaplayer.setVolume(1);
-	}
 
-	/**
-	 * Sound fur den Gang nehmen Button
-	 */
-	public void gangSound() {
-		String sound = "media/gang.mp3";
-		Media mediaFile = new Media(new File(sound).toURI().toString());
-		MediaPlayer mediaplayer = new MediaPlayer(mediaFile);
-		mediaplayer.setAutoPlay(true);
-		mediaplayer.setVolume(1);
-	}
-
-	/**
-	 * Sound fur die Turkacheln
-	 */
-	public void doorSound() {
-		String sound = "media/door.mp3";
-		Media mediaFile = new Media(new File(sound).toURI().toString());
-		MediaPlayer mediaplayer = new MediaPlayer(mediaFile);
-		mediaplayer.setAutoPlay(true);
-		mediaplayer.setVolume(1);
-	}
-
-	/**
-	 * Sound fur das Wurfeln
-	 */
-	public void diceSound() {
-		String sound = "media/dice.wav";
-		Media mediaFile = new Media(new File(sound).toURI().toString());
-		MediaPlayer mediaplayer = new MediaPlayer(mediaFile);
-		mediaplayer.setAutoPlay(true);
-		mediaplayer.setVolume(1);
-	}
 
 	/**
 	 * Arrangiert was jeder Button in dem Spiel machen soll.
@@ -498,7 +452,7 @@ public class PresenterMitKarten extends Application {
 			public void handle(MouseEvent e) {
 				zug1.getButtonsBox()
 						.getChildren()
-						.addAll(zug1.NOanklageImage, zug1.NOwurfelImage,
+						.addAll(zug1.NOvermutenImage, zug1.NOwurfelImage,
 								zug1.NOgangImage);
 				view.root.getChildren().add(zug1);
 				zug1.gangControl = true;
@@ -510,7 +464,7 @@ public class PresenterMitKarten extends Application {
 					public void handle(MouseEvent e) {
 						zug1.getButtonsBox()
 								.getChildren()
-								.addAll(zug1.NOanklageImage,
+								.addAll(zug1.NOvermutenImage,
 										zug1.NOwurfelImage, zug1.NOgangImage);
 						view.root.getChildren().add(zug1);
 						zug1.gangControl = false;
@@ -521,30 +475,30 @@ public class PresenterMitKarten extends Application {
 		zug1.YESwurfelImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				zug1.wurfelControl = true;
-				diceSound();
+				Sounds.diceSound();
 				System.out.println("Der Spieler hat "
 						+ (int) ((Math.random() * 6) + 1) + " und "
 						+ (int) ((Math.random() * 6) + 1) + " gewuerfelt.");
-				zug1.getButtonsBox().getChildren().remove(zug1.NOanklageImage);
-				zug1.getButtonsBox().getChildren().remove(zug1.YESanklageImage);
+				zug1.getButtonsBox().getChildren().remove(zug1.NOvermutenImage);
+				zug1.getButtonsBox().getChildren().remove(zug1.YESvermutenImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.NOwurfelImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.YESwurfelImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.NOgangImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.YESgangImage);
 				zug1.getButtonsBox()
 						.getChildren()
-						.addAll(zug1.NOanklageImage, zug1.NOwurfelImage,
+						.addAll(zug1.NOvermutenImage, zug1.NOwurfelImage,
 								zug1.NOgangImage);
 				zug1.wurfelControl = false;
 			}
 		});
 
 		// Anklagen
-		zug1.YESanklageImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		zug1.YESvermutenImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				zug1.anklageControl = true;
-				zug1.getButtonsBox().getChildren().remove(zug1.NOanklageImage);
-				zug1.getButtonsBox().getChildren().remove(zug1.YESanklageImage);
+				zug1.getButtonsBox().getChildren().remove(zug1.NOvermutenImage);
+				zug1.getButtonsBox().getChildren().remove(zug1.YESvermutenImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.NOwurfelImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.YESwurfelImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.NOgangImage);
@@ -562,50 +516,50 @@ public class PresenterMitKarten extends Application {
 		zug1.YESgangImage.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				zug1.gangControl = true;
-				gangSound();
-				zug1.getButtonsBox().getChildren().remove(zug1.NOanklageImage);
-				zug1.getButtonsBox().getChildren().remove(zug1.YESanklageImage);
+				Sounds.gangSound();
+				zug1.getButtonsBox().getChildren().remove(zug1.NOvermutenImage);
+				zug1.getButtonsBox().getChildren().remove(zug1.YESvermutenImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.NOwurfelImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.YESwurfelImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.NOgangImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.YESgangImage);
 				zug1.getButtonsBox()
 						.getChildren()
-						.addAll(zug1.NOanklageImage, zug1.NOwurfelImage,
+						.addAll(zug1.NOvermutenImage, zug1.NOwurfelImage,
 								zug1.NOgangImage);
 				zug1.gangControl = false;
 			}
 		});
 
 		// Button Animation
-		zug1.NOanklageImage.setOnMouseEntered(new EventHandler<MouseEvent>() {
+		zug1.NOvermutenImage.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				if (!zug1.anklageControl) {
 					zug1.getButtonsBox().getChildren()
-							.remove(zug1.NOanklageImage);
+							.remove(zug1.NOvermutenImage);
 					zug1.getButtonsBox().getChildren()
 							.remove(zug1.NOwurfelImage);
 					zug1.getButtonsBox().getChildren().remove(zug1.NOgangImage);
 					zug1.getButtonsBox()
 							.getChildren()
-							.addAll(zug1.YESanklageImage, zug1.NOwurfelImage,
+							.addAll(zug1.YESvermutenImage, zug1.NOwurfelImage,
 									zug1.NOgangImage);
 				}
 			}
 		});
 
 		// Button Animation
-		zug1.YESanklageImage.setOnMouseExited(new EventHandler<MouseEvent>() {
+		zug1.YESvermutenImage.setOnMouseExited(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				if (!zug1.anklageControl) {
 					zug1.getButtonsBox().getChildren()
-							.remove(zug1.YESanklageImage);
+							.remove(zug1.YESvermutenImage);
 					zug1.getButtonsBox().getChildren()
 							.remove(zug1.NOwurfelImage);
 					zug1.getButtonsBox().getChildren().remove(zug1.NOgangImage);
 					zug1.getButtonsBox()
 							.getChildren()
-							.addAll(zug1.NOanklageImage, zug1.NOwurfelImage,
+							.addAll(zug1.NOvermutenImage, zug1.NOwurfelImage,
 									zug1.NOgangImage);
 				}
 			}
@@ -616,13 +570,13 @@ public class PresenterMitKarten extends Application {
 			public void handle(MouseEvent e) {
 				if (!zug1.wurfelControl) {
 					zug1.getButtonsBox().getChildren()
-							.remove(zug1.NOanklageImage);
+							.remove(zug1.NOvermutenImage);
 					zug1.getButtonsBox().getChildren()
 							.remove(zug1.NOwurfelImage);
 					zug1.getButtonsBox().getChildren().remove(zug1.NOgangImage);
 					zug1.getButtonsBox()
 							.getChildren()
-							.addAll(zug1.NOanklageImage, zug1.YESwurfelImage,
+							.addAll(zug1.NOvermutenImage, zug1.YESwurfelImage,
 									zug1.NOgangImage);
 				}
 			}
@@ -633,13 +587,13 @@ public class PresenterMitKarten extends Application {
 			public void handle(MouseEvent e) {
 				if (!zug1.wurfelControl) {
 					zug1.getButtonsBox().getChildren()
-							.remove(zug1.NOanklageImage);
+							.remove(zug1.NOvermutenImage);
 					zug1.getButtonsBox().getChildren()
 							.remove(zug1.YESwurfelImage);
 					zug1.getButtonsBox().getChildren().remove(zug1.NOgangImage);
 					zug1.getButtonsBox()
 							.getChildren()
-							.addAll(zug1.NOanklageImage, zug1.NOwurfelImage,
+							.addAll(zug1.NOvermutenImage, zug1.NOwurfelImage,
 									zug1.NOgangImage);
 				}
 			}
@@ -650,13 +604,13 @@ public class PresenterMitKarten extends Application {
 			public void handle(MouseEvent e) {
 				if (!zug1.gangControl) {
 					zug1.getButtonsBox().getChildren()
-							.remove(zug1.NOanklageImage);
+							.remove(zug1.NOvermutenImage);
 					zug1.getButtonsBox().getChildren()
 							.remove(zug1.NOwurfelImage);
 					zug1.getButtonsBox().getChildren().remove(zug1.NOgangImage);
 					zug1.getButtonsBox()
 							.getChildren()
-							.addAll(zug1.NOanklageImage, zug1.NOwurfelImage,
+							.addAll(zug1.NOvermutenImage, zug1.NOwurfelImage,
 									zug1.YESgangImage);
 				}
 			}
@@ -667,14 +621,14 @@ public class PresenterMitKarten extends Application {
 			public void handle(MouseEvent e) {
 				if (!zug1.gangControl) {
 					zug1.getButtonsBox().getChildren()
-							.remove(zug1.NOanklageImage);
+							.remove(zug1.NOvermutenImage);
 					zug1.getButtonsBox().getChildren()
 							.remove(zug1.NOwurfelImage);
 					zug1.getButtonsBox().getChildren()
 							.remove(zug1.YESgangImage);
 					zug1.getButtonsBox()
 							.getChildren()
-							.addAll(zug1.NOanklageImage, zug1.NOwurfelImage,
+							.addAll(zug1.NOvermutenImage, zug1.NOwurfelImage,
 									zug1.NOgangImage);
 				}
 			}
@@ -689,8 +643,8 @@ public class PresenterMitKarten extends Application {
 				System.out.println(zug1.getWaffenListe().getValue());
 				System.out.println(zug1.getZimmerListe().getValue());
 
-				zug1.getButtonsBox().getChildren().remove(zug1.NOanklageImage);
-				zug1.getButtonsBox().getChildren().remove(zug1.YESanklageImage);
+				zug1.getButtonsBox().getChildren().remove(zug1.NOvermutenImage);
+				zug1.getButtonsBox().getChildren().remove(zug1.YESvermutenImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.NOwurfelImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.YESwurfelImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.NOgangImage);
@@ -735,10 +689,10 @@ public class PresenterMitKarten extends Application {
 
 		// Schliesst das Zugfenster (nur fuer Developing gedacht
 		// nicht fuer das eigentliche Spiel)
-		zug1.close.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		zug1.getClose().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
-				zug1.getButtonsBox().getChildren().remove(zug1.NOanklageImage);
-				zug1.getButtonsBox().getChildren().remove(zug1.YESanklageImage);
+				zug1.getButtonsBox().getChildren().remove(zug1.NOvermutenImage);
+				zug1.getButtonsBox().getChildren().remove(zug1.YESvermutenImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.NOwurfelImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.YESwurfelImage);
 				zug1.getButtonsBox().getChildren().remove(zug1.NOgangImage);
@@ -772,9 +726,9 @@ public class PresenterMitKarten extends Application {
 
 				zugAnklage.anklageControl = true;
 				zugAnklage.getButtonsBox().getChildren()
-						.remove(zugAnklage.NOanklageImage);
+						.remove(zugAnklage.NOvermutenImage);
 				zugAnklage.getButtonsBox().getChildren()
-						.remove(zugAnklage.YESanklageImage);
+						.remove(zugAnklage.YESvermutenImage);
 				zugAnklage.getButtonsBox().getChildren()
 						.remove(zugAnklage.NOwurfelImage);
 				zugAnklage.getButtonsBox().getChildren()
@@ -865,7 +819,7 @@ public class PresenterMitKarten extends Application {
 
 		// Schliesst das Zugfenster (nur fuer Developing gedacht
 		// nicht fuer das eigentliche Spiel)
-		zugAnklage.close.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		zugAnklage.getClose().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
 				zugAnklage.getButtonsBox().getChildren()
 						.remove(zugAnklage.getPersonenListe());

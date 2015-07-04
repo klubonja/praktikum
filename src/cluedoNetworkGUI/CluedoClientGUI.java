@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import staticClasses.Config;
 
 
@@ -174,7 +175,9 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	  public String selectColor(ArrayList<String> colors) {
 			Stage selectNewColor = new Stage();
 			IntroColorPrompt select = new IntroColorPrompt(selectNewColor, colors);
-	    	Scene secondary = new Scene(select, Config.COLOR_SELECT_WINDOW_WIDTH*colors.size(), Config.COLOR_SELECT_WINDOW_HEIGHT);
+
+	    	Scene secondary = new Scene(select, Config.COLOR_SELECT_WINDOW_WIDTH, Config.COLOR_SELECT_WINDOW_HEIGHT);
+	    	selectNewColor.initStyle(StageStyle.UNDECORATED);
 	    	selectNewColor.setScene(secondary);
 	    	selectNewColor.showAndWait();
 	    	return select.returnColor();

@@ -27,8 +27,9 @@ public class GameFrameView extends GridPane{
 
 	//private SpielfeldUndFiguren komplettesFeld;
 	//private FigurenView figuren;
-	KrasserStack komplettesFeld;
+	private KrasserStack komplettesFeld;
 	BallEbene2 ballEbene;
+	AussergewohnlichesZugfenster zugView;
 
 	HandFrameView hand;
 	
@@ -38,8 +39,6 @@ public class GameFrameView extends GridPane{
 
 	
 	public GameFrameView(){
-		scene = new Scene (this, 1300,700);
-		stage = new Stage();
 		/*Adds the size and number of the Rows and Columns of the main GridPane
 		(2 Rows x 2 Columns). */
 		this.getRowConstraints().add(new RowConstraints(25));
@@ -74,7 +73,8 @@ public class GameFrameView extends GridPane{
 		 */
 		
 		ballEbene = new BallEbene2();
-		komplettesFeld = new KrasserStack(ballEbene, board);
+		zugView = new AussergewohnlichesZugfenster();
+		komplettesFeld = new KrasserStack(ballEbene, board,zugView);
 		
 		//Adds the frame for the Cards in hand.
 		hand = new HandFrameView();
@@ -123,6 +123,8 @@ public class GameFrameView extends GridPane{
 	
 	public void start(){
 		
+		scene = new Scene (this, 1300,700);
+		stage = new Stage();		
 		stage.setScene(scene);
 		stage.setResizable(true);
 		//stage.setFullScreen(true);
@@ -239,6 +241,27 @@ public class GameFrameView extends GridPane{
 	public void setBallEbene(BallEbene2 ballEbene) {
 		this.ballEbene = ballEbene;
 	}
+	
+	public KrasserStack getKomplettesFeld() {
+		return komplettesFeld;
+	}
+
+
+	public void setKomplettesFeld(KrasserStack komplettesFeld) {
+		this.komplettesFeld = komplettesFeld;
+	}
+
+
+	public AussergewohnlichesZugfenster getZugView() {
+		return zugView;
+	}
+
+
+	public void setZugView(AussergewohnlichesZugfenster zugView) {
+		this.zugView = zugView;
+	}
+	
+	
 	
 	
 }

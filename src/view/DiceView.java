@@ -3,7 +3,6 @@ package view;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -20,18 +19,15 @@ import javafx.scene.layout.RowConstraints;
 
 public class DiceView extends GridPane{
 
-
-	private Button rollBtn;
 	private ImageView d1;
 	private ImageView d2;
 	
-	
-	private final Image dice1 = new Image("http://dobbelsteen.virtuworld.net/img/1c.gif");
-	private final Image dice2 = new Image("http://dobbelsteen.virtuworld.net/img/2c.gif");
-	private final Image dice3 = new Image("http://dobbelsteen.virtuworld.net/img/3c.gif");
-	private final Image dice4 = new Image("http://dobbelsteen.virtuworld.net/img/4c.gif");
-	private final Image dice5 = new Image("http://dobbelsteen.virtuworld.net/img/5c.gif");
-	private final Image dice6 = new Image("http://dobbelsteen.virtuworld.net/img/6c.gif");
+	private final Image dice1 = new Image("media/1c.gif");
+	private final Image dice2 = new Image("media/2c.gif");
+	private final Image dice3 = new Image("media/3c.gif");
+	private final Image dice4 = new Image("media/4c.gif");
+	private final Image dice5 = new Image("media/5c.gif");
+	private final Image dice6 = new Image("media/6c.gif");
 	
 	/**
 	 * Constructor of the Class.
@@ -48,17 +44,6 @@ public class DiceView extends GridPane{
 		this.getColumnConstraints().add(new ColumnConstraints(150));
 		this.getColumnConstraints().add(new ColumnConstraints(150));
 		this.setPadding(new Insets(5));
-		
-		//Create the roll button and edit the layout.
-		rollBtn = new Button("Roll");
-		GridPane.setConstraints(rollBtn,0,1);
-		GridPane.setColumnSpan(rollBtn, 2);
-		GridPane.setHalignment(rollBtn, HPos.CENTER);
-		GridPane.setValignment(rollBtn, VPos.BOTTOM);
-		rollBtn.setPrefSize(80, 25);
-		rollBtn.setMinSize(80, 25);
-		rollBtn.setMaxSize(80, 25);
-		
 		
 		//Creates an ImageView for the first dice.
 		d1 = new ImageView();
@@ -79,21 +64,11 @@ public class DiceView extends GridPane{
 		GridPane.setConstraints(d2,1,0);
 		
 		//Adds all the above elements to the GridPane
-		this.getChildren().addAll(d1, d2, rollBtn);
+		this.getChildren().addAll(d1, d2);
 	}
 	
 	
 	//Getters and Setters
-	public Button getrollBtn() {
-		return rollBtn;
-	}
-
-
-	public void setrollBtn(Button rollBtn) {
-		this.rollBtn = rollBtn;
-	}
-
-
 	public ImageView getD1() {
 		return d1;
 	}

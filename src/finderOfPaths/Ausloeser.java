@@ -6,6 +6,7 @@ import javafx.scene.shape.Circle;
 import kacheln.Kachel;
 import staticClasses.auxx;
 import view.BoardView;
+import view.GameFrameView;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Orientation;
 
@@ -23,6 +24,7 @@ public class Ausloeser {
 
 	private boolean gewuerfelt;
 	
+	private GameFrameView gameView;
 	private BoardView gui;
 	private BallEbene2 ballEbene;
 	private DerBeweger beweger;
@@ -51,12 +53,13 @@ public class Ausloeser {
 	 * @param ballEbene um auf die click-events zugreifen zu k�nnen
 	 * @param pathfinder um den Weg berechnen zu lassen
 	 */
-	public Ausloeser(BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher){
+	public Ausloeser(GameFrameView gameView, BoardView gui, DerBeweger beweger, BallEbene2 ballEbene, WahnsinnigTollerPathfinder pathfinder, Sucher sucher){
 		this.gui = gui;
 		this.ballEbene = ballEbene;
 		this.beweger = beweger;
 		this.pathfinder = pathfinder;
 		this.sucher = sucher;
+		this.gameView = gameView;
 	}
 	
 	/**
@@ -64,6 +67,8 @@ public class Ausloeser {
 	 */
 	public void zuweisung(){
 		System.out.println("zuweisung");
+		gameView.getZugView().YESgangImage.setOnMouseClicked(e -> {beweger.useSecretPassage();
+		gameView.getKomplettesFeld().getChildren().remove(gameView.getZugView());});
 		ballEbene.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {

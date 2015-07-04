@@ -1,45 +1,85 @@
 package view;
 
-import javafx.geometry.Insets;
+import java.util.ArrayList;
+
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import cluedoNetworkLayer.CluedoPlayer;
 
-public class HandFrameView extends StackPane{
+
+
+////CURRENTLY NOT PROPERLY WORKING SINCE PLAYERS HAVE NO CARDS YET
+
+public class HandFrameView extends BorderPane{
 	
-	ImageView firstCard;
-	ImageView secondCard;
-	ImageView thirdCard;
+	private ArrayList<ImageView> hand = new ArrayList<ImageView>();
 	Label title;
+	private StackPane stack = new StackPane();
+	private HBox cards = new HBox();
+	private Group selectedCard = new Group();
 	
-	final Image img =
-		      new Image("http://vignette3.wikia.nocookie.net/ageofempires/images/2/23/Hades.jpg/revision/latest?cb=20110606234954");
+	String media = "media/";
+	String type = ".png";
 	
 	public HandFrameView(){
-		
-		title = new Label("Cards in hand:");
-		
-		firstCard = new ImageView(img);
-		secondCard = new ImageView(img);
-		thirdCard = new ImageView(img);
-		
 		this.setMaxSize(350, 350);
 		this.setPrefSize(350, 350);
 		this.setMinSize(350, 350);
 		
-		StackPane.setAlignment(title, Pos.TOP_LEFT);
-		StackPane.setAlignment(firstCard, Pos.CENTER_LEFT);
-		StackPane.setAlignment(secondCard, Pos.CENTER);
-		StackPane.setAlignment(thirdCard, Pos.CENTER_RIGHT);
-		StackPane.setMargin(firstCard, new Insets(30,30,30,30));
-		StackPane.setMargin(secondCard, new Insets(0,0,0,0));
-		StackPane.setMargin(thirdCard, new Insets(30,30,30,30));
+		hand.add(new ImageView(new Image(media + "red" + type)));
+		hand.add(new ImageView(new Image(media + "blue" + type)));
+		hand.add(new ImageView(new Image(media + "green" + type)));
+		hand.add(new ImageView(new Image(media + "white" + type)));
+		hand.add(new ImageView(new Image(media + "purple" + type)));
 		
-		this.getChildren().addAll(title, thirdCard, secondCard, firstCard);
+		title = new Label("Cards in hand:");
+		
+		this.setTop(title);
+		this.cards.setSpacing(-30);
+		this.cards.setAlignment(Pos.CENTER);
+		this.cards.getChildren().addAll(hand);
+		stack.getChildren().add(cards);
+		this.setCenter(stack);
 		
 		
+	}
+
+	public ArrayList<ImageView> getHand() {
+		return hand;
+	}
+
+	public void setHand(ArrayList<ImageView> hand) {
+		this.hand = hand;
+	}
+
+	public HBox getCards() {
+		return cards;
+	}
+
+	public void setCards(HBox cards) {
+		this.cards = cards;
+	}
+
+	public Group getSelectedCard() {
+		return selectedCard;
+	}
+
+	public void setSelectedCard(Group selectedCard) {
+		this.selectedCard = selectedCard;
+	}
+
+	public StackPane getStack() {
+		return stack;
+	}
+
+	public void setStack(StackPane stack) {
+		this.stack = stack;
 	}
 	
 	
