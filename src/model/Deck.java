@@ -32,10 +32,11 @@ public class Deck {
 		deck = new ArrayList<String>();
 		rooms = Rooms.getRoomsString();
 		persons = Persons.getPersonsString();
-		weapons = Weapons.getWeaponsString();	
+		weapons = Weapons.getWeaponsString();
 	}
 	
 	public void makeDeck(){
+		rooms.remove("pool");
 		deck.addAll(rooms);
 		deck.addAll(weapons);
 		deck.addAll(persons);
@@ -93,5 +94,29 @@ public class Deck {
 
 	public List<String> getDeck() {
 		return this.deck;
+	}
+
+	public List<String> getPersons() {
+		return persons;
+	}
+
+	public List<String> getWeapons() {
+		return weapons;
+	}
+
+	public List<String> getRooms() {
+		return rooms;
+	}
+
+	public void setPersons(List<String> persons) {
+		this.persons = persons;
+	}
+
+	public void setWeapons(List<String> weapons) {
+		this.weapons = weapons;
+	}
+
+	public void setRooms(List<String> rooms) {
+		this.rooms = rooms;
 	}
 }

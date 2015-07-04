@@ -9,6 +9,8 @@ import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
+import cluedoNetworkLayer.CluedoField;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
@@ -159,6 +161,21 @@ class CommunicationHandler implements Runnable{
 	        	   }
 	        	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
 	        		  closeProtokollConnection();
+	        	   }
+	        	   
+	        	   else if(checker.getType().equals("move")){
+	        		   int xKoordinate = checker.getMessage().getJSONObject("field").getInt("x");
+	        		   int yKoordinate = checker.getMessage().getJSONObject("field").getInt("y");
+	        		   CluedoField field = new CluedoField(new CluedoPosition(xKoordinate, yKoordinate));
+	        		   int gameID = checker.getMessage().getInt("gameID");
+	        		   // TODO: Position checken dataManager.getGameByID(gameID)
+	        		   
+	        		   client.sendMsg(NetworkMessages.okMsg());
+	        		   JSONObject personpos = new JSONObject();
+	        		   personpos.put("person",client.getPlayer().getCluedoPerson()); 
+	        		   personpos.put("field", field);
+	        		   dataManager.notifyAll(NetworkMessages.movedMsg(gameID, personpos));
+	        		   
 	        	   }
 	        	  
 	        	   else if (checker.getType().equals("chat")) {														//CHAT

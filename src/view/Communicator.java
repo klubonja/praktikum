@@ -9,10 +9,14 @@ import javafx.stage.WindowEvent;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
 import finderOfPaths.Ausloeser;
+import finderOfPaths.BallEbene2;
 import finderOfPaths.DerBeweger;
 import finderOfPaths.PlayerCircleManager;
+import finderOfPaths.RaumBeweger;
 import finderOfPaths.Sucher;
+import finderOfPaths.Vorschlaege;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 
 public class Communicator {
@@ -20,23 +24,28 @@ public class Communicator {
 	private GameFrameView gameView;
 	private BoardView boardView;
 	private DiceView diceView;
+	private BallEbene2 ballEbene;
+	private AussergewohnlichesZugfenster zugView;
 	
 	private GameFramePresenter gamePresenter;
 	private DicePresenter dicePresenter;
+	private AussergewohnlichesZugfensterPresenter zugPresenter;
 	
 	private Ausloeser ausloeser;
 	private Sucher sucher;
+	private Vorschlaege vorschlager;
 	private WahnsinnigTollerPathfinder pathfinder;
 	private DerBeweger beweger;
+	private RaumBeweger raumBeweger;
 	private ArrayList <CluedoPlayer> players;
 	private CluedoGameClient network;
 	public final PlayerCircleManager pcManager;
+	public final int gameid;
 	
-	//public static GanzTolleSpielerliste<CluedoPlayer> playerManager = new GanzTolleSpielerliste<CluedoPlayer>();
-	//public static GanzTolleSpielerliste<Circle> circleManager = new GanzTolleSpielerliste<Circle>();
-	
+		
 	public Communicator(CluedoGameClient ngame){
 		network = ngame;
+		gameid = ngame.getGameId();
 		players = ngame.getPlayersConnected();
 		pcManager = new PlayerCircleManager(players);		
 	}
@@ -47,18 +56,25 @@ public class Communicator {
 
 		gameView = new GameFrameView(pcManager);
 		gameView.start();
-		gamePresenter = new GameFramePresenter(gameView,network,pcManager);
+		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid);
 		dicePresenter = gamePresenter.getDicePresenter();
+		zugPresenter = gamePresenter.getZugPresenter();
 		
 		diceView = gameView.getDice();
 		boardView = gameView.getBoard();
-
+		ballEbene = gameView.getBallEbene();
+		zugView = gameView.getZugView();
+		
 		ausloeser = gamePresenter.getAusloeser();
 		beweger = gamePresenter.getBeweger();
+		vorschlager = gamePresenter.getVorschlager();
+		raumBeweger = gamePresenter.getRaumBeweger();
 		pathfinder = gamePresenter.getPathfinder();
 		sucher = gamePresenter.getSucher();
 		
 		setHandler();
+		
+		testButtons();
 		
 	}
 	public void setTitle(String newtitle){
@@ -79,18 +95,21 @@ public class Communicator {
 	
 	
 	public void rollDice(){
-		///////////////////////////////
-		/////////BRAUCHT INPUT/////////
-		///////////////////////////////
-		// dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
+		int [] testWuerfelWurf = {6,6};
+		int ersterWuerfel = testWuerfelWurf[0];
+		int zweiterWuerfel = testWuerfelWurf[1];
+		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
 	}
 	
 	public void useSecretPassage(){
+		
 		beweger.useSecretPassage();
 	}
 	
-	public void move(){
-		
+	public void move(CluedoPosition position){
+		int yKoordinate = position.getY();
+		int xKoordinate = position.getX();
+		ausloeser.ausloesen(yKoordinate, xKoordinate);
 	}
 	
 	public void suspect(){
@@ -102,6 +121,10 @@ public class Communicator {
 	}
 	
 	public void disprove(){
+		
+	}
+	
+	public void showPoolCards(){
 		
 	}
 	
@@ -120,6 +143,18 @@ public class Communicator {
 		gameView.close();
 	}
 	
+	public void testButtons(){
+//		ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans = new int {5,9}));
+		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice());
+		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
+	}
+	
+	public boolean checkForValidMovement(CluedoPosition position){
+		return vorschlager.hierHerValide(position);
+		
+	}
+	
+	
 	public void setHandler(){
 		gameView.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 		      @Override
@@ -135,14 +170,15 @@ public class Communicator {
 	}
 	/*
 	 * (check) start game 
-	 * roll dice --> letztes Bild ihre Würfel-Kombination und dann pathfinder / sucher / vorschlager "losschicken"
-	 * use secret passage --> beweger muss position neu setzen
-	 * move --> ausloeser und beweger an diese position bewegen (neue methoden) / mit pathfinder ergebnissen vergleichen
+	 * (check) roll dice --> letztes Bild ihre Würfel-Kombination und dann pathfinder / sucher / vorschlager "losschicken"
+	 * (check) use secret passage --> beweger muss position neu setzen
+	 * (check) move --> ausloeser und beweger an diese position bewegen (neue methoden) / mit pathfinder ergebnissen vergleichen
 	 * suspect --> nedko
 	 * accuse --> nedko
 	 * disprove --> nedko
+	 * showPoolCards --> nedko
 	 * (check) end turn PlayerManager.playerManager.next() UND PlayerManager.circleManager.next() 
-	 * 
+	 * (check) check for valid moves.
 	 */
 	
 	

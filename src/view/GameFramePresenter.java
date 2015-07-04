@@ -27,7 +27,6 @@ public class GameFramePresenter {
 	private CluedoGameClient networkGame;
 	private GameFrameView gfv;
 	private CluedoPlayer currentPlayer;
-	private int playerIndex;
 	Circle playerCircle;
 	private Stage stage;
 	
@@ -43,11 +42,14 @@ public class GameFramePresenter {
 	private HandFramePresenter handFramePresenter;
 	private MenuBarPresenter menuBarPresenter;
 	private DicePresenter dicePresenter;
+	private AussergewohnlichesZugfensterPresenter zugPresenter;
 	public final PlayerCircleManager pcManager;
-	
-	public GameFramePresenter(GameFrameView gfv,CluedoGameClient game,PlayerCircleManager pcm){
+	private int gameid;
+
+	public GameFramePresenter(GameFrameView gfv,CluedoGameClient game,PlayerCircleManager pcm, int gameid){
 		networkGame = game;
 		this.gfv = gfv;
+		this.gameid = gameid;
 		pcManager = pcm;
 		this.currentPlayer = pcManager.getCurrentPlayer();
 		this.playerCircle = pcManager.getCurrentCircle();
@@ -66,15 +68,17 @@ public class GameFramePresenter {
 		handFramePresenter = new HandFramePresenter(gfv.hand);
 		menuBarPresenter = new MenuBarPresenter(gfv.menu, gfv);
 		
+		zugPresenter = new AussergewohnlichesZugfensterPresenter(gfv.getZugView(), pcManager);
+
 		raumBeweger = new RaumBeweger(gfv.board,pcManager);		
-		beweger = new DerBeweger(gfv.board, gfv.ballEbene, raumBeweger,pcManager);
+		beweger = new DerBeweger(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, gfv.ballEbene, raumBeweger,pcManager);
 		vorschlager = new Vorschlaege(gfv.board,pcManager);
 		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene,pcManager);
 		
 		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,   anweisungen,pcManager);
-		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager);
-		
-		dicePresenter = new DicePresenter(gfv.dice, ausloeser, gfv.board, sucher);
+		ausloeser = new Ausloeser(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager, gameid, networkGame);
+
+		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher);
 		
 		
 		test();
@@ -207,6 +211,22 @@ public class GameFramePresenter {
 
 	public void setDicePresenter(DicePresenter dicePresenter) {
 		this.dicePresenter = dicePresenter;
+	}
+
+	public RaumBeweger getRaumBeweger() {
+		return raumBeweger;
+	}
+
+	public void setRaumBeweger(RaumBeweger raumBeweger) {
+		this.raumBeweger = raumBeweger;
+	}
+	
+	public AussergewohnlichesZugfensterPresenter getZugPresenter() {
+		return zugPresenter;
+	}
+
+	public void setZugPresenter(AussergewohnlichesZugfensterPresenter zugPresenter) {
+		this.zugPresenter = zugPresenter;
 	}
 	
 	

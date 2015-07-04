@@ -22,9 +22,9 @@ public class Zug_V1 extends BorderPane {
 	private HBox bottom;
 	VBox organizer;
 
-	public ImageView YESanklageImage = new ImageView(new Image(
+	public ImageView YESvermutenImage = new ImageView(new Image(
 			"media/YESanklage.png"));
-	public ImageView NOanklageImage = new ImageView(new Image(
+	public ImageView NOvermutenImage = new ImageView(new Image(
 			"media/NOanklage.png"));
 	public ImageView YESgangImage = new ImageView(
 			new Image("media/YESgang.png"));
@@ -41,7 +41,7 @@ public class Zug_V1 extends BorderPane {
 	public ImageView ONvermuten = new ImageView(new Image(
 			"media/ONvermuten.png"));
 
-	public Button close = new Button("Close");
+	private Button close = new Button("Close");
 	private Button klagen = new Button("Anklage Aeussern");
 
 	boolean anklageControl = false;
@@ -77,13 +77,15 @@ public class Zug_V1 extends BorderPane {
 		waffen.getItems().addAll(deck.getWaffenOrdered());
 		waffen.setValue("Waffe");
 		waffen.setMaxWidth(110);
-//		zimmer.getItems().addAll(deck.getZimmerOrdered());
+		// zimmer.getItems().addAll(deck.getZimmerOrdered());
 		zimmer.setValue("Raum");
 		zimmer.setMaxWidth(110);
 
 		buttons = new HBox();
 		buttons.setSpacing(10);
 		buttons.setAlignment(Pos.CENTER);
+		buttons.getChildren().addAll(NOvermutenImage, NOwurfelImage,
+				NOgangImage);
 
 		bottom = new HBox();
 		bottom.setSpacing(150);
@@ -99,6 +101,22 @@ public class Zug_V1 extends BorderPane {
 		this.setCenter(organizer);
 		this.setWidth(450);
 		this.setHeight(300);
+	}
+
+	public void killEmAll() {
+		removeButtons();
+		buttons.getChildren().removeAll(ONanklage, ONvermuten, OFFanklage,
+				OFFvermuten, personen, waffen, zimmer);
+	}
+
+	public void removeButtons() {
+		buttons.getChildren().removeAll(NOvermutenImage, YESvermutenImage,
+				NOwurfelImage, YESwurfelImage, NOgangImage, YESgangImage);
+	}
+
+	public void addInactiveButtons() {
+		buttons.getChildren().addAll(NOvermutenImage, NOwurfelImage,
+				NOgangImage);
 	}
 
 	public Button getAnklageButton() {
@@ -126,5 +144,13 @@ public class Zug_V1 extends BorderPane {
 	@SuppressWarnings("rawtypes")
 	public ComboBox getZimmerListe() {
 		return this.zimmer;
+	}
+
+	public Button getClose() {
+		return close;
+	}
+
+	public void setClose(Button close) {
+		this.close = close;
 	}
 }

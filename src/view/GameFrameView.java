@@ -28,8 +28,9 @@ public class GameFrameView extends GridPane{
 
 	//private SpielfeldUndFiguren komplettesFeld;
 	//private FigurenView figuren;
-	KrasserStack komplettesFeld;
+	private KrasserStack komplettesFeld;
 	BallEbene2 ballEbene;
+	AussergewohnlichesZugfenster zugView;
 
 	HandFrameView hand;
 	
@@ -41,10 +42,8 @@ public class GameFrameView extends GridPane{
 	
 	public GameFrameView(PlayerCircleManager pcm){
 		pcManager = pcm;
-		scene = new Scene (this, 1300,700);
-		stage = new Stage();
-		/*Adds the size and number of the Rows and Columns of the main GridPane
-		(2 Rows x 2 Columns). */
+
+		/*(2 Rows x 2 Columns). */
 		this.getRowConstraints().add(new RowConstraints(25));
 		this.getRowConstraints().add(new RowConstraints(725));
 		this.getColumnConstraints().add(new ColumnConstraints(700));
@@ -76,8 +75,9 @@ public class GameFrameView extends GridPane{
 		 *  Adds the Stackpane with the field
 		 */
 		
-		ballEbene = new BallEbene2(pcManager);
-		komplettesFeld = new KrasserStack(ballEbene, board);
+		ballEbene = new BallEbene2(pcm);
+		zugView = new AussergewohnlichesZugfenster();
+		komplettesFeld = new KrasserStack(ballEbene, board, zugView);
 		
 		//Adds the frame for the Cards in hand.
 		hand = new HandFrameView();
@@ -126,6 +126,8 @@ public class GameFrameView extends GridPane{
 	
 	public void start(){
 		
+		scene = new Scene (this, 1300,700);
+		stage = new Stage();		
 		stage.setScene(scene);
 		stage.setResizable(true);
 		//stage.setFullScreen(true);
@@ -232,6 +234,38 @@ public class GameFrameView extends GridPane{
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
+
+
+	public BallEbene2 getBallEbene() {
+		return ballEbene;
+	}
+
+
+	public void setBallEbene(BallEbene2 ballEbene) {
+		this.ballEbene = ballEbene;
+	}
+	
+	public KrasserStack getKomplettesFeld() {
+		return komplettesFeld;
+	}
+
+
+	public void setKomplettesFeld(KrasserStack komplettesFeld) {
+		this.komplettesFeld = komplettesFeld;
+	}
+
+
+	public AussergewohnlichesZugfenster getZugView() {
+		return zugView;
+	}
+
+
+	public void setZugView(AussergewohnlichesZugfenster zugView) {
+		this.zugView = zugView;
+	}
+	
+	
+	
 	
 }
 

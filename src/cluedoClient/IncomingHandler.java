@@ -12,7 +12,9 @@ import org.json.JSONObject;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
+import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.NetworkHandhakeCodes;
 
 
@@ -65,7 +67,7 @@ class IncomingHandler implements Runnable {
 		        				  );
 		        		  
 					}
-					else if (checker.getType().equals("player cards")){						 
+					else if (checker.getType().equals("player_cards")){						 
 		        		 server.getGameByGameID(
 		        				 checker.getMessage().getInt("gameId")
 		        				 ).getConnectedPlayerByName(
@@ -94,6 +96,13 @@ class IncomingHandler implements Runnable {
 					else if (checker.getType().equals("user left")){
 		        		  String player = checker.getMessage().getString("nick");
 		        		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
+					}
+					else if (checker.getType().equals("moved")){
+						int xKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("x");
+						int yKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("y");
+						
+						CluedoPosition position = new CluedoPosition(xKoord, yKoord);
+						server.getGameByGameID(checker.getMessage().getInt("gameID")).move(position);
 					}
 					else if (checker.getType().equals("chat")){
 						  JSONObject chatmsg = checker.getMessage();
