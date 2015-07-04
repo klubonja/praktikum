@@ -1,26 +1,26 @@
 package cluedoNetworkLayer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-import javafx.application.Platform;
 import staticClasses.auxx;
-import view.Communicater;
+import view.Communicator;
 import enums.GameStates;
 import enums.Persons;
 import enums.PlayerStates;
 import enums.Weapons;
 
-public class CluedoGame {
+public abstract class CluedoGame {
 		
 	int size;
 	int gameId;
 	
+	abstract boolean start();
 	GameStates gameState;
 	
 	ArrayList<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
-	ArrayList<String> availableColors = new ArrayList<String>();
-	Communicater communicater;
+	Communicator communicator;
 
 		
 	public CluedoGame(int gameId){
@@ -41,28 +41,6 @@ public class CluedoGame {
 		for(Weapons w : weaponsEnum) 
 			weapons.add(new CluedoWeapon(w, new CluedoPosition(11, 11)) ); //11,11 ist schwimmbad	
 		
-	}
-	
-	public boolean start(String starterNick){
-		if (hasNick(starterNick)){
-			setGameState(GameStates.started);
-			return true;
-		}
-		
-		return false;
-	}
-	
-	// WIRD GENUTZT
-	public boolean start(){
-		Platform.runLater(() -> {
-			communicater = new Communicater(getPlayersConnected());
-			communicater.startGame();
-			
-			auxx.loginfo("kommt er hin?");
-			
-		});
-		
-		return true;
 	}
 	
 	public boolean addPlayers(ArrayList<CluedoPlayer> plist){
@@ -144,18 +122,13 @@ public class CluedoGame {
 	}
 	
 	public ArrayList<String> getAvailableColors(){
-			
-			for (CluedoPlayer p: players){
-				
+			ArrayList<String> availableColors = new ArrayList<String>();
+			for (CluedoPlayer p: players){				
 					if (p.getNick().equals("")){
 						availableColors.add(p.getCluedoPerson().getColor());
-						System.out.println(p.getCluedoPerson().getColor());
-					}
-								
-				
+					}				
 			}
-			return availableColors;
-			
+			return availableColors;			
 	}
 	
 	public CluedoPlayer getPlayer(String color){
@@ -230,12 +203,23 @@ public class CluedoGame {
 	}
 	
 	public void setOrder(ArrayList<String> order){
-		
+		for (int i = 0;i < order.size(); i++){
+			Collections.swap(players,i,getIndexByNick(order.get(i)));
+		}
 	}
 	
-	public void killGame(){
-		communicater.kill();
+	
+	
+	int getIndexByNick(String nick) {
+		for (int i = 0; i < players.size();i++)
+			if (players.get(i).getNick().equals(nick))
+				return i;
+		
+		return -1;
 	}
+	
+	
+	
 	
 	
 	

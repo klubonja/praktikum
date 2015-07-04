@@ -3,7 +3,6 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
-import staticClasses.auxx;
 import javafx.application.Platform;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
@@ -52,7 +51,6 @@ public class DataGuiManagerServer extends DataGuiManager {
 		JoinGameStatus status =  dataManager.joinGame(gameID, color, client);
 		if (status == JoinGameStatus.added)
 			updateGame(gameID, "Game", dataManager.getNicksConnectedByGameID(gameID));
-		 
 		return status;
 	}
 	
@@ -84,14 +82,21 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean removePlayerfromGame(ClientItem client,int gameID){
 		CluedoGameServer game = dataManager.getGameByID(gameID);
+		GameStates stateBefore = game.getGameState();
+		game.removePlayer(client.getNick());
 		 if (game.getNumberConnected() == 0){
 				game.notifyAll(NetworkMessages.game_deletedMsg(gameID));
 				removeGameGui(gameID);
 				dataManager.removeGame(game);
 		}
 		else if (game.getGameState() == GameStates.not_started && game.getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART){
-			game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
+			//game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
+			game.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
 			setGameWaitingGui(gameID);
+		}	
+		else if (game.getGameState() == GameStates.ended && GameStates.ended == stateBefore){
+			game.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
+			setGameEndedGui(gameID);
 		}
 		else if (game.getGameState() == GameStates.ended){
 			game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));

@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 
 public class IpTextField extends TextField{
-	final int maxLength;
+	final int maxLength;    
 	private StringBuffer err;
 	public IpTextField() {
 		super();
@@ -32,7 +32,6 @@ public class IpTextField extends TextField{
 		if (s.length() > maxLength-1){
 			this.setText(s.substring(0, maxLength));
 			raiseErr("Nur "+maxLength+" Ziffern");
-			System.out.println(s.substring(0,maxLength));
 		}
 	}
 	

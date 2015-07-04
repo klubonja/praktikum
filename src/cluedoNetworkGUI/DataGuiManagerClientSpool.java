@@ -33,22 +33,28 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void setSelectedServer(ServerItem selectedServer) {
 		this.selectedServer = selectedServer;
-		setWindowName("selected : "+selectedServer.getGroupName());
+		setStatus("selected server : "+selectedServer.getGroupName());
 	}
 	
 	public ServerItem getSelectedServer() {
 		return selectedServer;
 	}
 	
+	public void removePlayerFromGameOnServer(int gameID,String nick,ServerItem server){
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		game.removePlayer(nick);	
+		if (server == selectedServer) refreshGamesListServer(server);
+	}
+	
 	public boolean joinGameOnServer(ServerItem server,int gameID,String color,String nick){
-		if (server.addPlayerByGameID(gameID, color, nick)){
-			if (server.getGameByGameID(gameID).getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART) {
-				setReadyGame(gameID);
-				
-			}
-			auxx.loginfo("connected to game "+gameID+" : "+server.getGameByGameID(gameID).getNumberConnected());
-				
-			updateGame(gameID, "(updated by "+nick+")",server.getGameByGameID(gameID).getNicksConnected());
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		if (game.joinGame(color, nick)){
+			if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART) {
+				setReadyGame(gameID);				
+			}				
+			updateGame(gameID, "Game "+gameID,game.getNicksConnected());
+			auxx.loginfo("connected to game "+gameID+" : number Nicks connected : "+game.getNumberConnected());
+
 			return true;
 		}
 		return false;
@@ -56,9 +62,9 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void startGameOnServer(ServerItem server,int gameID,String gameState, ArrayList<String> order){
 		CluedoGameClient game = server.getGameByGameID(gameID);
+		game.setOrder(order);
 		if (game.start()){
-			game.setGameState(GameStates.getState(gameState));
-			game.setOrder(order);
+			game.setGameState(GameStates.getState(gameState));			
 			setRunningGame(gameID);
 		}
 	}
@@ -93,7 +99,9 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public void setGameEndedOnServer(ServerItem server,int gameID){
-		server.getGameByGameID(gameID).setGameState(GameStates.ended);
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		game.killCommunicator();
+		game.setGameState(GameStates.ended);
 		setGameEndedGui(gameID);
 	}
 	
@@ -104,7 +112,6 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public boolean addServer(ServerItem server,String status){
 		if (serverPool.add(server)){
-			addMsgIn("opened TCPSocket to "+server.getGroupName()+" on : "+ server.getIpString());
 			addNetworkActorToGui(server.getGroupName(),server.getIpString(),status);
 			setSelectedServer(server);
 			return true;
@@ -115,7 +122,13 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public boolean removeServer(ServerItem server){
 		auxx.loginfo("trying to remove server "+server.getGroupName());
-		return serverPool.remove(server);
+		if (serverPool.remove(server)){
+			emptyGamesList();
+			return true;
+		}
+		
+		return false;
+			
 	}
 	
 	public ServerItem getServerByIndex(int index){
@@ -149,6 +162,10 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		ArrayList<CluedoGameClient> glist = serverPool.getGamesConnected();
 		for (CluedoGameClient g: glist)
 			auxx.sendTCPMsg(g.getServer().getSocket(), NetworkMessages.leave_gameMsg(g.getGameId()));
+	}
+	
+	public void leaveGame(int gameID){
+		selectedServer.getGameByGameID(gameID).kill();
 	}
 	
 	

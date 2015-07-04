@@ -1,5 +1,7 @@
 package finderOfPaths;
 
+import java.awt.Font;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
@@ -25,7 +27,9 @@ public class BallEbene2 extends GridPane{
 	private Circle spieler;
 	private Stage stage;
 	private Scene scene;
-	private Button tollerKnopf;
+	private Button geheimgang;
+	private Button fremdWuerfeln;
+	private Button fremdBewegen;
 	
 	private Kachel [][] kachelArray;
 	
@@ -65,19 +69,45 @@ public class BallEbene2 extends GridPane{
 			this.add( (Circle) GanzTolleSpielerliste.circleManager.get(i), 0, 0);
 		}
 		
-		tollerKnopf = new Button();
-		this.add(tollerKnopf, 1, 1);
+		geheimgang = new Button("G");
+//		geheimgang.setFont(Font.font("Regular", 17));
+//		geheimgang.setFont(Font.);
+		fremdWuerfeln = new Button("W");
+		fremdBewegen = new Button("B");
+		geheimgang.setStyle("-fx-font: 12 arial -fx-base: #ff0000");
+		fremdWuerfeln.setStyle("-fx-font: 12 arial");
+		fremdBewegen.setStyle("-fx-font: 12 arial");
+		this.add(geheimgang, 0, 0);
+		this.add(fremdWuerfeln, 0, 1);
+		this.add(fremdBewegen, 0, 2);
 		
 		
 	}
 
-	public Button getTollerKnopf() {
-		return tollerKnopf;
+	public Button getGeheimgang() {
+		return geheimgang;
 	}
 
-	public void setTollerKnopf(Button tollerKnopf) {
-		this.tollerKnopf = tollerKnopf;
+	public void setGeheimgang(Button geheimgang) {
+		this.geheimgang = geheimgang;
 	}
+
+	public Button getFremdWuerfeln() {
+		return fremdWuerfeln;
+	}
+
+	public void setFremdWuerfeln(Button fremdWuerfeln) {
+		this.fremdWuerfeln = fremdWuerfeln;
+	}
+
+	public Button getFremdBewegen() {
+		return fremdBewegen;
+	}
+
+	public void setFremdBewegen(Button fremdBewegen) {
+		this.fremdBewegen = fremdBewegen;
+	}
+	
 	
 }
 

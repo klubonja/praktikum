@@ -29,9 +29,10 @@ public class myclass {
 	}
 	
 	public static void main(String [] args)		{
-		Deck cdeck = new Deck(5);
+		Deck cdeck = new Deck(4);
 		cdeck.dealCluedoCards();
 		
 		auxx.loginfo(Arrays.toString(cdeck.getWinningHand()));
+		auxx.loginfo(Arrays.toString(cdeck.getPoolCards()));
 	}
 }

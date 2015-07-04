@@ -52,6 +52,13 @@ public class DataManagerServer extends DataManager {
 		return gamesList.getGameByID(gameID).start();
 	}
 	
+	public ClientItem getClientByNick(String nick){
+		for (ClientItem client: clientPool)
+			if (client.getNick().equals(nick))
+				return client;
+		return null;
+	}
+	
 	public ArrayList<CluedoGameServer> getGamesByPlayer(String nick){
 		ArrayList<CluedoGameServer> glist = new ArrayList<CluedoGameServer>();
 		for (CluedoGameServer cg: gamesList){

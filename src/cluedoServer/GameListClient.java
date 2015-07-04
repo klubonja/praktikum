@@ -38,8 +38,7 @@ public class GameListClient extends ArrayList<CluedoGameClient>{
 	
 	public CluedoGameClient getGameByGameID(int gameID){
 		for (CluedoGameClient cg : this)
-			if (gameID == cg.getGameId()){
-				
+			if (gameID == cg.getGameId()){				
 				return cg;
 			}
 		return null;

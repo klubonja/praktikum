@@ -1,10 +1,12 @@
 package finderOfPaths;
 
 import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import kacheln.Kachel;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
 
 /**
@@ -55,8 +57,11 @@ public class Vorschlaege {
 	/**
 	 * Geht alle Kacheln durch und gibt den erreichbaren ein char [] mit Anweisungen.
 	 * @param moeglichkeitenEingabe alle m�glichen Eingaben - vom pathfinder vorher berechnet.
-	 * @param jetzigeKachelEingabe die Kachel, von welcher geschaut werden soll.
+	 * @param mehrereMoeglichkeiten wenn es mehrere Türen gibt.
 	 * @param moeglichkeiten[counterAussen] das zugewiesene char []
+	 * @param xPositionenEingabe alle xPositionen, von welchen aus gesucht werden soll 
+	 * @param yPositionenEingabe alle yPositionen, von welchen aus gesucht werden soll
+	 * @param tuerCounterEingabe von wie vielen Türen aus gesucht werden soll
 	 */
 	public void vorschlaegeMachen(char [][] moeglichkeitenEingabe, char [][][] mehrereMoeglichkeiten, int [] xPositionenEingabe, int [] yPositionenEingabe, int tuerCounterEingabe){
 		
@@ -136,6 +141,9 @@ public class Vorschlaege {
 		}
 	}
 
+	/**
+	 * Updatet die ehemals unmarkierten Hintergründe.
+	 */
 	public void markierteHintergruendeUpdaten(){
 		
 		for( int iReihen = 0; iReihen < markierteHintergruende.length;iReihen++){			
@@ -146,6 +154,9 @@ public class Vorschlaege {
 		
 	}
 	
+	/**
+	 * Setzt alle möglichkeiten wieder auf null
+	 */
 	public void resetAnweisungsArrays(){
 		
 		// Allen arrays werden leere anweisungs-arrays zugewiesen.
@@ -159,6 +170,9 @@ public class Vorschlaege {
 		
 	}
 	
+	/**
+	 * Setzt die Distanz auf den für die moeglichkeiten gültigen Wert
+	 */
 	public void distanzenUpdaten(){
 		
 		yDistanz=0;
@@ -184,6 +198,10 @@ public class Vorschlaege {
 		}
 	}
 	
+	/**
+	 * Stellt sicher, dass man aus "S"-Türen etc. nur nach Süden raus kann. 
+	 * @return true, falls das möglich ist.
+	 */
 	public boolean checkForWeirdStuff(){
 		Kachel checkThis = gui.getKachelArray()[jetzigeReihe][jetzigeSpalte];
 		if (checkThis.isIstTuer()){
@@ -208,6 +226,10 @@ public class Vorschlaege {
 		}
 	}
 	
+	/**
+	 * Setzt die moeglichkeitenHierHer und die moeglichkeitenVonHier einer gültigen Kachel
+	 * @param farbe
+	 */
 	public void moeglichkeitenSetzenMitTueren(Color farbe){
 		if (checkForWeirdStuff()){
 			
@@ -220,6 +242,11 @@ public class Vorschlaege {
 		}
 	}
 	
+
+	/**
+	 * Setzt die moeglichkeitenHierHer und die moeglichkeitenVonHier einer gültigen Kachel
+	 * @param farbe
+	 */	
 	public void moeglichkeitenSetzenOhneTueren(Color farbe){
 		if (checkForWeirdStuff()){
 			
@@ -232,10 +259,37 @@ public class Vorschlaege {
 		}
 	}
 
+	/**
+	 * Überprüft, ob diese Position eine der erreichbaren ist.
+	 * @param xKoordinate zu überprüfende x Koordinate
+	 * @param yKoordinate zu überprüfende y Koordinate
+	 * @return true, falls diese Position gültig ist.
+	 */
+	public boolean hierHerValide(CluedoPosition position){
+		
+		for (int iReihen = 0; iReihen < gui.getKachelArray().length; iReihen++){
+			for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length; jSpalten++){
+				if (gui.getKachelArray()[iReihen][jSpalten].getBackground().getFills().get(0) == new BackgroundFill(Color.GREY, null, null)){
+					if (position.getX() == jSpalten && position.getY() == iReihen){
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * @return der currentPlayer im vorschlager
+	 */
 	public CluedoPlayer getCurrentPlayer() {
 		return currentPlayer;
 	}
-
+	
+	/**
+	 * @param currentPlayer welcher im vorschlager gesetzt werden soll.
+	 */
 	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}

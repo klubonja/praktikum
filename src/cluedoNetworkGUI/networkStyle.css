@@ -38,6 +38,8 @@
     
 }
 
+
+
 .ipListItem:hover .ipNameItem,  
 .ipListItem:hover .ipIpItem , 
 .ipListItem:hover .ipStatusItem ,
@@ -94,5 +96,19 @@
   -fx-background-insets: 1 1 -1 0, 0, 1, 2;
   -fx-background-radius: 1px, 1px, 1px, 1px;
     
+}
+
+#menue .button {
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+	-fx-padding: 10 10 10 10;
+    -fx-background-insets: 1 1 -1 0, 0, 1, 2;
+    -fx-background-radius: 1px, 1px, 1px, 1px;
+}
+
+#menue .button:hover{
+	-fx-background-color: #000000;
+	-fx-text-fill: #ffffff;
+
 }
 

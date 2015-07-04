@@ -179,7 +179,7 @@ public class IntroPresenter {
 		
 		// HIER BEGINNT DAS SPIEL
 		gameView.start();
-		GameFramePresenter pres = new GameFramePresenter(gameView);
+		GameFramePresenter pres = new GameFramePresenter(gameView,null); // hier muss das netzwerk rein null ist nur verlegenheitslösung
 
 		}
 	

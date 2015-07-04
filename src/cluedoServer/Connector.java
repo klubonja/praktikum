@@ -9,12 +9,12 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 import staticClasses.Config;
-import staticClasses.auxx;
 import staticClasses.NetworkMessages;
+import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 
 
-class Connector extends Thread{	
+public class Connector extends Thread{	
 	
 	private ServerSocket serverSocket;
 	DataManagerServer dataManger;

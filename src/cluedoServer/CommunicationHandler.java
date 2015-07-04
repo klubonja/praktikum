@@ -27,6 +27,7 @@ class CommunicationHandler implements Runnable{
 	
 	boolean run = true;	
 	boolean readyForCommunication = false;
+	String currentMsg;
 	
 	/**
 	 * @param ss
@@ -48,7 +49,6 @@ class CommunicationHandler implements Runnable{
 		while (!readyForCommunication) { // will keep listening for valid login msg
 			try {
 				String message = auxx.getTCPMessage(client.getSocket()).trim();
-				
 				CluedoProtokollChecker checker = new CluedoProtokollChecker(
 						new CluedoJSON(
 								new JSONObject(message)));
@@ -102,7 +102,8 @@ class CommunicationHandler implements Runnable{
 		while (run){
 			try {
 	           String message = auxx.getTCPMessage(client.socket).trim();
-	           
+			   currentMsg = message;
+
 	           CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
 	           checker.validate();
 	           if (checker.isValid()){
@@ -124,23 +125,30 @@ class CommunicationHandler implements Runnable{
 		        						   gameID
 		        						   )
 		        				   );
+	        			   auxx.logfine(status.name());
 	        		   }
 	        		   else if (status == JoinGameStatus.already_joined)
 	        			   client.sendMsg(NetworkMessages.error_Msg("you have already joined this game"));
 	        		   else if (status == JoinGameStatus.nick_already_taken)
-	        			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));	        		  
+	        			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));
+	        		   else if (status == JoinGameStatus.not_joinable)
+	        			   client.sendMsg(NetworkMessages.error_Msg("you can't join this game, idiot"));	        		  
 	        	   }
 	        	   else if (checker.getType().equals("start game")) {												//START GAME
 		        	   int gameID = checker.getMessage().getInt("gameID");
-	        		   if (dataGuiManager.startGameByID(gameID,client.getNick())){
+		        	   if (dataManager.getGameByID(gameID).hasNick(client.getNick())){
+		        		   
 		        			dataManager.notifyAll(
 		        					NetworkMessages.game_startedMsg(
 		        							gameID, 
 		        							 dataManager.getGameByID(gameID).getConnectedPlayersString()
 		        							 )
 		        					);
-		        			dataGuiManager.getGameByIndex(gameID).notifyInit();
-		        		}
+		        		//	dataGuiManager.getGameByIndex(gameID).notifyInit();	
+		        			dataGuiManager.startGameByID(gameID,client.getNick());
+		        			dataGuiManager.addMsgIn("game "+checker.getMessage().getInt("gameID")+ " started");
+		        	   }
+	        		  
 	        		   else {
 	        			   client.sendMsg(NetworkMessages.error_Msg("you cant start this game"));
 	        		   }
@@ -153,10 +161,31 @@ class CommunicationHandler implements Runnable{
 	        	   }
 	        	  
 	        	   else if (checker.getType().equals("chat")) {														//CHAT
-	        		   String msg = checker.getMessage().getString("message");
-	        		   String ts = checker.getMessage().getString("timestamp");
-	        		   dataManager.notifyAll(NetworkMessages.chat_to_clientMsg(msg , ts, client.getNick()));
-		           }	        	   
+					   JSONObject chatmsg = checker.getMessage();
+					   String msg = checker.getMessage().getString("message");
+					   String ts = checker.getMessage().getString("timestamp");
+						if (chatmsg.has("gameID")){
+							int gameID = chatmsg.getInt("gameID");
+							  dataManager.getGameByID(gameID).notifyAll(NetworkMessages.chatMsg(msg,gameID,ts));
+						}
+						else if (checker.getMessage().has("nick")){
+							dataGuiManager.addMsgIn(
+								chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
+								chatmsg.getString("message")
+							);
+							dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg,ts));
+						}
+						else {							  
+							dataManager.notifyAll(NetworkMessages.chatMsg(msg , ts));
+							dataGuiManager.addMsgIn(
+								ts+" "+chatmsg.getString("sender")+" says : \n"+
+								msg
+							);
+						}
+		          }
+	        	  else  {											
+	        		   auxx.loginfo("SERVER INCOMING valid unchecked : \n"+ checker.getMessage());
+	        	  } 
 	           }
 	           else {
 	        	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()+ " \n "
@@ -165,12 +194,11 @@ class CommunicationHandler implements Runnable{
 		        	   dataGuiManager.removeClient(client);
 		        	   auxx.loginfo("INCOMING INVALID : "+ checker.getErrString());
 	           }
-	           
-	           auxx.loginfo("INCOMING anyway : "+ checker.getMessage().toString());
-
 			}
 			catch (Exception e ){	
-				auxx.logsevere("communicationhandler for client :"+ client.getNick()+ "running out", e);
+				auxx.logsevere("communicationhandler for client : "+ client.getNick()+ "running out", e);
+				auxx.logsevere("last message :"+ currentMsg);
+
 				closeProtokollConnection();			
 			}
 		}

@@ -1,6 +1,5 @@
 package cluedoClient;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -18,7 +17,6 @@ import cluedoNetworkGUI.CluedoClientGUI;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkGUI.GameVBox;
 import cluedoNetworkLayer.CluedoGameClient;
-import cluedoNetworkLayer.CluedoPlayer;
 import enums.GameStates;
 import enums.Persons;
 
@@ -44,36 +42,7 @@ class OutgoingHandler implements Runnable{
 	
 	}
 	
-	public void addClientGUIListener(CluedoClientGUI gui){
-		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
-			@Override
-			public void handle(KeyEvent e) {
-			        if (e.getCode() == KeyCode.ENTER){
-			        	sendInputFieldTextContent(dataGuiManager.getGui());
-						gui.inputField.setText("");
-						e.consume();
-			        }
-			    }
-			};	
-		dataGuiManager.getGui().inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
-		    @Override
-		    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
-		    	if (hasFocus){ 
-		        	gui.inputField.addEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );        	        	
-		    	}
-		    	else {
-		    		gui.inputField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );   
-		    	}
-		    }
-		});
-		
-		gui.submitMessageButton.setOnAction(new EventHandler<ActionEvent>() {				
-			@Override
-			public void handle(ActionEvent event) {
-				sendInputFieldTextContent(gui);		
-			}
-		});	
-		
+	public void addClientGUIListener(CluedoClientGUI gui){		
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -82,12 +51,34 @@ class OutgoingHandler implements Runnable{
             		colors.add(p.getColor());
             	}
 	        	String color = gui.selectColor(colors);
-	        	if(!(color == null)){
+	        	auxx.loginfo("color from prompt "+color);
+
+	        	if(color != null){
             		createGame(color);	  
 	        	}
             }
         });	
-		
+		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
+			@Override
+			public void handle(KeyEvent e) {
+			        if (e.getCode() == KeyCode.ENTER){
+			        	auxx.sendTCPMsg(server.getSocket(),NetworkMessages.chatMsg(gui.inputField.getText(),server.getMyNick(),auxx.now()));
+			        	gui.inputField.setText("");
+						e.consume();
+			        }
+			    }
+			};	
+			gui.inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
+			    @Override
+			    public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
+			    	if (hasFocus){ 
+			    		gui.inputField.addEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );        	        	
+			    	}
+			    	else {
+			    		gui.inputField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );   
+			    	}
+			    }
+			});
 		gui.refreshGamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 		    @Override
 		    public void handle(MouseEvent click) {
@@ -107,20 +98,24 @@ class OutgoingHandler implements Runnable{
 		        	String serverip = guiGame.getServerIp();
 		        	ServerItem server = dataGuiManager.getServerByID(servername, serverip);
 		        	CluedoGameClient game = server.getGameByGameID(gameID);
-		        	ArrayList<String> colors = dataGuiManager.getSelectedServer().getGameByGameID(gameID).getAvailableColors();
-		        	String color = gui.selectColor(colors);
+		        	
 		      
 		        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART 
 		        			&& game.hasNick(server.getMyNick())
 		        			&& game.getGameState() == GameStates.not_started){
 		        		sendStartGameRequest(gameID);
 		        	}
-		        	else if (game.getGameState() != GameStates.ended && !(color == null))  {
-		        		
-		        		selectGame(game, color);		
-		        	}	
-		        	
-		        	auxx.logfine("game on: "+serverip+" groupname : "+servername+" gamestate : "+game.getGameState());
+		        	else if (
+		        			game.getGameState() == GameStates.started && game.hasNick(server.getMyNick())
+		        			|| game.getGameState() == GameStates.ended
+		        			)  {
+			        	dataGuiManager.leaveGame(game.getGameId());	
+		        	}		
+		        	else if (game.getGameState() != GameStates.ended)  {
+			        	ArrayList<String> colors = dataGuiManager.getSelectedServer().getGameByGameID(gameID).getAvailableColors();
+		        		selectGame(game, gui.selectColor(colors));		
+		        	}
+		        	auxx.logfine("game on: "+serverip+" groupname : "+servername+" mynick : "+server.getMyNick()+" gamestate : "+game.getGameState());
 
 		        }
 		    }
@@ -141,20 +136,19 @@ class OutgoingHandler implements Runnable{
 	}
 	
 	
-	private void sendInputFieldTextContent(CluedoClientGUI gui){
-		auxx.sendTCPMsg(
-				server.getSocket(),
-				NetworkMessages.chat_to_serverMsg(
-						gui.inputField.getText(), 
-						LocalDateTime.now().toString() // 2015-04-08T15:16:23.42
-						)
-				);
-				
-		gui.inputField.setText("");
-	}
+//	void selectGame(SelectionModel<GameVBox> g) {
+//		int gameID = g.getSelectedItem().getGameID();
+//		Methods.sendTCPMsg(
+//				dataGuiManager.getServer().getSocket(),
+//				NetworkMessages.join_gameMsg(
+//						Methods.getRandomPerson(),
+//						gameID)
+//				);
+//	}
+
 	
 	void createGame(String color){
-		auxx.sendTCPMsg(dataGuiManager.getSelectedServer().getSocket(),NetworkMessages.create_gameMsg(color));
+		auxx.sendTCPMsg(server.getSocket(), NetworkMessages.create_gameMsg(color));
 	}	
 	
 	@Override

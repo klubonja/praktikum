@@ -64,7 +64,6 @@ public class Ausloeser {
 	 */
 	public void zuweisung(){
 		System.out.println("zuweisung");
-		ballEbene.getTollerKnopf().setOnAction(e -> beweger.useSecretPassage());
 		ballEbene.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
@@ -101,50 +100,58 @@ public class Ausloeser {
 						if ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutX() <= event.getX()) && (event.getX() < gui.getKachelArray()[iReihen][jSpalten].getLayoutX()+29)
 						&& ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutY() <= event.getY()) && (event.getY() < gui.getKachelArray()[iReihen][jSpalten].getLayoutY()+29) ) ){
 							
-							try {
-							
-								Kachel momentaneKachel = gui.getKachelArray()[iReihen][jSpalten];
-								
-								System.out.println("Reihe : "+iReihen +"  ||  Spalte : " +jSpalten);
-								
-								char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
-								
-								Kachel startKachel = momentaneKachel.getVonHier();
-								startKachel.setVonHier(null);
-								
-								auxx.logsevere("anfangs Kachel laut Auslöser x : " +gui.getColumnIndex(startKachel) +"  ||  y : " +gui.getRowIndex(startKachel));
-								
-								resetAnweisungen();
-								anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
-								schritte = wieVieleSchritte(moeglichkeitenHierher);
-								
-								insgesamteDistanz();
-								
-								for (int i = 0; i<anweisungenOrientations.length && anweisungenOrientations[i] != null;i++){
-									System.out.println("anweisungen : " +anweisungenOrientations[i]);
-								}
-								
-								beweger.setCurrentCircle((Circle) GanzTolleSpielerliste.circleManager.getCurrentObject());
-								beweger.setCurrentPlayer((CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject());
-								
-								beweger.anfangsKachelSetzen(startKachel);
-								
-								beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
-								
-								nullSchritte = 0;
-								pathfinder.setWelcheKachel(0);
-								
-								// HIER WIRD NEXT GEMACHT
-								GanzTolleSpielerliste.playerManager.next();
-								GanzTolleSpielerliste.circleManager.next();
-								
-							}catch (NullPointerException e ){}
+							ausloesen(iReihen, jSpalten);		
 							
 						}
 					}
 				}
 		}
 	}
+	
+	public void ausloesen(int iReihe, int jSpalte){
+		try {
+			
+			
+			Kachel momentaneKachel = gui.getKachelArray()[iReihe][jSpalte];
+			
+			System.out.println("Reihe : "+iReihe +"  ||  Spalte : " +jSpalte);
+			
+			char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
+			
+			Kachel startKachel = momentaneKachel.getVonHier();
+			startKachel.setVonHier(null);
+			
+			auxx.logsevere("anfangs Kachel laut Auslöser x : " +gui.getColumnIndex(startKachel) +"  ||  y : " +gui.getRowIndex(startKachel));
+			
+			resetAnweisungen();
+			anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
+			schritte = wieVieleSchritte(moeglichkeitenHierher);
+			
+			insgesamteDistanz();
+			
+			for (int i = 0; i<anweisungenOrientations.length && anweisungenOrientations[i] != null;i++){
+				System.out.println("anweisungen : " +anweisungenOrientations[i]);
+			}
+			
+			beweger.setCurrentCircle((Circle) GanzTolleSpielerliste.circleManager.getCurrentObject());
+			beweger.setCurrentPlayer((CluedoPlayer) GanzTolleSpielerliste.playerManager.getCurrentObject());
+			
+			beweger.anfangsKachelSetzen(startKachel);
+			
+			beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
+			
+			nullSchritte = 0;
+			pathfinder.setWelcheKachel(0);
+			
+			// HIER WIRD NEXT GEMACHT
+			GanzTolleSpielerliste.playerManager.next();
+			GanzTolleSpielerliste.circleManager.next();
+			
+		}catch (NullPointerException e ){}
+
+	}
+	
+	
 	
 	/**
 	 * Wandelt char [] mit anweisungen in Orientation [] mit anweisungen um

@@ -1,22 +1,20 @@
 package cluedoServer;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-import staticClasses.auxx;
 import staticClasses.NetworkMessages;
+import staticClasses.auxx;
+import cluedoNetworkLayer.CluedoPlayer;
 
 public class ClientItem {
 	
 	String id;
 	String nick;	
 	String groupName;
+	CluedoPlayer player;
 	ArrayList<String> expansions;
 	
 	int gameId;
@@ -32,6 +30,14 @@ public class ClientItem {
 	
 	public Socket getSocket(){
 		return socket;
+	}
+	
+	public void setPlayer(CluedoPlayer player) {
+		this.player = player;
+	}
+	
+	public CluedoPlayer getPlayer() {
+		return player;
 	}
 	
 	public String getIpString(){

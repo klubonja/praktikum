@@ -43,7 +43,6 @@ class IncomingHandler implements Runnable {
 						new CluedoJSON(new JSONObject(msg)));
 				checker.validate();
 				if (checker.isValid()){				
-					dataGuiManager.addMsgIn(checker.getMessage().toString());
 					if (checker.getType().equals("game created")){
 						int gameID = checker.getMessage().getInt("gameID");
 						JSONObject playerJSON = checker.getMessage().getJSONObject("player");
@@ -66,8 +65,28 @@ class IncomingHandler implements Runnable {
 		        				  );
 		        		  
 					}
+					else if (checker.getType().equals("player cards")){						 
+		        		 server.getGameByGameID(
+		        				 checker.getMessage().getInt("gameId")
+		        				 ).getConnectedPlayerByName(
+		        						 server.getMyNick()
+		        						 ).setCards(
+		        								 auxx.jsonArrayToArrayList(
+		        										 checker.getMessage().getJSONArray("cards")
+		        										 )
+		        							);	        		  
+					}
 					else if (checker.getType().equals("game ended")){
 		        		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
+					}
+					else if (checker.getType().equals("left game")){
+//		        		 CluedoGameClient game = server.getGameByGameID(checker.getMessage().getInt("gameID"));
+//		        		 game.removePlayer(checker.getMessage().getString("nick"));	
+//		        		 dataGuiManager.refreshGamesListServer(server);
+		        		 dataGuiManager.removePlayerFromGameOnServer(
+		        				 checker.getMessage().getInt("gameID"),
+		        				 checker.getMessage().getString("nick"),
+		        				 server);
 					}
 					else if (checker.getType().equals("game deleted")){
 		        		 dataGuiManager.deleteGameOnServer(server,checker.getMessage().getInt("gameID"));		        		  
@@ -76,24 +95,50 @@ class IncomingHandler implements Runnable {
 		        		  String player = checker.getMessage().getString("nick");
 		        		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
 					}
+					else if (checker.getType().equals("chat")){
+						  JSONObject chatmsg = checker.getMessage();
+		        		  if (chatmsg.has("gameID")){
+		        			  server.getGameByGameID(
+		        					  	chatmsg.getInt("gameID")
+		        					  ).addChatMsg(
+		        							  auxx.convertTs(chatmsg.getString("timestamp"))+" : "+chatmsg.getString("message")
+		        						);
+		        		  }
+		        		  if (checker.getMessage().has("nick")){
+		        			  dataGuiManager.addMsgIn(
+		        					  auxx.convertTs(chatmsg.getString("timestamp"))+" "+chatmsg.getString("sender")+" says (privately) : \n"+
+		        							  chatmsg.getString("message")
+		        					  );
+		        		  }
+//	        			  else if (chatmsg.has("sender")){
+//	        				  dataGuiManager.addMsgIn(
+//		        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says : \n"+
+//		        							  chatmsg.getString("message")
+//		        					  );
+//	        			  }
+	        			  else {
+	        				  dataGuiManager.addMsgIn(
+	        						  auxx.convertTs(chatmsg.getString("timestamp"))+" : \n"+
+		        							  chatmsg.getString("message")
+		        					  );
+	        			  }
+					}
 					else if (checker.getType().equals("disconnect")){
 		        		  killConnection();   
 					}
-					else {
-						auxx.loginfo("INCOMING unchecked type: "+checker.getType());
+					else if (checker.getType().equals("error")){
+		        		  dataGuiManager.setStatus("ERROR : "+checker.getMessage().getString("message")); 
 					}
-					
-					auxx.loginfo("INCOMING : handeled type : "+checker.getType());
+					else {
+						auxx.loginfo("INCOMING unchecked valid type: "+checker.getType());
+					}
 				}		
 				else {
 					auxx.loginfo("INCOMING invalid : "+checker.getErrString());
-				}
-				
-				auxx.loginfo("INCOMING anyway:  "+checker.getMessage().toString());
-				
+				}				
 			}			
 			catch (Exception e){
-				auxx.logsevere("fuxk !!!!!!!!!!!", e);
+				auxx.logsevere("error on incomming handler client", e);
 				killConnection();
 				dataGuiManager.refreshGamesListServer(server);// refresh view before running out, its a differnet thread anyway
 			}			
@@ -118,6 +163,7 @@ class IncomingHandler implements Runnable {
 					server.getIpString(),
 					"logged in"
 					);
+			dataGuiManager.setStatus("server "+server.getGroupName()+" status :"+server.getStatus());
 					
 		}
 		else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
@@ -126,10 +172,10 @@ class IncomingHandler implements Runnable {
 			killConnection(); // thread will run out without further notice					
 		}
 		else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){
-			dataGuiManager.addMsgIn(checker.getMessage().getString("message"));
+			//dataGuiManager.addMsgIn(checker.getMessage().getString("message"));
 		}
 		else {
-			dataGuiManager.addMsgIn(checker.getMessage().toString());
+			//dataGuiManager.addMsgIn(checker.getMessage().toString());
 		}
 		
 	}
@@ -142,6 +188,9 @@ class IncomingHandler implements Runnable {
 	
 	public void killConnection(){
 		localRun = false;
+		globalRun = false;
+		dataGuiManager.removeServer(server);
+		
 		auxx.logsevere("incomming handler thread runnning outon server : "+server.getGroupName());
 	}
 }
