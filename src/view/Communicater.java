@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import model.Deck;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Circle;
@@ -18,6 +19,7 @@ import finderOfPaths.WahnsinnigTollerPathfinder;
 public class Communicater {
 
 	private GameFrameView gameView;
+	private AussergewohnlichesZugfenster zug;
 	private BoardView boardView;
 	private DiceView diceView;
 
@@ -30,11 +32,6 @@ public class Communicater {
 	private WahnsinnigTollerPathfinder pathfinder;
 	private DerBeweger beweger;
 	private ArrayList<CluedoPlayer> players;
-
-	// public static GanzTolleSpielerliste<CluedoPlayer> playerManager = new
-	// GanzTolleSpielerliste<CluedoPlayer>();
-	// public static GanzTolleSpielerliste<Circle> circleManager = new
-	// GanzTolleSpielerliste<Circle>();
 
 	@SuppressWarnings("unchecked")
 	public Communicater(ArrayList<CluedoPlayer> players) {
@@ -51,7 +48,7 @@ public class Communicater {
 
 		auxx.loginfo("Communicater");
 
-		gameView = new GameFrameView(players.get(0));
+		gameView = new GameFrameView();
 		gameView.start();
 		GameFramePresenter presenterContainer = new GameFramePresenter(gameView);
 		dicePresenter = presenterContainer.getDicePresenter();
@@ -65,7 +62,7 @@ public class Communicater {
 		pathfinder = presenterContainer.getPathfinder();
 		sucher = presenterContainer.getSucher();
 
-		zugPresenter = new AussergewohnlichesZugfensterPresenter(gameView);
+		zugPresenter = presenterContainer.getZugPresenter();
 	}
 
 	public void rollDice() {

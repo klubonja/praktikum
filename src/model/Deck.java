@@ -32,7 +32,7 @@ public class Deck {
 		deck = new ArrayList<String>();
 		rooms = Rooms.getRoomsString();
 		persons = Persons.getPersonsString();
-		weapons = Weapons.getWeaponsString();	
+		weapons = Weapons.getWeaponsString();
 	}
 	
 	public void makeDeck(){

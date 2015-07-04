@@ -170,7 +170,7 @@ public class IntroPresenter {
 		
 		addPeople();
 		
-		GameFrameView gameView = new GameFrameView(player1);
+		GameFrameView gameView = new GameFrameView();
 		
 		// HIER BEGINNT DAS SPIEL
 		gameView.start();

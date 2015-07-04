@@ -40,10 +40,7 @@ public class GameFrameView extends GridPane{
 
 
 	
-	public GameFrameView(CluedoPlayer player){
-		
-		this.player = player;
-		
+	public GameFrameView(){
 		/*Adds the size and number of the Rows and Columns of the main GridPane
 		(2 Rows x 2 Columns). */
 		this.getRowConstraints().add(new RowConstraints(25));

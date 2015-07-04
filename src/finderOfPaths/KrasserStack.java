@@ -17,12 +17,12 @@ public class KrasserStack extends StackPane {
 	private AussergewohnlichesZugfenster zug;
 	
 	public KrasserStack(BallEbene2 ballEbeneEingabe, BoardView guiEingabe){
-		
 		this.ballEbene = ballEbeneEingabe;
 		this.boardView = guiEingabe;
 		boardView.start();
 		ballEbene.start();
 		
+		zug = new AussergewohnlichesZugfenster();
 		layoutStuff();
 	}
 	
@@ -37,7 +37,6 @@ public class KrasserStack extends StackPane {
 	}
 	
 	public void layoutStuff(){
-		zug = new AussergewohnlichesZugfenster();
 		StackPane.setMargin(boardView, new Insets(0,0,0,0));
 		StackPane.setMargin(ballEbene, new Insets(0,0,0,0));
 		

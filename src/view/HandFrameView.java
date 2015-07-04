@@ -12,6 +12,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import cluedoNetworkLayer.CluedoPlayer;
 
+
+
+////CURRENTLY NOT PROPERLY WORKING SINCE PLAYERS HAVE NO CARDS YET
+
 public class HandFrameView extends BorderPane{
 	
 	private ArrayList<ImageView> hand = new ArrayList<ImageView>();
@@ -19,16 +23,11 @@ public class HandFrameView extends BorderPane{
 	private StackPane stack = new StackPane();
 	private HBox cards = new HBox();
 	private Group selectedCard = new Group();
-	private CluedoPlayer player;
 	
 	String media = "media/";
 	String type = ".png";
 	
 	public HandFrameView(CluedoPlayer player){
-		
-		player = player;
-//		System.out.println(player.getCards().size());
-		
 		this.setMaxSize(350, 350);
 		this.setPrefSize(350, 350);
 		this.setMinSize(350, 350);

@@ -1,5 +1,6 @@
 package view;
 
+import enums.Persons;
 import model.Deck;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -21,7 +22,8 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 
 	private HBox buttons;
 	private HBox bottom;
-	VBox organizer;
+	private HBox vermuten;
+	private VBox organizer;
 
 	public ImageView YESvermutenImage = new ImageView(new Image(
 			"media/YESanklage.png"));
@@ -62,7 +64,7 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 	 */
 	public void setLayout() {
 		personen.getItems().addAll(deck.getPersons());
-		personen.setValue("Taeter");
+		personen.setValue("Person");
 		personen.setMaxWidth(110);
 		waffen.getItems().addAll(deck.getWeapons());
 		waffen.setValue("Waffe");
@@ -70,6 +72,11 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 		// zimmer.getItems().addAll(deck.getZimmerOrdered());
 		zimmer.setValue("Raum");
 		zimmer.setMaxWidth(110);
+		
+		vermuten = new HBox();
+		vermuten.setSpacing(10);
+		vermuten.setAlignment(Pos.CENTER);
+		vermuten.getChildren().addAll(personen, waffen, zimmer);
 
 		buttons = new HBox();
 		buttons.setSpacing(10);
@@ -94,15 +101,9 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 	}
 
 	public void killEmAll() {
-		removeButtons();
 		buttons.getChildren().removeAll(personen, waffen, zimmer);
 		bottom.getChildren().removeAll(ONanklage, ONvermuten, OFFanklage,
 				OFFvermuten, close);
-	}
-
-	public void removeButtons() {
-		buttons.getChildren().removeAll(NOvermutenImage, YESvermutenImage,
-				NOwurfelImage, YESwurfelImage, NOgangImage, YESgangImage);
 	}
 
 	public void addInactiveButtons() {
@@ -136,5 +137,21 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 
 	public void setClose(Button close) {
 		this.close = close;
+	}
+
+	public HBox getVermuten() {
+		return vermuten;
+	}
+
+	public void setVermuten(HBox vermuten) {
+		this.vermuten = vermuten;
+	}
+
+	public VBox getOrganizer() {
+		return organizer;
+	}
+
+	public void setOrganizer(VBox organizer) {
+		this.organizer = organizer;
 	}
 }

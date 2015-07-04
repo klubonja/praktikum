@@ -1,12 +1,17 @@
 package view;
 
+import java.util.Iterator;
+
+import cluedoNetworkLayer.CluedoPlayer;
 import staticClasses.Sounds;
+import finderOfPaths.GanzTolleSpielerliste;
 
 public class AussergewohnlichesZugfensterPresenter {
 
-	private GameFrameView gameView;
+	private AussergewohnlichesZugfenster gameView;
 
-	public AussergewohnlichesZugfensterPresenter(GameFrameView gameView) {
+	public AussergewohnlichesZugfensterPresenter(
+			AussergewohnlichesZugfenster gameView) {
 		this.gameView = gameView;
 
 		zugFensterButtonManager();
@@ -16,182 +21,166 @@ public class AussergewohnlichesZugfensterPresenter {
 	public void zugFensterButtonManager() {
 
 		// Vermuten
-		gameView.getKomplettesFeld().getZug().YESvermutenImage
-				.setOnMouseClicked(e -> {
-					gameView.getKomplettesFeld().getZug().removeButtons();
-					gameView.getKomplettesFeld().getZug().killEmAll();
-					 gameView.getKomplettesFeld()
-					 .getZug()
-					 .getButtonsBox()
-					 .getChildren()
-					 .addAll(gameView.getKomplettesFeld().getZug()
-					 .getPersonenListe(),
-					 gameView.getKomplettesFeld().getZug()
-					 .getWaffenListe(),
-					 gameView.getKomplettesFeld().getZug()
-					 .getZimmerListe());
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getBottomBox()
-							.getChildren()
-							.add(gameView.getKomplettesFeld().getZug().OFFanklage);
-				});
+		gameView.YESvermutenImage.setOnMouseClicked(e -> {
+			gameView.getOrganizer().getChildren()
+					.remove(gameView.getButtonsBox());
+			gameView.getOrganizer().getChildren()
+					.remove(gameView.getBottomBox());
+			gameView.getOrganizer().getChildren().add(gameView.getVermuten());
+			gameView.getOrganizer().getChildren().add(gameView.getBottomBox());
+			gameView.getBottomBox().getChildren().remove(gameView.getClose());
+			gameView.getBottomBox().getChildren().add(gameView.OFFanklage);
+			gameView.getBottomBox().getChildren().add(gameView.getClose());
+		});
 
 		// Gang nehmen
-		gameView.getKomplettesFeld().getZug().YESgangImage
-				.setOnMouseClicked(e -> {
-					Sounds.gangSound();
-					gameView.getKomplettesFeld().getZug().removeButtons();
-					gameView.getKomplettesFeld().getZug().addInactiveButtons();
-				});
+		gameView.YESgangImage.setOnMouseClicked(e -> {
+			Sounds.gangSound();
+			removeButtons();
+			gameView.addInactiveButtons();
+		});
 
 		// Button Animation
-		gameView.getKomplettesFeld().getZug().NOvermutenImage
-				.setOnMouseEntered(e -> {
-					gameView.getKomplettesFeld().getZug().removeButtons();
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getButtonsBox()
-							.getChildren()
-							.addAll(gameView.getKomplettesFeld().getZug().YESvermutenImage,
-									gameView.getKomplettesFeld().getZug().NOwurfelImage,
-									gameView.getKomplettesFeld().getZug().NOgangImage);
-				});
+		gameView.NOvermutenImage.setOnMouseEntered(e -> {
+			removeButtons();
+			gameView.getButtonsBox()
+					.getChildren()
+					.addAll(gameView.YESvermutenImage, gameView.NOwurfelImage,
+							gameView.NOgangImage);
+		});
 
 		// Button Animation
-		gameView.getKomplettesFeld().getZug().YESvermutenImage
-				.setOnMouseExited(e -> {
-					gameView.getKomplettesFeld().getZug().removeButtons();
-					gameView.getKomplettesFeld().getZug().addInactiveButtons();
-				});
+		gameView.YESvermutenImage.setOnMouseExited(e -> {
+			removeButtons();
+			gameView.addInactiveButtons();
+		});
 
 		// Button Animation
-		gameView.getKomplettesFeld().getZug().NOwurfelImage
-				.setOnMouseEntered(e -> {
-					gameView.getKomplettesFeld().getZug().removeButtons();
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getButtonsBox()
-							.getChildren()
-							.addAll(gameView.getKomplettesFeld().getZug().NOvermutenImage,
-									gameView.getKomplettesFeld().getZug().YESwurfelImage,
-									gameView.getKomplettesFeld().getZug().NOgangImage);
-				});
+		gameView.NOwurfelImage.setOnMouseEntered(e -> {
+			removeButtons();
+			gameView.getButtonsBox()
+					.getChildren()
+					.addAll(gameView.NOvermutenImage, gameView.YESwurfelImage,
+							gameView.NOgangImage);
+		});
 
 		// Button Animation
-		gameView.getKomplettesFeld().getZug().YESwurfelImage
-				.setOnMouseExited(e -> {
-					gameView.getKomplettesFeld().getZug().removeButtons();
-					gameView.getKomplettesFeld().getZug().addInactiveButtons();
-				});
+		gameView.YESwurfelImage.setOnMouseExited(e -> {
+			removeButtons();
+			gameView.addInactiveButtons();
+		});
 
 		// Button Animation
-		gameView.getKomplettesFeld().getZug().NOgangImage
-				.setOnMouseEntered(e -> {
-					gameView.getKomplettesFeld().getZug().removeButtons();
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getButtonsBox()
-							.getChildren()
-							.addAll(gameView.getKomplettesFeld().getZug().NOvermutenImage,
-									gameView.getKomplettesFeld().getZug().NOwurfelImage,
-									gameView.getKomplettesFeld().getZug().YESgangImage);
-				});
+		gameView.NOgangImage.setOnMouseEntered(e -> {
+			removeButtons();
+			gameView
+
+			.getButtonsBox()
+					.getChildren()
+					.addAll(gameView.NOvermutenImage, gameView.NOwurfelImage,
+							gameView.YESgangImage);
+		});
 
 		// Button Animation
-		gameView.getKomplettesFeld().getZug().YESgangImage
-				.setOnMouseExited(e -> {
-					gameView.getKomplettesFeld().getZug().removeButtons();
-					gameView.getKomplettesFeld().getZug().addInactiveButtons();
-				});
+		gameView.YESgangImage.setOnMouseExited(e -> {
+			removeButtons();
+			gameView.addInactiveButtons();
+		});
 
 		// Der Button fuer die aeusserung der Vermutung
-		gameView.getKomplettesFeld().getZug().ONvermuten
-				.setOnMouseClicked(e -> {
-					// ////////////////////////////////
-					// /Implementierung von Vermutung//
-					// ////////////////////////////////
-					gameView.getKomplettesFeld().getZug().removeButtons();
-				});
+		gameView.ONvermuten.setOnMouseClicked(e -> {
+			removeButtons();
+		});
 
 		// Der Button fuer die aeusserung der Vermutung
-		gameView.getKomplettesFeld().getZug().OFFvermuten
-				.setOnMouseEntered(e -> {
-					gameView.getKomplettesFeld().getZug().removeButtons();
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getBottomBox()
-							.getChildren()
-							.addAll(gameView.getKomplettesFeld().getZug().ONvermuten);
-				});
+		gameView.OFFvermuten.setOnMouseEntered(e -> {
+			removeButtons();
+			gameView.getBottomBox().getChildren().addAll(gameView.ONvermuten);
+		});
 
 		// Der Button fuer die aeusserung der Anklage
-		gameView.getKomplettesFeld().getZug().ONanklage.setOnMouseExited(e -> {
-			gameView.getKomplettesFeld()
-					.getZug()
-					.getBottomBox()
-					.getChildren()
-					.removeAll(
-							gameView.getKomplettesFeld().getZug().OFFanklage,
-							gameView.getKomplettesFeld().getZug().ONanklage);
-			gameView.getKomplettesFeld().getZug().getBottomBox().getChildren()
-					.addAll(gameView.getKomplettesFeld().getZug().OFFanklage);
+		gameView.ONanklage.setOnMouseExited(e -> {
+			gameView.getBottomBox().getChildren()
+					.removeAll(gameView.OFFanklage, gameView.ONanklage);
+			gameView.getBottomBox().getChildren().addAll(gameView.OFFanklage);
 		});
 
 		// Schliesst das Zugfenster (nur fuer Developing gedacht
 		// nicht fuer das eigentliche Spiel)
-		gameView.getKomplettesFeld()
-				.getZug()
-				.getClose()
-				.setOnMouseClicked(
-						e -> {
-							gameView.getKomplettesFeld().getZug().killEmAll();
-							gameView.getKomplettesFeld()
-									.getChildren()
-									.remove(gameView.getKomplettesFeld()
-											.getZug());
-						});
+		gameView
+
+		.getClose().setOnMouseClicked(e -> {
+			removeButtons();
+			gameView.killEmAll();
+			gameView.getChildren().remove(gameView);
+		});
 	}
 
+	@SuppressWarnings("unchecked")
 	public void vermutungButtonManager() {
-		// Der Button fuer die aeusserung der Vermutung
-		gameView.getKomplettesFeld().getZug().OFFanklage
-				.setOnMouseEntered(e -> {
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getBottomBox()
-							.getChildren()
-							.remove(gameView.getKomplettesFeld().getZug().OFFanklage);
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getBottomBox()
-							.getChildren()
-							.remove(gameView.getKomplettesFeld().getZug().ONanklage);
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getBottomBox()
-							.getChildren()
-							.addAll(gameView.getKomplettesFeld().getZug().ONanklage);
+		gameView.ONanklage
+				.setOnMouseClicked(e -> {
+					Iterator<CluedoPlayer> iter = GanzTolleSpielerliste.playerManager
+							.iterator();
+					CluedoPlayer buffer = (CluedoPlayer) GanzTolleSpielerliste.playerManager
+							.getCurrentObject();
+					CluedoPlayer current = iter.next();
+					if (iter.hasNext()) {
+						for (String card : current.getCards()) {
+							//SPIELER HAT MOMENTAN KEINE KARTEN IN DER HAND?? SEARCH ME
+							if (card.equals(gameView.getPersonenListe()
+									.getValue())
+									|| card.equals(gameView.getWaffenListe()
+											.getValue())) {
+								System.out.println(current.getCluedoPerson()
+										+ " Hat was!");
+							} else {
+								System.out.println(current.getCluedoPerson()
+										+ " Hat nix!");
+							}
+						}
+						current = iter.next();
+					} else {
+						current = (CluedoPlayer) GanzTolleSpielerliste.playerManager
+								.get(0);
+						for (String card : current.getCards()) {
+							if (card.equals(gameView.getPersonenListe()
+									.getValue())
+									|| card.equals(gameView.getWaffenListe()
+											.getValue())) {
+							}
+						}
+						current = iter.next();
+						if (current == buffer) {
+							System.out.println("Keiner hat die Karten.");
+						}
+					}
 				});
 
+		// Der Button fuer die aeusserung der Vermutung
+		gameView.OFFanklage.setOnMouseEntered(e -> {
+			gameView.getBottomBox().getChildren().remove(gameView.OFFanklage);
+			gameView.getBottomBox().getChildren().remove(gameView.ONanklage);
+			gameView.getBottomBox().getChildren().remove(gameView.getClose());
+			gameView.getBottomBox().getChildren()
+					.addAll(gameView.ONanklage, gameView.getClose());
+		});
+
 		// Der Button fuer die aeusserung der Anklage
-		gameView.getKomplettesFeld().getZug().ONanklage
-				.setOnMouseExited(e -> {
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getBottomBox()
-							.getChildren()
-							.remove(gameView.getKomplettesFeld().getZug().ONanklage);
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getBottomBox()
-							.getChildren()
-							.remove(gameView.getKomplettesFeld().getZug().OFFanklage);
-					gameView.getKomplettesFeld()
-							.getZug()
-							.getBottomBox()
-							.getChildren()
-							.add(gameView.getKomplettesFeld().getZug().OFFanklage);
-				});
+		gameView.ONanklage.setOnMouseExited(e -> {
+			gameView.getBottomBox().getChildren().remove(gameView.ONanklage);
+			gameView.getBottomBox().getChildren().remove(gameView.OFFanklage);
+			gameView.getBottomBox().getChildren().remove(gameView.getClose());
+			gameView.getBottomBox().getChildren()
+					.addAll(gameView.OFFanklage, gameView.getClose());
+		});
+	}
+
+	public void removeButtons() {
+		gameView.getButtonsBox()
+				.getChildren()
+				.removeAll(gameView.NOvermutenImage, gameView.YESvermutenImage,
+						gameView.NOwurfelImage, gameView.YESwurfelImage,
+						gameView.NOgangImage, gameView.YESgangImage);
 	}
 }

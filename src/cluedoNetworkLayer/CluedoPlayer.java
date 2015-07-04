@@ -1,7 +1,6 @@
 package cluedoNetworkLayer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import enums.Persons;
 import enums.PlayerStates;
@@ -20,7 +19,6 @@ public class CluedoPlayer {
 		position = p;
 		nick = "";
 		cards = new ArrayList<String>();
-		//setCards(new ArrayList<String>(Arrays.asList("conservatory", "pipe", "purple", "blue", "study", "ballroom")));
 	}
 	
 	public void setCards(ArrayList<String> cards) {

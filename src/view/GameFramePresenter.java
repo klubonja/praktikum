@@ -31,6 +31,7 @@ public class GameFramePresenter {
 	private HandFramePresenter handFramePresenter;
 	private MenuBarPresenter menuBarPresenter;
 	private DicePresenter dicePresenter;
+	private AussergewohnlichesZugfensterPresenter zugPresenter;
 	
 	public GameFramePresenter(GameFrameView gfv){
 		
@@ -61,6 +62,7 @@ public class GameFramePresenter {
 		
 		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher);
 		
+		zugPresenter = new AussergewohnlichesZugfensterPresenter(gfv.getKomplettesFeld().getZug());
 		
 		test();
 		
@@ -164,6 +166,14 @@ public class GameFramePresenter {
 
 	public void setDicePresenter(DicePresenter dicePresenter) {
 		this.dicePresenter = dicePresenter;
+	}
+
+	public AussergewohnlichesZugfensterPresenter getZugPresenter() {
+		return zugPresenter;
+	}
+
+	public void setZugPresenter(AussergewohnlichesZugfensterPresenter zugPresenter) {
+		this.zugPresenter = zugPresenter;
 	}
 	
 	
