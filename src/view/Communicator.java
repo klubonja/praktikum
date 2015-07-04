@@ -46,6 +46,8 @@ public class Communicator {
 		network = ngame;
 		players = ngame.getPlayersConnected();
 		pcManager = new PlayerCircleManager(players);
+		
+		System.out.println(players.get(0).getNick());
 		System.out.println(players.get(0).getCards());
 	}
 	

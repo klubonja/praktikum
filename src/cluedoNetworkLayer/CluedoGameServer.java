@@ -3,6 +3,7 @@ package cluedoNetworkLayer;
 import java.util.ArrayList;
 
 import model.Deck;
+import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoServer.ClientItem;
@@ -32,7 +33,7 @@ public class CluedoGameServer extends CluedoGame {
 
 	@Override
 	public boolean start() {
-		dealCardsNetwork(getPlayersConnected());
+		players = dealCardsNetwork(getPlayersConnected());
 		notifyInit();
 		notifyNextRound();
 		setGameState(GameStates.started);
@@ -41,7 +42,7 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	//DEALS CARDS BUT DOESNT SEND EM TO THE CLIENTS
-	public void dealCardsNetwork(ArrayList<CluedoPlayer> players) {
+	public ArrayList<CluedoPlayer> dealCardsNetwork(ArrayList<CluedoPlayer> players) {
 		Deck deck = new Deck(getNumberConnected());
 		deck.dealCluedoCards();
 		String[] wh = deck.getWinningHand();
@@ -52,8 +53,11 @@ public class CluedoGameServer extends CluedoGame {
 		String[][] playerHands = deck.getPlayerHands();
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).setCards(playerHands[i]);
+			System.out.println(playerHands[i][i]);
 			System.out.println(players.get(i).getCards());
+			System.out.println(players.get(i).getNick());
 		}
+		return players;
 	}
 
 	public ArrayList<String> getWatchersNicks() {
@@ -143,10 +147,25 @@ public class CluedoGameServer extends CluedoGame {
 		for (ClientItem client : participants) {
 			client.sendMsg(NetworkMessages.game_startedMsg(getGameId(),
 					getConnectedPlayersString()));
+			//CluedoPlayer p = getPlayerByClient(client);
+		//	client.sendMsg(NetworkMessages.player_cardsMsg(getGameId(),
+		//			p.getCards()));
+		}
+		/*try {
+			wait(Config.SECOND);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		for (ClientItem client : participants) {
+			//client.sendMsg(NetworkMessages.game_startedMsg(getGameId(),
+			//		getConnectedPlayersString()));
 			CluedoPlayer p = getPlayerByClient(client);
 			client.sendMsg(NetworkMessages.player_cardsMsg(getGameId(),
 					p.getCards()));
 		}
+		
+
 	}
 
 	public void setNextRound() {

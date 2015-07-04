@@ -11,7 +11,6 @@ public class CluedoGameClient extends CluedoGame {
 	
 	ServerItem server;
 	String myNick;
-	Communicator communicator;
 
 
 	public CluedoGameClient(int gameId,ServerItem server) {
