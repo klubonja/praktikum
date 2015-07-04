@@ -5,6 +5,7 @@ import javafx.scene.input.MouseEvent;
 import kacheln.Kachel;
 import staticClasses.auxx;
 import view.BoardView;
+import view.GameFrameView;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Orientation;
 
@@ -22,6 +23,7 @@ public class Ausloeser {
 
 	private boolean gewuerfelt;
 	
+	private GameFrameView gameView;
 	private BoardView gui;
 	private BallEbene2 ballEbene;
 	private DerBeweger beweger;
@@ -59,6 +61,7 @@ public class Ausloeser {
 		this.pathfinder = pathfinder;
 		this.sucher = sucher;
 		pcManager = pcm;
+		this.gameView = gameView;
 	}
 	
 	/**
@@ -66,7 +69,8 @@ public class Ausloeser {
 	 */
 	public void zuweisung(){
 		System.out.println("zuweisung");
-		ballEbene.getTollerKnopf().setOnAction(e -> beweger.useSecretPassage());
+		gameView.getZugView().YESgangImage.setOnMouseClicked(e -> {beweger.useSecretPassage();
+		gameView.getKomplettesFeld().getChildren().remove(gameView.getZugView());});
 		ballEbene.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
@@ -103,50 +107,53 @@ public class Ausloeser {
 						if ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutX() <= event.getX()) && (event.getX() < gui.getKachelArray()[iReihen][jSpalten].getLayoutX()+29)
 						&& ( (gui.getKachelArray()[iReihen][jSpalten].getLayoutY() <= event.getY()) && (event.getY() < gui.getKachelArray()[iReihen][jSpalten].getLayoutY()+29) ) ){
 							
-							try {
-							
-								Kachel momentaneKachel = gui.getKachelArray()[iReihen][jSpalten];
-								
-								System.out.println("Reihe : "+iReihen +"  ||  Spalte : " +jSpalten);
-								
-								char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
-								
-								Kachel startKachel = momentaneKachel.getVonHier();
-								startKachel.setVonHier(null);
-								
-								auxx.logsevere("anfangs Kachel laut Auslöser x : " +gui.getColumnIndex(startKachel) +"  ||  y : " +gui.getRowIndex(startKachel));
-								
-								resetAnweisungen();
-								anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
-								schritte = wieVieleSchritte(moeglichkeitenHierher);
-								
-								insgesamteDistanz();
-								
-								for (int i = 0; i<anweisungenOrientations.length && anweisungenOrientations[i] != null;i++){
-									System.out.println("anweisungen : " +anweisungenOrientations[i]);
-								}
-								
-								beweger.setCurrentCircle(pcManager.getCurrentCircle());
-								beweger.setCurrentPlayer(pcManager.getCurrentPlayer());
-								
-								beweger.anfangsKachelSetzen(startKachel);
-								
-								beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
-								
-								nullSchritte = 0;
-								pathfinder.setWelcheKachel(0);
-								
-								// HIER WIRD NEXT GEMACHT
-								pcManager.next();
-								
-							}
-							catch (NullPointerException e ){}
+							ausloesen(iReihen, jSpalten);		
 							
 						}
 					}
 				}
 		}
 	}
+	
+	public void ausloesen(int iReihe, int jSpalte){
+		try {
+			
+			
+			Kachel momentaneKachel = gui.getKachelArray()[iReihe][jSpalte];
+			
+			System.out.println("Reihe : "+iReihe +"  ||  Spalte : " +jSpalte);
+			
+			char [] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
+			
+			Kachel startKachel = momentaneKachel.getVonHier();
+			startKachel.setVonHier(null);
+			
+			auxx.logsevere("anfangs Kachel laut Auslöser x : " +gui.getColumnIndex(startKachel) +"  ||  y : " +gui.getRowIndex(startKachel));
+			
+			resetAnweisungen();
+			anweisungenOrientations = charToOrientation(moeglichkeitenHierher);
+			schritte = wieVieleSchritte(moeglichkeitenHierher);
+			
+			insgesamteDistanz();
+			
+			for (int i = 0; i<anweisungenOrientations.length && anweisungenOrientations[i] != null;i++){
+				System.out.println("anweisungen : " +anweisungenOrientations[i]);
+			}
+			
+			beweger.anfangsKachelSetzen(startKachel);
+			
+			beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
+			
+			nullSchritte = 0;
+			pathfinder.setWelcheKachel(0);
+			
+			// HIER WIRD NEXT GEMACHT
+			pcManager.next();
+		}catch (NullPointerException e ){}
+
+	}
+	
+	
 	
 	/**
 	 * Wandelt char [] mit anweisungen in Orientation [] mit anweisungen um

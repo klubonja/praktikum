@@ -39,7 +39,6 @@ public class BoardView extends GridPane {
 	private int rowSize;
 	private int columnSize;
 	private Player spieler;
-	private Kachel red,pink,blue,green,white,yellow;
 
 	private char [] keineMoeglichkeiten;
 	private char [][] keineMoeglichkeiten2;

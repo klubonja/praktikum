@@ -27,7 +27,6 @@ public class GameFramePresenter {
 	private CluedoGameClient networkGame;
 	private GameFrameView gfv;
 	private CluedoPlayer currentPlayer;
-	private int playerIndex;
 	Circle playerCircle;
 	private Stage stage;
 	
@@ -43,8 +42,9 @@ public class GameFramePresenter {
 	private HandFramePresenter handFramePresenter;
 	private MenuBarPresenter menuBarPresenter;
 	private DicePresenter dicePresenter;
+	private AussergewohnlichesZugfensterPresenter zugPresenter;
 	public final PlayerCircleManager pcManager;
-	
+
 	public GameFramePresenter(GameFrameView gfv,CluedoGameClient game,PlayerCircleManager pcm){
 		networkGame = game;
 		this.gfv = gfv;
@@ -73,9 +73,10 @@ public class GameFramePresenter {
 		
 		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,   anweisungen,pcManager);
 		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager);
+
+		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher);
 		
-		dicePresenter = new DicePresenter(gfv.dice, ausloeser, gfv.board, sucher);
-		
+		zugPresenter = new AussergewohnlichesZugfensterPresenter(gfv.getZugView(), pcManager);
 		
 		test();
 	}
@@ -207,6 +208,22 @@ public class GameFramePresenter {
 
 	public void setDicePresenter(DicePresenter dicePresenter) {
 		this.dicePresenter = dicePresenter;
+	}
+
+	public RaumBeweger getRaumBeweger() {
+		return raumBeweger;
+	}
+
+	public void setRaumBeweger(RaumBeweger raumBeweger) {
+		this.raumBeweger = raumBeweger;
+	}
+	
+	public AussergewohnlichesZugfensterPresenter getZugPresenter() {
+		return zugPresenter;
+	}
+
+	public void setZugPresenter(AussergewohnlichesZugfensterPresenter zugPresenter) {
+		this.zugPresenter = zugPresenter;
 	}
 	
 	
