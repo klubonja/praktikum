@@ -10,6 +10,7 @@ import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoField;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
@@ -162,7 +163,9 @@ class CommunicationHandler implements Runnable{
 	        	   }
 	        	   
 	        	   else if(checker.getType().equals("move")){
-	        		   CluedoField field = (CluedoField) checker.getMessage().getJSONObject("field");
+	        		   int xKoordinate = checker.getMessage().getJSONObject("field").getInt("x");
+	        		   int yKoordinate = checker.getMessage().getJSONObject("field").getInt("y");
+	        		   CluedoField field = new CluedoField(new CluedoPosition(xKoordinate, yKoordinate));
 	        		   int gameID = checker.getMessage().getInt("gameID");
 	        		   // TODO: Position checken dataManager.getGameByID(gameID)
 	        		   

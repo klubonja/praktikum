@@ -130,7 +130,7 @@ public abstract class NetworkMessages {
 	}
 	
 	public static String okMsg(){
-		CluedoJSON json = new CluedoJSON("OK");
+		CluedoJSON json = new CluedoJSON("ok");
 		
 		return json.toString();
 	}

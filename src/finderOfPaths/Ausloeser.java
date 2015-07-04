@@ -9,6 +9,7 @@ import view.AussergewohnlichesZugfenster;
 import view.BoardView;
 import view.GameFrameView;
 import cluedoNetworkLayer.CluedoField;
+import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
@@ -53,6 +54,7 @@ public class Ausloeser {
 
 	public final PlayerCircleManager pcManager;
 	private int gameid;
+	private CluedoGameClient network;
 
 	/**
 	 * Konstruktor fuer den Ausloeser, welcher ballEbenen-clicks mit Bewegungen
@@ -69,9 +71,10 @@ public class Ausloeser {
 	 */
 	public Ausloeser(KrasserStack stack, AussergewohnlichesZugfenster zug, BoardView gui, DerBeweger beweger, BallEbene2 ballEbene,
 			WahnsinnigTollerPathfinder pathfinder, Sucher sucher,
-			PlayerCircleManager pcm, int gameid) {
+			PlayerCircleManager pcm, int gameid, CluedoGameClient network) {
 		this.gui = gui;
 		this.gameid = gameid;
+		this.network = network;
 		this.ballEbene = ballEbene;
 		this.zug = zug;
 		this.stack = stack;
@@ -137,7 +140,7 @@ public class Ausloeser {
 									.getLayoutY() + 29))) {
 						aufServerWarten = new CluedoPosition(jSpalten, iReihen);
 						auxx.loginfo("positionen im ausloeser y : " +iReihen +" || x : " +jSpalten);
-						NetworkMessages.moveMsg(gameid, new CluedoField(aufServerWarten));
+						network.sendMsgToServer(NetworkMessages.moveMsg(gameid, new CluedoField(aufServerWarten)));
 						
 						//ausloesen(iReihen, jSpalten);
 

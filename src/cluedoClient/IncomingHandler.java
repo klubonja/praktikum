@@ -67,7 +67,7 @@ class IncomingHandler implements Runnable {
 		        				  );
 		        		  
 					}
-					else if (checker.getType().equals("player cards")){						 
+					else if (checker.getType().equals("player_cards")){						 
 		        		 server.getGameByGameID(
 		        				 checker.getMessage().getInt("gameId")
 		        				 ).getConnectedPlayerByName(
@@ -98,9 +98,11 @@ class IncomingHandler implements Runnable {
 		        		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
 					}
 					else if (checker.getType().equals("moved")){
-						CluedoField field = (CluedoField) checker.getMessage().getJSONObject("field");
-						CluedoPosition position = new CluedoPosition(field.getInt("x"), field.getInt("y"));
-						server.getGameByGameID(checker.getMessage().getInt("gameID"));
+						int xKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("x");
+						int yKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("y");
+						
+						CluedoPosition position = new CluedoPosition(xKoord, yKoord);
+						server.getGameByGameID(checker.getMessage().getInt("gameID")).move(position);
 					}
 					else if (checker.getType().equals("chat")){
 						  JSONObject chatmsg = checker.getMessage();
