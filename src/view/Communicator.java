@@ -100,7 +100,6 @@ public class Communicator {
 	}
 	
 	public void useSecretPassage(){
-		
 		auxx.logsevere("\\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n ");
 		beweger.useSecretPassage();
 	}

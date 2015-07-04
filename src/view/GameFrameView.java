@@ -77,7 +77,7 @@ public class GameFrameView extends GridPane{
 		
 		ballEbene = new BallEbene2(pcm);
 		zugView = new AussergewohnlichesZugfenster();
-		komplettesFeld = new KrasserStack(ballEbene, board,zugView);
+		komplettesFeld = new KrasserStack(ballEbene, board, zugView);
 		
 		//Adds the frame for the Cards in hand.
 		hand = new HandFrameView();

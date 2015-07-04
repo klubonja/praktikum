@@ -66,17 +66,18 @@ public class GameFramePresenter {
 		handFramePresenter = new HandFramePresenter(gfv.hand);
 		menuBarPresenter = new MenuBarPresenter(gfv.menu, gfv);
 		
+		zugPresenter = new AussergewohnlichesZugfensterPresenter(gfv.getZugView(), pcManager);
+
 		raumBeweger = new RaumBeweger(gfv.board,pcManager);		
-		beweger = new DerBeweger(gfv.board, gfv.ballEbene, raumBeweger,pcManager);
+		beweger = new DerBeweger(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, gfv.ballEbene, raumBeweger,pcManager);
 		vorschlager = new Vorschlaege(gfv.board,pcManager);
 		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene,pcManager);
 		
 		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,   anweisungen,pcManager);
-		ausloeser = new Ausloeser(gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager);
+		ausloeser = new Ausloeser(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager);
 
 		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher);
 		
-		zugPresenter = new AussergewohnlichesZugfensterPresenter(gfv.getZugView(), pcManager);
 		
 		test();
 	}

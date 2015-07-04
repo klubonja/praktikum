@@ -10,8 +10,8 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import kacheln.Kachel;
 import staticClasses.auxx;
+import view.AussergewohnlichesZugfenster;
 import view.BoardView;
-import view.GameFrameView;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
@@ -28,7 +28,8 @@ public class DerBeweger {
 	private BoardView gui;
 	private BallEbene2 ballEbene;
 	private RaumBeweger raumBeweger;
-	private GameFrameView gameView;
+	private KrasserStack stack;
+	private AussergewohnlichesZugfenster zug;
 
 	private int zaehler;
 
@@ -69,10 +70,12 @@ public class DerBeweger {
     
     public final PlayerCircleManager pcManager;
     
-	public DerBeweger(BoardView gui, BallEbene2 ballEbene, RaumBeweger raumBeweger,PlayerCircleManager pcm){
+	public DerBeweger(KrasserStack stack, AussergewohnlichesZugfenster zug, BoardView gui, BallEbene2 ballEbene, RaumBeweger raumBeweger,PlayerCircleManager pcm){
 		pcManager = pcm;
 		this.gui = gui;
 		this.ballEbene = ballEbene;
+		this.stack = stack;
+		this.zug = zug;
 		this.raumBeweger = raumBeweger;
 		
 		this.currentPlayer = pcManager.getCurrentPlayer();
@@ -143,9 +146,9 @@ public class DerBeweger {
 						raumZielKachel = raumBeweger.positionInRaum(
 								currentPlayer, room);
 						inRaumBewegen();
-						gameView.getKomplettesFeld().getChildren()
-						.add(gameView.getZugView());
-				gameView.getZugView().toFront();
+						stack.getChildren()
+						.add(zug);
+				zug.toFront();
 					}
 
 					bewegen(anweisungen, schritte, nullSchritte);
@@ -158,9 +161,9 @@ public class DerBeweger {
 		}
 
 		if (schritte == 0) {
-			gameView.getKomplettesFeld().getChildren()
-					.add(gameView.getZugView());
-			gameView.getZugView().toFront();
+			stack.getChildren()
+					.add(zug);
+			zug.toFront();
 		}
 	}
 
@@ -379,9 +382,9 @@ public class DerBeweger {
 						.positionInRaum(currentPlayer, room);
 				geheimgangBewegerAusgang(raumZielKachel, raum);
 
-				gameView.getKomplettesFeld().getChildren()
-				.add(gameView.getZugView());
-		gameView.getZugView().toFront();
+				stack.getChildren()
+				.add(zug);
+		zug.toFront();
 			}
 
 		});
