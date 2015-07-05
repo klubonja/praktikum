@@ -15,6 +15,7 @@ import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.NetworkHandhakeCodes;
+import enums.PlayerStates;
 
 
 class IncomingHandler implements Runnable {
@@ -111,6 +112,11 @@ class IncomingHandler implements Runnable {
 			else if (checker.getType().equals("user left")){
         		  String player = checker.getMessage().getString("nick");
         		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
+			}
+			else if(checker.getType().equals("stateupdate")){
+				if (checker.getMessage().get("player").equals(PlayerStates.roll_dice.getName())){
+					// fenster oeffnen
+				}
 			}
 			else if(checker.getType().equals("dice result")){
 				int [] wuerfel = new int [2];

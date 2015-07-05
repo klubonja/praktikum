@@ -13,6 +13,7 @@ import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
+import enums.Persons;
 import enums.PlayerStates;
 
 /**
@@ -196,6 +197,34 @@ class CommunicationHandler implements Runnable{
 	        		//	dataGuiManager.getGameByIndex(gameID).notifyInit();	
 	        			dataGuiManager.startGameByID(gameID,client.getNick());
 	        			dataGuiManager.addMsgIn("game "+checker.getMessage().getInt("gameID")+ " started");
+	        			boolean esGibtRot = false;
+	        			for(ClientItem clientTemp : dataManager.clientPool){
+	        				if(clientTemp.getPlayer().getCluedoPerson().getColor() == Persons.red.getColor()){
+	        					esGibtRot = true;
+	        				}
+	        			}
+	        			
+	        			
+	        			if (esGibtRot){
+		        			for(ClientItem clientTemp : dataManager.clientPool){
+		        				String  state = PlayerStates.do_nothing.getName();
+		        					if(clientTemp.getPlayer().getCluedoPerson().getColor() == Persons.red.getColor()){
+			        					state = PlayerStates.roll_dice.getName();
+			        				}
+		        				clientTemp.sendMsg(NetworkMessages.stateupdateMsg(gameID, NetworkMessages.player_info(clientTemp.getNick(), clientTemp.getPlayer().getCluedoPerson().getColor(), state)));
+		        			}
+		        		}
+	        			else {
+	        				int anfangsSpielerZufall = auxx.getRandInt(1, dataManager.clientPool.size());
+	        				for(int welcherSpieler = 0; welcherSpieler < dataManager.clientPool.size(); welcherSpieler++){
+		        				String  state = PlayerStates.do_nothing.getName();
+		        				if (welcherSpieler == anfangsSpielerZufall){
+		        					state = PlayerStates.roll_dice.getName();		        				
+		        				}
+		        				dataManager.getClientPool().get(welcherSpieler).sendMsg(NetworkMessages.stateupdateMsg(gameID, NetworkMessages.player_info(dataManager.getClientPool().get(welcherSpieler).getNick(), dataManager.getClientPool().get(welcherSpieler).getPlayer().getCluedoPerson().getColor(), state)));	
+		        				
+	        				}
+	        			}
 	        	   }
      		  
      		   else {

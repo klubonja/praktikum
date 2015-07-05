@@ -112,7 +112,7 @@ class OutgoingHandler implements Runnable{
 			        	dataGuiManager.leaveGame(game.getGameId());	
 		        	}		
 		        	else if (game.getGameState() != GameStates.ended)  {
-			        	ArrayList<String> colors = dataGuiManager.getSelectedServer().getGameByGameID(gameID).getAvailableColors();
+			        	ArrayList<String> colors = server.getGameByGameID(gameID).getAvailableColors();
 		        		selectGame(game, gui.selectColor(colors));		
 		        	}
 		        	auxx.logfine("game on: "+serverip+" groupname : "+servername+" mynick : "+server.getMyNick()+" gamestate : "+game.getGameState());
