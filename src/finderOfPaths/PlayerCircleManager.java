@@ -67,4 +67,12 @@ public class PlayerCircleManager {
 				return;		
 			}					
 	}
+
+	public ArrayList<CluedoPlayer> getPlayerManager() {
+		return playerManager;
+	}
+
+	public void setPlayerManager(ArrayList<CluedoPlayer> playerManager) {
+		this.playerManager = playerManager;
+	}
 }

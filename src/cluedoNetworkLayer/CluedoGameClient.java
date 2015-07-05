@@ -21,6 +21,10 @@ public class CluedoGameClient extends CluedoGame {
 		myNick = server.getMyNick();
 	}
 	
+	public void gotSomething(){
+		System.out.println(myNick + " got something!");
+	}
+	
 	public void setCardsForThisClient(ArrayList<String> str){
 		for(CluedoPlayer p : server.getGameByGameID(getGameId()).getPlayers()){
 			if(p.getNick().equals(myNick)){

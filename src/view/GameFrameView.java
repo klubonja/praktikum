@@ -32,7 +32,7 @@ public class GameFrameView extends GridPane{
 	BallEbene2 ballEbene;
 	AussergewohnlichesZugfenster zugView;
 
-	HandFrameView hand;
+	private HandFrameView hand;
 	
 	private Stage stage;
 	private Scene scene;
@@ -80,7 +80,7 @@ public class GameFrameView extends GridPane{
 		komplettesFeld = new KrasserStack(ballEbene, board, zugView);
 		
 		//Adds the frame for the Cards in hand.
-		hand = new HandFrameView();
+		hand = new HandFrameView(pcManager.getPlayerManager().get(0));
 		
 		/* Left part of the whole GameFrame,
 		   only for a better organising of objects. */

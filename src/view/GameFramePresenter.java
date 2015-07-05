@@ -63,7 +63,7 @@ public class GameFramePresenter {
 		auxx.logsevere("null? : " +currentPlayer.getPosition().getY() +currentPlayer.getPosition().getX());
 	
 		notesPresenter = new NotesPresenter(gfv.notes, currentPlayer);
-		handFramePresenter = new HandFramePresenter(gfv.hand);
+		handFramePresenter = new HandFramePresenter(gfv.getHand());
 		menuBarPresenter = new MenuBarPresenter(gfv.menu, gfv);
 		
 		zugPresenter = new AussergewohnlichesZugfensterPresenter(gfv.getZugView(), pcManager);

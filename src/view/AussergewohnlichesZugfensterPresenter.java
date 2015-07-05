@@ -117,36 +117,56 @@ public class AussergewohnlichesZugfensterPresenter {
 		});
 	}
 
-	@SuppressWarnings("unchecked")
 	public void vermutungButtonManager() {
-		gameView.ONanklage.setOnMouseClicked(e -> {
-			Iterator<CluedoPlayer> iter = pcManager.playerManager.iterator();
-			CluedoPlayer buffer = (CluedoPlayer) pcManager.getCurrentPlayer();
-			CluedoPlayer current = iter.next();
-			if (iter.hasNext()) {
-				for (String card : current.getCards()) {
-					// SPIELER HAT MOMENTAN KEINE KARTEN IN DER HAND?? SEARCH ME
-				if (card.equals(gameView.getPersonenListe().getValue())
-						|| card.equals(gameView.getWaffenListe().getValue())) {
-					System.out.println(current.getCluedoPerson() + " Hat was!");
-				} else {
-					System.out.println(current.getCluedoPerson() + " Hat nix!");
-				}
-			}
-			current = iter.next();
-		} else {
-			current = pcManager.playerManager.get(0);
-			for (String card : current.getCards()) {
-				if (card.equals(gameView.getPersonenListe().getValue())
-						|| card.equals(gameView.getWaffenListe().getValue())) {
-				}
-			}
-			current = iter.next();
-			if (current == buffer) {
-				System.out.println("Keiner hat die Karten.");
-			}
-		}
-	})	;
+//		gameView.ONanklage
+//				.setOnMouseClicked(e -> {
+//					
+//					if (!gameView.getPersonenListe().getValue()
+//							.equals("Taeter")
+//							&& !gameView.getWaffenListe().getValue()
+//									.equals("Waffe")) {
+//						vermutung(gameView.getPersonenListe().getValue(),
+//								gameView.getWaffenListe().getValue(), "room");
+//					}
+//					
+//					Iterator<CluedoPlayer> iter = pcManager.playerManager
+//							.iterator();
+//					CluedoPlayer buffer = (CluedoPlayer) pcManager
+//							.getCurrentPlayer();
+//					CluedoPlayer current = iter.next();
+//
+//					System.out.println(buffer.getCluedoPerson() + " vermutet");
+//					System.out.println("TÄTER "
+//							+ gameView.getPersonenListe().getValue());
+//					System.out.println("WAFFE "
+//							+ gameView.getWaffenListe().getValue());
+//					System.out.println("RAUM ");
+//
+//					if (iter.hasNext() && (!iter.next().getNick().equals(""))) {
+//						for (String card : current.getCards()) {
+//							// SPIELER HAT MOMENTAN KEINE KARTEN IN DER HAND??
+//							// SEARCH ME
+//				if (card.equals(gameView.getPersonenListe().getValue())
+//						|| card.equals(gameView.getWaffenListe().getValue())) {
+//					System.out.println(current.getCluedoPerson() + " Hat was!");
+//				} else {
+//					System.out.println(current.getCluedoPerson() + " Hat nix!");
+//				}
+//			}
+//			current = iter.next();
+//		} else {
+//			current = pcManager.playerManager.get(0);
+//			for (String card : current.getCards()) {
+//				if (card.equals(gameView.getPersonenListe().getValue())
+//						|| card.equals(gameView.getWaffenListe().getValue())) {
+//				}
+//			}
+//			current = iter.next();
+//			if (current == buffer) {
+//				System.out.println("Keiner hat die Karten.");
+//			}
+//		}
+//	})	;
 
 		// Der Button fuer die aeusserung der Vermutung
 		gameView.OFFanklage.setOnMouseEntered(e -> {
@@ -173,5 +193,21 @@ public class AussergewohnlichesZugfensterPresenter {
 				.removeAll(gameView.NOvermutenImage, gameView.YESvermutenImage,
 						gameView.NOwurfelImage, gameView.YESwurfelImage,
 						gameView.NOgangImage, gameView.YESgangImage);
+	}
+
+	public String[] vermutung(String person, String weapon, String room) {
+		String[] vermutung = new String[3];
+		vermutung[0] = person;
+		vermutung[1] = weapon;
+		vermutung[2] = room;
+		return vermutung;
+	}
+
+	public AussergewohnlichesZugfenster getGameView() {
+		return gameView;
+	}
+
+	public void setGameView(AussergewohnlichesZugfenster gameView) {
+		this.gameView = gameView;
 	}
 }

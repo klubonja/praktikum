@@ -3,7 +3,6 @@ package cluedoNetworkLayer;
 import java.util.ArrayList;
 
 import model.Deck;
-import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoServer.ClientItem;

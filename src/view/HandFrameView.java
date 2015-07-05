@@ -2,45 +2,67 @@ package view;
 
 import java.util.ArrayList;
 
+import model.Deck;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import cluedoNetworkLayer.CluedoPlayer;
-
-
-
-////CURRENTLY NOT PROPERLY WORKING SINCE PLAYERS HAVE NO CARDS YET
 
 public class HandFrameView extends BorderPane{
 	
+	private Deck deck = new Deck(6);
 	private ArrayList<ImageView> hand = new ArrayList<ImageView>();
 	Label title;
 	private StackPane stack = new StackPane();
 	private HBox cards = new HBox();
 	private Group selectedCard = new Group();
+	private VBox accusationBox = new VBox();
+	private HBox lists = new HBox();
+	private Button accuse = new Button("Accuse!");
 	
-	String media = "media/";
-	String type = ".png";
+	private ComboBox<String> persons = new ComboBox<String>();
+	private ComboBox<String> weapons = new ComboBox<String>();
+	private ComboBox<String> rooms = new ComboBox<String>();
 	
-	public HandFrameView(){
+	public HandFrameView(CluedoPlayer player){
+		
 		this.setMaxSize(350, 350);
 		this.setPrefSize(350, 350);
 		this.setMinSize(350, 350);
 		
-		hand.add(new ImageView(new Image(media + "red" + type)));
-		hand.add(new ImageView(new Image(media + "blue" + type)));
-		hand.add(new ImageView(new Image(media + "green" + type)));
-		hand.add(new ImageView(new Image(media + "white" + type)));
-		hand.add(new ImageView(new Image(media + "purple" + type)));
+		for(String str : player.getCards()){
+			hand.add(new ImageView(new Image("media/" + str + ".png")));
+		}
 		
-		title = new Label("Cards in hand:");
+		title = new Label("Cards in hand. Click on a card to view it.");
+		
+		
+		persons.getItems().addAll("red", "yellow", "white", "green", "blue", "purple");
+		persons.setValue("Person");
+		persons.setMinWidth(50);
+		persons.setMaxWidth(50);
+		weapons.getItems().addAll(deck.getWeapons());
+		weapons.setValue("Weapon");
+		weapons.setMinWidth(50);
+		weapons.setMaxWidth(50);
+		rooms.getItems().addAll(deck.getRooms());
+		rooms.setValue("Room");
+		rooms.setMinWidth(50);
+		rooms.setMaxWidth(50);
+		
+		lists.getChildren().addAll(persons, weapons, rooms);
+		accusationBox.getChildren().addAll(lists, accuse);
 		
 		this.setTop(title);
+		this.setBottom(accusationBox);
 		this.cards.setSpacing(-30);
 		this.cards.setAlignment(Pos.CENTER);
 		this.cards.getChildren().addAll(hand);
@@ -80,6 +102,38 @@ public class HandFrameView extends BorderPane{
 
 	public void setStack(StackPane stack) {
 		this.stack = stack;
+	}
+
+	public Button getAccuse() {
+		return accuse;
+	}
+
+	public void setAccuse(Button accuse) {
+		this.accuse = accuse;
+	}
+
+	public ComboBox<String> getPersons() {
+		return persons;
+	}
+
+	public ComboBox<String> getWeapons() {
+		return weapons;
+	}
+
+	public ComboBox<String> getRooms() {
+		return rooms;
+	}
+
+	public void setPersons(ComboBox<String> persons) {
+		this.persons = persons;
+	}
+
+	public void setWeapons(ComboBox<String> weapons) {
+		this.weapons = weapons;
+	}
+
+	public void setRooms(ComboBox<String> rooms) {
+		this.rooms = rooms;
 	}
 	
 	

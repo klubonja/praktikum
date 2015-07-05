@@ -345,7 +345,7 @@ public abstract class NetworkMessages {
 	}
 	
 	public static String suspicionMsg(int gameID,JSONObject statement){
-		CluedoJSON json = new CluedoJSON("suspition");
+		CluedoJSON json = new CluedoJSON("suspicion");
 		json.put("statement", statement);
 		json.put("gameID", gameID);		
 		
@@ -413,10 +413,10 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String accuseMsg(int gameID,String card){
+	public static String accuseMsg(int gameID, JSONObject statement){
 		CluedoJSON json = new CluedoJSON("accuse");
 		json.put("gameID", gameID);
-		json.put("card", card);
+		json.put("statement", statement);
 		
 		return json.toString();
 	}
