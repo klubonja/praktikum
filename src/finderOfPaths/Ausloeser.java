@@ -3,17 +3,21 @@ package finderOfPaths;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import kacheln.Kachel;
+import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import view.AussergewohnlichesZugfenster;
 import view.BoardView;
 import view.GameFrameView;
+import cluedoNetworkLayer.CluedoField;
+import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
 
 /**
- * Hier werden die MouseEvents der ballEbene ausgel�st und verwaltet.
+ * Hier werden die MouseEvents der ballEbene ausgeloest und verwaltet.
  * ---------------------------------------------- || HIER WIRD AUCH DIE BEWEGUNG
- * AUSGEL�ST!!!! || ----------------------------------------------
+ * AUSGELOEST!!!! || ----------------------------------------------
  * 
  * @since 13.06.2015
  * @version 25.06.2015
@@ -33,7 +37,7 @@ public class Ausloeser {
 	private Orientation[] anweisungenOrientations = new Orientation[12];
 	private Orientation[] anweisungenOrientationsVonHier = new Orientation[12];
 	private WahnsinnigTollerPathfinder pathfinder;
-	
+	private CluedoPosition aufServerWarten;
 
 	private int nullSchritte;
 
@@ -49,9 +53,11 @@ public class Ausloeser {
 	private int wuerfelZahl;
 
 	public final PlayerCircleManager pcManager;
+	private int gameid;
+	private CluedoGameClient network;
 
 	/**
-	 * Konstruktor f�r den Ausloeser, welcher ballEbenen-clicks mit Bewegungen
+	 * Konstruktor fuer den Ausloeser, welcher ballEbenen-clicks mit Bewegungen
 	 * verlinkt.
 	 * 
 	 * @param gui
@@ -59,14 +65,16 @@ public class Ausloeser {
 	 * @param beweger
 	 *            um den Spieler/Ball zu bewegen
 	 * @param ballEbene
-	 *            um auf die click-events zugreifen zu k�nnen
+	 *            um auf die click-events zugreifen zu koennen
 	 * @param pathfinder
 	 *            um den Weg berechnen zu lassen
 	 */
 	public Ausloeser(KrasserStack stack, AussergewohnlichesZugfenster zug, BoardView gui, DerBeweger beweger, BallEbene2 ballEbene,
 			WahnsinnigTollerPathfinder pathfinder, Sucher sucher,
-			PlayerCircleManager pcm) {
+			PlayerCircleManager pcm, int gameid, CluedoGameClient network) {
 		this.gui = gui;
+		this.gameid = gameid;
+		this.network = network;
 		this.ballEbene = ballEbene;
 		this.zug = zug;
 		this.stack = stack;
@@ -98,7 +106,7 @@ public class Ausloeser {
 	 * berechnetdie Anzahl der zu gehenden Schritte in jegliche Richtung
 	 * 
 	 * @param moeglichkeitenEingabe
-	 *            das auszuwertende m�glichkeiten-Array
+	 *            das auszuwertende moeglichkeiten-Array
 	 * @return wie viele Schritte zu gehen sind
 	 */
 	public int wieVieleSchritte(char[] moeglichkeitenEingabe) {
@@ -113,7 +121,7 @@ public class Ausloeser {
 	}
 
 	/**
-	 * Wird ausgel�st, wenn irgendwo in der ballEbene geclickt wird
+	 * Wird ausgeloest, wenn irgendwo in der ballEbene geclickt wird
 	 */
 	public void click(MouseEvent event) {
 
@@ -130,8 +138,11 @@ public class Ausloeser {
 									.getLayoutY() <= event.getY()) && (event
 									.getY() < gui.getKachelArray()[iReihen][jSpalten]
 									.getLayoutY() + 29))) {
-
-						ausloesen(iReihen, jSpalten);
+						aufServerWarten = new CluedoPosition(jSpalten, iReihen);
+						auxx.loginfo("positionen im ausloeser y : " +iReihen +" || x : " +jSpalten);
+						network.sendMsgToServer(NetworkMessages.moveMsg(gameid, new CluedoField(aufServerWarten)));
+						
+						//ausloesen(iReihen, jSpalten);
 
 					}
 				}
@@ -178,6 +189,9 @@ public class Ausloeser {
 
 			// HIER WIRD NEXT GEMACHT
 			pcManager.next();
+			if (gui.getKachelArray()[beweger.getCurrentPlayer().getPosition().getY()][beweger.getCurrentPlayer().getPosition().getX()].isIstRaum()){
+				network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
+			}
 		} catch (NullPointerException e) {
 		}
 

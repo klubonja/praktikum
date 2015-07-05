@@ -22,7 +22,6 @@ public class InGameMainMenuPresenter {
 	public void goToMain(){
 		
 		IntroView intro = new IntroView();
-		IntroPresenter presMain = new IntroPresenter(intro);
         intro.start();
         view.getGameFrameView().close();
         view.close();

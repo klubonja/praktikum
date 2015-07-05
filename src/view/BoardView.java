@@ -290,14 +290,10 @@ public class BoardView extends GridPane {
 				if (iReihen != 25 && jSpalten != 24){
 					this.add(kachelArray[iReihen][jSpalten], jSpalten, iReihen);
 				}
-				
-//				System.out.println(iReihen +" - "+jSpalten);
-				
 				kachelArray[iReihen][jSpalten].setMaxHeight(29);
 				kachelArray[iReihen][jSpalten].setMaxWidth(29);
 				kachelArray[iReihen][jSpalten].setMinHeight(29);
 				kachelArray[iReihen][jSpalten].setMinWidth(29);
-
 			}
 		}
 		

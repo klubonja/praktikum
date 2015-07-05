@@ -58,6 +58,16 @@ public class CluedoGameClient extends CluedoGame {
 		return true;
 	}
 	
+	public void rollDice(int [] wuerfel){
+		Platform.runLater(() -> {
+		communicator.rollDice(wuerfel);
+		});
+	}
+	
+	public void move(CluedoPosition position){
+		communicator.move(position);
+	}
+	
 	public void setMyNick(String myNick) {
 		this.myNick = myNick;
 	}

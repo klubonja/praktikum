@@ -43,12 +43,14 @@ public class Communicator {
 	private ArrayList<CluedoPlayer> players;
 	private CluedoGameClient network;
 	public final PlayerCircleManager pcManager;
+	public final int gameid;
 
 	public Communicator(CluedoGameClient ngame) {
 		network = ngame;
+		gameid = ngame.getGameId();
 		players = network.getServer().getGameByGameID(network.getGameId())
 				.getPlayers();
-		pcManager = new PlayerCircleManager(players);
+		pcManager = new PlayerCircleManager(network.getPlayersConnected());
 	}
 
 	public void startGame() {
@@ -56,7 +58,7 @@ public class Communicator {
 
 		gameView = new GameFrameView(pcManager);
 		gameView.start();
-		gamePresenter = new GameFramePresenter(gameView, network, pcManager);
+		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid);
 		dicePresenter = gamePresenter.getDicePresenter();
 		zugPresenter = gamePresenter.getZugPresenter();
 
@@ -93,24 +95,21 @@ public class Communicator {
 	public GameFramePresenter getGamePresenter() {
 		return gamePresenter;
 	}
-
-	public void rollDice() {
-		int[] testWuerfelWurf = { 6, 6 };
-		int ersterWuerfel = testWuerfelWurf[0];
-		int zweiterWuerfel = testWuerfelWurf[1];
+	public void rollDice(int [] wuerfelWurf){
+		//int [] testWuerfelWurf = {6,6};
+		int ersterWuerfel = wuerfelWurf[0];
+		int zweiterWuerfel = wuerfelWurf[1];
 		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
 	}
-
-	public void useSecretPassage() {
-		auxx.logsevere("\\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n \\(._.\\) ƪ(‘-’ ƪ)(ʃ ‘-’)ʃ (/._.)/  \n ");
+	
+	public void useSecretPassage(){
+		
 		beweger.useSecretPassage();
 	}
-
-	public void move(int[] bewegungen) {
-		// bewegungen = z.B. {5,9};
-		int[] testBewegung = bewegungen;
-		int xKoordinate = testBewegung[0];
-		int yKoordinate = testBewegung[1];
+	
+	public void move(CluedoPosition position){
+		int yKoordinate = position.getY();
+		int xKoordinate = position.getX();
 		ausloeser.ausloesen(yKoordinate, xKoordinate);
 	}
 
@@ -157,11 +156,10 @@ public class Communicator {
 	public void kill() {
 		gameView.close();
 	}
-
-	public void testButtons() {
-		// ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans =
-		// new int {5,9}));
-		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice());
+	public void testButtons(){
+//		ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans = new int {5,9}));
+		int [] cheater = {6,6};
+		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice(cheater));
 		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
 	}
 

@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import cluedoClient.ServerItem;
+import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -129,7 +130,7 @@ public abstract class NetworkMessages {
 	}
 	
 	public static String okMsg(){
-		CluedoJSON json = new CluedoJSON("OK");
+		CluedoJSON json = new CluedoJSON("ok");
 		
 		return json.toString();
 	}
@@ -303,6 +304,12 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
+	public static String end_turnMsg(int gameID){
+		CluedoJSON json = new CluedoJSON("end turn");
+		json.put("gameID", gameID);
+		return json.toString();
+	}
+	
 	public static String game_endedMsg(int gameID,WinningStatement statement){
 		JSONObject statementJSON = new JSONObject();
 		try {
@@ -329,8 +336,11 @@ public abstract class NetworkMessages {
 	}
 	
 	public static String dice_resultMsg(int gameID,int[] result){
-		CluedoJSON json = new CluedoJSON("game ended");
-		json.put("result", result);
+		JSONArray ergebnis = new JSONArray ();
+		ergebnis.put(result[0]);
+		ergebnis.put(result[1]);
+		CluedoJSON json = new CluedoJSON("dice result");
+		json.put("result", ergebnis);
 		json.put("gameID", gameID);		
 		
 		return json.toString();
@@ -382,8 +392,8 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String moveMsg(int gameID,JSONObject field){
-		CluedoJSON json = new CluedoJSON("roll dice");
+	public static String moveMsg(int gameID, CluedoField field){
+		CluedoJSON json = new CluedoJSON("move");
 		json.put("gameID", gameID);	
 		json.put("field", field);	
 		

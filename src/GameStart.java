@@ -1,7 +1,6 @@
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import view.IntroPresenter;
 import view.IntroView;
 
 public class GameStart extends Application{
@@ -17,7 +16,7 @@ public class GameStart extends Application{
 		this.primaryStage = primaryStage;
 
         IntroView view = new IntroView();
-        IntroPresenter presenter = new IntroPresenter(view);
+        
 
 
         view.start();

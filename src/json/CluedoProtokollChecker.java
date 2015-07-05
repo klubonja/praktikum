@@ -224,8 +224,8 @@ public class CluedoProtokollChecker {
 
 	void val_moved() {
 		val_watch_game();
-		if (validateValue(jsonRoot, "field"))
-			validateField(jsonRoot, "field");
+		if (validateValue(jsonRoot, "person position"))
+			validatePersonPos(jsonRoot.getJSONObject("person position"));
 	}
 
 	void val_suspicion() {
@@ -329,14 +329,15 @@ public class CluedoProtokollChecker {
 	void validateDiceResult(JSONObject jsonParent,String key){
 		try {
 			int amountDices = 2;
-			JSONArray diceres = new JSONArray(jsonParent.getJSONArray(key));
+			JSONArray diceres = jsonParent.getJSONArray(key);
 			for (int i = 0; i < amountDices;i++)
-				if (!isInt(jsonParent, diceres.getString(i)))
+				if (!(diceres.getInt(i)== (int) diceres.getInt(i)))
 					setErr("JSONArray : in JSONArray \""+key+"\" on index "+i+" : noInt");
 			
 		}
 		catch (JSONException je){
 			setErr("JSONArray expected : \""+key+"\" is not JSONArray");
+			auxx.logsevere("is not a JSONArray dipshit ", je);
 		}
 	}
 	
@@ -428,14 +429,14 @@ public class CluedoProtokollChecker {
 
 	}
 	
-	void validatePersonPos(JSONObject jsonParent, String key){
+	void validatePersonPos(JSONObject jsonParent){
 		if (validateValue(jsonParent, "person"))
 			validatePerson(jsonParent.getString("person"));
 		if (validateValue(jsonParent, "field"))
 			validateField(jsonParent, "field");
 	}
 	
-	void validateWeaponPos(JSONObject jsonParent, String key){
+	void validateWeaponPos(JSONObject jsonParent){
 		if (validateValue(jsonParent, "weapon"))
 			validateWeapon(jsonParent.getString("weapon"));
 		if (validateValue(jsonParent, "field"))
@@ -459,10 +460,10 @@ public class CluedoProtokollChecker {
 							validateCards(jar.getString(index));
 							break;
 						case "weaponpos" :
-							validateWeaponPos(jar.getJSONObject(index), key);
+							validateWeaponPos(jar.getJSONObject(index));
 							break;
 						case "personpos" :
-							validatePersonPos(jar.getJSONObject(index), key);
+							validatePersonPos(jar.getJSONObject(index));
 							break;
 						case "string" :
 							;
