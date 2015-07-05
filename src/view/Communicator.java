@@ -77,6 +77,7 @@ public class Communicator {
 		setHandler();
 
 		testButtons();
+		openWindow();
 
 	}
 
@@ -192,7 +193,19 @@ public class Communicator {
 		
 		// END TURN
 		gameView.getHand().getEndTurn().setOnMouseClicked(e -> {});
+		
 	}
+	
+	//OPEN WINDOW
+			public void openWindow(){
+				gameView.getKomplettesFeld().getChildren().add(zugView);
+			}
+			
+			//CLOSE WINDOW
+			public void closeWindow(){
+				gameView.getKomplettesFeld().getChildren().remove(zugView);
+			}
+	
 	/*
 	 * (check) start game (check) roll dice --> letztes Bild ihre
 	 * Würfel-Kombination und dann pathfinder / sucher / vorschlager

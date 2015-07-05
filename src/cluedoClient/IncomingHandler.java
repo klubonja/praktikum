@@ -90,6 +90,12 @@ class IncomingHandler implements Runnable {
         										 checker.getMessage().getJSONArray("cards")
         										 )
         							);	        		  
+			} else if(checker.getType().equals("suspicion")){
+				server.getGameByGameID(checker.getMessage().getInt("gameID")).compareCards(
+						checker.getMessage().getString("person"),
+						checker.getMessage().getString("weapon"),
+						checker.getMessage().getString("room")
+						);
 			}
 			else if (checker.getType().equals("game ended")){
         		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  

@@ -1,7 +1,5 @@
 package cluedoNetworkLayer;
 
-import java.util.ArrayList;
-
 import javafx.application.Platform;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
@@ -10,84 +8,90 @@ import cluedoClient.ServerItem;
 import enums.GameStates;
 
 public class CluedoGameClient extends CluedoGame {
-	
+
 	ServerItem server;
 	String myNick;
 
-
-	public CluedoGameClient(int gameId,ServerItem server) {
+	public CluedoGameClient(int gameId, ServerItem server) {
 		super(gameId);
 		this.server = server;
 		myNick = server.getMyNick();
 	}
-	
-	public void gotSomething(){
-		System.out.println(myNick + " got something!");
-	}
-	
-	public void setCardsForThisClient(ArrayList<String> str){
-		for(CluedoPlayer p : server.getGameByGameID(getGameId()).getPlayers()){
-			if(p.getNick().equals(myNick)){
-				p.setCards(str);
+
+	public void compareCards(String person, String weapon, String room) {
+		for (CluedoPlayer p : players) {
+			if (p.getNick().equals(myNick)) {
+				for (String card : p.getCards()) {
+					if (card.equals(person) || card.equals(weapon)
+							|| card.equals(room)) {
+						this.sendMsgToServer(NetworkMessages.disproveMsg(
+								this.gameId, card));
+					} else {
+						this.sendMsgToServer(NetworkMessages
+								.no_disproveMsg(this.gameId));
+					}
+				}
 			}
 		}
 	}
-	
+
 	public ServerItem getServer() {
 		return server;
 	}
-	
+
 	public Communicator getCommunicator() {
 		return communicator;
 	}
-	
+
 	public String getMyNick() {
 		return myNick;
 	}
-		
+
 	@Override
-	public boolean start(){
-		auxx.loginfo("game "+ getGameId()+ " started");
+	public boolean start() {
+		auxx.loginfo("game " + getGameId() + " started");
 		Platform.runLater(() -> {
 			communicator = new Communicator(this);
-			communicator.startGame();		
-			communicator.setTitle(myNick +" playing on server "+server.getGroupName()+" Game : "+gameId);			
+			communicator.startGame();
+			communicator.setTitle(myNick + " playing on server "
+					+ server.getGroupName() + " Game : " + gameId);
 		});
 		setGameState(GameStates.started);
-		
+
 		return true;
 	}
-	
-	public void rollDice(int [] wuerfel){
+
+	public void rollDice(int[] wuerfel) {
 		Platform.runLater(() -> {
-		communicator.rollDice(wuerfel);
+			communicator.rollDice(wuerfel);
 		});
 	}
-	
-	public void move(CluedoPosition position){
+
+	public void move(CluedoPosition position) {
 		communicator.move(position);
 	}
-	
+
 	public void setMyNick(String myNick) {
 		this.myNick = myNick;
 	}
-	
-	public void sendMsgToServer(String msg){
+
+	public void sendMsgToServer(String msg) {
 		auxx.sendTCPMsg(server.getSocket(), msg);
 	}
-	
-	public void addChatMsg(String msg){
+
+	public void addChatMsg(String msg) {
 		communicator.addChatMsg(msg);
 	}
-	
+
 	public void kill() {
-  	    auxx.sendTCPMsg(server.getSocket(), NetworkMessages.leave_gameMsg(gameId)); 
-  	    killCommunicator();
+		auxx.sendTCPMsg(server.getSocket(),
+				NetworkMessages.leave_gameMsg(gameId));
+		killCommunicator();
 	}
-	
+
 	public void killCommunicator() {
 		Platform.runLater(() -> {
-			communicator.kill();			
-		});  	    
+			communicator.kill();
+		});
 	}
 }
