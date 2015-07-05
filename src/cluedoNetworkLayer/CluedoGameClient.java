@@ -50,6 +50,7 @@ public class CluedoGameClient extends CluedoGame {
 	@Override
 	public boolean start() {
 		auxx.loginfo("game " + getGameId() + " started");
+		
 		Platform.runLater(() -> {
 			communicator = new Communicator(this);
 			communicator.startGame();
@@ -68,7 +69,10 @@ public class CluedoGameClient extends CluedoGame {
 	}
 
 	public void nextTurn(){
-		communicator.itsYourTurn();
+		Platform.runLater(() -> {
+			communicator.itsYourTurn();
+		});
+		
 	}
 	
 	public void move(CluedoPosition position) {

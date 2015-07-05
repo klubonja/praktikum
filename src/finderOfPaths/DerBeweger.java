@@ -180,11 +180,6 @@ public class DerBeweger {
 
 		}
 
-		if (schritte == 0) {
-			stack.getChildren()
-					.add(zug);
-			zug.toFront();
-		}
 	}
 
 	public void anfangsKachelSetzen(Kachel neueAnfangsKachel) {

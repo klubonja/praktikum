@@ -210,7 +210,7 @@ class CommunicationHandler implements Runnable {
 		        			}
 		        		}
 	        			else {
-	        				int anfangsSpielerZufall = auxx.getRandInt(1, dataManager.clientPool.size());
+	        				int anfangsSpielerZufall = auxx.getRandInt(1, dataManager.clientPool.size()-1);
 	        				for(int welcherSpieler = 0; welcherSpieler < dataManager.clientPool.size(); welcherSpieler++){
 		        				String  state = PlayerStates.do_nothing.getName();
 		        				if (welcherSpieler == anfangsSpielerZufall){

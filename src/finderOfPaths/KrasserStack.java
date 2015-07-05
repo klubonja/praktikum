@@ -23,7 +23,6 @@ public class KrasserStack extends StackPane {
 		boardView.start();
 		ballEbene.start();
 		
-		
 		layoutStuff();
 	}
 	
@@ -41,7 +40,7 @@ public class KrasserStack extends StackPane {
 		StackPane.setMargin(boardView, new Insets(0,0,0,0));
 		StackPane.setMargin(ballEbene, new Insets(0,0,0,0));
 		
-		this.getChildren().addAll(boardView, ballEbene, zugView);
+		this.getChildren().addAll(zugView, boardView, ballEbene);
 		
 		
 	}

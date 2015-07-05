@@ -51,11 +51,6 @@ public class Communicator {
 		players = network.getServer().getGameByGameID(network.getGameId())
 				.getPlayers();
 		pcManager = new PlayerCircleManager(network.getPlayersConnected());
-	}
-
-	public void startGame() {
-		auxx.loginfo("Communicater");
-
 		gameView = new GameFrameView(pcManager);
 		gameView.start();
 		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid);
@@ -74,11 +69,16 @@ public class Communicator {
 		pathfinder = gamePresenter.getPathfinder();
 		sucher = gamePresenter.getSucher();
 
+	}
+
+	public void startGame() {
+		auxx.loginfo("Communicator");
+
+		
 		setHandler();
 
 		testButtons();
-		openWindow();
-
+		auxx.logsevere("Oh my giddy giddy gosh");
 	}
 
 	public void setTitle(String newtitle) {
@@ -146,11 +146,21 @@ public class Communicator {
 	public void setNextTurn(){
 		pcManager.next();// erhöht den index und sonst nix
 	}
+		
+	public void endTurn() {
+		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
+		// Communicator.playerManager.next();
+		// Communicator.circleManager.next();
+		// ///////////////////////////////////
+		// /BENACHRICHTUGUNG, DASS NÄCHSTER///
+		// ///////ZUG ANGEFANGEN HAT//////////
+		// ///////////////////////////////////
+		
+	}
 	
 	public void itsYourTurn(){
 		setNextTurn();
 		openWindow();
-		
 	}
 	
 	public void kill() {
@@ -192,12 +202,15 @@ public class Communicator {
 		
 		
 		// END TURN
-		gameView.getHand().getEndTurn().setOnMouseClicked(e -> {});
+		gameView.getHand().getEndTurn().setOnMouseClicked(e -> endTurn());
 		
 	}
 	
 	//OPEN WINDOW
 			public void openWindow(){
+				auxx.logsevere("to the front!!!");
+				auxx.logsevere("" +zugView);
+				gameView.getKomplettesFeld().getChildren().remove(zugView);
 				gameView.getKomplettesFeld().getChildren().add(zugView);
 			}
 			
@@ -205,6 +218,8 @@ public class Communicator {
 			public void closeWindow(){
 				gameView.getKomplettesFeld().getChildren().remove(zugView);
 			}
+			
+			
 	
 	/*
 	 * (check) start game (check) roll dice --> letztes Bild ihre
