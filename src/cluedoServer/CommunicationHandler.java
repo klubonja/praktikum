@@ -53,7 +53,8 @@ class CommunicationHandler implements Runnable{
 			try {
 				String[] messages = auxx.getTCPMessages(client.getSocket());
 				for (String message : messages)
-					if (!message.equals("")) loginAttemptLogic(message);
+					if (!message.equals("")) 
+						loginAttemptLogic(message);
 			} 
 			catch (Exception e) {
 				auxx.logsevere("communcitationhandler of client"+ client.getNick(), e);
@@ -102,6 +103,7 @@ class CommunicationHandler implements Runnable{
 					dataManager.getGameList()
 					)
 			);
+			
 			if (dataGuiManager.addNetworkActor(client,"logged in"))
 				dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
 			else {
