@@ -94,10 +94,10 @@ public class Communicator {
 	}
 	
 	
-	public void rollDice(){
-		int [] testWuerfelWurf = {6,6};
-		int ersterWuerfel = testWuerfelWurf[0];
-		int zweiterWuerfel = testWuerfelWurf[1];
+	public void rollDice(int [] wuerfelWurf){
+		//int [] testWuerfelWurf = {6,6};
+		int ersterWuerfel = wuerfelWurf[0];
+		int zweiterWuerfel = wuerfelWurf[1];
 		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
 	}
 	
@@ -145,7 +145,8 @@ public class Communicator {
 	
 	public void testButtons(){
 //		ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans = new int {5,9}));
-		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice());
+		int [] cheater = {6,6};
+		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice(cheater));
 		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
 	}
 	

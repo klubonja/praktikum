@@ -189,6 +189,9 @@ public class Ausloeser {
 
 			// HIER WIRD NEXT GEMACHT
 			pcManager.next();
+			if (gui.getKachelArray()[beweger.getCurrentPlayer().getPosition().getY()][beweger.getCurrentPlayer().getPosition().getX()].isIstRaum()){
+				network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
+			}
 		} catch (NullPointerException e) {
 		}
 

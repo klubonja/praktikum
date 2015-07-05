@@ -163,6 +163,11 @@ class CommunicationHandler implements Runnable{
 	        		  closeProtokollConnection();
 	        	   }
 	        	   
+	        	   else if(checker.getType().equals("roll dice")){
+	        		   int gameID = checker.getMessage().getInt("gameID");
+	        		   dataManager.notifyAll(NetworkMessages.dice_resultMsg(gameID, dataManager.getGameByID(gameID).rollTheDice()));
+	        	   }
+	        	   
 	        	   else if(checker.getType().equals("move")){
 	        		   int xKoordinate = checker.getMessage().getJSONObject("field").getInt("x");
 	        		   int yKoordinate = checker.getMessage().getJSONObject("field").getInt("y");
@@ -176,6 +181,13 @@ class CommunicationHandler implements Runnable{
 	        		   personpos.put("field", field);
 	        		   dataManager.notifyAll(NetworkMessages.movedMsg(gameID, personpos));
 	        		   
+	        	   }
+	        	   
+	        	   else if(checker.getType().equals("end turn")){
+	        		   auxx.loginfo("end turn angekommen");
+	        		   //TODO notifyNextRound() methode auf CluedoGameServer implementieren
+	        		   //setNextRound();
+	        		   //setCurrentPlayerNext();
 	        	   }
 	        	  
 	        	   else if (checker.getType().equals("chat")) {														//CHAT

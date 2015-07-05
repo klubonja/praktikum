@@ -66,6 +66,12 @@ public abstract class Config {
 	public static final double COLOR_SELECT_WINDOW_HEIGHT = 130;
 	
 	public static final int MIN_CLIENTS_FOR_GAMESTART = 1;
+
+
+	public static final double GAMEWINDOW_HEIGHT = 750;
+
+
+	public static final double GAMEWINDOW_WIDTH = 1450;
 	
 	
 	

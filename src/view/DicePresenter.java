@@ -1,11 +1,14 @@
 
 package view;
 
+import cluedoNetworkLayer.CluedoGameClient;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+import staticClasses.NetworkMessages;
 import staticClasses.Sounds;
 import finderOfPaths.Ausloeser;
+import finderOfPaths.PlayerCircleManager;
 import finderOfPaths.Sucher;
 
 /**
@@ -32,8 +35,14 @@ public class DicePresenter {
 	
 	private int zielWuerfelEins;
 	private int zielWuerfelZwei;
+	public final PlayerCircleManager pcManager;
+	private int gameid;
+	private CluedoGameClient networkGame;
 	
-	public DicePresenter(DiceView dices, GameFrameView view, Ausloeser ausloeser, BoardView gui, Sucher sucher){
+	public DicePresenter(DiceView dices, GameFrameView view, Ausloeser ausloeser, BoardView gui, Sucher sucher, PlayerCircleManager pcManager, int gameid, CluedoGameClient networkGame){
+		this.pcManager = pcManager;
+		this.gameid = gameid;
+		this.networkGame = networkGame;
 		this.ausloeser = ausloeser;
 		this.view = view;
 		this.dices = dices;
@@ -44,7 +53,12 @@ public class DicePresenter {
 	
 	public void startEvents(){
 		
-		view.getZugView().YESwurfelImage.setOnMouseClicked(e -> rollTheDice());
+		view.getZugView().YESwurfelImage.setOnMouseClicked(e -> iWantToRollTheDice());
+	}
+	
+	public void iWantToRollTheDice(){
+		networkGame.sendMsgToServer(NetworkMessages.roll_diceMsg(gameid));
+		
 	}
 	
 	public void rollTheDice(){
@@ -62,6 +76,8 @@ public class DicePresenter {
 		this.zielWuerfelEins = ersterWuerfel;
 		this.zielWuerfelZwei = zweiterWuerfel;
 		diceCounter = 0;
+		Sounds.diceSound();
+		view.getKomplettesFeld().getChildren().remove(view.getZugView());
 		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("someone"));
 		Timeline t = new Timeline(keyFrame);
 		t.setCycleCount(10);

@@ -78,7 +78,7 @@ public class GameFramePresenter {
 		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,   anweisungen,pcManager);
 		ausloeser = new Ausloeser(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager, gameid, networkGame);
 
-		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher);
+		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher, pcManager, gameid, networkGame);
 		
 		
 		test();
