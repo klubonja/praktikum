@@ -13,24 +13,24 @@ import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
+import enums.Persons;
 import enums.PlayerStates;
 
 /**
- * @author guldener
- * verteilt die nachrichten der des clients
+ * @author guldener verteilt die nachrichten der des clients
  */
-class CommunicationHandler implements Runnable{
-	
+class CommunicationHandler implements Runnable {
+
 	ClientItem client;
 	Connector networkService;
-	
+
 	DataManagerServer dataManager;
 	DataGuiManagerServer dataGuiManager;
-	
-	boolean run = true;	
+
+	boolean run = true;
 	boolean readyForCommunication = false;
 	String currentMsg;
-	
+
 	/**
 	 * @param ss
 	 * @param c
@@ -38,64 +38,63 @@ class CommunicationHandler implements Runnable{
 	 * @param cList
 	 * @param bList
 	 * 
-	 * tcp verbindung steht server wartet auf tcp handshake
+	 *            tcp verbindung steht server wartet auf tcp handshake
 	 */
-	CommunicationHandler(ClientItem c, DataManagerServer dm,DataGuiManagerServer dgm) {
+	CommunicationHandler(ClientItem c, DataManagerServer dm,
+			DataGuiManagerServer dgm) {
 		dataManager = dm;
 		dataGuiManager = dgm;
 		client = c;
-	}	
-	
-	
-	private void awaitingLoginAttempt (){
+	}
+
+	private void awaitingLoginAttempt() {
 		auxx.logfine("awaiting login from client");
-		while (!readyForCommunication) { // will keep listening for valid login msg
+		while (!readyForCommunication) { // will keep listening for valid login
+											// msg
 			try {
 				String[] messages = auxx.getTCPMessages(client.getSocket());
 				for (String message : messages)
-					if (!message.equals("")) 
+					if (!message.equals(""))
 						loginAttemptLogic(message);
-			} 
-			catch (Exception e) {
-				auxx.logsevere("communcitationhandler of client"+ client.getNick(), e);
-			}
-		}	
-	}
-	
-	@Override
-	public void run(){	
-		awaitingLoginAttempt();
-		while (run){
-			try {
-
-	           String[] messages = auxx.getTCPMessages(client.socket);
-			   currentMsg = messages[0];
-			   for (String message : messages)
-				   if (!message.equals(""))   serverLogic(message);           
-			}
-			catch (Exception e ){	
-				auxx.logsevere("communicationhandler for client : "+ client.getNick()+ "running out", e);
-				auxx.logsevere("last message :"+ currentMsg);
-
-				closeProtokollConnection();			
+			} catch (Exception e) {
+				auxx.logsevere(
+						"communcitationhandler of client" + client.getNick(), e);
 			}
 		}
-		
 	}
-	
-	void loginAttemptLogic(String message){
-		CluedoProtokollChecker checker = new CluedoProtokollChecker(
-				new CluedoJSON(
-						new JSONObject(message)));
-		NetworkHandhakeCodes errcode = checker.validateExpectedType("login",null);
 
-		if (errcode == NetworkHandhakeCodes.OK) {					
-			client.setExpansions(
-				auxx.makeConjunction(
-					Config.EXPANSIONS, 
-					checker.getMessage().getJSONArray("expansions")
-				)
-			);
+	@Override
+	public void run() {
+		awaitingLoginAttempt();
+		while (run) {
+			try {
+
+				String[] messages = auxx.getTCPMessages(client.socket);
+				currentMsg = messages[0];
+				for (String message : messages)
+					if (!message.equals(""))
+						serverLogic(message);
+			} catch (Exception e) {
+				auxx.logsevere(
+						"communicationhandler for client : " + client.getNick()
+								+ "running out", e);
+				auxx.logsevere("last message :" + currentMsg);
+
+				closeProtokollConnection();
+			}
+		}
+
+	}
+
+	void loginAttemptLogic(String message) {
+		CluedoProtokollChecker checker = new CluedoProtokollChecker(
+				new CluedoJSON(new JSONObject(message)));
+		NetworkHandhakeCodes errcode = checker.validateExpectedType("login",
+				null);
+
+		if (errcode == NetworkHandhakeCodes.OK) {
+			client.setExpansions(auxx.makeConjunction(Config.EXPANSIONS,
+					checker.getMessage().getJSONArray("expansions")));
 			client.setNick(checker.getMessage().getString("nick"));
 			client.setGroupName(checker.getMessage().getString("group"));					
 			client.sendMsg(NetworkMessages.login_sucMsg(
@@ -104,52 +103,62 @@ class CommunicationHandler implements Runnable{
 					dataManager.getGameList()
 					)
 			);
-			if (dataGuiManager.addNetworkActor(client,"logged in"))
+			if (dataGuiManager.addNetworkActor(client,"logged in")){
 				dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
+				client.setGroupName(checker.getMessage().getString("group"));
+				client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(),
+								dataManager.getClientPool(), dataManager.getGameList()));
+
+//			if (dataGuiManager.addNetworkActor(client, "logged in"))
+//				dataManager.notifyAll(NetworkMessages.user_addedMsg(client
+//						.getNick()));
+//>>>>>>> d62cee416b07023f92e8b8a0ea083aa68d1efac5
+			}
 			else {
-				client.sendMsg(NetworkMessages.error_Msg(client.getNick()+" already exists, try again with different nick"));
+				client.sendMsg(NetworkMessages.error_Msg(client.getNick()
+						+ " already exists, try again with different nick"));
 				readyForCommunication = false;
-			}						
+			}
 			readyForCommunication = true;
-		}
-		else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
-				|| errcode == NetworkHandhakeCodes.TYPERR){
-			
-			dataGuiManager.addMsgIn(client.getAdress()+" sends invalid Messages : \n"+checker.getErrString());
-			client.sendMsg(NetworkMessages.error_Msg("you are violating the protokoll due to the following: \n"+checker.getErrString()));
+		} 
+	    else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR
+				|| errcode == NetworkHandhakeCodes.TYPERR) {
+
+			dataGuiManager.addMsgIn(client.getAdress()
+					+ " sends invalid Messages : \n" + checker.getErrString());
+			client.sendMsg(NetworkMessages
+					.error_Msg("you are violating the protokoll due to the following: \n"
+							+ checker.getErrString()));
 			client.sendMsg(NetworkMessages.disconnectMsg());
-			client.closingConnection(dataManager.getGroupName()+" is closing connection");
-			dataManager.blacklist(client);					
+			client.closingConnection(dataManager.getGroupName()
+					+ " is closing connection");
+			dataManager.blacklist(client);
 			killThread();
 		}
-		
-		auxx.loginfo("login attempt :"+ checker.getMessage().toString());			
+
+		auxx.loginfo("login attempt :" + checker.getMessage().toString());
 	}
-	
-	void createGame(String color,ClientItem client){
+
+	void createGame(String color, ClientItem client) {
 		int gameID = dataGuiManager.createGame(color, client);
-		dataManager.notifyAll(
-				NetworkMessages.game_createdMsg(
-						NetworkMessages.player_info(
-								client.getNick(), 
-								color,PlayerStates.do_nothing.getName()
-								), 
-						gameID
-						)
-				);
+		dataManager.notifyAll(NetworkMessages.game_createdMsg(NetworkMessages
+				.player_info(client.getNick(), color,
+						PlayerStates.do_nothing.getName()), gameID));
 	}
-	
+
 	private void closeProtokollConnection() {
-		 if (dataGuiManager.removeClient(client)){
-  		   dataManager.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
-  		   killThread();
-		 }			
+		if (dataGuiManager.removeClient(client)) {
+			dataManager
+					.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
+			killThread();
+		}
 	}
-	
-	public void killThread(){
+
+	public void killThread() {
 		readyForCommunication = true; // no further listinenig on this socket
-		run = false; // thread will run out without further notice					
+		run = false; // thread will run out without further notice
 	}
+
 	
 	private void serverLogic(String message){
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
@@ -195,6 +204,34 @@ class CommunicationHandler implements Runnable{
 	        		//	dataGuiManager.getGameByIndex(gameID).notifyInit();	
 	        			dataGuiManager.startGameByID(gameID,client.getNick());
 	        			dataGuiManager.addMsgIn("game "+checker.getMessage().getInt("gameID")+ " started");
+	        			boolean esGibtRot = false;
+	        			for(ClientItem clientTemp : dataManager.clientPool){
+	        				if(clientTemp.getPlayer().getCluedoPerson().getColor() == Persons.red.getColor()){
+	        					esGibtRot = true;
+	        				}
+	        			}
+	        			
+	        			
+	        			if (esGibtRot){
+		        			for(ClientItem clientTemp : dataManager.clientPool){
+		        				String  state = PlayerStates.do_nothing.getName();
+		        					if(clientTemp.getPlayer().getCluedoPerson().getColor() == Persons.red.getColor()){
+			        					state = PlayerStates.roll_dice.getName();
+			        				}
+		        				clientTemp.sendMsg(NetworkMessages.stateupdateMsg(gameID, NetworkMessages.player_info(clientTemp.getNick(), clientTemp.getPlayer().getCluedoPerson().getColor(), state)));
+		        			}
+		        		}
+	        			else {
+	        				int anfangsSpielerZufall = auxx.getRandInt(1, dataManager.clientPool.size()-1);
+	        				for(int welcherSpieler = 0; welcherSpieler < dataManager.clientPool.size(); welcherSpieler++){
+		        				String  state = PlayerStates.do_nothing.getName();
+		        				if (welcherSpieler == anfangsSpielerZufall){
+		        					state = PlayerStates.roll_dice.getName();		        				
+		        				}
+		        				dataManager.getClientPool().get(welcherSpieler).sendMsg(NetworkMessages.stateupdateMsg(gameID, NetworkMessages.player_info(dataManager.getClientPool().get(welcherSpieler).getNick(), dataManager.getClientPool().get(welcherSpieler).getPlayer().getCluedoPerson().getColor(), state)));	
+		        				
+	        				}
+	        			}
 	        	   }
      		  
      		   else {
@@ -227,10 +264,45 @@ class CommunicationHandler implements Runnable{
    		   dataManager.notifyAll(NetworkMessages.movedMsg(gameID, personpos));
    		   
    	   }
+     	   
+   	   	else if (checker.getType().equals("accuse")) {
+
+				// DO IT LIKE A
+				// BROTHER*************************************************
+
+			} else 
+				if (checker.getType().equals("suspicion")) {
+				dataManager.notifyAll(
+						NetworkMessages.suspicionMsg(
+								checker.getMessage().getInt("gameID"),
+								NetworkMessages.statement(
+								checker.getMessage().getString("person"),
+								checker.getMessage().getString("room"),
+								checker.getMessage().getString("weapon")
+								))
+								);
+			} else if(checker.getType().equals("disprove")){
+				
+			} else if(checker.getType().equals("no disprove")) {
+				
+			}
    	   
    	   else if(checker.getType().equals("end turn")){
    		   auxx.loginfo("end turn angekommen");
-   		   //TODO notifyNextRound() methode auf CluedoGameServer implementieren
+   		   int gameID = checker.getMessage().getInt("gameID");
+   		   ClientItem currentPlayer = dataManager.gamesList.getGameByID(gameID).getParticipants().get(dataManager.gamesList.getGameByID(gameID).getCurrentPlayer()); 
+   		   CluedoJSON playerinfo = new CluedoJSON("player");
+   		   playerinfo.put("nick", currentPlayer.getNick());
+   		   playerinfo.put("color", currentPlayer.getPlayer().getCluedoPerson().getColor());
+   		   playerinfo.put("playerstate", PlayerStates.do_nothing.getName());
+   		   currentPlayer.sendMsg(NetworkMessages.stateupdateMsg(gameID, playerinfo));
+   		   dataManager.gamesList.getGameByID(gameID).setCurrentPlayerNext();
+   		   currentPlayer = dataManager.gamesList.getGameByID(gameID).getParticipants().get(dataManager.gamesList.getGameByID(gameID).getCurrentPlayer()); 
+		   playerinfo = new CluedoJSON("player");
+		   playerinfo.put("nick", currentPlayer.getNick());
+		   playerinfo.put("color", currentPlayer.getPlayer().getCluedoPerson().getColor());
+		   playerinfo.put("playerstate", PlayerStates.roll_dice.getName());
+		   currentPlayer.sendMsg(NetworkMessages.stateupdateMsg(gameID, playerinfo));
    		   //setNextRound();
    		   //setCurrentPlayerNext();
    	   }
@@ -269,6 +341,6 @@ class CommunicationHandler implements Runnable{
 	        	   dataGuiManager.removeClient(client);
 	        	   auxx.loginfo("INCOMING INVALID : "+ checker.getErrString());
         }
+
 	}
-	
 }

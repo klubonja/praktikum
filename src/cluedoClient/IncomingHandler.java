@@ -15,6 +15,7 @@ import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.NetworkHandhakeCodes;
+import enums.PlayerStates;
 
 
 class IncomingHandler implements Runnable {
@@ -39,11 +40,9 @@ class IncomingHandler implements Runnable {
 		getGamesList();
 		while (globalRun && localRun) {
 			try {
-
 				String[] messages = auxx.getTCPMessages(server.getSocket());
 				for (String message: messages)
 					if (!message.equals("")) incommingLogic(message);
-						
 			}			
 			catch (Exception e){
 				auxx.logsevere("error on incomming handler client", e);
@@ -92,6 +91,12 @@ class IncomingHandler implements Runnable {
         										 checker.getMessage().getJSONArray("cards")
         										 )
         							);	        		  
+			} else if(checker.getType().equals("suspicion")){
+				server.getGameByGameID(checker.getMessage().getInt("gameID")).compareCards(
+						checker.getMessage().getString("person"),
+						checker.getMessage().getString("weapon"),
+						checker.getMessage().getString("room")
+						);
 			}
 			else if (checker.getType().equals("game ended")){
         		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
@@ -111,6 +116,13 @@ class IncomingHandler implements Runnable {
 			else if (checker.getType().equals("user left")){
         		  String player = checker.getMessage().getString("nick");
         		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
+			}
+			else if(checker.getType().equals("stateupdate")){
+				int gameID = checker.getMessage().getInt("gameID");
+				if (checker.getMessage().getJSONObject("player").get("playerstate").equals(PlayerStates.roll_dice.getName())){
+					auxx.logsevere("roll dice?!");
+					server.getGameByGameID(gameID).nextTurn();
+				}
 			}
 			else if(checker.getType().equals("dice result")){
 				int [] wuerfel = new int [2];

@@ -185,6 +185,7 @@ public abstract class auxx {
 		ArrayList<String> list = new ArrayList<String>();
 		for (int i= 0; i < jsonarray.length(); i++)
 			list.add(jsonarray.getString(i));
+		System.out.println(list);
 		
 		return list;
 	}

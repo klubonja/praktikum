@@ -47,6 +47,7 @@ public class DerBeweger {
 
 	private Kachel raumZielKachel;
 	private Kachel raumAnfangsKachel;
+	private Kachel raumStartKachel;
 
 	private Kachel gangKachel;
 
@@ -79,13 +80,32 @@ public class DerBeweger {
 		this.raumBeweger = raumBeweger;
 		
 		this.currentPlayer = pcManager.getCurrentPlayer();
-		
-		anfangsKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
 		currentCircle = pcManager.getCurrentCircle();
+		anfangsKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
+		
 		
 	}
-
-	public void bewegen(Orientation[] anweisungenEingabe, int schritteEingabe,
+	
+	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe, int nullSchritteEingabe){
+		
+		this.schritte = schritteEingabe;		
+		this.nullSchritte = nullSchritteEingabe;		
+		this.anweisungen = anweisungenEingabe;
+		
+		if(anfangsKachel.isIstTuer()){
+			anfangsRaumKachel = gui.getKachelArray()[anfangsKachel
+			         								.getPosition().getY()][anfangsKachel
+			         								.getPosition().getX()];
+			Rooms room = raumBeweger.checkRaum(currentPlayer, anfangsRaumKachel);
+			raumStartKachel = raumBeweger.positionInRaum(currentPlayer, room);
+			ausRaumBewegen();
+		}
+		else{
+			bewegenOhneRaum(anweisungen, schritte, nullSchritte);
+		}
+	}
+	
+	public void bewegenOhneRaum(Orientation[] anweisungenEingabe, int schritteEingabe,
 			int nullSchritteEingabe) {
 
 		this.schritte = schritteEingabe;
@@ -151,7 +171,7 @@ public class DerBeweger {
 				zug.toFront();
 					}
 
-					bewegen(anweisungen, schritte, nullSchritte);
+					bewegenOhneRaum(anweisungen, schritte, nullSchritte);
 
 				}
 			});
@@ -160,11 +180,6 @@ public class DerBeweger {
 
 		}
 
-		if (schritte == 0) {
-			stack.getChildren()
-					.add(zug);
-			zug.toFront();
-		}
 	}
 
 	public void anfangsKachelSetzen(Kachel neueAnfangsKachel) {
@@ -297,6 +312,29 @@ public class DerBeweger {
 		pathTransition.play();
 	}
 
+	
+	public void ausRaumBewegen(){
+		
+		Path path = new Path();
+
+		path.getElements().add(
+				new MoveTo(raumStartKachel.getLayoutX(), raumStartKachel
+						.getLayoutY()));
+		path.getElements().add(
+				new LineTo(anfangsKachel.getLayoutX(), anfangsKachel
+						.getLayoutY()));
+		
+		PathTransition pathTransition = new PathTransition();
+		pathTransition.setDuration(Duration.millis(2000));
+		pathTransition.setNode(currentCircle);
+		pathTransition.setPath(path);
+		pathTransition.play();
+		pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				bewegenOhneRaum(anweisungen, schritte, nullSchritte);
+			}
+		});
+	}
 	/**
 	 * Wandelt char [] mit anweisungen in Orientation [] mit anweisungen um
 	 * 

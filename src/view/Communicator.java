@@ -1,11 +1,14 @@
 package view;
 
-
 import java.util.ArrayList;
 import java.util.logging.Level;
 
+import org.json.JSONObject;
+
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
+import jdk.nashorn.api.scripting.JSObject;
+import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -26,74 +29,73 @@ public class Communicator {
 	private DiceView diceView;
 	private BallEbene2 ballEbene;
 	private AussergewohnlichesZugfenster zugView;
-	
+
 	private GameFramePresenter gamePresenter;
 	private DicePresenter dicePresenter;
 	private AussergewohnlichesZugfensterPresenter zugPresenter;
-	
+
 	private Ausloeser ausloeser;
 	private Sucher sucher;
 	private Vorschlaege vorschlager;
 	private WahnsinnigTollerPathfinder pathfinder;
 	private DerBeweger beweger;
 	private RaumBeweger raumBeweger;
-	private ArrayList <CluedoPlayer> players;
+	private ArrayList<CluedoPlayer> players;
 	private CluedoGameClient network;
 	public final PlayerCircleManager pcManager;
 	public final int gameid;
-	
-		
-	public Communicator(CluedoGameClient ngame){
+
+	public Communicator(CluedoGameClient ngame) {
 		network = ngame;
 		gameid = ngame.getGameId();
-		players = ngame.getPlayersConnected();
-		pcManager = new PlayerCircleManager(players);		
-	}
-	
-	public void startGame(){
-		
-		auxx.loginfo("Communicater");
-
+		players = network.getServer().getGameByGameID(network.getGameId())
+				.getPlayers();
+		pcManager = new PlayerCircleManager(network.getPlayersConnected());
 		gameView = new GameFrameView(pcManager);
 		gameView.start();
 		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid);
 		dicePresenter = gamePresenter.getDicePresenter();
 		zugPresenter = gamePresenter.getZugPresenter();
-		
+
 		diceView = gameView.getDice();
 		boardView = gameView.getBoard();
 		ballEbene = gameView.getBallEbene();
 		zugView = gameView.getZugView();
-		
+
 		ausloeser = gamePresenter.getAusloeser();
 		beweger = gamePresenter.getBeweger();
 		vorschlager = gamePresenter.getVorschlager();
 		raumBeweger = gamePresenter.getRaumBeweger();
 		pathfinder = gamePresenter.getPathfinder();
 		sucher = gamePresenter.getSucher();
+
+	}
+
+	public void startGame() {
+		auxx.loginfo("Communicator");
+
 		
 		setHandler();
-		
+
 		testButtons();
-		
+		auxx.logsevere("Oh my giddy giddy gosh");
 	}
-	public void setTitle(String newtitle){
+
+	public void setTitle(String newtitle) {
 		gameView.setStageTitle(newtitle);
 	}
-	
-	public void addChatMsg(String msg){
-		gamePresenter.getGfv().chat.chatArea.appendText(msg+"\n");
+
+	public void addChatMsg(String msg) {
+		gamePresenter.getGfv().chat.chatArea.appendText(msg + "\n");
 	}
-	
+
 	public GameFrameView getGameView() {
 		return gameView;
 	}
-	
+
 	public GameFramePresenter getGamePresenter() {
 		return gamePresenter;
 	}
-	
-	
 	public void rollDice(int [] wuerfelWurf){
 		//int [] testWuerfelWurf = {6,6};
 		int ersterWuerfel = wuerfelWurf[0];
@@ -109,37 +111,61 @@ public class Communicator {
 	public void move(CluedoPosition position){
 		int yKoordinate = position.getY();
 		int xKoordinate = position.getX();
+		beweger.setCurrentPlayer(pcManager.getCurrentPlayer());
+		beweger.setCurrentCircle(pcManager.getCurrentCircle());
 		ausloeser.ausloesen(yKoordinate, xKoordinate);
 	}
-	
-	public void suspect(){
-		
-	}
-	
-	public void accuse(){
-		
-	}
-	
-	public void disprove(){
-		
-	}
-	
-	public void showPoolCards(){
-		
-	}
-	
-	public void endTurn(){
 
-//		Communicator.playerManager.next();
-//		Communicator.circleManager.next();
-		pcManager.next();//erhöht den index und sonst nix
-		/////////////////////////////////////
-		///BENACHRICHTUGUNG, DASS NÄCHSTER///
-		/////////ZUG ANGEFANGEN HAT//////////
-		/////////////////////////////////////
+	// SENDS MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT
+	public void suspect() {
+		String person = zugView.getPersonenListe().getValue();
+		String weapon = zugView.getWaffenListe().getValue();
+		String room = "Hall";
+		network.sendMsgToServer(NetworkMessages.suspicionMsg(
+				network.getGameId(),
+				NetworkMessages.statement(person, room, weapon)));
+	}
+
+	// SENDS A MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT AS WELL
+	public void accuse() {
+		String person = gameView.getHand().getPersons().getValue();
+		String weapon = gameView.getHand().getWeapons().getValue();
+		String room = gameView.getHand().getRooms().getValue();
+		network.sendMsgToServer(NetworkMessages.accuseMsg(network.getGameId(),
+				NetworkMessages.statement(person, room, weapon)));
+
+	}
+
+	public void disprove() {
+
+	}
+
+	public void showPoolCards() {
+		//if im pool
+		
+	}
+
+	public void setNextTurn(){
+		pcManager.next();// erhöht den index und sonst nix
+	}
+		
+	public void endTurn() {
+		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
+		// Communicator.playerManager.next();
+		// Communicator.circleManager.next();
+		// ///////////////////////////////////
+		// /BENACHRICHTUGUNG, DASS NÄCHSTER///
+		// ///////ZUG ANGEFANGEN HAT//////////
+		// ///////////////////////////////////
+		
 	}
 	
-	public void kill(){
+	public void itsYourTurn(){
+		setNextTurn();
+		openWindow();
+	}
+	
+	public void kill() {
 		gameView.close();
 	}
 	
@@ -149,39 +175,63 @@ public class Communicator {
 		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice(cheater));
 		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
 	}
-	
-	public boolean checkForValidMovement(CluedoPosition position){
+
+	public boolean checkForValidMovement(CluedoPosition position) {
 		return vorschlager.hierHerValide(position);
+
+	}
+
+	public void setHandler() {
+		gameView.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent e) {
+				try {
+					network.kill();
+				} catch (Exception e1) {
+					auxx.log.log(Level.SEVERE, e1.getMessage());
+				}
+			}
+		});
+
+		zugPresenter.getGameView().ONanklage.setOnMouseClicked(e -> {
+			suspect();
+			gameView.getKomplettesFeld().getChildren().remove(zugView);
+		});
+
+		gameView.getHand().getAccuse().setOnMouseClicked(e -> {
+			accuse();
+		});
+		
+		
+		// END TURN
+		gameView.getHand().getEndTurn().setOnMouseClicked(e -> endTurn());
 		
 	}
 	
+	//OPEN WINDOW
+			public void openWindow(){
+				auxx.logsevere("to the front!!!");
+				auxx.logsevere("" +zugView);
+				gameView.getKomplettesFeld().getChildren().remove(zugView);
+				gameView.getKomplettesFeld().getChildren().add(zugView);
+			}
+			
+			//CLOSE WINDOW
+			public void closeWindow(){
+				gameView.getKomplettesFeld().getChildren().remove(zugView);
+			}
+			
+			
 	
-	public void setHandler(){
-		gameView.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
-		      @Override
-			public void handle(WindowEvent e){
-		          try {
-		        	  network.kill();
-		          } 
-		          catch (Exception e1) {
-		               auxx.log.log(Level.SEVERE,e1.getMessage());
-		          }
-		      }
-		 });
-	}
 	/*
-	 * (check) start game 
-	 * (check) roll dice --> letztes Bild ihre Würfel-Kombination und dann pathfinder / sucher / vorschlager "losschicken"
-	 * (check) use secret passage --> beweger muss position neu setzen
-	 * (check) move --> ausloeser und beweger an diese position bewegen (neue methoden) / mit pathfinder ergebnissen vergleichen
-	 * suspect --> nedko
-	 * accuse --> nedko
-	 * disprove --> nedko
-	 * showPoolCards --> nedko
-	 * (check) end turn PlayerManager.playerManager.next() UND PlayerManager.circleManager.next() 
-	 * (check) check for valid moves.
+	 * (check) start game (check) roll dice --> letztes Bild ihre
+	 * Würfel-Kombination und dann pathfinder / sucher / vorschlager
+	 * "losschicken" (check) use secret passage --> beweger muss position neu
+	 * setzen (check) move --> ausloeser und beweger an diese position bewegen
+	 * (neue methoden) / mit pathfinder ergebnissen vergleichen suspect -->
+	 * nedko accuse --> nedko disprove --> nedko showPoolCards --> nedko (check)
+	 * end turn PlayerManager.playerManager.next() UND
+	 * PlayerManager.circleManager.next() (check) check for valid moves.
 	 */
-	
-	
-	
+
 }
