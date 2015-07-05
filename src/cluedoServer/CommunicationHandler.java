@@ -1,5 +1,8 @@
 package cluedoServer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
@@ -141,9 +144,18 @@ class CommunicationHandler implements Runnable {
 
 	void createGame(String color, ClientItem client) {
 		int gameID = dataGuiManager.createGame(color, client);
-		dataManager.notifyAll(NetworkMessages.game_createdMsg(NetworkMessages
-				.player_info(client.getNick(), color,
-						PlayerStates.do_nothing.getName()), gameID));
+		dataManager.notifyAll(
+				NetworkMessages.game_createdMsg(
+						NetworkMessages.player_info(
+							client.getNick(), 
+							color,
+							new ArrayList<String>(
+								    Arrays.asList(PlayerStates.do_nothing.getName()
+								    	)
+							)
+						), 
+						gameID)
+					);
 	}
 
 	private void closeProtokollConnection() {
@@ -177,7 +189,10 @@ class CommunicationHandler implements Runnable {
 	        						   NetworkMessages.player_info(
 	        								   client.getNick(), 
 	        								   color , 
-	        								   PlayerStates.do_nothing.getName()
+	        								   new ArrayList<String>(
+	        										    Arrays.asList(PlayerStates.do_nothing.getName()
+	        										    	)
+	        									)
 	        								   ),
 	        						   gameID
 	        						   )
@@ -218,7 +233,10 @@ class CommunicationHandler implements Runnable {
 		        					if(clientTemp.getPlayer().getCluedoPerson().getColor() == Persons.red.getColor()){
 			        					state = PlayerStates.roll_dice.getName();
 			        				}
-		        				clientTemp.sendMsg(NetworkMessages.stateupdateMsg(gameID, NetworkMessages.player_info(clientTemp.getNick(), clientTemp.getPlayer().getCluedoPerson().getColor(), state)));
+		        				clientTemp.sendMsg(NetworkMessages.stateupdateMsg(gameID, NetworkMessages.player_info(clientTemp.getNick(), clientTemp.getPlayer().getCluedoPerson().getColor(), new ArrayList<String>(
+									    Arrays.asList(state
+										    	)
+									))));
 		        			}
 		        		}
 	        			else {
@@ -228,7 +246,10 @@ class CommunicationHandler implements Runnable {
 		        				if (welcherSpieler == anfangsSpielerZufall){
 		        					state = PlayerStates.roll_dice.getName();		        				
 		        				}
-		        				dataManager.getClientPool().get(welcherSpieler).sendMsg(NetworkMessages.stateupdateMsg(gameID, NetworkMessages.player_info(dataManager.getClientPool().get(welcherSpieler).getNick(), dataManager.getClientPool().get(welcherSpieler).getPlayer().getCluedoPerson().getColor(), state)));	
+		        				dataManager.getClientPool().get(welcherSpieler).sendMsg(NetworkMessages.stateupdateMsg(gameID, NetworkMessages.player_info(dataManager.getClientPool().get(welcherSpieler).getNick(), dataManager.getClientPool().get(welcherSpieler).getPlayer().getCluedoPerson().getColor(), new ArrayList<String>(
+									    Arrays.asList(state
+										    	)
+									))));	
 		        				
 	        				}
 	        			}

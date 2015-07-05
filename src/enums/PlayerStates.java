@@ -39,4 +39,12 @@ public enum PlayerStates {
 	                return pstate;
 	        return null;
 	    }
+	 
+	 public static PlayerStates getPlayerStateByOrdinal(int i){
+		 PlayerStates[] states = PlayerStates.values();
+		 for (PlayerStates ps: states)
+			 if (ps.ordinal() == i) return ps;
+		 
+		 return null;
+	 }
 }

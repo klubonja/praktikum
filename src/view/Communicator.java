@@ -3,11 +3,8 @@ package view;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
-import org.json.JSONObject;
-
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
-import jdk.nashorn.api.scripting.JSObject;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
@@ -241,11 +238,11 @@ public class Communicator {
 			}
 
 			public void updateStatesToNothing() {
-				pcManager.getCurrentPlayer().setState(PlayerStates.do_nothing);
+				pcManager.getCurrentPlayer().setDoNothing();
 			}
 			
 			public void updateStatesToRolls() {
-				pcManager.getCurrentPlayer().setState(PlayerStates.roll_dice);
+				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.roll_dice);
 			}
 			
 	

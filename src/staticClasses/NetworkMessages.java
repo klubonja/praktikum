@@ -96,11 +96,14 @@ public abstract class NetworkMessages {
 		return json;
 	}
 	
-	public static JSONObject player_info(String nick,String color,String playerstate){
+	public static JSONObject player_info(String nick,String color,ArrayList<String> playerstates){
 		JSONObject json = new JSONObject();
 		json.put("nick", nick);
 		json.put("color", color);
-		json.put("playerstate", playerstate);
+		JSONArray states = new JSONArray();
+		for (String state : playerstates)
+			states.put(state);
+		json.put("playerstate", states);
 		
 		return json;
 	}
@@ -440,7 +443,7 @@ public abstract class NetworkMessages {
 				NetworkMessages.player_info(
 					p.getNick(), 
 					p.getCluedoPerson().getColor(), 
-					p.getState().getName()
+					p.getStatesStringList()
 				)
 			);
 			perspossJSON.put(

@@ -6,10 +6,10 @@ import model.Deck;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoServer.ClientItem;
-import cluedoServer.TurnDFA;
 import enums.GameStates;
 import enums.JoinGameStatus;
 import enums.Persons;
+import enums.PlayerStates;
 import enums.Rooms;
 import enums.Weapons;
 
@@ -17,13 +17,15 @@ public class CluedoGameServer extends CluedoGame {
 	private ArrayList<ClientItem> participants;
 	ArrayList<ClientItem> watchers;
 	WinningStatement winningStatement;
-	TurnDFA drawAutomat;
+	CluedoStateMachine turnDFA;
 	int currentPlayer = 0;
 
 	public CluedoGameServer(int gameId) {
 		super(gameId);
 		setParticipants(new ArrayList<ClientItem>());
 		watchers = new ArrayList<ClientItem>();
+		
+		turnDFA = new CluedoStateMachine(PlayerStates.do_nothing);
 	}
 
 	public WinningStatement getWinningStatement() {
@@ -150,9 +152,21 @@ public class CluedoGameServer extends CluedoGame {
 
 	public void setNextRound() {
 		setCurrentPlayerNext();
-		drawAutomat = new TurnDFA(getParticipants().get(currentPlayer).getPlayer()
-				.getState());
+		updatePlayerStates();		
 		notifyNextRound();
+	}
+	
+	public void updatePlayerStates(){		
+		for (int i = 0;i < participants.size(); i++){
+			CluedoPlayer player = participants.get(i).getPlayer();
+			if (i == currentPlayer)	{
+				player.setCurrentState(PlayerStates.do_nothing); // hier werden possible moves von do nothing aus gesetzt
+			}
+			else{
+				player.setDoNothing(); // hier werden possible moves gelöscht und do nothing hinzugefügt
+			}			
+		}
+			
 	}
 
 	public void notifyNextRound() {
@@ -160,10 +174,9 @@ public class CluedoGameServer extends CluedoGame {
 		notifyAll(NetworkMessages.stateupdateMsg(getGameId(), NetworkMessages
 				.player_info(getParticipants().get(currentPlayer).getNick(),
 						getParticipants().get(currentPlayer).getPlayer()
-								.getCluedoPerson().getColor(), getParticipants()
-								.get(currentPlayer).getPlayer().getState()
-								.getName())
-
+								.getCluedoPerson().getColor(), 
+								getParticipants().get(currentPlayer).getPlayer().getStatesStringList()
+				)
 		));
 	}
 

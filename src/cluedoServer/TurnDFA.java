@@ -1,6 +1,7 @@
 package cluedoServer;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 
 import enums.PlayerStates;
 
@@ -13,9 +14,32 @@ public class TurnDFA {
  	//						do n     use s   roll d	  move   	  sus   disp end	acc
  	public TurnDFA(PlayerStates initState) {
 		currentState = initState.ordinal();
-		initStateOrdinal =  initState.ordinal();
-		 
+		initStateOrdinal =  initState.ordinal();		 
 	}
+ 	
+ 	public ArrayList<Number> getPossibleStates(int initS){
+ 		ArrayList<Number> states = new ArrayList<Number>();
+ 		//System.out.println("checking state "+initS);
+ 		for (int stateOrdinal : transitions[initS]){ // iteriere alle nachfolgestates 
+ 			//System.out.println("in state :"+ initS +" handling :"+stateOrdinal);
+ 			if (checkfortrans(stateOrdinal,initS)){ 
+ 				states.add(stateOrdinal); // jeder folgezustand ist ein möglicher zustand
+ 				if (stateOrdinal != initStateOrdinal) // wenn anfangsstate erreicht ist breche ab
+ 					states.addAll(getPossibleStates(stateOrdinal));//gehe alle kanten
+ 			}
+ 		}
+ 		
+ 		return new ArrayList<Number>(new LinkedHashSet<Number>(states)); // nasty way of removing dups
+ 	}
+ 	
+ 	public ArrayList<Number> getPossibleStates(ArrayList<Number> statelist){
+ 		ArrayList<Number> pstates = new ArrayList<Number>();
+ 		for (Number initS : statelist){
+ 			pstates.addAll(getPossibleStates(initS.intValue()));
+ 		}
+ 		
+ 		return pstates;
+ 	}
 
  	public boolean consumeInput(PlayerStates input){ // if is successor of current state set new input state
  		if (contains(input.ordinal(),transitions[currentState]) || transitions[currentState].length ==  0 ) {
@@ -26,7 +50,7 @@ public class TurnDFA {
  	}
  	
  	
- 	public boolean checkfortrans(int stateOrdinal){ // if is successor of current state set new input state
+ 	public boolean checkfortrans(int stateOrdinal,int currentState){ // if is successor of current state set new input state
  		if (contains(stateOrdinal,transitions[currentState]) || transitions[currentState].length ==  0 ) {
  			return true;
  		}
@@ -39,16 +63,7 @@ public class TurnDFA {
  		return false;
  	}
  	
- 	public ArrayList<Number> getPossibleStates(int initS){
- 		ArrayList<Number> states = new ArrayList<Number>();
- 		for (int stateOrdinal : transitions[initS]){ // iteriere alle states 
- 			if (checkfortrans(stateOrdinal)){ 
- 				if (stateOrdinal== initStateOrdinal) return states; // wenn anfangsstate erreicht ist breche ab
- 				states.add(stateOrdinal); // jeder folgezustand ist ein möglicher zustand
- 				states.addAll(getPossibleStates(stateOrdinal));//gehe alle kanten
- 			}
- 		}
- 		
- 		return states;
- 	}
+ 	public void setCurrentState(int currentState) {
+		this.currentState = currentState;
+	}
 }
