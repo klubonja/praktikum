@@ -65,11 +65,10 @@ class IncomingHandler implements Runnable {
 		        				  );
 		        		  
 					}
-					else if (checker.getType().equals("player cards")){						 
-		        		 server.getGameByGameID(checker.getMessage().getInt("gameId"))
-		        		 .getConnectedPlayerByName(server.getMyNick())
-		        		 .setCards(auxx.jsonArrayToArrayList(checker
-		        				 .getMessage().getJSONArray("cards")));	        		  
+					else if (checker.getType().equals("player_cards")){
+						ArrayList<String> str = auxx.jsonArrayToArrayList(checker.getMessage().getJSONArray("cards"));
+		        		 server.getGameByGameID(checker.getMessage().getInt("gameID")).setCardsForThisClient(str);
+		        		 
 					}
 					else if (checker.getType().equals("game ended")){
 		        		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  

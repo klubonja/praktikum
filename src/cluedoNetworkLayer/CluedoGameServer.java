@@ -41,7 +41,6 @@ public class CluedoGameServer extends CluedoGame {
 		return true;
 	}
 
-	//DEALS CARDS BUT DOESNT SEND EM TO THE CLIENTS
 	public ArrayList<CluedoPlayer> dealCardsNetwork(ArrayList<CluedoPlayer> players) {
 		Deck deck = new Deck(getNumberConnected());
 		deck.dealCluedoCards();
@@ -53,9 +52,6 @@ public class CluedoGameServer extends CluedoGame {
 		String[][] playerHands = deck.getPlayerHands();
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).setCards(playerHands[i]);
-			System.out.println(playerHands[i][i]);
-			System.out.println(players.get(i).getCards());
-			System.out.println(players.get(i).getNick());
 		}
 		return players;
 	}
@@ -144,25 +140,10 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	public void notifyInit() {
-		for (ClientItem client : participants) {
-			client.sendMsg(NetworkMessages.game_startedMsg(getGameId(),
-					getConnectedPlayersString()));
-			//CluedoPlayer p = getPlayerByClient(client);
-		//	client.sendMsg(NetworkMessages.player_cardsMsg(getGameId(),
-		//			p.getCards()));
-		}
-		/*try {
-			wait(Config.SECOND);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		for (ClientItem client : participants) {
-			//client.sendMsg(NetworkMessages.game_startedMsg(getGameId(),
-			//		getConnectedPlayersString()));
+		for (ClientItem client: participants){
+			client.sendMsg(NetworkMessages.game_startedMsg(getGameId(), getConnectedPlayersString()));
 			CluedoPlayer p = getPlayerByClient(client);
-			client.sendMsg(NetworkMessages.player_cardsMsg(getGameId(),
-					p.getCards()));
+			client.sendMsg(NetworkMessages.player_cardsMsg(getGameId(),p.getCards()));
 		}
 		
 

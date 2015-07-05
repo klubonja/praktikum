@@ -1,5 +1,7 @@
 package cluedoNetworkLayer;
 
+import java.util.ArrayList;
+
 import javafx.application.Platform;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
@@ -17,6 +19,14 @@ public class CluedoGameClient extends CluedoGame {
 		super(gameId);
 		this.server = server;
 		myNick = server.getMyNick();
+	}
+	
+	public void setCardsForThisClient(ArrayList<String> str){
+		for(CluedoPlayer p : server.getGameByGameID(getGameId()).getPlayers()){
+			if(p.getNick().equals(myNick)){
+				p.setCards(str);
+			}
+		}
 	}
 	
 	public ServerItem getServer() {

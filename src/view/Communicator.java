@@ -44,11 +44,15 @@ public class Communicator {
 		
 	public Communicator(CluedoGameClient ngame){
 		network = ngame;
-		players = ngame.getPlayersConnected();
+		players = network.getServer().getGameByGameID(network.getGameId()).getPlayers();
 		pcManager = new PlayerCircleManager(players);
 		
-		System.out.println(players.get(0).getNick());
-		System.out.println(players.get(0).getCards());
+		for(CluedoPlayer p : players){
+			if(p.getNick().equals(network.getMyNick())){
+				System.out.println(" WE GOT A NICK HERE");
+			}
+		}
+		System.out.println("[" + players.get(0).getCards() + "]");
 	}
 	
 	public void startGame(){
@@ -75,6 +79,7 @@ public class Communicator {
 		setHandler();
 		
 		testButtons();
+		
 		
 	}
 	public void setTitle(String newtitle){

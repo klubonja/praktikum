@@ -291,7 +291,7 @@ public class BoardView extends GridPane {
 					this.add(kachelArray[iReihen][jSpalten], jSpalten, iReihen);
 				}
 				
-				System.out.println(iReihen +" - "+jSpalten);
+//				System.out.println(iReihen +" - "+jSpalten);
 				
 				kachelArray[iReihen][jSpalten].setMaxHeight(29);
 				kachelArray[iReihen][jSpalten].setMaxWidth(29);

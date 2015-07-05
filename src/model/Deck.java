@@ -36,21 +36,27 @@ public class Deck {
 	}
 	
 	public void makeDeck(){
-		rooms.remove("pool");
 		deck.addAll(rooms);
 		deck.addAll(weapons);
 		deck.addAll(persons);
 	}
 	
 	public void dealCluedoCards(){
-
-		makeDeck();
+		rooms.remove("pool");
 		
 		winningHand = new String[3];
-		winningHand[0] = choseRandom(persons);
-		winningHand[1] = choseRandom(weapons);
-		winningHand[2] = choseRandom(rooms);
+		String randomPerson = choseRandom(persons);
+		String randomWeapon = choseRandom(weapons);
+		String randomRoom = choseRandom(rooms);
+		winningHand[0] = randomPerson;
+		winningHand[1] = randomWeapon;
+		winningHand[2] = randomRoom;
+		persons.remove(randomPerson);
+		weapons.remove(randomWeapon);
+		rooms.remove(randomRoom);
+		System.out.println("AND THE FUCKING WINNER IIIIIIIIIIIIIIIIS: " + winningHand[0] + " " + winningHand[1] + " "  + winningHand[2]);
 		
+		makeDeck();
 		
 		int playerModulo = deck.size()%amountPlayers;		
 		poolCards = choseNRandom(playerModulo,deck);
