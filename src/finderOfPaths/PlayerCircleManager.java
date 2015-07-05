@@ -78,6 +78,25 @@ public class PlayerCircleManager {
 		return null;
 	}
 	
+
+	public CluedoPlayer getPlayerByPerson(String person){
+		for (CluedoPlayer p:playerManager){
+			if (p.getCluedoPerson().getColor().equals(person))
+				return p;
+		}
+		
+		return null;
+	}
+	
+	public Circle getCircleByPerson(String person){
+		for (int i = 0; i < getSize(); i++){
+			if (playerManager.get(i).getCluedoPerson().getColor().equals(person))
+				return circleManager.get(i);
+		}
+		
+		return null;
+	}
+
 	
 	
 	public void setIndexByPlayer(CluedoPlayer p){

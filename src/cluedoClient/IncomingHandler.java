@@ -121,7 +121,9 @@ class IncomingHandler implements Runnable {
 				int gameID = checker.getMessage().getInt("gameID");
 				if (checker.getMessage().getJSONObject("player").get("playerstate").equals(PlayerStates.roll_dice.getName())){
 					auxx.logsevere("roll dice?!");
+					server.getGameByGameID(gameID).currentPlayerToNothing();
 					server.getGameByGameID(gameID).nextTurn();
+					server.getGameByGameID(gameID).currentPlayerToRolls();
 				}
 			}
 			else if(checker.getType().equals("dice result")){
@@ -133,11 +135,12 @@ class IncomingHandler implements Runnable {
 				server.getGameByGameID(checker.getMessage().getInt("gameID")).rollDice(wuerfel);
 			}
 			else if (checker.getType().equals("moved")){
+				String person = checker.getMessage().getJSONObject("person position").get("person").toString();
 				int xKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("x");
 				int yKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("y");
 				
 				CluedoPosition position = new CluedoPosition(xKoord, yKoord);
-				server.getGameByGameID(checker.getMessage().getInt("gameID")).move(position);
+				server.getGameByGameID(checker.getMessage().getInt("gameID")).move(position, person);
 			}
 			else if (checker.getType().equals("chat")){
 				  JSONObject chatmsg = checker.getMessage();

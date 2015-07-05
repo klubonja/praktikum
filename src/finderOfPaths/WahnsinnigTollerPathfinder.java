@@ -87,7 +87,7 @@ public class WahnsinnigTollerPathfinder {
 	 * @param ballEbene
 	 */
     
-    public final PlayerCircleManager pcManager;
+    public PlayerCircleManager pcManager;
 	public WahnsinnigTollerPathfinder(BoardView gui, BallEbene2 ballEbene,PlayerCircleManager pcm){
 		pcManager = pcm;
 		this.gui = gui;
@@ -100,7 +100,9 @@ public class WahnsinnigTollerPathfinder {
 	/**
 	 * Hauptmethode, mit welcher die ganzen checks aufgerufen werden.
 	 */
-	public void findThatPathBetter(int wuerfelZahl){
+	public void findThatPathBetter(int wuerfelZahl, PlayerCircleManager pcManager){
+		this.pcManager = pcManager;
+		currentPlayer = pcManager.getCurrentPlayer();
 		
 		refreshChecks();
 
