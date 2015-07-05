@@ -188,6 +188,10 @@ public class Communicator {
 		gameView.getHand().getAccuse().setOnMouseClicked(e -> {
 			accuse();
 		});
+		
+		
+		// END TURN
+		gameView.getHand().getEndTurn().setOnMouseClicked(e -> {});
 	}
 	/*
 	 * (check) start game (check) roll dice --> letztes Bild ihre

@@ -27,6 +27,7 @@ public class HandFrameView extends BorderPane{
 	private VBox accusationBox = new VBox();
 	private HBox lists = new HBox();
 	private Button accuse = new Button("Accuse!");
+	private Button endTurn = new Button("End turn");
 	
 	private ComboBox<String> persons = new ComboBox<String>();
 	private ComboBox<String> weapons = new ComboBox<String>();
@@ -59,7 +60,10 @@ public class HandFrameView extends BorderPane{
 		rooms.setMaxWidth(50);
 		
 		lists.getChildren().addAll(persons, weapons, rooms);
-		accusationBox.getChildren().addAll(lists, accuse);
+		accusationBox.getChildren().addAll(lists, accuse, endTurn);
+		
+		accusationBox.setAlignment(Pos.CENTER);
+		lists.setAlignment(Pos.CENTER);
 		
 		this.setTop(title);
 		this.setBottom(accusationBox);
@@ -134,6 +138,14 @@ public class HandFrameView extends BorderPane{
 
 	public void setRooms(ComboBox<String> rooms) {
 		this.rooms = rooms;
+	}
+
+	public Button getEndTurn() {
+		return endTurn;
+	}
+
+	public void setEndTurn(Button endTurn) {
+		this.endTurn = endTurn;
 	}
 	
 	
