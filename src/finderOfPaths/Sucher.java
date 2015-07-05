@@ -24,7 +24,7 @@ public class Sucher {
 	private CluedoPlayer currentPlayer;
 	
 	private char [][] anweisungen;
-	public final PlayerCircleManager pcManager;
+	public PlayerCircleManager pcManager;
 	 
 	
 	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  char [][]anweisungen,PlayerCircleManager pcm){
@@ -40,12 +40,13 @@ public class Sucher {
 	}
 	
 	
-	public void suchen(int wuerfelZahlEingabe){
+	public void suchen(int wuerfelZahlEingabe, PlayerCircleManager pcManager){
 		this.wuerfelZahl = wuerfelZahlEingabe;
+		this.pcManager = pcManager;
 		
-		setToNextPlayer();
+		//setToNextPlayer();
 		
-		pathfinder.findThatPathBetter(wuerfelZahl);
+		pathfinder.findThatPathBetter(wuerfelZahl, pcManager);
 		
 		anweisungen = pathfinder.getMoeglichkeiten();		
 		char [][][] mehrereAnweisungen = pathfinder.getMehrereMoeglichkeiten();
@@ -53,7 +54,7 @@ public class Sucher {
 		int [] yPositionen = pathfinder.getyPositionen();
 		int tuerCounter = pathfinder.getTuerCounter();
 		
-		vorschlager.vorschlaegeMachen(anweisungen, mehrereAnweisungen, xPositionen, yPositionen, tuerCounter);
+		vorschlager.vorschlaegeMachen(anweisungen, mehrereAnweisungen, xPositionen, yPositionen, tuerCounter, pcManager);
 		pathfinder.setTuerCounter(0);
 	}
 	

@@ -13,6 +13,7 @@ import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
+import enums.PlayerStates;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.BallEbene2;
 import finderOfPaths.DerBeweger;
@@ -79,6 +80,20 @@ public class Communicator {
 
 		testButtons();
 		auxx.logsevere("Oh my giddy giddy gosh");
+		updatePCs();
+	}
+	
+	public void updatePCs(){
+		CluedoPlayer currentPlayer = pcManager.getCurrentPlayer();
+		beweger.setCurrentPlayer(currentPlayer);
+		vorschlager.setCurrentPlayer(currentPlayer);
+		ausloeser.setCurrentPlayer(currentPlayer);
+		pathfinder.setCurrentPlayer(currentPlayer);
+		dicePresenter.pcManager = pcManager;
+		beweger.pcManager = pcManager;
+		vorschlager.pcManager = pcManager;
+		ausloeser.pcManager = pcManager;
+		pathfinder.pcManager = pcManager;
 	}
 
 	public void setTitle(String newtitle) {
@@ -100,20 +115,22 @@ public class Communicator {
 		//int [] testWuerfelWurf = {6,6};
 		int ersterWuerfel = wuerfelWurf[0];
 		int zweiterWuerfel = wuerfelWurf[1];
-		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
+		updatePCs();
+		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
 	}
 	
 	public void useSecretPassage(){
-		
-		beweger.useSecretPassage();
+		updatePCs();
+		beweger.useSecretPassage(pcManager);
 	}
 	
-	public void move(CluedoPosition position){
+	public void move(CluedoPosition position, String person){
+		updatePCs();
 		int yKoordinate = position.getY();
 		int xKoordinate = position.getX();
 		beweger.setCurrentPlayer(pcManager.getCurrentPlayer());
 		beweger.setCurrentCircle(pcManager.getCurrentCircle());
-		ausloeser.ausloesen(yKoordinate, xKoordinate);
+		ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
 	}
 
 	// SENDS MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT
@@ -147,6 +164,7 @@ public class Communicator {
 
 	public void setNextTurn(){
 		pcManager.next();// erhöht den index und sonst nix
+		updatePCs();
 	}
 		
 	public void endTurn() {
@@ -163,6 +181,7 @@ public class Communicator {
 	public void itsYourTurn(){
 		setNextTurn();
 		openWindow();
+		updatePCs();
 	}
 	
 	public void kill() {
@@ -220,7 +239,14 @@ public class Communicator {
 			public void closeWindow(){
 				gameView.getKomplettesFeld().getChildren().remove(zugView);
 			}
+
+			public void updateStatesToNothing() {
+				pcManager.getCurrentPlayer().setState(PlayerStates.do_nothing);
+			}
 			
+			public void updateStatesToRolls() {
+				pcManager.getCurrentPlayer().setState(PlayerStates.roll_dice);
+			}
 			
 	
 	/*

@@ -75,8 +75,8 @@ public class CluedoGameClient extends CluedoGame {
 		
 	}
 	
-	public void move(CluedoPosition position) {
-		communicator.move(position);
+	public void move(CluedoPosition position, String person) {
+		communicator.move(position, person);
 	}
 
 	public void setMyNick(String myNick) {
@@ -101,5 +101,19 @@ public class CluedoGameClient extends CluedoGame {
 		Platform.runLater(() -> {
 			communicator.kill();
 		});
+	}
+
+	public void currentPlayerToNothing() {
+		Platform.runLater(() -> {
+			communicator.updateStatesToNothing();
+		});
+		
+	}
+	
+	public void currentPlayerToRolls() {
+		Platform.runLater(() -> {
+			communicator.updateStatesToRolls();
+		});
+		
 	}
 }

@@ -129,7 +129,7 @@ public class GameFramePresenter {
 	public void test(){
 		beweger.anfangsPositionSetzen(0);
 		System.out.println("test");
-		ausloeser.zuweisung();
+		ausloeser.zuweisung(pcManager);
 	}
 	
 
