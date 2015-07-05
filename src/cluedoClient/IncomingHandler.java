@@ -118,8 +118,9 @@ class IncomingHandler implements Runnable {
         		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
 			}
 			else if(checker.getType().equals("stateupdate")){
+				int gameID = checker.getMessage().getInt("gameID");
 				if (checker.getMessage().get("player").equals(PlayerStates.roll_dice.getName())){
-					// fenster oeffnen
+					server.getGameByGameID(gameID).nextTurn();
 				}
 			}
 			else if(checker.getType().equals("dice result")){

@@ -67,6 +67,10 @@ public class CluedoGameClient extends CluedoGame {
 		});
 	}
 
+	public void nextTurn(){
+		communicator.itsYourTurn();
+	}
+	
 	public void move(CluedoPosition position) {
 		communicator.move(position);
 	}

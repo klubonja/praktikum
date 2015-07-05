@@ -143,20 +143,20 @@ public class Communicator {
 		
 	}
 
-	public void endTurn() {
-
-		// Communicator.playerManager.next();
-		// Communicator.circleManager.next();
+	public void setNextTurn(){
 		pcManager.next();// erhöht den index und sonst nix
-		// ///////////////////////////////////
-		// /BENACHRICHTUGUNG, DASS NÄCHSTER///
-		// ///////ZUG ANGEFANGEN HAT//////////
-		// ///////////////////////////////////
 	}
-
+	
+	public void itsYourTurn(){
+		setNextTurn();
+		openWindow();
+		
+	}
+	
 	public void kill() {
 		gameView.close();
 	}
+	
 	public void testButtons(){
 //		ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans = new int {5,9}));
 		int [] cheater = {6,6};
