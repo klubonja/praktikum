@@ -77,7 +77,7 @@ public class Communicator {
 		setHandler();
 
 		testButtons();
-		openWindow();
+		
 
 	}
 
@@ -144,14 +144,14 @@ public class Communicator {
 	}
 
 	public void endTurn() {
-
+		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
 		// Communicator.playerManager.next();
 		// Communicator.circleManager.next();
-		pcManager.next();// erhöht den index und sonst nix
 		// ///////////////////////////////////
 		// /BENACHRICHTUGUNG, DASS NÄCHSTER///
 		// ///////ZUG ANGEFANGEN HAT//////////
 		// ///////////////////////////////////
+		
 	}
 
 	public void kill() {
@@ -192,7 +192,7 @@ public class Communicator {
 		
 		
 		// END TURN
-		gameView.getHand().getEndTurn().setOnMouseClicked(e -> {});
+		gameView.getHand().getEndTurn().setOnMouseClicked(e -> endTurn());
 		
 	}
 	
@@ -205,6 +205,8 @@ public class Communicator {
 			public void closeWindow(){
 				gameView.getKomplettesFeld().getChildren().remove(zugView);
 			}
+			
+			
 	
 	/*
 	 * (check) start game (check) roll dice --> letztes Bild ihre
