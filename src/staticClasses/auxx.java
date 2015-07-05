@@ -87,34 +87,42 @@ public abstract class auxx {
 		
 	}
 	
-	public static String getTCPMessage(Socket s){
+	public static String[] getTCPMessages(Socket s){
 		try {
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
 			char[] buffer = new char[Config.MESSAGE_BUFFER];
 			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
-			String msg = new String (buffer, 0, charCount);			
+			String msg = new String (buffer, 0, charCount);	
 			logfine("RECEIVED : "+ msg);
-			return msg;
+			String[] msgs = msg.split(Config.TCP_MESSAGE_DELIMITER_REGEX);
+//			if (msgs[msgs.length-1].equals("")) {
+//				String[] msgsfinal = new String[msgs.length-1];
+//				for (int i = 0; i < msgs.length-2; i++)
+//					msgsfinal[i] = msgs[i];
+//				return msgs;
+//			}		
+			return msgs;
 		} 
 		catch (Exception e) {
 			logsevere("RECEIVE failed : ", e);
-			return null;
-	    }		
+	    }	
+		return null;
 	}
 	
 	public static boolean sendTCPMsg(Socket socket,String msg){
+		String message = msg+Config.TCP_MESSAGE_DELIMITER;
 		try {
 			PrintWriter out = new PrintWriter(
 					   new BufferedWriter(new OutputStreamWriter(
 					        socket.getOutputStream(), StandardCharsets.UTF_8)), true);
-			 out.print(msg);
+			 out.print(message);
 			 out.flush();	
-			 logfine("SENT : "+ msg);
+			 logfine("SENT : "+ message);
 			 return true;
 		}
 		catch (IOException e ){
-			logsevere("SEND failed : " + msg, e);
+			logsevere("SEND failed : " + message, e);
 			return false;
 		}			
 	}
