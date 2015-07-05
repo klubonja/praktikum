@@ -14,7 +14,7 @@ import enums.Rooms;
 import enums.Weapons;
 
 public class CluedoGameServer extends CluedoGame {
-	ArrayList<ClientItem> participants;
+	private ArrayList<ClientItem> participants;
 	ArrayList<ClientItem> watchers;
 	WinningStatement winningStatement;
 	DrawDFA drawAutomat;
@@ -22,7 +22,7 @@ public class CluedoGameServer extends CluedoGame {
 
 	public CluedoGameServer(int gameId) {
 		super(gameId);
-		participants = new ArrayList<ClientItem>();
+		setParticipants(new ArrayList<ClientItem>());
 		watchers = new ArrayList<ClientItem>();
 	}
 
@@ -64,13 +64,13 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	public void notifyAll(String msg) {
-		for (ClientItem c : participants) {
+		for (ClientItem c : getParticipants()) {
 			auxx.sendTCPMsg(c.getSocket(), msg);
 		}
 	}
 
 	public boolean hasPlayerNick(ClientItem client) {
-		for (ClientItem c : participants)
+		for (ClientItem c : getParticipants())
 			if (c == client)
 				return true;
 
@@ -78,17 +78,17 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	public boolean findAndRemovePlayer(ClientItem client) {
-		for (ClientItem c : participants)
+		for (ClientItem c : getParticipants())
 			if (c == client) {
 				if (removePlayer(client.getNick())) {
-					return participants.remove(client);
+					return getParticipants().remove(client);
 				}
 			}
 		return false;
 	}
 
 	public JoinGameStatus joinGameServer(String color, ClientItem client) {
-		if (participants.contains(client))
+		if (getParticipants().contains(client))
 			return JoinGameStatus.already_joined;
 		if (getGameState() != GameStates.not_started)
 			return JoinGameStatus.not_joinable;
@@ -96,7 +96,7 @@ public class CluedoGameServer extends CluedoGame {
 		for (CluedoPlayer p : players) {
 			if (p.getCluedoPerson().getColor().equals(color)) {
 				if (p.getNick().equals("")) {
-					if (participants.add(client)) {
+					if (getParticipants().add(client)) {
 						p.setNick(client.getNick());
 						client.setPlayer(p);
 						return JoinGameStatus.added;
@@ -113,7 +113,7 @@ public class CluedoGameServer extends CluedoGame {
 	public boolean leaveGameServer(ClientItem client) {
 		for (CluedoPlayer p : players) {
 			if (p.getNick().equals(client.getNick())) {
-				if (participants.remove(client)) {
+				if (getParticipants().remove(client)) {
 					p.setNick("");
 					return true;
 				} else {
@@ -139,7 +139,7 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	public void notifyInit() {
-		for (ClientItem client: participants){
+		for (ClientItem client: getParticipants()){
 			client.sendMsg(NetworkMessages.game_startedMsg(getGameId(), getConnectedPlayersString()));
 			CluedoPlayer p = getPlayerByClient(client);
 			client.sendMsg(NetworkMessages.player_cardsMsg(getGameId(),p.getCards()));
@@ -150,7 +150,7 @@ public class CluedoGameServer extends CluedoGame {
 
 	public void setNextRound() {
 		setCurrentPlayerNext();
-		drawAutomat = new DrawDFA(participants.get(currentPlayer).getPlayer()
+		drawAutomat = new DrawDFA(getParticipants().get(currentPlayer).getPlayer()
 				.getState());
 		notifyNextRound();
 	}
@@ -158,17 +158,22 @@ public class CluedoGameServer extends CluedoGame {
 	public void notifyNextRound() {
 		auxx.loginfo(getNicksConnected());
 		notifyAll(NetworkMessages.stateupdateMsg(getGameId(), NetworkMessages
-				.player_info(participants.get(currentPlayer).getNick(),
-						participants.get(currentPlayer).getPlayer()
-								.getCluedoPerson().getColor(), participants
+				.player_info(getParticipants().get(currentPlayer).getNick(),
+						getParticipants().get(currentPlayer).getPlayer()
+								.getCluedoPerson().getColor(), getParticipants()
 								.get(currentPlayer).getPlayer().getState()
 								.getName())
 
 		));
 	}
 
-	private void setCurrentPlayerNext() {
-		currentPlayer = (currentPlayer + 1) % participants.size();
+	public void setCurrentPlayerNext() {
+		currentPlayer = (currentPlayer + 1) % getParticipants().size();
+	}
+	
+
+	public int getCurrentPlayer() {
+		return currentPlayer;
 	}
 
 	public int [] rollTheDice() {
@@ -176,6 +181,14 @@ public class CluedoGameServer extends CluedoGame {
 		wuerfel[0] = auxx.getRandInt(1, 6);
 		wuerfel[1] = auxx.getRandInt(1, 6);
 		return wuerfel;
+	}
+
+	public ArrayList<ClientItem> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(ArrayList<ClientItem> participants) {
+		this.participants = participants;
 	}
 
 

@@ -277,7 +277,20 @@ class CommunicationHandler implements Runnable {
    	   
    	   else if(checker.getType().equals("end turn")){
    		   auxx.loginfo("end turn angekommen");
-   		   //TODO notifyNextRound() methode auf CluedoGameServer implementieren
+   		   int gameID = checker.getMessage().getInt("gameID");
+   		   ClientItem currentPlayer = dataManager.gamesList.getGameByID(gameID).getParticipants().get(dataManager.gamesList.getGameByID(gameID).getCurrentPlayer()); 
+   		   CluedoJSON playerinfo = new CluedoJSON("player");
+   		   playerinfo.put("nick", currentPlayer.getNick());
+   		   playerinfo.put("color", currentPlayer.getPlayer().getCluedoPerson().getColor());
+   		   playerinfo.put("playerstate", PlayerStates.do_nothing.getName());
+   		   currentPlayer.sendMsg(NetworkMessages.stateupdateMsg(gameID, playerinfo));
+   		   dataManager.gamesList.getGameByID(gameID).setCurrentPlayerNext();
+   		   currentPlayer = dataManager.gamesList.getGameByID(gameID).getParticipants().get(dataManager.gamesList.getGameByID(gameID).getCurrentPlayer()); 
+		   playerinfo = new CluedoJSON("player");
+		   playerinfo.put("nick", currentPlayer.getNick());
+		   playerinfo.put("color", currentPlayer.getPlayer().getCluedoPerson().getColor());
+		   playerinfo.put("playerstate", PlayerStates.roll_dice.getName());
+		   currentPlayer.sendMsg(NetworkMessages.stateupdateMsg(gameID, playerinfo));
    		   //setNextRound();
    		   //setCurrentPlayerNext();
    	   }
