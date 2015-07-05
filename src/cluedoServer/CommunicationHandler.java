@@ -67,6 +67,7 @@ class CommunicationHandler implements Runnable{
 		awaitingLoginAttempt();
 		while (run){
 			try {
+
 	           String[] messages = auxx.getTCPMessages(client.socket);
 			   currentMsg = messages[0];
 			   for (String message : messages)
@@ -207,20 +208,32 @@ class CommunicationHandler implements Runnable{
      		  closeProtokollConnection();
      	   }
      	   
-     	   else if(checker.getType().equals("move")){
-     		   int xKoordinate = checker.getMessage().getJSONObject("field").getInt("x");
-     		   int yKoordinate = checker.getMessage().getJSONObject("field").getInt("y");
-     		   CluedoField field = new CluedoField(new CluedoPosition(xKoordinate, yKoordinate));
-     		   int gameID = checker.getMessage().getInt("gameID");
-     		   // TODO: Position checken dataManager.getGameByID(gameID)
-     		   
-     		   client.sendMsg(NetworkMessages.okMsg());
-     		   JSONObject personpos = new JSONObject();
-     		   personpos.put("person",client.getPlayer().getCluedoPerson()); 
-     		   personpos.put("field", field);
-     		   dataManager.notifyAll(NetworkMessages.movedMsg(gameID, personpos));
-     		   
-     	   }
+     	  else if(checker.getType().equals("roll dice")){
+   		   int gameID = checker.getMessage().getInt("gameID");
+   		   dataManager.notifyAll(NetworkMessages.dice_resultMsg(gameID, dataManager.getGameByID(gameID).rollTheDice()));
+   	   }
+   	   
+   	   else if(checker.getType().equals("move")){
+   		   int xKoordinate = checker.getMessage().getJSONObject("field").getInt("x");
+   		   int yKoordinate = checker.getMessage().getJSONObject("field").getInt("y");
+   		   CluedoField field = new CluedoField(new CluedoPosition(xKoordinate, yKoordinate));
+   		   int gameID = checker.getMessage().getInt("gameID");
+   		   // TODO: Position checken dataManager.getGameByID(gameID)
+   		   
+   		   client.sendMsg(NetworkMessages.okMsg());
+   		   JSONObject personpos = new JSONObject();
+   		   personpos.put("person",client.getPlayer().getCluedoPerson()); 
+   		   personpos.put("field", field);
+   		   dataManager.notifyAll(NetworkMessages.movedMsg(gameID, personpos));
+   		   
+   	   }
+   	   
+   	   else if(checker.getType().equals("end turn")){
+   		   auxx.loginfo("end turn angekommen");
+   		   //TODO notifyNextRound() methode auf CluedoGameServer implementieren
+   		   //setNextRound();
+   		   //setCurrentPlayerNext();
+   	   }
      	  
      	   else if (checker.getType().equals("chat")) {														//CHAT
 				   JSONObject chatmsg = checker.getMessage();

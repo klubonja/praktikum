@@ -39,6 +39,7 @@ class IncomingHandler implements Runnable {
 		getGamesList();
 		while (globalRun && localRun) {
 			try {
+
 				String[] messages = auxx.getTCPMessages(server.getSocket());
 				for (String message: messages)
 					if (!message.equals("")) incommingLogic(message);
@@ -110,6 +111,14 @@ class IncomingHandler implements Runnable {
 			else if (checker.getType().equals("user left")){
         		  String player = checker.getMessage().getString("nick");
         		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
+			}
+			else if(checker.getType().equals("dice result")){
+				int [] wuerfel = new int [2];
+				wuerfel[0] = Integer.parseInt(checker.getMessage().getJSONArray("result").get(0).toString());
+				
+				
+				wuerfel[1] = Integer.parseInt(checker.getMessage().getJSONArray("result").get(1).toString());
+				server.getGameByGameID(checker.getMessage().getInt("gameID")).rollDice(wuerfel);
 			}
 			else if (checker.getType().equals("moved")){
 				int xKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("x");

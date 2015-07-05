@@ -170,5 +170,12 @@ public class CluedoGameServer extends CluedoGame{
 		currentPlayer = (currentPlayer + 1)%participants.size();
 	}
 
+	public int [] rollTheDice() {
+		int [] wuerfel = new int [2];
+		wuerfel[0] = auxx.getRandInt(1, 6);
+		wuerfel[1] = auxx.getRandInt(1, 6);
+		return wuerfel;
+	}
+
 
 }

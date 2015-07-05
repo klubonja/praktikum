@@ -329,14 +329,15 @@ public class CluedoProtokollChecker {
 	void validateDiceResult(JSONObject jsonParent,String key){
 		try {
 			int amountDices = 2;
-			JSONArray diceres = new JSONArray(jsonParent.getJSONArray(key));
+			JSONArray diceres = jsonParent.getJSONArray(key);
 			for (int i = 0; i < amountDices;i++)
-				if (!isInt(jsonParent, diceres.getString(i)))
+				if (!(diceres.getInt(i)== (int) diceres.getInt(i)))
 					setErr("JSONArray : in JSONArray \""+key+"\" on index "+i+" : noInt");
 			
 		}
 		catch (JSONException je){
 			setErr("JSONArray expected : \""+key+"\" is not JSONArray");
+			auxx.logsevere("is not a JSONArray dipshit ", je);
 		}
 	}
 	

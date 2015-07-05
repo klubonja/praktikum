@@ -1,6 +1,7 @@
 package view;
 
 
+import staticClasses.Config;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -46,7 +47,7 @@ public class GameFrameView extends GridPane{
 		/*(2 Rows x 2 Columns). */
 		this.getRowConstraints().add(new RowConstraints(25));
 		this.getRowConstraints().add(new RowConstraints(725));
-		this.getColumnConstraints().add(new ColumnConstraints(700));
+		this.getColumnConstraints().add(new ColumnConstraints(Config.GAMEWINDOW_HEIGHT));
 		this.getColumnConstraints().add(new ColumnConstraints(650));
 		this.setVgap(4);
 		this.setHgap(4);
@@ -126,7 +127,7 @@ public class GameFrameView extends GridPane{
 	
 	public void start(){
 		
-		scene = new Scene (this, 1300,700);
+		scene = new Scene (this, Config.GAMEWINDOW_WIDTH, Config.GAMEWINDOW_HEIGHT);
 		stage = new Stage();		
 		stage.setScene(scene);
 		stage.setResizable(true);
