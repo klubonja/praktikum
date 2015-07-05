@@ -423,10 +423,10 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String accuseMsg(int gameID,String card){
+	public static String accuseMsg(int gameID, JSONObject statement){
 		CluedoJSON json = new CluedoJSON("accuse");
 		json.put("gameID", gameID);
-		json.put("card", card);
+		json.put("statement", statement);
 		
 		return json.toString();
 	}

@@ -91,8 +91,6 @@ public class Ausloeser {
 		System.out.println("zuweisung");
 		zug.YESgangImage.setOnMouseClicked(e -> {beweger
 				.useSecretPassage();
-		stack.getChildren()
-				.remove(zug);
 	});
 		ballEbene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override

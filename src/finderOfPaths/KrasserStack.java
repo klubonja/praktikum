@@ -74,6 +74,4 @@ public class KrasserStack extends StackPane {
 	public void setBoardView(BoardView boardView) {
 		this.boardView = boardView;
 	}
-
-	
 }
