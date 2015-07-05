@@ -39,111 +39,10 @@ class IncomingHandler implements Runnable {
 		getGamesList();
 		while (globalRun && localRun) {
 			try {
-				String msg = auxx.getTCPMessage(server.getSocket());
-				CluedoProtokollChecker checker = new CluedoProtokollChecker(
-						new CluedoJSON(new JSONObject(msg)));
-				checker.validate();
-				if (checker.isValid()){				
-					if (checker.getType().equals("game created")){
-						int gameID = checker.getMessage().getInt("gameID");
-						JSONObject playerJSON = checker.getMessage().getJSONObject("player");
-						dataGuiManager.addGameToServer(server,gameID, playerJSON.getString("nick"),playerJSON.getString("color"));
-					}
-					
-					else if (checker.getType().equals("player added")){
-						  int gameID = checker.getMessage().getInt("gameID");
-		        		  JSONObject player = checker.getMessage().getJSONObject("player");
-		        		  dataGuiManager.joinGameOnServer(server,gameID,player.getString("color"),player.getString("nick"));
-		        		  
-					}
-					else if (checker.getType().equals("game started")){
-		        		  ArrayList<String> orderlist = auxx.jsonArrayToArrayList(checker.getMessage().getJSONArray("order"));
-		        		  dataGuiManager.startGameOnServer(
-		        				  server,
-		        				  checker.getMessage().getInt("gameID"),
-		        				  checker.getMessage().getString("gamestate"),
-		        				  orderlist
-		        				  );
-		        		  
-					}
-					else if (checker.getType().equals("player_cards")){						 
-		        		 server.getGameByGameID(
-		        				 checker.getMessage().getInt("gameID")
-		        				 ).getConnectedPlayerByName(
-		        						 server.getMyNick()
-		        						 ).setCards(
-		        								 auxx.jsonArrayToArrayList(
-		        										 checker.getMessage().getJSONArray("cards")
-		        										 )
-		        							);	        		  
-					}
-					else if (checker.getType().equals("game ended")){
-		        		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
-					}
-					else if (checker.getType().equals("left game")){
-//		        		 CluedoGameClient game = server.getGameByGameID(checker.getMessage().getInt("gameID"));
-//		        		 game.removePlayer(checker.getMessage().getString("nick"));	
-//		        		 dataGuiManager.refreshGamesListServer(server);
-		        		 dataGuiManager.removePlayerFromGameOnServer(
-		        				 checker.getMessage().getInt("gameID"),
-		        				 checker.getMessage().getString("nick"),
-		        				 server);
-					}
-					else if (checker.getType().equals("game deleted")){
-		        		 dataGuiManager.deleteGameOnServer(server,checker.getMessage().getInt("gameID"));		        		  
-					}
-					else if (checker.getType().equals("user left")){
-		        		  String player = checker.getMessage().getString("nick");
-		        		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
-					}
-					else if (checker.getType().equals("moved")){
-						int xKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("x");
-						int yKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("y");
+				String[] messages = auxx.getTCPMessages(server.getSocket());
+				for (String message: messages)
+					if (!message.equals("")) incommingLogic(message);
 						
-						CluedoPosition position = new CluedoPosition(xKoord, yKoord);
-						server.getGameByGameID(checker.getMessage().getInt("gameID")).move(position);
-					}
-					else if (checker.getType().equals("chat")){
-						  JSONObject chatmsg = checker.getMessage();
-		        		  if (chatmsg.has("gameID")){
-		        			  server.getGameByGameID(
-		        					  	chatmsg.getInt("gameID")
-		        					  ).addChatMsg(
-		        							  auxx.convertTs(chatmsg.getString("timestamp"))+" : "+chatmsg.getString("message")
-		        						);
-		        		  }
-		        		  if (checker.getMessage().has("nick")){
-		        			  dataGuiManager.addMsgIn(
-		        					  auxx.convertTs(chatmsg.getString("timestamp"))+" "+chatmsg.getString("sender")+" says (privately) : \n"+
-		        							  chatmsg.getString("message")
-		        					  );
-		        		  }
-//	        			  else if (chatmsg.has("sender")){
-//	        				  dataGuiManager.addMsgIn(
-//		        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says : \n"+
-//		        							  chatmsg.getString("message")
-//		        					  );
-//	        			  }
-	        			  else {
-	        				  dataGuiManager.addMsgIn(
-	        						  auxx.convertTs(chatmsg.getString("timestamp"))+" : \n"+
-		        							  chatmsg.getString("message")
-		        					  );
-	        			  }
-					}
-					else if (checker.getType().equals("disconnect")){
-		        		  killConnection();   
-					}
-					else if (checker.getType().equals("error")){
-		        		  dataGuiManager.setStatus("ERROR : "+checker.getMessage().getString("message")); 
-					}
-					else {
-						auxx.loginfo("INCOMING unchecked valid type: "+checker.getType());
-					}
-				}		
-				else {
-					auxx.loginfo("INCOMING invalid : "+checker.getErrString());
-				}				
 			}			
 			catch (Exception e){
 				auxx.logsevere("error on incomming handler client", e);
@@ -155,8 +54,122 @@ class IncomingHandler implements Runnable {
 		killConnection();	
 	}
 	
+	private void incommingLogic(String msg){
+		CluedoProtokollChecker checker = new CluedoProtokollChecker(
+				new CluedoJSON(new JSONObject(msg)));
+		checker.validate();
+		if (checker.isValid()){				
+			if (checker.getType().equals("game created")){
+				int gameID = checker.getMessage().getInt("gameID");
+				JSONObject playerJSON = checker.getMessage().getJSONObject("player");
+				dataGuiManager.addGameToServer(server,gameID, playerJSON.getString("nick"),playerJSON.getString("color"));
+			}
+			
+			else if (checker.getType().equals("player added")){
+				  int gameID = checker.getMessage().getInt("gameID");
+        		  JSONObject player = checker.getMessage().getJSONObject("player");
+        		  dataGuiManager.joinGameOnServer(server,gameID,player.getString("color"),player.getString("nick"));
+        		  
+			}
+			else if (checker.getType().equals("game started")){
+        		  ArrayList<String> orderlist = auxx.jsonArrayToArrayList(checker.getMessage().getJSONArray("order"));
+        		  dataGuiManager.startGameOnServer(
+        				  server,
+        				  checker.getMessage().getInt("gameID"),
+        				  checker.getMessage().getString("gamestate"),
+        				  orderlist
+        				  );
+        		  
+			}
+			else if (checker.getType().equals("player_cards")){						 
+        		 server.getGameByGameID(
+        				 checker.getMessage().getInt("gameID")
+        				 ).getConnectedPlayerByName(
+        						 server.getMyNick()
+        						 ).setCards(
+        								 auxx.jsonArrayToArrayList(
+        										 checker.getMessage().getJSONArray("cards")
+        										 )
+        							);	        		  
+			}
+			else if (checker.getType().equals("game ended")){
+        		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
+			}
+			else if (checker.getType().equals("left game")){
+//        		 CluedoGameClient game = server.getGameByGameID(checker.getMessage().getInt("gameID"));
+//        		 game.removePlayer(checker.getMessage().getString("nick"));	
+//        		 dataGuiManager.refreshGamesListServer(server);
+        		 dataGuiManager.removePlayerFromGameOnServer(
+        				 checker.getMessage().getInt("gameID"),
+        				 checker.getMessage().getString("nick"),
+        				 server);
+			}
+			else if (checker.getType().equals("game deleted")){
+        		 dataGuiManager.deleteGameOnServer(server,checker.getMessage().getInt("gameID"));		        		  
+			}
+			else if (checker.getType().equals("user left")){
+        		  String player = checker.getMessage().getString("nick");
+        		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
+			}
+			else if (checker.getType().equals("moved")){
+				int xKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("x");
+				int yKoord = checker.getMessage().getJSONObject("person position").getJSONObject("field").getInt("y");
+				
+				CluedoPosition position = new CluedoPosition(xKoord, yKoord);
+				server.getGameByGameID(checker.getMessage().getInt("gameID")).move(position);
+			}
+			else if (checker.getType().equals("chat")){
+				  JSONObject chatmsg = checker.getMessage();
+        		  if (chatmsg.has("gameID")){
+        			  server.getGameByGameID(
+        					  	chatmsg.getInt("gameID")
+        					  ).addChatMsg(
+        							  auxx.convertTs(chatmsg.getString("timestamp"))+" : "+chatmsg.getString("message")
+        						);
+        		  }
+        		  if (checker.getMessage().has("nick")){
+        			  dataGuiManager.addMsgIn(
+        					  auxx.convertTs(chatmsg.getString("timestamp"))+" "+chatmsg.getString("sender")+" says (privately) : \n"+
+        							  chatmsg.getString("message")
+        					  );
+        		  }
+//    			  else if (chatmsg.has("sender")){
+//    				  dataGuiManager.addMsgIn(
+//        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says : \n"+
+//        							  chatmsg.getString("message")
+//        					  );
+//    			  }
+    			  else {
+    				  dataGuiManager.addMsgIn(
+    						  auxx.convertTs(chatmsg.getString("timestamp"))+" : \n"+
+        							  chatmsg.getString("message")
+        					  );
+    			  }
+			}
+			else if (checker.getType().equals("disconnect")){
+        		  killConnection();   
+			}
+			else if (checker.getType().equals("error")){
+        		  dataGuiManager.setStatus("ERROR : "+checker.getMessage().getString("message")); 
+			}
+			else {
+				auxx.loginfo("INCOMING unchecked valid type: "+checker.getType());
+			}
+		}		
+		else {
+			auxx.loginfo("INCOMING invalid : "+checker.getErrString());
+		}	
+	}
+	
 	private void getGamesList(){
-		String msg = auxx.getTCPMessage(server.getSocket());
+		String msgs[] = auxx.getTCPMessages(server.getSocket());
+		for (String msg : msgs)
+			if (!msg.equals(""))  getGamesListLogic(msg);
+		
+		
+	}
+	
+	private void getGamesListLogic(String msg){
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(msg));
 		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error"});
 		
@@ -185,7 +198,6 @@ class IncomingHandler implements Runnable {
 		else {
 			//dataGuiManager.addMsgIn(checker.getMessage().toString());
 		}
-		
 	}
 	
 	

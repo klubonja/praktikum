@@ -67,6 +67,10 @@ public abstract class Config {
 	
 	public static final int MIN_CLIENTS_FOR_GAMESTART = 1;
 	
+	public static final String TCP_MESSAGE_DELIMITER = "\n";
+	public static final String TCP_MESSAGE_DELIMITER_WINDOWS = "\r";
+	public static final String TCP_MESSAGE_DELIMITER_REGEX = "\\r?\\n";
+	
 	
 	
 	
