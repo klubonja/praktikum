@@ -103,7 +103,6 @@ class CommunicationHandler implements Runnable{
 					dataManager.getGameList()
 					)
 			);
-			
 			if (dataGuiManager.addNetworkActor(client,"logged in"))
 				dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
 			else {
