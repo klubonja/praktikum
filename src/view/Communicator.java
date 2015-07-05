@@ -111,6 +111,8 @@ public class Communicator {
 	public void move(CluedoPosition position){
 		int yKoordinate = position.getY();
 		int xKoordinate = position.getX();
+		beweger.setCurrentPlayer(pcManager.getCurrentPlayer());
+		beweger.setCurrentCircle(pcManager.getCurrentCircle());
 		ausloeser.ausloesen(yKoordinate, xKoordinate);
 	}
 

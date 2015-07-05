@@ -43,8 +43,6 @@ public class Ausloeser {
 
 	private int schritte;
 
-	private CluedoPlayer currentPlayer;
-
 	private int xInsgesamt;
 	private int yInsgesamt;
 

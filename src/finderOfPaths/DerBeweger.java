@@ -80,9 +80,9 @@ public class DerBeweger {
 		this.raumBeweger = raumBeweger;
 		
 		this.currentPlayer = pcManager.getCurrentPlayer();
-		
-		anfangsKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
 		currentCircle = pcManager.getCurrentCircle();
+		anfangsKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
+		
 		
 	}
 	
