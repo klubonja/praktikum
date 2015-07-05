@@ -17,15 +17,12 @@ public class CluedoGameServer extends CluedoGame {
 	private ArrayList<ClientItem> participants;
 	ArrayList<ClientItem> watchers;
 	WinningStatement winningStatement;
-	CluedoStateMachine turnDFA;
 	int currentPlayer = 0;
 
 	public CluedoGameServer(int gameId) {
 		super(gameId);
 		setParticipants(new ArrayList<ClientItem>());
 		watchers = new ArrayList<ClientItem>();
-		
-		turnDFA = new CluedoStateMachine(PlayerStates.do_nothing);
 	}
 
 	public WinningStatement getWinningStatement() {
