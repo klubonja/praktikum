@@ -39,6 +39,7 @@ public class Deck {
 		deck.addAll(rooms);
 		deck.addAll(weapons);
 		deck.addAll(persons);
+		rooms.remove("pool");
 	}
 	
 	public void dealCluedoCards(){

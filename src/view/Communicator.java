@@ -79,6 +79,7 @@ public class Communicator {
 		setHandler();
 
 		testButtons();
+		openWindow();
 		auxx.logsevere("Oh my giddy giddy gosh");
 		updatePCs();
 	}
@@ -143,7 +144,6 @@ public class Communicator {
 				NetworkMessages.statement(person, room, weapon)));
 	}
 
-	// SENDS A MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT AS WELL
 	public void accuse() {
 		String person = gameView.getHand().getPersons().getValue();
 		String weapon = gameView.getHand().getWeapons().getValue();
@@ -153,8 +153,8 @@ public class Communicator {
 
 	}
 
-	public void disprove() {
-
+	public void disprove(String card) {
+		network.sendMsgToServer(NetworkMessages.disprovedMsg(network.getGameId(), network.getMyNick(), card));
 	}
 
 	public void highlightCard(String card) {
@@ -169,7 +169,7 @@ public class Communicator {
 		for (int i = 0; i < gameView.getHand().getHandURI().size(); i++) {
 			if (card.equals(gameView.getHand().getHandURI().get(i))) {
 				gameView.getHand().getHand().get(i).setOnMousePressed(e -> {
-					network.sendMsgToServer(NetworkMessages.disproveMsg(network.getGameId(), card));
+					disprove(card);
 				});
 				gameView.getHand().getHand().get(i).setOnMouseReleased(e -> {
 					gamePresenter.getHandFramePresenter().removeEffects();
@@ -273,43 +273,38 @@ public class Communicator {
 			}
 			
 			public void compareCards(String person, String weapon, String room){
-				boolean found = false;
+				switch (person) {
+				case "red":
+					person = "Fräulein Gloria";
+					break;
+				case "yellow":
+					person = "Oberts von Gatow";
+					break;
+				case "white":
+					person = "Frau Weiss";
+					break;
+				case "green":
+					person = "Reverend Green";
+					break;
+				case "blue":
+					person = "Baronin von Porz";
+					break;
+				case "purple":
+					person = "Professor Bloom";
+					break;
+				}
 				int currentIndex = pcManager.getIndex();
 				pcManager.next();
 				while(currentIndex != pcManager.getIndex()){
 				for(int i = 0; i < pcManager.getPlayerManager().size(); i++){
 					for(String card : pcManager.getCurrentPlayer().getCards()){
-					switch (person) {
-					case "red":
-						person = "Fräulein Gloria";
-						break;
-					case "yellow":
-						person = "Oberts von Gatow";
-						break;
-					case "white":
-						person = "Frau Weiss";
-						break;
-					case "green":
-						person = "Reverend Green";
-						break;
-					case "blue":
-						person = "Baronin von Porz";
-						break;
-					case "purple":
-						person = "Professor Bloom";
-						break;
-					}
 					if (card.equals(person) ||
 						card.equals(weapon) ||
 						card.equals(room)) {
 								highlightCard(card);
 								setCardFunction(card);
 								pcManager.setIndex(currentIndex);
-								found = true;
 					}
-					}
-					if(found){
-						break;
 					}
 					pcManager.next();
 				}

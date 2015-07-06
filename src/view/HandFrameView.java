@@ -45,6 +45,8 @@ public class HandFrameView extends BorderPane {
 		this.setPrefSize(350, 350);
 		this.setMinSize(350, 350);
 		
+		deck.makeDeck();
+		
 		for (CluedoPlayer p : client.getPlayersConnected()) {
 			if (p.getNick().equals(client.getMyNick())) {
 				for (String str : p.getCards()) {

@@ -33,7 +33,6 @@ class CommunicationHandler implements Runnable {
 	boolean run = true;
 	boolean readyForCommunication = false;
 	String currentMsg;
-	String suspector;
 
 	/**
 	 * @param ss
