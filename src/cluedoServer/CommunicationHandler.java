@@ -101,20 +101,32 @@ class CommunicationHandler implements Runnable {
 			client.setExpansions(auxx.makeConjunction(Config.EXPANSIONS,
 					checker.getMessage().getJSONArray("expansions")));
 			client.setNick(checker.getMessage().getString("nick"));
-			client.setGroupName(checker.getMessage().getString("group"));
-			client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(),
-					dataManager.getClientPool(), dataManager.getGameList()));
+			client.setGroupName(checker.getMessage().getString("group"));					
+			client.sendMsg(NetworkMessages.login_sucMsg(
+					client.getExpansions(),
+					dataManager.getClientPool(), 
+					dataManager.getGameList()
+					)
+			);
+			if (dataGuiManager.addNetworkActor(client,"logged in")){
+				dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
+				client.setGroupName(checker.getMessage().getString("group"));
+				client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(),
+								dataManager.getClientPool(), dataManager.getGameList()));
 
-			if (dataGuiManager.addNetworkActor(client, "logged in"))
-				dataManager.notifyAll(NetworkMessages.user_addedMsg(client
-						.getNick()));
+//			if (dataGuiManager.addNetworkActor(client, "logged in"))
+//				dataManager.notifyAll(NetworkMessages.user_addedMsg(client
+//						.getNick()));
+//>>>>>>> d62cee416b07023f92e8b8a0ea083aa68d1efac5
+			}
 			else {
 				client.sendMsg(NetworkMessages.error_Msg(client.getNick()
 						+ " already exists, try again with different nick"));
 				readyForCommunication = false;
 			}
 			readyForCommunication = true;
-		} else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR
+		} 
+	    else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR
 				|| errcode == NetworkHandhakeCodes.TYPERR) {
 
 			dataGuiManager.addMsgIn(client.getAdress()

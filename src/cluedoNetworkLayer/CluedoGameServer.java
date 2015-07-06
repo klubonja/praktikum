@@ -6,7 +6,7 @@ import model.Deck;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoServer.ClientItem;
-import cluedoServer.DrawDFA;
+import cluedoServer.TurnDFA;
 import enums.GameStates;
 import enums.JoinGameStatus;
 import enums.Persons;
@@ -17,7 +17,7 @@ public class CluedoGameServer extends CluedoGame {
 	private ArrayList<ClientItem> participants;
 	ArrayList<ClientItem> watchers;
 	WinningStatement winningStatement;
-	DrawDFA drawAutomat;
+	TurnDFA drawAutomat;
 	int currentPlayer = 0;
 
 	public CluedoGameServer(int gameId) {
@@ -149,7 +149,7 @@ public class CluedoGameServer extends CluedoGame {
 
 	public void setNextRound() {
 		setCurrentPlayerNext();
-		drawAutomat = new DrawDFA(getParticipants().get(currentPlayer).getPlayer()
+		drawAutomat = new TurnDFA(getParticipants().get(currentPlayer).getPlayer()
 				.getState());
 		notifyNextRound();
 	}
