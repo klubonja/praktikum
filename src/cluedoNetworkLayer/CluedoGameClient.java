@@ -16,13 +16,17 @@ public class CluedoGameClient extends CluedoGame {
 		super(gameId);
 		this.server = server;
 		myNick = server.getMyNick();
-		System.out.println(gameId);
 	}
 
 	public void somebodyIsAccusing(String nick, String person, String weapon, String room) {
 		String str = "The player " + nick
 				+ " is trying to solve the mystery!" + "\n" + "Accused: "
 				+ person + " " + weapon + " " + room;
+		changeLabel(str);
+	}
+	
+	public void somebodyFailedToAccuse(String person, String weapon, String room){
+		String str = "Accusation failed for: " + person + " " + weapon + " " + room;
 		changeLabel(str);
 	}
 

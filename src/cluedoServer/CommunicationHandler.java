@@ -296,6 +296,15 @@ class CommunicationHandler implements Runnable {
 			dataManager.notifyAll(NetworkMessages.accuseMsg(
 					id, NetworkMessages.statement(person, room, weapon))
 					);
+			if(person.equals(dataManager.getGameByID(id).getWinningStatement().getPerson()) &&
+				weapon.equals(dataManager.getGameByID(id).getWinningStatement().getWeapon()) &&
+				room.equals(dataManager.getGameByID(id).getWinningStatement().getRoom())){
+				//KICK PLAYER OUT OF THE GAME
+			} else {
+				dataManager.notifyAll(NetworkMessages.
+				wrong_accusationMsg(id, NetworkMessages.
+				statement(person, room, weapon)));
+			}
 		} else
 			if (checker.getType().equals("suspicion")) {
 			int id = checker.getMessage().getInt("gameID");

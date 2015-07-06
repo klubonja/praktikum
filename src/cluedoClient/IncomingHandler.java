@@ -110,7 +110,17 @@ class IncomingHandler implements Runnable {
 						server.getGameByGameID(checker.getMessage().getInt("gameID")).getMyNick(),
 						person, weapon, room
 						);
-			} else if (checker.getType().equals("disproved")) {
+			} else
+				if(checker.getType().equals("wrong accusation")){
+					JSONObject json = checker.getMessage().getJSONObject(
+							"statement");
+					String person = json.getString("person").toString();
+					String weapon = json.getString("weapon").toString();
+					String room = json.getString("room").toString();
+					server.getGameByGameID(checker.getMessage().getInt("gameID")).
+					somebodyFailedToAccuse(person, weapon, room);
+			} else
+				if (checker.getType().equals("disproved")) {
 				server.getGameByGameID(checker.getMessage().getInt("gameID"))
 				.changeLabel("Player: "+
 				checker.getMessage().getString("nick")
