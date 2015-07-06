@@ -69,8 +69,7 @@ class OutgoingHandler implements Runnable{
 			        			auxx.sendTCPMsg(
 				        				dataGuiManager.getSelectedServer().getSocket(),
 				        				NetworkMessages.chatMsg(gui.inputField.getText(),server.getMyNick(),auxx.now()));	
-			        		}
-			        				        		
+			        		}			        				        		
 			        	} 
 			        	catch (Exception e1) {
 							localRun = false;
