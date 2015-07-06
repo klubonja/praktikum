@@ -321,6 +321,8 @@ public class CluedoProtokollChecker {
 			setErr("PlayerState : \""+playerState+ "\" not a valid PlayerState in this Game");
 	}
 	
+	
+	
 	boolean validateProtokollVersion(JSONObject jsonParent,String key){
 		if (jsonParent.getString(key).equals(Config.PROTOKOLL_VERSION)) return true;		
 		return false;
@@ -331,7 +333,7 @@ public class CluedoProtokollChecker {
 			int amountDices = 2;
 			JSONArray diceres = jsonParent.getJSONArray(key);
 			for (int i = 0; i < amountDices;i++)
-				if (!(diceres.getInt(i)== (int) diceres.getInt(i)))
+				if (!(diceres.getInt(i)== diceres.getInt(i)))
 					setErr("JSONArray : in JSONArray \""+key+"\" on index "+i+" : noInt");
 			
 		}
@@ -415,7 +417,11 @@ public class CluedoProtokollChecker {
 //			if (validateValue(jsonParent, "cards"))
 //				isInt(jsonParent, "cards");
 			if (validateValue(jsonParent, "playerstate"))
-				validatePlayer(jsonParent.getString("playerstate"));		
+				validatePlayerStates(jsonParent,"playerstate");		
+	}
+	
+	void validatePlayerStates(JSONObject parent,String key){
+		isJSONArrayOfType(parent, key, "playerstate");
 	}
 	
 	void validateGameInfo(JSONObject jsonParent) throws JSONException{
@@ -443,6 +449,12 @@ public class CluedoProtokollChecker {
 			validateField(jsonParent, "field");
 	}
 	
+	private void validatePlayerState(String playerstate){
+		if (!PlayerStates.isMember(playerstate))
+			setErr("Playerstate \""+playerstate+ "\" not a valid Playerstate in this Game");
+			
+	}
+	
 	boolean isJSONArrayOfType(JSONObject jsonParent, String key,String localtype) {
 		int index = 0;
 		try {
@@ -458,6 +470,9 @@ public class CluedoProtokollChecker {
 							break;
 						case  "cards" :
 							validateCards(jar.getString(index));
+							break;
+						case  "playerstate" :
+							validatePlayerState(jar.getString(index));
 							break;
 						case "weaponpos" :
 							validateWeaponPos(jar.getJSONObject(index));

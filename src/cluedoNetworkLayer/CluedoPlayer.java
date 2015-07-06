@@ -19,7 +19,8 @@ public class CluedoPlayer {
 	
 	public CluedoPlayer(Persons pers,PlayerStates s, CluedoPosition p) {
 		cluedoPerson = pers;
-		currentState = s;
+		if (s == PlayerStates.do_nothing) setDoNothing();
+		else setCurrentState(s);
 		position = p;
 		nick = "";
 		cards = new ArrayList<String>();
@@ -27,7 +28,8 @@ public class CluedoPlayer {
 	
 	public CluedoPlayer(Persons pers,PlayerStates s) {
 		cluedoPerson = pers;
-		currentState = s;
+		if (s == PlayerStates.do_nothing) setDoNothing();
+		else setCurrentState(s);
 		position = new CluedoPosition(cluedoPerson.getStartposition().getX(),
 									 cluedoPerson.getStartposition().getY());
 	}
