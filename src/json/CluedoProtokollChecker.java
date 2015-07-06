@@ -430,8 +430,8 @@ public class CluedoProtokollChecker {
 		validateGameState(jsonParent.getString("gamestate"));
 		isJSONArrayOfType(jsonParent,"players", "playerinfo");
 		isJSONArrayOfType(jsonParent,"watchers", "string");
-		isJSONArrayOfType(jsonParent,"person positions", "personpos");
-		isJSONArrayOfType(jsonParent,"weapon positions", "weaponpos");			
+//		isJSONArrayOfType(jsonParent,"person positions", "personpos");
+//		isJSONArrayOfType(jsonParent,"weapon positions", "weaponpos");			
 
 	}
 	
@@ -496,7 +496,7 @@ public class CluedoProtokollChecker {
 		catch (JSONException e) {
 		//	System. out.println("VERYBAD :JSONArray expected on : "+key+" loopindex"+ index + " for "+localtype+" value \n"+jsonParent.toString());
 			//e.printStackTrace();
-			setErr("JSONArray: \""+key+"\" expected  ");
+			setErr("JSONArray: \""+key+"\" expected  in "+jsonParent.toString());
 			return false;
 		}		
 	}

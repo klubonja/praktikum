@@ -534,12 +534,20 @@ public abstract class NetworkMessages {
 //								)									
 //						);	
 //				player.setNick(players.getJSONObject(n).getString("nick"));
+				
+				JSONArray states = players.getJSONObject(n).getJSONArray("playerstate");
+				ArrayList<PlayerStates> playerstates = new ArrayList<PlayerStates>();
+				for (int t = 0; t < states.length(); t++){
+					playerstates.add(PlayerStates.getPlayerState(states.getString(t)));
+				}
+				
 				newgame.joinGame(
 						players.getJSONObject(n).getString("color")
 						,
 						players.getJSONObject(n).getString("nick"), 
-						PlayerStates.getPlayerState(
-								players.getJSONObject(n).getString("playerstate"))
+//						PlayerStates.getPlayerState(
+//								players.getJSONObject(n).getString("playerstate"))
+						playerstates
 						);
 			}
 			
@@ -548,30 +556,33 @@ public abstract class NetworkMessages {
 				//wofür?
 			}
 			
-			JSONArray personposs = gamearray.getJSONObject(i).getJSONArray("person positions");				
-			for (int n = 0;n < personposs.length();n++){						
-				JSONObject ppos = personposs.getJSONObject(n);
-				String pname = ppos.getString("person");
-				newgame.
-					getPlayer(pname).
-						getPosition().
-							setX(ppos.getJSONObject("field").
-									getInt("x"));
-				newgame.getPlayer(pname).getPosition().setY(ppos.getJSONObject("field").getInt("y"));
+			if (gamearray.getJSONObject(i).has("person positions")){
+				JSONArray personposs = gamearray.getJSONObject(i).getJSONArray("person positions");				
+				for (int n = 0;n < personposs.length();n++){						
+					JSONObject ppos = personposs.getJSONObject(n);
+					String pname = ppos.getString("person");
+					newgame.
+						getPlayer(pname).
+							getPosition().
+								setX(ppos.getJSONObject("field").
+										getInt("x"));
+					newgame.getPlayer(pname).getPosition().setY(ppos.getJSONObject("field").getInt("y"));	
+				}
 			}
-			
-			JSONArray weaponposs = gamearray.getJSONObject(i).getJSONArray("weapon positions");				
-			for (int n = 0;n < weaponposs.length();n++){						
-				JSONObject wpos = weaponposs.getJSONObject(n);
-				String wname = wpos.getString("weapon");
-				newgame.
-					getWeaponByName(wname).
-						getPosition().
-							setX(
-									wpos.getJSONObject("field").
-									getInt("x")
-								);
-				newgame.getWeaponByName(wname).getPosition().setY(wpos.getJSONObject("field").getInt("y"));
+			if (gamearray.getJSONObject(i).has("weapon positions")){
+				JSONArray weaponposs = gamearray.getJSONObject(i).getJSONArray("weapon positions");				
+				for (int n = 0;n < weaponposs.length();n++){						
+					JSONObject wpos = weaponposs.getJSONObject(n);
+					String wname = wpos.getString("weapon");
+					newgame.
+						getWeaponByName(wname).
+							getPosition().
+								setX(
+										wpos.getJSONObject("field").
+										getInt("x")
+									);
+					newgame.getWeaponByName(wname).getPosition().setY(wpos.getJSONObject("field").getInt("y"));
+				}
 			}	
 			
 			gamelist.add(newgame);
@@ -579,5 +590,4 @@ public abstract class NetworkMessages {
 		
 		return gamelist;
 	}	
-	
 }

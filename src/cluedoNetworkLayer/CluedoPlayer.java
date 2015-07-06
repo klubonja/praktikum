@@ -45,6 +45,11 @@ public class CluedoPlayer {
 		possibleStates = dfa.getPossibleStatesFromState(currentState);
 	}
 	
+	public void setCurrentStates(ArrayList<PlayerStates> states) {
+		//this.currentState = currentState;
+		possibleStates = states;
+	}
+	
 	public PlayerStates getCurrentState() {
 		return currentState;
 	}

@@ -64,12 +64,12 @@ public abstract class CluedoGame {
 		return false;
 	}
 	
-	public boolean joinGame(String color,String nick,PlayerStates state){
+	public boolean joinGame(String color,String nick,ArrayList<PlayerStates> states){
 		for (CluedoPlayer p: players){
 			if (p.getCluedoPerson().getColor().equals(color)){
 				if (p.getNick().equals("")){
 					p.setNick(nick);
-					p.setCurrentState(state);
+					p.setCurrentStates(states);
 					return true;
 				}
 				return false;				
