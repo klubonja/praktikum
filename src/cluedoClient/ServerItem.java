@@ -17,6 +17,8 @@ public class ServerItem  {
 	Socket socket;
 	ServerStatus status;
 	String myNick;
+	ArrayList<String> chatmsg;
+	ArrayList<String> chatts;
 	
 	public ServerItem(String groupName,InetAddress ip, int port) {
 		this.groupName = groupName;
@@ -24,6 +26,9 @@ public class ServerItem  {
 		this.port = port;
 		gamesList = new GameListClient();
 		status = ServerStatus.not_connected;
+		chatmsg = new ArrayList<String>();
+		chatts = new ArrayList<String>();
+		
 		
 		
 	}
@@ -133,6 +138,18 @@ public class ServerItem  {
 	public boolean removePlayerFromGames(String nickID){
 		return gamesList.leaveAllGames(nickID);
 	}
-
+	
+	public String getChat() {
+		StringBuffer chat = new StringBuffer("");
+		for (int i = 0; i < chatmsg.size(); i++)
+			chat.append(chatts.get(i)+" : "+chatmsg.get(i)+"\n");
+		
+		return chat.toString();
+	}
+	
+	public void addChatMsg(String msg,String ts){
+		chatmsg.add(msg);
+		chatts.add(ts);
+	}
 	
 }

@@ -42,7 +42,8 @@ class OutgoingHandler implements Runnable{
 	
 	}
 	
-	public void addClientGUIListener(CluedoClientGUI gui){		
+	public void addClientGUIListener(CluedoClientGUI gui){	
+		auxx.setStyleChatField(gui.inputField, false);
 		gui.createGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -62,10 +63,24 @@ class OutgoingHandler implements Runnable{
 			@Override
 			public void handle(KeyEvent e) {
 			        if (e.getCode() == KeyCode.ENTER){
-			        	auxx.sendTCPMsg(server.getSocket(),NetworkMessages.chatMsg(gui.inputField.getText(),server.getMyNick(),auxx.now()));
-			        	gui.inputField.setText("");
-						e.consume();
+			        	try {	
+			        		auxx.logfine("firing enter and trying sendchat");
+			        		if (!gui.inputField.getText().equals("")){
+			        			auxx.sendTCPMsg(
+				        				dataGuiManager.getSelectedServer().getSocket(),
+				        				NetworkMessages.chatMsg(gui.inputField.getText(),server.getMyNick(),auxx.now()));	
+			        		}
+			        				        		
+			        	} 
+			        	catch (Exception e1) {
+							localRun = false;
+							globalRun = false;
+						}			        	
+			        	e.consume();
+			        	gui.inputField.setText("");			        	
 			        }
+			       
+			        
 			    }
 			};	
 			gui.inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
@@ -77,6 +92,7 @@ class OutgoingHandler implements Runnable{
 			    	else {
 			    		gui.inputField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );   
 			    	}
+			    	auxx.setStyleChatField(gui.inputField, hasFocus);
 			    }
 			});
 		gui.refreshGamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {

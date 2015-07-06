@@ -70,7 +70,7 @@ public class CluedoProtokollChecker {
 					} catch (IllegalAccessException | IllegalArgumentException e) {
 						e.printStackTrace();
 					}
-					auxx.logfine("invoking :"+"val_" + typeNoSpace);
+					//auxx.logfine("invoking :"+"val_" + typeNoSpace);
 				} 
 				catch (InvocationTargetException e) {
 					auxx.logsevere("invoking :"+"val_" + typeNoSpace +" failed",e);
@@ -87,7 +87,7 @@ public class CluedoProtokollChecker {
 		};
 
 		if (errs.size() == 0){
-			auxx.logfine("msg OK");
+			//auxx.logfine("msg OK");
 			return true;
 		}
 		auxx.loginfo("msg NOT OK");
@@ -133,7 +133,9 @@ public class CluedoProtokollChecker {
 
 	void val_chat() {
 		//validateValue(jsonRoot, "sender");
-		validateValue(jsonRoot, "message");
+		//validateValue(jsonRoot, "message");
+		if (!jsonRoot.has("message")) //allow messsage to be empty
+			setErr("key : message expected");
 		if (validateValue(jsonRoot, "timestamp"))
 			validateLocalTimeFormat(jsonRoot, "timestamp");
 	}

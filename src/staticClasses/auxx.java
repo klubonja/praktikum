@@ -16,6 +16,8 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.scene.control.TextArea;
+
 import org.json.JSONArray;
 
 import cluedoClient.ServerItem;
@@ -28,7 +30,6 @@ public abstract class auxx {
 	
 	public static final Logger log = Logger.getLogger("mydearliittlelogger");
 	public static final ConsoleHandler C_HANDLER = new ConsoleHandler();
-
 	public static final void setLoggingLevel(Level level){
 		log.setUseParentHandlers(false);
 		log.setLevel(level);
@@ -36,20 +37,23 @@ public abstract class auxx {
 		log.addHandler(C_HANDLER);
 	}
 	
+	public static long getMillis(){
+		return  System.currentTimeMillis() % 1000;
+	}
 	public static final void logsevere(String msg){
-		log.log(Level.SEVERE, msg);
+		log.log(Level.SEVERE, getMillis()+" "+msg);
 	}
 	
 	public static final void logsevere(String msg,Throwable e){
-		log.log(Level.SEVERE, msg, e);
+		log.log(Level.SEVERE, getMillis()+" "+ msg, e);
 	}
 	
 	public static final void loginfo(String msg){
-		log.log(Level.INFO, msg);
+		log.log(Level.INFO,getMillis()+" "+ msg);
 	}
 	
 	public static final void logfine(String msg){		
-		log.log(Level.FINE, msg);
+		log.log(Level.FINE,getMillis()+" "+ msg);
 	}
 	
 	public static ArrayList<String> makeConjunction(String[] sa1,JSONArray sa2JSON){
@@ -101,7 +105,8 @@ public abstract class auxx {
 //				for (int i = 0; i < msgs.length-2; i++)
 //					msgsfinal[i] = msgs[i];
 //				return msgs;
-//			}		
+//			}
+			if (msgs.length == 0) return new String[]{""};
 			return msgs;
 		} 
 		catch (Exception e) {
@@ -193,5 +198,17 @@ public abstract class auxx {
 	public static int getRandInt(int min,int max){
 		Random rint = new Random();		
 		return rint.nextInt(Math.max(max-min + 1,0)) + min;				
+	}
+	
+	public static void setStyleChatField(TextArea inputField, boolean focused){
+		if (focused){
+			inputField.setText("");
+    		inputField.setStyle("-fx-text-fill: #000000;-fx-font-style: normal;");
+		}
+		else {
+			inputField.setText("submit chatmsg with enter");
+	    	inputField.setStyle("-fx-text-fill: #999999;-fx-font-style: italic;");
+		}
+		
 	}
 }

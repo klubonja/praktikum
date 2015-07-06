@@ -162,8 +162,9 @@ class CommunicationHandler implements Runnable {
 		if (dataGuiManager.removeClient(client)) {
 			dataManager
 					.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
-			killThread();
+			
 		}
+		killThread();
 	}
 
 	public void killThread() {
@@ -356,10 +357,10 @@ class CommunicationHandler implements Runnable {
      	  } 
         }
         else {
-     	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()+ " \n "
+     	   client.sendMsg(NetworkMessages.error_Msg(checker.getErrString()+ " "
 	        	   		+ "bye "+client.getNick()+" and "+client.getGroupName()+" is a shitty group"));
-	        	   client.sendMsg(NetworkMessages.disconnectMsg());
-	        	   dataGuiManager.removeClient(client);
+//	        	   client.sendMsg(NetworkMessages.disconnectMsg());
+//	        	   dataGuiManager.removeClient(client);
 	        	   auxx.loginfo("INCOMING INVALID : "+ checker.getErrString());
         }
 

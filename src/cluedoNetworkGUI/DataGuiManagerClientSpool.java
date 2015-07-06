@@ -31,7 +31,10 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		}
 	}
 	
-	
+	public void addChatMsgIn(String chatmsg, String ts,ServerItem server){
+		if (server == getSelectedServer()) addMsgIn(ts+" : "+chatmsg);
+		server.addChatMsg(chatmsg, ts);
+	}
 	
 	public void addGameToServer(ServerItem server, int gameID, String nick,String color){
 		CluedoGameClient newgame = 
@@ -45,6 +48,8 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	public void setSelectedServer(ServerItem selectedServer) {
 		this.selectedServer = selectedServer;
 		setStatus("selected server : "+selectedServer.getGroupName());
+		cleanInput();
+		addMsgIn(selectedServer.getChat());
 	}
 	
 	public ServerItem getSelectedServer() {

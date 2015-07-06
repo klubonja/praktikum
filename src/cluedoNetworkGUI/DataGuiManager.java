@@ -30,6 +30,12 @@ public class DataGuiManager   {
 		});
 	}
 	
+	public void cleanInput(){		
+		Platform.runLater(() -> {
+			gui.messagesIn.setText("");
+		});
+	}
+	
 	public void addMessageOut(String msg){		
 		Platform.runLater(() -> {
 			gui.addMessageOut(auxx.now()+" : "+msg+"\n");

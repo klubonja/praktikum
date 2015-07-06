@@ -2,6 +2,7 @@ package cluedoServer;
 
 import java.util.ArrayList;
 
+import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 
 public class GameListClient extends ArrayList<CluedoGameClient>{
@@ -41,6 +42,7 @@ public class GameListClient extends ArrayList<CluedoGameClient>{
 			if (gameID == cg.getGameId()){				
 				return cg;
 			}
+		auxx.logsevere("game : "+gameID+ " not found on server.gameslist");
 		return null;
 	}
 }

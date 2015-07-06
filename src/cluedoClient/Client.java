@@ -145,12 +145,10 @@ public class Client {
 					smod.getSelectedItem().getIpID());
 					auxx.logfine("attempting login to serverport : "+server.getPort()+", ip: "+server.getIpString());
 			if (server.getStatus() == ServerStatus.not_connected){
-				if (server.getSocket() == null)	startTCPConnection(server);
-					
-				if (!auxx.login(dataGuiManager.getGui(), server))	
-					dataGuiManager.removeServer(server);							
+				if (server.getSocket() == null)	startTCPConnection(server); //login to server					
+				if (!auxx.login(dataGuiManager.getGui(), server)) dataGuiManager.removeServer(server);							
 			}
-			else if (server.getStatus() == ServerStatus.connected){
+			else if (server.getStatus() == ServerStatus.connected){//select server beeing fully connected
 				dataGuiManager.refreshGamesListServer(server);
 				dataGuiManager.setSelectedServer(server);
 			}

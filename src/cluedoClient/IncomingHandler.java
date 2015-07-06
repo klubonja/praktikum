@@ -143,20 +143,17 @@ class IncomingHandler implements Runnable {
 				server.getGameByGameID(checker.getMessage().getInt("gameID")).move(position, person);
 			}
 			else if (checker.getType().equals("chat")){
-				  JSONObject chatmsg = checker.getMessage();
-        		  if (chatmsg.has("gameID")){
-        			  server.getGameByGameID(
-        					  	chatmsg.getInt("gameID")
-        					  ).addChatMsg(
-        							  auxx.convertTs(chatmsg.getString("timestamp"))+" : "+chatmsg.getString("message")
-        						);
+				  JSONObject chatmsgJSON = checker.getMessage();
+				  String chatmsg = chatmsgJSON.getString("message");
+				  String ts = auxx.convertTs(chatmsgJSON.getString("timestamp"));
+        		  if (chatmsgJSON.has("gameID")){
+        			  server.getGameByGameID(chatmsgJSON.getInt("gameID")).addChatMsg(ts+" : "+chatmsg);
         		  }
-        		  if (checker.getMessage().has("nick")){
-        			  dataGuiManager.addMsgIn(
-        					  auxx.convertTs(chatmsg.getString("timestamp"))+" "+chatmsg.getString("sender")+" says (privately) : \n"+
-        							  chatmsg.getString("message")
-        					  );
-        		  }
+//        		  if (chatmsgJSON.has("nick")){
+//        			  dataGuiManager.addMsgIn(
+//        					  ts+" "+chatmsgJSON.getString("sender")+" says (privately) : "+ chatmsg
+//        					  );
+//        		  }
 //    			  else if (chatmsg.has("sender")){
 //    				  dataGuiManager.addMsgIn(
 //        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says : \n"+
@@ -164,11 +161,8 @@ class IncomingHandler implements Runnable {
 //        					  );
 //    			  }
     			  else {
-    				  dataGuiManager.addMsgIn(
-    						  auxx.convertTs(chatmsg.getString("timestamp"))+" : \n"+
-        							  chatmsg.getString("message")
-        					  );
-    			  }
+    				  dataGuiManager.addChatMsgIn(chatmsg, ts,server);    				  
+    			  }        		  
 			}
 			else if (checker.getType().equals("disconnect")){
         		  killConnection();   

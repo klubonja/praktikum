@@ -2,6 +2,7 @@ package cluedoServer;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Vector;
 
 import staticClasses.NetworkMessages;
@@ -126,7 +127,10 @@ public class DataManagerServer extends DataManager {
 	}
 	
 	public boolean removeClientfromSystem(ClientItem client){
-		for (CluedoGameServer cgs: gamesList){
+		Iterator<CluedoGameServer> iter = gamesList.iterator();
+		//for (CluedoGameServer cgs: gamesList){
+		while(iter.hasNext()){
+			CluedoGameServer cgs = iter.next();
 			cgs.findAndRemovePlayer(client);
 			if (cgs.getNumberConnected() == 0){
 				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
