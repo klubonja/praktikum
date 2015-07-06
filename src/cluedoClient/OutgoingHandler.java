@@ -163,7 +163,7 @@ class OutgoingHandler implements Runnable{
 
 	
 	void createGame(String color){
-		auxx.sendTCPMsg(server.getSocket(), NetworkMessages.create_gameMsg(color));
+		auxx.sendTCPMsg(dataGuiManager.getSelectedServer().getSocket(), NetworkMessages.create_gameMsg(color));
 	}	
 	
 	@Override

@@ -97,6 +97,7 @@ public abstract class auxx {
 					new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
 			char[] buffer = new char[Config.MESSAGE_BUFFER];
 			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
+			logsevere("charcount : "+charCount+" from getTCPMesg");
 			String msg = new String (buffer, 0, charCount);	
 			logfine("RECEIVED : "+ msg);
 			String[] msgs = msg.split(Config.TCP_MESSAGE_DELIMITER_REGEX);

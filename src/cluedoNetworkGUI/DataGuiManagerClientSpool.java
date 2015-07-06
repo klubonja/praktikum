@@ -112,6 +112,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		setGamesOnServer(server,gameslist);		
 		updateNetworkActorGui(servername,serverip,status);
 		server.setStatus(ServerStatus.connected);
+		setSelectedServer(server);
 	}
 	
 	public void setGameEndedOnServer(ServerItem server,int gameID){
@@ -129,7 +130,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	public boolean addServer(ServerItem server,String status){
 		if (serverPool.add(server)){
 			addNetworkActorToGui(server.getGroupName(),server.getIpString(),status);
-			setSelectedServer(server);
+			//setSelectedServer(server);
 			return true;
 		}
 		
