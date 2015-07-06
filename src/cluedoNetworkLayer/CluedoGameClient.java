@@ -18,15 +18,16 @@ public class CluedoGameClient extends CluedoGame {
 		myNick = server.getMyNick();
 	}
 
-	public void somebodyIsAccusing(String nick, String person, String weapon, String room) {
-		String str = "The player " + nick
-				+ " is trying to solve the mystery!" + "\n" + "Accused: "
-				+ person + " " + weapon + " " + room;
+	public void somebodyIsAccusing(String nick, String person, String weapon,
+			String room) {
+		String str = "The player " + nick + " is trying to solve the mystery!"
+				+ "\n" + "Accused: " + person + " " + weapon + " " + room;
 		changeLabel(str);
 	}
-	
-	public void somebodyFailedToAccuse(String person, String weapon, String room){
-		String str = "Accusation failed for: " + person + " " + weapon + " " + room;
+
+	public void somebodyFailedToAccuse(String person, String weapon, String room) {
+		String str = "Accusation failed for: " + person + " " + weapon + " "
+				+ room;
 		changeLabel(str);
 	}
 
@@ -39,46 +40,11 @@ public class CluedoGameClient extends CluedoGame {
 	}
 
 	public void compareCards(String person, String weapon, String room) {
-		for (CluedoPlayer p : players) {
-			if (p.getNick().equals(myNick)) {
-				for (String card : p.getCards()) {
-					switch (person) {
-					case "red":
-						person = "Fräulein Gloria";
-						break;
-					case "yellow":
-						person = "Oberts von Gatow";
-						break;
-					case "white":
-						person = "Frau Weiss";
-						break;
-					case "green":
-						person = "Reverend Green";
-						break;
-					case "blue":
-						person = "Baronin von Porz";
-						break;
-					case "purple":
-						person = "Professor Bloom";
-						break;
-					}
-					if (card.equals(person) || card.equals(weapon)
-							|| card.equals(room)) {
-						Platform.runLater(new Runnable() {
-							public void run() {
-								communicator.highlightCard(card);
-								communicator.setCardFunction(card);
-							}
-						});
-						// this.sendMsgToServer(NetworkMessages.disproveMsg(
-						// this.gameId, card));
-					} else {
-//						this.sendMsgToServer(NetworkMessages
-//								.no_disproveMsg(this.gameId));
-					}
-				}
+		Platform.runLater(new Runnable() {
+			public void run() {
+				communicator.compareCards(person, weapon, room);
 			}
-		}
+		});
 	}
 
 	public ServerItem getServer() {
@@ -96,7 +62,7 @@ public class CluedoGameClient extends CluedoGame {
 	@Override
 	public boolean start() {
 		auxx.loginfo("game " + getGameId() + " started");
-		
+
 		Platform.runLater(() -> {
 			communicator = new Communicator(this);
 			communicator.startGame();
@@ -114,13 +80,13 @@ public class CluedoGameClient extends CluedoGame {
 		});
 	}
 
-	public void nextTurn(){
+	public void nextTurn() {
 		Platform.runLater(() -> {
 			communicator.itsYourTurn();
 		});
-		
+
 	}
-	
+
 	public void move(CluedoPosition position, String person) {
 		communicator.move(position, person);
 	}
@@ -153,13 +119,13 @@ public class CluedoGameClient extends CluedoGame {
 		Platform.runLater(() -> {
 			communicator.updateStatesToNothing();
 		});
-		
+
 	}
-	
+
 	public void currentPlayerToRolls() {
 		Platform.runLater(() -> {
 			communicator.updateStatesToRolls();
 		});
-		
+
 	}
 }

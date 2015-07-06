@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.effect.Glow;
@@ -133,7 +134,6 @@ public class Communicator {
 		ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
 	}
 
-	// SENDS MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT
 	public void suspect() {
 		String person = zugView.getPersonenListe().getValue();
 		String weapon = zugView.getWaffenListe().getValue();
@@ -272,6 +272,49 @@ public class Communicator {
 				gameView.getHand().getText().setText(str);
 			}
 			
+			public void compareCards(String person, String weapon, String room){
+				boolean found = false;
+				int currentIndex = pcManager.getIndex();
+				pcManager.next();
+				while(currentIndex != pcManager.getIndex()){
+				for(int i = 0; i < pcManager.getPlayerManager().size(); i++){
+					for(String card : pcManager.getCurrentPlayer().getCards()){
+					switch (person) {
+					case "red":
+						person = "Fräulein Gloria";
+						break;
+					case "yellow":
+						person = "Oberts von Gatow";
+						break;
+					case "white":
+						person = "Frau Weiss";
+						break;
+					case "green":
+						person = "Reverend Green";
+						break;
+					case "blue":
+						person = "Baronin von Porz";
+						break;
+					case "purple":
+						person = "Professor Bloom";
+						break;
+					}
+					if (card.equals(person) ||
+						card.equals(weapon) ||
+						card.equals(room)) {
+								highlightCard(card);
+								setCardFunction(card);
+								pcManager.setIndex(currentIndex);
+								found = true;
+					}
+					}
+					if(found){
+						break;
+					}
+					pcManager.next();
+				}
+				}
+			}
 	
 	/*
 	 * (check) start game (check) roll dice --> letztes Bild ihre

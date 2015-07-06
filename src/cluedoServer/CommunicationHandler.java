@@ -293,17 +293,42 @@ class CommunicationHandler implements Runnable {
 			String person = json.getString("person");
 			String room = json.getString("room");
 			String weapon = json.getString("weapon");
+			String winnerPerson = dataManager.getGameByID(id).getWinningStatement().getPerson().getPersonName();
+			String winnerRoom = dataManager.getGameByID(id).getWinningStatement().getRoom().getName();
+			String winnerWeapon = dataManager.getGameByID(id).getWinningStatement().getWeapon().getName();
 			dataManager.notifyAll(NetworkMessages.accuseMsg(
 					id, NetworkMessages.statement(person, room, weapon))
 					);
-			if(person.equals(dataManager.getGameByID(id).getWinningStatement().getPerson()) &&
-				weapon.equals(dataManager.getGameByID(id).getWinningStatement().getWeapon()) &&
-				room.equals(dataManager.getGameByID(id).getWinningStatement().getRoom())){
-				//KICK PLAYER OUT OF THE GAME
+			switch (winnerPerson) {
+			case "Fräulein Gloria":
+				winnerPerson = "red";
+				break;
+			case "Oberts von Gatow":
+				winnerPerson = "yellow";
+				break;
+			case "Frau Weiss":
+				winnerPerson = "white";
+				break;
+			case "Reverend Green":
+				winnerPerson = "green";
+				break;
+			case "Baronin von Porz":
+				winnerPerson = "blue";
+				break;
+			case "Professor Bloom":
+				winnerPerson = "purple";
+				break;
+			}
+			if(person.equals(winnerPerson) &&
+				weapon.equals(winnerWeapon) &&
+				room.equals(winnerRoom)){
+				dataManager.notifyAll(NetworkMessages.game_endedMsg(id,
+						dataManager.getGameByID(id).getWinningStatement()));
 			} else {
 				dataManager.notifyAll(NetworkMessages.
 				wrong_accusationMsg(id, NetworkMessages.
 				statement(person, room, weapon)));
+				//KICK PLAYER OUT OF THE GAME
 			}
 		} else
 			if (checker.getType().equals("suspicion")) {
@@ -327,7 +352,6 @@ class CommunicationHandler implements Runnable {
 			if (checker.getType().equals("no disprove")) {
 			int id = checker.getMessage().getInt("gameID");
 			dataManager.notifyAll(NetworkMessages.no_disproveMsg(id));
-			
 		}
    	   
    	   else if(checker.getType().equals("end turn")){

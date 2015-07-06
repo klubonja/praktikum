@@ -71,27 +71,37 @@ class IncomingHandler implements Runnable {
 						playerJSON.getString("color"));
 			}
 
-			else if (checker.getType().equals("player added")) {
+			else
+				if (checker.getType().equals("player added")) {
 				int gameID = checker.getMessage().getInt("gameID");
 				JSONObject player = checker.getMessage()
 						.getJSONObject("player");
 				dataGuiManager.joinGameOnServer(server, gameID,
 						player.getString("color"), player.getString("nick"));
 
-			} else if (checker.getType().equals("game started")) {
+			}
+			
+				else
+				if (checker.getType().equals("game started")) {
 				ArrayList<String> orderlist = auxx.jsonArrayToArrayList(checker
 						.getMessage().getJSONArray("order"));
 				dataGuiManager.startGameOnServer(server, checker.getMessage()
 						.getInt("gameID"),
 						checker.getMessage().getString("gamestate"), orderlist);
 
-			} else if (checker.getType().equals("player_cards")) {
+			}
+			
+				else
+				if (checker.getType().equals("player_cards")) {
 				server.getGameByGameID(checker.getMessage().getInt("gameID"))
 						.getConnectedPlayerByName(server.getMyNick())
 						.setCards(
 								auxx.jsonArrayToArrayList(checker.getMessage()
 										.getJSONArray("cards")));
-			} else if (checker.getType().equals("suspicion")) {
+			}
+				
+				else
+				if (checker.getType().equals("suspicion")) {
 				JSONObject json = checker.getMessage().getJSONObject(
 						"statement");
 				String person = json.getString("person").toString();
@@ -99,7 +109,10 @@ class IncomingHandler implements Runnable {
 				String room = json.getString("room").toString();
 				server.getGameByGameID(checker.getMessage().getInt("gameID"))
 						.compareCards(person, room, weapon);
-			} else if (checker.getType().equals("accuse")) {
+			}
+				
+				else
+					if (checker.getType().equals("accuse")) {
 				JSONObject json = checker.getMessage().getJSONObject(
 						"statement");
 				String person = json.getString("person").toString();
@@ -110,7 +123,9 @@ class IncomingHandler implements Runnable {
 						server.getGameByGameID(checker.getMessage().getInt("gameID")).getMyNick(),
 						person, weapon, room
 						);
-			} else
+			}
+					
+			else
 				if(checker.getType().equals("wrong accusation")){
 					JSONObject json = checker.getMessage().getJSONObject(
 							"statement");
@@ -119,13 +134,18 @@ class IncomingHandler implements Runnable {
 					String room = json.getString("room").toString();
 					server.getGameByGameID(checker.getMessage().getInt("gameID")).
 					somebodyFailedToAccuse(person, weapon, room);
-			} else
+			} 
+				
+				else
 				if (checker.getType().equals("disproved")) {
 				server.getGameByGameID(checker.getMessage().getInt("gameID"))
 				.changeLabel("Player: "+
 				checker.getMessage().getString("nick")
 				+ " had a card.");
-			} else if(checker.getType().equals("disprove")){
+			} 
+				
+				else
+					if(checker.getType().equals("disprove")){
 				server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
 						"Disproved with: " + checker.getMessage().getString("card")
 						);

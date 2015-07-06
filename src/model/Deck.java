@@ -45,7 +45,14 @@ public class Deck {
 		rooms.remove("pool");
 		
 		winningHand = new String[3];
-		String randomPerson = choseRandom(persons);
+		ArrayList<String> randomPersons = new ArrayList<String>();
+		randomPersons.add("red");
+		randomPersons.add("yellow");
+		randomPersons.add("white");
+		randomPersons.add("green");
+		randomPersons.add("blue");
+		randomPersons.add("purple");
+		String randomPerson = choseRandom(randomPersons);
 		String randomWeapon = choseRandom(weapons);
 		String randomRoom = choseRandom(rooms);
 		winningHand[0] = randomPerson;
