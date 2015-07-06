@@ -2,6 +2,7 @@ package view;
 
 import java.util.ArrayList;
 
+import staticClasses.auxx;
 import model.Deck;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -39,7 +40,10 @@ public class HandFrameView extends BorderPane{
 		this.setPrefSize(350, 350);
 		this.setMinSize(350, 350);
 		
-		for(String str : player.getCards()){
+		ArrayList<String> cardstmp = player.getCards();
+		for(String str : cardstmp){
+			auxx.logfine("imagestring :" + str);
+			
 			hand.add(new ImageView(new Image("media/" + str + ".png")));
 		}
 		

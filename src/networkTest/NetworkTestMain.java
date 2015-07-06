@@ -17,6 +17,10 @@ public class NetworkTestMain extends Application {
 		 
 		 CluedoClientGUI clientGUI = new CluedoClientGUI(new Stage());
 			Client client = new Client(clientGUI);	
+			CluedoClientGUI clientGUI1 = new CluedoClientGUI(new Stage());
+			Client client1 = new Client(clientGUI1);	
+			CluedoClientGUI clientGUI2 = new CluedoClientGUI(new Stage());
+			Client client2 = new Client(clientGUI2);	
 	}
 
 	public static void main(String[] args) {

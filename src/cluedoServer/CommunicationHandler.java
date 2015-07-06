@@ -116,13 +116,13 @@ class CommunicationHandler implements Runnable {
 //				dataManager.notifyAll(NetworkMessages.user_addedMsg(client
 //						.getNick()));
 //>>>>>>> d62cee416b07023f92e8b8a0ea083aa68d1efac5
+				readyForCommunication = true;
 			}
 			else {
 				client.sendMsg(NetworkMessages.error_Msg(client.getNick()
 						+ " already exists, try again with different nick"));
-				readyForCommunication = false;
 			}
-			readyForCommunication = true;
+			
 		} 
 	    else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR
 				|| errcode == NetworkHandhakeCodes.TYPERR) {

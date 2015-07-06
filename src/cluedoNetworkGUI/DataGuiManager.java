@@ -79,20 +79,32 @@ public class DataGuiManager   {
 	  }
 	  
 	  public void removeGameGui(int gameID){
-			try {
+//			try {
 				 Platform.runLater(() -> {
-					  gui.removeGame(gameID);					  
+					 try {
+						    gui.removeGame(gameID);	
+						    auxx.loginfo("game : "+gameID+ " removed");
+						} 
+						catch (Exception e) {
+							try {
+								wait(Config.SECOND/100);
+								
+							} catch (Exception e1) {
+								removeGameGui(gameID);
+								auxx.logsevere("nasty business on multithread javafxobserablelist update", e);					
+							} //naive workaround for not beeing threadsafe							
+						}					  		  
 				  });	
-			} 
-			catch (Exception e) {
-				try {
-					wait(Config.SECOND/10); //naive workaround for not beeing threadsafe
-					removeGameGui(gameID);
-				} 
-				catch (InterruptedException e1) {
-					auxx.logsevere("nasty business on multithread javafxobserablelist update", e1);					
-				}
-		  }		 
+//			} 
+//			catch (Exception e) {
+//				try {
+//					wait(Config.SECOND/10); //naive workaround for not beeing threadsafe
+//					removeGameGui(gameID);
+//				} 
+//				catch (InterruptedException e1) {
+//					auxx.logsevere("nasty business on multithread javafxobserablelist update", e1);					
+//				}
+//		  }		 
 	  }	  
 	
 	  public  void emptyGamesList(){

@@ -85,6 +85,7 @@ public class GameFramePresenter {
 	}
 	
 	public void setHandler(){
+		setStyleChatField(false);
 		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
 			@Override
 			public void handle(KeyEvent e) {
@@ -96,8 +97,8 @@ public class GameFramePresenter {
 			        					networkGame.getMyNick(),
 			        					auxx.now()
 			        			)
-			        	);
-			        	gfv.chat.chatField.setText("");
+			        	);	
+			        	setStyleChatField(false);
 			        }
 			    }
 			};	
@@ -110,11 +111,22 @@ public class GameFramePresenter {
 			    	else {
 			    		gfv.chat.chatField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );  
 			    	}
+			    	setStyleChatField(hasFocus);
 			    }
 			});
 	}
 	
-
+	public void setStyleChatField(boolean focused){
+		if (focused){
+			gfv.chat.chatField.setText("");
+    		gfv.chat.chatField.setStyle("-fx-text-fill: #000000;-fx-font-style: normal;");
+		}
+		else {
+			gfv.chat.chatField.setText("confirm with enter");
+	    	gfv.chat.chatField.setStyle("-fx-text-fill: #999999;-fx-font-style: italic;");
+		}
+		
+	}
 	
 
 	//Getter and Setters

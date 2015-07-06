@@ -88,7 +88,9 @@ public class CluedoGameClient extends CluedoGame {
 	}
 
 	public void addChatMsg(String msg) {
-		communicator.addChatMsg(msg);
+		Platform.runLater(() -> {
+			communicator.addChatMsg(msg);
+		});
 	}
 
 	public void kill() {

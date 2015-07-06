@@ -24,7 +24,7 @@ public class ChatView extends VBox {
 	TextArea chatArea;
 	Label chatLabel;
 	HBox chatBox;
-	Button chatSend;
+	//Button chatSend;
 	TextField chatField;
 	
 	
@@ -35,11 +35,11 @@ public class ChatView extends VBox {
 	//chatArea.set
 	chatArea.setEditable(false);
 	chatBox = new HBox(3);
-	chatSend = new Button("Send");
+	//chatSend = new Button("Send");
 	chatField = new TextField();
 	chatField.setPrefWidth(200);
 	chatField.setMaxWidth(200);
-	chatBox.getChildren().addAll(chatField, chatSend);
+	//chatBox.getChildren().addAll(chatField, chatSend);
 	this.getChildren().addAll(chatLabel,chatArea,chatBox);
 	
 	}
