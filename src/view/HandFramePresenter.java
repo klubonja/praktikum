@@ -17,13 +17,9 @@ public class HandFramePresenter {
 	public void activateEvents() {
 		ArrayList<ImageView> buffer = view.getHand();
 		for (ImageView img : view.getHand()) {
-			img.setOnMousePressed(e -> {
-				view.getSelectedCard().setLayoutX(img.getLayoutX());
-				view.getSelectedCard().setLayoutY(img.getLayoutY());
-				view.getSelectedCard().getChildren().add(img);
-				view.getStack().getChildren().add(view.getSelectedCard());
-				img.setEffect(new Glow(0.8));
-			});
+//			img.setOnMousePressed(e -> {
+//				setCardEffect();
+//			});
 			img.setOnMouseReleased(e -> {
 				img.setEffect(null);
 				view.getSelectedCard().getChildren().removeAll(buffer);
@@ -37,6 +33,22 @@ public class HandFramePresenter {
 			img.setOnMouseExited(e -> {
 				img.setEffect(null);
 			});
+		}
+	}
+
+	public void setCardEffect() {
+		for (ImageView img : view.getHand()) {
+			view.getSelectedCard().setLayoutX(img.getLayoutX());
+			view.getSelectedCard().setLayoutY(img.getLayoutY());
+			view.getSelectedCard().getChildren().add(img);
+			view.getStack().getChildren().add(view.getSelectedCard());
+			img.setEffect(new Glow(0.8));
+		}
+	}
+	
+	public void removeEffects(){
+		for (ImageView img : view.getHand()) {
+			img.setEffect(null);
 		}
 	}
 }

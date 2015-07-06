@@ -365,7 +365,8 @@ public abstract class NetworkMessages {
 	public static String disprovedMsg(int gameID,String nick,String card){
 		CluedoJSON json = new CluedoJSON("disproved");
 		json.put("nick", nick);
-		json.put("gameID", gameID);		
+		json.put("gameID", gameID);	
+		json.put("card", card);
 		
 		return json.toString();
 	}

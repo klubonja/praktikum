@@ -1,11 +1,16 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 
 import org.json.JSONObject;
 
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.effect.Glow;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
 import jdk.nashorn.api.scripting.JSObject;
 import staticClasses.NetworkMessages;
@@ -13,6 +18,7 @@ import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
+import enums.PlayerStates;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.BallEbene2;
 import finderOfPaths.DerBeweger;
@@ -40,7 +46,6 @@ public class Communicator {
 	private WahnsinnigTollerPathfinder pathfinder;
 	private DerBeweger beweger;
 	private RaumBeweger raumBeweger;
-	private ArrayList<CluedoPlayer> players;
 	private CluedoGameClient network;
 	public final PlayerCircleManager pcManager;
 	public final int gameid;
@@ -48,17 +53,16 @@ public class Communicator {
 	public Communicator(CluedoGameClient ngame) {
 		network = ngame;
 		gameid = ngame.getGameId();
-		players = network.getServer().getGameByGameID(network.getGameId())
-				.getPlayers();
 		pcManager = new PlayerCircleManager(network.getPlayersConnected());
 	}
 
 	public void startGame() {
 		auxx.loginfo("Communicater");
 
-		gameView = new GameFrameView(pcManager);
+		gameView = new GameFrameView(pcManager, network);
 		gameView.start();
-		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid);
+		gamePresenter = new GameFramePresenter(gameView, network, pcManager,
+				gameid);
 		dicePresenter = gamePresenter.getDicePresenter();
 		zugPresenter = gamePresenter.getZugPresenter();
 
@@ -77,8 +81,6 @@ public class Communicator {
 		setHandler();
 
 		testButtons();
-		openWindow();
-
 	}
 
 	public void setTitle(String newtitle) {
@@ -96,19 +98,20 @@ public class Communicator {
 	public GameFramePresenter getGamePresenter() {
 		return gamePresenter;
 	}
-	public void rollDice(int [] wuerfelWurf){
-		//int [] testWuerfelWurf = {6,6};
+
+	public void rollDice(int[] wuerfelWurf) {
+		// int [] testWuerfelWurf = {6,6};
 		int ersterWuerfel = wuerfelWurf[0];
 		int zweiterWuerfel = wuerfelWurf[1];
 		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
 	}
-	
-	public void useSecretPassage(){
-		
+
+	public void useSecretPassage() {
+
 		beweger.useSecretPassage();
 	}
-	
-	public void move(CluedoPosition position){
+
+	public void move(CluedoPosition position) {
 		int yKoordinate = position.getY();
 		int xKoordinate = position.getX();
 		ausloeser.ausloesen(yKoordinate, xKoordinate);
@@ -118,10 +121,22 @@ public class Communicator {
 	public void suspect() {
 		String person = zugView.getPersonenListe().getValue();
 		String weapon = zugView.getWaffenListe().getValue();
-		String room = "Hall";
+		String room = "hall";
 		network.sendMsgToServer(NetworkMessages.suspicionMsg(
 				network.getGameId(),
 				NetworkMessages.statement(person, room, weapon)));
+		ArrayList<CluedoPlayer> list = network.getPlayersConnected();
+		String color = "";
+		for(CluedoPlayer p : list){
+			if(p.getNick().equals(network.getMyNick())){
+				color = p.getCluedoPerson().getColor();
+			}
+		}
+		System.out.println("COLOR IS HEEEEEEEEEEEEEEEEEERE " + color);
+		network.sendMsgToServer(
+				(NetworkMessages.player_info(network.getMyNick(),
+				color,
+				PlayerStates.suspect.getName())).toString());
 	}
 
 	// SENDS A MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT AS WELL
@@ -138,9 +153,30 @@ public class Communicator {
 
 	}
 
+	public void highlightCard(String card) {
+		for (int i = 0; i < gameView.getHand().getHandURI().size(); i++) {
+			if (card.equals(gameView.getHand().getHandURI().get(i))) {
+				gameView.getHand().getHand().get(i).setEffect(new Glow(0.5));
+			}
+		}
+	}
+	
+	public void setCardFunction(String card){
+		for (int i = 0; i < gameView.getHand().getHandURI().size(); i++) {
+			if (card.equals(gameView.getHand().getHandURI().get(i))) {
+				gameView.getHand().getHand().get(i).setOnMousePressed(e -> {
+					network.sendMsgToServer(NetworkMessages.disproveMsg(network.getGameId(), card));
+				});
+				gameView.getHand().getHand().get(i).setOnMouseReleased(e -> {
+					gamePresenter.getHandFramePresenter().removeEffects();
+				});
+			}
+		}
+	}
+
 	public void showPoolCards() {
-		//if im pool
-		
+		// if im pool
+
 	}
 
 	public void endTurn() {
@@ -157,9 +193,11 @@ public class Communicator {
 	public void kill() {
 		gameView.close();
 	}
-	public void testButtons(){
-//		ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans = new int {5,9}));
-		int [] cheater = {6,6};
+
+	public void testButtons() {
+		// ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans =
+		// new int {5,9}));
+		int[] cheater = { 6, 6 };
 		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice(cheater));
 		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
 	}
@@ -189,23 +227,27 @@ public class Communicator {
 		gameView.getHand().getAccuse().setOnMouseClicked(e -> {
 			accuse();
 		});
-		
-		
+
 		// END TURN
-		gameView.getHand().getEndTurn().setOnMouseClicked(e -> {});
-		
+		gameView.getHand().getEndTurn().setOnMouseClicked(e -> {
+		});
+
+	}
+
+	// OPEN WINDOW
+	public void openWindow() {
+		gameView.getKomplettesFeld().getChildren().add(zugView);
+	}
+
+	// CLOSE WINDOW
+	public void closeWindow() {
+		gameView.getKomplettesFeld().getChildren().remove(zugView);
 	}
 	
-	//OPEN WINDOW
-			public void openWindow(){
-				gameView.getKomplettesFeld().getChildren().add(zugView);
-			}
-			
-			//CLOSE WINDOW
-			public void closeWindow(){
-				gameView.getKomplettesFeld().getChildren().remove(zugView);
-			}
-	
+	public void changeLabel(String str){
+		gameView.getHand().getText().setText(str);
+	}
+
 	/*
 	 * (check) start game (check) roll dice --> letztes Bild ihre
 	 * Würfel-Kombination und dann pathfinder / sucher / vorschlager

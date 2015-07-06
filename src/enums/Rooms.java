@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public enum Rooms {
 	
-	hall("Hall"),
+	hall("hall"),
 	lounge("lounge"),
 	diningroom("diningroom"),
 	kitchen("kitchen"),

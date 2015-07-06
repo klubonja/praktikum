@@ -54,7 +54,7 @@ public class Deck {
 		persons.remove(randomPerson);
 		weapons.remove(randomWeapon);
 		rooms.remove(randomRoom);
-		System.out.println("AND THE FUCKING WINNER IIIIIIIIIIIIIIIIS: " + winningHand[0] + " " + winningHand[1] + " "  + winningHand[2]);
+		System.out.println("AND THE WINNER IIIIIIIIIIIIIIIIS: " + winningHand[0] + " " + winningHand[1] + " "  + winningHand[2]);
 		
 		makeDeck();
 		

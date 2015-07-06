@@ -16,19 +16,61 @@ public class CluedoGameClient extends CluedoGame {
 		super(gameId);
 		this.server = server;
 		myNick = server.getMyNick();
+		System.out.println(gameId);
+	}
+
+	public void somebodyIsAccusing(String nick, String person, String weapon, String room) {
+		String str = "The player " + nick
+				+ " is trying to solve the mystery!" + "\n" + "Accused: "
+				+ person + " " + weapon + " " + room;
+		changeLabel(str);
+	}
+
+	public void changeLabel(String str) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				communicator.changeLabel(str);
+			}
+		});
 	}
 
 	public void compareCards(String person, String weapon, String room) {
 		for (CluedoPlayer p : players) {
 			if (p.getNick().equals(myNick)) {
 				for (String card : p.getCards()) {
+					switch (person) {
+					case "red":
+						person = "Fräulein Gloria";
+						break;
+					case "yellow":
+						person = "Oberts von Gatow";
+						break;
+					case "white":
+						person = "Frau Weiss";
+						break;
+					case "green":
+						person = "Reverend Green";
+						break;
+					case "blue":
+						person = "Baronin von Porz";
+						break;
+					case "purple":
+						person = "Professor Bloom";
+						break;
+					}
 					if (card.equals(person) || card.equals(weapon)
 							|| card.equals(room)) {
-						this.sendMsgToServer(NetworkMessages.disproveMsg(
-								this.gameId, card));
+						Platform.runLater(new Runnable() {
+							public void run() {
+								communicator.highlightCard(card);
+								communicator.setCardFunction(card);
+							}
+						});
+						// this.sendMsgToServer(NetworkMessages.disproveMsg(
+						// this.gameId, card));
 					} else {
-						this.sendMsgToServer(NetworkMessages
-								.no_disproveMsg(this.gameId));
+//						this.sendMsgToServer(NetworkMessages
+//								.no_disproveMsg(this.gameId));
 					}
 				}
 			}

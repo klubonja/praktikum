@@ -1,5 +1,7 @@
 package cluedoServer;
 
+import java.util.ArrayList;
+
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
@@ -29,6 +31,7 @@ class CommunicationHandler implements Runnable {
 	boolean run = true;
 	boolean readyForCommunication = false;
 	String currentMsg;
+	String suspector;
 
 	/**
 	 * @param ss
@@ -152,26 +155,39 @@ class CommunicationHandler implements Runnable {
 		checker.validate();
 		if (checker.isValid()) {
 			if (checker.getType().equals("accuse")) {
-
-				// DO IT LIKE A
-				// BROTHER*************************************************
-
-			} else 
+				int id = checker.getMessage().getInt("gameID");
+				JSONObject json = checker.getMessage().getJSONObject(
+						"statement");
+				String person = json.getString("person");
+				String room = json.getString("room");
+				String weapon = json.getString("weapon");
+				dataManager.notifyAll(NetworkMessages.accuseMsg(
+						id, NetworkMessages.statement(person, room, weapon))
+						);
+			} else
 				if (checker.getType().equals("suspicion")) {
-				dataManager.notifyAll(
-						NetworkMessages.suspicionMsg(
-								checker.getMessage().getInt("gameID"),
-								NetworkMessages.statement(
-								checker.getMessage().getString("person"),
-								checker.getMessage().getString("room"),
-								checker.getMessage().getString("weapon")
-								))
-								);
-			} else if(checker.getType().equals("disprove")){
-				
-			} else if(checker.getType().equals("no disprove")) {
-				
+				int id = checker.getMessage().getInt("gameID");
+				JSONObject json = checker.getMessage().getJSONObject("statement");
+				String person = json.getString("person").toString();
+				String room = json.getString("room").toString();
+				String weapon = json.getString("weapon").toString();
+				dataManager.notifyAll(NetworkMessages.suspicionMsg(
+						id, NetworkMessages.statement(person, room, weapon))
+						);
+			} else
+				if (checker.getType().equals("disprove")) {
+					String pool = "pool";
+					int id = checker.getMessage().getInt("gameID");
+					String card = checker.getMessage().getString("card");
+					dataManager.notifyAll(NetworkMessages.disprovedMsg(id, client.getNick(), pool));
+					client.sendMsg(NetworkMessages.disproveMsg(client.getGameId(), card));
+					
 			} else 
+				if (checker.getType().equals("no disprove")) {
+				int id = checker.getMessage().getInt("gameID");
+				dataManager.notifyAll(NetworkMessages.no_disproveMsg(id));
+				
+			} else
 				if (checker.getType().equals("create game")) { // CREATE GAME
 				createGame(checker.getMessage().getString("color"), client);
 			} else if (checker.getType().equals("join game")) {
