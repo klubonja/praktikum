@@ -102,6 +102,7 @@ public class Communicator {
 		}
 		
 		currentPlayer = pcManager.getPlayerByNick(pcManager.order.get(0));
+		currentNick = pcManager.order.get(0);
 		pcManager.setIndexByPlayer(currentPlayer);
 		
 	}
@@ -158,6 +159,7 @@ public class Communicator {
 	
 	public void rollDiceForMoving(int [] wuerfelWurf, CluedoPosition position, String person){
 		//int [] testWuerfelWurf = {6,6};
+		auxx.logsevere("wird das hier ausgeführt?");
 		Platform.runLater(() -> {
 			this.wuerfelWurf = wuerfelWurf;
 			int ersterWuerfel = wuerfelWurf[0];
@@ -195,7 +197,7 @@ public class Communicator {
 		}
 		else {
 //				Platform.runLater(() -> {
-					auxx.logsevere("kommt er hier hin?");
+					//auxx.logsevere("kommt er hier hin?");
 					updatePCs();
 					int yKoordinate = position.getY();
 					int xKoordinate = position.getX();
@@ -254,21 +256,24 @@ public class Communicator {
 	}
 	
 	public void itsYourTurn(){
-		if (!erstesMal){
-			updatePCs();
-			//changePlayer();
-			//updatePCs();
-			openWindow();
-			erstesMal = true;
-		}
-		else {
-			pcManager.next();
-			updatePCs();
-			//changePlayer();
-			//updatePCs();
-			openWindow();
-		}
-		
+//		if (!erstesMal){
+//			updatePCs();
+//			//changePlayer();
+//			//updatePCs();
+//			openWindow();
+//			erstesMal = true;
+//		}
+//		else {
+//			pcManager.next();
+//			updatePCs();
+//			//changePlayer();
+//			//updatePCs();
+//			openWindow();
+//		}
+
+		pcManager.next();
+		updatePCs();
+		openWindow();
 		
 	}
 	
@@ -298,7 +303,6 @@ public class Communicator {
 	public void testButtons(){
 //		ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans = new int {5,9}));
 		int [] cheater = {6,6};
-		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice(cheater));
 		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
 	}
 
