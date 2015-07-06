@@ -92,6 +92,7 @@ public class CluedoGameClient extends CluedoGame {
 	@Override
 	public boolean start() {
 		auxx.loginfo("game " + getGameId() + " started");
+		
 		Platform.runLater(() -> {
 			communicator = new Communicator(this);
 			communicator.startGame();
@@ -109,8 +110,15 @@ public class CluedoGameClient extends CluedoGame {
 		});
 	}
 
-	public void move(CluedoPosition position) {
-		communicator.move(position);
+	public void nextTurn(){
+		Platform.runLater(() -> {
+			communicator.itsYourTurn();
+		});
+		
+	}
+	
+	public void move(CluedoPosition position, String person) {
+		communicator.move(position, person);
 	}
 
 	public void setMyNick(String myNick) {
@@ -135,5 +143,19 @@ public class CluedoGameClient extends CluedoGame {
 		Platform.runLater(() -> {
 			communicator.kill();
 		});
+	}
+
+	public void currentPlayerToNothing() {
+		Platform.runLater(() -> {
+			communicator.updateStatesToNothing();
+		});
+		
+	}
+	
+	public void currentPlayerToRolls() {
+		Platform.runLater(() -> {
+			communicator.updateStatesToRolls();
+		});
+		
 	}
 }

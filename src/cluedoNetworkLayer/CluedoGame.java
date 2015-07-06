@@ -69,7 +69,7 @@ public abstract class CluedoGame {
 			if (p.getCluedoPerson().getColor().equals(color)){
 				if (p.getNick().equals("")){
 					p.setNick(nick);
-					p.setState(state);
+					p.setCurrentState(state);
 					return true;
 				}
 				return false;				
@@ -217,6 +217,7 @@ public abstract class CluedoGame {
 		
 		return -1;
 	}
+	
 	
 	
 	

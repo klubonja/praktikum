@@ -38,7 +38,7 @@ public class Vorschlaege {
 	private int yDistanz;
 	
 	private CluedoPlayer currentPlayer;
-	public final PlayerCircleManager pcManager;
+	public PlayerCircleManager pcManager;
 	
 	private Background [][] markierteHintergruende = new Background [25][24];
 	
@@ -64,11 +64,13 @@ public class Vorschlaege {
 	 * @param yPositionenEingabe alle yPositionen, von welchen aus gesucht werden soll
 	 * @param tuerCounterEingabe von wie vielen Türen aus gesucht werden soll
 	 */
-	public void vorschlaegeMachen(char [][] moeglichkeitenEingabe, char [][][] mehrereMoeglichkeiten, int [] xPositionenEingabe, int [] yPositionenEingabe, int tuerCounterEingabe){
+	public void vorschlaegeMachen(char [][] moeglichkeitenEingabe, char [][][] mehrereMoeglichkeiten, int [] xPositionenEingabe, int [] yPositionenEingabe, int tuerCounterEingabe, PlayerCircleManager pcManager){
 		
 		this.xPositionen = xPositionenEingabe;
 		this.yPositionen = yPositionenEingabe;
 		this.tuerCounter = tuerCounterEingabe;
+		this.pcManager = pcManager;
+		currentPlayer = pcManager.getCurrentPlayer();
 		
 		gui.resetBackground();
 		

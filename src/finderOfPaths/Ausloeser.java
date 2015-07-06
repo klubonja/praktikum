@@ -2,17 +2,18 @@ package finderOfPaths;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
 import kacheln.Kachel;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import view.AussergewohnlichesZugfenster;
 import view.BoardView;
-import view.GameFrameView;
 import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
+import enums.PlayerStates;
 
 /**
  * Hier werden die MouseEvents der ballEbene ausgeloest und verwaltet.
@@ -43,8 +44,6 @@ public class Ausloeser {
 
 	private int schritte;
 
-	private CluedoPlayer currentPlayer;
-
 	private int xInsgesamt;
 	private int yInsgesamt;
 
@@ -52,7 +51,9 @@ public class Ausloeser {
 
 	private int wuerfelZahl;
 
-	public final PlayerCircleManager pcManager;
+	public PlayerCircleManager pcManager;
+	private CluedoPlayer currentPlayer;
+	private Circle currentCircle;
 	private int gameid;
 	private CluedoGameClient network;
 
@@ -87,14 +88,16 @@ public class Ausloeser {
 	/**
 	 * nimmt clicks aus der ballEbene und weist ihnen hier eine Methode zu.
 	 */
-	public void zuweisung() {
+	public void zuweisung(PlayerCircleManager pcManager) {
+		this.pcManager = pcManager;
 		System.out.println("zuweisung");
 		zug.YESgangImage.setOnMouseClicked(e -> {beweger
-				.useSecretPassage();
+				.useSecretPassage(pcManager);
 	});
 		ballEbene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
+				//if (pcManager.getCurrentPlayer().getState() != PlayerStates.do_nothing)
 				click(event);
 			}
 		});
@@ -148,9 +151,13 @@ public class Ausloeser {
 		}
 	}
 
-	public void ausloesen(int iReihe, int jSpalte) {
+	public void ausloesen(int iReihe, int jSpalte, String person, PlayerCircleManager pcManager) {
+		this.pcManager = pcManager;
 		try {
 
+			currentPlayer = pcManager.getPlayerByPerson(person);
+			currentCircle = pcManager.getCircleByPerson(person);
+			
 			Kachel momentaneKachel = gui.getKachelArray()[iReihe][jSpalte];
 
 			System.out.println("Reihe : " + iReihe + "  ||  Spalte : "
@@ -180,16 +187,16 @@ public class Ausloeser {
 
 			beweger.anfangsKachelSetzen(startKachel);
 
-			beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
+			beweger.bewegen(anweisungenOrientations, schritte, nullSchritte, currentPlayer, currentCircle);
 
 			nullSchritte = 0;
 			pathfinder.setWelcheKachel(0);
 
 			// HIER WIRD NEXT GEMACHT
 			pcManager.next();
-			if (gui.getKachelArray()[beweger.getCurrentPlayer().getPosition().getY()][beweger.getCurrentPlayer().getPosition().getX()].isIstRaum()){
-				network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
-			}
+			//if (gui.getKachelArray()[beweger.getCurrentPlayer().getPosition().getY()][beweger.getCurrentPlayer().getPosition().getX()].isIstRaum()){
+			//	network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
+			//}
 		} catch (NullPointerException e) {
 		}
 
@@ -284,4 +291,21 @@ public class Ausloeser {
 		this.gewuerfelt = gewuerfelt;
 	}
 
+	public CluedoPlayer getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public Circle getCurrentCircle() {
+		return currentCircle;
+	}
+
+	public void setCurrentCircle(Circle currentCircle) {
+		this.currentCircle = currentCircle;
+	}
+
+	
 }

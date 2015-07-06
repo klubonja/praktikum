@@ -1,5 +1,6 @@
 package enums;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import model.Deck;
@@ -7,6 +8,7 @@ import model.Deck;
 import org.json.JSONObject;
 
 import staticClasses.auxx;
+import cluedoServer.TurnDFA;
 
 public class myclass {
 	public myclass() {
@@ -34,5 +36,11 @@ public class myclass {
 		
 		auxx.loginfo(Arrays.toString(cdeck.getWinningHand()));
 		auxx.loginfo(Arrays.toString(cdeck.getPoolCards()));
+		
+		TurnDFA dfa = new TurnDFA(PlayerStates.do_nothing);
+		ArrayList<Number> l = dfa.getPossibleStates(7);
+		for (Number i : l)
+			System.out.println(i);
+		
 	}
 }

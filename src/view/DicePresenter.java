@@ -35,7 +35,7 @@ public class DicePresenter {
 	
 	private int zielWuerfelEins;
 	private int zielWuerfelZwei;
-	public final PlayerCircleManager pcManager;
+	public PlayerCircleManager pcManager;
 	private int gameid;
 	private CluedoGameClient networkGame;
 	
@@ -65,27 +65,28 @@ public class DicePresenter {
 		Sounds.diceSound();
 		view.getKomplettesFeld().getChildren().remove(view.getZugView());
 		diceCounter = 0;
-		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("yourself"));
+		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("yourself", pcManager));
 		Timeline t = new Timeline(keyFrame);
 		t.setCycleCount(10);
 		t.play();
 		
 		}
 	
-	public void rollTheDiceForSomeone(int ersterWuerfel, int zweiterWuerfel){
+	public void rollTheDiceForSomeone(int ersterWuerfel, int zweiterWuerfel, PlayerCircleManager pcManager){
 		this.zielWuerfelEins = ersterWuerfel;
 		this.zielWuerfelZwei = zweiterWuerfel;
+		this.pcManager = pcManager;
 		diceCounter = 0;
 		Sounds.diceSound();
 		view.getKomplettesFeld().getChildren().remove(view.getZugView());
-		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("someone"));
+		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("someone", pcManager));
 		Timeline t = new Timeline(keyFrame);
 		t.setCycleCount(10);
 		t.play();
 		
 	}
 	
-	public void changeFrame(String who){
+	public void changeFrame(String who, PlayerCircleManager pcManager){
 		
 		diceCounter = diceCounter + 1;
 		
@@ -103,7 +104,7 @@ public class DicePresenter {
 		if (diceCounter == 10){
 			dice[0] = first;
 			dice[1] = second;
-			wuerfeln();
+			wuerfeln(pcManager);
 		}
 		
 		switch(first){
@@ -131,7 +132,8 @@ public class DicePresenter {
 	/**
 	 * Testmethode zum Würfeln
 	 */
-	public void wuerfeln(){
+	public void wuerfeln(PlayerCircleManager pcManager){
+		this.pcManager = pcManager;
 		gui.resetBackground();
 		gui.resetMoeglichkeiten();
 		ausloeser.setWuerfelZahl(dice[0] + dice[1]);
@@ -142,8 +144,8 @@ public class DicePresenter {
 		System.out.println("==================================");
 		
 		
-		sucher.suchen(ausloeser.getWuerfelZahl());
-		ausloeser.zuweisung();
+		sucher.suchen(ausloeser.getWuerfelZahl(), pcManager);
+		ausloeser.zuweisung(pcManager);
 		ausloeser.setGewuerfelt(true);
 	}
 	

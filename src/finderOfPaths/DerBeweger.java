@@ -69,7 +69,7 @@ public class DerBeweger {
     private Kachel anfangsKachel;
     private Kachel zielKachel;
     
-    public final PlayerCircleManager pcManager;
+    public PlayerCircleManager pcManager;
     
 	public DerBeweger(KrasserStack stack, AussergewohnlichesZugfenster zug, BoardView gui, BallEbene2 ballEbene, RaumBeweger raumBeweger,PlayerCircleManager pcm){
 		pcManager = pcm;
@@ -80,24 +80,26 @@ public class DerBeweger {
 		this.raumBeweger = raumBeweger;
 		
 		this.currentPlayer = pcManager.getCurrentPlayer();
-		
-		anfangsKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
 		currentCircle = pcManager.getCurrentCircle();
+		anfangsKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
+		
 		
 	}
 	
-	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe, int nullSchritteEingabe){
+	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe, int nullSchritteEingabe, CluedoPlayer currentPlayer, Circle currentCircle){
 		
 		this.schritte = schritteEingabe;		
 		this.nullSchritte = nullSchritteEingabe;		
 		this.anweisungen = anweisungenEingabe;
+		this.currentPlayer = currentPlayer;
+		this.currentCircle = currentCircle;
 		
 		if(anfangsKachel.isIstTuer()){
 			anfangsRaumKachel = gui.getKachelArray()[anfangsKachel
 			         								.getPosition().getY()][anfangsKachel
 			         								.getPosition().getX()];
-			Rooms room = raumBeweger.checkRaum(currentPlayer, anfangsRaumKachel);
-			raumStartKachel = raumBeweger.positionInRaum(currentPlayer, room);
+			Rooms room = raumBeweger.checkRaum(this.currentPlayer, anfangsRaumKachel);
+			raumStartKachel = raumBeweger.positionInRaum(this.currentPlayer, room);
 			ausRaumBewegen();
 		}
 		else{
@@ -180,11 +182,6 @@ public class DerBeweger {
 
 		}
 
-		if (schritte == 0) {
-			stack.getChildren()
-					.add(zug);
-			zug.toFront();
-		}
 	}
 
 	public void anfangsKachelSetzen(Kachel neueAnfangsKachel) {
@@ -376,8 +373,9 @@ public class DerBeweger {
 		return anweisungenOrientationsVerarbeitet;
 	}
 
-	public void useSecretPassage() {
+	public void useSecretPassage(PlayerCircleManager pcManager) {
 
+		this.pcManager = pcManager;
 		auxx.logsevere("PAAAAAAAAAAANIIIIIIIIIIIK");
 		System.out.println(currentPlayer.getPosition().getX());
 		System.out.println(currentPlayer.getPosition().getY());

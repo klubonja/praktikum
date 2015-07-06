@@ -8,17 +8,45 @@ import enums.PlayerStates;
 public class CluedoPlayer {
 	
 	Persons cluedoPerson;
-	PlayerStates state;
+	ArrayList<PlayerStates>  possibleStates;
+	CluedoStateMachine dfa = new CluedoStateMachine(PlayerStates.do_nothing);
+	PlayerStates currentState;
 	CluedoPosition position;
 	String nick;
 	ArrayList<String> cards;
 	
+	
+	
 	public CluedoPlayer(Persons pers,PlayerStates s, CluedoPosition p) {
 		cluedoPerson = pers;
-		state = s;
+		if (s == PlayerStates.do_nothing) setDoNothing();
+		else setCurrentState(s);
 		position = p;
 		nick = "";
 		cards = new ArrayList<String>();
+	}
+	
+	public CluedoPlayer(Persons pers,PlayerStates s) {
+		cluedoPerson = pers;
+		if (s == PlayerStates.do_nothing) setDoNothing();
+		else setCurrentState(s);
+		position = new CluedoPosition(cluedoPerson.getStartposition().getX(),
+									 cluedoPerson.getStartposition().getY());
+	}
+	
+	public void setDoNothing() {
+		this.currentState = PlayerStates.do_nothing;
+		possibleStates = new ArrayList<PlayerStates>();
+		possibleStates.add(currentState);
+	}
+	
+	public void setCurrentState(PlayerStates currentState) {
+		this.currentState = currentState;
+		possibleStates = dfa.getPossibleStatesFromState(currentState);
+	}
+	
+	public PlayerStates getCurrentState() {
+		return currentState;
 	}
 	
 	public void setCards(ArrayList<String> cards) {
@@ -34,24 +62,27 @@ public class CluedoPlayer {
 		return cards;
 	}
 	
-	public CluedoPlayer(Persons pers,PlayerStates s) {
-		cluedoPerson = pers;
-		state = s;
-		position = new CluedoPosition(cluedoPerson.getStartposition().getX(),
-									 cluedoPerson.getStartposition().getY());
-	}
+	
 	
 	public void setNewPosition(int x,int y) {
 		this.position.setX(x);
 		this.position.setY(y);
 	}
 	
-	public void setState(PlayerStates state) {
-		this.state = state;
+	public void setPossibleStates(ArrayList<PlayerStates> newstates) {
+		this.possibleStates = newstates;
 	}
 	
-	public PlayerStates getState() {
-		return state;
+	public ArrayList<PlayerStates> getStates() {
+		return possibleStates;
+	}
+	
+	public ArrayList<String> getStatesStringList() {
+		ArrayList<String> sl = new ArrayList<String>();
+		for (PlayerStates s: possibleStates)
+			sl.add(s.getName());
+		
+		return sl;
 	}
 	
 	public CluedoPosition getPosition() {

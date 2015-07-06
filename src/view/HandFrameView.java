@@ -61,16 +61,16 @@ public class HandFrameView extends BorderPane {
 		
 		persons.getItems().addAll("red", "yellow", "white", "green", "blue", "purple");
 		persons.setValue("Person");
-		persons.setMinWidth(120);
-		persons.setMaxWidth(120);
+		persons.setMinWidth(110);
+		persons.setMaxWidth(110);
 		weapons.getItems().addAll(deck.getWeapons());
 		weapons.setValue("Weapon");
-		weapons.setMinWidth(120);
-		weapons.setMaxWidth(120);
+		weapons.setMinWidth(110);
+		weapons.setMaxWidth(110);
 		rooms.getItems().addAll(deck.getRooms());
 		rooms.setValue("Room");
-		rooms.setMinWidth(120);
-		rooms.setMaxWidth(120);
+		rooms.setMinWidth(110);
+		rooms.setMaxWidth(110);
 
 		lists.getChildren().addAll(persons, weapons, rooms);
 		accusationBox.getChildren().addAll(lists, accuse, endTurn);

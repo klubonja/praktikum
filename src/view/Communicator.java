@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 
-import org.json.JSONObject;
-
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
-import jdk.nashorn.api.scripting.JSObject;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
@@ -81,6 +78,21 @@ public class Communicator {
 		setHandler();
 
 		testButtons();
+		auxx.logsevere("Oh my giddy giddy gosh");
+		updatePCs();
+	}
+	
+	public void updatePCs(){
+		CluedoPlayer currentPlayer = pcManager.getCurrentPlayer();
+		beweger.setCurrentPlayer(currentPlayer);
+		vorschlager.setCurrentPlayer(currentPlayer);
+		ausloeser.setCurrentPlayer(currentPlayer);
+		pathfinder.setCurrentPlayer(currentPlayer);
+		dicePresenter.pcManager = pcManager;
+		beweger.pcManager = pcManager;
+		vorschlager.pcManager = pcManager;
+		ausloeser.pcManager = pcManager;
+		pathfinder.pcManager = pcManager;
 	}
 
 	public void setTitle(String newtitle) {
@@ -103,18 +115,22 @@ public class Communicator {
 		// int [] testWuerfelWurf = {6,6};
 		int ersterWuerfel = wuerfelWurf[0];
 		int zweiterWuerfel = wuerfelWurf[1];
-		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel);
+		updatePCs();
+		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
 	}
-
-	public void useSecretPassage() {
-
-		beweger.useSecretPassage();
+	
+	public void useSecretPassage(){
+		updatePCs();
+		beweger.useSecretPassage(pcManager);
 	}
-
-	public void move(CluedoPosition position) {
+	
+	public void move(CluedoPosition position, String person){
+		updatePCs();
 		int yKoordinate = position.getY();
 		int xKoordinate = position.getX();
-		ausloeser.ausloesen(yKoordinate, xKoordinate);
+		beweger.setCurrentPlayer(pcManager.getCurrentPlayer());
+		beweger.setCurrentCircle(pcManager.getCurrentCircle());
+		ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
 	}
 
 	// SENDS MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT
@@ -125,18 +141,6 @@ public class Communicator {
 		network.sendMsgToServer(NetworkMessages.suspicionMsg(
 				network.getGameId(),
 				NetworkMessages.statement(person, room, weapon)));
-		ArrayList<CluedoPlayer> list = network.getPlayersConnected();
-		String color = "";
-		for(CluedoPlayer p : list){
-			if(p.getNick().equals(network.getMyNick())){
-				color = p.getCluedoPerson().getColor();
-			}
-		}
-		System.out.println("COLOR IS HEEEEEEEEEEEEEEEEEERE " + color);
-		network.sendMsgToServer(
-				(NetworkMessages.player_info(network.getMyNick(),
-				color,
-				PlayerStates.suspect.getName())).toString());
 	}
 
 	// SENDS A MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT AS WELL
@@ -179,25 +183,35 @@ public class Communicator {
 
 	}
 
+	public void setNextTurn(){
+		pcManager.next();// erhöht den index und sonst nix
+		updatePCs();
+	}
+		
 	public void endTurn() {
-
+		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
 		// Communicator.playerManager.next();
 		// Communicator.circleManager.next();
-		pcManager.next();// erhöht den index und sonst nix
 		// ///////////////////////////////////
 		// /BENACHRICHTUGUNG, DASS NÄCHSTER///
 		// ///////ZUG ANGEFANGEN HAT//////////
 		// ///////////////////////////////////
+		
 	}
-
+	
+	public void itsYourTurn(){
+		setNextTurn();
+		openWindow();
+		updatePCs();
+	}
+	
 	public void kill() {
 		gameView.close();
 	}
-
-	public void testButtons() {
-		// ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans =
-		// new int {5,9}));
-		int[] cheater = { 6, 6 };
+	
+	public void testButtons(){
+//		ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans = new int {5,9}));
+		int [] cheater = {6,6};
 		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice(cheater));
 		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
 	}
@@ -229,25 +243,36 @@ public class Communicator {
 		});
 
 		// END TURN
-		gameView.getHand().getEndTurn().setOnMouseClicked(e -> {
-		});
-
-	}
-
-	// OPEN WINDOW
-	public void openWindow() {
-		gameView.getKomplettesFeld().getChildren().add(zugView);
-	}
-
-	// CLOSE WINDOW
-	public void closeWindow() {
-		gameView.getKomplettesFeld().getChildren().remove(zugView);
+		gameView.getHand().getEndTurn().setOnMouseClicked(e -> endTurn());
+		
 	}
 	
-	public void changeLabel(String str){
-		gameView.getHand().getText().setText(str);
-	}
+	//OPEN WINDOW
+			public void openWindow(){
+				auxx.logsevere("to the front!!!");
+				auxx.logsevere("" +zugView);
+				gameView.getKomplettesFeld().getChildren().remove(zugView);
+				gameView.getKomplettesFeld().getChildren().add(zugView);
+			}
+			
+			//CLOSE WINDOW
+			public void closeWindow(){
+				gameView.getKomplettesFeld().getChildren().remove(zugView);
+			}
 
+			public void updateStatesToNothing() {
+				pcManager.getCurrentPlayer().setDoNothing();
+			}
+			
+			public void updateStatesToRolls() {
+				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.roll_dice);
+			}
+			
+			public void changeLabel(String str){
+				gameView.getHand().getText().setText(str);
+			}
+			
+	
 	/*
 	 * (check) start game (check) roll dice --> letztes Bild ihre
 	 * Würfel-Kombination und dann pathfinder / sucher / vorschlager
