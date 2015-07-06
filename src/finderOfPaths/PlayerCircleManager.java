@@ -10,6 +10,7 @@ public class PlayerCircleManager {
 		
 	public  ArrayList<CluedoPlayer> playerManager;
 	public  ArrayList<Circle> circleManager;
+	public  ArrayList<String> order;
 	
 	private int currentIndex = 0;
  	
@@ -44,6 +45,10 @@ public class PlayerCircleManager {
 		return circleManager.get(currentIndex);
 	}
 
+	public String getCurrentNick(){
+		return order.get(currentIndex);
+	}
+	
 	public int getIndex() {
 		return currentIndex;
 	}	
@@ -114,4 +119,15 @@ public class PlayerCircleManager {
 	public void setPlayerManager(ArrayList<CluedoPlayer> playerManager) {
 		this.playerManager = playerManager;
 	}
+
+	public ArrayList<String> getOrder() {
+		return order;
+	}
+
+	public void setOrder(ArrayList<String> order) {
+		this.order = order;
+	}
+
+	
+	
 }

@@ -140,7 +140,6 @@ public class CluedoGameServer extends CluedoGame {
 
 	public void notifyInit() {
 		for (ClientItem client: getParticipants()){
-			client.sendMsg(NetworkMessages.game_startedMsg(getGameId(), getConnectedPlayersString()));
 			CluedoPlayer p = getPlayerByClient(client);
 			client.sendMsg(NetworkMessages.player_cardsMsg(getGameId(),p.getCards()));
 		}
@@ -189,6 +188,11 @@ public class CluedoGameServer extends CluedoGame {
 
 	public void setParticipants(ArrayList<ClientItem> participants) {
 		this.participants = participants;
+	}
+
+	@Override
+	boolean start(ArrayList<String> order) {
+		return false;
 	}
 
 

@@ -1,5 +1,6 @@
 package finderOfPaths;
 
+import staticClasses.auxx;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
 
@@ -27,8 +28,8 @@ public class Sucher {
 	public PlayerCircleManager pcManager;
 	 
 	
-	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  char [][]anweisungen,PlayerCircleManager pcm){
-		pcManager = pcm;
+	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  char [][]anweisungen,PlayerCircleManager pcManager){
+		this.pcManager = pcManager;
 		this.boardView = boardView;
 		this.ballEbene = ballEbene;
 		this.beweger = beweger;
@@ -44,6 +45,10 @@ public class Sucher {
 		this.wuerfelZahl = wuerfelZahlEingabe;
 		this.pcManager = pcManager;
 		
+		auxx.logsevere("Sucher.suchen:");
+		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
+		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
+		
 		//setToNextPlayer();
 		
 		pathfinder.findThatPathBetter(wuerfelZahl, pcManager);
@@ -54,14 +59,19 @@ public class Sucher {
 		int [] yPositionen = pathfinder.getyPositionen();
 		int tuerCounter = pathfinder.getTuerCounter();
 		
-		vorschlager.vorschlaegeMachen(anweisungen, mehrereAnweisungen, xPositionen, yPositionen, tuerCounter, pcManager);
+		vorschlager.vorschlaegeMachen(anweisungen, mehrereAnweisungen, xPositionen, yPositionen, tuerCounter, this.pcManager);
 		pathfinder.setTuerCounter(0);
 	}
 	
-	public void setToNextPlayer(){
-		pathfinder.setCurrentPlayer(pcManager.getCurrentPlayer());
-		vorschlager.setCurrentPlayer(pcManager.getCurrentPlayer());
-		this.currentPlayer = pcManager.getCurrentPlayer();
+	public CluedoPlayer getCurrentPlayer() {
+		return currentPlayer;
 	}
+
+
+	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+	
+	
 	
 }
