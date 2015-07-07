@@ -15,6 +15,7 @@ public enum Persons {
 	purple("purple","Professor Bloom",new CluedoPosition(0,5), Color.PURPLE)
 	;
 	
+	private static Persons[] values = values();
 	
 	private String color;
 	private Color farbe;
@@ -35,6 +36,11 @@ public enum Persons {
 	public String getColor() {
         return this.color;
     }
+	
+	public Persons getNextColor(){
+		return values[(this.ordinal()+1) % values.length];
+		
+	}
 	
 	public Color getFarbe() {
 		return farbe;

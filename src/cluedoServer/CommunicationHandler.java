@@ -1,11 +1,14 @@
 package cluedoServer;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
+
 
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import staticClasses.Config;
@@ -33,7 +36,9 @@ class CommunicationHandler implements Runnable {
 	boolean run = true;
 	boolean readyForCommunication = false;
 	String currentMsg;
-
+	
+	private int anfangsSpielerZufall;
+	
 	/**
 	 * @param ss
 	 * @param c
@@ -218,8 +223,7 @@ class CommunicationHandler implements Runnable {
 //	        							 )
 //	        					);
 	        		//	dataGuiManager.getGameByIndex(gameID).notifyInit();	
-	        			dataGuiManager.startGameByID(gameID,client.getNick());
-	        			dataGuiManager.addMsgIn("game "+checker.getMessage().getInt("gameID")+ " started");
+	        			
 	        			boolean esGibtRot = false;
 	        			for(ClientItem clientTemp : dataManager.clientPool){
 	        				if(clientTemp.getPlayer().getCluedoPerson().getColor() == Persons.red.getColor()){
@@ -228,9 +232,60 @@ class CommunicationHandler implements Runnable {
 	        			}
 	        			
 	        			
+	        			
+	        			ArrayList <String> nicksConnected = new ArrayList <String>();
+	        			ArrayList <String> usedColors = new ArrayList <String>();
+	        			Persons startColor;
+	        			
+	        			for (ClientItem clientTemp : dataManager.clientPool){
+	        				nicksConnected.add(clientTemp.getNick());
+	        				usedColors.add(clientTemp.getPlayer().getCluedoPerson().getColor());
+	        			}
+	        			
+	        			ArrayList <String> sortedColors = new ArrayList <String>();
+	        			if (esGibtRot){
+	        				startColor = Persons.red;
+	        			}
+	        			else {
+	        				anfangsSpielerZufall = auxx.getRandInt(1, dataManager.clientPool.size()-1);
+	        				startColor = Persons.getPersonByColor(usedColors.get(anfangsSpielerZufall));
+	        			}
+	        			
+	        			sortedColors.add(startColor.getColor());
+	        			Persons color = startColor.getNextColor();
+	        				for (int j = 0; j < 5; j++){
+	        					for (int i = 0; i < usedColors.size(); i++){
+	        					if (color.getColor() == usedColors.get(i) && !sortedColors.contains(color.getColor())){
+	        						sortedColors.add(usedColors.get(i));
+	        					}
+	        					color = color.getNextColor();
+	        				}
+	        					
+	        					
+	        			}
+	        			
+	        			
+	        			CluedoJSON startGame = new CluedoJSON("order");
+	        			
+	        			JSONObject krasserScheiss = new JSONObject();
+	        			ArrayList <String> sortierteMenschen = new ArrayList <String>();
+	        			
+	        			for(int i = 0; i < usedColors.size(); i++){
+	        				krasserScheiss.put(usedColors.get(i), nicksConnected.get(i));
+	        			}
+	        			
+	        			for (String farbe : sortedColors){
+	        				auxx.logsevere("add me much");
+	        				auxx.logsevere("color : " +farbe);
+	        				sortierteMenschen.add(krasserScheiss.get(farbe).toString());
+	        			}
+	        			
+	        			dataManager.notifyAll(NetworkMessages.game_startedMsg(gameID, sortierteMenschen));
+	        			dataGuiManager.startGameByID(gameID,client.getNick());
 	        			if (esGibtRot){
 		        			for(ClientItem clientTemp : dataManager.clientPool){
 		        				String  state = PlayerStates.do_nothing.getName();
+		        				
 		        					if(clientTemp.getPlayer().getCluedoPerson().getColor() == Persons.red.getColor()){
 			        					state = PlayerStates.roll_dice.getName();
 			        				}
@@ -239,13 +294,13 @@ class CommunicationHandler implements Runnable {
 										    	)
 									))));
 		        			}
+		        			
 		        		}
 	        			else {
-	        				int anfangsSpielerZufall = auxx.getRandInt(1, dataManager.clientPool.size()-1);
 	        				for(int welcherSpieler = 0; welcherSpieler < dataManager.clientPool.size(); welcherSpieler++){
 		        				String  state = PlayerStates.do_nothing.getName();
 		        				if (welcherSpieler == anfangsSpielerZufall){
-		        					state = PlayerStates.roll_dice.getName();		        				
+		        					state = PlayerStates.roll_dice.getName();	
 		        				}
 		        				dataManager.getClientPool().get(welcherSpieler).sendMsg(NetworkMessages.stateupdateMsg(gameID, NetworkMessages.player_info(dataManager.getClientPool().get(welcherSpieler).getNick(), dataManager.getClientPool().get(welcherSpieler).getPlayer().getCluedoPerson().getColor(), new ArrayList<String>(
 									    Arrays.asList(state
@@ -254,6 +309,8 @@ class CommunicationHandler implements Runnable {
 		        				
 	        				}
 	        			}
+	        			
+	        			dataGuiManager.addMsgIn("game "+checker.getMessage().getInt("gameID")+ " started");
 	        	   }
      		  
      		   else {
@@ -365,4 +422,5 @@ class CommunicationHandler implements Runnable {
         }
 
 	}
+
 }
