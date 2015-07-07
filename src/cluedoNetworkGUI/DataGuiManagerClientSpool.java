@@ -48,8 +48,10 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	public void setSelectedServer(ServerItem selectedServer) {
 		this.selectedServer = selectedServer;
 		setStatus("selected server : "+selectedServer.getGroupName());
+		setWindowName("logged in to server "+selectedServer.getGroupName()+" as "+selectedServer.getMyNick());
 		cleanInput();
 		addMsgIn(selectedServer.getChat());
+		auxx.logfine("logged in to server "+selectedServer.getGroupName()+" as "+selectedServer.getMyNick());
 	}
 	
 	public ServerItem getSelectedServer() {

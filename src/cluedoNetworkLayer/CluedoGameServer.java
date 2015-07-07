@@ -141,10 +141,13 @@ public class CluedoGameServer extends CluedoGame {
 		for (ClientItem client: getParticipants()){
 			client.sendMsg(NetworkMessages.game_startedMsg(getGameId(), getConnectedPlayersString()));
 			CluedoPlayer p = getPlayerByClient(client);
-			client.sendMsg(NetworkMessages.player_cardsMsg(getGameId(),p.getCards()));
+			client.sendMsg(
+					NetworkMessages.player_cardsMsg(
+							getGameId(),
+							p.getCards()
+						)
+				);
 		}
-		
-
 	}
 
 	public void setNextRound() {

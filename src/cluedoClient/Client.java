@@ -282,7 +282,7 @@ public class Client {
 				if (server.getSocket() == null)	startTCPConnection(server); //login to server					
 				if (!auxx.login(dataGuiManager.getGui(), server)) dataGuiManager.removeServer(server);							
 			}
-			else if (server.getStatus() == ServerStatus.connected){//select server beeing fully connected
+			else if (server.getStatus() == ServerStatus.connected){//select server being fully connected
 				dataGuiManager.refreshGamesListServer(server);
 				dataGuiManager.setSelectedServer(server);
 			}
