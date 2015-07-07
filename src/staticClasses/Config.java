@@ -29,7 +29,7 @@ public abstract class Config {
 	public final static int NETWORK_BUFFER_SIZE = 256;
 	public final static String BROADCAST_WILDCARD_IP = "255.255.255.255";
 	
-	public final static int MESSAGE_BUFFER = 4096*2;
+	public final static int MESSAGE_BUFFER = 4096*3;
 	
 	
 	//public final static int TCP_PORT = 1200;	

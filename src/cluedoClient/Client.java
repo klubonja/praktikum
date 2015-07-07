@@ -49,9 +49,10 @@ public class Client {
 		gui = g;
 		serverList = new ServerPool();
 		dataGuiManager = new DataGuiManagerClientSpool(gui, serverList);
-		dataGuiManager.setWindowName(Config.GROUP_NAME+ " Client");
-		
+		dataGuiManager.setWindowName(Config.GROUP_NAME+ " Client");		
 		globalRun = true;
+		
+		
 		setHandler();
 		listenForServersThread();
 		sayHello();
@@ -84,21 +85,19 @@ public class Client {
 			public void handle(KeyEvent e) {
 			        if (e.getCode() == KeyCode.ENTER){
 			        	try {	
-			        		auxx.logfine("firing enter and trying sendchat");
 			        		if (!gui.inputField.getText().equals("")){
 			        			auxx.sendTCPMsg(
 				        				dataGuiManager.getSelectedServer().getSocket(),
 				        				NetworkMessages.chatMsg(gui.inputField.getText(),dataGuiManager.getSelectedServer().getMyNick(),auxx.now()));	
-			        		}			        				        		
+			        		}	
+			        		e.consume();
+				        	gui.inputField.setText("");	
 			        	} 
 			        	catch (Exception e1) {
+			        		auxx.logsevere("sending chat failed ",e1);
 							globalRun = false;
-						}			        	
-			        	e.consume();
-			        	gui.inputField.setText("");			        	
-			        }
-			       
-			        
+						}		        			        	
+			        }			        
 			    }
 			};	
 			gui.inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
@@ -167,9 +166,8 @@ public class Client {
 	            	sayHello();
 	            }
 	        });	
-			 ////////////////////////SEDNDHANDSHAKE MANEND/////////////////////////////////////////////////
-			
-			
+		////////////////////////SEDNDHANDSHAKE MAN END/////////////////////////////////////////////////			
+			////////////////////////TESTSERVERCONNECTION MAN/////////////////////////////////////////////////
 			gui.connectToTestServer.setOnAction(new EventHandler<ActionEvent>() {
 	            @Override
 	            public void handle(ActionEvent event) {
@@ -182,6 +180,9 @@ public class Client {
 					}            	
 	            }
 	        });	
+			////////////////////////TESTSERVERCONNECTION MAN END/////////////////////////////////////////////////
+			////////////////////////CLOSEWINDOW/////////////////////////////////////////////////
+
 			gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 			      @Override
 				public void handle(WindowEvent e){
@@ -197,7 +198,9 @@ public class Client {
 			          }
 			      }
 			 });
-			
+			////////////////////////CLOSEWINDOW END////////////////////////////////////////////////
+
+			////////////////////////SELECT SERVER/////////////////////////////////////////////////
 			gui.getNetworkActorsView().setOnMouseClicked(new EventHandler<MouseEvent>() {
 			    @Override
 			    public void handle(MouseEvent click) {
@@ -206,6 +209,10 @@ public class Client {
 			        }
 			    }
 			});	
+			////////////////////////SELECT SERVER END/////////////////////////////////////////////////
+			
+			
+
 	}
 	
 	
@@ -266,7 +273,6 @@ public class Client {
 	}
 	
 	void selectIp(SelectionModel<NetworkActorVBox> smod) {
-		//String[] loginInfo = ((CluedoClientGUI) gui).loginPrompt("Login to "+selectedListItemName);
 		try {
 			ServerItem server = dataGuiManager.getServerByID(
 					smod.getSelectedItem().getNameID(),
