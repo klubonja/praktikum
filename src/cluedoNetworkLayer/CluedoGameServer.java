@@ -172,10 +172,10 @@ public class CluedoGameServer extends CluedoGame {
 	public void notifyNextRound() {
 		auxx.loginfo(getNicksConnected());
 		notifyAll(NetworkMessages.stateupdateMsg(getGameId(), 
-				NetworkMessages.player_info(getParticipants().get(currentPlayerIndex).getNick(),
-						getParticipants().get(currentPlayerIndex).getPlayer()
-								.getCluedoPerson().getColor(), 
-								getParticipants().get(currentPlayerIndex).getPlayer().getStatesStringList()
+				NetworkMessages.player_info(
+						players.get(currentPlayerIndex).getNick(),
+						players.get(currentPlayerIndex).getCluedoPerson().getColor(), 
+						players.get(currentPlayerIndex).getStatesStringList()
 				)
 		));
 	}
@@ -184,7 +184,6 @@ public class CluedoGameServer extends CluedoGame {
 		currentPlayerIndex = (currentPlayerIndex + 1) % getParticipants().size();
 	}
 	
-
 	public int getCurrentPlayerIndex() {
 		return currentPlayerIndex;
 	}

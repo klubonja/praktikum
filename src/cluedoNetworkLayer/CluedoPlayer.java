@@ -40,9 +40,15 @@ public class CluedoPlayer {
 		possibleStates.add(currentState);
 	}
 	
+	public void setDisprove() {
+		this.currentState = PlayerStates.disprove;
+		possibleStates = new ArrayList<PlayerStates>();
+		possibleStates.add(PlayerStates.disprove);
+	}
+	
 	public void setCurrentState(PlayerStates currentState) {
 		this.currentState = currentState;
-		possibleStates = dfa.getPossibleStatesFromState(currentState);
+		possibleStates = dfa.getSucStates(currentState);
 	}
 	
 	public void setCurrentStates(ArrayList<PlayerStates> states) {

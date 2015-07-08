@@ -40,7 +40,7 @@ class IncomingHandler implements Runnable {
 		getGamesList();
 		while (globalRun && localRun) {
 			try {
-				String[] messages = auxx.getTCPMessages(server.getSocket());
+				ArrayList<String> messages = auxx.getTCPMessages(server.getSocket());
 				for (String message: messages)
 					if (!message.equals("")) incommingLogic(message);
 			}			
@@ -180,9 +180,10 @@ class IncomingHandler implements Runnable {
 	}
 	
 	private void getGamesList(){
-		String msgs[] = auxx.getTCPMessages(server.getSocket());
+		ArrayList<String> msgs = auxx.getTCPMessages(server.getSocket());
 		for (String msg : msgs)
-			if (!msg.equals(""))  getGamesListLogic(msg);
+			if (!msg.equals(""))  
+				getGamesListLogic(msg);
 		
 		
 	}
@@ -216,6 +217,8 @@ class IncomingHandler implements Runnable {
 		else {
 			//dataGuiManager.addMsgIn(checker.getMessage().toString());
 		}
+		
+		auxx.logfine("Server login response was : " +msg);
 	}
 	
 	

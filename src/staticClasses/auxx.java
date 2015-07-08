@@ -20,6 +20,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cluedoClient.ServerItem;
 import cluedoNetworkGUI.CluedoClientGUI;
@@ -92,29 +94,63 @@ public abstract class auxx {
 		
 	}
 	
-	public static String[] getTCPMessages(Socket s){
+	public static ArrayList<String> getTCPMessages(Socket s){
 		try {
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
 			char[] buffer = new char[Config.MESSAGE_BUFFER];
-			int charCount = br.read(buffer,0,Config.MESSAGE_BUFFER);
-			logsevere("charcount : "+charCount+" from getTCPMesg");
-			String msg = new String (buffer, 0, charCount);	
-			logfine("RECEIVED : "+ msg);
-			String[] msgs = msg.split(Config.TCP_MESSAGE_DELIMITER_REGEX);
-//			if (msgs[msgs.length-1].equals("")) {
-//				String[] msgsfinal = new String[msgs.length-1];
-//				for (int i = 0; i < msgs.length-2; i++)
-//					msgsfinal[i] = msgs[i];
-//				return msgs;
-//			}
-			if (msgs.length == 0) return new String[]{""};
-			return msgs;
+			
+			
+			int readpos = br.read(buffer,0,Config.MESSAGE_BUFFER);
+			if (readpos >= 0 ){
+				String msg = new String (buffer,0,readpos);	
+				logfine("RECEIVED : <MSG START> "+ msg +" <MSGS END>");
+				String[] rawmsgs = msg.split(Config.TCP_MESSAGE_DELIMITER_REGEX); //removing and splitting along newlines
+				return handledTCPMessages(rawmsgs, s);
+			}
+			else {
+				logsevere("readpos : "+readpos+" network stream closed");	
+				throw new Exception();
+			}			
+			
 		} 
 		catch (Exception e) {
 			logsevere("RECEIVE failed : ", e);
-	    }	
-		return null;
+	    }
+		
+		return new ArrayList<String>();
+	}
+	
+	public static ArrayList<String> handledTCPMessages(String[] jsonSource, Socket s){
+		ArrayList<String> handled = new ArrayList<String>();
+		for (int i = 0; i < jsonSource.length-1; i++){
+			
+			JSONObject newjson = new JSONObject(jsonSource[i]);
+			handled.add(jsonSource[i]);
+		}
+		if (!jsonSource[jsonSource.length-1].equals("")){
+			try {
+				JSONObject potentiallyIncomplete = new JSONObject(jsonSource[jsonSource.length-1]);
+				handled.add(jsonSource[jsonSource.length-1]);
+			}
+			catch (JSONException e){
+				ArrayList<String> sucList = getTCPMessages(s);
+				auxx.logsevere("goiing into recursion");
+				String fixedJSONSource = jsonSource[jsonSource.length-1].concat(sucList.get(0));
+				try {
+					JSONObject tobefixed = new JSONObject(fixedJSONSource);
+					sucList.set(0, fixedJSONSource);
+				}
+				catch (JSONException e1){
+					logsevere("fixing network message failed, dropping msg : \n"+ fixedJSONSource);
+					
+				}
+				handled.addAll(sucList);	
+			}
+		}
+		
+		
+		return  handled;
 	}
 	
 	public static boolean sendTCPMsg(Socket socket,String msg){

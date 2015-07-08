@@ -4,13 +4,47 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 import enums.PlayerStates;
-
+// CHECK ORDER OF PLAYERSTATES IF THIS DOES NOT RENDER EXPECTED RESULTS
+// ITS STATEINDEXES ARE HARDCODED
 public class TurnDFA {
 	int currentState;
 	int initStateOrdinal;
-
- 	int transitions[][] = {{1,2,5}, {4,7},	{3,7}, 	{4,5,7},	{6,7}, {0},	{0},	{},{9},{8}};
- 	//						0		 1	  	2			3	  	  4	    5	 6		7  8  9
+ 	//int transitions[][] = {{1,2,5}, {4,7},	{3,7}, 	{4,5,7},	{6,7}, {0},	{0},	{},{9},{8}};
+		 //						0		 1	  	2			3	  	  4	    5	 6		7  8  9
+ 	int transitions[][] = {
+ 	 		{//do nothing
+ 		 		PlayerStates.use_secret_passage.ordinal(),
+ 		 		PlayerStates.roll_dice.ordinal(),
+ 		 		PlayerStates.accuse.ordinal()
+ 	 		},
+ 	 		{ //use secret passage
+ 		 		PlayerStates.suspect.ordinal(),
+ 		 		PlayerStates.accuse.ordinal()
+ 	 		},	
+ 	 		{//rolldice
+ 	 			PlayerStates.move.ordinal(),
+ 	 			PlayerStates.accuse.ordinal()
+ 	 		}, 	
+ 	 		{//move
+ 	 			PlayerStates.suspect.ordinal(),
+ 	 			PlayerStates.disprove.ordinal(),
+ 	 			PlayerStates.accuse.ordinal()
+ 	 		},	
+ 	 		{//suspect
+ 	 			//PlayerStates.disprove.ordinal(),
+ 	 			PlayerStates.accuse.ordinal()
+ 	 		}, 
+ 	 		{//endturn
+ 	 			PlayerStates.do_nothing.ordinal()
+ 	 		},	
+ 	 		{//disprove
+ 	 			PlayerStates.do_nothing.ordinal()
+ 	 		},	
+ 	 		{},
+ 	 		{9},//donothing trapstate not protokoll covered
+ 	 		{8}//disprove trapstate not ...
+ 	 		};
+ 	 
  	//						do n     use s   roll d	  move   	  sus   disp end	acc
  	public TurnDFA(PlayerStates initState) {
 		currentState = initState.ordinal();
@@ -32,8 +66,8 @@ public class TurnDFA {
  		return new ArrayList<Number>(new LinkedHashSet<Number>(states)); // nasty way of removing dups
  	}
  	
- 	public ArrayList<Number> getSucStates(PlayerStates sstate){
- 		return null;
+ 	public int[] getSucStates(PlayerStates sstate){
+ 		return transitions[sstate.ordinal()];
  	}
  	
  	public ArrayList<Number> getPossibleStates(ArrayList<Number> statelist){

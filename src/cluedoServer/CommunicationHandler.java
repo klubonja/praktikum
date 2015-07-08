@@ -57,13 +57,17 @@ class CommunicationHandler implements Runnable {
 		while (!readyForCommunication) { // will keep listening for valid login
 											// msg
 			try {
-				String[] messages = auxx.getTCPMessages(client.getSocket());
-				for (String message : messages)
+				ArrayList<String> messages = auxx.getTCPMessages(client.getSocket());
+				for (String message : messages){
+					System.out.println("attempting eith msg "+message);
 					if (!message.equals(""))
 						loginAttemptLogic(message);
+					
+				}
+					
 			} catch (Exception e) {
 				auxx.logsevere(
-						"communcitationhandler of client" + client.getNick(), e);
+						"error client login attempt : " + client.getNick(), e);
 			}
 		}
 	}
@@ -74,11 +78,16 @@ class CommunicationHandler implements Runnable {
 		while (run) {
 			try {
 
-				String[] messages = auxx.getTCPMessages(client.socket);
-				currentMsg = messages[0];
+				ArrayList<String> messages = auxx.getTCPMessages(client.socket);
+				try {					
+					currentMsg = messages.get(0);				}
+				catch (Exception e){}
+				
 				for (String message : messages)
 					if (!message.equals(""))
 						serverLogic(message);
+			
+				
 			} catch (Exception e) {
 				auxx.logsevere(
 						"communicationhandler for client : " + client.getNick()
@@ -114,10 +123,6 @@ class CommunicationHandler implements Runnable {
 				client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(),
 								dataManager.getClientPool(), dataManager.getGameList()));
 
-//			if (dataGuiManager.addNetworkActor(client, "logged in"))
-//				dataManager.notifyAll(NetworkMessages.user_addedMsg(client
-//						.getNick()));
-//>>>>>>> d62cee416b07023f92e8b8a0ea083aa68d1efac5
 				readyForCommunication = true;
 			}
 			else {
