@@ -2,6 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 import staticClasses.auxx;
 import view.Communicator;
@@ -17,7 +18,7 @@ public abstract class CluedoGame {
 	
 	GameStates gameState;
 	
-	ArrayList<CluedoPlayer> players;
+	Stack<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
 	
 	Communicator communicator;
@@ -31,7 +32,7 @@ public abstract class CluedoGame {
 	
 	void init(){		
 		gameState = GameStates.not_started;
-		players = new ArrayList<CluedoPlayer>();
+		players = new Stack<CluedoPlayer>();
 		weapons = new ArrayList<CluedoWeapon> ();
 		
 		Persons[] persons = Persons.values();
@@ -99,7 +100,7 @@ public abstract class CluedoGame {
 		return weapons;
 	}
 	
-	public ArrayList<CluedoPlayer> getPlayers() {
+	public Stack<CluedoPlayer> getPlayers() {
 		return players;
 	}
 	
@@ -155,8 +156,8 @@ public abstract class CluedoGame {
 		return n;
 	}
 	
-	public ArrayList<CluedoPlayer> getPlayersConnected(){
-		ArrayList<CluedoPlayer> cp = new ArrayList<CluedoPlayer>();
+	public Stack<CluedoPlayer> getPlayersConnected(){
+		Stack<CluedoPlayer> cp = new Stack<CluedoPlayer>();
 		for (CluedoPlayer p : players)
 			if (!p.getNick().equals(""))
 				cp.add(p);

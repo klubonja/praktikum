@@ -1,6 +1,7 @@
 package staticClasses;
 
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.Vector;
 
 import json.CluedoJSON;
@@ -321,7 +322,7 @@ public abstract class NetworkMessages {
 			statementJSON.put("room", statement.getRoom().getName());
 			
 		} catch (NullPointerException e) {
-			statementJSON.put("person", auxx.getRandomPerson());
+			statementJSON.put("person", auxx.getRandomPersonColorString());
 			statementJSON.put("weapon",auxx.getRandomWeapon());
 			statementJSON.put("room", auxx.getRandomRoom());
 		}
@@ -437,7 +438,7 @@ public abstract class NetworkMessages {
 	public static JSONObject gameInfo(CluedoGameServer game){
 		JSONArray playerInfosJSON = new JSONArray();
 		JSONArray perspossJSON = new JSONArray();
-		ArrayList<CluedoPlayer> playerInfos = game.getPlayersConnected();
+		Stack<CluedoPlayer> playerInfos = game.getPlayersConnected();
 		for (CluedoPlayer p : playerInfos){
 			playerInfosJSON.put(
 				NetworkMessages.player_info(

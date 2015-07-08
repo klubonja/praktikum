@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
 
 import org.json.JSONArray;
 
@@ -166,12 +167,23 @@ public abstract class auxx {
 		return sb.toString();		
 	}
 	
-	public static String getRandomPerson(){
+	public static String getRandomPersonColorString(){
 		Persons[] ps = Persons.values();
 		Random rand = new Random();	
 	
 		return ps[Math.abs(rand.nextInt()%ps.length)].getColor();		
 	}
+	
+	public static Persons getRandomPerson(){
+		Persons[] ps = Persons.values();
+		Random rand = new Random();	
+	
+		return ps[Math.abs(rand.nextInt()%ps.length)];
+	}
+	
+	 public static Color getRandFarbe(){
+		 return getRandomPerson().getFarbe();
+	 }
 	
 	public static String getRandomWeapon(){
 		Weapons[] ps = Weapons.values();

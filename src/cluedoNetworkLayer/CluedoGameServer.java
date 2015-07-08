@@ -1,7 +1,10 @@
 package cluedoNetworkLayer;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Stack;
 
+import javafx.scene.paint.Color;
 import model.Deck;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
@@ -17,7 +20,7 @@ public class CluedoGameServer extends CluedoGame {
 	private ArrayList<ClientItem> participants;
 	ArrayList<ClientItem> watchers;
 	WinningStatement winningStatement;
-	int currentPlayer = 0;
+	int currentPlayerIndex = 0;
 
 	public CluedoGameServer(int gameId) {
 		super(gameId);
@@ -31,7 +34,8 @@ public class CluedoGameServer extends CluedoGame {
 
 	@Override
 	public boolean start() {
-		players = dealCardsNetwork(getPlayersConnected());
+		players = dealCardsNetwork(getPlayersConnected()); //this renders players as only connected
+		orderPlayersList();
 		notifyInit();
 		notifyNextRound();
 		setGameState(GameStates.started);
@@ -39,7 +43,7 @@ public class CluedoGameServer extends CluedoGame {
 		return true;
 	}
 
-	public ArrayList<CluedoPlayer> dealCardsNetwork(ArrayList<CluedoPlayer> players) {
+	public Stack<CluedoPlayer> dealCardsNetwork(Stack<CluedoPlayer> players) {
 		Deck deck = new Deck(getNumberConnected());
 		deck.dealCluedoCards();
 		String[] wh = deck.getWinningHand();
@@ -154,13 +158,12 @@ public class CluedoGameServer extends CluedoGame {
 	}
 	
 	public void updatePlayerStates(){		
-		for (int i = 0;i < participants.size(); i++){
-			CluedoPlayer player = participants.get(i).getPlayer();
-			if (i == currentPlayer)	{
-				player.setCurrentState(PlayerStates.do_nothing); // hier werden possible moves von do nothing aus gesetzt
+		for (int i = 0;i < players.size(); i++){
+			if (i == currentPlayerIndex)	{
+				players.get(i).setCurrentState(PlayerStates.do_nothing); // hier werden possible moves von do nothing aus gesetzt
 			}
 			else{
-				player.setDoNothing(); // hier werden possible moves gelöscht und do nothing hinzugefügt
+				players.get(i).setDoNothing(); // hier werden possible moves geleert und do nothing hinzugefügt
 			}			
 		}
 			
@@ -168,22 +171,22 @@ public class CluedoGameServer extends CluedoGame {
 
 	public void notifyNextRound() {
 		auxx.loginfo(getNicksConnected());
-		notifyAll(NetworkMessages.stateupdateMsg(getGameId(), NetworkMessages
-				.player_info(getParticipants().get(currentPlayer).getNick(),
-						getParticipants().get(currentPlayer).getPlayer()
+		notifyAll(NetworkMessages.stateupdateMsg(getGameId(), 
+				NetworkMessages.player_info(getParticipants().get(currentPlayerIndex).getNick(),
+						getParticipants().get(currentPlayerIndex).getPlayer()
 								.getCluedoPerson().getColor(), 
-								getParticipants().get(currentPlayer).getPlayer().getStatesStringList()
+								getParticipants().get(currentPlayerIndex).getPlayer().getStatesStringList()
 				)
 		));
 	}
 
 	public void setCurrentPlayerNext() {
-		currentPlayer = (currentPlayer + 1) % getParticipants().size();
+		currentPlayerIndex = (currentPlayerIndex + 1) % getParticipants().size();
 	}
 	
 
-	public int getCurrentPlayer() {
-		return currentPlayer;
+	public int getCurrentPlayerIndex() {
+		return currentPlayerIndex;
 	}
 
 	public int [] rollTheDice() {
@@ -199,6 +202,27 @@ public class CluedoGameServer extends CluedoGame {
 
 	public void setParticipants(ArrayList<ClientItem> participants) {
 		this.participants = participants;
+	}
+	
+	public boolean checkForColor(Color color){
+		Stack<CluedoPlayer> pl = getPlayersConnected();
+		for (CluedoPlayer p : pl)
+			if (p.getCluedoPerson().getFarbe() == color) 
+				return true;
+		return false;
+	}
+	
+	public void orderPlayersList(){
+		if (!checkForColor(Color.RED))
+			setStart(players,auxx.getRandFarbe());	
+	}
+	
+	static void setStart(Stack<CluedoPlayer> p,Color c){
+		Iterator<CluedoPlayer> it = p.iterator();
+		while (it.hasNext() && it.next().getCluedoPerson().getFarbe() != c){
+			p.remove(it.next());
+			p.add(it.next());
+		}
 	}
 
 

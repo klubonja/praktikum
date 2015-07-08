@@ -2,6 +2,7 @@ package enums;
 
 import java.util.ArrayList;
 
+import staticClasses.auxx;
 import javafx.scene.paint.Color;
 import cluedoNetworkLayer.CluedoPosition;
 
@@ -82,4 +83,7 @@ public enum Persons {
 	        	pnames.add(p.getPersonName());
 	        return pnames;
 	    }
+	
+	 
+	
 }

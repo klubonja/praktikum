@@ -1,6 +1,7 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.logging.Level;
 
 import javafx.event.EventHandler;
@@ -38,7 +39,7 @@ public class Communicator {
 	private WahnsinnigTollerPathfinder pathfinder;
 	private DerBeweger beweger;
 	private RaumBeweger raumBeweger;
-	private ArrayList<CluedoPlayer> players;
+	private Stack<CluedoPlayer> players;
 	private CluedoGameClient network;
 	public final PlayerCircleManager pcManager;
 	public final int gameid;
@@ -71,7 +72,7 @@ public class Communicator {
 
 	public void startGame() {
 		auxx.loginfo("Communicator");
-
+		
 		
 		setHandler();
 

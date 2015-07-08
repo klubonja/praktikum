@@ -32,6 +32,10 @@ public class TurnDFA {
  		return new ArrayList<Number>(new LinkedHashSet<Number>(states)); // nasty way of removing dups
  	}
  	
+ 	public ArrayList<Number> getSucStates(PlayerStates sstate){
+ 		return null;
+ 	}
+ 	
  	public ArrayList<Number> getPossibleStates(ArrayList<Number> statelist){
  		ArrayList<Number> pstates = new ArrayList<Number>();
  		for (Number initS : statelist){
