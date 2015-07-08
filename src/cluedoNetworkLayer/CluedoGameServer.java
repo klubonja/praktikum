@@ -219,8 +219,9 @@ public class CluedoGameServer extends CluedoGame {
 	static void setStart(Stack<CluedoPlayer> p,Color c){
 		Iterator<CluedoPlayer> it = p.iterator();
 		while (it.hasNext() && it.next().getCluedoPerson().getFarbe() != c){
-			p.remove(it.next());
-			p.add(it.next());
+			CluedoPlayer pl = it.next();
+			p.remove(pl);
+			p.add(pl);
 		}
 	}
 

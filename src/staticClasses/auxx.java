@@ -99,11 +99,11 @@ public abstract class auxx {
 			BufferedReader br = new BufferedReader(
 					new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
 			char[] buffer = new char[Config.MESSAGE_BUFFER];
-			
-			
 			int readpos = br.read(buffer,0,Config.MESSAGE_BUFFER);
+			String msg = new String (buffer,0,readpos);	
+			
 			if (readpos >= 0 ){
-				String msg = new String (buffer,0,readpos);	
+				
 				logfine("RECEIVED : <MSG START> "+ msg +" <MSGS END>");
 				String[] rawmsgs = msg.split(Config.TCP_MESSAGE_DELIMITER_REGEX); //removing and splitting along newlines
 				return handledTCPMessages(rawmsgs, s);
@@ -118,7 +118,8 @@ public abstract class auxx {
 			logsevere("RECEIVE failed : ", e);
 	    }
 		
-		return new ArrayList<String>();
+		//return new ArrayList<String>();
+		return null;
 	}
 	
 	public static ArrayList<String> handledTCPMessages(String[] jsonSource, Socket s){
