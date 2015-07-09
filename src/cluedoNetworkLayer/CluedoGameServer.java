@@ -1,7 +1,6 @@
 package cluedoNetworkLayer;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -225,30 +224,22 @@ public class CluedoGameServer extends CluedoGame {
 		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
 		Iterator<CluedoPlayer> it = tmplist.iterator();
 		while (it.hasNext()){
-			try {
-				CluedoPlayer pl = it.next();
-				if (pl != first){
-					players.remove(pl);
-					players.add(pl);
-				}
-				
-			} catch (ConcurrentModificationException e) {
-				
-					auxx.logsevere("modification playerslist failed", e);
+			CluedoPlayer pl = it.next();
+			if (pl != first){
+				players.remove(pl);
+				players.add(pl);
 			}
-			
-		
-			
 		}
 		tmplist = null;
 	}
 	
-	static void setStart(Stack<CluedoPlayer> p,Color c){
-		Iterator<CluedoPlayer> it = p.iterator();
+	static void setStart(Stack<CluedoPlayer> players,Color c){
+		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
+		Iterator<CluedoPlayer> it = tmplist.iterator();
 		while (it.hasNext() && it.next().getCluedoPerson().getFarbe() != c){
 			CluedoPlayer pl = it.next();
-			p.remove(pl);
-			p.add(pl);
+			players.remove(pl);
+			players.add(pl);			
 		}
 	}
 
