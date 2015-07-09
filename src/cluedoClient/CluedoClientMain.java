@@ -10,7 +10,7 @@ import cluedoNetworkGUI.CluedoClientGUI;
 public class CluedoClientMain extends Application {
 
 	public static void main(String[] args) {
-		auxx.setLoggingLevel(Level.ALL);
+		auxx.setLoggingLevel(Level.INFO);
 		launch(args);
 	}
 	@Override

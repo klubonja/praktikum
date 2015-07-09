@@ -104,7 +104,7 @@ public abstract class auxx {
 			
 			if (readpos >= 0 ){
 				
-				logfine("RECEIVED : <MSG START> "+ msg +" <MSGS END>");
+				loginfo("RECEIVED : <MSG START> "+ msg +" <MSGS END>");
 				String[] rawmsgs = msg.split(Config.TCP_MESSAGE_DELIMITER_REGEX); //removing and splitting along newlines
 				return handledTCPMessages(rawmsgs, s);
 			}
@@ -162,7 +162,7 @@ public abstract class auxx {
 					        socket.getOutputStream(), StandardCharsets.UTF_8)), true);
 			 out.print(message);
 			 out.flush();	
-			 logfine("SENT : "+ message);
+			 loginfo("SENT : "+ message);
 			 return true;
 		}
 		catch (IOException e ){

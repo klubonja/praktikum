@@ -82,28 +82,35 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean removePlayerfromGame(ClientItem client,int gameID){
 		CluedoGameServer game = dataManager.getGameByID(gameID);
-		GameStates stateBefore = game.getGameState();
-		game.removePlayer(client.getNick());
-		 if (game.getNumberConnected() == 0){
-				game.notifyAll(NetworkMessages.game_deletedMsg(gameID));
-				removeGameGui(gameID);
-				dataManager.removeGame(game);
-		}
-		else if (game.getGameState() == GameStates.not_started && game.getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART){
-			//game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
-			game.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
-			setGameWaitingGui(gameID);
-		}	
-		else if (game.getGameState() == GameStates.ended && GameStates.ended == stateBefore){
-			game.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
-			setGameEndedGui(gameID);
-		}
-		else if (game.getGameState() == GameStates.ended){
-			game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
-			setGameEndedGui(gameID);
+		if (game != null) {
+			GameStates stateBefore = game.getGameState();
+			game.removePlayer(client.getNick());
+			 if (game.getNumberConnected() == 0){
+					game.notifyAll(NetworkMessages.game_deletedMsg(gameID));
+					removeGameGui(gameID);
+					dataManager.removeGame(game);
+			}
+			else if (game.getGameState() == GameStates.not_started && game.getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART){
+				//game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
+				game.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
+				setGameWaitingGui(gameID);
+			}	
+			else if (game.getGameState() == GameStates.ended && GameStates.ended == stateBefore){
+				game.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
+				setGameEndedGui(gameID);
+			}
+			else if (game.getGameState() == GameStates.ended){
+				game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
+				setGameEndedGui(gameID);
+			}
+			 return true;
 		}
 		
-		return true;
+		client.sendMsg(NetworkMessages.error_Msg("game "+gameID+" doesn't exist"));
+		
+		return false;
+		
+		
 	}
 	
 	public ArrayList<CluedoGameServer> getGamesByPlayer(ClientItem client){
