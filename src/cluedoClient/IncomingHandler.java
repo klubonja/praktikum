@@ -135,15 +135,14 @@ class IncomingHandler implements Runnable {
 						auxx.loginfo("voll ghetto-code");
 						game.currentPlayerToNothing();
 					}
+					else if ( ! (states.get(welcherState).equals(PlayerStates.do_nothing.getName()))){
+						auxx.loginfo("nicht so ghetto-code");
+						game.currentPlayerToRolls();
+					}
 				}
 //				else if (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.disprove.getName())){
 //					server.getGameByGameID(gameID).disprove();
 //				}
-				
-				
-				
-				
-				
 			}
 			else if(checker.getType().equals("dice result")){
 				int [] wuerfel = new int [2];

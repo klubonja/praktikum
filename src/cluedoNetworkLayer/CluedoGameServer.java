@@ -3,7 +3,6 @@ package cluedoNetworkLayer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.scene.paint.Color;
 import model.Deck;
@@ -44,7 +43,7 @@ public class CluedoGameServer extends CluedoGame {
 		return true;
 	}
 
-	public CopyOnWriteArrayList<CluedoPlayer> dealCardsNetwork(CopyOnWriteArrayList<CluedoPlayer> players) {
+	public Stack<CluedoPlayer> dealCardsNetwork(Stack<CluedoPlayer> players) {
 		Deck deck = new Deck(players.size());
 		deck.dealCluedoCards();
 		String[] wh = deck.getWinningHand();
@@ -211,7 +210,7 @@ public class CluedoGameServer extends CluedoGame {
 	}
 	
 	public boolean checkForColor(Color color){
-		CopyOnWriteArrayList<CluedoPlayer> pl = getPlayersConnected();
+		Stack<CluedoPlayer> pl = getPlayersConnected();
 		for (CluedoPlayer p : pl)
 			if (p.getCluedoPerson().getFarbe() == color) 
 				return true;
@@ -223,7 +222,7 @@ public class CluedoGameServer extends CluedoGame {
 			setStart(players);	
 	}
 	
-	public static void setStart(CopyOnWriteArrayList<CluedoPlayer> players){
+	public static void setStart(Stack<CluedoPlayer> players){
 		CluedoPlayer first = players.get(auxx.getRandInt(0, players.size()-1));
 		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
 		Iterator<CluedoPlayer> it = tmplist.iterator();

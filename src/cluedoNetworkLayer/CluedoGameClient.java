@@ -3,6 +3,7 @@ package cluedoNetworkLayer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Stack;
 
 import javafx.application.Platform;
 import staticClasses.NetworkMessages;
@@ -130,11 +131,12 @@ public class CluedoGameClient extends CluedoGame {
 	}
 	
 	public void searchAndDestroyOrder(ArrayList<String> order){
+		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone();
 		Iterator <CluedoPlayer> profDrOhlbach = players.iterator();
 		while (profDrOhlbach.hasNext()){
 			CluedoPlayer laith = profDrOhlbach.next();
 			if (laith.getNick().equals("")){
-				players.remove(laith);
+				profDrOhlbach.remove();
 			}
 		}
 		

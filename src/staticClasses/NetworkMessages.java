@@ -1,8 +1,8 @@
 package staticClasses;
 
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.Vector;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import json.CluedoJSON;
 
@@ -438,7 +438,7 @@ public abstract class NetworkMessages {
 	public static JSONObject gameInfo(CluedoGameServer game){
 		JSONArray playerInfosJSON = new JSONArray();
 		JSONArray perspossJSON = new JSONArray();
-		CopyOnWriteArrayList<CluedoPlayer> playerInfos = game.getPlayersConnected();
+		Stack<CluedoPlayer> playerInfos = game.getPlayersConnected();
 		for (CluedoPlayer p : playerInfos){
 			playerInfosJSON.put(
 				NetworkMessages.player_info(
