@@ -2,16 +2,14 @@ package enums;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Stack;
 
-import javafx.scene.paint.Color;
 import model.Deck;
 
 import org.json.JSONObject;
 
 import staticClasses.auxx;
-import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoFieldInt;
 import cluedoServer.TurnDFA;
 
 public class myclass {
@@ -33,6 +31,8 @@ public class myclass {
 		
 			
 	}
+	
+	
 	
 	public static void main(String [] args)		{
 		Deck cdeck = new Deck(4);
@@ -60,7 +60,57 @@ public class myclass {
 		for (Persons pe: pl)
 			System.out.print(pe.getColor()+"\n");
 		
+		//diceresult
+		CluedoFieldInt start = new CluedoFieldInt(1, 1);
+		int i = 2;
+		//playfield
+		ArrayList<CluedoFieldInt> fields = makeField(23, 23);
+		//maxfield limited by dicevalue
+		ArrayList<CluedoFieldInt> maxfields = makeMaxField(i, start);
+		CluedoFieldInt startpos = new CluedoFieldInt(0,0);
+
+		
+		
 	}
 	
+	public static ArrayList<CluedoFieldInt> makeMaxField(int i, CluedoFieldInt start){
+		ArrayList<CluedoFieldInt> fields = new ArrayList<CluedoFieldInt>();
+		for(int height = start.getY()-i; height < start.getY()+i; height++){
+			for(int width = start.getX()-i; width < start.getX()+i; width++){
+				fields.add(new CluedoFieldInt(width, height));
+			}
+		}
+		
+		return fields;
+	}
+	
+//	ArrayList<CluedoFieldInt> findPath(int i,ArrayList<CluedoFieldInt> field,CluedoFieldInt start){
+//		ArrayList<CluedoFieldInt> pos = new ArrayList<CluedoFieldInt>();
+//		ArrayList<CluedoFieldInt> context = makeField(start.getX()-1, start.getY()+1);
+//		
+//			for (i = i; i < 23; i++){
+//				ArrayList<CluedoFieldInt> context = makeField(start.getX()-1, start.getY()+1);
+//			}
+//		}
+//		if (i == 0) return pos;
+//		
+//		return findPath(i-1,)
+//	}
+	
+//	public static ArrayList<CluedoFieldInt> checkContext(ArrayList<CluedoFieldInt> field,CluedoPosition pos){
+//		ArrayList<CluedoFieldInt> fields = new ArrayList<CluedoFieldInt>();
+//		for (int i = 0;)
+//	}
+//	
+	public static ArrayList<CluedoFieldInt> makeField(int width,int height){
+		ArrayList<CluedoFieldInt> fields = new ArrayList<CluedoFieldInt>();
+		for (int y = 0; y < height; y++){
+			for (int x = 0; x < width; x++){
+				fields.add(new CluedoFieldInt(x,y));
+			}
+		}
+		
+		return fields;
+	}
 	
 }
