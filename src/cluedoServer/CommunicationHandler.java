@@ -31,11 +31,9 @@ class CommunicationHandler implements Runnable {
 	DataManagerServer dataManager;
 	DataGuiManagerServer dataGuiManager;
 
-	boolean run = true;
+	boolean runThread = false;
 	boolean readyForCommunication = false;
 	String currentMsg;
-	
-	private int anfangsSpielerZufall;
 	
 	/**
 	 * @param ss
@@ -74,7 +72,7 @@ class CommunicationHandler implements Runnable {
 	@Override
 	public void run() {
 		awaitingLoginAttempt();
-		while (run) {
+		while (runThread) {
 			try {
 				ArrayList<String> messages = auxx.getTCPMessages(client.socket);
 				try {					
@@ -103,23 +101,17 @@ class CommunicationHandler implements Runnable {
 				null);
 
 		if (errcode == NetworkHandhakeCodes.OK) {
-			boolean loginsucMsgSent = false;
 			client.setExpansions(auxx.makeConjunction(Config.EXPANSIONS,
 					checker.getMessage().getJSONArray("expansions")));
 			client.setNick(checker.getMessage().getString("nick"));
 			client.setGroupName(checker.getMessage().getString("group"));					
-//			client.sendMsg(NetworkMessages.login_sucMsg(
-//					client.getExpansions(),
-//					dataManager.getClientPool(), 
-//					dataManager.getGameList()
-//					)
-//			);
 			if (dataGuiManager.addNetworkActor(client,"logged in")){
 				client.setGroupName(checker.getMessage().getString("group"));
 				client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(),
 								dataManager.getClientPool(), dataManager.getGameList()));
 				dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
 				readyForCommunication = true;
+				runThread = true;
 			}
 			else {
 				client.sendMsg(NetworkMessages.error_Msg(client.getNick()
@@ -174,7 +166,7 @@ class CommunicationHandler implements Runnable {
 
 	public void killThread() {
 		readyForCommunication = true; // no further listinenig on this socket
-		run = false; // thread will run out without further notice
+		runThread = false; // thread will run out without further notice
 	}
 
 	

@@ -1,3 +1,83 @@
+<<<<<<< HEAD
+Jul 09, 2015 10:20:11 PM cluedoClient.Client <init>
+INFORMATION: CLIENT started
+Jul 09, 2015 10:20:30 PM staticClasses.auxx loginfo
+INFORMATION: 190 RECEIVED : <MSG START> {"nick array":["äääjä","qunqu","dmumä"],"type":"login successful","expansions":["Chat","Pumping Oil in the Antarctica, fuck yeah!"],"game array":[]}
+ <MSGS END>
+Jul 09, 2015 10:20:30 PM staticClasses.auxx loginfo
+INFORMATION: 193 last json msg OK
+Jul 09, 2015 10:20:30 PM staticClasses.auxx loginfo
+INFORMATION: 199 SENT : {"nick":"dmumä","type":"login","expansions":["Chat","Pumping Oil in the Antarctica, fuck yeah!"],"version":"1.2.1","group":"dmumä_GROUP"}
+
+Jul 09, 2015 10:20:30 PM staticClasses.auxx loginfo
+INFORMATION: 207 RECEIVED : <MSG START> {"nick":"dmumä","type":"user added"}
+ <MSGS END>
+Jul 09, 2015 10:20:30 PM staticClasses.auxx loginfo
+INFORMATION: 209 last json msg OK
+Jul 09, 2015 10:20:30 PM staticClasses.auxx loginfo
+INFORMATION: 211 INCOMING unchecked valid type: user added
+Jul 09, 2015 10:20:35 PM staticClasses.auxx loginfo
+INFORMATION: 157 color from prompt purple
+Jul 09, 2015 10:20:35 PM staticClasses.auxx loginfo
+INFORMATION: 163 SENT : {"color":"purple","type":"create game"}
+
+Jul 09, 2015 10:20:35 PM staticClasses.auxx loginfo
+INFORMATION: 193 RECEIVED : <MSG START> {"gameID":0,"type":"game created","player":{"nick":"dmumä","color":"purple","playerstate":["do nothing"]}}
+ <MSGS END>
+Jul 09, 2015 10:20:35 PM staticClasses.auxx loginfo
+INFORMATION: 195 last json msg OK
+Jul 09, 2015 10:20:37 PM staticClasses.auxx loginfo
+INFORMATION: 292 RECEIVED : <MSG START> {"gameID":0,"type":"player added","player":{"nick":"qunqu","color":"green","playerstate":["do nothing"]}}
+ <MSGS END>
+Jul 09, 2015 10:20:37 PM staticClasses.auxx loginfo
+INFORMATION: 293 last json msg OK
+Jul 09, 2015 10:20:37 PM staticClasses.auxx loginfo
+INFORMATION: 302 connected to game 0 : number Nicks connected : 2
+Jul 09, 2015 10:20:39 PM staticClasses.auxx loginfo
+INFORMATION: 418 RECEIVED : <MSG START> {"gameID":0,"type":"player added","player":{"nick":"äääjä","color":"blue","playerstate":["do nothing"]}}
+ <MSGS END>
+Jul 09, 2015 10:20:39 PM staticClasses.auxx loginfo
+INFORMATION: 419 last json msg OK
+Jul 09, 2015 10:20:39 PM staticClasses.auxx loginfo
+INFORMATION: 421 connected to game 0 : number Nicks connected : 3
+Jul 09, 2015 10:20:40 PM staticClasses.auxx loginfo
+INFORMATION: 488 RECEIVED : <MSG START> {"gameID":0,"cards":["hall","rope","study","lounge","ballroom","Reverend Green"],"type":"player_cards"}
+ <MSGS END>
+Jul 09, 2015 10:20:40 PM staticClasses.auxx loginfo
+INFORMATION: 497 last json msg OK
+Jul 09, 2015 10:20:40 PM staticClasses.auxx loginfo
+INFORMATION: 504 RECEIVED : <MSG START> {"gameID":0,"type":"stateupdate","player":{"nick":"qunqu","color":"green","playerstate":["do nothing"]}}
+ <MSGS END>
+Jul 09, 2015 10:20:40 PM staticClasses.auxx loginfo
+INFORMATION: 509 last json msg OK
+Jul 09, 2015 10:20:40 PM staticClasses.auxx loginfo
+INFORMATION: 523 RECEIVED : <MSG START> {"gameID":0,"gamestate":"started","type":"game started","order":["qunqu","äääjä","dmumä"]}
+ <MSGS END>
+Jul 09, 2015 10:20:40 PM staticClasses.auxx loginfo
+INFORMATION: 525 last json msg OK
+Jul 09, 2015 10:20:40 PM staticClasses.auxx loginfo
+INFORMATION: 527 game 0 started
+Jul 09, 2015 10:20:44 PM staticClasses.auxx logsevere
+SCHWERWIEGEND: 635 null? : 249
+Jul 09, 2015 10:20:44 PM staticClasses.auxx logsevere
+SCHWERWIEGEND: 685 hamana
+Jul 09, 2015 10:20:44 PM staticClasses.auxx loginfo
+INFORMATION: 701 Communicator started
+Jul 09, 2015 10:20:44 PM staticClasses.auxx logsevere
+SCHWERWIEGEND: 724 Oh my giddy giddy gosh
+Jul 09, 2015 10:20:45 PM staticClasses.auxx logsevere
+SCHWERWIEGEND: 704 hamana
+Jul 09, 2015 10:20:46 PM staticClasses.auxx logsevere
+SCHWERWIEGEND: 736 hamana
+Jul 09, 2015 10:20:57 PM staticClasses.auxx loginfo
+INFORMATION: 398 SENT : {"gameID":0,"type":"leave game"}
+
+Jul 09, 2015 10:20:57 PM staticClasses.auxx loginfo
+INFORMATION: 408 RECEIVED : <MSG START> {"gameID":0,"statement":{"weapon":"rope","person":"yellow","room":"kitchen"},"type":"game ended"}
+ <MSGS END>
+Jul 09, 2015 10:20:57 PM staticClasses.auxx loginfo
+INFORMATION: 410 last json msg OK
+=======
 Jul 09, 2015 9:30:31 PM cluedoClient.Client <init>
 INFORMATION: CLIENT started
 Jul 09, 2015 9:31:19 PM staticClasses.auxx loginfo
@@ -31,3 +111,4 @@ INFORMATION: 976 SENT : {"gameID":2,"type":"start game"}
 Jul 09, 2015 9:32:15 PM staticClasses.auxx loginfo
 INFORMATION: 611 SENT : {"gameID":2,"type":"start game"}
 
+>>>>>>> 6ea0f6da96fbf324d58a31561580a3e164dda949

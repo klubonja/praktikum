@@ -2,6 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Stack;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.scene.paint.Color;
@@ -224,20 +225,27 @@ public class CluedoGameServer extends CluedoGame {
 	
 	public static void setStart(CopyOnWriteArrayList<CluedoPlayer> players){
 		CluedoPlayer first = players.get(auxx.getRandInt(0, players.size()-1));
-		Iterator<CluedoPlayer> it = players.iterator();
-		while (it.hasNext() && it.next() != first){
+		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
+		Iterator<CluedoPlayer> it = tmplist.iterator();
+		while (it.hasNext()){
 			CluedoPlayer pl = it.next();
-			players.remove(pl);
-			players.add(pl);
+			if (pl != first){
+				players.remove(pl);
+				players.add(pl);
+			}
 		}
+		tmplist = null;
 	}
 	
-	static void setStart(CopyOnWriteArrayList<CluedoPlayer> p,Color c){
-		Iterator<CluedoPlayer> it = p.iterator();
+
+	static void setStart(Stack<CluedoPlayer> players,Color c){
+		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
+		Iterator<CluedoPlayer> it = tmplist.iterator();
+
 		while (it.hasNext() && it.next().getCluedoPerson().getFarbe() != c){
 			CluedoPlayer pl = it.next();
-			p.remove(pl);
-			p.add(pl);
+			players.remove(pl);
+			players.add(pl);			
 		}
 	}
 
