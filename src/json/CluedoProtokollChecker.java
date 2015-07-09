@@ -418,8 +418,9 @@ public class CluedoProtokollChecker {
 //				validateField(jsonParent, "field");
 //			if (validateValue(jsonParent, "cards"))
 //				isInt(jsonParent, "cards");
-			if (validateValue(jsonParent, "playerstate"))
-				validatePlayerStates(jsonParent,"playerstate");		
+			if (jsonParent.has("playerstate"))
+				if (validateValue(jsonParent, "playerstate"))
+					validatePlayerStates(jsonParent,"playerstate");		
 	}
 	
 	void validatePlayerStates(JSONObject parent,String key){
