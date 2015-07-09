@@ -80,7 +80,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		CluedoGameClient game = server.getGameByGameID(gameID);
 		game.setOrder(order);
 		if (game.start()){
-			game.setGameState(GameStates.getState(gameState));			
+			game.setGameState(GameStates.getState(gameState));
 			setRunningGame(gameID);
 		}
 	}
