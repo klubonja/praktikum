@@ -222,10 +222,13 @@ public class CluedoGameServer extends CluedoGame {
 	public static void setStart(Stack<CluedoPlayer> players){
 		CluedoPlayer first = players.get(auxx.getRandInt(0, players.size()-1));
 		Iterator<CluedoPlayer> it = players.iterator();
-		while (it.hasNext() && it.next() != first){
+		while (it.hasNext()){
 			CluedoPlayer pl = it.next();
-			players.remove(pl);
-			players.add(pl);
+			if (pl != first){
+				players.remove(pl);
+				players.add(pl);
+			}
+			
 		}
 	}
 	

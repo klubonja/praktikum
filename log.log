@@ -1,187 +1,140 @@
-Jul 09, 2015 8:13:06 PM cluedoClient.Client <init>
+Jul 09, 2015 9:36:22 PM cluedoClient.Client <init>
 INFORMATION: CLIENT started
-Jul 09, 2015 8:13:13 PM staticClasses.auxx loginfo
-INFORMATION: 309 SENT : {"nick":"nsqüx","type":"login","expansions":["Chat","Pumping Oil in the Antarctica, fuck yeah!"],"version":"1.2.1","group":"nsqüx_GROUP"}
+Jul 09, 2015 9:36:31 PM staticClasses.auxx loginfo
+INFORMATION: 566 SENT : {"nick":"rüwcf","type":"login","expansions":["Chat","Pumping Oil in the Antarctica, fuck yeah!"],"version":"1.2.1","group":"rüwcf_GROUP"}
 
-Jul 09, 2015 8:13:13 PM staticClasses.auxx loginfo
-INFORMATION: 311 RECEIVED : <MSG START> {"nick array":["nsqüx"],"type":"login successful","expansions":["Chat","Pumping Oil in the Antarctica, fuck yeah!"],"game array":[]}
+Jul 09, 2015 9:36:31 PM staticClasses.auxx loginfo
+INFORMATION: 570 RECEIVED : <MSG START> {"nick array":["dpmtl","rüwcf"],"type":"login successful","expansions":["Chat","Pumping Oil in the Antarctica, fuck yeah!"],"game array":[]}
  <MSGS END>
-Jul 09, 2015 8:13:13 PM staticClasses.auxx loginfo
-INFORMATION: 314 last json msg OK
-Jul 09, 2015 8:13:13 PM staticClasses.auxx loginfo
-INFORMATION: 330 RECEIVED : <MSG START> {"nick":"nsqüx","type":"user added"}
+Jul 09, 2015 9:36:31 PM staticClasses.auxx loginfo
+INFORMATION: 584 last json msg OK
+Jul 09, 2015 9:36:31 PM staticClasses.auxx loginfo
+INFORMATION: 588 RECEIVED : <MSG START> {"nick":"rüwcf","type":"user added"}
  <MSGS END>
-Jul 09, 2015 8:13:13 PM staticClasses.auxx loginfo
-INFORMATION: 332 last json msg OK
-Jul 09, 2015 8:13:13 PM staticClasses.auxx loginfo
-INFORMATION: 338 INCOMING unchecked valid type: user added
-Jul 09, 2015 8:13:49 PM staticClasses.auxx loginfo
-INFORMATION: 925 RECEIVED : <MSG START> {"nick":"prökb","type":"user added"}
- <MSGS END>
-Jul 09, 2015 8:13:49 PM staticClasses.auxx loginfo
-INFORMATION: 927 last json msg OK
-Jul 09, 2015 8:13:49 PM staticClasses.auxx loginfo
-INFORMATION: 930 INCOMING unchecked valid type: user added
-Jul 09, 2015 8:14:20 PM staticClasses.auxx loginfo
-INFORMATION: 659 SENT : {"nick":"nsqüx","type":"login","expansions":["Chat","Pumping Oil in the Antarctica, fuck yeah!"],"version":"1.2.1","group":"nsqüx_GROUP"}
+Jul 09, 2015 9:36:31 PM staticClasses.auxx loginfo
+INFORMATION: 590 last json msg OK
+Jul 09, 2015 9:36:31 PM staticClasses.auxx loginfo
+INFORMATION: 596 INCOMING unchecked valid type: user added
+Jul 09, 2015 9:36:34 PM staticClasses.auxx loginfo
+INFORMATION: 683 color from prompt white
+Jul 09, 2015 9:36:34 PM staticClasses.auxx loginfo
+INFORMATION: 688 SENT : {"color":"white","type":"create game"}
 
-Jul 09, 2015 8:14:20 PM staticClasses.auxx loginfo
-INFORMATION: 666 RECEIVED : <MSG START> {"nick array":["ccwyv","prökb","nsqüx"],"type":"login successful","expansions":["Chat","Pumping Oil in the Antarctica, fuck yeah!"],"game array":[{"gameID":0,"weapon positions":[{"weapon":"dagger","field":{"x":11,"y":11}},{"weapon":"candlestick","field":{"x":11,"y":11}},{"weapon":"revolver","field":{"x":11,"y":11}},{"weapon":"rope","field":{"x":11,"y":11}},{"weapon":"pipe","field":{"x":11,"y":11}},{"weapon":"spanner","field":{"x":11,"y":11}}],"person positions":[{"field":{"x":0,"y":5},"person":"purple"}],"players":[{"nick":"prökb","color":"purple","playerstate":["do nothing"]}],"gamestate":"not started","watchers":[]},{"gameID":1,"weapon positions":[{"weapon":"dagger","field":{"x":11,"y":11}},{"weapon":"candlestick","field":{"x":11,"y":11}},{"weapon":"revolver","field":{"x":11,"y":11}},{"weapon":"rope","field":{"x":11,"y":11}},{"weapon":"pipe","field":{"x":11,"y":11}},{"weapon":"spanner","field":{"x":11,"y":11}}],"person positions":[{"field":{"x":0,"y":5},"person":"purple"}],"players":[{"nick":"prökb","color":"purple","playerstate":["do nothing"]}],"gamestate":"not started","watchers":[]}]}
+Jul 09, 2015 9:36:34 PM staticClasses.auxx loginfo
+INFORMATION: 732 RECEIVED : <MSG START> {"gameID":0,"type":"game created","player":{"nick":"rüwcf","color":"white","playerstate":["do nothing"]}}
  <MSGS END>
-Jul 09, 2015 8:14:20 PM staticClasses.auxx loginfo
-INFORMATION: 668 last json msg OK
-Jul 09, 2015 8:14:20 PM staticClasses.auxx loginfo
-INFORMATION: 691 RECEIVED : <MSG START> {"nick":"nsqüx","type":"user added"}
+Jul 09, 2015 9:36:34 PM staticClasses.auxx loginfo
+INFORMATION: 734 last json msg OK
+Jul 09, 2015 9:36:36 PM staticClasses.auxx loginfo
+INFORMATION: 645 RECEIVED : <MSG START> {"gameID":0,"type":"player added","player":{"nick":"dpmtl","color":"purple","playerstate":["do nothing"]}}
  <MSGS END>
-Jul 09, 2015 8:14:20 PM staticClasses.auxx loginfo
-INFORMATION: 694 last json msg OK
-Jul 09, 2015 8:14:20 PM staticClasses.auxx loginfo
-INFORMATION: 696 INCOMING unchecked valid type: user added
-Jul 09, 2015 8:14:22 PM staticClasses.auxx logsevere
-SCHWERWIEGEND: 39 RECEIVE failed : 
-java.net.SocketException: Connection reset
-	at java.net.SocketInputStream.read(SocketInputStream.java:209)
-	at java.net.SocketInputStream.read(SocketInputStream.java:141)
-	at sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
-	at sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
-	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
-	at java.io.InputStreamReader.read(InputStreamReader.java:184)
-	at java.io.BufferedReader.read1(BufferedReader.java:210)
-	at java.io.BufferedReader.read(BufferedReader.java:286)
-	at staticClasses.auxx.getTCPMessages(auxx.java:103)
-	at cluedoClient.IncomingHandler.run(IncomingHandler.java:43)
-	at java.lang.Thread.run(Thread.java:745)
+Jul 09, 2015 9:36:36 PM staticClasses.auxx loginfo
+INFORMATION: 646 last json msg OK
+Jul 09, 2015 9:36:36 PM staticClasses.auxx loginfo
+INFORMATION: 654 connected to game 0 : number Nicks connected : 2
+Jul 09, 2015 9:36:39 PM staticClasses.auxx loginfo
+INFORMATION: 530 SENT : {"gameID":0,"type":"start game"}
 
-Jul 09, 2015 8:14:22 PM staticClasses.auxx logsevere
-SCHWERWIEGEND: 46 error on incomming handler client
-java.lang.NullPointerException
-	at cluedoClient.IncomingHandler.run(IncomingHandler.java:44)
-	at java.lang.Thread.run(Thread.java:745)
+Jul 09, 2015 9:36:39 PM staticClasses.auxx loginfo
+INFORMATION: 534 RECEIVED : <MSG START> {"gameID":0,"cards":["Reverend Green","hall","conservatory","Baronin von Porz","Fräulein Gloria","lounge","revolver","diningroom","Oberts von Gatow"],"type":"player_cards"}
+ <MSGS END>
+Jul 09, 2015 9:36:39 PM staticClasses.auxx loginfo
+INFORMATION: 536 last json msg OK
+Jul 09, 2015 9:36:39 PM staticClasses.auxx loginfo
+INFORMATION: 548 RECEIVED : <MSG START> {"gameID":0,"type":"stateupdate","player":{"nick":"rüwcf","color":"white","playerstate":["do nothing"]}}
+ <MSGS END>
+Jul 09, 2015 9:36:39 PM staticClasses.auxx loginfo
+INFORMATION: 555 last json msg OK
+Jul 09, 2015 9:36:39 PM staticClasses.auxx loginfo
+INFORMATION: 560 RECEIVED : <MSG START> {"gameID":0,"gamestate":"started","type":"game started","order":["rüwcf","dpmtl"]}
+ <MSGS END>
+Jul 09, 2015 9:36:39 PM staticClasses.auxx loginfo
+INFORMATION: 564 last json msg OK
+Jul 09, 2015 9:36:39 PM staticClasses.auxx loginfo
+INFORMATION: 567 game 0 started
+Jul 09, 2015 9:36:42 PM staticClasses.auxx logsevere
+SCHWERWIEGEND: 601 null? : 2414
+Jul 09, 2015 9:36:42 PM staticClasses.auxx logsevere
+SCHWERWIEGEND: 691 hamana
+Jul 09, 2015 9:36:42 PM staticClasses.auxx loginfo
+INFORMATION: 701 Communicator started
+Jul 09, 2015 9:36:42 PM staticClasses.auxx logsevere
+SCHWERWIEGEND: 704 Oh my giddy giddy gosh
+Jul 09, 2015 9:36:43 PM staticClasses.auxx logsevere
+SCHWERWIEGEND: 708 hamana
+Jul 09, 2015 9:36:50 PM staticClasses.auxx loginfo
+INFORMATION: 671 SENT : {"gameID":0,"type":"leave game"}
 
-Jul 09, 2015 8:14:22 PM staticClasses.auxx loginfo
-INFORMATION: 76 trying to remove server näguc
-Jul 09, 2015 8:14:22 PM staticClasses.auxx loginfo
-INFORMATION: 81 SENT : {"gameID":0,"type":"leave game"}
+Jul 09, 2015 9:36:50 PM staticClasses.auxx loginfo
+INFORMATION: 677 RECEIVED : <MSG START> {"gameID":0,"statement":{"weapon":"revolver","person":"white","room":"diningroom"},"type":"game ended"}
+ <MSGS END>
+Jul 09, 2015 9:36:50 PM staticClasses.auxx loginfo
+INFORMATION: 680 last json msg OK
+Jul 09, 2015 9:37:14 PM staticClasses.auxx loginfo
+INFORMATION: 246 RECEIVED : <MSG START> {"nick":"tuyry","type":"user added"}
+ <MSGS END>
+Jul 09, 2015 9:37:14 PM staticClasses.auxx loginfo
+INFORMATION: 247 last json msg OK
+Jul 09, 2015 9:37:14 PM staticClasses.auxx loginfo
+INFORMATION: 250 INCOMING unchecked valid type: user added
+Jul 09, 2015 9:37:16 PM staticClasses.auxx loginfo
+INFORMATION: 821 RECEIVED : <MSG START> {"gameID":1,"type":"game created","player":{"nick":"tuyry","color":"white","playerstate":["do nothing"]}}
+ <MSGS END>
+Jul 09, 2015 9:37:16 PM staticClasses.auxx loginfo
+INFORMATION: 822 last json msg OK
+Jul 09, 2015 9:37:20 PM staticClasses.auxx loginfo
+INFORMATION: 893 SENT : {"gameID":1,"color":"green","type":"join game"}
 
-Jul 09, 2015 8:14:22 PM staticClasses.auxx loginfo
-INFORMATION: 86 SENT : {"gameID":1,"type":"leave game"}
+Jul 09, 2015 9:37:20 PM staticClasses.auxx loginfo
+INFORMATION: 921 RECEIVED : <MSG START> {"gameID":1,"type":"player added","player":{"nick":"rüwcf","color":"green","playerstate":["do nothing"]}}
+ <MSGS END>
+Jul 09, 2015 9:37:20 PM staticClasses.auxx loginfo
+INFORMATION: 922 last json msg OK
+Jul 09, 2015 9:37:20 PM staticClasses.auxx loginfo
+INFORMATION: 923 connected to game 1 : number Nicks connected : 2
+Jul 09, 2015 9:37:49 PM staticClasses.auxx loginfo
+INFORMATION: 95 RECEIVED : <MSG START> {"gameID":1,"type":"player added","player":{"nick":"dpmtl","color":"purple","playerstate":["do nothing"]}}
+ <MSGS END>
+Jul 09, 2015 9:37:49 PM staticClasses.auxx loginfo
+INFORMATION: 96 last json msg OK
+Jul 09, 2015 9:37:49 PM staticClasses.auxx loginfo
+INFORMATION: 97 connected to game 1 : number Nicks connected : 3
+Jul 09, 2015 9:37:50 PM staticClasses.auxx loginfo
+INFORMATION: 572 RECEIVED : <MSG START> {"gameID":0,"statement":{"weapon":"spanner","person":"yellow","room":"study"},"type":"game ended"}
+ <MSGS END>
+Jul 09, 2015 9:37:50 PM staticClasses.auxx loginfo
+INFORMATION: 573 last json msg OK
+Jul 09, 2015 9:37:50 PM staticClasses.auxx loginfo
+INFORMATION: 575 RECEIVED : <MSG START> {"gameID":0,"type":"game deleted"}
+ <MSGS END>
+Jul 09, 2015 9:37:50 PM staticClasses.auxx loginfo
+INFORMATION: 576 last json msg OK
+Jul 09, 2015 9:37:50 PM staticClasses.auxx loginfo
+INFORMATION: 579 game : 0 removed
+Jul 09, 2015 9:37:50 PM staticClasses.auxx loginfo
+INFORMATION: 584 RECEIVED : <MSG START> {"nick":"dpmtl","type":"user left"}
+ <MSGS END>
+Jul 09, 2015 9:37:50 PM staticClasses.auxx loginfo
+INFORMATION: 585 last json msg OK
+Jul 09, 2015 9:37:50 PM staticClasses.auxx loginfo
+INFORMATION: 586 dpmtl removed from Game 1 Gamestate is now : not started
+Jul 09, 2015 9:37:58 PM staticClasses.auxx loginfo
+INFORMATION: 818 RECEIVED : <MSG START> {"nick":"tuyry","type":"user left"}
+ <MSGS END>
+Jul 09, 2015 9:37:58 PM staticClasses.auxx loginfo
+INFORMATION: 819 last json msg OK
+Jul 09, 2015 9:37:58 PM staticClasses.auxx loginfo
+INFORMATION: 819 tuyry removed from Game 1 Gamestate is now : not started
+Jul 09, 2015 9:37:58 PM staticClasses.auxx loginfo
+INFORMATION: 841 RECEIVED : <MSG START> {"nick":"tuyry","type":"user left"}
+ <MSGS END>
+Jul 09, 2015 9:37:58 PM staticClasses.auxx loginfo
+INFORMATION: 841 last json msg OK
+Jul 09, 2015 9:38:06 PM staticClasses.auxx loginfo
+INFORMATION: 691 SENT : {"gameID":1,"color":"yellow","type":"join game"}
 
-Jul 09, 2015 8:14:22 PM staticClasses.auxx logsevere
-SCHWERWIEGEND: 101 incomming handler thread runnning outon server : näguc
-Jul 09, 2015 8:14:22 PM staticClasses.auxx loginfo
-INFORMATION: 106 trying to remove server näguc
-Jul 09, 2015 8:14:22 PM staticClasses.auxx logsevere
-SCHWERWIEGEND: 117 SEND failed : {"gameID":0,"type":"leave game"}
-
-java.net.SocketException: Socket is closed
-	at java.net.Socket.getOutputStream(Socket.java:943)
-	at staticClasses.auxx.sendTCPMsg(auxx.java:166)
-	at cluedoNetworkLayer.CluedoGameClient.kill(CluedoGameClient.java:104)
-	at cluedoClient.ServerItem.killAllGames(ServerItem.java:56)
-	at cluedoNetworkGUI.DataGuiManagerClientSpool.killAllGamesOnServer(DataGuiManagerClientSpool.java:162)
-	at cluedoNetworkGUI.DataGuiManagerClientSpool.removeServer(DataGuiManagerClientSpool.java:150)
-	at cluedoClient.IncomingHandler.killConnection(IncomingHandler.java:233)
-	at cluedoClient.IncomingHandler.run(IncomingHandler.java:54)
-	at java.lang.Thread.run(Thread.java:745)
-
-Jul 09, 2015 8:14:22 PM staticClasses.auxx logsevere
-SCHWERWIEGEND: 119 SEND failed : {"gameID":1,"type":"leave game"}
-
-java.net.SocketException: Socket is closed
-	at java.net.Socket.getOutputStream(Socket.java:943)
-	at staticClasses.auxx.sendTCPMsg(auxx.java:166)
-	at cluedoNetworkLayer.CluedoGameClient.kill(CluedoGameClient.java:104)
-	at cluedoClient.ServerItem.killAllGames(ServerItem.java:56)
-	at cluedoNetworkGUI.DataGuiManagerClientSpool.killAllGamesOnServer(DataGuiManagerClientSpool.java:162)
-	at cluedoNetworkGUI.DataGuiManagerClientSpool.removeServer(DataGuiManagerClientSpool.java:150)
-	at cluedoClient.IncomingHandler.killConnection(IncomingHandler.java:233)
-	at cluedoClient.IncomingHandler.run(IncomingHandler.java:54)
-	at java.lang.Thread.run(Thread.java:745)
-
-Jul 09, 2015 8:14:22 PM staticClasses.auxx logsevere
-SCHWERWIEGEND: 121 incomming handler thread runnning outon server : näguc
-Jul 09, 2015 8:17:49 PM staticClasses.auxx loginfo
-INFORMATION: 258 RECEIVED : <MSG START> {"nick":"lkbxt","type":"user added"}
+Jul 09, 2015 9:38:06 PM staticClasses.auxx loginfo
+INFORMATION: 695 RECEIVED : <MSG START> {"type":"error","message":"you have already joined this game"}
  <MSGS END>
-Jul 09, 2015 8:17:49 PM staticClasses.auxx loginfo
-INFORMATION: 260 last json msg OK
-Jul 09, 2015 8:17:49 PM staticClasses.auxx loginfo
-INFORMATION: 261 INCOMING unchecked valid type: user added
-Jul 09, 2015 8:17:57 PM staticClasses.auxx loginfo
-INFORMATION: 835 color from prompt yellow
-Jul 09, 2015 8:17:57 PM staticClasses.auxx loginfo
-INFORMATION: 844 SENT : {"color":"yellow","type":"create game"}
-
-Jul 09, 2015 8:17:57 PM staticClasses.auxx loginfo
-INFORMATION: 877 RECEIVED : <MSG START> {"gameID":0,"type":"game created","player":{"nick":"nsqüx","color":"yellow","playerstate":["do nothing"]}}
- <MSGS END>
-Jul 09, 2015 8:17:57 PM staticClasses.auxx loginfo
-INFORMATION: 879 last json msg OK
-Jul 09, 2015 8:17:58 PM staticClasses.auxx loginfo
-INFORMATION: 456 RECEIVED : <MSG START> {"nick":"cluxw","type":"user added"}
- <MSGS END>
-Jul 09, 2015 8:17:58 PM staticClasses.auxx loginfo
-INFORMATION: 457 last json msg OK
-Jul 09, 2015 8:17:58 PM staticClasses.auxx loginfo
-INFORMATION: 458 INCOMING unchecked valid type: user added
-Jul 09, 2015 8:18:02 PM staticClasses.auxx loginfo
-INFORMATION: 675 RECEIVED : <MSG START> {"gameID":0,"type":"player added","player":{"nick":"cluxw","color":"green","playerstate":["do nothing"]}}
- <MSGS END>
-Jul 09, 2015 8:18:02 PM staticClasses.auxx loginfo
-INFORMATION: 679 last json msg OK
-Jul 09, 2015 8:18:02 PM staticClasses.auxx loginfo
-INFORMATION: 702 connected to game 0 : number Nicks connected : 2
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 447 RECEIVED : <MSG START> {"gameID":0,"cards":["library","revolver","billiard","spanner","Professor Bloom","rope","kitchen","Reverend Green","Frau Weiss"],"type":"player_cards"}
- <MSGS END>
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 448 last json msg OK
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 455 RECEIVED : <MSG START> {"gameID":0,"type":"stateupdate","player":{"nick":"nsqüx","color":"yellow","playerstate":["do nothing"]}}
- <MSGS END>
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 456 last json msg OK
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 460 RECEIVED : <MSG START> {"gameID":0,"gamestate":"started","type":"game started","order":["nsqüx","cluxw"]}
- <MSGS END>
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 461 last json msg OK
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 462 game 0 started
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 515 RECEIVED : <MSG START> {"gameID":0,"statement":{"weapon":"pipe","person":"red","room":"diningroom"},"type":"game ended"}
- <MSGS END>
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 516 last json msg OK
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 528 RECEIVED : <MSG START> {"gameID":0,"statement":{"weapon":"revolver","person":"purple","room":"kitchen"},"type":"game ended"}
- <MSGS END>
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 530 last json msg OK
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 538 RECEIVED : <MSG START> {"nick":"cluxw","type":"user left"}
- <MSGS END>
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 539 last json msg OK
-Jul 09, 2015 8:18:10 PM staticClasses.auxx loginfo
-INFORMATION: 539 cluxw removed from Game 0 Gamestate is now : ended
-Jul 09, 2015 8:18:13 PM staticClasses.auxx logsevere
-SCHWERWIEGEND: 134 null? : 723
-Jul 09, 2015 8:18:13 PM staticClasses.auxx logsevere
-SCHWERWIEGEND: 219 hamana
-Jul 09, 2015 8:18:13 PM staticClasses.auxx loginfo
-INFORMATION: 241 Communicator started
-Jul 09, 2015 8:18:13 PM staticClasses.auxx logsevere
-SCHWERWIEGEND: 247 Oh my giddy giddy gosh
-Jul 09, 2015 8:18:14 PM staticClasses.auxx logsevere
-SCHWERWIEGEND: 234 hamana
-Jul 09, 2015 8:53:20 PM staticClasses.auxx loginfo
-INFORMATION: 997 RECEIVED : <MSG START> {"gameID":0,"statement":{"weapon":"revolver","person":"white","room":"diningroom"},"type":"game ended"}
- <MSGS END>
-Jul 09, 2015 8:53:20 PM staticClasses.auxx loginfo
-INFORMATION: 998 last json msg OK
-Jul 09, 2015 8:53:21 PM staticClasses.auxx loginfo
-INFORMATION: 2 RECEIVED : <MSG START> {"nick":"lkbxt","type":"user left"}
- <MSGS END>
-Jul 09, 2015 8:53:21 PM staticClasses.auxx loginfo
-INFORMATION: 3 last json msg OK
+Jul 09, 2015 9:38:06 PM staticClasses.auxx loginfo
+INFORMATION: 696 last json msg OK
