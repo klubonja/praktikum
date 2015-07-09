@@ -154,7 +154,7 @@ public class CluedoGameServer extends CluedoGame {
 		}
 	}
 
-	public void setNextRound() {
+	public void setAndNotifyNextRound() {
 		setCurrentPlayerNext();
 		updatePlayerStates();		
 		notifyNextRound();
@@ -174,13 +174,16 @@ public class CluedoGameServer extends CluedoGame {
 
 	public void notifyNextRound() {
 		auxx.loginfo(getNicksConnected());
-		notifyAll(NetworkMessages.stateupdateMsg(getGameId(), 
-				NetworkMessages.player_info(
-						players.get(currentPlayerIndex).getNick(),
-						players.get(currentPlayerIndex).getCluedoPerson().getColor(), 
-						players.get(currentPlayerIndex).getStatesStringList()
-				)
-		));
+		
+		for (CluedoPlayer player : players){
+			notifyAll(NetworkMessages.stateupdateMsg(getGameId(), 
+					NetworkMessages.player_info(
+							player.getNick(),
+							player.getCluedoPerson().getColor(), 
+							player.getStatesStringList()
+					)
+			));
+		}
 	}
 
 	public void setCurrentPlayerNext() {
@@ -237,11 +240,5 @@ public class CluedoGameServer extends CluedoGame {
 			p.add(pl);
 		}
 	}
-
-	@Override
-	boolean start(ArrayList<String> order) {
-		return false;
-	}
-
 
 }

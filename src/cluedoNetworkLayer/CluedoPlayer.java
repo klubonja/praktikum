@@ -2,6 +2,8 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
+import com.sun.media.jfxmedia.events.PlayerStateEvent.PlayerState;
+
 import enums.Persons;
 import enums.PlayerStates;
 
@@ -84,7 +86,7 @@ public class CluedoPlayer {
 		this.possibleStates = newstates;
 	}
 	
-	public ArrayList<PlayerStates> getStates() {
+	public ArrayList<PlayerStates> getPossibleStates() {
 		return possibleStates;
 	}
 	
@@ -112,5 +114,12 @@ public class CluedoPlayer {
 		return nick;
 	}
 	
+	public String returnStatesAsString(){
+		String ausgabe = new String();
+		for (PlayerStates state : possibleStates){
+			ausgabe += state.getName() + " ";
+		}
+		return ausgabe;
+	}
 
 }

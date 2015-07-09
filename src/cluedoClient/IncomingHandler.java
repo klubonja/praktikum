@@ -119,8 +119,10 @@ class IncomingHandler implements Runnable {
 			}
 			else if(checker.getType().equals("stateupdate")){
 				int gameID = checker.getMessage().getInt("gameID");
-				if (checker.getMessage().getJSONObject("player").get("playerstate").equals(PlayerStates.roll_dice.getName())){
-					auxx.logsevere("roll dice?!");
+				ArrayList <String> playerStates = new ArrayList <String> ();
+				if ( ! (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.do_nothing.getName())) ){
+					
+					auxx.loginfo("voll ghetto-code");
 					server.getGameByGameID(gameID).currentPlayerToNothing();
 					server.getGameByGameID(gameID).nextTurn();
 					server.getGameByGameID(gameID).currentPlayerToRolls();

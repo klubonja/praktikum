@@ -1,13 +1,11 @@
 package cluedoServer;
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
-import javafx.scene.paint.Color;
+
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import staticClasses.Config;
@@ -16,10 +14,10 @@ import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameServer;
+import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
-import enums.Persons;
 import enums.PlayerStates;
 
 /**
@@ -284,19 +282,22 @@ class CommunicationHandler implements Runnable {
    	   else if(checker.getType().equals("end turn")){
    		   auxx.loginfo("end turn angekommen");
    		   int gameID = checker.getMessage().getInt("gameID");
-   		   ClientItem currentPlayer = dataManager.gamesList.getGameByID(gameID).getParticipants().get(dataManager.gamesList.getGameByID(gameID).getCurrentPlayerIndex()); 
-   		   CluedoJSON playerinfo = new CluedoJSON("player");
-   		   playerinfo.put("nick", currentPlayer.getNick());
-   		   playerinfo.put("color", currentPlayer.getPlayer().getCluedoPerson().getColor());
-   		   playerinfo.put("playerstate", PlayerStates.do_nothing.getName());
-   		   currentPlayer.sendMsg(NetworkMessages.stateupdateMsg(gameID, playerinfo));
-   		   dataManager.gamesList.getGameByID(gameID).setCurrentPlayerNext();
-   		   currentPlayer = dataManager.gamesList.getGameByID(gameID).getParticipants().get(dataManager.gamesList.getGameByID(gameID).getCurrentPlayerIndex()); 
-		   playerinfo = new CluedoJSON("player");
-		   playerinfo.put("nick", currentPlayer.getNick());
-		   playerinfo.put("color", currentPlayer.getPlayer().getCluedoPerson().getColor());
-		   playerinfo.put("playerstate", PlayerStates.roll_dice.getName());
-		   currentPlayer.sendMsg(NetworkMessages.stateupdateMsg(gameID, playerinfo));
+   		   CluedoGameServer game = dataManager.getGameByID(gameID);
+   		   if (game.hasNick(checker.getMessage().getString("nick"))){
+   		   CluedoPlayer player = game.getPlayerByNick(client.getNick());
+   		   
+	   		   if (player.getPossibleStates().contains(PlayerStates.end_turn)){
+	   			   client.sendMsg(NetworkMessages.okMsg());
+	   			   game.setAndNotifyNextRound();
+	   		   }
+   		   
+   		   else {
+   			   client.sendMsg(NetworkMessages.error_Msg("stfu you're not done yet!" +player.returnStatesAsString()));
+   		   }
+   		   }
+   		   // Validieren
+   		   
+   		   
    		   //setNextRound();
    		   //setCurrentPlayerNext();
    	   }

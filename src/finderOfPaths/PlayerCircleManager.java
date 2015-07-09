@@ -11,7 +11,6 @@ public class PlayerCircleManager {
 		
 	public  Stack<CluedoPlayer> playerManager;
 	public  ArrayList<Circle> circleManager;
-	public  ArrayList<String> order;
 	
 	private int currentIndex = 0;
  	
@@ -47,7 +46,7 @@ public class PlayerCircleManager {
 	}
 
 	public String getCurrentNick(){
-		return order.get(currentIndex);
+		return playerManager.get(currentIndex).getNick();
 	}
 	
 	public int getIndex() {
@@ -121,14 +120,4 @@ public class PlayerCircleManager {
 		this.playerManager = playerManager;
 	}
 
-	public ArrayList<String> getOrder() {
-		return order;
-	}
-
-	public void setOrder(ArrayList<String> order) {
-		this.order = order;
-	}
-
-	
-	
 }

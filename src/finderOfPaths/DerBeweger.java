@@ -35,8 +35,6 @@ public class DerBeweger {
 
 	private Kachel geheimGangKachel;
 
-	private CluedoPlayer currentPlayer;
-
 	private Orientation[] anweisungen;
 	private Orientation[] anweisungenVonHier;
 	private int momentaneAnweisung;
@@ -61,8 +59,6 @@ public class DerBeweger {
 	private int yDistanz;
 	private int xDistanz;
 
-	private Circle currentCircle;
-	
     private int schritte;
     private int nullSchritte;
     
@@ -79,27 +75,21 @@ public class DerBeweger {
 		this.zug = zug;
 		this.raumBeweger = raumBeweger;
 		
-		this.currentPlayer = pcManager.getCurrentPlayer();
-		currentCircle = pcManager.getCurrentCircle();
-		anfangsKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
-		
-		
+		anfangsKachel = gui.getKachelArray()[pcManager.getCurrentPlayer().getPosition().getY()][pcManager.getCurrentPlayer().getPosition().getX()];
 	}
 	
-	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe, int nullSchritteEingabe, CluedoPlayer currentPlayer, Circle currentCircle){
+	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe, int nullSchritteEingabe){
 		
 		this.schritte = schritteEingabe;		
 		this.nullSchritte = nullSchritteEingabe;		
 		this.anweisungen = anweisungenEingabe;
-		this.currentPlayer = currentPlayer;
-		this.currentCircle = currentCircle;
 		
 		if(anfangsKachel.isIstTuer()){
 			anfangsRaumKachel = gui.getKachelArray()[anfangsKachel
 			         								.getPosition().getY()][anfangsKachel
 			         								.getPosition().getX()];
-			Rooms room = raumBeweger.checkRaum(this.currentPlayer, anfangsRaumKachel);
-			raumStartKachel = raumBeweger.positionInRaum(this.currentPlayer, room);
+			Rooms room = raumBeweger.checkRaum(anfangsRaumKachel);
+			raumStartKachel = raumBeweger.positionInRaum(this.pcManager.getCurrentPlayer(), room);
 			ausRaumBewegen();
 		}
 		else{
@@ -125,8 +115,8 @@ public class DerBeweger {
 
 		if (schritte > 0) {
 
-			jetzigeSpalte = currentPlayer.getPosition().getX();
-			jetzigeReihe = currentPlayer.getPosition().getY();
+			jetzigeSpalte = pcManager.getCurrentPlayer().getPosition().getX();
+			jetzigeReihe = pcManager.getCurrentPlayer().getPosition().getY();
 
 			distanzBerechnen();
 
@@ -149,7 +139,7 @@ public class DerBeweger {
 			PathTransition pathTransition = new PathTransition();
 			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 300
 					+ Math.abs(xDistanz) * 300));
-			pathTransition.setNode(currentCircle);
+			pathTransition.setNode(pcManager.getCurrentCircle());
 			pathTransition.setPath(path);
 			pathTransition.play();
 			pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
@@ -163,10 +153,9 @@ public class DerBeweger {
 						anfangsRaumKachel = gui.getKachelArray()[anfangsKachel
 								.getPosition().getY()][anfangsKachel
 								.getPosition().getX()];
-						Rooms room = raumBeweger.checkRaum(currentPlayer,
-								anfangsRaumKachel);
+						Rooms room = raumBeweger.checkRaum(anfangsRaumKachel);
 						raumZielKachel = raumBeweger.positionInRaum(
-								currentPlayer, room);
+								pcManager.getCurrentPlayer(), room);
 						inRaumBewegen();
 						stack.getChildren()
 						.add(zug);
@@ -190,15 +179,15 @@ public class DerBeweger {
 		auxx.logsevere("anfangs Kachel x : "
 				+ anfangsKachel.getPosition().getX() + " ||  y : "
 				+ anfangsKachel.getPosition().getY());
-		currentPlayer.getPosition().setX(anfangsKachel.getPosition().getX());
-		currentPlayer.getPosition().setY(anfangsKachel.getPosition().getY());
+		pcManager.getCurrentPlayer().getPosition().setX(anfangsKachel.getPosition().getX());
+		pcManager.getCurrentPlayer().getPosition().setY(anfangsKachel.getPosition().getY());
 	}
 
 	public void positionUpdaten() {
-		currentPlayer.getPosition().setY(
-				currentPlayer.getPosition().getY() + yDistanz);
-		currentPlayer.getPosition().setX(
-				currentPlayer.getPosition().getX() + xDistanz);
+		pcManager.getCurrentPlayer().getPosition().setY(
+				pcManager.getCurrentPlayer().getPosition().getY() + yDistanz);
+		pcManager.getCurrentPlayer().getPosition().setX(
+				pcManager.getCurrentPlayer().getPosition().getX() + xDistanz);
 	}
 
 	public void distanzBerechnen() {
@@ -236,26 +225,22 @@ public class DerBeweger {
 		
 			auxx.logsevere("hamana");
 			
-			startKachel = gui.getKachelArray()[currentPlayer.getPosition().getY()][currentPlayer.getPosition().getX()];
-			
-			currentPlayer = pcManager.getPlayerByIndex(zaehler);
-			currentCircle = pcManager.getCircleByIndex(zaehler);
-			
+			startKachel = gui.getKachelArray()[pcManager.getCurrentPlayer().getPosition().getY()][pcManager.getCurrentPlayer().getPosition().getX()];
 			
 			Path path = new Path();
 			path.getElements().add(
 					new MoveTo(gui.getKachelArray()[11][12].getLayoutX(), gui
 							.getKachelArray()[11][12].getLayoutY()));
 			path.getElements().add(
-					new LineTo(gui.getKachelArray()[currentPlayer.getPosition()
-							.getY()][currentPlayer.getPosition().getX()]
-							.getLayoutX(), gui.getKachelArray()[currentPlayer
-							.getPosition().getY()][currentPlayer.getPosition()
+					new LineTo(gui.getKachelArray()[pcManager.getCurrentPlayer().getPosition()
+							.getY()][pcManager.getCurrentPlayer().getPosition().getX()]
+							.getLayoutX(), gui.getKachelArray()[pcManager.getCurrentPlayer()
+							.getPosition().getY()][pcManager.getCurrentPlayer().getPosition()
 							.getX()].getLayoutY()));
 
 			PathTransition pathTransition = new PathTransition();
 			pathTransition.setDuration(Duration.millis(1000));
-			pathTransition.setNode(currentCircle);
+			pathTransition.setNode(pcManager.getCurrentCircle());
 			pathTransition.setPath(path);
 			pathTransition.play();
 			
@@ -264,6 +249,7 @@ public class DerBeweger {
 
 					@Override
 					public void handle(ActionEvent event) {
+						pcManager.next();
 						zaehler++;
 						anfangsPositionSetzen(zaehler);
 					}
@@ -271,9 +257,6 @@ public class DerBeweger {
 				});
 			}
 			else {
-				
-				currentPlayer = pcManager.getCurrentPlayer();
-				currentCircle = pcManager.getCurrentCircle();
 				pcManager.next();
 			}
 				
@@ -285,19 +268,19 @@ public class DerBeweger {
 	 */
 	public void inRaumBewegen() {
 
-		raumAnfangsKachel = gui.getKachelArray()[currentPlayer.getPosition()
-				.getY()][currentPlayer.getPosition().getX()];
+		raumAnfangsKachel = gui.getKachelArray()[pcManager.getCurrentPlayer().getPosition()
+				.getY()][pcManager.getCurrentPlayer().getPosition().getX()];
 
 		System.out.println(" test " + startKachel.getLayoutX());
 
 		System.out
 				.println("layout y : "
-						+ gui.getKachelArray()[currentPlayer.getPosition()
-								.getY()][currentPlayer.getPosition().getX()]
+						+ gui.getKachelArray()[pcManager.getCurrentPlayer().getPosition()
+								.getY()][pcManager.getCurrentPlayer().getPosition().getX()]
 								.getLayoutX()
 						+ "  layout x : "
-						+ gui.getKachelArray()[currentPlayer.getPosition()
-								.getY()][currentPlayer.getPosition().getX()]
+						+ gui.getKachelArray()[pcManager.getCurrentPlayer().getPosition()
+								.getY()][pcManager.getCurrentPlayer().getPosition().getX()]
 								.getLayoutY());
 
 		Path path = new Path();
@@ -309,7 +292,7 @@ public class DerBeweger {
 						.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(currentCircle);
+		pathTransition.setNode(pcManager.getCurrentCircle());
 		pathTransition.setPath(path);
 		pathTransition.play();
 	}
@@ -328,7 +311,7 @@ public class DerBeweger {
 		
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(currentCircle);
+		pathTransition.setNode(pcManager.getCurrentCircle());
 		pathTransition.setPath(path);
 		pathTransition.play();
 		pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
@@ -377,9 +360,9 @@ public class DerBeweger {
 
 		this.pcManager = pcManager;
 		auxx.logsevere("PAAAAAAAAAAANIIIIIIIIIIIK");
-		System.out.println(currentPlayer.getPosition().getX());
-		System.out.println(currentPlayer.getPosition().getY());
-		CluedoPosition position = currentPlayer.getPosition();
+		System.out.println(pcManager.getCurrentPlayer().getPosition().getX());
+		System.out.println(pcManager.getCurrentPlayer().getPosition().getY());
+		CluedoPosition position = pcManager.getCurrentPlayer().getPosition();
 		if (position.getX() == 6 && position.getY() == 3) {
 			auxx.logsevere("study");
 			geheimgangBewegerEingang(Rooms.study);
@@ -407,20 +390,19 @@ public class DerBeweger {
 				new LineTo(gangKachel.getLayoutX(), gangKachel.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(currentCircle);
+		pathTransition.setNode(pcManager.getCurrentCircle());
 		pathTransition.setPath(path);
 		pathTransition.play();
 		pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				anfangsRaumKachel = gui.getKachelArray()[currentPlayer
-						.getPosition().getY()][currentPlayer.getPosition()
+				anfangsRaumKachel = gui.getKachelArray()[pcManager.getCurrentPlayer()
+						.getPosition().getY()][pcManager.getCurrentPlayer().getPosition()
 						.getX()];
-				Rooms room = raumBeweger.checkRaum(currentPlayer,
-						anfangsRaumKachel);
+				Rooms room = raumBeweger.checkRaum(anfangsRaumKachel);
 				raumZielKachel = raumBeweger
-						.positionInRaum(currentPlayer, room);
+						.positionInRaum(pcManager.getCurrentPlayer(), room);
 				geheimgangBewegerAusgang(raumZielKachel, raum);
 
 				stack.getChildren()
@@ -443,7 +425,7 @@ public class DerBeweger {
 						.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(currentCircle);
+		pathTransition.setNode(pcManager.getCurrentCircle());
 		pathTransition.setPath(path);
 		pathTransition.play();
 	}
@@ -453,20 +435,20 @@ public class DerBeweger {
 		if (vonWo == "anfang") {
 			if (raum == Rooms.study) {
 				geheimGangKachel = gui.getKachelArray()[0][0];
-				currentPlayer.getPosition().setX(19);
-				currentPlayer.getPosition().setY(18);
+				pcManager.getCurrentPlayer().getPosition().setX(19);
+				pcManager.getCurrentPlayer().getPosition().setY(18);
 			} else if (raum == Rooms.kitchen) {
 				geheimGangKachel = gui.getKachelArray()[24][23];
-				currentPlayer.getPosition().setX(6);
-				currentPlayer.getPosition().setY(3);
+				pcManager.getCurrentPlayer().getPosition().setX(6);
+				pcManager.getCurrentPlayer().getPosition().setY(3);
 			} else if (raum == Rooms.lounge) {
 				geheimGangKachel = gui.getKachelArray()[0][23];
-				currentPlayer.getPosition().setX(4);
-				currentPlayer.getPosition().setY(19);
+				pcManager.getCurrentPlayer().getPosition().setX(4);
+				pcManager.getCurrentPlayer().getPosition().setY(19);
 			} else if (raum == Rooms.conservatory) {
 				geheimGangKachel = gui.getKachelArray()[24][0];
-				currentPlayer.getPosition().setX(17);
-				currentPlayer.getPosition().setY(5);
+				pcManager.getCurrentPlayer().getPosition().setX(17);
+				pcManager.getCurrentPlayer().getPosition().setY(5);
 			}
 		} else {
 			if (raum == Rooms.study) {
@@ -480,24 +462,7 @@ public class DerBeweger {
 			}
 		}
 		
-		pcManager.setIndexByPlayer(currentPlayer);
 		return geheimGangKachel;
-	}
-
-	public CluedoPlayer getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
-		this.currentPlayer = currentPlayer;
-	}
-
-	public Circle getCurrentCircle() {
-		return currentCircle;
-	}
-
-	public void setCurrentCircle(Circle circle) {
-		this.currentCircle = circle;
 	}
 
 }

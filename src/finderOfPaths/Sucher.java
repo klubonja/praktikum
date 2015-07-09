@@ -22,8 +22,6 @@ public class Sucher {
 	
 	private int wuerfelZahl;
 	
-	private CluedoPlayer currentPlayer;
-	
 	private char [][] anweisungen;
 	public PlayerCircleManager pcManager;
 	 
@@ -35,21 +33,16 @@ public class Sucher {
 		this.beweger = beweger;
 		this.vorschlager = vorschlager;
 		this.pathfinder = pathfinder;
-		this.currentPlayer = pcManager.getCurrentPlayer();
 		this.anweisungen = anweisungen;
-		
 	}
-	
 	
 	public void suchen(int wuerfelZahlEingabe, PlayerCircleManager pcManager){
 		this.wuerfelZahl = wuerfelZahlEingabe;
 		this.pcManager = pcManager;
 		
 		auxx.logsevere("Sucher.suchen:");
-		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
-		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
-		
-		//setToNextPlayer();
+		auxx.logsevere("pcManager.getCurrentPlayer() Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
+		auxx.logsevere("pcManager.getCurrentPlayer() x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 		
 		pathfinder.findThatPathBetter(wuerfelZahl, pcManager);
 		
@@ -62,16 +55,4 @@ public class Sucher {
 		vorschlager.vorschlaegeMachen(anweisungen, mehrereAnweisungen, xPositionen, yPositionen, tuerCounter, this.pcManager);
 		pathfinder.setTuerCounter(0);
 	}
-	
-	public CluedoPlayer getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-
-	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
-		this.currentPlayer = currentPlayer;
-	}
-	
-	
-	
 }

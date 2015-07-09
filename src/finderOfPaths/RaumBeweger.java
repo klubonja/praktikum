@@ -9,7 +9,6 @@ import enums.Rooms;
 public class RaumBeweger {
 
 	private BoardView gui;
-	private CluedoPlayer currentPlayer;
 	private Kachel aufenthalt;
 	private Kachel zielImRaum;
 	
@@ -19,13 +18,11 @@ public class RaumBeweger {
 	public RaumBeweger(BoardView gui,PlayerCircleManager pcm){
 		pcManager = pcm;
 		this.gui = gui;
-		this.currentPlayer = pcManager.getCurrentPlayer();
 		zielImRaum = gui.getKachelArray()[0][0];
 	}
 
-	public Rooms checkRaum( CluedoPlayer currentPlayer, Kachel aufenthalt) {
+	public Rooms checkRaum(Kachel aufenthalt) {
 		this.aufenthalt = aufenthalt;
-		this.currentPlayer = currentPlayer;
 		if(aufenthalt.getRaum() != null){
 			return aufenthalt.getRaum();
 		}
@@ -36,7 +33,7 @@ public class RaumBeweger {
 	
 	
 	public Kachel positionInRaum(CluedoPlayer player2, Rooms raum) {
-		if(currentPlayer.getCluedoPerson().getColor() == "yellow"){
+		if(pcManager.getCurrentPlayer().getCluedoPerson().getColor() == "yellow"){
 			if(raum == Rooms.hall){
 				System.out.println("haaaaaaaaaaaaall");
 				zielImRaum.getPosition().setX(11);
@@ -98,7 +95,7 @@ public class RaumBeweger {
 				zielImRaum = gui.getKachelArray()[zielImRaum.getPosition().getY()][zielImRaum.getPosition().getX()];
 			}
 		}
-		else if(currentPlayer.getCluedoPerson().getColor() == "blue"){
+		else if(pcManager.getCurrentPlayer().getCluedoPerson().getColor() == "blue"){
 			if(raum == Rooms.hall){
 				zielImRaum.getPosition().setX(11);
 				zielImRaum.getPosition().setY(2);
@@ -151,7 +148,7 @@ public class RaumBeweger {
 			}
 		
 		}
-		else if(currentPlayer.getCluedoPerson().getColor() == "green"){
+		else if(pcManager.getCurrentPlayer().getCluedoPerson().getColor() == "green"){
 			if(raum == Rooms.hall){
 				zielImRaum.getPosition().setX(11);
 				zielImRaum.getPosition().setY(3);
@@ -204,7 +201,7 @@ public class RaumBeweger {
 			}
 		
 		}
-		else if(currentPlayer.getCluedoPerson().getColor() == "white"){
+		else if(pcManager.getCurrentPlayer().getCluedoPerson().getColor() == "white"){
 			if(raum == Rooms.hall){
 				zielImRaum.getPosition().setX(12);
 				zielImRaum.getPosition().setY(1);
@@ -257,7 +254,7 @@ public class RaumBeweger {
 			}
 		
 		}
-		else if(currentPlayer.getCluedoPerson().getColor() == "yellow"){
+		else if(pcManager.getCurrentPlayer().getCluedoPerson().getColor() == "yellow"){
 			if(raum == Rooms.hall){
 				zielImRaum.getPosition().setX(12);
 				zielImRaum.getPosition().setY(2);
@@ -310,7 +307,7 @@ public class RaumBeweger {
 			}
 		
 		}
-		else if(currentPlayer.getCluedoPerson().getColor() == "red"  || currentPlayer.getCluedoPerson().getColor() == "Peter"){
+		else if(pcManager.getCurrentPlayer().getCluedoPerson().getColor() == "red"  || pcManager.getCurrentPlayer().getCluedoPerson().getColor() == "Peter"){
 			if(raum == Rooms.hall){
 				zielImRaum.getPosition().setX(12);
 				zielImRaum.getPosition().setY(3);

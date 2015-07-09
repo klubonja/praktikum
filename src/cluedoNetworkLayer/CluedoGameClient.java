@@ -1,6 +1,8 @@
 package cluedoNetworkLayer;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 import javafx.application.Platform;
 import staticClasses.NetworkMessages;
@@ -54,12 +56,13 @@ public class CluedoGameClient extends CluedoGame {
 		return false;
 	}
 	
-	@Override
 	public boolean start(ArrayList <String> order) {
 		auxx.loginfo("game " + getGameId() + " started");
 		
+		searchAndDestroyOrder(order);
+		
 		Platform.runLater(() -> {
-			communicator = new Communicator(this, order);
+			communicator = new Communicator(this);
 			communicator.startGame();
 			communicator.setTitle(myNick + " playing on server "
 					+ server.getGroupName() + " Game : " + gameId);
@@ -119,16 +122,33 @@ public class CluedoGameClient extends CluedoGame {
 		
 	}
 	
-	public void changePlayer(){
-		Platform.runLater(() -> {
-			communicator.changePlayer();
-		});
-	}
-	
 	public void currentPlayerToRolls() {
 		Platform.runLater(() -> {
 			communicator.updateStatesToRolls();
 		});
 		
 	}
+	
+	public void searchAndDestroyOrder(ArrayList<String> order){
+		Iterator <CluedoPlayer> profDrOhlbach = players.iterator();
+		while (profDrOhlbach.hasNext()){
+			CluedoPlayer laith = profDrOhlbach.next();
+			if (laith.getNick().equals("")){
+				players.remove(laith);
+			}
+		}
+		
+		for (int i = 0;i < order.size(); i++){
+			Collections.swap(players,i,getIndexByNick(order.get(i)));
+		}
+		
+		for (int hans = 0; hans < order.size(); hans++){
+			System.out.print("order an der stelle : " +hans +order.get(hans));
+			System.out.println(" || players an der stelle : " +hans +players.get(hans).getNick());
+		}
+		
+	}
+	
+
+	
 }

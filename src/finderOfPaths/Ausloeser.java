@@ -53,8 +53,6 @@ public class Ausloeser {
 	private int wuerfelZahl;
 
 	public PlayerCircleManager pcManager;
-	private CluedoPlayer currentPlayer;
-	private Circle currentCircle;
 	private int gameid;
 	private CluedoGameClient network;
 
@@ -157,9 +155,6 @@ public class Ausloeser {
 		this.pcManager = pcManager;
 		try {
 
-			currentPlayer = pcManager.getPlayerByPerson(person);
-			currentCircle = pcManager.getCircleByPerson(person);
-			
 			Kachel momentaneKachel = gui.getKachelArray()[iReihe][jSpalte];
 
 			auxx.logsevere("Reihe : " + iReihe + "  ||  Spalte : "
@@ -189,7 +184,7 @@ public class Ausloeser {
 
 			beweger.anfangsKachelSetzen(startKachel);
 
-			beweger.bewegen(anweisungenOrientations, schritte, nullSchritte, currentPlayer, currentCircle);
+			beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
 
 			nullSchritte = 0;
 			pathfinder.setWelcheKachel(0);
@@ -293,21 +288,4 @@ public class Ausloeser {
 		this.gewuerfelt = gewuerfelt;
 	}
 
-	public CluedoPlayer getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
-		this.currentPlayer = currentPlayer;
-	}
-
-	public Circle getCurrentCircle() {
-		return currentCircle;
-	}
-
-	public void setCurrentCircle(Circle currentCircle) {
-		this.currentCircle = currentCircle;
-	}
-
-	
 }

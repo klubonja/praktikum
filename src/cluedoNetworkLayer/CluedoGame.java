@@ -21,12 +21,12 @@ public abstract class CluedoGame {
 	Stack<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
 	
+	ArrayList<String> orderList;
+	
 	Communicator communicator;
 	
 	abstract boolean start();
 	
-	abstract boolean start(ArrayList <String> order);
-		
 	public CluedoGame(int gameId){
 		this.gameId = gameId; 		
 		init();
@@ -205,14 +205,6 @@ public abstract class CluedoGame {
 			
 	}
 	
-	public void setOrder(ArrayList<String> order){
-		for (int i = 0;i < order.size(); i++){
-			Collections.swap(players,i,getIndexByNick(order.get(i)));
-		}
-	}
-	
-	
-	
 	int getIndexByNick(String nick) {
 		for (int i = 0; i < players.size();i++)
 			if (players.get(i).getNick().equals(nick))
@@ -221,13 +213,13 @@ public abstract class CluedoGame {
 		return -1;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	public CluedoPlayer getPlayerByNick(String nick){
+		for (CluedoPlayer player : players){
+			if (player.getNick().equals(nick)){
+				return player;
+			}
+		}
+		return null;
+	}
 	
 }
