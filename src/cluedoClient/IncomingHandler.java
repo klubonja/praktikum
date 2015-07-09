@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
+import cluedoNetworkLayer.CluedoGame;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.NetworkHandhakeCodes;
@@ -119,20 +120,34 @@ class IncomingHandler implements Runnable {
 			}
 			else if(checker.getType().equals("stateupdate")){
 				int gameID = checker.getMessage().getInt("gameID");
-				ArrayList <String> playerStates = new ArrayList <String> ();
-				if ( ! (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.do_nothing.getName())) ){
-					
-					auxx.loginfo("voll ghetto-code");
-					server.getGameByGameID(gameID).currentPlayerToNothing();
-					server.getGameByGameID(gameID).nextTurn();
-					server.getGameByGameID(gameID).currentPlayerToRolls();
+				CluedoGameClient game = server.getGameByGameID(gameID); 
+				JSONArray states = checker.getMessage().getJSONObject("player").getJSONArray("playerstate");
+
+				for (int welcherState = 0; welcherState < states.length(); welcherState++){
+					if (states.get(welcherState).equals(PlayerStates.end_turn.getName())){
+						game.nextTurn();
+					}
+					else if (states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
+						auxx.loginfo("voll ghetto-code");
+						game.currentPlayerToRolls();
+					}
+					else if (states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
+						auxx.loginfo("voll ghetto-code");
+						game.currentPlayerToNothing();
+					}
 				}
+//				else if (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.disprove.getName())){
+//					server.getGameByGameID(gameID).disprove();
+//				}
+				
+				
+				
+				
+				
 			}
 			else if(checker.getType().equals("dice result")){
 				int [] wuerfel = new int [2];
 				wuerfel[0] = Integer.parseInt(checker.getMessage().getJSONArray("result").get(0).toString());
-				
-				
 				wuerfel[1] = Integer.parseInt(checker.getMessage().getJSONArray("result").get(1).toString());
 				server.getGameByGameID(checker.getMessage().getInt("gameID")).rollDice(wuerfel);
 			}

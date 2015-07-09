@@ -107,7 +107,6 @@ public class Communicator {
 	}
 	
 	public void rollDice(int [] wuerfelWurf){
-		//int [] testWuerfelWurf = {6,6};
 		this.wuerfelWurf = wuerfelWurf;
 		int ersterWuerfel = wuerfelWurf[0];
 		int zweiterWuerfel = wuerfelWurf[1];
@@ -119,51 +118,16 @@ public class Communicator {
 		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
 	}
 	
-//	public void rollDiceForMoving(int [] wuerfelWurf, CluedoPosition position, String person){
-//		//int [] testWuerfelWurf = {6,6};
-//		auxx.logsevere("wird das hier ausgeführt?");
-//		Platform.runLater(() -> {
-//			this.wuerfelWurf = wuerfelWurf;
-//			int ersterWuerfel = wuerfelWurf[0];
-//			int zweiterWuerfel = wuerfelWurf[1];
-//			
-//			auxx.logsevere("Communicator.rollDice");
-//			auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
-//			auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
-//			
-//			currentPlayer = pcManager.getCurrentPlayer();
-//			dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
-//		});
-//		Platform.runLater(() -> {
-//			auxx.logsevere("kommt er hier hin?");
-//			
-//			int yKoordinate = position.getY();
-//			int xKoordinate = position.getX();
-//			beweger.setCurrentPlayer(pcManager.getCurrentPlayer());
-//			beweger.setCurrentCircle(pcManager.getCurrentCircle());
-//			ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
-//		});
-//		
-//	}
-	
 	public void useSecretPassage(){
 		
 		beweger.useSecretPassage(pcManager);
 	}
 	
 	public void move(CluedoPosition position, String person){
-//		if (!(currentNick.equals(myNick))){
-//			rollDiceForMoving(wuerfelWurf, position, person);
-//		}
 		
-//				Platform.runLater(() -> {
-					//auxx.logsevere("kommt er hier hin?");
-					
 					int yKoordinate = position.getY();
 					int xKoordinate = position.getX();
 					ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
-//				});
-		
 			
 	}
 
@@ -198,12 +162,11 @@ public class Communicator {
 
 	public void setNextTurn(){
 		
-		//pcManager.next();// erhöht den index und sonst nix
-		
 	}
 		
 	public void endTurn() {
 		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
+		//pcManager.next();
 		// Communicator.playerManager.next();
 		// Communicator.circleManager.next();
 		// ///////////////////////////////////
@@ -214,21 +177,7 @@ public class Communicator {
 	}
 	
 	public void itsYourTurn(){
-//		if (!erstesMal){
-//			
-//			//changePlayer();
-//			//
-//			openWindow();
-//			erstesMal = true;
-//		}
-//		else {
-//			pcManager.next();
-//			
-//			//changePlayer();
-//			//
-//			openWindow();
-//		}
-		//
+
 		pcManager.next();
 		
 		openWindow();

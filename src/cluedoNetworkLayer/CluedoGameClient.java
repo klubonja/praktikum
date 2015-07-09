@@ -148,6 +148,10 @@ public class CluedoGameClient extends CluedoGame {
 		}
 		
 	}
+
+	public void disprove() {
+		communicator.disprove();
+	}
 	
 
 	
