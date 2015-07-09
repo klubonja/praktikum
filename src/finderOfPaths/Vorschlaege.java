@@ -4,6 +4,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import kacheln.Kachel;
+import staticClasses.auxx;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
@@ -71,6 +72,10 @@ public class Vorschlaege {
 		this.tuerCounter = tuerCounterEingabe;
 		this.pcManager = pcManager;
 		currentPlayer = pcManager.getCurrentPlayer();
+		
+		auxx.logsevere("Vorschlager.vorschlaegeMachen");
+		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
+		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 		
 		gui.resetBackground();
 		
@@ -235,6 +240,10 @@ public class Vorschlaege {
 	 */
 	public void moeglichkeitenSetzenMitTueren(Color farbe){
 		if (checkForWeirdStuff()){
+			
+			auxx.logsevere("Vorschlager.moeglichkeitenSetzenMitTueren:");
+			auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
+			auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 			
 			gui.getKachelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setMoeglichkeitenHierher(moeglichkeiten[counterAussen]);
 			

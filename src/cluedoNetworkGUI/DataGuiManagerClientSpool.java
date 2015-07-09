@@ -48,8 +48,10 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	public void setSelectedServer(ServerItem selectedServer) {
 		this.selectedServer = selectedServer;
 		setStatus("selected server : "+selectedServer.getGroupName());
+		setWindowName("logged in to server "+selectedServer.getGroupName()+" as "+selectedServer.getMyNick());
 		cleanInput();
 		addMsgIn(selectedServer.getChat());
+		auxx.logfine("logged in to server "+selectedServer.getGroupName()+" as "+selectedServer.getMyNick());
 	}
 	
 	public ServerItem getSelectedServer() {
@@ -80,9 +82,15 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		CluedoGameClient game = server.getGameByGameID(gameID);
 		game.setOrder(order);
 		if (game.hasNick(server.getMyNick()))
-			game.start();
+			game.start(order);
 		game.setGameState(GameStates.getState(gameState));
 		setRunningGame(gameID);
+		//=======
+		//		if (game.start(order)){
+		//			game.setGameState(GameStates.getState(gameState));			
+		//			setRunningGame(gameID);
+		//		}
+		//>>>>>>> networkC
 	}
 	
 	public boolean deleteGameOnServer(ServerItem server,int gameID){

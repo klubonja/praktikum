@@ -24,6 +24,8 @@ public abstract class CluedoGame {
 	Communicator communicator;
 	
 	abstract boolean start();
+	
+	abstract boolean start(ArrayList <String> order);
 		
 	public CluedoGame(int gameId){
 		this.gameId = gameId; 		

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.logging.Level;
 
+
+import org.json.JSONObject;
+
+import javafx.application.Platform;
+
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
 import staticClasses.NetworkMessages;
@@ -23,6 +28,11 @@ import finderOfPaths.WahnsinnigTollerPathfinder;
 
 public class Communicator {
 
+	private int [] wuerfelWurf;
+	private String myNick;
+	
+	public boolean erstesMal;
+	
 	private GameFrameView gameView;
 	private BoardView boardView;
 	private DiceView diceView;
@@ -41,15 +51,27 @@ public class Communicator {
 	private RaumBeweger raumBeweger;
 	private Stack<CluedoPlayer> players;
 	private CluedoGameClient network;
-	public final PlayerCircleManager pcManager;
+	//private ArrayList <String> order;
+	public PlayerCircleManager pcManager;
+	private CluedoPlayer currentPlayer; 
+	private String currentNick;
 	public final int gameid;
 
-	public Communicator(CluedoGameClient ngame) {
+	public Communicator(CluedoGameClient ngame, ArrayList <String> order) {
 		network = ngame;
+		
+		
+		
+		
 		gameid = ngame.getGameId();
 		players = network.getServer().getGameByGameID(network.getGameId())
 				.getPlayers();
 		pcManager = new PlayerCircleManager(network.getPlayersConnected());
+		pcManager.order = order;
+		doThatCurrentPlayerInititationStuff();
+		
+		
+		
 		gameView = new GameFrameView(pcManager);
 		gameView.start();
 		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid);
@@ -68,31 +90,37 @@ public class Communicator {
 		pathfinder = gamePresenter.getPathfinder();
 		sucher = gamePresenter.getSucher();
 
+		updatePCs();
+
+		myNick = network.getMyNick();
+		//pcManager.getPlayerByNick(myNick);
+		
+	}
+
+	private void doThatCurrentPlayerInititationStuff() {
+		
+		for (String nick : pcManager.order){
+			System.out.println("alle nicks : " +nick);
+		}
+		
+		currentPlayer = pcManager.getPlayerByNick(pcManager.order.get(0));
+		currentNick = pcManager.order.get(0);
+		pcManager.setIndexByPlayer(currentPlayer);
+		
 	}
 
 	public void startGame() {
-		auxx.loginfo("Communicator");
-		
-		
+		auxx.loginfo("Communicator started");
+		myNick = network.getMyNick();
 		setHandler();
 
 		testButtons();
 		auxx.logsevere("Oh my giddy giddy gosh");
 		updatePCs();
+		
 	}
 	
-	public void updatePCs(){
-		CluedoPlayer currentPlayer = pcManager.getCurrentPlayer();
-		beweger.setCurrentPlayer(currentPlayer);
-		vorschlager.setCurrentPlayer(currentPlayer);
-		ausloeser.setCurrentPlayer(currentPlayer);
-		pathfinder.setCurrentPlayer(currentPlayer);
-		dicePresenter.pcManager = pcManager;
-		beweger.pcManager = pcManager;
-		vorschlager.pcManager = pcManager;
-		ausloeser.pcManager = pcManager;
-		pathfinder.pcManager = pcManager;
-	}
+	
 
 	public void setTitle(String newtitle) {
 		gameView.setStageTitle(newtitle);
@@ -109,12 +137,52 @@ public class Communicator {
 	public GameFramePresenter getGamePresenter() {
 		return gamePresenter;
 	}
+	
 	public void rollDice(int [] wuerfelWurf){
 		//int [] testWuerfelWurf = {6,6};
+		this.wuerfelWurf = wuerfelWurf;
 		int ersterWuerfel = wuerfelWurf[0];
 		int zweiterWuerfel = wuerfelWurf[1];
 		updatePCs();
-		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
+		auxx.logsevere("Communicator.rollDice");
+		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
+		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
+		
+		System.out.println("my nick : " +myNick);
+		currentPlayer = pcManager.getCurrentPlayer();
+		System.out.println("current nick : " +currentNick);
+		if (currentNick.equals(myNick)){
+			dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
+		}
+		
+		
+	}
+	
+	public void rollDiceForMoving(int [] wuerfelWurf, CluedoPosition position, String person){
+		//int [] testWuerfelWurf = {6,6};
+		auxx.logsevere("wird das hier ausgeführt?");
+		Platform.runLater(() -> {
+			this.wuerfelWurf = wuerfelWurf;
+			int ersterWuerfel = wuerfelWurf[0];
+			int zweiterWuerfel = wuerfelWurf[1];
+			updatePCs();
+			auxx.logsevere("Communicator.rollDice");
+			auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
+			auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
+			
+			currentPlayer = pcManager.getCurrentPlayer();
+			dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
+		});
+		Platform.runLater(() -> {
+			auxx.logsevere("kommt er hier hin?");
+			updatePCs();
+			int yKoordinate = position.getY();
+			int xKoordinate = position.getX();
+			beweger.setCurrentPlayer(pcManager.getCurrentPlayer());
+			beweger.setCurrentCircle(pcManager.getCurrentCircle());
+			ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
+		});
+		
 	}
 	
 	public void useSecretPassage(){
@@ -123,12 +191,23 @@ public class Communicator {
 	}
 	
 	public void move(CluedoPosition position, String person){
-		updatePCs();
-		int yKoordinate = position.getY();
-		int xKoordinate = position.getX();
-		beweger.setCurrentPlayer(pcManager.getCurrentPlayer());
-		beweger.setCurrentCircle(pcManager.getCurrentCircle());
-		ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
+		currentPlayer = pcManager.getPlayerByPerson(person);
+		pcManager.setIndexByPlayer(currentPlayer);
+		if (!(currentNick.equals(myNick))){
+			rollDiceForMoving(wuerfelWurf, position, person);
+		}
+		else {
+//				Platform.runLater(() -> {
+					//auxx.logsevere("kommt er hier hin?");
+					updatePCs();
+					int yKoordinate = position.getY();
+					int xKoordinate = position.getX();
+					beweger.setCurrentPlayer(pcManager.getCurrentPlayer());
+					beweger.setCurrentCircle(pcManager.getCurrentCircle());
+					ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
+//				});
+			}
+			
 	}
 
 	// SENDS MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT
@@ -161,7 +240,8 @@ public class Communicator {
 	}
 
 	public void setNextTurn(){
-		pcManager.next();// erhöht den index und sonst nix
+		
+		//pcManager.next();// erhöht den index und sonst nix
 		updatePCs();
 	}
 		
@@ -177,11 +257,46 @@ public class Communicator {
 	}
 	
 	public void itsYourTurn(){
-		setNextTurn();
-		openWindow();
+//		if (!erstesMal){
+//			updatePCs();
+//			//changePlayer();
+//			//updatePCs();
+//			openWindow();
+//			erstesMal = true;
+//		}
+//		else {
+//			pcManager.next();
+//			updatePCs();
+//			//changePlayer();
+//			//updatePCs();
+//			openWindow();
+//		}
+
+		pcManager.next();
 		updatePCs();
+		openWindow();
+		
 	}
 	
+	public void changePlayer() {
+		currentNick = pcManager.getCurrentNick();
+	}
+	
+	public void updatePCs(){
+		currentNick = pcManager.getCurrentNick();
+		currentPlayer = pcManager.getPlayerByNick(currentNick);
+		beweger.setCurrentPlayer(currentPlayer);
+		vorschlager.setCurrentPlayer(currentPlayer);
+		ausloeser.setCurrentPlayer(currentPlayer);
+		pathfinder.setCurrentPlayer(currentPlayer);
+		sucher.setCurrentPlayer(currentPlayer);
+		dicePresenter.pcManager = pcManager;
+		beweger.pcManager = pcManager;
+		vorschlager.pcManager = pcManager;
+		ausloeser.pcManager = pcManager;
+		pathfinder.pcManager = pcManager;
+		sucher.pcManager = pcManager;
+	}
 	public void kill() {
 		gameView.close();
 	}
@@ -189,7 +304,6 @@ public class Communicator {
 	public void testButtons(){
 //		ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans = new int {5,9}));
 		int [] cheater = {6,6};
-		ballEbene.getFremdWuerfeln().setOnAction(e -> rollDice(cheater));
 		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
 	}
 
@@ -245,6 +359,8 @@ public class Communicator {
 			public void updateStatesToRolls() {
 				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.roll_dice);
 			}
+
+			
 			
 	
 	/*

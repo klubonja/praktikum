@@ -36,6 +36,7 @@ public abstract class CluedoNetworkGUI {
 	final Text status;
 	final Text inLabel;
 	final Text outLabel;
+	final public TextArea inputField;
 	final public Button button0;
 	final public GridPane grid;
 	final public Stage primaryStage;
@@ -69,7 +70,7 @@ public abstract class CluedoNetworkGUI {
 		 messagesOut = new TextArea();
 		 button0 = new Button();
 		 scene = new Scene(grid);
-		 
+		 inputField = new TextArea();			 
 		 
 		 inLabel = new Text("IN");
 		 outLabel = new Text("OUT");
