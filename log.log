@@ -1,4 +1,33 @@
-Jul 09, 2015 1:38:52 PM cluedoClient.Client <init>
+Jul 09, 2015 9:30:31 PM cluedoClient.Client <init>
 INFORMATION: CLIENT started
-Jul 09, 2015 1:40:41 PM cluedoClient.Client$8 handle
-SCHWERWIEGEND: null
+Jul 09, 2015 9:31:19 PM staticClasses.auxx loginfo
+INFORMATION: 549 SENT : {"nick":"öäfvv","type":"login","expansions":["Chat","Pumping Oil in the Antarctica, fuck yeah!"],"version":"1.2.1","group":"öäfvv_GROUP"}
+
+Jul 09, 2015 9:31:19 PM staticClasses.auxx loginfo
+INFORMATION: 553 RECEIVED : <MSG START> {"nick array":["nhhql","rvxhw","öäfvv"],"type":"login successful","expansions":["Chat","Pumping Oil in the Antarctica, fuck yeah!"],"game array":[{"gameID":0,"weapon positions":[{"weapon":"dagger","field":{"x":11,"y":11}},{"weapon":"candlestick","field":{"x":11,"y":11}},{"weapon":"revolver","field":{"x":11,"y":11}},{"weapon":"rope","field":{"x":11,"y":11}},{"weapon":"pipe","field":{"x":11,"y":11}},{"weapon":"spanner","field":{"x":11,"y":11}}],"person positions":[{"field":{"x":0,"y":18},"person":"blue"}],"players":[{"nick":"nhhql","color":"blue","playerstate":["do nothing"]}],"gamestate":"not started","watchers":[]},{"gameID":1,"weapon positions":[{"weapon":"dagger","field":{"x":11,"y":11}},{"weapon":"candlestick","field":{"x":11,"y":11}},{"weapon":"revolver","field":{"x":11,"y":11}},{"weapon":"rope","field":{"x":11,"y":11}},{"weapon":"pipe","field":{"x":11,"y":11}},{"weapon":"spanner","field":{"x":11,"y":11}}],"person positions":[{"field":{"x":0,"y":18},"person":"blue"}],"players":[{"nick":"nhhql","color":"blue","playerstate":["do nothing"]}],"gamestate":"not started","watchers":[]},{"gameID":2,"weapon positions":[{"weapon":"dagger","field":{"x":11,"y":11}},{"weapon":"candlestick","field":{"x":11,"y":11}},{"weapon":"revolver","field":{"x":11,"y":11}},{"weapon":"rope","field":{"x":11,"y":11}},{"weapon":"pipe","field":{"x":11,"y":11}},{"weapon":"spanner","field":{"x":11,"y":11}}],"person positions":[{"field":{"x":23,"y":7},"person":"yellow"},{"field":{"x":0,"y":5},"person":"purple"}],"players":[{"nick":"rvxhw","color":"yellow","playerstate":["do nothing"]},{"nick":"nhhql","color":"purple","playerstate":["do nothing"]}],"gamestate":"not started","watchers":[]},{"gameID":3,"weapon positions":[{"weapon":"dagger","field":{"x":11,"y":11}},{"weapon":"candlestick","field":{"x":11,"y":11}},{"weapon":"revolver","field":{"x":11,"y":11}},{"weapon":"rope","field":{"x":11,"y":11}},{"weapon":"pipe","field":{"x":11,"y":11}},{"weapon":"spanner","field":{"x":11,"y":11}}],"person positions":[{"field":{"x":14,"y":24},"person":"white"},{"field":{"x":0,"y":5},"person":"purple"}],"players":[{"nick":"rvxhw","color":"white","playerstate":["do nothing"]},{"nick":"nhhql","color":"purple","playerstate":["do nothing"]}],"gamestate":"not started","watchers":[]}]}
+ <MSGS END>
+Jul 09, 2015 9:31:19 PM staticClasses.auxx loginfo
+INFORMATION: 558 last json msg OK
+Jul 09, 2015 9:31:19 PM staticClasses.auxx loginfo
+INFORMATION: 607 RECEIVED : <MSG START> {"nick":"öäfvv","type":"user added"}
+ <MSGS END>
+Jul 09, 2015 9:31:19 PM staticClasses.auxx loginfo
+INFORMATION: 615 last json msg OK
+Jul 09, 2015 9:31:19 PM staticClasses.auxx loginfo
+INFORMATION: 620 INCOMING unchecked valid type: user added
+Jul 09, 2015 9:31:21 PM staticClasses.auxx loginfo
+INFORMATION: 634 SENT : {"gameID":2,"color":"green","type":"join game"}
+
+Jul 09, 2015 9:31:21 PM staticClasses.auxx loginfo
+INFORMATION: 637 RECEIVED : <MSG START> {"gameID":2,"type":"player added","player":{"nick":"öäfvv","color":"green","playerstate":["do nothing"]}}
+ <MSGS END>
+Jul 09, 2015 9:31:21 PM staticClasses.auxx loginfo
+INFORMATION: 644 last json msg OK
+Jul 09, 2015 9:31:21 PM staticClasses.auxx loginfo
+INFORMATION: 649 connected to game 2 : number Nicks connected : 3
+Jul 09, 2015 9:31:22 PM staticClasses.auxx loginfo
+INFORMATION: 976 SENT : {"gameID":2,"type":"start game"}
+
+Jul 09, 2015 9:32:15 PM staticClasses.auxx loginfo
+INFORMATION: 611 SENT : {"gameID":2,"type":"start game"}
+

@@ -2,7 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Stack;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import staticClasses.auxx;
 import view.Communicator;
@@ -18,7 +18,7 @@ public abstract class CluedoGame {
 	
 	GameStates gameState;
 	
-	Stack<CluedoPlayer> players;
+	CopyOnWriteArrayList<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
 	
 	ArrayList<String> orderList;
@@ -34,7 +34,7 @@ public abstract class CluedoGame {
 	
 	void init(){		
 		gameState = GameStates.not_started;
-		players = new Stack<CluedoPlayer>();
+		players = new CopyOnWriteArrayList<CluedoPlayer>();
 		weapons = new ArrayList<CluedoWeapon> ();
 		
 		Persons[] persons = Persons.values();
@@ -102,7 +102,7 @@ public abstract class CluedoGame {
 		return weapons;
 	}
 	
-	public Stack<CluedoPlayer> getPlayers() {
+	public CopyOnWriteArrayList<CluedoPlayer> getPlayers() {
 		return players;
 	}
 	
@@ -158,8 +158,8 @@ public abstract class CluedoGame {
 		return n;
 	}
 	
-	public Stack<CluedoPlayer> getPlayersConnected(){
-		Stack<CluedoPlayer> cp = new Stack<CluedoPlayer>();
+	public CopyOnWriteArrayList<CluedoPlayer> getPlayersConnected(){
+		CopyOnWriteArrayList<CluedoPlayer> cp = new CopyOnWriteArrayList<CluedoPlayer>();
 		for (CluedoPlayer p : players)
 			if (!p.getNick().equals(""))
 				cp.add(p);

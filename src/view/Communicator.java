@@ -1,14 +1,10 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
-
-import org.json.JSONObject;
-
 import javafx.application.Platform;
-
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
 import staticClasses.NetworkMessages;
@@ -49,7 +45,7 @@ public class Communicator {
 	private WahnsinnigTollerPathfinder pathfinder;
 	private DerBeweger beweger;
 	private RaumBeweger raumBeweger;
-	private Stack<CluedoPlayer> players;
+	private CopyOnWriteArrayList<CluedoPlayer> players;
 	private CluedoGameClient network;
 	//private ArrayList <String> order;
 	public PlayerCircleManager pcManager;
