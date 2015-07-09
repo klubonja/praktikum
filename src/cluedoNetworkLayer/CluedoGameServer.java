@@ -3,6 +3,7 @@ package cluedoNetworkLayer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.scene.paint.Color;
 import model.Deck;
@@ -43,7 +44,7 @@ public class CluedoGameServer extends CluedoGame {
 		return true;
 	}
 
-	public Stack<CluedoPlayer> dealCardsNetwork(Stack<CluedoPlayer> players) {
+	public CopyOnWriteArrayList<CluedoPlayer> dealCardsNetwork(CopyOnWriteArrayList<CluedoPlayer> players) {
 		Deck deck = new Deck(players.size());
 		deck.dealCluedoCards();
 		String[] wh = deck.getWinningHand();
@@ -207,7 +208,7 @@ public class CluedoGameServer extends CluedoGame {
 	}
 	
 	public boolean checkForColor(Color color){
-		Stack<CluedoPlayer> pl = getPlayersConnected();
+		CopyOnWriteArrayList<CluedoPlayer> pl = getPlayersConnected();
 		for (CluedoPlayer p : pl)
 			if (p.getCluedoPerson().getFarbe() == color) 
 				return true;
@@ -219,7 +220,7 @@ public class CluedoGameServer extends CluedoGame {
 			setStart(players);	
 	}
 	
-	public static void setStart(Stack<CluedoPlayer> players){
+	public static void setStart(CopyOnWriteArrayList<CluedoPlayer> players){
 		CluedoPlayer first = players.get(auxx.getRandInt(0, players.size()-1));
 		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
 		Iterator<CluedoPlayer> it = tmplist.iterator();
@@ -233,9 +234,11 @@ public class CluedoGameServer extends CluedoGame {
 		tmplist = null;
 	}
 	
+
 	static void setStart(Stack<CluedoPlayer> players,Color c){
 		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
 		Iterator<CluedoPlayer> it = tmplist.iterator();
+
 		while (it.hasNext() && it.next().getCluedoPerson().getFarbe() != c){
 			CluedoPlayer pl = it.next();
 			players.remove(pl);
