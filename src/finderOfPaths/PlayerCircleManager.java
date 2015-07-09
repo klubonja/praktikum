@@ -1,7 +1,7 @@
 package finderOfPaths;
 
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javafx.scene.shape.Circle;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -9,18 +9,18 @@ import cluedoNetworkLayer.CluedoPlayer;
 
 public class PlayerCircleManager {
 		
-	public  Stack<CluedoPlayer> playerManager;
+	public CopyOnWriteArrayList<CluedoPlayer> playerManager;
 	public  ArrayList<Circle> circleManager;
 	public  ArrayList<String> order;
 	
 	private int currentIndex = 0;
  	
-	public PlayerCircleManager(Stack<CluedoPlayer> plist){
+	public PlayerCircleManager(CopyOnWriteArrayList<CluedoPlayer> plist){
 		super();
 		init(plist);
 	}
 	
-	public void init(Stack<CluedoPlayer> plist){
+	public void init(CopyOnWriteArrayList<CluedoPlayer> plist){
 		playerManager = plist;
 		circleManager = new ArrayList<Circle>();
 		for (CluedoPlayer p: playerManager)
@@ -113,11 +113,11 @@ public class PlayerCircleManager {
 			}					
 	}
 
-	public Stack<CluedoPlayer> getPlayerManager() {
+	public CopyOnWriteArrayList<CluedoPlayer> getPlayerManager() {
 		return playerManager;
 	}
 
-	public void setPlayerManager(Stack<CluedoPlayer> playerManager) {
+	public void setPlayerManager(CopyOnWriteArrayList<CluedoPlayer> playerManager) {
 		this.playerManager = playerManager;
 	}
 
