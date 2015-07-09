@@ -38,7 +38,7 @@ public class ClientHandShakeListener extends MulticastListenerThread {
 				Multicaster bc = new Multicaster(Config.BROADCAST_WILDCARD_IP, dataGuiManager,answer);
 				bc.sendBrodcast();			
 			}
-			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR){
+			else if (errcode == NetworkHandhakeCodes.TYPEOK_MSGERR){
 				dataGuiManager.addMsgIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){

@@ -2,8 +2,9 @@ package enums;
 
 public enum NetworkHandhakeCodes {
 	OK,
-	TYPEOK_MESERR,
+	TYPEOK_MSGERR,
 	TYPEIGNORED,
-	TYPERR;	
+	TYPEERR_MSGOK,
+	TYPERR_MSGERR;	
 	
 }

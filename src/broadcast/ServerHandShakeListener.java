@@ -53,7 +53,7 @@ public class ServerHandShakeListener extends MulticastListenerThread{
 						
 						);
 			}
-			else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR){
+			else if (errcode == NetworkHandhakeCodes.TYPEOK_MSGERR){
 				//dataGuiManager.addMsgIn(ip.toString()+" sends invalid Messages : \n"+checker.getErrString());
 			}
 			else if (errcode == NetworkHandhakeCodes.TYPEIGNORED){

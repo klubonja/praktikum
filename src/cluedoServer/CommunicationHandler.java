@@ -107,22 +107,22 @@ class CommunicationHandler implements Runnable {
 				null);
 
 		if (errcode == NetworkHandhakeCodes.OK) {
+			boolean loginsucMsgSent = false;
 			client.setExpansions(auxx.makeConjunction(Config.EXPANSIONS,
 					checker.getMessage().getJSONArray("expansions")));
 			client.setNick(checker.getMessage().getString("nick"));
 			client.setGroupName(checker.getMessage().getString("group"));					
-			client.sendMsg(NetworkMessages.login_sucMsg(
-					client.getExpansions(),
-					dataManager.getClientPool(), 
-					dataManager.getGameList()
-					)
-			);
+//			client.sendMsg(NetworkMessages.login_sucMsg(
+//					client.getExpansions(),
+//					dataManager.getClientPool(), 
+//					dataManager.getGameList()
+//					)
+//			);
 			if (dataGuiManager.addNetworkActor(client,"logged in")){
-				dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
 				client.setGroupName(checker.getMessage().getString("group"));
 				client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(),
 								dataManager.getClientPool(), dataManager.getGameList()));
-
+				dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
 				readyForCommunication = true;
 			}
 			else {
@@ -131,8 +131,10 @@ class CommunicationHandler implements Runnable {
 			}
 			
 		} 
-	    else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR
-				|| errcode == NetworkHandhakeCodes.TYPERR) {
+		else if (errcode == NetworkHandhakeCodes.TYPEERR_MSGOK){
+			
+		}
+	    else if (errcode == NetworkHandhakeCodes.TYPEOK_MSGERR) {
 
 			dataGuiManager.addMsgIn(client.getAdress()
 					+ " sends invalid Messages : \n" + checker.getErrString());

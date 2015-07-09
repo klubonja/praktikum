@@ -48,15 +48,16 @@ public class CluedoProtokollChecker {
 		checkType();
 		if (type.equals(exptype)) 
 			if (validate()) return NetworkHandhakeCodes.OK; //alles OK
-			else return NetworkHandhakeCodes.TYPEOK_MESERR; //typ ok aber andere protokollabweichungen
+			else return NetworkHandhakeCodes.TYPEOK_MSGERR; //typ ok aber andere protokollabweichungen
 		else if (ignoredTypes != null && Arrays.asList(ignoredTypes).contains(type)){
 			setMsg(type+" is ignored");
 			return NetworkHandhakeCodes.TYPEIGNORED;//ignored
 		}
 		
-			
 		setErr(exptype +" : is expected, found :"+type);		
-		return NetworkHandhakeCodes.TYPERR; // falscher typ
+		if (validate()) return NetworkHandhakeCodes.TYPEERR_MSGOK;			
+			
+		return NetworkHandhakeCodes.TYPERR_MSGERR; // falscher typ nichtprotokollgemäße nachricht
 	}
 	
 	private void invokeValMethod(){

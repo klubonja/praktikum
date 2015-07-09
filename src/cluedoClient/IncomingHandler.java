@@ -206,8 +206,7 @@ class IncomingHandler implements Runnable {
 			dataGuiManager.setStatus("server "+server.getGroupName()+" status :"+server.getStatus());
 					
 		}
-		else if (errcode == NetworkHandhakeCodes.TYPEOK_MESERR 
-				|| errcode == NetworkHandhakeCodes.TYPERR){
+		else if (errcode == NetworkHandhakeCodes.TYPEOK_MSGERR ){
 			dataGuiManager.addMsgIn(server.getGroupName()+" sends invalid Messages : \n"+checker.getErrString());		
 			killConnection(); // thread will run out without further notice					
 		}
