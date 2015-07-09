@@ -79,10 +79,10 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	public void startGameOnServer(ServerItem server,int gameID,String gameState, ArrayList<String> order){
 		CluedoGameClient game = server.getGameByGameID(gameID);
 		game.setOrder(order);
-		if (game.start()){
-			game.setGameState(GameStates.getState(gameState));
-			setRunningGame(gameID);
-		}
+		if (game.hasNick(server.getMyNick()))
+			game.start();
+		game.setGameState(GameStates.getState(gameState));
+		setRunningGame(gameID);
 	}
 	
 	public boolean deleteGameOnServer(ServerItem server,int gameID){
