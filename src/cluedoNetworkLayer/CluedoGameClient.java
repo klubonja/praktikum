@@ -126,6 +126,7 @@ public class CluedoGameClient extends CluedoGame {
 	public void currentPlayerToRolls() {
 		Platform.runLater(() -> {
 			communicator.updateStatesToRolls();
+			communicator.openWindow();
 		});
 		
 	}

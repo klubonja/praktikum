@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
-import cluedoNetworkLayer.CluedoGame;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.NetworkHandhakeCodes;
@@ -122,22 +121,23 @@ class IncomingHandler implements Runnable {
 				int gameID = checker.getMessage().getInt("gameID");
 				CluedoGameClient game = server.getGameByGameID(gameID); 
 				JSONArray states = checker.getMessage().getJSONObject("player").getJSONArray("playerstate");
-
+				JSONObject playerinfo = checker.getMessage().getJSONObject("player");
+				String nick = playerinfo.getString("nick");
 				for (int welcherState = 0; welcherState < states.length(); welcherState++){
 					if (states.get(welcherState).equals(PlayerStates.end_turn.getName())){
 						game.nextTurn();
 					}
-					else if (states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
+					else if (server.getMyNick().equals(nick) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
 						auxx.loginfo("voll ghetto-code");
 						game.currentPlayerToRolls();
 					}
-					else if (states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
-						auxx.loginfo("voll ghetto-code");
-						game.currentPlayerToNothing();
-					}
+//					else if (states.get(welcherState).equals(PlayerStates.do_nothing.getName())){
+//						auxx.loginfo("voll ghetto-code");
+//						game.currentPlayerToNothing();
+//					}
 					else if ( ! (states.get(welcherState).equals(PlayerStates.do_nothing.getName()))){
 						auxx.loginfo("nicht so ghetto-code");
-						game.currentPlayerToRolls();
+//						game.currentPlayerToRolls();
 					}
 				}
 //				else if (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.disprove.getName())){

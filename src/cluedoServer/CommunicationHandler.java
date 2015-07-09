@@ -206,10 +206,11 @@ class CommunicationHandler implements Runnable {
      	   }
      	   else if (checker.getType().equals("start game")) {												//START GAME
 	        	   int gameID = checker.getMessage().getInt("gameID");
-	        	   if (dataManager.getGameByID(gameID).hasNick(client.getNick())){	        		   
-	        			
+	        	   CluedoGameServer game = dataManager.getGameByID(gameID);
+	        	   if (game.hasNick(client.getNick())){	        		   
+	        			game.initNetworkGame();
 	        		//	dataGuiManager.getGameByIndex(gameID).notifyInit();	
-	        			dataGuiManager.startGameByID(gameID,client.getNick());
+	        			
 	        			dataGuiManager.addMsgIn("game "+checker.getMessage().getInt("gameID")+ " started");
 	        			dataManager.notifyAll(
 	        					NetworkMessages.game_startedMsg(
@@ -217,6 +218,7 @@ class CommunicationHandler implements Runnable {
 	        							 dataManager.getGameByID(gameID).getConnectedPlayersString()
 	        							 )
 	        					);
+	        			dataGuiManager.startGameByID(gameID,client.getNick());
 	        	   }     		  
 	     		   else {
 	     			   client.sendMsg(NetworkMessages.error_Msg("you cant start this game"));

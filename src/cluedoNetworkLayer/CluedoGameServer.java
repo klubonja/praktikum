@@ -33,14 +33,25 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	@Override
-	public boolean start() {
-		players = dealCardsNetwork(getPlayersConnected()); //this renders players as only connected
-		orderPlayersList();
+	public boolean start() {		
 		notifyInit();
+		updatePlayerStates();		
 		notifyNextRound();
 		setGameState(GameStates.started);
 
 		return true;
+	}
+	
+	
+	public void initNetworkGame(){
+		players = dealCardsNetwork(getPlayersConnected()); //this renders players as only connected
+		orderPlayersList();
+	}
+	
+	public void setAndNotifyNextRound() {
+		setCurrentPlayerNext();
+		updatePlayerStates();		
+		notifyNextRound();
 	}
 
 	public Stack<CluedoPlayer> dealCardsNetwork(Stack<CluedoPlayer> players) {
@@ -152,12 +163,6 @@ public class CluedoGameServer extends CluedoGame {
 						)
 				);
 		}
-	}
-
-	public void setAndNotifyNextRound() {
-		setCurrentPlayerNext();
-		updatePlayerStates();		
-		notifyNextRound();
 	}
 	
 	public void updatePlayerStates(){		
