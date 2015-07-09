@@ -11,6 +11,7 @@ public class CluedoServerMain extends Application{
 
 	public static void main(String[] args) {
 		auxx.setLoggingLevel(Level.INFO);
+		auxx.setLoggingLevel(Level.SEVERE);
         launch(args);
     }
 	   

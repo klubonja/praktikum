@@ -80,7 +80,8 @@ class CommunicationHandler implements Runnable {
 
 				ArrayList<String> messages = auxx.getTCPMessages(client.socket);
 				try {					
-					currentMsg = messages.get(0);				}
+					currentMsg = messages.get(0);				
+				}
 				catch (Exception e){}
 				
 				for (String message : messages)
@@ -90,8 +91,7 @@ class CommunicationHandler implements Runnable {
 				
 			} catch (Exception e) {
 				auxx.logsevere(
-						"communicationhandler for client : " + client.getNick()
-								+ "running out", e);
+						"communicationhandler for client : " + client.getNick()	+ " running out\n", e);
 				auxx.logsevere("last message :" + currentMsg);
 
 				closeProtokollConnection();
@@ -216,8 +216,7 @@ class CommunicationHandler implements Runnable {
      	   }
      	   else if (checker.getType().equals("start game")) {												//START GAME
 	        	   int gameID = checker.getMessage().getInt("gameID");
-	        	   if (dataManager.getGameByID(gameID).hasNick(client.getNick())){
-	        		   
+	        	   if (dataManager.getGameByID(gameID).hasNick(client.getNick())){	        		   
 	        			
 	        		//	dataGuiManager.getGameByIndex(gameID).notifyInit();	
 	        			dataGuiManager.startGameByID(gameID,client.getNick());

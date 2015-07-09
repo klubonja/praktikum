@@ -35,9 +35,10 @@ public abstract class auxx {
 	public static final ConsoleHandler C_HANDLER = new ConsoleHandler();
 	public static final void setLoggingLevel(Level level){
 		log.setUseParentHandlers(false);
-		log.setLevel(level);
-		C_HANDLER.setLevel(level);
-		log.addHandler(C_HANDLER);
+		//log.setLevel(level);
+		ConsoleHandler newch = new ConsoleHandler();
+		newch.setLevel(level);
+		log.addHandler(newch);
 	}
 	
 	public static long getMillis(){
@@ -128,22 +129,25 @@ public abstract class auxx {
 			
 			JSONObject newjson = new JSONObject(jsonSource[i]);
 			handled.add(jsonSource[i]);
+			loginfo("json msg OK");
 		}
 		if (!jsonSource[jsonSource.length-1].equals("")){
 			try {
 				JSONObject potentiallyIncomplete = new JSONObject(jsonSource[jsonSource.length-1]);
 				handled.add(jsonSource[jsonSource.length-1]);
+				loginfo("last json msg OK");
 			}
 			catch (JSONException e){
+				logsevere("last json msg NOT OK");
 				ArrayList<String> sucList = getTCPMessages(s);
-				auxx.logsevere("goiing into recursion");
+				logsevere("goiing into recursion");
 				String fixedJSONSource = jsonSource[jsonSource.length-1].concat(sucList.get(0));
 				try {
 					JSONObject tobefixed = new JSONObject(fixedJSONSource);
 					sucList.set(0, fixedJSONSource);
 				}
 				catch (JSONException e1){
-					logsevere("fixing network message failed, dropping msg : \n"+ fixedJSONSource);
+					loginfo("fixing network message failed, dropping msg : \n"+ fixedJSONSource);
 					
 				}
 				handled.addAll(sucList);	
