@@ -62,13 +62,11 @@ class CommunicationHandler implements Runnable {
 			try {
 				ArrayList<String> messages = auxx.getTCPMessages(client.getSocket());
 				for (String message : messages){
-					System.out.println("attempting eith msg "+message);
 					if (!message.equals(""))
-						loginAttemptLogic(message);
-					
-				}
-					
-			} catch (Exception e) {
+						loginAttemptLogic(message);				
+				}					
+			} 
+			catch (Exception e) {
 				auxx.logsevere(
 						"error client login attempt : " + client.getNick(), e);
 			}
@@ -80,7 +78,6 @@ class CommunicationHandler implements Runnable {
 		awaitingLoginAttempt();
 		while (run) {
 			try {
-
 				ArrayList<String> messages = auxx.getTCPMessages(client.socket);
 				try {					
 					currentMsg = messages.get(0);				
@@ -89,18 +86,16 @@ class CommunicationHandler implements Runnable {
 				
 				for (String message : messages)
 					if (!message.equals(""))
-						serverLogic(message);
-			
+						serverLogic(message);			
 				
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
 				auxx.logsevere(
 						"communicationhandler for client : " + client.getNick()	+ " running out\n", e);
 				auxx.logsevere("last message :" + currentMsg);
-
 				closeProtokollConnection();
 			}
 		}
-
 	}
 
 	void loginAttemptLogic(String message) {

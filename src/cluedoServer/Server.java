@@ -4,10 +4,15 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
@@ -18,6 +23,7 @@ import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoGameServer;
+import enums.Persons;
 
 /**
  * @author guldener
@@ -142,6 +148,41 @@ public class Server {
 		          }
 		      }
 		 });
+		//////////////////////////CHAT//////////////////////////////////////////////////////////////////
+		auxx.setStyleChatField(gui.inputField, false);
+		
+		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
+			@Override
+			public void handle(KeyEvent e) {
+			  if (e.getCode() == KeyCode.ENTER){
+			  	try {	
+			  		if (!gui.inputField.getText().equals("")){
+			  			dataManager.notifyAll(
+			  					NetworkMessages.chatMsg(gui.inputField.getText(),auxx.now())
+			  					);	
+			  		}	
+			  		e.consume();
+			      	gui.inputField.setText("");	
+			  	} 
+			  	catch (Exception e1) {
+			  		auxx.logsevere("sending chat failed ",e1);
+				}		        			        	
+			  }			        
+			}
+		};	
+		gui.inputField.focusedProperty().addListener(new ChangeListener<Boolean>(){				
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean hasFocus){		    			
+				if (hasFocus){ 
+					gui.inputField.addEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );        	        	
+				}
+				else {
+					gui.inputField.removeEventHandler(KeyEvent.KEY_PRESSED,listenForEnter );   
+				}
+				auxx.setStyleChatField(gui.inputField, hasFocus);
+			}
+		});		
+		////////////////////////// ENDCHAT//////////////////////////////////////
 	}
 }
 

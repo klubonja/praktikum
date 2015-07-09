@@ -44,7 +44,7 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	public Stack<CluedoPlayer> dealCardsNetwork(Stack<CluedoPlayer> players) {
-		Deck deck = new Deck(getNumberConnected());
+		Deck deck = new Deck(players.size());
 		deck.dealCluedoCards();
 		String[] wh = deck.getWinningHand();
 		winningStatement = new WinningStatement(
@@ -216,7 +216,17 @@ public class CluedoGameServer extends CluedoGame {
 	
 	public void orderPlayersList(){
 		if (!checkForColor(Color.RED))
-			setStart(players,auxx.getRandFarbe());	
+			setStart(players);	
+	}
+	
+	public static void setStart(Stack<CluedoPlayer> players){
+		CluedoPlayer first = players.get(auxx.getRandInt(0, players.size()-1));
+		Iterator<CluedoPlayer> it = players.iterator();
+		while (it.hasNext() && it.next() != first){
+			CluedoPlayer pl = it.next();
+			players.remove(pl);
+			players.add(pl);
+		}
 	}
 	
 	static void setStart(Stack<CluedoPlayer> p,Color c){

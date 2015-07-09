@@ -12,7 +12,7 @@ public class CluedoPlayer {
 	CluedoStateMachine dfa = new CluedoStateMachine(PlayerStates.do_nothing);
 	PlayerStates currentState;
 	CluedoPosition position;
-	String nick;
+	String nick = "";
 	ArrayList<String> cards;
 	
 	
@@ -22,7 +22,6 @@ public class CluedoPlayer {
 		if (s == PlayerStates.do_nothing) setDoNothing();
 		else setCurrentState(s);
 		position = p;
-		nick = "";
 		cards = new ArrayList<String>();
 	}
 	
@@ -30,6 +29,7 @@ public class CluedoPlayer {
 		cluedoPerson = pers;
 		if (s == PlayerStates.do_nothing) setDoNothing();
 		else setCurrentState(s);
+		cards = new ArrayList<String>();
 		position = new CluedoPosition(cluedoPerson.getStartposition().getX(),
 									 cluedoPerson.getStartposition().getY());
 	}
