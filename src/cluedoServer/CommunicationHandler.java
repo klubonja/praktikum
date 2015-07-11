@@ -277,18 +277,15 @@ class CommunicationHandler implements Runnable {
    		   auxx.loginfo("end turn angekommen");
    		   int gameID = checker.getMessage().getInt("gameID");
    		   CluedoGameServer game = dataManager.getGameByID(gameID);
-   		   if (game.hasNick(checker.getMessage().getString("nick"))){
    		   CluedoPlayer player = game.getPlayerByNick(client.getNick());
-   		   
-	   		   if (player.getPossibleStates().contains(PlayerStates.end_turn)){
+	   		   //if (player.getPossibleStates().contains(PlayerStates.end_turn)){
 	   			   client.sendMsg(NetworkMessages.okMsg());
 	   			   game.setAndNotifyNextRound();
-	   		   }
+	   		   //}
    		   
-   		   else {
-   			   client.sendMsg(NetworkMessages.error_Msg("stfu you're not done yet!" +player.returnStatesAsString()));
-   		   }
-   		   }
+//   		   else {
+//   			   client.sendMsg(NetworkMessages.error_Msg("stfu you're not done yet!" +player.returnStatesAsString()));
+//   		   }
    		   // Validieren
    		   
    		   
