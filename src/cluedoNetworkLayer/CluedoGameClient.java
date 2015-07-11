@@ -79,9 +79,16 @@ public class CluedoGameClient extends CluedoGame {
 		});
 	}
 
-	public void nextTurn(){
+	public void itsYourTurn(){
 		Platform.runLater(() -> {
 			communicator.itsYourTurn();
+		});
+		
+	}
+	
+	public void itsSomeonesTurn(){
+		Platform.runLater(() -> {
+			communicator.itsSomeonesTurn();
 		});
 		
 	}
@@ -126,7 +133,6 @@ public class CluedoGameClient extends CluedoGame {
 	public void currentPlayerToRolls() {
 		Platform.runLater(() -> {
 			communicator.updateStatesToRolls();
-			communicator.openWindow();
 		});
 		
 	}

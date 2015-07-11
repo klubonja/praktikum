@@ -125,11 +125,17 @@ class IncomingHandler implements Runnable {
 				String nick = playerinfo.getString("nick");
 				for (int welcherState = 0; welcherState < states.length(); welcherState++){
 					if (states.get(welcherState).equals(PlayerStates.end_turn.getName())){
-						game.nextTurn();
+						game.itsYourTurn();
 					}
 					else if (server.getMyNick().equals(nick) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
 						auxx.loginfo("voll ghetto-code");
 						game.currentPlayerToRolls();
+						game.itsYourTurn();
+					}
+					else if ( ! (server.getMyNick().equals(nick) ) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
+						auxx.loginfo("voll ghetto-code");
+						game.currentPlayerToRolls();
+						game.itsSomeonesTurn();
 					}
 //					else if (states.get(welcherState).equals(PlayerStates.do_nothing.getName())){
 //						auxx.loginfo("voll ghetto-code");

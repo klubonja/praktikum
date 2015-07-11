@@ -223,7 +223,9 @@ public class DerBeweger {
 		int size = pcManager.getSize();
 		if (zaehler < size){
 		
-			auxx.logsevere("hamana");
+			auxx.logsevere("anfangspositionen");
+			
+			
 			
 			startKachel = gui.getKachelArray()[pcManager.getCurrentPlayer().getPosition().getY()][pcManager.getCurrentPlayer().getPosition().getX()];
 			
@@ -256,10 +258,6 @@ public class DerBeweger {
 					
 				});
 			}
-			else {
-				pcManager.next();
-			}
-				
 
 	}
 

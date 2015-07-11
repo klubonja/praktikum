@@ -33,6 +33,8 @@ public class Communicator {
 	private BallEbene2 ballEbene;
 	private AussergewohnlichesZugfenster zugView;
 
+	private boolean sswitch;
+	
 	private GameFramePresenter gamePresenter;
 	private DicePresenter dicePresenter;
 	private AussergewohnlichesZugfensterPresenter zugPresenter;
@@ -81,6 +83,18 @@ public class Communicator {
 		myNick = network.getMyNick();
 		setHandler();
 
+		auxx.loginfo("%%%%%%%%%%%%%%% Der nick : " +myNick);
+		
+		pcManager.setIndexByPlayer(pcManager.playerManager.get(0));
+		auxx.loginfo("Der hier fängt an : " +pcManager.getCurrentNick());
+		
+		auxx.logsevere("Communicator.startGame");
+		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
+		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
+		
+		// Hier ist noch alles richtig
+		
+		// Hier passiert schon mal nichts.
 		testButtons();
 		auxx.loginfo("Oh my giddy giddy gosh");
 		
@@ -105,9 +119,12 @@ public class Communicator {
 	}
 	
 	public void rollDice(int [] wuerfelWurf){
+		
 		this.wuerfelWurf = wuerfelWurf;
 		int ersterWuerfel = wuerfelWurf[0];
 		int zweiterWuerfel = wuerfelWurf[1];
+		
+		// Vor diesem hier wurde der Spieler vertauscht.
 		
 		auxx.logsevere("Communicator.rollDice");
 		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
@@ -122,7 +139,7 @@ public class Communicator {
 	}
 	
 	public void move(CluedoPosition position, String person){
-		
+		//pcManager.setIndexByPlayer(pcManager.getPlayerByPerson(person));
 					int yKoordinate = position.getY();
 					int xKoordinate = position.getX();
 					ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
@@ -164,22 +181,29 @@ public class Communicator {
 		
 	public void endTurn() {
 		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
-		//pcManager.next();
-		// Communicator.playerManager.next();
-		// Communicator.circleManager.next();
-		// ///////////////////////////////////
-		// /BENACHRICHTUGUNG, DASS NÄCHSTER///
-		// ///////ZUG ANGEFANGEN HAT//////////
-		// ///////////////////////////////////
-		
 	}
 	
 	public void itsYourTurn(){
-
+		
+		if (!sswitch){
+			sswitch = true;
+			openWindow();
+		}
+		else {
+			pcManager.next();
+			
+			openWindow();
+		}
+			
+	}
+	
+	public void itsSomeonesTurn(){
+		if (!sswitch){
+			sswitch = true;
+		}
+		else {
 		pcManager.next();
-		
-		openWindow();
-		
+		}
 	}
 	
 	public void kill() {

@@ -13,7 +13,7 @@ import cluedoNetworkGUI.CluedoClientGUI;
 public class CluedoClientMain extends Application {
 	static FileHandler fh;
 	public static void main(String[] args) {
-		auxx.setLoggingLevel(Level.INFO);
+		auxx.setLoggingLevel(Level.FINE);
 
 		// This block configure the logger with handler and formatter  
 //        try {
