@@ -44,10 +44,12 @@ public class ServerItem  {
 	}
 	
 	public boolean removeClient(String clientnick){
-		if (clientNicks.contains(clientnick))
-				return clientNicks.remove(clientnick);
+		for (String s: clientNicks)
+			if (s.equals(clientnick))
+				return clientNicks.remove(s);
 		return false;
 	}
+	
 	public ArrayList<String> getClientNicks() {
 		return clientNicks;
 	}

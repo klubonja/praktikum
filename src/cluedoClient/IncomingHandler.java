@@ -235,7 +235,7 @@ class IncomingHandler implements Runnable {
 					);
 			dataGuiManager.setClients(server,auxx.jsonArrayToArrayList(checker.getMessage().getJSONArray("nick array")));
 			dataGuiManager.setStatus("server "+server.getGroupName()+" status :"+server.getStatus());
-					
+			dataGuiManager.setSelectedServer(server);		
 		}
 		else if (errcode == NetworkHandhakeCodes.TYPEOK_MSGERR ){
 			dataGuiManager.addMsgIn(server.getGroupName()+" sends invalid Messages : \n"+checker.getErrString());		
