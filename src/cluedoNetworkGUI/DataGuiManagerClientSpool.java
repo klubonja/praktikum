@@ -52,12 +52,6 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		
 	}
 	
-	public void removeClient(ServerItem server, String nick){
-			server.removeClient(nick);
-			getGui().removeClient(nick);
-			System.out.println("nick removed from list");
-			
-	}
 	
 	public void setClients(ServerItem server ,ArrayList<String> nicks){
 		server.setClientNicks(nicks);
@@ -125,13 +119,20 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public boolean removeClientFromSystemServer(ServerItem server,String nickID){
-	    if (server.removePlayerFromGames(nickID)){
+		server.removeClient(nickID);
+		getGui().removeClient(nickID);
+		if (server.removePlayerFromGames(nickID)){
 			refreshGamesListServer(server);
 			return true;
 		}
 		return false;
 	}
 	
+	public void removeClient(ServerItem server, String nick){
+		
+		System.out.println("nick removed from list");
+		
+	}
 
 	public void refreshGamesListServer(ServerItem server){
 		emptyGamesList();
