@@ -45,11 +45,33 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		server.addGame(newgame);
 	}
 	
+	public void addClient(ServerItem server , String nick){
+		if (server.addClient(nick) && server == selectedServer){
+			getGui().addClient(nick);
+		}
+		
+	}
+	
+	public void removeClient(ServerItem server, String nick){
+		if (server.removeClient(nick) && server == selectedServer){
+			getGui().removeClient(nick);
+			System.out.println("nick removed from list");
+		}		
+	}
+	
+	public void setClients(ServerItem server ,ArrayList<String> nicks){
+		server.setClientNicks(nicks);
+		if (server == getSelectedServer())
+			setNicksGui();
+		
+	}
+	
 	public void setSelectedServer(ServerItem selectedServer) {
 		this.selectedServer = selectedServer;
 		setStatus("selected server : "+selectedServer.getGroupName());
 		setWindowName("logged in to server "+selectedServer.getGroupName()+" as "+selectedServer.getMyNick());
 		cleanInput();
+		setNicksGui();
 		addMsgIn(selectedServer.getChat());
 		auxx.logfine("logged in to server "+selectedServer.getGroupName()+" as "+selectedServer.getMyNick());
 	}
@@ -198,6 +220,10 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void leaveGame(int gameID){
 		selectedServer.getGameByGameID(gameID).kill();
+	}
+	
+	public void setNicksGui(){
+		getGui().setClientNicks(selectedServer.getClientNicks());
 	}
 	
 	

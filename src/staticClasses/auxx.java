@@ -103,30 +103,26 @@ public abstract class auxx {
 			int readpos = br.read(buffer,0,Config.MESSAGE_BUFFER);
 			String msg = new String (buffer,0,readpos);	
 			
-			if (readpos >= 0 ){
-				
+			if (readpos != -1 ){				
 				loginfo("RECEIVED : <MSG START> "+ msg +" <MSGS END>");
 				String[] rawmsgs = msg.split(Config.TCP_MESSAGE_DELIMITER_REGEX); //removing and splitting along newlines
 				return handledTCPMessages(rawmsgs, s);
 			}
 			else {
 				logsevere("readpos : "+readpos+" network stream closed");	
-				throw new Exception();
+				throw new Exception("Socket close");
 			}			
-			
 		} 
 		catch (Exception e) {
 			logsevere("RECEIVE failed : ", e);
 	    }
-		
-		//return new ArrayList<String>();
 		return null;
+		
 	}
 	
 	public static ArrayList<String> handledTCPMessages(String[] jsonSource, Socket s){
 		ArrayList<String> handled = new ArrayList<String>();
-		for (int i = 0; i < jsonSource.length-1; i++){
-			
+		for (int i = 0; i < jsonSource.length-1; i++){			
 			JSONObject newjson = new JSONObject(jsonSource[i]);
 			handled.add(jsonSource[i]);
 			loginfo("json msg OK");
@@ -147,14 +143,11 @@ public abstract class auxx {
 					sucList.set(0, fixedJSONSource);
 				}
 				catch (JSONException e1){
-					loginfo("fixing network message failed, dropping msg : \n"+ fixedJSONSource);
-					
+					loginfo("fixing network message failed, dropping msg : \n"+ fixedJSONSource);					
 				}
 				handled.addAll(sucList);	
 			}
-		}
-		
-		
+		}		
 		return  handled;
 	}
 	

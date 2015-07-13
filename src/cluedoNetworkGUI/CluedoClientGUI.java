@@ -2,9 +2,13 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Priority;
@@ -25,6 +29,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	final public Button createGame;
 	final public Button connectToTestServer;
 	final public Button refreshGamesList;
+	final public ObservableList<String> clientNicks;
+	final public ListView<String> clientNicksView;
 
 	
 	
@@ -35,6 +41,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 createGame = new Button("Create Game");
 		 connectToTestServer = new Button("TestServerConnection");
 		 refreshGamesList = new Button("refreshGamesList");
+		 clientNicks =  FXCollections.observableArrayList();
+		 clientNicksView = new ListView<String>(clientNicks);
 		 width = Config.CLIENT_WINDOW_WIDTH;
 		 height = Config.CLIENT_WINDOW_HEIGHT;
 		 
@@ -54,13 +62,18 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         ColumnConstraints col0 = new ColumnConstraints();
         col0.setHgrow(Priority.ALWAYS);
-        col0.setPercentWidth(40);
+        col0.setPercentWidth(35);
         grid.getColumnConstraints().add(col0);
         
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setHgrow(Priority.ALWAYS);
-        col1.setPercentWidth(60);
+        col1.setPercentWidth(20);
         grid.getColumnConstraints().add(col1);
+        
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setHgrow(Priority.ALWAYS);
+        col2.setPercentWidth(45);
+        grid.getColumnConstraints().add(col2);
         
         RowConstraints row0 = new RowConstraints(); //menue
 	    row0.setPercentHeight(6); 
@@ -118,18 +131,18 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         grid.setValignment(submitMessageButton, VPos.CENTER);
        
        //grid.add(node,				  col,row,colspan,rowspan)
-        grid.add(menue, 				0, 0, 	2, 		1);
-        grid.add(statusContainer,   	0, 1, 	2, 		1);
+        grid.add(menue, 				0, 0, 	3, 		1);
+        grid.add(statusContainer,   	0, 1, 	3, 		1);
 	    grid.add(networkActorsListView, 0, 2, 	1, 		1);
-	    //grid.add(submitMessageButton, 0, 5, 	1, 		1);
-	    grid.add(gameListView, 			1, 2,	1, 		1);
+	    grid.add(clientNicksView,       1, 2, 	1, 		1);
+	    grid.add(gameListView, 			2, 2,	1, 		1);
 	    
 //	    grid.add(inLabel, 				1, 2, 	1, 		1);
 //	    grid.add(messagesIn, 			1, 3, 	1, 		1);
 //	    grid.add(outLabel, 				1, 4, 1, 1);
 //	    grid.add(messagesOut, 			1, 5, 1, 1);	    
-	    grid.add(inputField, 			0, 3, 	1, 		1);
-	    grid.add(messagesIn,			1, 3, 	1, 		1);
+	    grid.add(inputField, 			0, 3, 	2, 		1);
+	    grid.add(messagesIn,			1, 3, 	2, 		1);
 	    
        
 
@@ -166,18 +179,41 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
     }  
    
 	  
-	  public void clearMessages(){
+	public void clearMessages(){
 		  messagesIn.setText("");
-	  }
+	}
 	  
-	  public String selectColor(ArrayList<String> colors) {
-			Stage selectNewColor = new Stage();
-			IntroColorPrompt select = new IntroColorPrompt(selectNewColor, colors);
-
-	    	Scene secondary = new Scene(select, Config.COLOR_SELECT_WINDOW_WIDTH, Config.COLOR_SELECT_WINDOW_HEIGHT);
-	    	selectNewColor.initStyle(StageStyle.UNDECORATED);
-	    	selectNewColor.setScene(secondary);
-	    	selectNewColor.showAndWait();
-	    	return select.returnColor();
-		}
+	public String selectColor(ArrayList<String> colors) {
+		Stage selectNewColor = new Stage();
+		IntroColorPrompt select = new IntroColorPrompt(selectNewColor, colors);
+	
+	    Scene secondary = new Scene(select, Config.COLOR_SELECT_WINDOW_WIDTH, Config.COLOR_SELECT_WINDOW_HEIGHT);
+	    selectNewColor.initStyle(StageStyle.UNDECORATED);
+	    selectNewColor.setScene(secondary);
+	    selectNewColor.showAndWait();
+	    return select.returnColor();
+	}
+	
+	public void addClient(String nick){
+		Platform.runLater(() -> {
+			clientNicks.add(nick);
+		});
+		
+	}
+	
+	public void removeClient(String nick){
+		Platform.runLater(() -> {
+			clientNicks.remove(nick);
+		});
+		
+	}
+	
+	public void setClientNicks(ArrayList<String> nicks){
+		Platform.runLater(() -> {
+			clientNicks.remove(0, clientNicks.size()-1);
+			for (String nick : nicks)
+				clientNicks.add(nick);
+		});
+	
+	}
 }

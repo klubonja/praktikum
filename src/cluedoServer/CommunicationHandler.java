@@ -208,9 +208,7 @@ class CommunicationHandler implements Runnable {
 	        	   int gameID = checker.getMessage().getInt("gameID");
 	        	   CluedoGameServer game = dataManager.getGameByID(gameID);
 	        	   if (game.hasNick(client.getNick())){	        		   
-	        			game.initNetworkGame();
-	        		//	dataGuiManager.getGameByIndex(gameID).notifyInit();	
-	        			
+	        			game.initNetworkGame();	        			
 	        			dataGuiManager.addMsgIn("game "+checker.getMessage().getInt("gameID")+ " started");
 	        			dataManager.notifyAll(
 	        					NetworkMessages.game_startedMsg(
@@ -224,19 +222,19 @@ class CommunicationHandler implements Runnable {
 	     			   client.sendMsg(NetworkMessages.error_Msg("you cant start this game"));
 	     		   }
      	   }	        	   
-     	   else  if (checker.getType().equals("leave game")){													//CREATE GAME
+     	   else  if (checker.getType().equals("leave game")){													//LEAVE GAME
      		   dataGuiManager.removePlayerfromGame(client, checker.getMessage().getInt("gameID"));
      	   }
      	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
      		  closeProtokollConnection();
      	   }
      	   
-     	  else if(checker.getType().equals("roll dice")){
+     	  else if(checker.getType().equals("roll dice")){													//ROLL DICE
    		   int gameID = checker.getMessage().getInt("gameID");
    		   dataManager.notifyAll(NetworkMessages.dice_resultMsg(gameID, dataManager.getGameByID(gameID).rollTheDice()));
    	   }
    	   
-   	   else if(checker.getType().equals("move")){
+   	   else if(checker.getType().equals("move")){															//MOVE
    		   int xKoordinate = checker.getMessage().getJSONObject("field").getInt("x");
    		   int yKoordinate = checker.getMessage().getJSONObject("field").getInt("y");
    		   CluedoField field = new CluedoField(new CluedoPosition(xKoordinate, yKoordinate));
@@ -256,22 +254,24 @@ class CommunicationHandler implements Runnable {
 				// DO IT LIKE A
 				// BROTHER*************************************************
 
-			} else 
-				if (checker.getType().equals("suspicion")) {
-				dataManager.notifyAll(
-						NetworkMessages.suspicionMsg(
-								checker.getMessage().getInt("gameID"),
-								NetworkMessages.statement(
-								checker.getMessage().getString("person"),
-								checker.getMessage().getString("room"),
-								checker.getMessage().getString("weapon")
-								))
-								);
-			} else if(checker.getType().equals("disprove")){
-				
-			} else if(checker.getType().equals("no disprove")) {
-				
-			}
+		} 
+   	   	else if (checker.getType().equals("suspicion")) {
+			dataManager.notifyAll(
+					NetworkMessages.suspicionMsg(
+							checker.getMessage().getInt("gameID"),
+							NetworkMessages.statement(
+							checker.getMessage().getString("person"),
+							checker.getMessage().getString("room"),
+							checker.getMessage().getString("weapon")
+							))
+						);
+		} 
+		else if(checker.getType().equals("disprove")){
+			
+		} 
+		else if(checker.getType().equals("no disprove")) {
+			
+		}
    	   
    	   else if(checker.getType().equals("end turn")){
    		   auxx.loginfo("end turn angekommen");
@@ -293,29 +293,29 @@ class CommunicationHandler implements Runnable {
    		   //setCurrentPlayerNext();
    	   }
      	  
-     	   else if (checker.getType().equals("chat")) {														//CHAT
-				   JSONObject chatmsg = checker.getMessage();
-				   String msg = checker.getMessage().getString("message");
-				   String ts = checker.getMessage().getString("timestamp");
-					if (chatmsg.has("gameID")){
-						int gameID = chatmsg.getInt("gameID");
-						  dataManager.getGameByID(gameID).notifyAll(NetworkMessages.chatMsg(msg,gameID,ts));
-					}
-					else if (checker.getMessage().has("nick")){
-						dataGuiManager.addMsgIn(
-							chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
-							chatmsg.getString("message")
-						);
-						dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg,ts));
-					}
-					else {							  
-						dataManager.notifyAll(NetworkMessages.chatMsg(msg , ts));
-						dataGuiManager.addMsgIn(
-							ts+" "+chatmsg.getString("sender")+" says : \n"+
-							msg
-						);
-					}
-	          }
+ 	   else if (checker.getType().equals("chat")) {														//CHAT
+			   JSONObject chatmsg = checker.getMessage();
+			   String msg = checker.getMessage().getString("message");
+			   String ts = checker.getMessage().getString("timestamp");
+				if (chatmsg.has("gameID")){
+					int gameID = chatmsg.getInt("gameID");
+					  dataManager.getGameByID(gameID).notifyAll(NetworkMessages.chatMsg(msg,gameID,ts));
+				}
+				else if (checker.getMessage().has("nick")){
+					dataGuiManager.addMsgIn(
+						chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
+						chatmsg.getString("message")
+					);
+					dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg,ts));
+				}
+				else {							  
+					dataManager.notifyAll(NetworkMessages.chatMsg(msg , ts));
+					dataGuiManager.addMsgIn(
+						ts+" "+chatmsg.getString("sender")+" says : \n"+
+						msg
+					);
+				}
+          }
      	  else  {											
      		   auxx.loginfo("SERVER INCOMING valid unchecked : \n"+ checker.getMessage());
      	  } 

@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoServer.GameListClient;
 import enums.ServerStatus;
@@ -14,11 +15,12 @@ public class ServerItem  {
 	InetAddress ip;
 	int port;
 	GameListClient gamesList;
+	ArrayList<String> clientNicks;
 	Socket socket;
 	ServerStatus status;
 	String myNick;
-	ArrayList<String> chatmsg;
-	ArrayList<String> chatts;
+	ArrayList<String> chatProtokoll;
+	ArrayList<String> chatTs;
 	
 	public ServerItem(String groupName,InetAddress ip, int port) {
 		this.groupName = groupName;
@@ -26,11 +28,28 @@ public class ServerItem  {
 		this.port = port;
 		gamesList = new GameListClient();
 		status = ServerStatus.not_connected;
-		chatmsg = new ArrayList<String>();
-		chatts = new ArrayList<String>();
-		
-		
-		
+		chatProtokoll = new ArrayList<String>();
+		chatTs = new ArrayList<String>();
+		clientNicks = new ArrayList<String>();		
+	}
+	
+	public void setClientNicks(ArrayList<String> newClientNicks){
+		clientNicks = newClientNicks;
+	}
+	
+	public boolean addClient(String clientnick){
+		if (!clientNicks.contains(clientnick))
+				return clientNicks.add(clientnick);
+		return false;
+	}
+	
+	public boolean removeClient(String clientnick){
+		if (clientNicks.contains(clientnick))
+				return clientNicks.remove(clientnick);
+		return false;
+	}
+	public ArrayList<String> getClientNicks() {
+		return clientNicks;
 	}
 	
 	public ArrayList<CluedoGameClient> getGamesByNick(String nick){		
@@ -141,15 +160,19 @@ public class ServerItem  {
 	
 	public String getChat() {
 		StringBuffer chat = new StringBuffer("");
-		for (int i = 0; i < chatmsg.size(); i++)
-			chat.append(chatts.get(i)+" : "+chatmsg.get(i)+"\n");
+		for (int i = 0; i < chatProtokoll.size(); i++)
+			chat.append(chatTs.get(i)+" : "+chatProtokoll.get(i)+"\n");
 		
 		return chat.toString();
 	}
 	
 	public void addChatMsg(String msg,String ts){
-		chatmsg.add(msg);
-		chatts.add(ts);
+		chatProtokoll.add(msg);
+		chatTs.add(ts);
+	}
+	
+	public void sendMsg(String msg){
+		auxx.sendTCPMsg(getSocket(), msg);
 	}
 	
 }

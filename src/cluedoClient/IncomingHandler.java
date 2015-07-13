@@ -91,7 +91,8 @@ class IncomingHandler implements Runnable {
         										 checker.getMessage().getJSONArray("cards")
         										 )
         							);	        		  
-			} else if(checker.getType().equals("suspicion")){
+			} 
+			else if(checker.getType().equals("suspicion")){
 				server.getGameByGameID(checker.getMessage().getInt("gameID")).compareCards(
 						checker.getMessage().getString("person"),
 						checker.getMessage().getString("weapon"),
@@ -186,6 +187,12 @@ class IncomingHandler implements Runnable {
     				  dataGuiManager.addChatMsgIn(chatmsg, ts,server);    				  
     			  }        		  
 			}
+			else if (checker.getType().equals("user added")){
+				dataGuiManager.addClient(server,checker.getMessage().getString("nick"));
+			}
+			else if (checker.getType().equals("user left")){
+				dataGuiManager.removeClient(server,checker.getMessage().getString("nick"));
+			}
 			else if (checker.getType().equals("disconnect")){
         		  killConnection();   
 			}
@@ -198,6 +205,7 @@ class IncomingHandler implements Runnable {
 		}		
 		else {
 			auxx.loginfo("INCOMING invalid : "+checker.getErrString());
+			server.sendMsg(NetworkMessages.error_Msg(checker.getErrString()));
 		}	
 	}
 	
@@ -217,7 +225,7 @@ class IncomingHandler implements Runnable {
 		if (errcode == NetworkHandhakeCodes.OK) {	
 			JSONArray gamearray = checker.getMessage().getJSONArray("game array");	
 			ArrayList<CluedoGameClient> gameslist = NetworkMessages.createGamesFromJSONGameArray(gamearray,server);
-		
+			
 			dataGuiManager.setServerLoggedIn(
 					server,
 					gameslist,
@@ -225,6 +233,7 @@ class IncomingHandler implements Runnable {
 					server.getIpString(),
 					"logged in"
 					);
+			dataGuiManager.setClients(server,auxx.jsonArrayToArrayList(checker.getMessage().getJSONArray("nick array")));
 			dataGuiManager.setStatus("server "+server.getGroupName()+" status :"+server.getStatus());
 					
 		}
