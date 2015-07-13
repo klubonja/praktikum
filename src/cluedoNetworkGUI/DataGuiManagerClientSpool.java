@@ -53,10 +53,10 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public void removeClient(ServerItem server, String nick){
-		if (server.removeClient(nick) && server == selectedServer){
+			server.removeClient(nick);
 			getGui().removeClient(nick);
 			System.out.println("nick removed from list");
-		}		
+			
 	}
 	
 	public void setClients(ServerItem server ,ArrayList<String> nicks){
