@@ -18,16 +18,20 @@ public class MenuBarView extends MenuBar{
 	Menu options;
 	Menu help;
 	MenuItem sounds;
+	MenuItem main;
+	MenuItem quit;
 	
 	public MenuBarView(){
 		
 		
-	this.setPrefWidth(1200);
-	this.setMaxWidth(1200);
+	this.setPrefWidth(1400);
+	this.setMaxWidth(1400);
 	options = new Menu("Options");
 	help = new Menu("Help");
 	sounds = new MenuItem("Sound");
-	options.getItems().addAll(sounds);
+	main = new MenuItem("Main Menu");
+	quit = new MenuItem("Exit Game");
+	options.getItems().addAll(sounds, main, quit);
 	this.getMenus().addAll(options, help);
 	
 	}

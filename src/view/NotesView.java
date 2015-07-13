@@ -10,16 +10,34 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
 
+/**
+ * 
+ * @author YinYanYolos
+ *
+ * NotesView implemented as a TabPane. 
+ * The class responsible for the user notes.
+ */
 public class NotesView extends TabPane {
 	
-	Tab userNotes;
-	Tab checklist;
-	TextArea notesField;
-	GridPane layoutGrid;
+	private Tab userNotes;
+	private Tab checklist;
+	private TextArea notesField;
+	private GridPane layoutGrid;
 	
 	Label who;
 	Label how;
@@ -90,15 +108,27 @@ public class NotesView extends TabPane {
 	TextField txt20;
 	TextField txt21;
 	
-	LinkedList<Label> labels;
-	LinkedList<Button> buttons;
-	LinkedList<TextField> textFlds;
+	private LinkedList<Label> labels;
+	private LinkedList<Button> buttons;
+	private LinkedList<TextField> textFlds;
+	
+	private final Stop[] stops = new Stop[] { new Stop(0, Color.LAVENDER), new Stop(1, Color.GHOSTWHITE)};
+	private final RadialGradient rg1 = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
+	
+	private final BackgroundFill defaultFill = new BackgroundFill(rg1, new CornerRadii(1), new Insets(0.2));
+	private final Background defaultButton = new Background(defaultFill);
+	private final BorderStroke defaultStroke = new BorderStroke(Color.DARKSLATEGREY, BorderStrokeStyle.SOLID, 
+			new CornerRadii(4), new BorderWidths(0.5));
+	private final Border defaultBorder = new Border(defaultStroke);
+	
+	private final BackgroundFill	defaulttxt = new BackgroundFill(Color.GHOSTWHITE, new CornerRadii(1), new Insets(0.2));
+	private final Background defaultTxt = new Background(defaulttxt);
+	
 	
 	
 	public NotesView(){
 		 
 		this.checklist = new Tab("Checklist");
-		
 		
 		this.userNotes = new Tab("User Notes");
 		this.notesField = new TextArea();
@@ -106,6 +136,7 @@ public class NotesView extends TabPane {
 		this.notesField.setPromptText("Use it with caution!");
 		this.userNotes.setContent(notesField);
 		
+		// Crates the Labels for every card.
 		this.who = new Label("WHO?");
 		this.how = new Label("HOW?");
 		this.where = new Label("WHERE?");
@@ -133,6 +164,7 @@ public class NotesView extends TabPane {
 		this.library = new Label("Library");
 		this.study = new Label("Study");
 		
+		// Creates a list and adds the Labels in it.
 		labels = new LinkedList<Label>();
 		labels.add(who);
 		labels.add(where);
@@ -159,6 +191,7 @@ public class NotesView extends TabPane {
 		labels.add(library);
 		labels.add(study);
 		
+		// Crates the Buttons for every card.
 		this.button1 = new Button();
 		this.button2 = new Button();
 		this.button3 = new Button();
@@ -181,6 +214,7 @@ public class NotesView extends TabPane {
 		this.button20 = new Button("");
 		this.button21 = new Button("");
 		
+		// Creates a list and adds the Buttons in it.
 		buttons = new LinkedList<Button>();
 		buttons.add(button1);
 		buttons.add(button2);
@@ -204,6 +238,7 @@ public class NotesView extends TabPane {
 		buttons.add(button20);
 		buttons.add(button21);
 		
+		// Crates the textFields for every card.
 		this.txt1 = new TextField();
 		this.txt2 = new TextField();
 		this.txt3 = new TextField();
@@ -226,6 +261,7 @@ public class NotesView extends TabPane {
 		this.txt20 = new TextField();
 		this.txt21 = new TextField();
 		
+		// Creates a list and adds the textFields in it.
 		textFlds = new LinkedList<TextField>();
 		textFlds.add(txt1);
 		textFlds.add(txt2);
@@ -249,6 +285,7 @@ public class NotesView extends TabPane {
 		textFlds.add(txt20);
 		textFlds.add(txt21);
 		
+		// Creates the GridPane with the measures for every row.
 		this.layoutGrid = new GridPane();
 		layoutGrid.setPadding(new Insets(2));
 		layoutGrid.setVgap(0.4);
@@ -279,6 +316,7 @@ public class NotesView extends TabPane {
 		layoutGrid.getColumnConstraints().add(new ColumnConstraints(40));
 		layoutGrid.getColumnConstraints().add(new ColumnConstraints(175));
 		
+		//Sets the positions of the labels, buttons and textFields in the GridPane.
 		GridPane.setConstraints(who, 0, 0);
 		GridPane.setColumnSpan(who, 3);
 		GridPane.setHalignment(who, HPos.CENTER);
@@ -362,7 +400,7 @@ public class NotesView extends TabPane {
 	}
 	
 	/**
-	 * Edits the size of the Buttons and TextFields to fit the Grid
+	 * Edits the size of the Buttons and TextFields to fit the Grid.
 	 */
 	public void editSize(){
 		
@@ -370,6 +408,8 @@ public class NotesView extends TabPane {
 			button.setMaxSize(39, 19);
 			button.setMinSize(39, 19);
 			button.setPrefSize(39, 19);
+			button.setBackground(defaultButton);
+			button.setBorder(defaultBorder);
 			
 		}
 		
@@ -377,13 +417,16 @@ public class NotesView extends TabPane {
 			txtField.setMaxHeight(20);
 			txtField.setMinHeight(20);
 			txtField.setPrefHeight(20);
+			txtField.setOpacity(0.7);
+			txtField.setBackground(defaultTxt);
+			txtField.setBorder(defaultBorder);
 		}
 		
 	}
 	
 	
 	/**
-	 * Adds the Buttons, TextFields and Labels to the GridPane
+	 * Adds the Buttons, TextFields and Labels to the GridPane.
 	 */
 	public void addtoGUI(){
 		for(Label label : labels){
@@ -401,9 +444,9 @@ public class NotesView extends TabPane {
 	}
 
 	
-	/**
-	 * Getter and Setter Methods
-	 */
+	
+	// Getters and Setter Methods.
+	 
 	public Tab getUserNotes() {
 		return userNotes;
 	}
@@ -1131,6 +1174,38 @@ public class NotesView extends TabPane {
 
 	public void setTextfld(LinkedList<TextField> textfld) {
 		this.textFlds = textfld;
+	}
+
+	public LinkedList<TextField> getTextFlds() {
+		return textFlds;
+	}
+
+	public void setTextFlds(LinkedList<TextField> textFlds) {
+		this.textFlds = textFlds;
+	}
+
+	public BackgroundFill getDefaultFill() {
+		return defaultFill;
+	}
+
+	public Background getDefaultButton() {
+		return defaultButton;
+	}
+
+	public BorderStroke getDefaultStroke() {
+		return defaultStroke;
+	}
+
+	public Border getDefaultBorder() {
+		return defaultBorder;
+	}
+
+	public BackgroundFill getDefaulttxt() {
+		return defaulttxt;
+	}
+
+	public Background getDefaultTxt() {
+		return defaultTxt;
 	}
 	
 	

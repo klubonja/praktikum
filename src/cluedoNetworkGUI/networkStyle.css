@@ -1,0 +1,120 @@
+.gameListItem, .ipListItem {
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+	-fx-padding: 5 0 5 5;
+	-fx-border-color:  #999999;
+	-fx-border-width: 0 0 1 0;
+	-fx-border-style: solid;
+	
+}
+
+.gameListItem:hover .gameNameItem,
+.gameListItem:hover .gameInfoItem,
+.gameListItem:hover {
+	-fx-background-color: #000000;
+	-fx-text-fill: #ffffff;		
+}
+
+.gameListItem:focused, .gameListItem:selected, .gameListItem:filled {
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+}
+
+
+
+.gameNameItem {
+	-fx-font: 15px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+	
+}
+
+.gameInfoItem {
+	-fx-font: 10px "Tahoma";
+    -fx-padding: 0;
+    -fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+	
+    
+}
+
+
+
+.ipListItem:hover .ipNameItem,  
+.ipListItem:hover .ipIpItem , 
+.ipListItem:hover .ipStatusItem ,
+.ipListItem:hover {
+	-fx-background-color: #000000;
+	-fx-text-fill: #ffffff;		
+}
+
+.list-cell:focus:selected:filled , .list-cell {
+	-fx-background-color: #ffffff;
+}
+
+.ipNameItem {
+	-fx-font: 14px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+}
+
+.ipIpItem {
+	-fx-font: 12px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+}
+
+.ipStatusItem {
+	-fx-font: 10px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+}
+
+#tabPane:top *.tab-header-area {
+	-fx-background-insets: 0 0 0 0;
+    -fx-padding: 0 0 0 0;
+	
+}
+
+.tab-content-area {
+    -fx-padding: 10 0 0 0;
+    /* -fx-opacity: -fx-disabled-opacity;*/	  
+}
+
+#ipList , #gameList{
+	-fx-padding : 0em;
+}
+
+#menue {
+	-fx-padding: 5 5 5 5;
+}
+
+.startGameButtonGamesList {
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+	-fx-padding: 20 10 20 10;
+  -fx-background-insets: 1 1 -1 0, 0, 1, 2;
+  -fx-background-radius: 1px, 1px, 1px, 1px;
+    
+}
+
+#menue .button {
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+	-fx-padding: 10 10 10 10;
+    -fx-background-insets: 1 1 -1 0, 0, 1, 2;
+    -fx-background-radius: 1px, 1px, 1px, 1px;
+}
+
+#menue .button:hover{
+	-fx-background-color: #000000;
+	-fx-text-fill: #ffffff;
+
+}
+
+#status {
+	-fx-font: 16px "Tahoma";
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #000000;
+}
+
