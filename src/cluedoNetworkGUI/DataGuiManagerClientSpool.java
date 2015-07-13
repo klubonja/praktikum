@@ -46,10 +46,8 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public void addClient(ServerItem server , String nick){
-		if (server.addClient(nick) && server == selectedServer){
-			getGui().addClient(nick);
-		}
-		
+		if (!nick.equals(server.getMyNick()) && server.addClient(nick) && server == selectedServer)
+			getGui().addClient(nick);		
 	}
 	
 	
@@ -101,12 +99,6 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 			game.start(order);
 		game.setGameState(GameStates.getState(gameState));
 		setRunningGame(gameID);
-		//=======
-		//		if (game.start(order)){
-		//			game.setGameState(GameStates.getState(gameState));			
-		//			setRunningGame(gameID);
-		//		}
-		//>>>>>>> networkC
 	}
 	
 	public boolean deleteGameOnServer(ServerItem server,int gameID){
@@ -119,19 +111,14 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public boolean removeClientFromSystemServer(ServerItem server,String nickID){
-		server.removeClient(nickID);
-		getGui().removeClient(nickID);
+		if (server.removeClient(nickID) && server == selectedServer){
+			getGui().removeClient(nickID);
+		}		
 		if (server.removePlayerFromGames(nickID)){
 			refreshGamesListServer(server);
 			return true;
 		}
 		return false;
-	}
-	
-	public void removeClient(ServerItem server, String nick){
-		
-		System.out.println("nick removed from list");
-		
 	}
 
 	public void refreshGamesListServer(ServerItem server){
