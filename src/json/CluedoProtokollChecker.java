@@ -174,7 +174,9 @@ public class CluedoProtokollChecker {
 	}
 
 	void val_watcher_added() {
-		val_join_game();
+		if (validateValue(jsonRoot, "gameID"))
+			isInt(jsonRoot, "gameID");
+		validateValue(jsonRoot, "nick");
 	}
 
 	void val_leave_game() {

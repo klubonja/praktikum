@@ -30,7 +30,7 @@
 }
 
 .gameInfoItem {
-	-fx-font: 10px "Tahoma";
+	-fx-font: 8px "Tahoma";
     -fx-padding: 0;
     -fx-background-color: #ffffff;
 	-fx-text-fill: #000000;

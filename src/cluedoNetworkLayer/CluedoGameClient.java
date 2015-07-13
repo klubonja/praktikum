@@ -16,10 +16,13 @@ public class CluedoGameClient extends CluedoGame {
 
 	ServerItem server;
 	String myNick;
+	
+	ArrayList<String> watchers;
 
 	public CluedoGameClient(int gameId, ServerItem server) {
 		super(gameId);
 		this.server = server;
+		watchers = new ArrayList<String>();
 		myNick = server.getMyNick();
 	}
 
@@ -157,9 +160,34 @@ public class CluedoGameClient extends CluedoGame {
 		}
 		
 	}
+	
+	public String getWatchersConnected(){
+		StringBuffer nb = new StringBuffer();
+		for (String p : watchers)			
+				nb.append(p+", ");		
+		
+		if (nb.length() > 2) nb.delete(nb.length()-2, nb.length()-1);
+		return nb.toString();
+	}
+
 
 	public void disprove() {
 		communicator.disprove();
+	}
+	
+	public ArrayList<String> getWatchers() {
+		return watchers;
+	}
+	
+	public boolean removeWatcher(String nick){
+		for (String n: watchers)
+			if (n.equals(nick))
+				return watchers.remove(n);
+		return false;		
+	}
+	
+	public boolean addWatcher(String c) {
+		return watchers.add(c);
 	}
 	
 

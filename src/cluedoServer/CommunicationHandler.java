@@ -225,6 +225,9 @@ class CommunicationHandler implements Runnable {
      	   else  if (checker.getType().equals("leave game")){													//LEAVE GAME
      		   dataGuiManager.removePlayerfromGame(client, checker.getMessage().getInt("gameID"));
      	   }
+     	  else  if (checker.getType().equals("watch game")){													//LEAVE GAME
+    		   dataGuiManager.addWatcherToGame(checker.getMessage().getInt("gameID"),client);
+    	   }
      	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
      		  closeProtokollConnection();
      	   }

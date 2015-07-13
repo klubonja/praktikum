@@ -18,7 +18,8 @@ import enums.Weapons;
 
 public class CluedoGameServer extends CluedoGame {
 	private ArrayList<ClientItem> participants;
-	ArrayList<ClientItem> watchers;
+	private ArrayList<ClientItem> watchers;
+	
 	WinningStatement winningStatement;
 	int currentPlayerIndex = 0;
 
@@ -75,6 +76,18 @@ public class CluedoGameServer extends CluedoGame {
 			nicks.add(c.getNick());
 
 		return nicks;
+	}
+	
+	public String getWatchersConnected(){
+		StringBuffer nb = new StringBuffer();
+		for (ClientItem p : watchers){
+			if (!p.getNick().equals("")){
+				nb.append(p.getNick()+", ");
+			}
+		}
+			
+		if (nb.length() > 2) nb.delete(nb.length()-2, nb.length()-1);
+		return nb.toString();
 	}
 
 	public void notifyAll(String msg) {
