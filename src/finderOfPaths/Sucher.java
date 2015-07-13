@@ -13,7 +13,6 @@ import cluedoNetworkLayer.CluedoPlayer;
  */
 public class Sucher {
 
-	private DerBeweger beweger;
 	private Vorschlaege vorschlager;
 	private WahnsinnigTollerPathfinder pathfinder;
 	
@@ -23,12 +22,10 @@ public class Sucher {
 	public PlayerCircleManager pcManager;
 	 
 	
-	public Sucher(DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  char [][]anweisungen,PlayerCircleManager pcManager){
+	public Sucher(Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder, PlayerCircleManager pcManager){
 		this.pcManager = pcManager;
-		this.beweger = beweger;
 		this.vorschlager = vorschlager;
 		this.pathfinder = pathfinder;
-		this.anweisungen = anweisungen;
 	}
 	
 	public void suchen(int wuerfelZahlEingabe, PlayerCircleManager pcManager){

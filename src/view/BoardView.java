@@ -78,20 +78,6 @@ public class BoardView extends GridPane {
 		 
 	}	
 
-	public void resetMoeglichkeiten(){
-		
-		for( int iSpalten = 0; iSpalten < kachelContainer.getKacheln().length;iSpalten++){
-			
-			for (int jReihen = 0; jReihen < kachelContainer.getKacheln()[iSpalten].length;jReihen++){
-				kachelContainer.getKacheln()[iSpalten][jReihen].setMoeglichkeitenHierher(null);
-			}
-			
-		}
-		
-	}
-	
-	
-	
 	/**
 	 * Hier werden die Kacheln erzeugt und ihnen ein Platz zugewiesen.
 	 * Auch wird die Gr��e der Kacheln festgelegt auf 29 x 29 und ihnen

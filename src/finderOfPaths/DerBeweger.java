@@ -426,8 +426,7 @@ public class DerBeweger {
 						.getX()];
 				anfangsRaumLabel = gui.getLabelHier(anfangsRaumKachel);
 				Rooms room = raumBeweger.checkRaum(anfangsRaumKachel);
-				raumZielKachel = raumBeweger
-						.positionInRaum(pcManager.getCurrentPlayer(), room);
+				raumZielKachel = raumBeweger.positionInRaum(pcManager.getCurrentPlayer(), room);
 				raumZielLabel = gui.getLabelHier(raumZielKachel);
 				geheimgangBewegerAusgang(raumZielKachel, raum);
 

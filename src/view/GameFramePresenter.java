@@ -76,10 +76,10 @@ public class GameFramePresenter {
 		vorschlager = new Vorschlaege(gfv.board,pcManager, kacheln);
 		pathfinder = new WahnsinnigTollerPathfinder(pcManager, kacheln);
 		
-		sucher = new Sucher(beweger, vorschlager, pathfinder,   anweisungen,pcManager);
-		ausloeser = new Ausloeser(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager, gameid, networkGame, kacheln);
+		sucher = new Sucher(vorschlager, pathfinder, pcManager);
+		ausloeser = new Ausloeser(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, beweger, gfv.ballEbene, pathfinder, pcManager, gameid, networkGame, kacheln);
 
-		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher, pcManager, gameid, networkGame);
+		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher, pcManager, gameid, networkGame, kacheln);
 		
 		
 		test();

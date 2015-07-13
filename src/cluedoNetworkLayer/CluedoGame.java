@@ -3,8 +3,8 @@ package cluedoNetworkLayer;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import kommunikation.Communicator;
 import staticClasses.auxx;
-import view.Communicator;
 import enums.GameStates;
 import enums.Persons;
 import enums.PlayerStates;

@@ -8,74 +8,44 @@ import enums.Weapons;
 
 public class KIPerson {
 
-	ArrayList<Persons> personen;
-	ArrayList<Weapons> waffen;
-	ArrayList<Rooms> raeume;
+	ArrayList<Persons> personen = new ArrayList<Persons>();
+	ArrayList<Weapons> waffen = new ArrayList<Weapons>();
+	ArrayList<Rooms> raeume = new ArrayList<Rooms>();
 	
-	ArrayList<Persons> nichtPersonen;
-	ArrayList<Weapons> nichtWaffen;
-	ArrayList<Rooms> nichtRaeume;
+	ArrayList<Persons> nichtPersonen = new ArrayList<Persons>();
+	ArrayList<Weapons> nichtWaffen = new ArrayList<Weapons>();
+	ArrayList<Rooms> nichtRaeume = new ArrayList<Rooms>();
 	
-	ArrayList<Persons> vielleichtPersonen;
-	ArrayList<Weapons> vielleichtWaffen;
-	ArrayList<Rooms> vielleichtRaeume;
+	ArrayList<Persons> vielleichtPersonen = new ArrayList<Persons>();
+	ArrayList<Weapons> vielleichtWaffen = new ArrayList<Weapons>();
+	ArrayList<Rooms> vielleichtRaeume = new ArrayList<Rooms>();
 	
 	public KIPerson(){
 		
 	}
 	
 	public boolean hatPerson(Persons person){
-		if (personen.contains(person)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		return personen.contains(person);
 	}
 	
 	public boolean hatWaffe(Weapons waffe){
-		if (waffen.contains(waffe)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		return waffen.contains(waffe);
 	}
 	
 	public boolean hatRaum(Rooms raum){
-		if (raeume.contains(raum)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		return raeume.contains(raum);
 	}
 	
 	public boolean hatVielleichtPerson(Persons person){
-		if (vielleichtPersonen.contains(person)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		return vielleichtPersonen.contains(person);
 	}
 	
 	public boolean hatVielleichtWaffe(Weapons waffe){
-		if (vielleichtWaffen.contains(waffe)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		return vielleichtWaffen.contains(waffe);
 	}
 	
 	public boolean hatVielleichtRaum(Rooms raum){
-		if (vielleichtRaeume.contains(raum)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		return vielleichtRaeume.contains(raum);
 	}
 	
 	public void addNichtKombination(Persons person, Weapons waffe, Rooms raum){

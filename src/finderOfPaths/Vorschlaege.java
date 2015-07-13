@@ -30,6 +30,8 @@ public class Vorschlaege {
 	private int counterAussen;
 	private int counterInnen;
 	
+	private boolean spieler;
+	
 	private int [] xPositionen;
 	private int [] yPositionen;
 	
@@ -54,9 +56,16 @@ public class Vorschlaege {
 		this.gui = gui;
 		this.kacheln = kacheln;
 		markierteHintergruendeUpdaten();
-		
+		spieler = true;
 		this.currentPlayer = pcManager.getCurrentPlayer();
 		
+	}
+	
+	public Vorschlaege(PlayerCircleManager pcm, KachelContainer kacheln){
+		this.pcManager = pcm;
+		this.kacheln = kacheln;
+		spieler = false;
+		this.currentPlayer = pcManager.getCurrentPlayer();
 	}
 	
 	/**
@@ -80,7 +89,8 @@ public class Vorschlaege {
 		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
 		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 		
-		gui.resetBackground();
+		if(spieler) {gui.resetBackground();}
+
 		
 		if (tuerCounter != 0){
 			
@@ -156,13 +166,13 @@ public class Vorschlaege {
 	 * Updatet die ehemals unmarkierten Hintergründe.
 	 */
 	public void markierteHintergruendeUpdaten(){
-		
-		for( int iReihen = 0; iReihen < markierteHintergruende.length;iReihen++){			
-			for (int jSpalten = 0; jSpalten < markierteHintergruende[iReihen].length;jSpalten++){
-				markierteHintergruende[iReihen][jSpalten] = gui.getKrassesLabelArray()[iReihen][jSpalten].getBackground();
+		if(spieler){
+			for( int iReihen = 0; iReihen < markierteHintergruende.length;iReihen++){			
+				for (int jSpalten = 0; jSpalten < markierteHintergruende[iReihen].length;jSpalten++){
+					markierteHintergruende[iReihen][jSpalten] = gui.getKrassesLabelArray()[iReihen][jSpalten].getBackground();
+				}
 			}
 		}
-		
 	}
 	
 	/**
@@ -253,7 +263,9 @@ public class Vorschlaege {
 			Kachel vonHier = kacheln.getKacheln()[yPositionen[counter]][xPositionen[counter]];
 			kacheln.getKacheln()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
 			
-			gui.getKrassesLabelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKrassesLabelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], farbe);
+			if (spieler){gui.getKrassesLabelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKrassesLabelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], farbe);}
+			
+			
 		}
 	}
 	
@@ -270,7 +282,7 @@ public class Vorschlaege {
 			Kachel vonHier = kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte];
 			kacheln.getKacheln()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setVonHier(vonHier);
 	
-			gui.getKrassesLabelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKrassesLabelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], farbe);
+			if (spieler){gui.getKrassesLabelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].setBackgroundColor(gui.getKrassesLabelArray()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz], farbe);}
 		}
 	}
 
@@ -284,7 +296,7 @@ public class Vorschlaege {
 		
 		for (int iReihen = 0; iReihen < kacheln.getKacheln().length; iReihen++){
 			for (int jSpalten = 0; jSpalten < kacheln.getKacheln()[iReihen].length; jSpalten++){
-				if (gui.getKrassesLabelArray()[iReihen][jSpalten].getBackground().getFills().get(0) == new BackgroundFill(Color.GREY, null, null)){
+				if (kacheln.getKacheln()[iReihen][jSpalten].getMoeglichkeitenHierher() != null){
 					if (position.getX() == jSpalten && position.getY() == iReihen){
 						return true;
 					}
@@ -307,6 +319,14 @@ public class Vorschlaege {
 	 */
 	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
 		this.currentPlayer = currentPlayer;
+	}
+
+	public boolean isSpieler() {
+		return spieler;
+	}
+
+	public void setSpieler(boolean spieler) {
+		this.spieler = spieler;
 	}
 	
 	

@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 public class ChatView extends VBox {
 	
 
-	TextArea chatArea;
+	private TextArea chatArea;
 	Label chatLabel;
 	HBox chatBox;
 	//Button chatSend;
@@ -30,17 +30,27 @@ public class ChatView extends VBox {
 	public ChatView(){
 	
 	chatLabel = new Label("Chat");
-	chatArea = new TextArea();
+	setChatArea(new TextArea());
 	//chatArea.set
-	chatArea.setEditable(false);
+	getChatArea().setEditable(false);
 	chatBox = new HBox(3);
 	//chatSend = new Button("Send");
 	chatField = new TextField();
 	chatField.setPrefWidth(200);
 	chatField.setMaxWidth(200);
 	//chatBox.getChildren().addAll(chatField, chatSend);
-	this.getChildren().addAll(chatArea,chatField,chatBox);
+	this.getChildren().addAll(getChatArea(),chatField,chatBox);
 	
+	}
+
+
+	public TextArea getChatArea() {
+		return chatArea;
+	}
+
+
+	public void setChatArea(TextArea chatArea) {
+		this.chatArea = chatArea;
 	}
 
 }

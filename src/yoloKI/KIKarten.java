@@ -99,21 +99,11 @@ public class KIKarten {
 	}
 	
 	public boolean habenWirPerson(Persons person){
-		if (personen.contains(person)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		return personen.contains(person);
 	}
 	
 	public boolean habenWirWaffe(Weapons waffe){
-		if (waffen.contains(waffe)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		return waffen.contains(waffe);
 	}
 	
 	public ArrayList<Rooms> getRaeume() {

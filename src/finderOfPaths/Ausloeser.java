@@ -46,8 +46,6 @@ public class Ausloeser {
 	private int xInsgesamt;
 	private int yInsgesamt;
 
-	private Sucher sucher;
-
 	private int wuerfelZahl;
 
 	public PlayerCircleManager pcManager;
@@ -69,8 +67,7 @@ public class Ausloeser {
 	 *            um den Weg berechnen zu lassen
 	 */
 	public Ausloeser(KrasserStack stack, AussergewohnlichesZugfenster zug, BoardView gui, DerBeweger beweger, BallEbene2 ballEbene,
-			WahnsinnigTollerPathfinder pathfinder, Sucher sucher,
-			PlayerCircleManager pcm, int gameid, CluedoGameClient network, KachelContainer kachelContainer) {
+			WahnsinnigTollerPathfinder pathfinder,PlayerCircleManager pcm, int gameid, CluedoGameClient network, KachelContainer kachelContainer) {
 		this.kachelContainer = kachelContainer;
 		this.gui = gui;
 		this.gameid = gameid;
@@ -80,8 +77,14 @@ public class Ausloeser {
 		this.stack = stack;
 		this.beweger = beweger;
 		this.pathfinder = pathfinder;
-		this.sucher = sucher;
 		pcManager = pcm;
+	}
+	
+	public Ausloeser(KachelContainer kachelContainer, int gameid, WahnsinnigTollerPathfinder pathfinder, PlayerCircleManager pcManager){
+		this.kachelContainer = kachelContainer;
+		this.gameid = gameid;
+		this.pathfinder = pathfinder;
+		this.pcManager = pcManager;
 	}
 
 	/**

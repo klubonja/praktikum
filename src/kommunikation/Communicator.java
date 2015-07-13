@@ -1,4 +1,4 @@
-package view;
+package kommunikation;
 
 import java.util.Stack;
 import java.util.logging.Level;
@@ -8,6 +8,13 @@ import javafx.stage.WindowEvent;
 import kacheln.KachelContainer;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
+import view.AussergewohnlichesZugfenster;
+import view.AussergewohnlichesZugfensterPresenter;
+import view.BoardView;
+import view.DicePresenter;
+import view.DiceView;
+import view.GameFramePresenter;
+import view.GameFrameView;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
@@ -106,7 +113,7 @@ public class Communicator {
 	}
 
 	public void addChatMsg(String msg) {
-		gamePresenter.getGfv().chat.chatArea.appendText(msg + "\n");
+		gameView.getChat().getChatArea().appendText(msg + "\n");
 	}
 
 	public GameFrameView getGameView() {

@@ -1,13 +1,10 @@
 
 package view;
 
-import cluedoNetworkLayer.CluedoGameClient;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
+import kacheln.KachelContainer;
 import staticClasses.NetworkMessages;
-import staticClasses.Sounds;
 import staticClasses.auxx;
+import cluedoNetworkLayer.CluedoGameClient;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.PlayerCircleManager;
 import finderOfPaths.Sucher;
@@ -30,6 +27,8 @@ public class DicePresenter {
 	private GameFrameView view;
 	private DiceView dices;
 	
+	private boolean istSpieler;
+	
 	private Ausloeser ausloeser;
 	private BoardView gui;
 	private Sucher sucher;
@@ -39,8 +38,9 @@ public class DicePresenter {
 	public PlayerCircleManager pcManager;
 	private int gameid;
 	private CluedoGameClient networkGame;
+	private KachelContainer kacheln;
 	
-	public DicePresenter(DiceView dices, GameFrameView view, Ausloeser ausloeser, BoardView gui, Sucher sucher, PlayerCircleManager pcManager, int gameid, CluedoGameClient networkGame){
+	public DicePresenter(DiceView dices, GameFrameView view, Ausloeser ausloeser, BoardView gui, Sucher sucher, PlayerCircleManager pcManager, int gameid, CluedoGameClient networkGame, KachelContainer kacheln){
 		this.pcManager = pcManager;
 		this.gameid = gameid;
 		this.networkGame = networkGame;
@@ -49,7 +49,16 @@ public class DicePresenter {
 		this.dices = dices;
 		this.sucher = sucher;
 		this.gui = gui;
+		this.kacheln = kacheln;
 		startEvents();
+		istSpieler = true;
+	}
+	
+	public DicePresenter(PlayerCircleManager pcManager, Ausloeser ausloeser, Sucher sucher){
+		this.pcManager = pcManager;
+		this.ausloeser = ausloeser;
+		this.sucher = sucher;
+		istSpieler = false;
 	}
 	
 	public void startEvents(){
@@ -70,67 +79,8 @@ public class DicePresenter {
 		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
 		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 		speedWuerfeln(pcManager, "someone");
-		view.getKomplettesFeld().getChildren().remove(view.getZugView());
-		
-		
-		
-//		diceCounter = 0;
-//		Sounds.diceSound();
-//		view.getKomplettesFeld().getChildren().remove(view.getZugView());
-//		KeyFrame keyFrame = new KeyFrame(new Duration(250), event -> changeFrame("someone", pcManager));
-//		Timeline t = new Timeline(keyFrame);
-//		t.setCycleCount(10);
-//		t.play();
-		
+		if (istSpieler){view.getKomplettesFeld().getChildren().remove(view.getZugView());}
 	}
-	
-//	public void changeFrame(String who, PlayerCircleManager pcManager){
-//		
-//		this.pcManager = pcManager;
-//		
-//		auxx.logsevere("DicePresenter.changeFrame");
-//		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
-//		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
-//		
-//		diceCounter = diceCounter + 1;
-//		
-////		dices.getChildren().remove(dices.getD1());
-////		dices.getChildren().remove(dices.getD2());
-//		
-//		int first = 1 + (int)(Math.random()*6);
-//		int second = 1 + (int)(Math.random()*6);
-//		
-//		if (who == "someone" && diceCounter == 10){
-//			first = zielWuerfelEins;
-//			second = zielWuerfelZwei;
-//		}
-//		
-//		if (diceCounter == 10){
-//			dice[0] = first;
-//			dice[1] = second;
-//			wuerfeln(pcManager);
-//		}
-//		
-//		switch(first){
-//		case 1: dices.getD1().setImage(dices.getDice1());break;
-//		case 2: dices.getD1().setImage(dices.getDice2());break;
-//		case 3: dices.getD1().setImage(dices.getDice3());break;
-//		case 4: dices.getD1().setImage(dices.getDice4());break;
-//		case 5: dices.getD1().setImage(dices.getDice5());break;
-//		case 6: dices.getD1().setImage(dices.getDice6());break;
-//		}
-//		switch(second){
-//		case 1: dices.getD2().setImage(dices.getDice1());break;
-//		case 2: dices.getD2().setImage(dices.getDice2());break;
-//		case 3: dices.getD2().setImage(dices.getDice3());break;
-//		case 4: dices.getD2().setImage(dices.getDice4());break;
-//		case 5: dices.getD2().setImage(dices.getDice5());break;
-//		case 6: dices.getD2().setImage(dices.getDice6());break;
-//		}
-//		
-//		dices.getChildren().addAll(dices.getD1(), dices.getD2());
-		
-//		}
 	
 	public void speedWuerfeln(PlayerCircleManager pcManager, String who){
 		
@@ -157,8 +107,10 @@ public class DicePresenter {
 		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
 		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 		
-		gui.resetBackground();
-		gui.resetMoeglichkeiten();
+		if (istSpieler){gui.resetBackground();}
+		
+		kacheln.resetMoeglichkeiten();
+		
 		ausloeser.setWuerfelZahl(dice[0] + dice[1]);
 		System.out.println("==================================");
 		System.out.println("==================================");
