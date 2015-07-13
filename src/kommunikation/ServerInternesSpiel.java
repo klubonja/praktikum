@@ -60,10 +60,20 @@ public class ServerInternesSpiel {
 		serverBeweger.useSecretPassage(person);
 	}
 	
+	/**
+	 * 
+	 * @param position
+	 * @return true, falls man sich dahin bewegen darf
+	 */
 	public boolean checkMove(CluedoPosition position){
 		return serverBeweger.movePossible(position);
 	}
 	
+	/**
+	 * 
+	 * @param person
+	 * @return true, falls man von hier aus den Geheimgang nutzen darf.
+	 */
 	public boolean checkSecretPassage(Persons person){
 		return serverBeweger.secretPassagePossible(person);
 	}
