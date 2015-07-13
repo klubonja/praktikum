@@ -197,6 +197,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	public void addClient(String nick){
 		Platform.runLater(() -> {
 			clientNicks.add(nick);
+			System.out.println(nick+" single added");
 		});
 		
 	}
@@ -210,10 +211,10 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	
 	public void setClientNicks(ArrayList<String> nicks){
 		Platform.runLater(() -> {
-			clientNicks.remove(0, clientNicks.size()-1);
-			for (String nick : nicks)
-				clientNicks.add(nick);
-		});
-	
+			clientNicks.clear();
+			for (String nick : nicks){
+				addClient(nick);
+			}				
+		});	
 	}
 }
