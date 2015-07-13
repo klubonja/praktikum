@@ -2,18 +2,16 @@ package finderOfPaths;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Circle;
 import kacheln.Kachel;
+import kacheln.KachelContainer;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import view.AussergewohnlichesZugfenster;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
-import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
-import enums.PlayerStates;
 
 /**
  * Hier werden die MouseEvents der ballEbene ausgeloest und verwaltet.
@@ -56,6 +54,7 @@ public class Ausloeser {
 	private int gameid;
 	private CluedoGameClient network;
 
+	private KachelContainer kachelContainer;
 	/**
 	 * Konstruktor fuer den Ausloeser, welcher ballEbenen-clicks mit Bewegungen
 	 * verlinkt.
@@ -71,7 +70,8 @@ public class Ausloeser {
 	 */
 	public Ausloeser(KrasserStack stack, AussergewohnlichesZugfenster zug, BoardView gui, DerBeweger beweger, BallEbene2 ballEbene,
 			WahnsinnigTollerPathfinder pathfinder, Sucher sucher,
-			PlayerCircleManager pcm, int gameid, CluedoGameClient network) {
+			PlayerCircleManager pcm, int gameid, CluedoGameClient network, KachelContainer kachelContainer) {
+		this.kachelContainer = kachelContainer;
 		this.gui = gui;
 		this.gameid = gameid;
 		this.network = network;
@@ -129,15 +129,15 @@ public class Ausloeser {
 		if (gewuerfelt) {
 			gewuerfelt = false;
 
-			for (int iReihen = 0; iReihen < gui.getKachelArray().length - 1; iReihen++) {
-				for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length - 1; jSpalten++) {
-					if ((gui.getKachelArray()[iReihen][jSpalten].getLayoutX() <= event
+			for (int iReihen = 0; iReihen < gui.getLabelArray().length - 1; iReihen++) {
+				for (int jSpalten = 0; jSpalten < gui.getLabelArray()[iReihen].length - 1; jSpalten++) {
+					if ((gui.getLabelArray()[iReihen][jSpalten].getLayoutX() <= event
 							.getX())
-							&& (event.getX() < gui.getKachelArray()[iReihen][jSpalten]
+							&& (event.getX() < gui.getLabelArray()[iReihen][jSpalten]
 									.getLayoutX() + 29)
-							&& ((gui.getKachelArray()[iReihen][jSpalten]
+							&& ((gui.getLabelArray()[iReihen][jSpalten]
 									.getLayoutY() <= event.getY()) && (event
-									.getY() < gui.getKachelArray()[iReihen][jSpalten]
+									.getY() < gui.getLabelArray()[iReihen][jSpalten]
 									.getLayoutY() + 29))) {
 						aufServerWarten = new CluedoPosition(jSpalten, iReihen);
 						auxx.loginfo("positionen im ausloeser y : " +iReihen +" || x : " +jSpalten);
@@ -155,7 +155,7 @@ public class Ausloeser {
 		this.pcManager = pcManager;
 		try {
 
-			Kachel momentaneKachel = gui.getKachelArray()[iReihe][jSpalte];
+			Kachel momentaneKachel = kachelContainer.getKacheln()[iReihe][jSpalte];
 
 			auxx.logsevere("Reihe : " + iReihe + "  ||  Spalte : "
 					+ jSpalte);
@@ -167,8 +167,9 @@ public class Ausloeser {
 			startKachel.setVonHier(null);
 
 			auxx.logsevere("anfangs Kachel laut Auslöser x : "
-					+ gui.getColumnIndex(startKachel) + "  ||  y : "
-					+ gui.getRowIndex(startKachel));
+					
+					+ startKachel.getPosition().getX() + "  ||  y : "
+					+ startKachel.getPosition().getY());
 
 			resetAnweisungen();
 			anweisungenOrientations = charToOrientation(moeglichkeitenHierher);

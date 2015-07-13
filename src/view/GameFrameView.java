@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import kacheln.KachelContainer;
 import finderOfPaths.BallEbene2;
 import finderOfPaths.KrasserStack;
 import finderOfPaths.PlayerCircleManager;
@@ -38,11 +39,12 @@ public class GameFrameView extends GridPane{
 	private Stage stage;
 	private Scene scene;
 	public final PlayerCircleManager pcManager;
-
+	private KachelContainer kacheln;
 
 	
-	public GameFrameView(PlayerCircleManager pcm){
+	public GameFrameView(PlayerCircleManager pcm, KachelContainer kacheln){
 		pcManager = pcm;
+		this.kacheln = kacheln;
 
 		/*(2 Rows x 2 Columns). */
 		this.getRowConstraints().add(new RowConstraints(25));
@@ -61,7 +63,7 @@ public class GameFrameView extends GridPane{
 		/**
 		 * Adds the Game Board frame.
 		 */
-		board = new BoardView(25,26);
+		board = new BoardView(kacheln);
 
 		//Adds the Notes frame.
 		notes = new NotesView();

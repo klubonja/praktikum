@@ -13,9 +13,6 @@ import cluedoNetworkLayer.CluedoPlayer;
  */
 public class Sucher {
 
-	private BoardView boardView;
-	private BallEbene2 ballEbene;
-	
 	private DerBeweger beweger;
 	private Vorschlaege vorschlager;
 	private WahnsinnigTollerPathfinder pathfinder;
@@ -26,10 +23,8 @@ public class Sucher {
 	public PlayerCircleManager pcManager;
 	 
 	
-	public Sucher(BoardView boardView, BallEbene2 ballEbene, DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  char [][]anweisungen,PlayerCircleManager pcManager){
+	public Sucher(DerBeweger beweger, Vorschlaege vorschlager, WahnsinnigTollerPathfinder pathfinder,  char [][]anweisungen,PlayerCircleManager pcManager){
 		this.pcManager = pcManager;
-		this.boardView = boardView;
-		this.ballEbene = ballEbene;
 		this.beweger = beweger;
 		this.vorschlager = vorschlager;
 		this.pathfinder = pathfinder;

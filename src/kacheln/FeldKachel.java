@@ -29,8 +29,8 @@ public class FeldKachel extends Kachel {
 	 * @param istTuer ob die Kachel eine T�r ist
 	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
 	 */
-	public FeldKachel(String text, CluedoPosition position, boolean istRaum, Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher,char [][] moeglichkeitenVonHier, Kachel vonHier){
-		super(text, position, istRaum, orientierung,raum, istTuer, moeglichkeitenHierher,moeglichkeitenVonHier, vonHier);
+	public FeldKachel(CluedoPosition position, boolean istRaum, Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher,char [][] moeglichkeitenVonHier, Kachel vonHier){
+		super(position, istRaum, orientierung,raum, istTuer, moeglichkeitenHierher,moeglichkeitenVonHier, vonHier);
 	}
 	
 	
