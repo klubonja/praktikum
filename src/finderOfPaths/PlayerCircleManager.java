@@ -64,7 +64,11 @@ public class PlayerCircleManager {
 	
 	public int getIndex() {
 		return currentIndex;
-	}	
+	}
+	
+	public void setIndex(int index){
+		this.currentIndex = index;
+	}
 	
 	public int getSize(){
 		return players.size();

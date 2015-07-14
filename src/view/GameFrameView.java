@@ -1,6 +1,7 @@
 package view;
 
 
+import cluedoNetworkLayer.CluedoGameClient;
 import staticClasses.Config;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -39,12 +40,10 @@ public class GameFrameView extends GridPane{
 	private Stage stage;
 	private Scene scene;
 	public final PlayerCircleManager pcManager;
-	private KachelContainer kacheln;
 
 	
-	public GameFrameView(PlayerCircleManager pcm, KachelContainer kacheln){
+	public GameFrameView(PlayerCircleManager pcm, KachelContainer kacheln, CluedoGameClient client){
 		pcManager = pcm;
-		this.kacheln = kacheln;
 
 		/*(2 Rows x 2 Columns). */
 		this.getRowConstraints().add(new RowConstraints(25));
@@ -83,7 +82,9 @@ public class GameFrameView extends GridPane{
 		komplettesFeld = new KrasserStack(ballEbene, board, zugView);
 		
 		//Adds the frame for the Cards in hand.
-		hand = new HandFrameView(pcManager.getPlayerManager().get(0));
+//		hand = new HandFrameView(pcManager.getPlayerManager().get(0));
+		hand = new HandFrameView(client);
+
 		
 		/* Left part of the whole GameFrame,
 		   only for a better organising of objects. */

@@ -3,7 +3,17 @@ package kommunikation;
 import java.util.Stack;
 import java.util.logging.Level;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import org.json.JSONObject;
+
+import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.effect.Glow;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
 import kacheln.KachelContainer;
 import staticClasses.NetworkMessages;
@@ -63,10 +73,9 @@ public class Communicator {
 	public Communicator(CluedoGameClient ngame) {
 		network = ngame;
 		gameid = ngame.getGameId();
-		
 		pcManager = new PlayerCircleManager(network.getPlayers());
 		kacheln = new KachelContainer();
-		gameView = new GameFrameView(pcManager, kacheln);
+		gameView = new GameFrameView(pcManager, kacheln, network);
 		gameView.start();
 		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid, kacheln);
 		dicePresenter = gamePresenter.getDicePresenter();
@@ -152,17 +161,15 @@ public class Communicator {
 			
 	}
 
-	// SENDS MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT
 	public void suspect() {
 		String person = zugView.getPersonenListe().getValue();
 		String weapon = zugView.getWaffenListe().getValue();
-		String room = "Hall";
+		String room = "hall";
 		network.sendMsgToServer(NetworkMessages.suspicionMsg(
 				network.getGameId(),
 				NetworkMessages.statement(person, room, weapon)));
 	}
 
-	// SENDS A MESSAGE BUT SERVER DOESNT DO SHIT AFTER THAT AS WELL
 	public void accuse() {
 		String person = gameView.getHand().getPersons().getValue();
 		String weapon = gameView.getHand().getWeapons().getValue();
@@ -172,13 +179,34 @@ public class Communicator {
 
 	}
 
-	public void disprove() {
+	public void disprove(String card) {
+		network.sendMsgToServer(NetworkMessages.disprovedMsg(network.getGameId(), network.getMyNick(), card));
+	}
 
+	public void highlightCard(String card) {
+		for (int i = 0; i < gameView.getHand().getHandURI().size(); i++) {
+			if (card.equals(gameView.getHand().getHandURI().get(i))) {
+				gameView.getHand().getHand().get(i).setEffect(new Glow(0.5));
+			}
+		}
+	}
+	
+	public void setCardFunction(String card){
+		for (int i = 0; i < gameView.getHand().getHandURI().size(); i++) {
+			if (card.equals(gameView.getHand().getHandURI().get(i))) {
+				gameView.getHand().getHand().get(i).setOnMousePressed(e -> {
+					disprove(card);
+				});
+				gameView.getHand().getHand().get(i).setOnMouseReleased(e -> {
+					gamePresenter.getHandFramePresenter().removeEffects();
+				});
+			}
+		}
 	}
 
 	public void showPoolCards() {
-		//if im pool
-		
+		// if im pool
+
 	}
 
 	public void setNextTurn(){
@@ -241,8 +269,7 @@ public class Communicator {
 		gameView.getHand().getAccuse().setOnMouseClicked(e -> {
 			accuse();
 		});
-		
-		
+
 		// END TURN
 		gameView.getHand().getEndTurn().setOnMouseClicked(e -> endTurn());
 		
@@ -268,9 +295,51 @@ public class Communicator {
 			public void updateStatesToRolls() {
 				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.roll_dice);
 			}
+			
+			public void changeLabel(String str){
+				gameView.getHand().getText().setText(str);
+			}
 
 			
 			
+			public void compareCards(String person, String weapon, String room){
+				switch (person) {
+				case "red":
+					person = "Fräulein Gloria";
+					break;
+				case "yellow":
+					person = "Oberts von Gatow";
+					break;
+				case "white":
+					person = "Frau Weiss";
+					break;
+				case "green":
+					person = "Reverend Green";
+					break;
+				case "blue":
+					person = "Baronin von Porz";
+					break;
+				case "purple":
+					person = "Professor Bloom";
+					break;
+				}
+				int currentIndex = pcManager.getIndex();
+				pcManager.next();
+				while(currentIndex != pcManager.getIndex()){
+				for(int i = 0; i < pcManager.getPlayerManager().size(); i++){
+					for(String card : pcManager.getCurrentPlayer().getCards()){
+					if (card.equals(person) ||
+						card.equals(weapon) ||
+						card.equals(room)) {
+								highlightCard(card);
+								setCardFunction(card);
+								pcManager.setIndex(currentIndex);
+					}
+					}
+					pcManager.next();
+				}
+				}
+			}
 	
 	/*
 	 * (check) start game (check) roll dice --> letztes Bild ihre

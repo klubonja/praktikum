@@ -26,21 +26,33 @@ public class CluedoGameClient extends CluedoGame {
 		myNick = server.getMyNick();
 	}
 
-	public void compareCards(String person, String weapon, String room) {
-		for (CluedoPlayer p : players) {
-			if (p.getNick().equals(myNick)) {
-				for (String card : p.getCards()) {
-					if (card.equals(person) || card.equals(weapon)
-							|| card.equals(room)) {
-						this.sendMsgToServer(NetworkMessages.disproveMsg(
-								this.gameId, card));
-					} else {
-						this.sendMsgToServer(NetworkMessages
-								.no_disproveMsg(this.gameId));
-					}
-				}
+	public void somebodyIsAccusing(String nick, String person, String weapon,
+			String room) {
+		String str = "The player " + nick + " is trying to solve the mystery!"
+				+ "\n" + "Accused: " + person + " " + weapon + " " + room;
+		changeLabel(str);
+	}
+
+	public void somebodyFailedToAccuse(String person, String weapon, String room) {
+		String str = "Accusation failed for: " + person + " " + weapon + " "
+				+ room;
+		changeLabel(str);
+	}
+
+	public void changeLabel(String str) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				communicator.changeLabel(str);
 			}
-		}
+		});
+	}
+
+	public void compareCards(String person, String weapon, String room) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				communicator.compareCards(person, weapon, room);
+			}
+		});
 	}
 
 	public ServerItem getServer() {
@@ -86,7 +98,7 @@ public class CluedoGameClient extends CluedoGame {
 		Platform.runLater(() -> {
 			communicator.itsYourTurn();
 		});
-		
+
 	}
 	
 	public void itsSomeonesTurn(){
@@ -134,14 +146,14 @@ public class CluedoGameClient extends CluedoGame {
 		Platform.runLater(() -> {
 			communicator.updateStatesToNothing();
 		});
-		
+
 	}
 	
 	public void currentPlayerToRolls() {
 		Platform.runLater(() -> {
 			communicator.updateStatesToRolls();
 		});
-		
+
 	}
 	
 	public void searchAndDestroyOrder(ArrayList<String> order){
@@ -175,8 +187,8 @@ public class CluedoGameClient extends CluedoGame {
 	}
 
 
-	public void disprove() {
-		communicator.disprove();
+	public void disprove(String card) {
+		communicator.disprove(card);
 	}
 	
 	public ArrayList<String> getWatchers() {

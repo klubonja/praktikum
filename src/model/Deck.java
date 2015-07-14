@@ -39,13 +39,21 @@ public class Deck {
 		deck.addAll(rooms);
 		deck.addAll(weapons);
 		deck.addAll(persons);
+		rooms.remove("pool");
 	}
 	
 	public void dealCluedoCards(){
 		rooms.remove("pool");
 		
 		winningHand = new String[3];
-		String randomPerson = choseRandom(persons);
+		ArrayList<String> randomPersons = new ArrayList<String>();
+		randomPersons.add("red");
+		randomPersons.add("yellow");
+		randomPersons.add("white");
+		randomPersons.add("green");
+		randomPersons.add("blue");
+		randomPersons.add("purple");
+		String randomPerson = choseRandom(randomPersons);
 		String randomWeapon = choseRandom(weapons);
 		String randomRoom = choseRandom(rooms);
 		winningHand[0] = randomPerson;
@@ -54,7 +62,7 @@ public class Deck {
 		persons.remove(randomPerson);
 		weapons.remove(randomWeapon);
 		rooms.remove(randomRoom);
-		System.out.println("AND THE FUCKING WINNER IIIIIIIIIIIIIIIIS: " + winningHand[0] + " " + winningHand[1] + " "  + winningHand[2]);
+		System.out.println("AND THE WINNER IIIIIIIIIIIIIIIIS: " + winningHand[0] + " " + winningHand[1] + " "  + winningHand[2]);
 		
 		makeDeck();
 		

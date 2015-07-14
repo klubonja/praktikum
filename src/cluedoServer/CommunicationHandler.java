@@ -169,7 +169,6 @@ class CommunicationHandler implements Runnable {
 		runThread = false; // thread will run out without further notice
 	}
 
-	
 	private void serverLogic(String message){
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(message));
         checker.validate();
@@ -253,27 +252,71 @@ class CommunicationHandler implements Runnable {
    	   }
      	   
    	   	else if (checker.getType().equals("accuse")) {
-
-				// DO IT LIKE A
-				// BROTHER*************************************************
-
-		} 
-   	   	else if (checker.getType().equals("suspicion")) {
-			dataManager.notifyAll(
-					NetworkMessages.suspicionMsg(
-							checker.getMessage().getInt("gameID"),
-							NetworkMessages.statement(
-							checker.getMessage().getString("person"),
-							checker.getMessage().getString("room"),
-							checker.getMessage().getString("weapon")
-							))
-						);
-		} 
-		else if(checker.getType().equals("disprove")){
-			
-		} 
-		else if(checker.getType().equals("no disprove")) {
-			
+			int id = checker.getMessage().getInt("gameID");
+			JSONObject json = checker.getMessage().getJSONObject(
+					"statement");
+			String person = json.getString("person");
+			String room = json.getString("room");
+			String weapon = json.getString("weapon");
+			String winnerPerson = dataManager.getGameByID(id).getWinningStatement().getPerson().getPersonName();
+			String winnerRoom = dataManager.getGameByID(id).getWinningStatement().getRoom().getName();
+			String winnerWeapon = dataManager.getGameByID(id).getWinningStatement().getWeapon().getName();
+			dataManager.notifyAll(NetworkMessages.accuseMsg(
+					id, NetworkMessages.statement(person, room, weapon))
+					);
+			switch (winnerPerson) {
+			case "Fräulein Gloria":
+				winnerPerson = "red";
+				break;
+			case "Oberts von Gatow":
+				winnerPerson = "yellow";
+				break;
+			case "Frau Weiss":
+				winnerPerson = "white";
+				break;
+			case "Reverend Green":
+				winnerPerson = "green";
+				break;
+			case "Baronin von Porz":
+				winnerPerson = "blue";
+				break;
+			case "Professor Bloom":
+				winnerPerson = "purple";
+				break;
+			}
+			if(person.equals(winnerPerson) &&
+				weapon.equals(winnerWeapon) &&
+				room.equals(winnerRoom)){
+				dataManager.notifyAll(NetworkMessages.game_endedMsg(id,
+						dataManager.getGameByID(id).getWinningStatement()));
+			} else {
+				dataManager.notifyAll(NetworkMessages.
+				wrong_accusationMsg(id, NetworkMessages.
+				statement(person, room, weapon)));
+				//KICK PLAYER OUT OF THE GAME
+			}
+		} else
+			if (checker.getType().equals("suspicion")) {
+			int id = checker.getMessage().getInt("gameID");
+			JSONObject json = checker.getMessage().getJSONObject("statement");
+			String person = json.getString("person").toString();
+			String room = json.getString("room").toString();
+			String weapon = json.getString("weapon").toString();
+			dataManager.notifyAll(NetworkMessages.suspicionMsg(
+					id, NetworkMessages.statement(person, room, weapon))
+					);
+		} else
+			if (checker.getType().equals("disprove")) {
+				String pool = "pool";
+				int id = checker.getMessage().getInt("gameID");
+				String card = checker.getMessage().getString("card");
+				dataManager.notifyAll(NetworkMessages.disprovedMsg(id, client.getNick(), pool));
+				client.sendMsg(NetworkMessages.disproveMsg(client.getGameId(), card));
+				
+		} else 
+			if (checker.getType().equals("no disprove")) {
+			int id = checker.getMessage().getInt("gameID");
+			dataManager.notifyAll(NetworkMessages.no_disproveMsg(id));
 		}
    	   
    	   else if(checker.getType().equals("end turn")){

@@ -1,6 +1,5 @@
 package cluedoClient;
 
-
 import java.util.ArrayList;
 
 import json.CluedoJSON;
@@ -17,26 +16,25 @@ import cluedoNetworkLayer.CluedoPosition;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
 
-
 class IncomingHandler implements Runnable {
-	
+
 	DataGuiManagerClientSpool dataGuiManager;
 	ServerItem server;
-	
+
 	boolean localRun = true;
 	boolean globalRun = true;
-	
-	
-	IncomingHandler(DataGuiManagerClientSpool dgm,ServerItem server,boolean globalRun,boolean localRun){
+
+	IncomingHandler(DataGuiManagerClientSpool dgm, ServerItem server,
+			boolean globalRun, boolean localRun) {
 		dataGuiManager = dgm;
 		this.server = server;
 		this.localRun = localRun;
 		this.globalRun = globalRun;
 		setListener();
 	}
-	
+
 	@Override
-	public void run() {	
+	public void run() {
 		getGamesList();
 		while (globalRun && localRun) {
 			try {
@@ -47,22 +45,50 @@ class IncomingHandler implements Runnable {
 			catch (Exception e){
 				auxx.logsevere("error on incomming handler client", e);
 				killConnection();
-				dataGuiManager.refreshGamesListServer(server);// refresh view before running out, its a differnet thread anyway
-			}			
+				dataGuiManager.refreshGamesListServer(server);// refresh view
+																// before
+																// running out,
+																// its a
+																// differnet
+																// thread anyway
+			}
 		}
-		
-		killConnection();	
+
+		killConnection();
 	}
-	
-	private void incommingLogic(String msg){
+
+	private void incommingLogic(String msg) {
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(
 				new CluedoJSON(new JSONObject(msg)));
 		checker.validate();
-		if (checker.isValid()){				
-			if (checker.getType().equals("game created")){
+		if (checker.isValid()) {
+			if (checker.getType().equals("game created")) {
 				int gameID = checker.getMessage().getInt("gameID");
-				JSONObject playerJSON = checker.getMessage().getJSONObject("player");
-				dataGuiManager.addGameToServer(server,gameID, playerJSON.getString("nick"),playerJSON.getString("color"));
+				JSONObject playerJSON = checker.getMessage().getJSONObject(
+						"player");
+				dataGuiManager.addGameToServer(server, gameID,
+						playerJSON.getString("nick"),
+						playerJSON.getString("color"));
+			}
+
+			else
+				if (checker.getType().equals("player added")) {
+				int gameID = checker.getMessage().getInt("gameID");
+				JSONObject player = checker.getMessage()
+						.getJSONObject("player");
+				dataGuiManager.joinGameOnServer(server, gameID,
+						player.getString("color"), player.getString("nick"));
+
+			}
+			
+				else
+				if (checker.getType().equals("game started")) {
+				ArrayList<String> orderlist = auxx.jsonArrayToArrayList(checker
+						.getMessage().getJSONArray("order"));
+				dataGuiManager.startGameOnServer(server, checker.getMessage()
+						.getInt("gameID"),
+						checker.getMessage().getString("gamestate"), orderlist);
+
 			}
 			
 			else if (checker.getType().equals("player added")){
@@ -95,11 +121,54 @@ class IncomingHandler implements Runnable {
         										 )
         							);	        		  
 			} 
-			else if(checker.getType().equals("suspicion")){
-				server.getGameByGameID(checker.getMessage().getInt("gameID")).compareCards(
-						checker.getMessage().getString("person"),
-						checker.getMessage().getString("weapon"),
-						checker.getMessage().getString("room")
+				else
+				if (checker.getType().equals("suspicion")) {
+				JSONObject json = checker.getMessage().getJSONObject(
+						"statement");
+				String person = json.getString("person").toString();
+				String weapon = json.getString("weapon").toString();
+				String room = json.getString("room").toString();
+				server.getGameByGameID(checker.getMessage().getInt("gameID"))
+						.compareCards(person, room, weapon);
+			}
+				
+				else
+					if (checker.getType().equals("accuse")) {
+				JSONObject json = checker.getMessage().getJSONObject(
+						"statement");
+				String person = json.getString("person").toString();
+				String weapon = json.getString("weapon").toString();
+				String room = json.getString("room").toString();
+				server.getGameByGameID(checker.getMessage().getInt("gameID"))
+						.somebodyIsAccusing(
+						server.getGameByGameID(checker.getMessage().getInt("gameID")).getMyNick(),
+						person, weapon, room
+						);
+			}
+					
+			else
+				if(checker.getType().equals("wrong accusation")){
+					JSONObject json = checker.getMessage().getJSONObject(
+							"statement");
+					String person = json.getString("person").toString();
+					String weapon = json.getString("weapon").toString();
+					String room = json.getString("room").toString();
+					server.getGameByGameID(checker.getMessage().getInt("gameID")).
+					somebodyFailedToAccuse(person, weapon, room);
+			} 
+				
+				else
+				if (checker.getType().equals("disproved")) {
+				server.getGameByGameID(checker.getMessage().getInt("gameID"))
+				.changeLabel("Player: "+
+				checker.getMessage().getString("nick")
+				+ " had a card.");
+			} 
+				
+				else
+					if(checker.getType().equals("disprove")){
+				server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
+						"Disproved with: " + checker.getMessage().getString("card")
 						);
 			}
 			else if (checker.getType().equals("game ended")){
@@ -250,21 +319,19 @@ class IncomingHandler implements Runnable {
 		
 		auxx.logfine("Server login response was : " +msg);
 	}
-	
-	
-	
-	public void setListener(){}
-	
-	
-	
-	public void killConnection(){
+
+	public void setListener() {
+	}
+
+	public void killConnection() {
 		localRun = false;
 		globalRun = false;
-		dataGuiManager.setStatus(server.getGroupName()+" said FUCKOFF (kindof)");
+		dataGuiManager.setStatus(server.getGroupName()
+				+ " said FUCKOFF (kindof)");
 		dataGuiManager.removeServer(server);
 		dataGuiManager.setServer();
-		
-		
-		auxx.logsevere("incomming handler thread runnning outon server : "+server.getGroupName());
+
+		auxx.logsevere("incomming handler thread runnning outon server : "
+				+ server.getGroupName());
 	}
 }

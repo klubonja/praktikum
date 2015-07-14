@@ -65,6 +65,7 @@ public class CluedoGameServer extends CluedoGame {
 		winningStatement = new WinningStatement(
 				Persons.getPersonByColor(wh[0]),
 				Weapons.getWeaponByName(wh[1]), Rooms.getRoomByName(wh[2]));
+		System.out.println("WINNERRRRRR " + wh[0] + wh[1] + wh[2]);
 
 		String[][] playerHands = deck.getPlayerHands();
 		for (int i = 0; i < players.size(); i++) {
