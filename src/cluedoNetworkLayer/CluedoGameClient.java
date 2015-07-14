@@ -153,8 +153,20 @@ public class CluedoGameClient extends CluedoGame {
 		Platform.runLater(() -> {
 			communicator.updateStatesToRolls();
 		});
-
 	}
+	
+	public void currentPlayerToAccuse(){
+		Platform.runLater(() -> {
+			communicator.updateStatesToAccuse();}
+		);}
+	public void currentPlayerToSuspect(){
+		Platform.runLater(() -> {
+			communicator.updateStatesToSuspect();}
+		);}
+	public void currentPlayerToDisprove(){
+		Platform.runLater(() -> {
+			communicator.updateStatesToDisprove();}
+		);}
 	
 	public void searchAndDestroyOrder(ArrayList<String> order){
 		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone();

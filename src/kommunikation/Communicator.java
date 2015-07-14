@@ -166,7 +166,7 @@ public class Communicator {
 		String weapon = zugView.getWaffenListe().getValue();
 		String room = "hall";
 		network.sendMsgToServer(NetworkMessages.suspicionMsg(
-				network.getGameId(),
+				gameid,
 				NetworkMessages.statement(person, room, weapon)));
 	}
 
@@ -180,7 +180,8 @@ public class Communicator {
 	}
 
 	public void disprove(String card) {
-		network.sendMsgToServer(NetworkMessages.disprovedMsg(network.getGameId(), network.getMyNick(), card));
+		network.sendMsgToServer(NetworkMessages.disprovedMsg(
+				network.getGameId(), network.getMyNick(), card));
 	}
 
 	public void highlightCard(String card) {
@@ -296,9 +297,22 @@ public class Communicator {
 				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.roll_dice);
 			}
 			
+			public void updateStatesToSuspect(){
+				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.suspect);
+			}
+			
+			public void updateStatesToAccuse(){
+				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.accuse);
+			}
+			
+			public void updateStatesToDisprove(){
+				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.disprove);
+			}
+			
 			public void changeLabel(String str){
 				gameView.getHand().getText().setText(str);
 			}
+			
 
 			
 			
@@ -326,16 +340,17 @@ public class Communicator {
 				int currentIndex = pcManager.getIndex();
 				pcManager.next();
 				while(currentIndex != pcManager.getIndex()){
-				for(int i = 0; i < pcManager.getPlayerManager().size(); i++){
 					for(String card : pcManager.getCurrentPlayer().getCards()){
+						System.out.println(currentIndex);
 					if (card.equals(person) ||
 						card.equals(weapon) ||
 						card.equals(room)) {
 								highlightCard(card);
 								setCardFunction(card);
 								pcManager.setIndex(currentIndex);
+								break;
 					}
-					}
+					currentIndex++;
 					pcManager.next();
 				}
 				}
