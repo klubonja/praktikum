@@ -28,6 +28,7 @@ import enums.PlayerStates;
 public class Ausloeser {
 
 	private boolean gewuerfelt;
+	public boolean wow;
 
 	private BoardView gui;
 	private BallEbene2 ballEbene;
@@ -91,6 +92,7 @@ public class Ausloeser {
 	public void zuweisung(PlayerCircleManager pcManager) {
 		this.pcManager = pcManager;
 		System.out.println("zuweisung");
+		wow = true;
 		zug.YESgangImage.setOnMouseClicked(e -> {beweger
 				.useSecretPassage(pcManager);
 	});
@@ -160,7 +162,7 @@ public class Ausloeser {
 			
 			Kachel momentaneKachel = gui.getKachelArray()[iReihe][jSpalte];
 
-			System.out.println("Reihe : " + iReihe + "  ||  Spalte : "
+			auxx.logsevere("Reihe : " + iReihe + "  ||  Spalte : "
 					+ jSpalte);
 
 			char[] moeglichkeitenHierher = momentaneKachel

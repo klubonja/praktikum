@@ -1,6 +1,7 @@
 package finderOfPaths;
 
 import kacheln.Kachel;
+import staticClasses.auxx;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Orientation;
@@ -103,6 +104,10 @@ public class WahnsinnigTollerPathfinder {
 	public void findThatPathBetter(int wuerfelZahl, PlayerCircleManager pcManager){
 		this.pcManager = pcManager;
 		currentPlayer = pcManager.getCurrentPlayer();
+		
+		auxx.logsevere("pathfinder.findThatPathBetter");
+		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
+		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 		
 		refreshChecks();
 

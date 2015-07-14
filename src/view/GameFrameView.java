@@ -38,8 +38,8 @@ public class GameFrameView extends GridPane{
 	
 	private Stage stage;
 	private Scene scene;
-	private CluedoGameClient client;
 	public final PlayerCircleManager pcManager;
+	private CluedoGameClient client;
 
 
 

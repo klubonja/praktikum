@@ -1,5 +1,7 @@
 package cluedoNetworkLayer;
 
+import java.util.ArrayList;
+
 import javafx.application.Platform;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
@@ -60,11 +62,16 @@ public class CluedoGameClient extends CluedoGame {
 	}
 
 	@Override
-	public boolean start() {
+	public boolean start(){
+		return false;
+	}
+	
+	@Override
+	public boolean start(ArrayList <String> order) {
 		auxx.loginfo("game " + getGameId() + " started");
 
 		Platform.runLater(() -> {
-			communicator = new Communicator(this);
+			communicator = new Communicator(this, order);
 			communicator.startGame();
 			communicator.setTitle(myNick + " playing on server "
 					+ server.getGroupName() + " Game : " + gameId);
@@ -121,7 +128,13 @@ public class CluedoGameClient extends CluedoGame {
 		});
 
 	}
-
+	
+	public void changePlayer(){
+		Platform.runLater(() -> {
+			communicator.changePlayer();
+		});
+	}
+	
 	public void currentPlayerToRolls() {
 		Platform.runLater(() -> {
 			communicator.updateStatesToRolls();
