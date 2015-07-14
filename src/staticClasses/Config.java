@@ -31,6 +31,11 @@ public abstract class Config {
 	
 	public final static int MESSAGE_BUFFER = 4096*3;
 	
+	public final static int HOWMANYOFDEMCARDS = 19;
+	public final static int ALLOFDEMCARDS = 21;
+	
+	public final static int COLUMNS = 25;
+	public final static int ROWS = 26;
 	
 	//public final static int TCP_PORT = 1200;	
 	public final static int TCP_PORT = auxx.getRandInt(1025,49151);	

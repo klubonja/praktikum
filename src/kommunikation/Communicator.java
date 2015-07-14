@@ -1,12 +1,20 @@
-package view;
+package kommunikation;
 
 import java.util.Stack;
 import java.util.logging.Level;
 
 import javafx.event.EventHandler;
 import javafx.stage.WindowEvent;
+import kacheln.KachelContainer;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
+import view.AussergewohnlichesZugfenster;
+import view.AussergewohnlichesZugfensterPresenter;
+import view.BoardView;
+import view.DicePresenter;
+import view.DiceView;
+import view.GameFramePresenter;
+import view.GameFrameView;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
@@ -49,6 +57,7 @@ public class Communicator {
 	private CluedoGameClient network;
 	//private ArrayList <String> order;
 	public PlayerCircleManager pcManager;
+	private KachelContainer kacheln;
 	public final int gameid;
 
 	public Communicator(CluedoGameClient ngame) {
@@ -56,9 +65,10 @@ public class Communicator {
 		gameid = ngame.getGameId();
 		
 		pcManager = new PlayerCircleManager(network.getPlayers());
-		gameView = new GameFrameView(pcManager);
+		kacheln = new KachelContainer();
+		gameView = new GameFrameView(pcManager, kacheln);
 		gameView.start();
-		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid);
+		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid, kacheln);
 		dicePresenter = gamePresenter.getDicePresenter();
 		zugPresenter = gamePresenter.getZugPresenter();
 
@@ -92,10 +102,6 @@ public class Communicator {
 		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
 		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 		
-		// Hier ist noch alles richtig
-		
-		// Hier passiert schon mal nichts.
-		testButtons();
 		auxx.loginfo("Oh my giddy giddy gosh");
 		
 	}
@@ -107,7 +113,7 @@ public class Communicator {
 	}
 
 	public void addChatMsg(String msg) {
-		gamePresenter.getGfv().chat.chatArea.appendText(msg + "\n");
+		gameView.getChat().getChatArea().appendText(msg + "\n");
 	}
 
 	public GameFrameView getGameView() {
@@ -210,12 +216,6 @@ public class Communicator {
 		gameView.close();
 	}
 	
-	public void testButtons(){
-//		ballEbene.getFremdBewegen().setOnAction(e -> move(new int [] hans = new int {5,9}));
-		int [] cheater = {6,6};
-		ballEbene.getGeheimgang().setOnAction(e -> useSecretPassage());
-	}
-
 	public boolean checkForValidMovement(CluedoPosition position) {
 		return vorschlager.hierHerValide(position);
 

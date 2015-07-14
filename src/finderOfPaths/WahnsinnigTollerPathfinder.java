@@ -1,6 +1,7 @@
 package finderOfPaths;
 
 import kacheln.Kachel;
+import kacheln.KachelContainer;
 import staticClasses.auxx;
 import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -60,12 +61,6 @@ public class WahnsinnigTollerPathfinder {
 	private int jetzigeReihe;
 	
 	/**
-	 * Das Spielfeld und die Ballebene mit welcher gerechnet wird.
-	 */
-	private BoardView gui;
-	private BallEbene2 ballEbene;
-	
-	/**
 	 * Der momentane String mit Anweisungen
 	 */
 	private String currentEntry;
@@ -88,10 +83,12 @@ public class WahnsinnigTollerPathfinder {
 	 */
     
     public PlayerCircleManager pcManager;
-	public WahnsinnigTollerPathfinder(BoardView gui, BallEbene2 ballEbene,PlayerCircleManager pcm){
+    
+    private KachelContainer kacheln;
+    
+	public WahnsinnigTollerPathfinder(PlayerCircleManager pcm, KachelContainer kacheln){
 		pcManager = pcm;
-		this.gui = gui;
-		this.ballEbene = ballEbene;
+		this.kacheln = kacheln;
 		
 	}
 	
@@ -112,7 +109,7 @@ public class WahnsinnigTollerPathfinder {
         
         checkForRoom();
         
-        if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
+        if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
 	        for (welcheKachel = 0; welcheKachel < tuerCounter; welcheKachel++){
 	        	
 	        	refreshChecks();
@@ -147,15 +144,15 @@ public class WahnsinnigTollerPathfinder {
 	}
 		
 	public void checkForRoom(){
-		if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
+		if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
 
 			int welcheKachel = 0;
 
-			for (int iReihen = 0; iReihen < gui.getKachelArray().length; iReihen++){
-				for (int jSpalten = 0; jSpalten < gui.getKachelArray()[iReihen].length; jSpalten++){
+			for (int iReihen = 0; iReihen < kacheln.getKacheln().length; iReihen++){
+				for (int jSpalten = 0; jSpalten < kacheln.getKacheln()[iReihen].length; jSpalten++){
 						
-					Kachel momentanteKachel = gui.getKachelArray()[jetzigeReihe][jetzigeSpalte];
-					Kachel vergleichsKachel = gui.getKachelArray()[iReihen][jSpalten];
+					Kachel momentanteKachel = kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte];
+					Kachel vergleichsKachel = kacheln.getKacheln()[iReihen][jSpalten];
 						
 					if (momentanteKachel.getRaum() == vergleichsKachel.getRaum() && vergleichsKachel.isIstTuer()){
 						suchKacheln[welcheKachel] = vergleichsKachel;
@@ -267,7 +264,7 @@ public class WahnsinnigTollerPathfinder {
 			return false;
 		}
 		
-		if ( !gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
+		if ( !kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
 			
 			if (jetzigeReihe == 25 && jetzigeSpalte == 9){
 				System.out.println("Cheater");
@@ -275,8 +272,8 @@ public class WahnsinnigTollerPathfinder {
 			return true;
 		}
 
-		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
-				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.N){
+		else if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstTuer()
+				&& kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.N){
 					letztesMalTuer = true;
 					tuerRichtung = "S";
 					return false;
@@ -307,12 +304,12 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 
-		if ( !gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
+		if ( !kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
 			return true;
 		}
 		
-		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
-				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.W){
+		else if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstTuer()
+				&& kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.W){
 					letztesMalTuer = true;
 					tuerRichtung = "E";
 					return false;
@@ -340,12 +337,12 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 		
-		if ( !gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
+		if ( !kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
 			return true;
 		}
 
-		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
-				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.S){
+		else if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstTuer()
+				&& kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.S){
 					letztesMalTuer = true;
 					tuerRichtung = "N";
 					return false;
@@ -376,12 +373,12 @@ public class WahnsinnigTollerPathfinder {
 		
 		refreshRoot();
 		
-		if ( !gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
+		if ( !kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
 			return true;
 		}
 		
-		else if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstTuer()
-				&& gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.O){
+		else if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum() &&  kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstTuer()
+				&& kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].getOrientierung()==Orientation.O){
 					letztesMalTuer = true;
 					tuerRichtung = "W";
 					return false;
@@ -430,7 +427,7 @@ public class WahnsinnigTollerPathfinder {
         if(currentEntry.length() == maximaleSchritte) {
             if (checkThatPlace(currentEntry)){
             	moeglichkeiten[welcheMoeglichkeit] = currentEntry.toCharArray();
-                if (gui.getKachelArray()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
+                if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
                 	mehrereMoeglichkeiten[welcheKachel] = moeglichkeiten;
                 	setMehrereMoeglichkeiten(mehrereMoeglichkeiten);
                 }

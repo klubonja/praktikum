@@ -19,7 +19,7 @@ import enums.Rooms;
  * Kachel hat die Unterklassen Feldkachel und Raumkachel.
  *
  */
-public class Kachel extends Label {
+public class Kachel{
 
 	private boolean istRaum;
 	private boolean istTuer;
@@ -40,8 +40,7 @@ public class Kachel extends Label {
 	 * @param istTuer ob die Kachel eine T�r ist
 	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
 	 */
-	public Kachel (String text, CluedoPosition position, boolean istRaum,Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
-		super(text);
+	public Kachel (CluedoPosition position, boolean istRaum,Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
 		this.position = position;
 		this.istRaum = istRaum;
 		this.orientierung = orientierung;

@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
+import kacheln.KachelContainer;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
@@ -25,9 +26,8 @@ public class GameFramePresenter {
 	
 	
 	private CluedoGameClient networkGame;
-	private GameFrameView gfv;
 	private CluedoPlayer currentPlayer;
-	Circle playerCircle;
+	private GameFrameView gfv;
 	private Stage stage;
 	
 	private Ausloeser ausloeser;
@@ -44,15 +44,16 @@ public class GameFramePresenter {
 	private DicePresenter dicePresenter;
 	private AussergewohnlichesZugfensterPresenter zugPresenter;
 	public final PlayerCircleManager pcManager;
+	private KachelContainer kacheln;
 	private int gameid;
 
-	public GameFramePresenter(GameFrameView gfv,CluedoGameClient game,PlayerCircleManager pcm, int gameid){
-		networkGame = game;
+	public GameFramePresenter(GameFrameView gfv, CluedoGameClient game,PlayerCircleManager pcm, int gameid, KachelContainer kacheln){
+		this.kacheln = kacheln;
 		this.gfv = gfv;
+		networkGame = game;
 		this.gameid = gameid;
 		pcManager = pcm;
 		this.currentPlayer = pcManager.getCurrentPlayer();
-		this.playerCircle = pcManager.getCurrentCircle();
 		
 		startEvents();
 		setHandler();
@@ -70,15 +71,15 @@ public class GameFramePresenter {
 		
 		zugPresenter = new AussergewohnlichesZugfensterPresenter(gfv.getZugView(), pcManager);
 
-		raumBeweger = new RaumBeweger(gfv.board,pcManager);		
-		beweger = new DerBeweger(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, gfv.ballEbene, raumBeweger,pcManager);
-		vorschlager = new Vorschlaege(gfv.board,pcManager);
-		pathfinder = new WahnsinnigTollerPathfinder(gfv.board, gfv.ballEbene,pcManager);
+		raumBeweger = new RaumBeweger(pcManager, kacheln);		
+		beweger = new DerBeweger(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, gfv.ballEbene, raumBeweger,pcManager, kacheln);
+		vorschlager = new Vorschlaege(gfv.board,pcManager, kacheln);
+		pathfinder = new WahnsinnigTollerPathfinder(pcManager, kacheln);
 		
-		sucher = new Sucher(gfv.board, gfv.ballEbene, beweger, vorschlager, pathfinder,   anweisungen,pcManager);
-		ausloeser = new Ausloeser(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, beweger, gfv.ballEbene, pathfinder, sucher,pcManager, gameid, networkGame);
+		sucher = new Sucher(vorschlager, pathfinder, pcManager);
+		ausloeser = new Ausloeser(gfv.getKomplettesFeld(), gfv.getZugView(), gfv.board, beweger, gfv.ballEbene, pathfinder, pcManager, gameid, networkGame, kacheln);
 
-		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher, pcManager, gameid, networkGame);
+		dicePresenter = new DicePresenter(gfv.dice, gfv,ausloeser, gfv.board, sucher, pcManager, gameid, networkGame, kacheln);
 		
 		
 		test();

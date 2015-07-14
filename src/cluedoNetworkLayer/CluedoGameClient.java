@@ -6,9 +6,9 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import javafx.application.Platform;
+import kommunikation.Communicator;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
-import view.Communicator;
 import cluedoClient.ServerItem;
 import enums.GameStates;
 

@@ -1,7 +1,5 @@
 package finderOfPaths;
 
-import java.awt.Font;
-
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
@@ -12,6 +10,8 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import kacheln.FeldKachel;
 import kacheln.Kachel;
+import staticClasses.Config;
+import view.KrassesLabel;
 import cluedoNetworkLayer.CluedoPosition;
 
 /**
@@ -31,7 +31,7 @@ public class BallEbene2 extends GridPane{
 	private Button fremdWuerfeln;
 	private Button fremdBewegen;
 	
-	private Kachel [][] kachelArray;
+	private KrassesLabel [][] labelArray;
 	
 	private char [] keineMoeglichkeiten;
 	private char [][] keineMoeglichkeiten2;
@@ -40,7 +40,6 @@ public class BallEbene2 extends GridPane{
 	
 	public BallEbene2(PlayerCircleManager pcm){
 		pcManager = pcm;
-		kachelArray = new Kachel[25][24];
 		layoutStuff();
 		
 	}
@@ -53,19 +52,22 @@ public class BallEbene2 extends GridPane{
 	
 	public void layoutStuff(){
 		
+		labelArray = new KrassesLabel [Config.ROWS][Config.COLUMNS];
+		
 		BackgroundFill fills = new BackgroundFill(Color.TRANSPARENT, null, null);
 		Background hintergrund = new Background(fills);
 		this.setBackground(hintergrund);
 		
-		for (int iReihen = 0; iReihen < kachelArray.length;iReihen++){
-			for (int jSpalten = 0; jSpalten < kachelArray[iReihen].length;jSpalten++ ){
+		for (int iReihen = 0; iReihen < labelArray.length;iReihen++){
+			for (int jSpalten = 0; jSpalten < labelArray[iReihen].length;jSpalten++ ){
 				String aufschrift = +iReihen +"" +jSpalten;
-				kachelArray[iReihen][jSpalten] = new FeldKachel(aufschrift,  new CluedoPosition(jSpalten,iReihen), false, null,null, false, keineMoeglichkeiten, keineMoeglichkeiten2, null);
-				this.add(kachelArray[iReihen][jSpalten], jSpalten, iReihen);
+				labelArray[iReihen][jSpalten] = new KrassesLabel(aufschrift);
 				
-				kachelArray[iReihen][jSpalten].setMinHeight(29);
-				kachelArray[iReihen][jSpalten].setMinWidth(29);
-				kachelArray[iReihen][jSpalten].setVisible(false);
+				this.add(labelArray[iReihen][jSpalten], jSpalten, iReihen);
+				
+				labelArray[iReihen][jSpalten].setMinHeight(29);
+				labelArray[iReihen][jSpalten].setMinWidth(29);
+				labelArray[iReihen][jSpalten].setVisible(false);
 				
 			}
 		}
@@ -74,44 +76,16 @@ public class BallEbene2 extends GridPane{
 			this.add( pcManager.getCircleByIndex(i), 0, 0);
 		}
 		
-		geheimgang = new Button("G");
-//		geheimgang.setFont(Font.font("Regular", 17));
-//		geheimgang.setFont(Font.);
-		fremdWuerfeln = new Button("W");
-		fremdBewegen = new Button("B");
-		geheimgang.setStyle("-fx-font: 12 arial -fx-base: #ff0000");
-		fremdWuerfeln.setStyle("-fx-font: 12 arial");
-		fremdBewegen.setStyle("-fx-font: 12 arial");
-		this.add(geheimgang, 0, 0);
-		this.add(fremdWuerfeln, 0, 1);
-		this.add(fremdBewegen, 0, 2);
-		
-		
 	}
 
-	public Button getGeheimgang() {
-		return geheimgang;
+	public KrassesLabel[][] getLabelArray() {
+		return labelArray;
 	}
 
-	public void setGeheimgang(Button geheimgang) {
-		this.geheimgang = geheimgang;
+	public void setLabelArray(KrassesLabel[][] labelArray) {
+		this.labelArray = labelArray;
 	}
-
-	public Button getFremdWuerfeln() {
-		return fremdWuerfeln;
-	}
-
-	public void setFremdWuerfeln(Button fremdWuerfeln) {
-		this.fremdWuerfeln = fremdWuerfeln;
-	}
-
-	public Button getFremdBewegen() {
-		return fremdBewegen;
-	}
-
-	public void setFremdBewegen(Button fremdBewegen) {
-		this.fremdBewegen = fremdBewegen;
-	}
+	
 	
 	
 }
