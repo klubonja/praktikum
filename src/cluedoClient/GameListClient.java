@@ -1,4 +1,4 @@
-package cluedoServer;
+package cluedoClient;
 
 import java.util.ArrayList;
 

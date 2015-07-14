@@ -8,13 +8,11 @@ public abstract class Config {
 	 * unsere config daten in einer static klasse
 	 * */
 
-	//public final static String GROUP_NAME = "yinyanyolosMAC";
-
 
 	
 	
 	
-	//public final static String GROUP_NAME = "yinyanyolosCIP";
+	//public final static String GROUP_NAME = "yinyanyolos";
 	public final static String GROUP_NAME = auxx.getRandomString(5);
 
 	

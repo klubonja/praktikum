@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
-import cluedoServer.GameListClient;
 import enums.ServerStatus;
 
 
