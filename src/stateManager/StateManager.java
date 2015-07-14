@@ -3,9 +3,7 @@ package stateManager;
 import java.util.Stack;
 
 import kommunikation.ServerBeweger;
-import kommunikation.ServerBoard;
 import cluedoNetworkLayer.CluedoPlayer;
-import cluedoNetworkLayer.CluedoPosition;
 import enums.GameStates;
 import enums.PlayerStates;
 import finderOfPaths.PlayerCircleManager;
@@ -18,10 +16,10 @@ public class StateManager {
 	
 	public StateManager(PlayerCircleManager pcm,ServerBeweger beweger){
 		this.pcm = pcm;
-		beweger = beweger;
+		this.beweger = beweger;
 	}
 	
-	public void setNextTurn(){
+	public void setNextTurnRec(){
 		Stack<CluedoPlayer> players  = pcm.getPlayerManager();
 		for (int i = 0;i < pcm.getSize(); i++){
 			if (i == pcm.getIndex()){
@@ -29,8 +27,8 @@ public class StateManager {
 				nextplayer.setPossibleStates(stateMachine.getSucStates(PlayerStates.do_nothing));
 				if (nextplayer.hasAccused()){
 					nextplayer.setPossibleState(PlayerStates.do_nothing);
-					pcm.next();
-					setNextTurn();
+					pcm.next(); // HIER WIRD DAS EINZIGE MAL IN DIESER KLASSE DER SPIELERPOINTER VERÄNDERT
+					setNextTurnRec();
 					break;
 				}
 				else if (!beweger.secretPassagePossible(nextplayer.getCluedoPerson())) {
@@ -39,7 +37,7 @@ public class StateManager {
 				nextplayer.removeFromPossibleStates(PlayerStates.disprove);
 			}
 			else{
-				players.get(i).setDoNothing(); // hier werden possible moves geleert und do nothing hinzugefügt
+				players.get(i).setPossibleState(PlayerStates.do_nothing); // hier werden possible moves geleert und do nothing hinzugefügt
 			}			
 		}
 	}

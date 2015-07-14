@@ -160,6 +160,26 @@ public class DataManagerServer extends DataManager {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public void rollDiceRequest(int gameID,ClientItem client){
+		CluedoGameServer game = getGameByID(gameID);
+		if (game.hasClient(client)){
+	   		notifyAll(NetworkMessages.dice_resultMsg(gameID,game.rollDice()));
+		}		
+	}
+	
+	public void endTurnRequest(int gameID,String nick,ClientItem client){
+		CluedoGameServer game = getGameByID(gameID);
+		if (game.hasClient(client)){
+			if (game.endTurnRequest(client)){
+				
+			}
+			else {
+				
+			}
+		}
+		
+	}
 }
 	
 

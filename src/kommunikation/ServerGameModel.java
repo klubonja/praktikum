@@ -1,11 +1,22 @@
 package kommunikation;
 
+import java.util.Iterator;
+import java.util.Stack;
+
+import javafx.scene.paint.Color;
+import model.Deck;
 import kacheln.KachelContainer;
 import stateManager.StateManager;
+import staticClasses.auxx;
 import view.DicePresenter;
 import cluedoNetworkLayer.CluedoGameServer;
+import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
+import cluedoNetworkLayer.WinningStatement;
 import enums.Persons;
+import enums.PlayerStates;
+import enums.Rooms;
+import enums.Weapons;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.PlayerCircleManager;
 import finderOfPaths.RaumBeweger;
@@ -27,10 +38,13 @@ public class ServerGameModel {
 	private RaumBeweger raumBeweger;
 	private StateManager stateManager;
 	private int gameID;
+	private WinningStatement winningStatement;
+	public CluedoGameServer  network;
 	
 	
 	public ServerGameModel(CluedoGameServer game){
 		
+		network = game;
 		gameID = game.getGameId();
 		pcManager = new PlayerCircleManager(game.getPlayers());		
 		
@@ -48,12 +62,66 @@ public class ServerGameModel {
 		
 		stateManager = new StateManager(pcManager,serverBeweger);
 		
+		
 	}
 	
-	public void wuerfeln(int [] wuerfel){
-		int ersterWuerfel = wuerfel[0];
-		int zweiterWuerfel = wuerfel[1];
+	public void start(){
+		pcManager.setPlayerManager(dealCardsNetwork(pcManager.getPlayerManager()));
+		orderPlayersList();
+		stateManager.setNextTurnRec();
+	}
+	public WinningStatement getWinningStatement() {
+		return winningStatement;
+	}
+	
+	public Stack<CluedoPlayer> dealCardsNetwork(Stack<CluedoPlayer> players) {
+		Deck deck = new Deck(players.size());
+		deck.dealCluedoCards();
+		String[] wh = deck.getWinningHand();
+		winningStatement = new WinningStatement(
+				Persons.getPersonByColor(wh[0]),
+				Weapons.getWeaponByName(wh[1]), Rooms.getRoomByName(wh[2]));
+
+		String[][] playerHands = deck.getPlayerHands();
+		for (int i = 0; i < players.size(); i++) {
+			players.get(i).setCards(playerHands[i]);
+		}
+		return players;
+	}
+	
+	public boolean checkForColor(Color color){
+		Stack<CluedoPlayer> pl = network.getPlayersConnected();
+		for (CluedoPlayer p : pl)
+			if (p.getCluedoPerson().getFarbe() == color) 
+				return true;
+		return false;
+	}
+	
+	public void orderPlayersList(){
+		if (!checkForColor(Color.RED))
+			setStart(pcManager.getPlayerManager());	
+	}
+	
+	public static void setStart(Stack<CluedoPlayer> players){
+		CluedoPlayer first = players.get(auxx.getRandInt(0, players.size()-1));
+		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
+		Iterator<CluedoPlayer> it = tmplist.iterator();
+		while (it.hasNext()){
+			CluedoPlayer pl = it.next();
+			if (pl != first){
+				players.remove(pl);
+				players.add(pl);
+			}
+		}
+		tmplist = null;
+	}
+	
+	public int[] rollDice(){
+		int ersterWuerfel = auxx.getRandInt(1, 6);
+		int zweiterWuerfel = auxx.getRandInt(1, 6);
 		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
+		
+		return new int[]{ersterWuerfel,zweiterWuerfel};
 	}
 	
 	public void bewegen(Persons person, CluedoPosition position){
@@ -80,6 +148,10 @@ public class ServerGameModel {
 	 */
 	public boolean checkSecretPassage(Persons person){
 		return serverBeweger.secretPassagePossible(person);
+	}
+	
+	public void endTurn(){
+		stateManager.transitionByAction(PlayerStates.end_turn);
 	}
 	
 }

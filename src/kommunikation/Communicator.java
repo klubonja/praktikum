@@ -262,11 +262,11 @@ public class Communicator {
 			}
 
 			public void updateStatesToNothing() {
-				pcManager.getCurrentPlayer().setDoNothing();
+				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.do_nothing);
 			}
 			
 			public void updateStatesToRolls() {
-				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.roll_dice);
+				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.do_nothing);
 			}
 
 			

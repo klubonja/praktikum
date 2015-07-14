@@ -6,24 +6,20 @@ import java.util.Stack;
 
 import javafx.scene.paint.Color;
 import kommunikation.ServerGameModel;
-import model.Deck;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoServer.ClientItem;
 import enums.GameStates;
 import enums.JoinGameStatus;
-import enums.Persons;
 import enums.PlayerStates;
-import enums.Rooms;
-import enums.Weapons;
 
 public class CluedoGameServer extends CluedoGame {
 	private ArrayList<ClientItem> participants;
 	private ArrayList<ClientItem> watchers;
 	private ServerGameModel gameLogic;
 	
-	WinningStatement winningStatement;
-	int currentPlayerIndex = 0;
+//	WinningStatement winningStatement;
+//	int currentPlayerIndex = 0;
 
 	public CluedoGameServer(int gameId) {
 		super(gameId);
@@ -32,47 +28,21 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	public WinningStatement getWinningStatement() {
-		return winningStatement;
+		return gameLogic.getWinningStatement();
 	}
 
 	@Override
 	public boolean start() {		
 		notifyInit();
-		updatePlayerStates();		
-		notifyNextRound();
-		setGameState(GameStates.started);
+		//updatePlayerStates();		
 		gameLogic = new ServerGameModel(this);
-
+		gameLogic.start();
+		notifyNextRound();
+		
+		setGameState(GameStates.started);
 		return true;
 	}
 	
-	
-	public void initNetworkGame(){
-		players = dealCardsNetwork(getPlayersConnected()); //this renders players as only connected
-		orderPlayersList();
-	}
-	
-	public void setAndNotifyNextRound() {
-		setCurrentPlayerNext();
-		updatePlayerStates();		
-		notifyNextRound();
-	}
-
-	public Stack<CluedoPlayer> dealCardsNetwork(Stack<CluedoPlayer> players) {
-		Deck deck = new Deck(players.size());
-		deck.dealCluedoCards();
-		String[] wh = deck.getWinningHand();
-		winningStatement = new WinningStatement(
-				Persons.getPersonByColor(wh[0]),
-				Weapons.getWeaponByName(wh[1]), Rooms.getRoomByName(wh[2]));
-
-		String[][] playerHands = deck.getPlayerHands();
-		for (int i = 0; i < players.size(); i++) {
-			players.get(i).setCards(playerHands[i]);
-		}
-		return players;
-	}
-
 	public ArrayList<String> getWatchersNicks() {
 		ArrayList<String> nicks = new ArrayList<String>();
 		for (ClientItem c : watchers)
@@ -197,17 +167,18 @@ public class CluedoGameServer extends CluedoGame {
 		}
 	}
 	
-	public void updatePlayerStates(){		
-		for (int i = 0;i < players.size(); i++){
-			if (i == currentPlayerIndex)	{
-				players.get(i).setCurrentState(PlayerStates.do_nothing); // hier werden possible moves von do nothing aus gesetzt
-			}
-			else{
-				players.get(i).setDoNothing(); // hier werden possible moves geleert und do nothing hinzugefügt
-			}			
-		}
-			
-	}
+	//NICHT MEHR BENUTZEN
+//	public void updatePlayerStates(){		
+//		for (int i = 0;i < players.size(); i++){
+//			if (i == currentPlayerIndex)	{
+//				players.get(i).setCurrentState(PlayerStates.do_nothing); // hier werden possible moves von do nothing aus gesetzt
+//			}
+//			else{
+//				players.get(i).setDoNothing(); // hier werden possible moves geleert und do nothing hinzugefügt
+//			}			
+//		}
+//			
+//	}
 
 	public void notifyNextRound() {
 		auxx.loginfo(getNicksConnected());
@@ -223,20 +194,13 @@ public class CluedoGameServer extends CluedoGame {
 		}
 	}
 
-	public void setCurrentPlayerNext() {
-		currentPlayerIndex = (currentPlayerIndex + 1) % getParticipants().size();
-	}
+//	public void setCurrentPlayerNext() {
+//		currentPlayerIndex = (currentPlayerIndex + 1) % getParticipants().size();
+//	}
 	
-	public int getCurrentPlayerIndex() {
-		return currentPlayerIndex;
-	}
-
-	public int [] rollTheDice() {
-		int [] wuerfel = new int [2];
-		wuerfel[0] = auxx.getRandInt(1, 6);
-		wuerfel[1] = auxx.getRandInt(1, 6);
-		return wuerfel;
-	}
+//	public int getCurrentPlayerIndex() {
+//		return currentPlayerIndex;
+//	}
 
 	public ArrayList<ClientItem> getParticipants() {
 		return participants;
@@ -246,43 +210,23 @@ public class CluedoGameServer extends CluedoGame {
 		this.participants = participants;
 	}
 	
-	public boolean checkForColor(Color color){
-		Stack<CluedoPlayer> pl = getPlayersConnected();
-		for (CluedoPlayer p : pl)
-			if (p.getCluedoPerson().getFarbe() == color) 
-				return true;
+	public boolean hasClient(ClientItem client){
+		return participants.contains(client);
+	}	
+	
+	public int[] rollDice(){
+		return gameLogic.rollDice();
+	}
+	
+	public boolean endTurnRequest(ClientItem client){
+		CluedoPlayer player = getPlayerByClient(client);
+		if (player.getPossibleStates().contains(PlayerStates.end_turn)){
+			gameLogic.endTurn();
+			return true;
+		}
 		return false;
 	}
 	
-	public void orderPlayersList(){
-		if (!checkForColor(Color.RED))
-			setStart(players);	
-	}
-	
-	public static void setStart(Stack<CluedoPlayer> players){
-		CluedoPlayer first = players.get(auxx.getRandInt(0, players.size()-1));
-		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
-		Iterator<CluedoPlayer> it = tmplist.iterator();
-		while (it.hasNext()){
-			CluedoPlayer pl = it.next();
-			if (pl != first){
-				players.remove(pl);
-				players.add(pl);
-			}
-		}
-		tmplist = null;
-	}
-	
-
-	static void setStart(Stack<CluedoPlayer> players,Color c){
-		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
-		Iterator<CluedoPlayer> it = tmplist.iterator();
-
-		while (it.hasNext() && it.next().getCluedoPerson().getFarbe() != c){
-			CluedoPlayer pl = it.next();
-			players.remove(pl);
-			players.add(pl);			
-		}
-	}
-
 }
+
+

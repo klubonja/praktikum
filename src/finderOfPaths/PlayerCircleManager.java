@@ -20,18 +20,18 @@ public class PlayerCircleManager {
 		init(plist);
 	}
 	
-	public void updatePlayerStates(){		
-		for (int i = 0;i < players.size(); i++){
-			if (i == currentIndex)	{
-				players.get(i).setCurrentState(PlayerStates.do_nothing); // hier werden possible moves von do nothing aus gesetzt
-			}
-			else{
-				players.get(i).setDoNothing(); // hier werden possible moves geleert und do nothing hinzugefügt
-			}			
-		}
-			
-	}
-	
+//	public void updatePlayerStates(){		
+//		for (int i = 0;i < players.size(); i++){
+//			if (i == currentIndex)	{
+//				players.get(i).setCurrentState(PlayerStates.do_nothing); // hier werden possible moves von do nothing aus gesetzt
+//			}
+//			else{
+//				players.get(i).setDoNothing(); // hier werden possible moves geleert und do nothing hinzugefügt
+//			}			
+//		}
+//			
+//	}
+//	
 	public void init(Stack<CluedoPlayer> plist){
 		players = plist;
 		circle = new ArrayList<Circle>();
