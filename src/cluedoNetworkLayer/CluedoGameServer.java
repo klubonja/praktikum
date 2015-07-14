@@ -177,6 +177,7 @@ public class CluedoGameServer extends CluedoGame {
 		if (!watchers.contains(c)){
 			return watchers.add(c);
 		}
+		
 		return false;	
 	}
 
