@@ -317,7 +317,11 @@ class CommunicationHandler implements Runnable {
 			if (checker.getType().equals("no disprove")) {
 			int id = checker.getMessage().getInt("gameID");
 			dataManager.notifyAll(NetworkMessages.no_disproveMsg(id));
-		}
+		} else
+			if (checker.getType().equals("disproved")){
+				System.out.println(dataManager.getGameByID(checker.getMessage().getInt("gameID")).
+						getPlayerByClient(client).getCluedoPerson().getColor() + " has disproved it!");
+			}
    	   
    	   else if(checker.getType().equals("end turn")){
    		   auxx.loginfo("end turn angekommen");

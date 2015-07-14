@@ -168,7 +168,7 @@ class IncomingHandler implements Runnable {
 				else
 					if(checker.getType().equals("disprove")){
 				server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
-						"Disproved with: " + checker.getMessage().getString("card")
+						"Disproved with: " + checker.getMessage().getString("card").toString()
 						);
 			}
 			else if (checker.getType().equals("game ended")){

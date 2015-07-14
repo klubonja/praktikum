@@ -339,7 +339,7 @@ public class Communicator {
 				}
 				int currentIndex = pcManager.getIndex();
 				pcManager.next();
-				while(currentIndex != pcManager.getIndex()){
+				if(currentIndex != pcManager.getIndex()){
 					for(String card : pcManager.getCurrentPlayer().getCards()){
 						System.out.println(currentIndex);
 					if (card.equals(person) ||

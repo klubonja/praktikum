@@ -243,7 +243,7 @@ public class CluedoProtokollChecker {
 	void val_disproved() {
 		val_game_created();
 		if (validateValue(jsonRoot, "card"))
-			validateCards(jsonRoot.getString("cards"));
+			validateCards(jsonRoot.getString("card"));
 	}
 
 	void val_no_disprove() {
