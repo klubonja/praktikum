@@ -78,6 +78,10 @@ public class CluedoGameServer extends CluedoGame {
 		return nicks;
 	}
 	
+	public ArrayList<ClientItem> getWatchers() {
+		return watchers;
+	}
+	
 	public String getWatchersConnected(){
 		StringBuffer nb = new StringBuffer();
 		for (ClientItem p : watchers){
@@ -105,11 +109,19 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	public boolean findAndRemovePlayer(ClientItem client) {
-		for (ClientItem c : getParticipants())
+		for (ClientItem c : participants)
 			if (c == client) {
 				if (removePlayer(client.getNick())) {
-					return getParticipants().remove(client);
+					return participants.remove(client);
 				}
+			}
+		return false;
+	}
+	
+	public boolean findAndRemoveWatcher(ClientItem client) {
+		for (ClientItem c : watchers)
+			if (c == client) {
+				return watchers.remove(client);
 			}
 		return false;
 	}
@@ -161,8 +173,11 @@ public class CluedoGameServer extends CluedoGame {
 		return null;
 	}
 
-	public void addWatcher(ClientItem c) {
-		watchers.add(c);
+	public boolean addWatcher(ClientItem c) {
+		if (!watchers.contains(c)){
+			return watchers.add(c);
+		}
+		return false;	
 	}
 
 	public void notifyInit() {

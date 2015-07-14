@@ -151,9 +151,13 @@ public class DataGuiManagerServer extends DataGuiManager {
 	}
 	
 	public void addWatcherToGame(int gameID,ClientItem client){
-		 getGameByIndex(gameID).addWatcher(client);
-		 dataManager.notifyAll(NetworkMessages.watcher_addedMsg(gameID, client.getNick()));	
-		 refreshGamesList();
+		 if (getGameByIndex(gameID).addWatcher(client)){
+			 dataManager.notifyAll(NetworkMessages.watcher_addedMsg(gameID, client.getNick()));	
+			 refreshGamesList();
+		 }
+		 else{
+			 client.sendMsg(NetworkMessages.error_Msg("you are already watching that game"));
+		 }
 	}
 	
 }

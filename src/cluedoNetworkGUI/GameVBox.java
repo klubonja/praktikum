@@ -76,14 +76,7 @@ public class GameVBox extends VBox{
 		
 		for (HBox b: kids)
 			b.setAlignment(Pos.BOTTOM_LEFT);
-		//HBox hb = new HBox();
 		
-//		startGame = new Button("Start Game");
-//		startGame.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-//		startGame.getStyleClass().add("startGameButtonGamesList");
-//		hb.getChildren().add(startGame);
-//		hb.setAlignment(Pos.CENTER_RIGHT);
-//		hb.visibleProperty().bind(visibilityProp);
 		switch (state) {
 			case started :
 				setRunningGame();
@@ -129,36 +122,31 @@ public class GameVBox extends VBox{
 	public void setReadyGame() {
 		String style = "-fx-text-fill:#ffffff; "
 				+ "-fx-background-color: green;";
-		
-		for (HBox l: kids)
-			l.setStyle(style);
-		setStyle(style);
+		setStyleAll(style);
 	}
 	
 	public void setRunningGame() {
 		String style = "-fx-text-fill:#ffffff; "
 				+ "-fx-background-color: blue;";
-		for (HBox l: kids)
-			l.setStyle(style);
-		setStyle(style);
+		setStyleAll(style);
 	}
 	
 	public void setEndedGame() {
 		String style = "-fx-text-fill:#ffffff; "
 				+ "-fx-background-color: red;";
-		for (HBox l: kids)
-			l.setStyle(style);
-		setStyle(style);
+		setStyleAll(style);
 	}
 	
 	public void setGameWaiting() {
 		String style = "-fx-text-fill:#000000; "
 				+ "-fx-background-color: #ffffff;";
-		for (HBox l: kids)
+		setStyleAll(style);
+	}
+	
+	public void setStyleAll(String style){
+		for (Label l: labels)
 			l.setStyle(style);
 		setStyle(style);
 	}
-	
-	
 	
 }
