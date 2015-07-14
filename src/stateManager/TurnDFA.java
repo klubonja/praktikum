@@ -1,4 +1,4 @@
-package cluedoServer;
+package stateManager;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -15,7 +15,8 @@ public class TurnDFA {
  	 		{//do nothing
  		 		PlayerStates.use_secret_passage.ordinal(),
  		 		PlayerStates.roll_dice.ordinal(),
- 		 		PlayerStates.accuse.ordinal()
+ 		 		PlayerStates.accuse.ordinal(),
+ 		 		PlayerStates.disprove.ordinal()
  	 		},
  	 		{ //use secret passage
  		 		PlayerStates.suspect.ordinal(),

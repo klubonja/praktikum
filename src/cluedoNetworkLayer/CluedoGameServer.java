@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import javafx.scene.paint.Color;
+import kommunikation.ServerGameModel;
 import model.Deck;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
@@ -19,6 +20,7 @@ import enums.Weapons;
 public class CluedoGameServer extends CluedoGame {
 	private ArrayList<ClientItem> participants;
 	private ArrayList<ClientItem> watchers;
+	private ServerGameModel gameLogic;
 	
 	WinningStatement winningStatement;
 	int currentPlayerIndex = 0;
@@ -39,6 +41,7 @@ public class CluedoGameServer extends CluedoGame {
 		updatePlayerStates();		
 		notifyNextRound();
 		setGameState(GameStates.started);
+		gameLogic = new ServerGameModel(this);
 
 		return true;
 	}

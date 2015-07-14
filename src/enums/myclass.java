@@ -8,9 +8,9 @@ import model.Deck;
 
 import org.json.JSONObject;
 
+import stateManager.TurnDFA;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoFieldInt;
-import cluedoServer.TurnDFA;
 
 public class myclass {
 	public myclass() {

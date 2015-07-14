@@ -95,7 +95,7 @@ public class Communicator {
 
 		auxx.loginfo("%%%%%%%%%%%%%%% Der nick : " +myNick);
 		
-		pcManager.setIndexByPlayer(pcManager.playerManager.get(0));
+		pcManager.setIndexByPlayer(pcManager.players.get(0));
 		auxx.loginfo("Der hier fängt an : " +pcManager.getCurrentNick());
 		
 		auxx.logsevere("Communicator.startGame");

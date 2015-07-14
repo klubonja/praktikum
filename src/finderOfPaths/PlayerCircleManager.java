@@ -5,12 +5,13 @@ import java.util.Stack;
 
 import javafx.scene.shape.Circle;
 import cluedoNetworkLayer.CluedoPlayer;
+import enums.PlayerStates;
 
 
 public class PlayerCircleManager {
 		
-	public Stack<CluedoPlayer> playerManager;
-	public  ArrayList<Circle> circleManager;
+	public Stack<CluedoPlayer> players;
+	public  ArrayList<Circle> circle;
 	
 	private int currentIndex = 0;
  	
@@ -19,34 +20,46 @@ public class PlayerCircleManager {
 		init(plist);
 	}
 	
+	public void updatePlayerStates(){		
+		for (int i = 0;i < players.size(); i++){
+			if (i == currentIndex)	{
+				players.get(i).setCurrentState(PlayerStates.do_nothing); // hier werden possible moves von do nothing aus gesetzt
+			}
+			else{
+				players.get(i).setDoNothing(); // hier werden possible moves geleert und do nothing hinzugefügt
+			}			
+		}
+			
+	}
+	
 	public void init(Stack<CluedoPlayer> plist){
-		playerManager = plist;
-		circleManager = new ArrayList<Circle>();
-		for (CluedoPlayer p: playerManager)
-			circleManager.add(new Circle(0,0,14,p.getCluedoPerson().getFarbe()));
+		players = plist;
+		circle = new ArrayList<Circle>();
+		for (CluedoPlayer p: players)
+			circle.add(new Circle(0,0,14,p.getCluedoPerson().getFarbe()));
 	}
 	
 	public void addPlayer(CluedoPlayer p){
-		playerManager.add(p);
+		players.add(p);
 	}
 	
 	public void addCircle(Circle c){
-		circleManager.add(c);
+		circle.add(c);
 	}
 	public void next(){		
-		currentIndex = (currentIndex + 1) % playerManager.size();		
+		currentIndex = (currentIndex + 1) % players.size();		
 	}
 	
 	public CluedoPlayer getCurrentPlayer(){
-		return playerManager.get(currentIndex);
+		return players.get(currentIndex);
 	}
 	
 	public Circle getCurrentCircle(){
-		return circleManager.get(currentIndex);
+		return circle.get(currentIndex);
 	}
 
 	public String getCurrentNick(){
-		return playerManager.get(currentIndex).getNick();
+		return players.get(currentIndex).getNick();
 	}
 	
 	public int getIndex() {
@@ -54,19 +67,19 @@ public class PlayerCircleManager {
 	}	
 	
 	public int getSize(){
-		return playerManager.size();
+		return players.size();
 	}
 	
 	public CluedoPlayer getPlayerByIndex(int i){
-		return playerManager.get(i);
+		return players.get(i);
 	}
 	
 	public Circle getCircleByIndex(int i){
-		return circleManager.get(i);
+		return circle.get(i);
 	}
 	
 	public CluedoPlayer getPlayerByNick(String nick){
-		for (CluedoPlayer p:playerManager){
+		for (CluedoPlayer p:players){
 			if (p.getNick().equals(nick))
 				return p;
 		}
@@ -76,8 +89,8 @@ public class PlayerCircleManager {
 	
 	public Circle getCircleByNick(String nick){
 		for (int i = 0; i < getSize(); i++){
-			if (playerManager.get(i).getNick().equals(nick))
-				return circleManager.get(i);
+			if (players.get(i).getNick().equals(nick))
+				return circle.get(i);
 		}
 		
 		return null;
@@ -85,7 +98,7 @@ public class PlayerCircleManager {
 	
 
 	public CluedoPlayer getPlayerByPerson(String person){
-		for (CluedoPlayer p:playerManager){
+		for (CluedoPlayer p:players){
 			if (p.getCluedoPerson().getColor().equals(person))
 				return p;
 		}
@@ -95,8 +108,8 @@ public class PlayerCircleManager {
 	
 	public Circle getCircleByPerson(String person){
 		for (int i = 0; i < getSize(); i++){
-			if (playerManager.get(i).getCluedoPerson().getColor().equals(person))
-				return circleManager.get(i);
+			if (players.get(i).getCluedoPerson().getColor().equals(person))
+				return circle.get(i);
 		}
 		
 		return null;
@@ -106,18 +119,19 @@ public class PlayerCircleManager {
 	
 	public void setIndexByPlayer(CluedoPlayer p){
 		for (int i = 0; i < getSize(); i++)
-			if (p == playerManager.get(i)){
+			if (p == players.get(i)){
 				currentIndex = i;
 				return;		
 			}					
 	}
 
 	public Stack<CluedoPlayer> getPlayerManager() {
-		return playerManager;
+		return players;
 	}
 
 	public void setPlayerManager(Stack<CluedoPlayer> playerManager) {
-		this.playerManager = playerManager;
+		this.players = playerManager;
 	}
+	
 
 }

@@ -2,7 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
-import com.sun.media.jfxmedia.events.PlayerStateEvent.PlayerState;
+import stateManager.CluedoStateMachine;
 
 import enums.Persons;
 import enums.PlayerStates;
@@ -16,6 +16,7 @@ public class CluedoPlayer {
 	CluedoPosition position;
 	String nick = "";
 	ArrayList<String> cards;
+	boolean hasAccused = false;
 	
 	
 	
@@ -27,6 +28,10 @@ public class CluedoPlayer {
 		cards = new ArrayList<String>();
 	}
 	
+	public boolean hasAccused(){
+		return hasAccused;
+	}
+	
 	public CluedoPlayer(Persons pers,PlayerStates s) {
 		cluedoPerson = pers;
 		if (s == PlayerStates.do_nothing) setDoNothing();
@@ -34,6 +39,16 @@ public class CluedoPlayer {
 		cards = new ArrayList<String>();
 		position = new CluedoPosition(cluedoPerson.getStartposition().getX(),
 									 cluedoPerson.getStartposition().getY());
+	}
+	
+	
+	public void setPossibleState(PlayerStates state){
+		possibleStates = new ArrayList<PlayerStates>();
+		possibleStates.add(state);
+	}
+	
+	public void addPossibleState(PlayerStates state){
+		possibleStates.add(state);
 	}
 	
 	public void setDoNothing() {
@@ -120,6 +135,10 @@ public class CluedoPlayer {
 			ausgabe += state.getName() + " ";
 		}
 		return ausgabe;
+	}
+	
+	public void removeFromPossibleStates(PlayerStates state){
+		possibleStates.remove(state);
 	}
 
 }

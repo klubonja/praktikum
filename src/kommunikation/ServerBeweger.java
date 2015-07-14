@@ -70,6 +70,10 @@ public class ServerBeweger {
 		}
 	}
 	
+	public boolean isRaum(CluedoPosition pos){
+		return kacheln.getKacheln()[pos.getY()][pos.getX()].isIstRaum();	
+	}
+	
 	public void useSecretPassage(Persons person){
 		CluedoPlayer player = pcManager.getPlayerByPerson(person.getPersonName());
 		CluedoPosition position = player.getPosition();

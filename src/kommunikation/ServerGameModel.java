@@ -1,6 +1,7 @@
 package kommunikation;
 
 import kacheln.KachelContainer;
+import stateManager.StateManager;
 import view.DicePresenter;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPosition;
@@ -12,7 +13,7 @@ import finderOfPaths.Sucher;
 import finderOfPaths.Vorschlaege;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 
-public class ServerInternesSpiel {
+public class ServerGameModel {
 
 	private Sucher sucher;
 	private Vorschlaege vorschlager;
@@ -24,10 +25,11 @@ public class ServerInternesSpiel {
 	private ServerBoard serverBoard;
 	private ServerBeweger serverBeweger;
 	private RaumBeweger raumBeweger;
+	private StateManager stateManager;
 	private int gameID;
 	
 	
-	public ServerInternesSpiel(CluedoGameServer game){
+	public ServerGameModel(CluedoGameServer game){
 		
 		gameID = game.getGameId();
 		pcManager = new PlayerCircleManager(game.getPlayers());		
@@ -43,6 +45,8 @@ public class ServerInternesSpiel {
 		ausloeser = new Ausloeser(kacheln, gameID, pathfinder, pcManager);
 
 		dicePresenter = new DicePresenter(pcManager, ausloeser, sucher);
+		
+		stateManager = new StateManager(pcManager,serverBeweger);
 		
 	}
 	
