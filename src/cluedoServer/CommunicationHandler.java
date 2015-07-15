@@ -242,10 +242,7 @@ class CommunicationHandler implements Runnable {
    		   int yKoordinate = checker.getMessage().getJSONObject("field").getInt("y");
    		   CluedoPosition newpos = new CluedoPosition(xKoordinate, yKoordinate);
    		   int gameID = checker.getMessage().getInt("gameID");
-   		   dataManager.moveRequest(gameID,client,newpos);
-   		   // TODO: Position checken dataManager.getGameByID(gameID)
-   		 
-   		   
+   		   dataManager.moveRequest(gameID,client,newpos);   		 
    	   }
      	   
    	   	else if (checker.getType().equals("accuse")) {

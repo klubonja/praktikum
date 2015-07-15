@@ -246,7 +246,6 @@ public class CluedoGameServer extends CluedoGame {
 				 sendMsgToParticipants(NetworkMessages.movedMsg(getGameId(),getPlayerByClient(client).getCluedoPerson().getPersonName(), newpos));
 				return true	;
 			}
-				
 			client.sendMsg(NetworkMessages.error_Msg("move not legit"));
 		}
 		return false;
