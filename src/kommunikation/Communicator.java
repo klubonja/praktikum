@@ -180,8 +180,8 @@ public class Communicator {
 	}
 
 	public void disprove(String card) {
-		network.sendMsgToServer(NetworkMessages.disprovedMsg(
-				network.getGameId(), network.getMyNick(), card));
+		network.sendMsgToServer(NetworkMessages.disproveMsg(
+				network.getGameId(), card));
 	}
 
 	public void highlightCard(String card) {
@@ -337,19 +337,29 @@ public class Communicator {
 					person = "Professor Bloom";
 					break;
 				}
+				boolean theOne = false;
 				int currentIndex = pcManager.getIndex();
 				pcManager.next();
 				if(currentIndex != pcManager.getIndex()){
 					for(String card : pcManager.getCurrentPlayer().getCards()){
-						System.out.println(currentIndex);
 					if (card.equals(person) ||
 						card.equals(weapon) ||
 						card.equals(room)) {
-								highlightCard(card);
-								setCardFunction(card);
-								pcManager.setIndex(currentIndex);
-								break;
+						theOne = true;
 					}
+					if(theOne){
+						for(String cardOfTheOne : pcManager.getCurrentPlayer().getCards()){
+							if (cardOfTheOne.equals(person) ||
+									cardOfTheOne.equals(weapon) ||
+									cardOfTheOne.equals(room)) {
+									highlightCard(cardOfTheOne);
+									setCardFunction(cardOfTheOne);
+								}
+						}
+						pcManager.setIndex(currentIndex);
+						break;	
+					}
+					network.sendMsgToServer(NetworkMessages.no_disproveMsg(network.getGameId()));
 					currentIndex++;
 					pcManager.next();
 				}

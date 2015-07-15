@@ -158,19 +158,27 @@ class IncomingHandler implements Runnable {
 			} 
 				
 				else
-				if (checker.getType().equals("disproved")) {
+				if (checker.getType().equals("disprove")) {
+					System.out.println("NICK INCOMING " + server.getGameByGameID(checker.getMessage().getInt("gameID")).getPlayerByNick(server.myNick));
+					String card = checker.getMessage().getString("card").toString();
 				server.getGameByGameID(checker.getMessage().getInt("gameID"))
-				.changeLabel("Player: "+
-				checker.getMessage().getString("nick")
-				+ " had a card.");
+				.changeLabel(
+				server.getGameByGameID(checker.getMessage().getInt("gameID")).getPlayerByNick(server.myNick).getCluedoPerson().getPersonName()
+				+ " had the card: " + card);
 			} 
 				
 				else
-					if(checker.getType().equals("disprove")){
+					if(checker.getType().equals("disproved")){
 				server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
-						"Disproved with: " + checker.getMessage().getString("card").toString()
+						checker.getMessage().getString("nick").toString() + " disproved!"
 						);
-			}
+			} else
+				if (checker.getType().equals("no disprove")){
+					server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
+							server.getGameByGameID(checker.getMessage().getInt("gameID"))
+							.getPlayerByNick(server.myNick).getCluedoPerson().getPersonName() +
+							" did not disprove.");
+				}
 			else if (checker.getType().equals("game ended")){
         		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
 			}
