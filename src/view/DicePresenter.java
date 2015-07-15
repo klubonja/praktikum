@@ -119,7 +119,7 @@ public class DicePresenter {
 		System.out.println("==================================");
 		
 		sucher.suchen(ausloeser.getWuerfelZahl(), pcManager);
-		ausloeser.zuweisung(pcManager);
+		if (istSpieler) {ausloeser.zuweisung(pcManager);}
 		ausloeser.setGewuerfelt(true);
 	}
 	
