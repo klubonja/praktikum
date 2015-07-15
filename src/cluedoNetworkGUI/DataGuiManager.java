@@ -2,6 +2,7 @@ package cluedoNetworkGUI;
 
 import javafx.application.Platform;
 import javafx.scene.control.ListView;
+import javafx.scene.paint.Color;
 import staticClasses.Config;
 import staticClasses.auxx;
 import enums.GameStates;
@@ -76,6 +77,10 @@ public class DataGuiManager   {
 		  Platform.runLater(() -> {gui.setStatus(stat);});
 	  }
 	  
+	  public void setStatusStyle(Color color){
+		  Platform.runLater(() -> {gui.status.setFill(color);});
+	  }
+	  
 	  public void setStartServiceButtonLabel(String label){
 		  Platform.runLater(() -> {gui.setStartServiceButtonLabel(label);});
 	  }	  
@@ -83,6 +88,8 @@ public class DataGuiManager   {
 	  public void setWindowName(String label){
 		  Platform.runLater(() -> {gui.setWindowName(label);});
 	  }
+	  
+	  
 	  
 	  public void removeGameGui(int gameID){
 //			try {
