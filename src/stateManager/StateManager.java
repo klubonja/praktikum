@@ -10,7 +10,7 @@ import finderOfPaths.PlayerCircleManager;
 
 public class StateManager {
 	GameStates currentState;
-	CluedoStateMachine stateMachine;
+	CluedoStateMachine stateMachine = new CluedoStateMachine(PlayerStates.do_nothing);
 	PlayerCircleManager pcm;
 	ServerBeweger beweger;
 	
@@ -20,7 +20,7 @@ public class StateManager {
 	}
 	
 	public void setNextTurnRec(){
-		Stack<CluedoPlayer> players  = pcm.getPlayerManager();
+		Stack<CluedoPlayer> players  = pcm.getPlayers();
 		for (int i = 0;i < pcm.getSize(); i++){
 			if (i == pcm.getIndex()){
 				CluedoPlayer nextplayer = players.get(i);

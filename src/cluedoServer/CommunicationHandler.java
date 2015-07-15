@@ -234,7 +234,6 @@ class CommunicationHandler implements Runnable {
      	   
      	  else if(checker.getType().equals("roll dice")){													//ROLL DICE
    		   int gameID = checker.getMessage().getInt("gameID");
-   		   String nick = checker.getMessage().getString("nick");
    		   dataManager.rollDiceRequest(gameID,client);
    	   }
    	   

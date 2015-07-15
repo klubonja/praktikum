@@ -32,15 +32,21 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	@Override
-	public boolean start() {		
-		notifyInit();
+	public boolean start() {
+		filterPlayers();
+		
 		//updatePlayerStates();		
 		gameLogic = new ServerGameModel(this);
 		gameLogic.start();
+		notifyInit();
 		notifyNextRound();
 		
 		setGameState(GameStates.started);
 		return true;
+	}
+	
+	public void filterPlayers(){
+		players = getPlayersConnected();
 	}
 	
 	public ArrayList<String> getWatchersNicks() {

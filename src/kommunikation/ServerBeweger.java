@@ -1,5 +1,9 @@
 package kommunikation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import kacheln.Kachel;
 import kacheln.KachelContainer;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -23,8 +27,8 @@ public class ServerBeweger {
 	}
 	
 	public void setNewPosition(Persons person, CluedoPosition position){
-		pcManager.getPlayerByPerson(person.getPersonName()).getPosition().setX(position.getX());
-		pcManager.getPlayerByPerson(person.getPersonName()).getPosition().setY(position.getY());
+		pcManager.getPlayerByPersonName(person.getPersonName()).getPosition().setX(position.getX());
+		pcManager.getPlayerByPersonName(person.getPersonName()).getPosition().setY(position.getY());
 	}
 	
 	/**
@@ -51,23 +55,18 @@ public class ServerBeweger {
 	 * @return true, falls man von hier aus einen Geheimgang nutzen kann.
 	 */
 	public boolean secretPassagePossible(Persons person){
-		CluedoPlayer player = pcManager.getPlayerByPerson(person.getPersonName());
-		Rooms raum = kacheln.getKacheln()[player.getPosition().getY()][player.getPosition().getX()].getRaum();
-		if (raum.equals(Rooms.study)){
-			return true;
+		CluedoPosition pos = pcManager.
+				getPlayerByPerson(
+						person).
+						getPosition();
+		System.out.println("query kachal at y: "+pos.getY()+" x : "+pos.getX());
+		Kachel k = kacheln.getKachelAt(pos.getY(), pos.getX());
+		if (k.isIstRaum()){
+			List<Rooms> corners = new ArrayList<Rooms>(Arrays.asList(Rooms.study,Rooms.kitchen,Rooms.lounge,Rooms.conservatory));
+			return corners.contains(k.getRaum());
 		}
-		else if (raum.equals(Rooms.kitchen)){
-			return true;
-		}
-		else if (raum.equals(Rooms.lounge)){
-			return true;
-		}
-		else if (raum.equals(Rooms.conservatory)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		
+		return false;
 	}
 	
 	public boolean isRaum(CluedoPosition pos){
@@ -75,7 +74,7 @@ public class ServerBeweger {
 	}
 	
 	public void useSecretPassage(Persons person){
-		CluedoPlayer player = pcManager.getPlayerByPerson(person.getPersonName());
+		CluedoPlayer player = pcManager.getPlayerByPerson(person);
 		CluedoPosition position = player.getPosition();
 		if (kacheln.getKacheln()[position.getY()][position.getX()].getRaum().equals(Rooms.study)){
 			position.setX(raumBeweger.positionInRaum(player, Rooms.kitchen).getPosition().getX());

@@ -66,16 +66,18 @@ public class ServerGameModel {
 	}
 	
 	public void start(){
-		pcManager.setPlayerManager(dealCardsNetwork(pcManager.getPlayerManager()));
+		dealCardsNetwork();
 		orderPlayersList();
 		stateManager.setNextTurnRec();
 	}
+	
 	public WinningStatement getWinningStatement() {
 		return winningStatement;
 	}
 	
-	public Stack<CluedoPlayer> dealCardsNetwork(Stack<CluedoPlayer> players) {
-		Deck deck = new Deck(players.size());
+	public void dealCardsNetwork() {
+		Deck deck = new Deck(pcManager.getSize());
+		Stack<CluedoPlayer> players = pcManager.getPlayers();
 		deck.dealCluedoCards();
 		String[] wh = deck.getWinningHand();
 		winningStatement = new WinningStatement(
@@ -86,7 +88,6 @@ public class ServerGameModel {
 		for (int i = 0; i < players.size(); i++) {
 			players.get(i).setCards(playerHands[i]);
 		}
-		return players;
 	}
 	
 	public boolean checkForColor(Color color){
@@ -99,7 +100,7 @@ public class ServerGameModel {
 	
 	public void orderPlayersList(){
 		if (!checkForColor(Color.RED))
-			setStart(pcManager.getPlayerManager());	
+			setStart(pcManager.getPlayers());	
 	}
 	
 	public static void setStart(Stack<CluedoPlayer> players){
