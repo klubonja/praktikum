@@ -99,7 +99,7 @@ public class GameFramePresenter {
 			        					auxx.now()
 			        			)
 			        	);	
-			        	setStyleChatField(false);
+			        	setStyleChatField(true);
 			        }
 			    }
 			};	

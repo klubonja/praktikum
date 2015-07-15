@@ -1,5 +1,9 @@
 package kommunikation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import kacheln.Kachel;
 import kacheln.KachelContainer;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -23,8 +27,8 @@ public class ServerBeweger {
 	}
 	
 	public void setNewPosition(Persons person, CluedoPosition position){
-		pcManager.getPlayerByPerson(person.getPersonName()).getPosition().setX(position.getX());
-		pcManager.getPlayerByPerson(person.getPersonName()).getPosition().setY(position.getY());
+		pcManager.getPlayerByPersonName(person.getPersonName()).getPosition().setX(position.getX());
+		pcManager.getPlayerByPersonName(person.getPersonName()).getPosition().setY(position.getY());
 	}
 	
 	/**
@@ -51,23 +55,14 @@ public class ServerBeweger {
 	 * @return true, falls man von hier aus einen Geheimgang nutzen kann.
 	 */
 	public boolean secretPassagePossible(Persons person){
-		CluedoPlayer player = pcManager.getPlayerByPerson(person.getPersonName());
-		Rooms raum = kacheln.getKacheln()[player.getPosition().getY()][player.getPosition().getX()].getRaum();
-		if (raum.equals(Rooms.study)){
-			return true;
+		CluedoPosition pos = pcManager.getPlayerByPerson(person).getPosition();
+		Kachel k = kacheln.getKachelAt(pos.getY(), pos.getX());
+		if (k.isIstRaum()){
+			List<Rooms> corners = new ArrayList<Rooms>(Arrays.asList(Rooms.study,Rooms.kitchen,Rooms.lounge,Rooms.conservatory));
+			return corners.contains(k.getRaum());
 		}
-		else if (raum.equals(Rooms.kitchen)){
-			return true;
-		}
-		else if (raum.equals(Rooms.lounge)){
-			return true;
-		}
-		else if (raum.equals(Rooms.conservatory)){
-			return true;
-		}
-		else {
-			return false;
-		}
+		
+		return false;
 	}
 	
 	public boolean isRaum(CluedoPosition pos){
@@ -75,21 +70,21 @@ public class ServerBeweger {
 	}
 	
 	public void useSecretPassage(Persons person){
-		CluedoPlayer player = pcManager.getPlayerByPerson(person.getPersonName());
+		CluedoPlayer player = pcManager.getPlayerByPerson(person);
 		CluedoPosition position = player.getPosition();
-		if (kacheln.getKacheln()[position.getY()][position.getX()].getRaum().equals(Rooms.study)){
+		if (kacheln.getKacheln()[position.getY()][position.getX()].getRaum()==Rooms.study){
 			position.setX(raumBeweger.positionInRaum(player, Rooms.kitchen).getPosition().getX());
 			position.setY(raumBeweger.positionInRaum(player, Rooms.kitchen).getPosition().getY());
 		}
-		else if (kacheln.getKacheln()[position.getY()][position.getX()].getRaum().equals(Rooms.kitchen)){
+		else if (kacheln.getKacheln()[position.getY()][position.getX()].getRaum()==Rooms.kitchen){
 			position.setX(raumBeweger.positionInRaum(player, Rooms.study).getPosition().getX());
 			position.setY(raumBeweger.positionInRaum(player, Rooms.study).getPosition().getY());
 		}
-		else if (kacheln.getKacheln()[position.getY()][position.getX()].getRaum().equals(Rooms.lounge)){
+		else if (kacheln.getKacheln()[position.getY()][position.getX()].getRaum()==Rooms.lounge){
 			position.setX(raumBeweger.positionInRaum(player, Rooms.conservatory).getPosition().getX());
 			position.setY(raumBeweger.positionInRaum(player, Rooms.conservatory).getPosition().getY());
 		}
-		else if (kacheln.getKacheln()[position.getY()][position.getX()].getRaum().equals(Rooms.conservatory)){
+		else if (kacheln.getKacheln()[position.getY()][position.getX()].getRaum()==Rooms.conservatory){
 			position.setX(raumBeweger.positionInRaum(player, Rooms.lounge).getPosition().getX());
 			position.setY(raumBeweger.positionInRaum(player, Rooms.lounge).getPosition().getY());
 		}

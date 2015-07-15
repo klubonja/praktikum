@@ -289,23 +289,23 @@ public class Communicator {
 			}
 
 			public void updateStatesToNothing() {
-				pcManager.getCurrentPlayer().setDoNothing();
+				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.do_nothing);
 			}
 			
 			public void updateStatesToRolls() {
-				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.roll_dice);
+				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.do_nothing);
 			}
 			
 			public void updateStatesToSuspect(){
-				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.suspect);
+				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.suspect);
 			}
 			
 			public void updateStatesToAccuse(){
-				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.accuse);
+				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.accuse);
 			}
 			
 			public void updateStatesToDisprove(){
-				pcManager.getCurrentPlayer().setCurrentState(PlayerStates.disprove);
+				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.disprove);
 			}
 			
 			public void changeLabel(String str){
@@ -340,6 +340,7 @@ public class Communicator {
 				int bufferIndex = pcManager.getIndex();
 				pcManager.next();
 				while(!cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
+					network.sendMsgToServer(NetworkMessages.no_disproveMsg(network.getGameId()));
 					pcManager.next();
 					if(bufferIndex == pcManager.getIndex() || cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
 						break;

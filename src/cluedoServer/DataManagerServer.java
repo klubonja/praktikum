@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.json.JSONObject;
+
 import staticClasses.NetworkMessages;
+import staticClasses.auxx;
 import cluedoNetworkGUI.DataManager;
 import cluedoNetworkLayer.CluedoGameServer;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.GameStates;
 import enums.JoinGameStatus;
 
@@ -172,6 +176,65 @@ public class DataManagerServer extends DataManager {
 
 	public void setSuspector(String suspector) {
 		this.suspector = suspector;
+	}
+	
+	public void rollDiceRequest(int gameID,ClientItem client){
+		CluedoGameServer game = validatedClientGame(gameID, client);
+		if (game != null){
+			game.rollDice(client);	
+		}		
+	}
+	
+	public void endTurnRequest(int gameID,ClientItem client){
+		CluedoGameServer game = validatedClientGame(gameID, client);
+		if (game != null){
+			game.endTurnRequest(client);
+//			else {
+//				game.sendMsgToParticipants(
+//						NetworkMessages.chatMsg(
+//							"@"+client.getNick()+": cant end turn at this point idiot, possible moves are :  "+game.getPlayerByClient(client).getStatesAsString(),
+//							game.getGameId(), 
+//							auxx.now()
+//							)
+//						);
+//			}
+		}
+	}
+	
+	public void moveRequest(int gameID, ClientItem client,CluedoPosition newpos){
+		CluedoGameServer game = validatedClientGame(gameID, client);
+		if (game != null){
+			if (game.movePlayer(client ,newpos)) {
+		   		//ach 
+			}
+		}
+	}
+	
+	private boolean validateClient(ClientItem client){
+		boolean valid = true;
+		if (blackList.contains(client)){
+			valid = false;
+			client.sendMsg(NetworkMessages.error_Msg("you are blacklisted"));
+		}
+		if (!clientPool.contains(client)){
+			valid = false;		
+			client.sendMsg(NetworkMessages.error_Msg("you are not supposed to be connected"));
+		}
+		
+		return valid;
+	}
+	
+	private CluedoGameServer validatedClientGame(int gameID, ClientItem client){
+		boolean valid = validateClient(client);
+		CluedoGameServer game = getGameByID(gameID);
+		if (valid){
+			if (game.hasClient(client)){
+				return game;
+			}
+			client.sendMsg(NetworkMessages.error_Msg("you are not participating in this game"));
+		}
+
+		return  null;
 	}
 }
 	

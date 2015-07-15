@@ -11,8 +11,6 @@ public class CluedoPlayer {
 	
 	Persons cluedoPerson;
 	ArrayList<PlayerStates>  possibleStates;
-	CluedoStateMachine dfa = new CluedoStateMachine(PlayerStates.do_nothing);
-	PlayerStates currentState;
 	CluedoPosition position;
 	String nick = "";
 	ArrayList<String> cards;
@@ -22,25 +20,27 @@ public class CluedoPlayer {
 	
 	public CluedoPlayer(Persons pers,PlayerStates s, CluedoPosition p) {
 		cluedoPerson = pers;
-		if (s == PlayerStates.do_nothing) setDoNothing();
-		else setCurrentState(s);
+		possibleStates = new ArrayList<PlayerStates>();
 		position = p;
+		possibleStates.add(s);
 		cards = new ArrayList<String>();
+	}
+	
+	
+	
+	public CluedoPlayer(Persons pers,PlayerStates s) {
+		possibleStates = new ArrayList<PlayerStates>();
+		position = new CluedoPosition(cluedoPerson.getStartposition().getX(),
+									 cluedoPerson.getStartposition().getY());
+		cluedoPerson = pers;
+		possibleStates.add(s);
+		cards = new ArrayList<String>();
+		
 	}
 	
 	public boolean hasAccused(){
 		return hasAccused;
 	}
-	
-	public CluedoPlayer(Persons pers,PlayerStates s) {
-		cluedoPerson = pers;
-		if (s == PlayerStates.do_nothing) setDoNothing();
-		else setCurrentState(s);
-		cards = new ArrayList<String>();
-		position = new CluedoPosition(cluedoPerson.getStartposition().getX(),
-									 cluedoPerson.getStartposition().getY());
-	}
-	
 	
 	public void setPossibleState(PlayerStates state){
 		possibleStates = new ArrayList<PlayerStates>();
@@ -51,31 +51,14 @@ public class CluedoPlayer {
 		possibleStates.add(state);
 	}
 	
-	public void setDoNothing() {
-		this.currentState = PlayerStates.do_nothing;
-		possibleStates = new ArrayList<PlayerStates>();
-		possibleStates.add(currentState);
-	}
-	
-	public void setDisprove() {
-		this.currentState = PlayerStates.disprove;
-		possibleStates = new ArrayList<PlayerStates>();
-		possibleStates.add(PlayerStates.disprove);
-	}
-	
-	public void setCurrentState(PlayerStates currentState) {
-		this.currentState = currentState;
-		possibleStates = dfa.getSucStates(currentState);
-	}
-	
 	public void setCurrentStates(ArrayList<PlayerStates> states) {
 		//this.currentState = currentState;
 		possibleStates = states;
 	}
 	
-	public PlayerStates getCurrentState() {
-		return currentState;
-	}
+//	public PlayerStates getCurrentState() {
+//		return currentState;
+//	}
 	
 	public void setCards(ArrayList<String> cards) {
 		this.cards = cards;
@@ -95,6 +78,10 @@ public class CluedoPlayer {
 	public void setNewPosition(int x,int y) {
 		this.position.setX(x);
 		this.position.setY(y);
+	}
+	
+	public void setNewPosition(CluedoPosition newpos) {
+		position = newpos;
 	}
 	
 	public void setPossibleStates(ArrayList<PlayerStates> newstates) {
@@ -129,7 +116,7 @@ public class CluedoPlayer {
 		return nick;
 	}
 	
-	public String returnStatesAsString(){
+	public String getStatesAsString(){
 		String ausgabe = new String();
 		for (PlayerStates state : possibleStates){
 			ausgabe += state.getName() + " ";

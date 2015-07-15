@@ -2,6 +2,7 @@ package cluedoClient;
 
 import java.util.ArrayList;
 
+import javafx.scene.paint.Color;
 import json.CluedoJSON;
 import json.CluedoProtokollChecker;
 
@@ -289,7 +290,8 @@ class IncomingHandler implements Runnable {
         		  killConnection();   
 			}
 			else if (checker.getType().equals("error")){
-        		  dataGuiManager.setStatus("ERROR : "+checker.getMessage().getString("message")); 
+        		dataGuiManager.setStatus("ERROR : "+checker.getMessage().getString("message")); 
+        		dataGuiManager.setStatusStyle(Color.RED);
 			}
 			else {
 				auxx.loginfo("INCOMING unchecked valid type: "+checker.getType());

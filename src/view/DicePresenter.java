@@ -54,10 +54,11 @@ public class DicePresenter {
 		istSpieler = true;
 	}
 	
-	public DicePresenter(PlayerCircleManager pcManager, Ausloeser ausloeser, Sucher sucher){
+	public DicePresenter(PlayerCircleManager pcManager, Ausloeser ausloeser, Sucher sucher,KachelContainer kachelC){
 		this.pcManager = pcManager;
 		this.ausloeser = ausloeser;
 		this.sucher = sucher;
+		kacheln = kachelC;
 		istSpieler = false;
 	}
 	
@@ -119,8 +120,7 @@ public class DicePresenter {
 		System.out.println("==================================");
 		
 		sucher.suchen(ausloeser.getWuerfelZahl(), pcManager);
-		ausloeser.zuweisung(pcManager);
-		ausloeser.setGewuerfelt(true);
+		if (istSpieler) {ausloeser.zuweisung(pcManager);}
 	}
 	
 

@@ -82,10 +82,8 @@ public class GameFrameView extends GridPane{
 		komplettesFeld = new KrasserStack(ballEbene, board, zugView);
 		
 		//Adds the frame for the Cards in hand.
-//		hand = new HandFrameView(pcManager.getPlayerManager().get(0));
 		hand = new HandFrameView(client);
 
-		
 		/* Left part of the whole GameFrame,
 		   only for a better organising of objects. */
 
