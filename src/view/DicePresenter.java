@@ -120,7 +120,6 @@ public class DicePresenter {
 		
 		sucher.suchen(ausloeser.getWuerfelZahl(), pcManager);
 		if (istSpieler) {ausloeser.zuweisung(pcManager);}
-		ausloeser.setGewuerfelt(true);
 	}
 	
 
