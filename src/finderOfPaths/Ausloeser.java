@@ -25,8 +25,6 @@ import enums.Orientation;
  */
 public class Ausloeser {
 
-	private boolean gewuerfelt;
-
 	private BoardView gui;
 	private BallEbene2 ballEbene;
 	private AussergewohnlichesZugfenster zug;
@@ -98,7 +96,6 @@ public class Ausloeser {
 		ballEbene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				//if (pcManager.getCurrentPlayer().getState() != PlayerStates.do_nothing)
 				click(event);
 			}
 		});
@@ -127,27 +124,20 @@ public class Ausloeser {
 	 */
 	public void click(MouseEvent event) {
 
-		if (gewuerfelt) {
-			gewuerfelt = false;
-
-			for (int iReihen = 0; iReihen < gui.getLabelArray().length - 1; iReihen++) {
-				for (int jSpalten = 0; jSpalten < gui.getLabelArray()[iReihen].length - 1; jSpalten++) {
-					if ((gui.getLabelArray()[iReihen][jSpalten].getLayoutX() <= event
-							.getX())
-							&& (event.getX() < gui.getLabelArray()[iReihen][jSpalten]
-									.getLayoutX() + 29)
-							&& ((gui.getLabelArray()[iReihen][jSpalten]
-									.getLayoutY() <= event.getY()) && (event
-									.getY() < gui.getLabelArray()[iReihen][jSpalten]
-									.getLayoutY() + 29))) {
-						aufServerWarten = new CluedoPosition(jSpalten, iReihen);
-						auxx.loginfo("positionen im ausloeser y : " +iReihen +" || x : " +jSpalten);
-						network.sendMsgToServer(NetworkMessages.moveMsg(gameid, new CluedoField(aufServerWarten)));
-						
-						//ausloesen(iReihen, jSpalten);
-
+		for (int iReihen = 0; iReihen < gui.getLabelArray().length - 1; iReihen++) {
+			for (int jSpalten = 0; jSpalten < gui.getLabelArray()[iReihen].length - 1; jSpalten++) {
+				if ((gui.getLabelArray()[iReihen][jSpalten].getLayoutX() <= event
+						.getX())
+						&& (event.getX() < gui.getLabelArray()[iReihen][jSpalten]
+								.getLayoutX() + 29)
+						&& ((gui.getLabelArray()[iReihen][jSpalten]
+								.getLayoutY() <= event.getY()) && (event
+								.getY() < gui.getLabelArray()[iReihen][jSpalten]
+								.getLayoutY() + 29))) {
+					aufServerWarten = new CluedoPosition(jSpalten, iReihen);
+					auxx.loginfo("positionen im ausloeser y : " +iReihen +" || x : " +jSpalten);
+					network.sendMsgToServer(NetworkMessages.moveMsg(gameid, new CluedoField(aufServerWarten)));
 					}
-				}
 			}
 		}
 	}
@@ -275,14 +265,6 @@ public class Ausloeser {
 		for (int i = 0; i < anweisungenOrientations.length; i++) {
 			anweisungenOrientations[i] = null;
 		}
-	}
-
-	public boolean isGewuerfelt() {
-		return gewuerfelt;
-	}
-
-	public void setGewuerfelt(boolean gewuerfelt) {
-		this.gewuerfelt = gewuerfelt;
 	}
 
 }
