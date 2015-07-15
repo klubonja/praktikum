@@ -16,6 +16,7 @@ public class DataManagerServer extends DataManager {
 	ClientPool clientPool;
 	ArrayList<ClientItem> blackList;
 	GameListServer gamesList;
+	private String suspector;
 	
 	public DataManagerServer(String groupname) {
 		super(groupname);
@@ -159,6 +160,18 @@ public class DataManagerServer extends DataManager {
 	public boolean joinGame(int gameID, String color, String nick) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+
+	public String getSuspector() {
+		return suspector;
+	}
+
+
+
+	public void setSuspector(String suspector) {
+		this.suspector = suspector;
 	}
 }
 	

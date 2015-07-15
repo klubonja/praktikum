@@ -110,7 +110,7 @@ class IncomingHandler implements Runnable {
         				  );
         		  
 			}
-			else if (checker.getType().equals("player_cards")){						 
+			else if (checker.getType().equals("player_cards")){
         		 server.getGameByGameID(
         				 checker.getMessage().getInt("gameID")
         				 ).getConnectedPlayerByName(
@@ -125,11 +125,14 @@ class IncomingHandler implements Runnable {
 				if (checker.getType().equals("suspicion")) {
 				JSONObject json = checker.getMessage().getJSONObject(
 						"statement");
+				int id = checker.getMessage().getInt("gameID");
 				String person = json.getString("person").toString();
 				String weapon = json.getString("weapon").toString();
 				String room = json.getString("room").toString();
-				server.getGameByGameID(checker.getMessage().getInt("gameID"))
+				server.getGameByGameID(id)
 						.compareCards(person, room, weapon);
+				server.getGameByGameID(id).changeLabel(server.getGameByGameID(id).getMyNick()
+						+ " is suspecting. " + "\n" + person + " " + room + " " + weapon);
 			}
 				
 				else

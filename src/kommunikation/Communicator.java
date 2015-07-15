@@ -2,7 +2,6 @@ package kommunikation;
 
 import java.util.Stack;
 import java.util.logging.Level;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -337,33 +336,37 @@ public class Communicator {
 					person = "Professor Bloom";
 					break;
 				}
-				boolean theOne = false;
-				int currentIndex = pcManager.getIndex();
+				
+				int bufferIndex = pcManager.getIndex();
 				pcManager.next();
-				if(currentIndex != pcManager.getIndex()){
-					for(String card : pcManager.getCurrentPlayer().getCards()){
-					if (card.equals(person) ||
-						card.equals(weapon) ||
-						card.equals(room)) {
-						theOne = true;
-					}
-					if(theOne){
-						for(String cardOfTheOne : pcManager.getCurrentPlayer().getCards()){
-							if (cardOfTheOne.equals(person) ||
-									cardOfTheOne.equals(weapon) ||
-									cardOfTheOne.equals(room)) {
-									highlightCard(cardOfTheOne);
-									setCardFunction(cardOfTheOne);
-								}
-						}
-						pcManager.setIndex(currentIndex);
-						break;	
-					}
-					network.sendMsgToServer(NetworkMessages.no_disproveMsg(network.getGameId()));
-					currentIndex++;
+				while(!cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
 					pcManager.next();
+					if(bufferIndex == pcManager.getIndex() || cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
+						break;
+					}
 				}
+				if(bufferIndex != pcManager.getIndex()){
+					for(String cardOfTheOne : pcManager.getCurrentPlayer().getCards()){
+						if (cardOfTheOne.equals(person) ||
+								cardOfTheOne.equals(weapon) ||
+								cardOfTheOne.equals(room)) {
+								highlightCard(cardOfTheOne);
+								setCardFunction(cardOfTheOne);
+							}
+					}
+					pcManager.setIndex(bufferIndex);
 				}
+			}
+			
+			public boolean cardInspector(String person, String weapon, String room, ArrayList<String> cards){
+				for(String str : cards){
+					if (str.equals(person) ||
+							str.equals(weapon) ||
+							str.equals(room)) {
+						return true;
+						}
+				}
+				return false;
 			}
 	
 	/*
