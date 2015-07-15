@@ -51,7 +51,6 @@ public class StateManager {
 			case move :
 				if (!beweger.isRaum(curplayer.getPosition())){
 					curplayer.removeFromPossibleStates(PlayerStates.suspect);
-					curplayer.addPossibleState(PlayerStates.end_turn);
 				}
 				break;
 		}

@@ -240,15 +240,11 @@ class CommunicationHandler implements Runnable {
    	   else if(checker.getType().equals("move")){															//MOVE
    		   int xKoordinate = checker.getMessage().getJSONObject("field").getInt("x");
    		   int yKoordinate = checker.getMessage().getJSONObject("field").getInt("y");
-   		   CluedoField field = new CluedoField(new CluedoPosition(xKoordinate, yKoordinate));
+   		   CluedoPosition newpos = new CluedoPosition(xKoordinate, yKoordinate);
    		   int gameID = checker.getMessage().getInt("gameID");
+   		   dataManager.moveRequest(gameID,client,newpos);
    		   // TODO: Position checken dataManager.getGameByID(gameID)
-   		   
-   		   client.sendMsg(NetworkMessages.okMsg());
-   		   JSONObject personpos = new JSONObject();
-   		   personpos.put("person",client.getPlayer().getCluedoPerson()); 
-   		   personpos.put("field", field);
-   		   dataManager.notifyAll(NetworkMessages.movedMsg(gameID, personpos));
+   		 
    		   
    	   }
      	   
@@ -277,14 +273,12 @@ class CommunicationHandler implements Runnable {
 		}
    	   
    	   else if(checker.getType().equals("end turn")){
-   		   auxx.loginfo("end turn angekommen");
    		   int gameID = checker.getMessage().getInt("gameID");
-   		   String nick = checker.getMessage().getString("nick");
    		   //CluedoGameServer game = dataManager.getGameByID(gameID);
    		   //CluedoPlayer player = game.getPlayerByNick(client.getNick());
 	   		   //if (player.getPossibleStates().contains(PlayerStates.end_turn)){
-	   			   client.sendMsg(NetworkMessages.okMsg());
-	   			   dataManager.endTurnRequest(gameID,nick,client);
+	   			   
+	   			   dataManager.endTurnRequest(gameID,client);
 	   		   //}
    		   
 //   		   else {

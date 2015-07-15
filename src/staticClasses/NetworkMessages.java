@@ -14,6 +14,7 @@ import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoWeapon;
 import cluedoNetworkLayer.WinningStatement;
 import cluedoServer.ClientItem;
@@ -351,14 +352,29 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String movedMsg(int gameID,JSONObject personpos){
+	public static String movedMsg(int gameID,String personname,CluedoPosition newpos){
 		CluedoJSON json = new CluedoJSON("moved");
-		json.put("person position", personpos);
+		json.put("person position", personPos(personname, newpos));
 		json.put("gameID", gameID);		
 		
 		return json.toString();
 	}
 	
+	public static JSONObject personPos(String personname ,CluedoPosition pos){
+		JSONObject personpos = new JSONObject();
+		personpos.put("person", personname);
+		personpos.put("field", makefield(pos.getX(), pos.getY()));
+		
+		return personpos;
+	}
+	
+	public static JSONObject makefield(int x, int y){
+		JSONObject field = new JSONObject();
+		field.put("x",x);
+		field.put("y", y);
+		
+		return field;
+	}
 	public static String suspicionMsg(int gameID,JSONObject statement){
 		CluedoJSON json = new CluedoJSON("suspicion");
 		json.put("statement", statement);

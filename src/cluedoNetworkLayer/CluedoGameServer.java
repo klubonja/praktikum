@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import kommunikation.ServerGameModel;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
+import cluedoClient.Client;
 import cluedoServer.ClientItem;
 import enums.GameStates;
 import enums.JoinGameStatus;
@@ -187,8 +188,6 @@ public class CluedoGameServer extends CluedoGame {
 //	}
 
 	public void notifyNextRound() {
-		auxx.loginfo(getNicksConnected());
-		
 		for (CluedoPlayer player : players){
 			notifyAll(NetworkMessages.stateupdateMsg(getGameId(), 
 					NetworkMessages.player_info(
@@ -220,19 +219,52 @@ public class CluedoGameServer extends CluedoGame {
 		return participants.contains(client);
 	}	
 	
-	public int[] rollDice(){
-		return gameLogic.rollDice();
+	public boolean rollDice(ClientItem client){
+		if (checkandHandleStateTrans(PlayerStates.roll_dice, client)){
+			int[] diceres = gameLogic.rollDice();
+			if (diceres != null){
+				sendMsgToParticipants(NetworkMessages.dice_resultMsg(getGameId(),diceres));
+				return true;
+			};
+		}
+		return false;
 	}
 	
 	public boolean endTurnRequest(ClientItem client){
-		CluedoPlayer player = getPlayerByClient(client);
-		if (player.getPossibleStates().contains(PlayerStates.end_turn)){
+		if (checkandHandleStateTrans(PlayerStates.end_turn, client)){
 			gameLogic.endTurn();
+			client.sendMsg(NetworkMessages.okMsg());
 			return true;
 		}
 		return false;
 	}
 	
+	public boolean movePlayer(ClientItem client, CluedoPosition newpos){
+		if(checkandHandleStateTrans(PlayerStates.move, client)){
+			if (gameLogic.movePlayer(client.getNick(), newpos)) {
+				client.sendMsg(NetworkMessages.okMsg());
+				 sendMsgToParticipants(NetworkMessages.movedMsg(getGameId(),getPlayerByClient(client).getCluedoPerson().getPersonName(), newpos));
+				return true	;
+			}
+				
+			client.sendMsg(NetworkMessages.error_Msg("move not legit"));
+		}
+		return false;
+	}
+	
+	public void sendMsgToParticipants(String msg){
+		ArrayList<ClientItem> clients = getParticipants();
+		for (ClientItem client : clients)
+			client.sendMsg(msg);
+	}
+	
+	public boolean checkandHandleStateTrans(PlayerStates state, ClientItem client){
+		CluedoPlayer player = getPlayerByClient(client);
+		if (player.getPossibleStates().contains(state)) return true;
+		client.sendMsg(NetworkMessages.error_Msg("cant end turn at this point idiot, possible moves are :  "+player.getStatesAsString()));
+
+		return false;
+	}
 }
 
 

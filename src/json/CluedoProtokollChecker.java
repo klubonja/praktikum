@@ -443,7 +443,7 @@ public class CluedoProtokollChecker {
 	
 	void validatePersonPos(JSONObject jsonParent){
 		if (validateValue(jsonParent, "person"))
-			validatePerson(jsonParent.getString("person"));
+			validatePersonName(jsonParent.getString("person"));
 		if (validateValue(jsonParent, "field"))
 			validateField(jsonParent, "field");
 	}

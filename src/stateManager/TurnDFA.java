@@ -28,12 +28,13 @@ public class TurnDFA {
  	 		}, 	
  	 		{//move
  	 			PlayerStates.suspect.ordinal(),
- 	 			PlayerStates.disprove.ordinal(),
+ 	 			PlayerStates.end_turn.ordinal(),
  	 			PlayerStates.accuse.ordinal()
  	 		},	
  	 		{//suspect
  	 			//PlayerStates.disprove.ordinal(),
- 	 			PlayerStates.accuse.ordinal()
+ 	 			PlayerStates.accuse.ordinal(),
+ 	 			PlayerStates.end_turn.ordinal()
  	 		}, 
  	 		{//endturn
  	 			PlayerStates.do_nothing.ordinal()

@@ -121,7 +121,7 @@ public class ServerGameModel {
 		int ersterWuerfel = auxx.getRandInt(1, 6);
 		int zweiterWuerfel = auxx.getRandInt(1, 6);
 		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
-		
+		stateManager.transitionByAction(PlayerStates.roll_dice);
 		return new int[]{ersterWuerfel,zweiterWuerfel};
 	}
 	
@@ -153,6 +153,22 @@ public class ServerGameModel {
 	
 	public void endTurn(){
 		stateManager.transitionByAction(PlayerStates.end_turn);
+		setNextRound();
+	}
+	
+	public boolean movePlayer(String nick,CluedoPosition newpos){
+		if (checkMove(newpos)) {
+			pcManager.getPlayerByNick(nick).setNewPosition(newpos);
+			stateManager.transitionByAction(PlayerStates.move);
+			return true;
+		}
+		return false;
+	}
+	
+	public void setNextRound(){
+		pcManager.next();
+		stateManager.setNextTurnRec();
+		network.notifyNextRound();
 	}
 	
 }

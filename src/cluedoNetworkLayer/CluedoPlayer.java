@@ -80,6 +80,10 @@ public class CluedoPlayer {
 		this.position.setY(y);
 	}
 	
+	public void setNewPosition(CluedoPosition newpos) {
+		position = newpos;
+	}
+	
 	public void setPossibleStates(ArrayList<PlayerStates> newstates) {
 		this.possibleStates = newstates;
 	}
@@ -112,7 +116,7 @@ public class CluedoPlayer {
 		return nick;
 	}
 	
-	public String returnStatesAsString(){
+	public String getStatesAsString(){
 		String ausgabe = new String();
 		for (PlayerStates state : possibleStates){
 			ausgabe += state.getName() + " ";
