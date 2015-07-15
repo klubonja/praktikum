@@ -369,7 +369,6 @@ public class CluedoProtokollChecker {
 	}
 	
 	void validateStatement(JSONObject jsonParent){
-		String[] expectedFields = {"person","weapon","room"};
 		if (validateValue(jsonParent, "person"))
 			validatePerson(jsonParent.getString("person"));
 		if (validateValue(jsonParent, "weapon"))
