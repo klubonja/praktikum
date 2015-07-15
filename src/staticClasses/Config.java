@@ -8,13 +8,11 @@ public abstract class Config {
 	 * unsere config daten in einer static klasse
 	 * */
 
-	//public final static String GROUP_NAME = "yinyanyolosMAC";
-
 
 	
 	
 	
-	//public final static String GROUP_NAME = "yinyanyolosCIP";
+	//public final static String GROUP_NAME = "yinyanyolos";
 	public final static String GROUP_NAME = auxx.getRandomString(5);
 
 	
@@ -40,7 +38,7 @@ public abstract class Config {
 	//public final static int TCP_PORT = 1200;	
 	public final static int TCP_PORT = auxx.getRandInt(1025,49151);	
 	
-	public final static String[] EXPANSIONS= {"Chat","Pumping Oil in the Antarctica, fuck yeah!"};
+	public final static String[] EXPANSIONS= {"Chat"};
 	
 	public final static double IP_PROMPT_WINDOW_HEIGHT = 200;
 	public final static double IP_PROMPT_WINDOW_WIDTH = 300;
@@ -53,7 +51,7 @@ public abstract class Config {
 	
 	public final static double SERVER_WINDOW_WIDTH = 700;
 	public final static double SERVER_WINDOW_HEIGHT = 350;
-	public final static double GAME_LIST_ITEM_HEIGHT = 50;
+	public final static double GAME_LIST_ITEM_HEIGHT = 60;
 	public final static double NETWORK_ACTOR_LIST_ITEM_HEIGHT = 50;
 	
 	public final static String BLACKLISTED_MSG = ""

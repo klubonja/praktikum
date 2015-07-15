@@ -132,10 +132,10 @@ public class DataManagerServer extends DataManager {
 		while(iter.hasNext()){
 			CluedoGameServer cgs = iter.next();
 			cgs.findAndRemovePlayer(client);
+			cgs.findAndRemoveWatcher(client);
 			if (cgs.getNumberConnected() == 0){
 				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
-				if (removeGame(cgs)) cgs.notifyAll(NetworkMessages.game_deletedMsg(cgs.getGameId()));				
-							
+				if (removeGame(cgs)) cgs.notifyAll(NetworkMessages.game_deletedMsg(cgs.getGameId()));								
 			}
 			else if (cgs.getGameState() == GameStates.ended){
 				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
@@ -143,8 +143,8 @@ public class DataManagerServer extends DataManager {
 			else if (cgs.getGameState() == GameStates.not_started){
 				cgs.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
 			}		
-		}		
-		
+		}	
+	
 		return clientPool.remove(client);
 	}
 	
@@ -159,6 +159,26 @@ public class DataManagerServer extends DataManager {
 	public boolean joinGame(int gameID, String color, String nick) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public void rollDiceRequest(int gameID,ClientItem client){
+		CluedoGameServer game = getGameByID(gameID);
+		if (game.hasClient(client)){
+	   		notifyAll(NetworkMessages.dice_resultMsg(gameID,game.rollDice()));
+		}		
+	}
+	
+	public void endTurnRequest(int gameID,String nick,ClientItem client){
+		CluedoGameServer game = getGameByID(gameID);
+		if (game.hasClient(client)){
+			if (game.endTurnRequest(client)){
+				
+			}
+			else {
+				
+			}
+		}
+		
 	}
 }
 	

@@ -1,8 +1,7 @@
-package cluedoNetworkLayer;
+package stateManager;
 
 import java.util.ArrayList;
 
-import cluedoServer.TurnDFA;
 import enums.PlayerStates;
 
 public class CluedoStateMachine {

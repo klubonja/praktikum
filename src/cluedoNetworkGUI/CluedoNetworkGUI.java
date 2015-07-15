@@ -162,20 +162,20 @@ public abstract class CluedoNetworkGUI {
 		  games.clear();
 	  }
 	  
-	  public void addGame(int gameID,String specialinfo, String info,GameStates state,String servername,String serverip){
+	  public void addGame(int gameID, String playersinfo,String watchersinfo, GameStates state,String servername,String serverip){
 			for (GameVBox p: games)
 	       		if (p.getGameID() == gameID) return;
 			
-			GameVBox gamelistitem = new GameVBox(gameID, specialinfo, info,servername,serverip,state);
+			GameVBox gamelistitem = new GameVBox(gameID,playersinfo,watchersinfo,servername,serverip,state);
 			gamelistitem.setPrefHeight(Config.GAME_LIST_ITEM_HEIGHT);		
 			games.add(gamelistitem);	
 	  }
 	  
-	  public void updateGame(int gameID,String specialinfo, String info){
+	  public void updateGame(int gameID, String playersinfo, String watchersinfo ){
 		for (GameVBox p: games)
        		if (p.getGameID() == gameID){
-       			p.setLabelString(specialinfo);
-       			p.setInfoString(info);
+       			p.setInfoString(playersinfo);
+       			p.setWatchersInfo(watchersinfo);
        			return;
        		}			 		
 	  }

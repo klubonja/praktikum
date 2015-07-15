@@ -40,23 +40,25 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		CluedoGameClient newgame = 
 				new CluedoGameClient(gameID,server);
 		newgame.joinGame(color, nick);
-		addGameToGui(gameID, "(created by "+nick+") Game "+gameID, nick,newgame.getGameState(),server.getGroupName(),server.getIpString());
+		addGameToGui(gameID, nick,"",newgame.getGameState(),server.getGroupName(),server.getIpString());
 		
 		server.addGame(newgame);
 	}
 	
 	public void addClient(ServerItem server , String nick){
-		if (server.addClient(nick) && server == selectedServer){
+		//System.out.println("added : "+server.getMyNick()+" - "+nick+" equals : "+ nick.equals(server.getMyNick()));
+		if (!nick.equals(server.getMyNick()) && server.addClient(nick) && server == selectedServer){
 			getGui().addClient(nick);
+			System.out.println("added : "+server.getMyNick()+" - "+nick+" equals : "+ nick.equals(server.getMyNick()));	
 		}
-		
+				
 	}
 	
 	
 	public void setClients(ServerItem server ,ArrayList<String> nicks){
 		server.setClientNicks(nicks);
-		if (server == getSelectedServer())
-			setNicksGui();
+//		if (server == getSelectedServer())
+//			//setNicksGui(server);
 		
 	}
 	
@@ -65,7 +67,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		setStatus("selected server : "+selectedServer.getGroupName());
 		setWindowName("logged in to server "+selectedServer.getGroupName()+" as "+selectedServer.getMyNick());
 		cleanInput();
-		setNicksGui();
+		setNicksGui(selectedServer);
 		addMsgIn(selectedServer.getChat());
 		auxx.logfine("logged in to server "+selectedServer.getGroupName()+" as "+selectedServer.getMyNick());
 	}
@@ -86,7 +88,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 			if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART) {
 				setReadyGame(gameID);				
 			}				
-			updateGame(gameID, "Game "+gameID,game.getNicksConnected());
+			updateGame(gameID, game.getNicksConnected(),game.getWatchersConnected());
 			auxx.loginfo("connected to game "+gameID+" : number Nicks connected : "+game.getNumberConnected());
 
 			return true;
@@ -101,12 +103,6 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 			game.start(order);
 		game.setGameState(GameStates.getState(gameState));
 		setRunningGame(gameID);
-		//=======
-		//		if (game.start(order)){
-		//			game.setGameState(GameStates.getState(gameState));			
-		//			setRunningGame(gameID);
-		//		}
-		//>>>>>>> networkC
 	}
 	
 	public boolean deleteGameOnServer(ServerItem server,int gameID){
@@ -119,19 +115,14 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public boolean removeClientFromSystemServer(ServerItem server,String nickID){
-		server.removeClient(nickID);
-		getGui().removeClient(nickID);
+		if (server.removeClient(nickID) && server == selectedServer){
+			getGui().removeClient(nickID);
+		}		
 		if (server.removePlayerFromGames(nickID)){
 			refreshGamesListServer(server);
 			return true;
 		}
 		return false;
-	}
-	
-	public void removeClient(ServerItem server, String nick){
-		
-		System.out.println("nick removed from list");
-		
 	}
 
 	public void refreshGamesListServer(ServerItem server){
@@ -183,8 +174,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void killAllGamesOnServer(ServerItem server){
 		server.killAllGames();
-	}
-	
+	}	
 	
 	public ServerItem getServerByIndex(int index){
 		return serverPool.get(index);
@@ -209,7 +199,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void addGamesToGui(ArrayList<CluedoGameClient> glist ){
 		for (CluedoGameClient cg: glist){
-			addGameToGui(cg.getGameId(), "Game "+cg.getGameId(), cg.getNicksConnected(),cg.getGameState(),cg.getServer().getGroupName(),cg.getServer().getIpString());
+			addGameToGui(cg.getGameId(), cg.getNicksConnected(),cg.getWatchersConnected(),cg.getGameState(),cg.getServer().getGroupName(),cg.getServer().getIpString());
 		}
 	}
 	
@@ -223,8 +213,21 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		selectedServer.getGameByGameID(gameID).kill();
 	}
 	
-	public void setNicksGui(){
-		getGui().setClientNicks(selectedServer.getClientNicks());
+	public void setNicksGui(ServerItem server){
+		getGui().setClientNicks(server.getClientNicks());
+	}
+	
+	public void addWatcherToGame(ServerItem server,int gameID,String nick){
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		game.addWatcher(nick);
+		if (server == getSelectedServer()){
+			updateGame(gameID, game.getNicksConnected(),game.getWatchersConnected());
+		}
+			refreshGamesListServer(server);
+	};	
+	
+	public void joinGameAsWatcher(ServerItem server,int gameID){
+		server.sendMsg(NetworkMessages.watch_gameMsg(gameID));
 	}
 	
 	

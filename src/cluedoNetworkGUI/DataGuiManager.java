@@ -61,9 +61,9 @@ public class DataGuiManager   {
 			  });
 		  }
 	  
-	  public void addGameToGui(int gameID,String specialInfo, String info,GameStates state,String servername,String serverip){
+	  public void addGameToGui(int gameID, String playersinfo,String watchersinfo,GameStates state,String servername,String serverip){
 		  Platform.runLater(() -> {
-			gui.addGame(gameID, specialInfo, info,state,servername,serverip);
+			gui.addGame(gameID, playersinfo,watchersinfo,state,servername,serverip);
 		});
 	  }
 	  
@@ -141,9 +141,9 @@ public class DataGuiManager   {
 		  });
 	  }
 	  
-	  public void updateGame(int gameID,String specialinfo, String info){
+	  public void updateGame(int gameID, String playersinfo,String watchersInfo){
 		Platform.runLater(() -> {
-			gui.updateGame(gameID, specialinfo, info); 	
+			gui.updateGame(gameID, playersinfo,watchersInfo); 	
 		});
 	  }
 	  

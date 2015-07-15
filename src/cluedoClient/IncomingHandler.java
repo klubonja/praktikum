@@ -71,6 +71,9 @@ class IncomingHandler implements Runnable {
         		  dataGuiManager.joinGameOnServer(server,gameID,player.getString("color"),player.getString("nick"));
         		  
 			}
+			else if (checker.getType().equals("watcher added")){
+      		  dataGuiManager.addWatcherToGame(server,checker.getMessage().getInt("gameID"),checker.getMessage().getString("nick"));      		  
+			}
 			else if (checker.getType().equals("game started")){
         		  ArrayList<String> orderlist = auxx.jsonArrayToArrayList(checker.getMessage().getJSONArray("order"));
         		  dataGuiManager.startGameOnServer(

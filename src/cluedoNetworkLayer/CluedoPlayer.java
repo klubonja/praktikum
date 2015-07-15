@@ -2,7 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
-import com.sun.media.jfxmedia.events.PlayerStateEvent.PlayerState;
+import stateManager.CluedoStateMachine;
 
 import enums.Persons;
 import enums.PlayerStates;
@@ -11,46 +11,44 @@ public class CluedoPlayer {
 	
 	Persons cluedoPerson;
 	ArrayList<PlayerStates>  possibleStates;
-	CluedoStateMachine dfa = new CluedoStateMachine(PlayerStates.do_nothing);
-	PlayerStates currentState;
 	CluedoPosition position;
 	String nick = "";
 	ArrayList<String> cards;
+	boolean hasAccused = false;
 	
 	
 	
 	public CluedoPlayer(Persons pers,PlayerStates s, CluedoPosition p) {
 		cluedoPerson = pers;
-		if (s == PlayerStates.do_nothing) setDoNothing();
-		else setCurrentState(s);
+		possibleStates = new ArrayList<PlayerStates>();
 		position = p;
+		possibleStates.add(s);
 		cards = new ArrayList<String>();
 	}
+	
+	
 	
 	public CluedoPlayer(Persons pers,PlayerStates s) {
-		cluedoPerson = pers;
-		if (s == PlayerStates.do_nothing) setDoNothing();
-		else setCurrentState(s);
-		cards = new ArrayList<String>();
+		possibleStates = new ArrayList<PlayerStates>();
 		position = new CluedoPosition(cluedoPerson.getStartposition().getX(),
 									 cluedoPerson.getStartposition().getY());
+		cluedoPerson = pers;
+		possibleStates.add(s);
+		cards = new ArrayList<String>();
+		
 	}
 	
-	public void setDoNothing() {
-		this.currentState = PlayerStates.do_nothing;
+	public boolean hasAccused(){
+		return hasAccused;
+	}
+	
+	public void setPossibleState(PlayerStates state){
 		possibleStates = new ArrayList<PlayerStates>();
-		possibleStates.add(currentState);
+		possibleStates.add(state);
 	}
 	
-	public void setDisprove() {
-		this.currentState = PlayerStates.disprove;
-		possibleStates = new ArrayList<PlayerStates>();
-		possibleStates.add(PlayerStates.disprove);
-	}
-	
-	public void setCurrentState(PlayerStates currentState) {
-		this.currentState = currentState;
-		possibleStates = dfa.getSucStates(currentState);
+	public void addPossibleState(PlayerStates state){
+		possibleStates.add(state);
 	}
 	
 	public void setCurrentStates(ArrayList<PlayerStates> states) {
@@ -58,9 +56,9 @@ public class CluedoPlayer {
 		possibleStates = states;
 	}
 	
-	public PlayerStates getCurrentState() {
-		return currentState;
-	}
+//	public PlayerStates getCurrentState() {
+//		return currentState;
+//	}
 	
 	public void setCards(ArrayList<String> cards) {
 		this.cards = cards;
@@ -120,6 +118,10 @@ public class CluedoPlayer {
 			ausgabe += state.getName() + " ";
 		}
 		return ausgabe;
+	}
+	
+	public void removeFromPossibleStates(PlayerStates state){
+		possibleStates.remove(state);
 	}
 
 }

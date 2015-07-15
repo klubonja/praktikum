@@ -208,7 +208,7 @@ class CommunicationHandler implements Runnable {
 	        	   int gameID = checker.getMessage().getInt("gameID");
 	        	   CluedoGameServer game = dataManager.getGameByID(gameID);
 	        	   if (game.hasNick(client.getNick())){	        		   
-	        			game.initNetworkGame();	        			
+//	        			game.initNetworkGame();	        			
 	        			dataGuiManager.addMsgIn("game "+checker.getMessage().getInt("gameID")+ " started");
 	        			dataManager.notifyAll(
 	        					NetworkMessages.game_startedMsg(
@@ -225,13 +225,16 @@ class CommunicationHandler implements Runnable {
      	   else  if (checker.getType().equals("leave game")){													//LEAVE GAME
      		   dataGuiManager.removePlayerfromGame(client, checker.getMessage().getInt("gameID"));
      	   }
+     	  else  if (checker.getType().equals("watch game")){													//LEAVE GAME
+    		   dataGuiManager.addWatcherToGame(checker.getMessage().getInt("gameID"),client);
+    	   }
      	   else if (checker.getType().equals("disconnect")) {												//DISCONNECT
      		  closeProtokollConnection();
      	   }
      	   
      	  else if(checker.getType().equals("roll dice")){													//ROLL DICE
    		   int gameID = checker.getMessage().getInt("gameID");
-   		   dataManager.notifyAll(NetworkMessages.dice_resultMsg(gameID, dataManager.getGameByID(gameID).rollTheDice()));
+   		   dataManager.rollDiceRequest(gameID,client);
    	   }
    	   
    	   else if(checker.getType().equals("move")){															//MOVE
@@ -276,11 +279,12 @@ class CommunicationHandler implements Runnable {
    	   else if(checker.getType().equals("end turn")){
    		   auxx.loginfo("end turn angekommen");
    		   int gameID = checker.getMessage().getInt("gameID");
-   		   CluedoGameServer game = dataManager.getGameByID(gameID);
-   		   CluedoPlayer player = game.getPlayerByNick(client.getNick());
+   		   String nick = checker.getMessage().getString("nick");
+   		   //CluedoGameServer game = dataManager.getGameByID(gameID);
+   		   //CluedoPlayer player = game.getPlayerByNick(client.getNick());
 	   		   //if (player.getPossibleStates().contains(PlayerStates.end_turn)){
 	   			   client.sendMsg(NetworkMessages.okMsg());
-	   			   game.setAndNotifyNextRound();
+	   			   dataManager.endTurnRequest(gameID,nick,client);
 	   		   //}
    		   
 //   		   else {
@@ -329,5 +333,7 @@ class CommunicationHandler implements Runnable {
         }
 
 	}
+	
+	
 
 }

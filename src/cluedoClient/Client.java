@@ -129,7 +129,6 @@ public class Client {
 			    @Override
 			    public void handle(MouseEvent click) {
 			        if (click.getClickCount() == 2) {
-
 			        	GameVBox guiGame = gui.getGamesListView().getSelectionModel().getSelectedItem();
 			        	int gameID = guiGame.getGameID();
 			        	String servername = guiGame.getServerName();
@@ -148,7 +147,11 @@ public class Client {
 			        			|| game.getGameState() == GameStates.ended
 			        			)  {
 				        	dataGuiManager.leaveGame(game.getGameId());	
-			        	}		
+			        	}
+			        	else if (game.getGameState() == GameStates.started){
+			        		 dataGuiManager.joinGameAsWatcher(server,game.getGameId());
+
+			        	}
 			        	else if (game.getGameState() != GameStates.ended)  {
 				        	ArrayList<String> colors = server.getGameByGameID(gameID).getAvailableColors();
 			        		selectGame(game, gui.selectColor(colors));		

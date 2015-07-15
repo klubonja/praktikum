@@ -13,6 +13,10 @@ public class KachelContainer {
 	public Kachel[][] getKacheln() {
 		return kacheln;
 	}
+	
+	public Kachel getKachelAt(int y, int x){
+		return kacheln[y][x];
+	}
 
 	public void setKacheln(Kachel[][] kacheln) {
 		this.kacheln = kacheln;
@@ -33,5 +37,7 @@ public class KachelContainer {
 		}
 		
 	}
+	
+	
 	
 }

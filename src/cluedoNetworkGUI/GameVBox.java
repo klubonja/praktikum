@@ -6,53 +6,77 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import enums.GameStates;
 
 public class GameVBox extends VBox{
 	int gameID;
 	StringProperty gameLabelStringProp;
-	StringProperty gameInfoStringProp;
+	StringProperty playersInfoStringProp;
+	StringProperty watchersInfoStringProp;
 	BooleanProperty visibilityProp;
 	String serverIp;
 	String serverName;
 	Button startGame;
-	ArrayList<Label> kids;
+	ArrayList<HBox> kids;
+	ArrayList<Label> labels;
 	
-	public GameVBox(int gameid,String label, String info,String servername,String serverIp,GameStates state) {
+	public GameVBox(int gameid, String playersinfo, String watchersinfo, String servername,String serverIp,GameStates state) {
 		super();	
-		gameLabelStringProp = new SimpleStringProperty(label+" :"+gameid);
-		gameInfoStringProp = new SimpleStringProperty(info);
+		labels = new ArrayList<Label>();
+		gameLabelStringProp = new SimpleStringProperty(""+gameid+"");
+		playersInfoStringProp = new SimpleStringProperty(playersinfo);
+		watchersInfoStringProp = new SimpleStringProperty(watchersinfo);
 		visibilityProp = new SimpleBooleanProperty(false);
 		serverName = servername;
 		this.serverIp = serverIp;
 		gameID = gameid;
 	
 		getStyleClass().add("gameListItem");
-		kids = new ArrayList<Label>();
-				
-		Label gameLabel = new Label(label+" :"+gameid);
-		kids.add(gameLabel);
-		gameLabel.textProperty().bind(gameLabelStringProp);
+		kids = new ArrayList<HBox>();
+		
+		HBox gameBox = new HBox();
+		Label gameLabel = new Label("Game : ");
+		gameLabel.getStyleClass().add("gameLabel");
+		Label gameId = new Label(""+gameid+"");
+		gameBox.getChildren().addAll(gameLabel,gameId);
+		gameId.textProperty().bind(gameLabelStringProp);
 		gameLabel.getStyleClass().add("gameNameItem");
+		labels.add(gameLabel);
+		labels.add(gameId);
+		kids.add(gameBox);
 		
-		Label gameInfo = new Label("Connected :" +info);
-		kids.add(gameInfo);
-		gameInfo.textProperty().bind(gameInfoStringProp);
-		gameInfo.getStyleClass().add("gameInfoItem");
-		gameInfo.setLayoutY(14);
+		HBox playerBox = new HBox();
+		Label playerLabel = new Label("Players : ");
+		playerLabel.getStyleClass().add("gameInfoLabel");
+		Label playersInfo = new Label("Connected :" +playersinfo);
+		playersInfo.textProperty().bind(playersInfoStringProp);
+		playersInfo.getStyleClass().add("gameInfoItem");
+		playerBox.getChildren().addAll(playerLabel,playersInfo);
+		kids.add(playerBox);
+		labels.add(playerLabel);
+		labels.add(playersInfo);
+		//playersInfo.setLayoutY(14);
 		
+		HBox watchersBox = new HBox();
+		Label watchersLabel = new Label("Watchers : ");
+		watchersLabel.getStyleClass().add("gameInfoLabel");
+		Label watchersInfo = new Label(watchersinfo);		
+		watchersInfo.textProperty().bind(watchersInfoStringProp);
+		watchersInfo.getStyleClass().add("gameInfoItem");
+		watchersBox.getChildren().addAll(watchersLabel,watchersInfo);
+		//watchersInfo.setLayoutY(14);
+		kids.add(watchersBox);
+		labels.add(watchersInfo);
+		labels.add(watchersLabel);
 		
-		//HBox hb = new HBox();
+		for (HBox b: kids)
+			b.setAlignment(Pos.BOTTOM_LEFT);
 		
-//		startGame = new Button("Start Game");
-//		startGame.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-//		startGame.getStyleClass().add("startGameButtonGamesList");
-//		hb.getChildren().add(startGame);
-//		hb.setAlignment(Pos.CENTER_RIGHT);
-//		hb.visibleProperty().bind(visibilityProp);
 		switch (state) {
 			case started :
 				setRunningGame();
@@ -61,7 +85,7 @@ public class GameVBox extends VBox{
 				setEndedGame();
 				break;
 		}
-		getChildren().addAll(gameLabel,gameInfo);
+		getChildren().addAll(gameBox,playerBox,watchersBox);
 	}
 	
 	public int getGameID() {
@@ -72,15 +96,19 @@ public class GameVBox extends VBox{
 		gameLabelStringProp.set(newText);
 	}
 	public void setInfoString(String newText){
-		gameInfoStringProp.set(newText);
+		playersInfoStringProp.set(newText);
+	}
+	
+	public void setWatchersInfo(String watchersInfo) {
+		this.watchersInfoStringProp.set(watchersInfo);
 	}
 	
 	public void appendInfoString(String newText){
-		gameInfoStringProp.set(gameInfoStringProp.get()+", "+newText);
+		playersInfoStringProp.set(playersInfoStringProp.get()+", "+newText);
 	}
 	
 	public String getInfoString(){
-		return gameInfoStringProp.get();
+		return playersInfoStringProp.get();
 	}
 	
 	public String getServerName() {
@@ -94,35 +122,31 @@ public class GameVBox extends VBox{
 	public void setReadyGame() {
 		String style = "-fx-text-fill:#ffffff; "
 				+ "-fx-background-color: green;";
-		for (Label l: kids)
-			l.setStyle(style);
-		setStyle(style);
+		setStyleAll(style);
 	}
 	
 	public void setRunningGame() {
 		String style = "-fx-text-fill:#ffffff; "
 				+ "-fx-background-color: blue;";
-		for (Label l: kids)
-			l.setStyle(style);
-		setStyle(style);
+		setStyleAll(style);
 	}
 	
 	public void setEndedGame() {
 		String style = "-fx-text-fill:#ffffff; "
 				+ "-fx-background-color: red;";
-		for (Label l: kids)
-			l.setStyle(style);
-		setStyle(style);
+		setStyleAll(style);
 	}
 	
 	public void setGameWaiting() {
 		String style = "-fx-text-fill:#000000; "
 				+ "-fx-background-color: #ffffff;";
-		for (Label l: kids)
+		setStyleAll(style);
+	}
+	
+	public void setStyleAll(String style){
+		for (Label l: labels)
 			l.setStyle(style);
 		setStyle(style);
 	}
-	
-	
 	
 }

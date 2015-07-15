@@ -220,8 +220,9 @@ public abstract class NetworkMessages {
 	}
 	
 	public static String watcher_addedMsg(int gameID,String nick){
-		CluedoJSON json = new CluedoJSON("watcher_added");
-		json.put("gameID", nick);
+		CluedoJSON json = new CluedoJSON("watcher added");
+		json.put("gameID", gameID);
+		json.put("nick", nick);
 		
 		return json.toString();
 	}
@@ -554,7 +555,7 @@ public abstract class NetworkMessages {
 			
 			JSONArray watchers = gamearray.getJSONObject(i).getJSONArray("watchers");				
 			for (int n = 0;n < watchers.length();n++){
-				//wofür?
+				newgame.addWatcher(watchers.getString(n));
 			}
 			
 			if (gamearray.getJSONObject(i).has("person positions")){

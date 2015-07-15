@@ -33,7 +33,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean addGame(CluedoGameServer game){
 		if (dataManager.addGame(game)){
-			gui.addGame(game.getGameId(),"Game",game.getNicksConnected(),game.getGameState(),"","");
+			gui.addGame(game.getGameId(),game.getNicksConnected(),game.getWatchersConnected(),game.getGameState(),"","");
 			return true;
 		}
 		return false;		
@@ -50,7 +50,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 	public JoinGameStatus joinGame(int gameID, String color,ClientItem client){
 		JoinGameStatus status =  dataManager.joinGame(gameID, color, client);
 		if (status == JoinGameStatus.added)
-			updateGame(gameID, "Game", dataManager.getNicksConnectedByGameID(gameID));
+			updateGame(gameID, dataManager.getNicksConnectedByGameID(gameID),dataManager.getGameByID(gameID).getWatchersConnected());
 		return status;
 	}
 	
@@ -122,7 +122,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 		CluedoGameServer newgame = new CluedoGameServer(gameId);
 		newgame.joinGameServer(color, client);
 		dataManager.addGame(newgame);
-		addGameToGui(gameId, "", client.getNick(),newgame.getGameState(),"","");
+		addGameToGui(gameId,  client.getNick(),newgame.getWatchersConnected(),newgame.getGameState(),"","");
 		
 		return gameId;
 	}
@@ -140,7 +140,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 	public void addGamesGui(GameListServer glist){
 		  Platform.runLater(() -> {
 			  for (CluedoGameServer c: glist){
-				  gui.addGame(c.getGameId(),"Game" ,c.getNicksConnected(),c.getGameState(),"","");
+				  gui.addGame(c.getGameId(),c.getNicksConnected(),c.getWatchersConnected(),c.getGameState(),"","");
 			  }					
 		 });
 	  }
@@ -148,6 +148,16 @@ public class DataGuiManagerServer extends DataGuiManager {
 	@Override
 	public CluedoServerGUI getGui(){
 		return (CluedoServerGUI) super.getGui();
+	}
+	
+	public void addWatcherToGame(int gameID,ClientItem client){
+		 if (getGameByIndex(gameID).addWatcher(client)){
+			 dataManager.notifyAll(NetworkMessages.watcher_addedMsg(gameID, client.getNick()));	
+			 refreshGamesList();
+		 }
+		 else{
+			 client.sendMsg(NetworkMessages.error_Msg("you are already watching that game"));
+		 }
 	}
 	
 }
