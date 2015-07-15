@@ -261,7 +261,7 @@ public class CluedoGameServer extends CluedoGame {
 	public boolean checkandHandleStateTrans(PlayerStates state, ClientItem client){
 		CluedoPlayer player = getPlayerByClient(client);
 		if (player.getPossibleStates().contains(state)) return true;
-		client.sendMsg(NetworkMessages.error_Msg("cant end turn at this point idiot, possible moves are :  "+player.getStatesAsString()));
+		client.sendMsg(NetworkMessages.error_Msg("you cant do \""+state.getName()+"\" at this point, idiot, read the manual :  "+player.getStatesAsString()));
 
 		return false;
 	}
