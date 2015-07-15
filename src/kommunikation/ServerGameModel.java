@@ -58,7 +58,7 @@ public class ServerGameModel {
 		sucher = new Sucher(vorschlager, pathfinder, pcManager);
 		ausloeser = new Ausloeser(kacheln, gameID, pathfinder, pcManager);
 
-		dicePresenter = new DicePresenter(pcManager, ausloeser, sucher);
+		dicePresenter = new DicePresenter(pcManager, ausloeser, sucher,kacheln);
 		
 		stateManager = new StateManager(pcManager,serverBeweger);
 		
