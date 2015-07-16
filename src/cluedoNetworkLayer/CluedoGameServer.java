@@ -264,6 +264,20 @@ public class CluedoGameServer extends CluedoGame {
 
 		return false;
 	}
+	
+	public boolean hasPlayerConnectedByNick(String nick){
+		for (CluedoPlayer p: players)
+			if (p.getNick().equals(nick)) return true;
+		
+		return false;	
+	}
+	
+	@Override
+	boolean hasWatcherConnectedByNick(String nick) {
+		for (ClientItem w: watchers)
+			if (w.getNick().equals(nick)) return true;
+		return false;
+	}
 }
 
 

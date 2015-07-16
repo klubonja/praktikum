@@ -99,7 +99,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	public void startGameOnServer(ServerItem server,int gameID,String gameState, ArrayList <String> order){
 		CluedoGameClient game = server.getGameByGameID(gameID);
 		//game.setOrder(order);
-		if (game.hasNick(server.getMyNick()))
+		if (game.hasPlayerConnectedByNick(server.getMyNick()) || game.hasWatcherConnectedByNick(server.getMyNick()))
 			game.start(order);
 		game.setGameState(GameStates.getState(gameState));
 		setRunningGame(gameID);

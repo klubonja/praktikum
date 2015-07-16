@@ -206,7 +206,7 @@ class CommunicationHandler implements Runnable {
      	   else if (checker.getType().equals("start game")) {												//START GAME
 	        	   int gameID = checker.getMessage().getInt("gameID");
 	        	   CluedoGameServer game = dataManager.getGameByID(gameID);
-	        	   if (game.hasNick(client.getNick())){	        		   
+	        	   if (game.hasPlayerConnectedByNick(client.getNick())){	        		   
 //	        			game.initNetworkGame();	        			
 	        			dataGuiManager.addMsgIn("game "+checker.getMessage().getInt("gameID")+ " started");
 	        			dataManager.notifyAll(
@@ -257,7 +257,7 @@ class CommunicationHandler implements Runnable {
 			dataManager.notifyAll(NetworkMessages.accuseMsg(
 					id, NetworkMessages.statement(person, room, weapon))
 					);
-			switch (winnerPerson) {
+			switch (winnerPerson) { // irgendjemand hasst enums
 			case "Fräulein Gloria":
 				winnerPerson = "red";
 				break;
