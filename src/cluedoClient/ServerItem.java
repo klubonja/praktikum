@@ -72,8 +72,11 @@ public class ServerItem  {
 	}
 	
 	public void killAllGames(){
-		for (CluedoGameClient cg: gamesList)
+		for (CluedoGameClient cg: gamesList){
 			cg.kill();
+			cg = null;
+		}
+			
 	}
 	
 	public void setStatus(ServerStatus status) {

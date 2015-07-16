@@ -1,6 +1,7 @@
 package cluedoNetworkGUI;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -154,9 +155,13 @@ public abstract class CluedoNetworkGUI {
 		  return gameListView;
 	  }
 	  
-	  public void removeGame(int gameID){		  
-			for (GameVBox gameListItem: games)
-	       		if (gameListItem.getGameID() == gameID) games.remove(gameListItem);		 
+	  public void removeGame(int gameID){	
+		  Iterator<GameVBox> iter = games.iterator();
+		  while (iter.hasNext()){
+			  GameVBox tmpb = iter.next();
+			  if (tmpb.getGameID() == gameID)
+				 iter.remove();
+		  }
 	  }	  
 	
 	  public  void emptyGamesList(){

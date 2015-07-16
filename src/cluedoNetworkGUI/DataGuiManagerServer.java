@@ -44,20 +44,23 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public boolean startGameByID(int gameID, ClientItem client){
 		  CluedoGameServer game = dataManager.getGameByID(gameID);
-	  	   if (game.hasPlayerConnectedByClient(client)){	        		    			
-	  			addMsgIn("game "+gameID+ " started");
-	  			dataManager.notifyAll(
-	  					NetworkMessages.game_startedMsg(
-	  							gameID, 
-	  							 game.getConnectedPlayersString()
-	  							 )
-	  					);
-	  			dataManager.startGameByID(gameID,client.getNick());
-	  			setRunningGame(gameID);
-	  	   }     		  
-		   else {
-			   client.sendMsg(NetworkMessages.error_Msg("you have to join game "+gameID+" first to join"));
-		   }
+		  if (game != null){
+			  if (game.hasPlayerConnectedByClient(client)){	        		    			
+		  			addMsgIn("game "+gameID+ " started");
+		  			dataManager.notifyAll(
+		  					NetworkMessages.game_startedMsg(
+		  							gameID, 
+		  							 game.getConnectedPlayersString()
+		  							 )
+		  					);
+		  			dataManager.startGameByID(gameID,client.getNick());
+		  			setRunningGame(gameID);
+		  	   }     		  
+			   else {
+				   client.sendMsg(NetworkMessages.error_Msg("you have to join game "+gameID+" first to join"));
+			   }
+		  }
+	  	  
 		return false;
 	}
 	
@@ -188,13 +191,15 @@ public class DataGuiManagerServer extends DataGuiManager {
 	
 	public void addWatcherToGame(int gameID,ClientItem client){
 		CluedoGameServer game = getGameByIndex(gameID);
-		 if (getGameByIndex(gameID).addWatcher(client)){
-			 if (game.getGameState() == GameStates.started){
-				 client.sendMsg(NetworkMessages.gameInfoMsg(game));
+		if (game != null){
+			 if (game.addWatcher(client)){
+				 if (game.getGameState() == GameStates.started){
+					 client.sendMsg(NetworkMessages.gameInfoMsg(game));
+				 }
+				 dataManager.notifyAll(NetworkMessages.watcher_addedMsg(gameID, client.getNick()));	
+				 refreshGamesList();
 			 }
-			 dataManager.notifyAll(NetworkMessages.watcher_addedMsg(gameID, client.getNick()));	
-			 refreshGamesList();
-		 }
+		}
 	}
 	
 	

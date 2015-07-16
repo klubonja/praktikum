@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
+import sun.font.CreatedFontTracker;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPosition;
@@ -282,10 +283,10 @@ class IncomingHandler implements Runnable {
 			else if (checker.getType().equals("user added")){
 				dataGuiManager.addClient(server,checker.getMessage().getString("nick"));
 			}
-			else if (checker.getType().equals("game info")){
-				int gameID = checker.getMessage().getInt("gameID");
-				dataGuiManager.deleteGameOnServer(server, gameID);
-				dataGuiManager.addRunningGameToServer(server, gameID);
+			else if (checker.getType().equals("gameinfo")){
+				CluedoGameClient newgame = NetworkMessages.createGameFromJSONGameInfo(checker.getMessage().getJSONObject("game"), server);			
+				if (dataGuiManager.deleteGameOnServer(server, newgame.getGameId()))					
+					dataGuiManager.addRunningGameToServer(server, newgame);
 			}
 			else if (checker.getType().equals("disconnect")){
         		  killConnection();   
@@ -350,8 +351,7 @@ class IncomingHandler implements Runnable {
 	public void killConnection() {
 		localRun = false;
 		globalRun = false;
-		dataGuiManager.setStatus(server.getGroupName()
-				+ " ceased to be");
+		dataGuiManager.setStatus("Server "+server.getGroupName()+ " ceased to be");
 		dataGuiManager.removeServer(server);
 		dataGuiManager.setServer();
 

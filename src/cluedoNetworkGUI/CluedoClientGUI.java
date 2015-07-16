@@ -209,6 +209,12 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		
 	}
 	
+	public void emptyClientNicks(){
+		Platform.runLater(() -> {
+			clientNicks.clear();
+		});	
+	}
+	
 	public void setClientNicks(ArrayList<String> nicks){
 		Platform.runLater(() -> {
 			clientNicks.clear();

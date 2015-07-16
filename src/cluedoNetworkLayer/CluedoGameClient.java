@@ -67,25 +67,29 @@ public class CluedoGameClient extends CluedoGame {
 		return myNick;
 	}
 
-	@Override
-	public boolean start(){
-		return false;
+	public boolean start() { //aussumes playerlsit beeing ordered
+		auxx.loginfo("gameGUI of game " + getGameId() + " started");
+		filterPlayers();
+		startGameGui();		
+		setGameState(GameStates.started);
+
+		return true;
 	}
 	
 	public boolean start(ArrayList <String> order) {
-		auxx.loginfo("game " + getGameId() + " started");
-		
 		searchAndDestroyOrder(order);
-		
+		start();
+
+		return true;
+	}
+	
+	private void startGameGui(){
 		Platform.runLater(() -> {
 			communicator = new Communicator(this);
 			communicator.startGame();
 			communicator.setTitle(myNick + " playing on server "
 					+ server.getGroupName() + " Game : " + gameId);
 		});
-		setGameState(GameStates.started);
-
-		return true;
 	}
 
 	public void rollDice(int[] wuerfel) {
@@ -189,6 +193,10 @@ public class CluedoGameClient extends CluedoGame {
 		
 	}
 	
+	public void filterPlayers(){
+		players = getPlayersConnected();
+	}
+	
 	public String getWatchersConnected(){
 		StringBuffer nb = new StringBuffer();
 		for (String p : watchers)			
@@ -215,6 +223,7 @@ public class CluedoGameClient extends CluedoGame {
 	}
 	
 	public boolean addWatcher(String c) {
+		if (watchers.contains(c)) return false;
 		return watchers.add(c);
 	}
 	

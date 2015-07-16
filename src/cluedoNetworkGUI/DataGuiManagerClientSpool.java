@@ -3,6 +3,7 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
@@ -28,6 +29,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 			
 		} catch (Exception e) {
 			auxx.loginfo("no server to refresh gamelist from");
+			emptyGamesList();
 		}
 	}
 	
@@ -45,10 +47,8 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		server.addGame(newgame);
 	}
 	
-	public void addRunningGameToServer(ServerItem server, int gameID){
-		CluedoGameClient runningGame = 
-				new CluedoGameClient(gameID,server);
-		addGameToGui(gameID,runningGame.getNicksConnected(),runningGame.getWatchersConnected(),runningGame.getGameState(),server.getGroupName(),server.getIpString());
+	public void addRunningGameToServer(ServerItem server, CluedoGameClient runningGame){
+		addGameToGui(runningGame.getGameId(),runningGame.getNicksConnected(),runningGame.getWatchersConnected(),runningGame.getGameState(),server.getGroupName(),server.getIpString());
 		
 		server.addGame(runningGame);
 		runningGame.start();
@@ -173,10 +173,12 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		killAllGamesOnServer(server);
 		if (serverPool.remove(server)){
 			removeNetworkActorFromGui(server.getGroupName(), server.getIpString());
-			emptyGamesList();
+			if (server == selectedServer){
+				emptyGamesList();
+				emptyClientNicks();
+			}			
 			return true;
-		}
-		
+		}		
 		return false;
 			
 	}
@@ -239,7 +241,9 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		server.sendMsg(NetworkMessages.watch_gameMsg(gameID));
 	}
 	
-	
+	public void emptyClientNicks(){
+		getGui().emptyClientNicks();
+	  }
 	
 	
 }
