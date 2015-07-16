@@ -221,15 +221,15 @@ class IncomingHandler implements Runnable {
 					}
 					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.accuse.getName())){
 						game.currentPlayerToAccuse();
-						game.itsSomeonesTurn();
+//						game.itsSomeonesTurn();
 					}
 					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.suspect.getName())){
 						game.currentPlayerToSuspect();
-						game.itsSomeonesTurn();
+//						game.itsSomeonesTurn();
 					}
 					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.disprove.getName())){
 						game.currentPlayerToDisprove();
-						game.itsSomeonesTurn();
+//						game.itsSomeonesTurn();
 					}
 //					else if (states.get(welcherState).equals(PlayerStates.do_nothing.getName())){
 //						auxx.loginfo("voll ghetto-code");
