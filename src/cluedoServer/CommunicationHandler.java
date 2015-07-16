@@ -179,8 +179,8 @@ class CommunicationHandler implements Runnable {
      		   dataGuiManager.joinGame(gameID, color, client);
      	   }
 	 	   else if (checker.getType().equals("start game")) {												//START GAME
-	        	   int gameID = checker.getMessage().getInt("gameID");
-	        	   dataGuiManager.startGameByID(gameID, client);
+        	   int gameID = checker.getMessage().getInt("gameID");
+        	   dataGuiManager.startGameByID(gameID, client);
 	 	   }	        	   
 	 	   else  if (checker.getType().equals("leave game")){													//LEAVE GAME
 	 		   dataGuiManager.removeClientfromGame(client, checker.getMessage().getInt("gameID"));

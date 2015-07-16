@@ -19,7 +19,6 @@ import cluedoNetworkLayer.CluedoWeapon;
 import cluedoNetworkLayer.WinningStatement;
 import cluedoServer.ClientItem;
 import enums.GameStates;
-import enums.Persons;
 import enums.PlayerStates;
 
 

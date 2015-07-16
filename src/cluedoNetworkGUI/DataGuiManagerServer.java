@@ -145,7 +145,8 @@ public class DataGuiManagerServer extends DataGuiManager {
 				}
 				 return true;
 			}
-			dataManager.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));			
+			dataManager.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
+			updateGame(gameID, game.getNicksConnected(), game.getWatchersConnected());
 		}
 		
 		client.sendMsg(NetworkMessages.error_Msg("game "+gameID+" doesn't exist"));
