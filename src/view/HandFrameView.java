@@ -65,7 +65,7 @@ public class HandFrameView extends BorderPane {
 		}
 
 		title = new Label("Cards in hand. Click on a card to view it.");
-		happening = new Label("Currently happening: ");
+		happening = new Label("If somebody disproves you, look here:" + "\n");
 		text = new Label();
 		top.getChildren().addAll(happening, text);
 		
