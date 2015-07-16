@@ -292,6 +292,18 @@ public class CluedoGameServer extends CluedoGame {
 			if (w.getNick().equals(nick)) return true;
 		return false;
 	}
+	
+	public boolean removeWatcher(ClientItem client){
+		Iterator<ClientItem> iter = watchers.iterator();
+		while (iter.hasNext()){
+			ClientItem c = iter.next();
+			if (c == client){
+				iter.remove();
+				return true;
+			}
+		}
+		return false;
+	}
 }
 
 

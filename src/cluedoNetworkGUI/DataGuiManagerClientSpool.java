@@ -87,7 +87,8 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void removePlayerFromGameOnServer(int gameID,String nick,ServerItem server){
 		CluedoGameClient game = server.getGameByGameID(gameID);
-		game.removePlayer(nick);	
+		game.removePlayer(nick);
+		game.removeWatcher(nick);
 		if (server == selectedServer) refreshGamesListServer(server);
 	}
 	

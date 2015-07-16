@@ -132,11 +132,13 @@ public class CluedoGameClient extends CluedoGame {
 
 	public void kill() {
 		try {
-			auxx.sendTCPMsg(server.getSocket(),
-					NetworkMessages.leave_gameMsg(gameId));
-			killCommunicator();
+			server.sendMsg(NetworkMessages.leave_gameMsg(gameId));
 		}
 		catch (Exception e){	
+			auxx.logsevere("sending leave msg failed :", e);
+		}
+		finally {
+			killCommunicator();
 		}
 	}
 
