@@ -211,25 +211,22 @@ class IncomingHandler implements Runnable {
 					}
 					else if (server.getMyNick().equals(nick) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
 						auxx.loginfo("voll ghetto-code");
-						game.currentPlayerToRolls();
+//						game.currentPlayerToRolls();
 						game.itsYourTurn();
 					}
 					else if ( ! (server.getMyNick().equals(nick) ) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
 						auxx.loginfo("voll ghetto-code");
-						game.currentPlayerToRolls();
+//						game.currentPlayerToRolls();
 						game.itsSomeonesTurn();
 					}
-					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.accuse.getName())){
-						game.currentPlayerToAccuse();
-//						game.itsSomeonesTurn();
-					}
-					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.suspect.getName())){
-						game.currentPlayerToSuspect();
-//						game.itsSomeonesTurn();
-					}
+//					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.accuse.getName())){
+//						game.currentPlayerToAccuse();
+//					}
+//					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.suspect.getName())){
+//						game.currentPlayerToSuspect();
+//					}
 					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.disprove.getName())){
 						game.currentPlayerToDisprove();
-//						game.itsSomeonesTurn();
 					}
 //					else if (states.get(welcherState).equals(PlayerStates.do_nothing.getName())){
 //						auxx.loginfo("voll ghetto-code");
@@ -237,7 +234,6 @@ class IncomingHandler implements Runnable {
 //					}
 					else if ( ! (states.get(welcherState).equals(PlayerStates.do_nothing.getName()))){
 						auxx.loginfo("nicht so ghetto-code");
-//						game.currentPlayerToRolls();
 					}
 				}
 //				else if (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.disprove.getName())){
