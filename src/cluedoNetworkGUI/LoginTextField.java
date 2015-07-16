@@ -3,7 +3,6 @@ package cluedoNetworkGUI;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -37,16 +36,15 @@ public class LoginTextField extends TextField{
 
 			return false;
 		}
-		else if (getText().equals(labelName)){
-			raiseErr(labelName+" muss mindestens "+minLength+" Zeichen haben");
-			setStyle("-fx-text-inner-color: red;"
-				+    "-fx-font-style: italic;"
-				+ "");
-
-			return false;
-			
-		}
-		System.out.println(""+getText().length()+"");
+//		else if (getText().equals(labelName)){
+//			raiseErr(labelName+" muss mindestens "+minLength+" Zeichen haben");
+//			setStyle("-fx-text-inner-color: red;"
+//				+    "-fx-font-style: italic;"
+//				+ "");
+//
+//			return false;
+//			
+//		}
 		return true;	
 		
 	}

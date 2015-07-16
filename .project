@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+
 	<name>yinyanyolos</name>
 	<comment></comment>
 	<projects>
@@ -21,4 +22,3 @@
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 	</natures>
 </projectDescription>
-
