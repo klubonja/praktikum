@@ -352,7 +352,7 @@ class IncomingHandler implements Runnable {
 		localRun = false;
 		globalRun = false;
 		dataGuiManager.setStatus(server.getGroupName()
-				+ " said FUCKOFF (kindof)");
+				+ " ceased to be");
 		dataGuiManager.removeServer(server);
 		dataGuiManager.setServer();
 
