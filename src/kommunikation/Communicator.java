@@ -163,7 +163,10 @@ public class Communicator {
 	public void suspect() {
 		String person = zugView.getPersonenListe().getValue();
 		String weapon = zugView.getWaffenListe().getValue();
-		String room = "hall";
+		String room = kacheln.getKacheln()
+				[pcManager.getCurrentPlayer().getPosition().getY()]
+				[pcManager.getCurrentPlayer().getPosition().getX()].
+				getRaum().getName();
 		network.sendMsgToServer(NetworkMessages.suspicionMsg(
 				gameid,
 				NetworkMessages.statement(person, room, weapon)));
@@ -263,12 +266,24 @@ public class Communicator {
 
 		zugPresenter.getGameView().ONanklage.setOnMouseClicked(e -> {
 			suspect();
+			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+				remove(gameView.getKomplettesFeld().getZugView().getBottomBox());
+			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+				remove(gameView.getKomplettesFeld().getZugView().getVermuten());
+			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+				remove(gameView.getKomplettesFeld().getZugView().OFFanklage);
+			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+				add(gameView.getKomplettesFeld().getZugView().getButtonsBox());
+			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+				add(gameView.getKomplettesFeld().getZugView().getBottomBox());
+			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+				remove(gameView.getKomplettesFeld().getZugView().getClose());
+			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+				add(gameView.getKomplettesFeld().getZugView().getClose());
 			gameView.getKomplettesFeld().getChildren().remove(zugView);
 		});
 
-		gameView.getHand().getAccuse().setOnMouseClicked(e -> {
-			accuse();
-		});
+		gameView.getHand().getAccuse().setOnMouseClicked(e -> accuse());
 
 		// END TURN
 		gameView.getHand().getEndTurn().setOnMouseClicked(e -> endTurn());

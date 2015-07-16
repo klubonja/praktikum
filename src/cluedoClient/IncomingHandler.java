@@ -179,6 +179,10 @@ class IncomingHandler implements Runnable {
 							server.getGameByGameID(checker.getMessage().getInt("gameID"))
 							.getPlayerByNick(server.myNick).getCluedoPerson().getPersonName() +
 							" did not disprove.");
+					server.sendMsg(NetworkMessages.chatMsg(
+							server.getGameByGameID(checker.getMessage().getInt("gameID"))
+							.getPlayerByNick(server.myNick).getCluedoPerson().getPersonName() +
+							" did not disprove.", server.getMyNick(), auxx.now()));
 				}
 			else if (checker.getType().equals("game ended")){
         		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
