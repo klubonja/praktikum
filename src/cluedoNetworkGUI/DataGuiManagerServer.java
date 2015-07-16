@@ -2,16 +2,19 @@ package cluedoNetworkGUI;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javafx.application.Platform;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
+import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoServer.ClientItem;
 import cluedoServer.DataManagerServer;
 import cluedoServer.GameListServer;
 import enums.GameStates;
 import enums.JoinGameStatus;
+import enums.PlayerStates;
 
 public class DataGuiManagerServer extends DataGuiManager {	
 	
@@ -39,19 +42,52 @@ public class DataGuiManagerServer extends DataGuiManager {
 		return false;		
 	}
 	
-	public boolean startGameByID(int gameID, String nick){
-		if (dataManager.startGameByID(gameID,nick)){
-			setRunningGame(gameID);
-			return true;
-		}
+	public boolean startGameByID(int gameID, ClientItem client){
+		  CluedoGameServer game = dataManager.getGameByID(gameID);
+	  	   if (game.hasPlayerConnectedByClient(client)){	        		    			
+	  			addMsgIn("game "+gameID+ " started");
+	  			dataManager.notifyAll(
+	  					NetworkMessages.game_startedMsg(
+	  							gameID, 
+	  							 game.getConnectedPlayersString()
+	  							 )
+	  					);
+	  			dataManager.startGameByID(gameID,client.getNick());
+	  			setRunningGame(gameID);
+	  	   }     		  
+		   else {
+			   client.sendMsg(NetworkMessages.error_Msg("you have to join game "+gameID+" first to join"));
+		   }
 		return false;
 	}
 	
-	public JoinGameStatus joinGame(int gameID, String color,ClientItem client){
+	public void joinGame(int gameID, String color,ClientItem client){
 		JoinGameStatus status =  dataManager.joinGame(gameID, color, client);
-		if (status == JoinGameStatus.added)
-			updateGame(gameID, dataManager.getNicksConnectedByGameID(gameID),dataManager.getGameByID(gameID).getWatchersConnected());
-		return status;
+		   if (status == JoinGameStatus.added){
+			   dataManager.notifyAll(
+     				   NetworkMessages.player_addedMsg(
+     						   NetworkMessages.player_info(
+     								   client.getNick(), 
+     								   color , 
+     								   new ArrayList<String>(
+     										    Arrays.asList(PlayerStates.do_nothing.getName()
+     										    	)
+     									)
+     								   ),
+     						   gameID
+     						   )
+     				   );
+			   auxx.logfine(status.name());
+		   }
+		   if (status == JoinGameStatus.added){
+			   updateGame(gameID, dataManager.getNicksConnectedByGameID(gameID),dataManager.getGameByID(gameID).getWatchersConnected());
+		   }
+		   else if (status == JoinGameStatus.already_joined)
+			   client.sendMsg(NetworkMessages.error_Msg("you have already joined this game"));
+		   else if (status == JoinGameStatus.color_already_taken)
+			   client.sendMsg(NetworkMessages.error_Msg("color is already chosen by someone else"));
+		   else if (status == JoinGameStatus.not_joinable)
+			   client.sendMsg(NetworkMessages.error_Msg("you can't join this game, idiot"));
 	}
 	
 	public void setGuiStatus(String status) {
@@ -151,13 +187,16 @@ public class DataGuiManagerServer extends DataGuiManager {
 	}
 	
 	public void addWatcherToGame(int gameID,ClientItem client){
+		CluedoGameServer game = getGameByIndex(gameID);
 		 if (getGameByIndex(gameID).addWatcher(client)){
+			 if (game.getGameState() == GameStates.started){
+				 client.sendMsg(NetworkMessages.gameInfoMsg(game));
+			 }
 			 dataManager.notifyAll(NetworkMessages.watcher_addedMsg(gameID, client.getNick()));	
 			 refreshGamesList();
 		 }
-		 else{
-			 client.sendMsg(NetworkMessages.error_Msg("you are already watching that game"));
-		 }
 	}
+	
+	
 	
 }

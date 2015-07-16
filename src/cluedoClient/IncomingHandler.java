@@ -282,6 +282,11 @@ class IncomingHandler implements Runnable {
 			else if (checker.getType().equals("user added")){
 				dataGuiManager.addClient(server,checker.getMessage().getString("nick"));
 			}
+			else if (checker.getType().equals("game info")){
+				int gameID = checker.getMessage().getInt("gameID");
+				dataGuiManager.deleteGameOnServer(server, gameID);
+				dataGuiManager.addRunningGameToServer(server, gameID);
+			}
 			else if (checker.getType().equals("disconnect")){
         		  killConnection();   
 			}

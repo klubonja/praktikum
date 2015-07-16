@@ -45,6 +45,15 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		server.addGame(newgame);
 	}
 	
+	public void addRunningGameToServer(ServerItem server, int gameID){
+		CluedoGameClient runningGame = 
+				new CluedoGameClient(gameID,server);
+		addGameToGui(gameID,runningGame.getNicksConnected(),runningGame.getWatchersConnected(),runningGame.getGameState(),server.getGroupName(),server.getIpString());
+		
+		server.addGame(runningGame);
+		runningGame.start();
+	}
+	
 	public void addClient(ServerItem server , String nick){
 		//System.out.println("added : "+server.getMyNick()+" - "+nick+" equals : "+ nick.equals(server.getMyNick()));
 		if (!nick.equals(server.getMyNick()) && server.addClient(nick) && server == selectedServer){

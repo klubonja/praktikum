@@ -178,6 +178,11 @@ public class CluedoProtokollChecker {
 			isInt(jsonRoot, "gameID");
 		validateValue(jsonRoot, "nick");
 	}
+	
+	void val_gameinfo(){
+		if (validateValue(jsonRoot, "game"))
+			validateGameInfo(jsonRoot.getJSONObject("game"));
+	}
 
 	void val_leave_game() {
 		val_watch_game();

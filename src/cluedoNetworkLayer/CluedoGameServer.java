@@ -107,7 +107,9 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	public JoinGameStatus joinGameServer(String color, ClientItem client) {
-		if (getParticipants().contains(client))
+		if (hasWatcherConnectedByClient(client))
+			return JoinGameStatus.already_watching;
+		if (hasPlayerConnectedByClient(client))
 			return JoinGameStatus.already_joined;
 		if (getGameState() != GameStates.not_started)
 			return JoinGameStatus.not_joinable;
@@ -117,12 +119,11 @@ public class CluedoGameServer extends CluedoGame {
 				if (p.getNick().equals("")) {
 					if (getParticipants().add(client)) {
 						p.setNick(client.getNick());
-						client.setPlayer(p);
 						return JoinGameStatus.added;
 					}
 					return JoinGameStatus.error;
 				}
-				return JoinGameStatus.nick_already_taken;
+				return JoinGameStatus.color_already_taken;
 			}
 		}
 
@@ -154,9 +155,14 @@ public class CluedoGameServer extends CluedoGame {
 	}
 
 	public boolean addWatcher(ClientItem c) {
-		if (!watchers.contains(c)){
-			return watchers.add(c);
+		if (!hasPlayerNick(c)){
+			if (!hasWatcherConnectedByNick(c.getNick())){
+				return watchers.add(c);	
+			}
+			c.sendMsg(NetworkMessages.error_Msg("you are already watching game "+getGameId()));
 		}
+		c.sendMsg(NetworkMessages.error_Msg("you damn cheater, you cant watch and play game "+getGameId()));
+		
 		
 		return false;	
 	}
@@ -270,6 +276,14 @@ public class CluedoGameServer extends CluedoGame {
 			if (p.getNick().equals(nick)) return true;
 		
 		return false;	
+	}
+	
+	public boolean hasPlayerConnectedByClient(ClientItem client){
+		return participants.contains(client);
+	}
+	
+	public boolean hasWatcherConnectedByClient(ClientItem client){
+		return watchers.contains(client);
 	}
 	
 	@Override

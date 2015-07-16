@@ -32,6 +32,7 @@ public enum CluedoProtokollMessageTypes {
 	game_started("game started"),
 	game_ended("game ended"),
 	game_created("game created"),
+	gameinfo("gameinfo"),
 	
 	// Statusupdate eines Spielers
 	statupdate("stateupdate"),	

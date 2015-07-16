@@ -504,6 +504,14 @@ public abstract class NetworkMessages {
 			  );		
 	}
 	
+	public static String gameInfoMsg(CluedoGameServer serverGame){
+		CluedoJSON json = new CluedoJSON("gameinfo");
+		JSONObject gameinfo = gameInfo(serverGame);
+		json.put("game", gameinfo);
+		
+		return json.toString();
+	}
+	
 	public static String make_login_sucMsg(JSONArray nickArray,JSONArray gameArray,JSONArray expansions){
 		CluedoJSON json = new CluedoJSON("login successful");
 		json.put("expansions", expansions);
