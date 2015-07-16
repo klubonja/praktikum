@@ -138,7 +138,7 @@ public class CluedoGameClient extends CluedoGame {
 
 	public void killCommunicator() {
 		Platform.runLater(() -> {
-			communicator.kill();
+			if (communicator != null) communicator.kill();
 		});
 	}
 
