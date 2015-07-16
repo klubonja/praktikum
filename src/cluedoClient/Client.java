@@ -138,12 +138,12 @@ public class Client {
 			        	
 			      
 			        	if (game.getNumberConnected() >= Config.MIN_CLIENTS_FOR_GAMESTART 
-			        			&& game.hasNick(server.getMyNick())
+			        			&& game.hasPlayerConnectedByNick(server.getMyNick())
 			        			&& game.getGameState() == GameStates.not_started){
 			        		sendStartGameRequest(gameID);
 			        	}
 			        	else if (
-			        			game.getGameState() == GameStates.started && game.hasNick(server.getMyNick())
+			        			game.getGameState() == GameStates.started && game.hasPlayerConnectedByNick(server.getMyNick())
 			        			|| game.getGameState() == GameStates.ended
 			        			)  {
 				        	dataGuiManager.leaveGame(game.getGameId());	

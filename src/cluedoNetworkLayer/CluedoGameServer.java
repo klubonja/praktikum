@@ -260,8 +260,22 @@ public class CluedoGameServer extends CluedoGame {
 	public boolean checkandHandleStateTrans(PlayerStates state, ClientItem client){
 		CluedoPlayer player = getPlayerByClient(client);
 		if (player.getPossibleStates().contains(state)) return true;
-		client.sendMsg(NetworkMessages.error_Msg("you cant do \""+state.getName()+"\" at this point, idiot, read the manual :  "+player.getStatesAsString()));
+		client.sendMsg(NetworkMessages.error_Msg("you cant do \""+state.getName()+"\" at this point, idiot, read the manual :  "+player.getStatesAsStringFormatted()));
 
+		return false;
+	}
+	
+	public boolean hasPlayerConnectedByNick(String nick){
+		for (CluedoPlayer p: players)
+			if (p.getNick().equals(nick)) return true;
+		
+		return false;	
+	}
+	
+	@Override
+	public boolean hasWatcherConnectedByNick(String nick) {
+		for (ClientItem w: watchers)
+			if (w.getNick().equals(nick)) return true;
 		return false;
 	}
 }

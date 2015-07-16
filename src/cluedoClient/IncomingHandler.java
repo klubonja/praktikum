@@ -122,8 +122,7 @@ class IncomingHandler implements Runnable {
         										 )
         							);	        		  
 			} 
-				else
-				if (checker.getType().equals("suspicion")) {
+			else if (checker.getType().equals("suspicion")) {
 				JSONObject json = checker.getMessage().getJSONObject(
 						"statement");
 				int id = checker.getMessage().getInt("gameID");
@@ -136,8 +135,7 @@ class IncomingHandler implements Runnable {
 						+ " is suspecting. " + "\n" + person + " " + room + " " + weapon);
 			}
 				
-				else
-					if (checker.getType().equals("accuse")) {
+			else if (checker.getType().equals("accuse")) {
 				JSONObject json = checker.getMessage().getJSONObject(
 						"statement");
 				String person = json.getString("person").toString();
@@ -150,8 +148,7 @@ class IncomingHandler implements Runnable {
 						);
 			}
 					
-			else
-				if(checker.getType().equals("wrong accusation")){
+			else if(checker.getType().equals("wrong accusation")){
 					JSONObject json = checker.getMessage().getJSONObject(
 							"statement");
 					String person = json.getString("person").toString();
@@ -161,14 +158,13 @@ class IncomingHandler implements Runnable {
 					somebodyFailedToAccuse(person, weapon, room);
 			} 
 				
-				else
-				if (checker.getType().equals("disprove")) {
-					System.out.println("NICK INCOMING " + server.getGameByGameID(checker.getMessage().getInt("gameID")).getPlayerByNick(server.myNick));
-					String card = checker.getMessage().getString("card").toString();
-				server.getGameByGameID(checker.getMessage().getInt("gameID"))
-				.changeLabel(
-				server.getGameByGameID(checker.getMessage().getInt("gameID")).getPlayerByNick(server.myNick).getCluedoPerson().getPersonName()
-				+ " had the card: " + card);
+			else if (checker.getType().equals("disprove")) {
+				System.out.println("NICK INCOMING " + server.getGameByGameID(checker.getMessage().getInt("gameID")).getPlayerByNick(server.myNick));
+				String card = checker.getMessage().getString("card").toString();
+			server.getGameByGameID(checker.getMessage().getInt("gameID"))
+			.changeLabel(
+			server.getGameByGameID(checker.getMessage().getInt("gameID")).getPlayerByNick(server.myNick).getCluedoPerson().getPersonName()
+			+ " had the card: " + card);
 			} 
 				
 				else
@@ -308,8 +304,6 @@ class IncomingHandler implements Runnable {
 		for (String msg : msgs)
 			if (!msg.equals(""))  
 				getGamesListLogic(msg);
-		
-		
 	}
 	
 	private void getGamesListLogic(String msg){
@@ -352,7 +346,7 @@ class IncomingHandler implements Runnable {
 		localRun = false;
 		globalRun = false;
 		dataGuiManager.setStatus(server.getGroupName()
-				+ " said FUCKOFF (kindof)");
+				+ " ceased to be");
 		dataGuiManager.removeServer(server);
 		dataGuiManager.setServer();
 

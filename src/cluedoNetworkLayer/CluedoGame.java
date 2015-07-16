@@ -20,11 +20,12 @@ public abstract class CluedoGame {
 	Stack<CluedoPlayer> players;
 	ArrayList<CluedoWeapon> weapons;
 	
-	ArrayList<String> orderList;
 	
 	Communicator communicator;
 	
 	abstract boolean start();
+	public abstract boolean hasPlayerConnectedByNick(String nick);
+	public abstract boolean hasWatcherConnectedByNick(String nick);
 	
 	public CluedoGame(int gameId){
 		this.gameId = gameId; 		
@@ -195,13 +196,6 @@ public abstract class CluedoGame {
 			
 		if (nb.length() > 2) nb.delete(nb.length()-2, nb.length()-1);
 		return nb.toString();
-	}
-	
-	public boolean hasNick(String nick){
-		for (CluedoPlayer p: players)
-			if (p.getNick().equals(nick)) return true;
-		return false;
-			
 	}
 	
 	int getIndexByNick(String nick) {

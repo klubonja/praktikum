@@ -56,7 +56,7 @@ public class ServerItem  {
 	public ArrayList<CluedoGameClient> getGamesByNick(String nick){		
 		ArrayList<CluedoGameClient> assocgames = new ArrayList<CluedoGameClient>();
 		for (CluedoGameClient game: gamesList){
-			if (game.hasNick(nick)){
+			if (game.hasPlayerConnectedByNick(nick)){
 				assocgames.add(game);
 			}
 		}		

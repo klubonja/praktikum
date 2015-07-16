@@ -2,8 +2,6 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
-import stateManager.CluedoStateMachine;
-
 import enums.Persons;
 import enums.PlayerStates;
 
@@ -116,10 +114,12 @@ public class CluedoPlayer {
 		return nick;
 	}
 	
-	public String getStatesAsString(){
+	public String getStatesAsStringFormatted(){
 		String ausgabe = new String();
-		for (PlayerStates state : possibleStates){
-			ausgabe += state.getName() + " ";
+		for (int i = 0; i < possibleStates.size();i++){
+			if (i == possibleStates.size())  ausgabe += "und "+possibleStates.get(i).getName();
+			else if (i == possibleStates.size()-1) ausgabe += possibleStates.get(i).getName()+" ";
+			else ausgabe += possibleStates.get(i).getName() + " ,";
 		}
 		return ausgabe;
 	}
