@@ -229,7 +229,9 @@ public class CluedoGameServer extends CluedoGame {
 		if (checkandHandleStateTrans(PlayerStates.roll_dice, client)){
 			int[] diceres = gameLogic.rollDice();
 			if (diceres != null){
+				client.sendMsg(NetworkMessages.okMsg());
 				sendMsgToParticipants(NetworkMessages.dice_resultMsg(getGameId(),diceres));
+				sendStateUpdateMsg(getPlayerByClient(client));
 				return true;
 			};
 		}
@@ -248,8 +250,10 @@ public class CluedoGameServer extends CluedoGame {
 	public boolean movePlayer(ClientItem client, CluedoPosition newpos){
 		if(checkandHandleStateTrans(PlayerStates.move, client)){
 			if (gameLogic.movePlayer(client.getNick(), newpos)) {
-				client.sendMsg(NetworkMessages.okMsg());
+				 client.sendMsg(NetworkMessages.okMsg());
 				 sendMsgToParticipants(NetworkMessages.movedMsg(getGameId(),getPlayerByClient(client).getCluedoPerson().getPersonName(), newpos));
+				 sendStateUpdateMsg(getPlayerByClient(client));
+
 				return true	;
 			}
 			client.sendMsg(NetworkMessages.error_Msg("move not legit"));
@@ -303,6 +307,16 @@ public class CluedoGameServer extends CluedoGame {
 			}
 		}
 		return false;
+	}
+	
+	public void sendStateUpdateMsg(CluedoPlayer player){
+		sendMsgToParticipants(
+				NetworkMessages.stateupdateMsg(
+						getGameId(),NetworkMessages.player_info(
+								player.getNick(), player.getCluedoPerson().getColor(), player.getStatesStringList()
+								)
+						)
+				);
 	}
 }
 

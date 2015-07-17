@@ -28,6 +28,7 @@ public class GameFrameView extends GridPane{
 	DiceView dice;
 	ChatView chat;
 	BoardView board;
+	StatusView statusView;
 
 	//private SpielfeldUndFiguren komplettesFeld;
 	//private FigurenView figuren;
@@ -76,7 +77,7 @@ public class GameFrameView extends GridPane{
 		/**
 		 *  Adds the Stackpane with the field
 		 */
-		
+		statusView = new StatusView();
 		ballEbene = new BallEbene2(pcm);
 		zugView = new AussergewohnlichesZugfenster();
 		komplettesFeld = new KrasserStack(ballEbene, board, zugView);
@@ -98,7 +99,7 @@ public class GameFrameView extends GridPane{
 		VBox leftColumn = new VBox(10);
 		VBox rightColumn = new VBox(10);
 		rightColumn.getChildren().addAll(notes, dice);
-		leftColumn.getChildren().addAll(hand, chat);
+		leftColumn.getChildren().addAll(statusView,hand, chat);
 		
 		//
 		/*GridPane.setConstraints(notes,1,0);
@@ -264,6 +265,10 @@ public class GameFrameView extends GridPane{
 
 	public void setZugView(AussergewohnlichesZugfenster zugView) {
 		this.zugView = zugView;
+	}
+	
+	public StatusView getStatusView() {
+		return statusView;
 	}
 	
 	

@@ -101,16 +101,15 @@ public class Communicator {
 		myNick = network.getMyNick();
 		setHandler();
 
-		auxx.loginfo("%%%%%%%%%%%%%%% Der nick : " +myNick);
+		auxx.loginfo("%%%%%%%%%%%%%%%  Mynick : " +myNick);
 		
-		pcManager.setIndexByPlayer(pcManager.players.get(0));
+		//pcManager.setIndexByPlayer(pcManager.players.get(0));
 		auxx.loginfo("Der hier fängt an : " +pcManager.getCurrentNick());
 		
 		auxx.logsevere("Communicator.startGame");
 		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
 		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 		
-		auxx.loginfo("Oh my giddy giddy gosh");
 		
 	}
 	
@@ -275,6 +274,7 @@ public class Communicator {
 		
 	}
 	
+	
 	//OPEN WINDOW
 			public void openWindow(){
 				auxx.logsevere("to the front!!!");
@@ -309,14 +309,18 @@ public class Communicator {
 			}
 			
 			public void changeLabel(String str){
-				gameView.getHand().getText().setText(str);
+				gameView.getStatusView().setCurEventsMsg(str);
+			}
+			
+			public void setServerStateMsg(String str){
+				gameView.getStatusView().setSStateMsg(str);
 			}
 			
 
 			
 			
 			public void compareCards(String person, String weapon, String room){
-				switch (person) {
+				switch (person) {// nochwer hasst enums
 				case "red":
 					person = "Fräulein Gloria";
 					break;

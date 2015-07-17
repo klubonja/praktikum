@@ -18,6 +18,8 @@ public class CluedoGameClient extends CluedoGame {
 	String myNick;
 	
 	ArrayList<String> watchers;
+	
+	Communicator communicator;
 
 	public CluedoGameClient(int gameId, ServerItem server) {
 		super(gameId);
@@ -40,18 +42,14 @@ public class CluedoGameClient extends CluedoGame {
 	}
 
 	public void changeLabel(String str) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				communicator.changeLabel(str);
-			}
+		Platform.runLater(() -> {
+			communicator.changeLabel(str);
 		});
 	}
 
 	public void compareCards(String person, String weapon, String room) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				communicator.compareCards(person, weapon, room);
-			}
+		Platform.runLater(() -> {
+			communicator.compareCards(person, weapon, room);
 		});
 	}
 

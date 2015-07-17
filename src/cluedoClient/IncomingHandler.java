@@ -205,7 +205,9 @@ class IncomingHandler implements Runnable {
 				JSONArray states = checker.getMessage().getJSONObject("player").getJSONArray("playerstate");
 				JSONObject playerinfo = checker.getMessage().getJSONObject("player");
 				String nick = playerinfo.getString("nick");
+				StringBuffer statesb = new StringBuffer();
 				for (int welcherState = 0; welcherState < states.length(); welcherState++){
+					statesb.append(states.get(welcherState));
 					if (states.get(welcherState).equals(PlayerStates.end_turn.getName())){
 						game.itsYourTurn();
 					}
@@ -235,6 +237,11 @@ class IncomingHandler implements Runnable {
 					else if ( ! (states.get(welcherState).equals(PlayerStates.do_nothing.getName()))){
 						auxx.loginfo("nicht so ghetto-code");
 					}
+					
+						
+				}
+				if (game.hasPlayerConnectedByNick(nick)){
+					game.changeLabel(statesb.toString());
 				}
 //				else if (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.disprove.getName())){
 //					server.getGameByGameID(gameID).disprove();

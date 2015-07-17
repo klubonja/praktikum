@@ -3,7 +3,6 @@ package cluedoNetworkLayer;
 import java.util.ArrayList;
 import java.util.Stack;
 
-import kommunikation.Communicator;
 import staticClasses.auxx;
 import enums.GameStates;
 import enums.Persons;
@@ -21,7 +20,7 @@ public abstract class CluedoGame {
 	ArrayList<CluedoWeapon> weapons;
 	
 	
-	Communicator communicator;
+//	Communicator communicator; //das gehört hier nicht nicht rein der server bracuht das nicht
 	
 	abstract boolean start();
 	public abstract boolean hasPlayerConnectedByNick(String nick);
