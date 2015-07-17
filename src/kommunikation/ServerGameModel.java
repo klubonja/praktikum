@@ -113,6 +113,9 @@ public class ServerGameModel {
 				players.remove(pl);
 				players.add(pl);
 			}
+			else {
+				break;
+			}
 		}
 		tmplist = null;
 	}
