@@ -13,7 +13,6 @@ import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoPosition;
-import enums.JoinGameStatus;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
 
@@ -216,7 +215,8 @@ class CommunicationHandler implements Runnable {
 				dataManager.notifyAll(NetworkMessages.accuseMsg(
 						id, NetworkMessages.statement(person, room, weapon))
 						);
-				switch (winnerPerson) { // irgendjemand hasst enums
+				
+				switch (winnerPerson) { // irgendjemand hasst enums : winnerPerson = Persons.getPersonByName(winnerPerson).getColor();
 				case "Fräulein Gloria":
 					winnerPerson = "red";
 					break;
