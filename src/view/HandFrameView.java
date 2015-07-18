@@ -26,9 +26,9 @@ public class HandFrameView extends BorderPane {
 	private ArrayList<String> handURI = new ArrayList<String>();
 	private CluedoGameClient client;
 	Label title;
-//	private Label happening;
-//	private Label text;
-//	private VBox top = new VBox();
+	private Label happening;
+	private Label text;
+	private VBox top = new VBox();
 	private StackPane stack = new StackPane();
 	private HBox cards = new HBox();
 	private Group selectedCard = new Group();
@@ -68,6 +68,9 @@ public class HandFrameView extends BorderPane {
 //		happening = new Label("Currently happening: ");
 //		text = new Label();
 //		top.getChildren().addAll(happening, text);
+//		happening = new Label("If somebody disproves you, look here:" + "\n");
+		text = new Label();
+		top.getChildren().addAll(text);
 		
 		persons.getItems().addAll("red", "yellow", "white", "green", "blue", "purple");
 		persons.setValue("Person");

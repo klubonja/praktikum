@@ -5,6 +5,7 @@ import model.Deck;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -48,7 +49,7 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 
 	private ComboBox<String> personen = new ComboBox<String>();
 	private ComboBox<String> waffen = new ComboBox<String>();
-	private ComboBox<String> zimmer = new ComboBox<String>();
+	private Button zimmer = new Button("You're not in a room, Harry!");
 
 	/**
 	 * Constructor fuer die erste Version von einem Spielerzug
@@ -67,11 +68,10 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 		personen.setValue("Person");
 		personen.setMaxWidth(110);
 		waffen.getItems().addAll(deck.getWeapons());
-		waffen.setValue("Waffe");
+		waffen.setValue("Weapon");
 		waffen.setMaxWidth(110);
-		// zimmer.getItems().addAll(deck.getZimmerOrdered());
-		zimmer.setValue("Raum");
-		zimmer.setMaxWidth(110);
+		zimmer.setMinWidth(110);
+
 		
 		vermuten = new HBox();
 		vermuten.setSpacing(10);
@@ -127,8 +127,12 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 		return this.waffen;
 	}
 
-	public ComboBox<String> getZimmerListe() {
+	public Button getZimmer() {
 		return this.zimmer;
+	}
+	
+	public void setZimmer(String room){
+		this.zimmer.setText(room);
 	}
 
 	public Button getClose() {

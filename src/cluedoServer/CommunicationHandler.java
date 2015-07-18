@@ -251,7 +251,6 @@ class CommunicationHandler implements Runnable {
 				if (checker.getType().equals("suspicion")) {
 				int id = checker.getMessage().getInt("gameID");
 				dataManager.setSuspector(dataManager.getGameByID(id).getPlayerByClient(client).getNick());
-				System.out.println("GETTING THE SUSPECTOR " + dataManager.getSuspector());
 				JSONObject json = checker.getMessage().getJSONObject("statement");
 				String person = json.getString("person").toString();
 				String room = json.getString("room").toString();
@@ -263,9 +262,9 @@ class CommunicationHandler implements Runnable {
 				if (checker.getType().equals("disprove")) {
 					String pool = "pool";
 					int id = checker.getMessage().getInt("gameID");
+					dataManager.setDisprover(dataManager.getGameByID(id).getPlayerByClient(client).getNick());
 					String card = checker.getMessage().getString("card");
-					dataManager.notifyAll(NetworkMessages.disprovedMsg(id, client.getNick(), pool));
-					System.out.println("USING THE SUSPECTOR " + dataManager.getSuspector());
+					dataManager.getClientByNick(dataManager.getDisprover()).sendMsg(NetworkMessages.disprovedMsg(id, client.getNick(), pool));
 					dataManager.getClientByNick(dataManager.getSuspector()).sendMsg(NetworkMessages.disproveMsg(client.getGameId(), card));
 			} else 
 				if (checker.getType().equals("no disprove")) {

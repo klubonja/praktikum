@@ -130,8 +130,12 @@ class IncomingHandler implements Runnable {
 				String room = json.getString("room").toString();
 				server.getGameByGameID(id)
 						.compareCards(person, room, weapon);
-				server.getGameByGameID(id).changeLabel(server.getGameByGameID(id).getMyNick()
-						+ " is suspecting. " + "\n" + person + " " + room + " " + weapon);
+//				server.getGameByGameID(id).changeLabel(server.getGameByGameID(id).getMyNick()
+//						+ " is suspecting. " + "\n" + person + " " + room + " " + weapon);
+				server.sendMsg(NetworkMessages.chatMsg(
+						server.getGameByGameID(id).getMyNick()
+								+ " is suspecting. " + "\n" + 
+								person + " " + room + " " + weapon, id, auxx.now()));
 			}
 				
 			else if (checker.getType().equals("accuse")) {
@@ -168,15 +172,22 @@ class IncomingHandler implements Runnable {
 				
 				else
 					if(checker.getType().equals("disproved")){
-				server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
-						checker.getMessage().getString("nick").toString() + " disproved!"
-						);
+//				server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
+//						checker.getMessage().getString("nick").toString() + " disproved!"
+//						);
+				server.sendMsg(NetworkMessages.chatMsg(
+						checker.getMessage().getString("nick").toString() + " disproved!",
+						checker.getMessage().getInt("gameID"), auxx.now()));
 			} else
 				if (checker.getType().equals("no disprove")){
-					server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
+//					server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
+//							server.getGameByGameID(checker.getMessage().getInt("gameID"))
+//							.getPlayerByNick(server.myNick).getCluedoPerson().getPersonName() +
+//							" did not disprove.");
+					server.sendMsg(NetworkMessages.chatMsg(
 							server.getGameByGameID(checker.getMessage().getInt("gameID"))
 							.getPlayerByNick(server.myNick).getCluedoPerson().getPersonName() +
-							" did not disprove.");
+							" did not disprove.", checker.getMessage().getInt("gameID"), auxx.now()));
 				}
 			else if (checker.getType().equals("game ended")){
         		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
