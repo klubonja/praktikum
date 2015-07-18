@@ -42,7 +42,9 @@ public class TurnDFA {
  	 		{//disprove
  	 			PlayerStates.do_nothing.ordinal()
  	 		},	
- 	 		{},
+ 	 		{
+ 	 			PlayerStates.do_nothing.ordinal()
+ 	 		},
  	 		{9},//donothing trapstate not protokoll covered
  	 		{8}//disprove trapstate not ...
  	 		};
