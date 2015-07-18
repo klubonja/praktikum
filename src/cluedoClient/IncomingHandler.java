@@ -15,7 +15,6 @@ import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.NetworkHandhakeCodes;
-import enums.PlayerStates;
 
 class IncomingHandler implements Runnable {
 
@@ -199,52 +198,13 @@ class IncomingHandler implements Runnable {
         		  dataGuiManager.removeClientFromSystemServer(server,player);		        		  
 			}
 			else if(checker.getType().equals("stateupdate")){
-				int gameID = checker.getMessage().getInt("gameID");
-				CluedoGameClient game = server.getGameByGameID(gameID); 
-				JSONArray states = checker.getMessage().getJSONObject("player").getJSONArray("playerstate");
 				JSONObject playerinfo = checker.getMessage().getJSONObject("player");
-				String nick = playerinfo.getString("nick");
-				StringBuffer statesb = new StringBuffer();
-				for (int welcherState = 0; welcherState < states.length(); welcherState++){
-					statesb.append(states.get(welcherState));
-					if (states.get(welcherState).equals(PlayerStates.end_turn.getName())){
-						game.itsYourTurn();
-					}
-					else if (server.getMyNick().equals(nick) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
-						auxx.loginfo("voll ghetto-code");
-//						game.currentPlayerToRolls();
-						game.itsYourTurn();
-					}
-					else if ( ! (server.getMyNick().equals(nick) ) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
-						auxx.loginfo("voll ghetto-code");
-//						game.currentPlayerToRolls();
-						game.itsSomeonesTurn();
-					}
-//					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.accuse.getName())){
-//						game.currentPlayerToAccuse();
-//					}
-//					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.suspect.getName())){
-//						game.currentPlayerToSuspect();
-//					}
-					else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.disprove.getName())){
-						game.currentPlayerToDisprove();
-					}
-//					else if (states.get(welcherState).equals(PlayerStates.do_nothing.getName())){
-//						auxx.loginfo("voll ghetto-code");
-//						game.currentPlayerToNothing();
-//					}
-					else if ( ! (states.get(welcherState).equals(PlayerStates.do_nothing.getName()))){
-						auxx.loginfo("nicht so ghetto-code");
-					}
-					
-						
-				}
-				if (game.hasPlayerConnectedByNick(server.getMyNick())){
-					game.changeLabel(statesb.toString());
-				}
-//				else if (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.disprove.getName())){
-//					server.getGameByGameID(gameID).disprove();
-//				}
+				dataGuiManager.handleStateUpdate(
+						checker.getMessage().getInt("gameID"),
+						playerinfo.getString("nick"),
+						server,
+						auxx.jsonArrayToArrayList(playerinfo.getJSONArray("playerstate"))
+						);				
 			}
 			else if(checker.getType().equals("dice result")){
 				int [] wuerfel = new int [2];

@@ -86,6 +86,13 @@ public class CluedoPlayer {
 		this.possibleStates = newstates;
 	}
 	
+	public void setPossibleStatesFromStringList(ArrayList<String> newStatesString) {
+		ArrayList<PlayerStates> newPlayerStates = new ArrayList<PlayerStates>();
+		for(String newstateString: newStatesString)
+			newPlayerStates.add(PlayerStates.getPlayerState(newstateString));
+		this.possibleStates = newPlayerStates;
+	}
+	
 	public ArrayList<PlayerStates> getPossibleStates() {
 		return possibleStates;
 	}

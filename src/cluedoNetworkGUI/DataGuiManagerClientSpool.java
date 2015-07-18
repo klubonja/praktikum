@@ -3,7 +3,6 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
-import javafx.application.Platform;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
@@ -11,6 +10,7 @@ import cluedoClient.ServerItem;
 import cluedoClient.ServerPool;
 import cluedoNetworkLayer.CluedoGameClient;
 import enums.GameStates;
+import enums.PlayerStates;
 import enums.ServerStatus;
 
 public class DataGuiManagerClientSpool extends DataGuiManager{
@@ -246,5 +246,68 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		getGui().emptyClientNicks();
 	  }
 	
+	public void handleStateUpdate(int gameID,String gameNick,ServerItem server,ArrayList<String> newStates){
+		CluedoGameClient game = server.getGameByGameID(gameID); 
+		if (game.hasPlayerConnectedByNick(gameNick)){ //never ever trust anyone
+			game.getPlayerByNick(gameNick).setPossibleStatesFromStringList(newStates);
+			if (gameNick.equals(server.getMyNick())){ // its me
+				if (newStates.contains(PlayerStates.roll_dice.getName()))
+					game.itsYourTurn();
+				else if (newStates.contains(PlayerStates.disprove.getName()))
+					game.currentPlayerToDisprove();
+				else if (newStates.contains(PlayerStates.do_nothing.getName()))
+					game.currentPlayerToNothing();
+				game.changeLabel(auxx.formatStringList(newStates, "oder"));
+			}
+			else { //its some other fucker
+				game.itsSomeonesTurn();
+			}
+		}
+	}
+		
+//		for (int welcherState = 0; welcherState < states.length(); welcherState++){
+//			statesb.append(states.get(welcherState));
+//			if (states.get(welcherState).equals(PlayerStates.end_turn.getName())){
+//				game.itsYourTurn();
+//			}
+//			else if (server.getMyNick().equals(nick) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
+//				auxx.loginfo("voll ghetto-code");
+////				game.currentPlayerToRolls();
+//				game.itsYourTurn();
+//			}
+//			else if ( ! (server.getMyNick().equals(nick) ) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
+//				auxx.loginfo("voll ghetto-code");
+////				game.currentPlayerToRolls();
+//				game.itsSomeonesTurn();
+//			}
+////			else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.accuse.getName())){
+////				game.currentPlayerToAccuse();
+////			}
+////			else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.suspect.getName())){
+////				game.currentPlayerToSuspect();
+////			}
+//			else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.disprove.getName())){
+//				game.currentPlayerToDisprove();
+//			}
+////			else if (states.get(welcherState).equals(PlayerStates.do_nothing.getName())){
+////				auxx.loginfo("voll ghetto-code");
+////				game.currentPlayerToNothing();
+////			}
+//			else if ( ! (states.get(welcherState).equals(PlayerStates.do_nothing.getName()))){
+//				auxx.loginfo("nicht so ghetto-code");
+//			}
+//			
+				
+//		}
+//		else if (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.disprove.getName())){
+//			server.getGameByGameID(gameID).disprove();
+//		}
+		
+		
+		
+		
+		
+	
+
 	
 }
