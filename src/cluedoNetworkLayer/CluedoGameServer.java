@@ -2,13 +2,10 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Stack;
 
-import javafx.scene.paint.Color;
 import kommunikation.ServerGameModel;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
-import cluedoClient.Client;
 import cluedoServer.ClientItem;
 import enums.GameStates;
 import enums.JoinGameStatus;
@@ -263,8 +260,10 @@ public class CluedoGameServer extends CluedoGame {
 	
 	public void sendMsgToParticipants(String msg){
 		ArrayList<ClientItem> clients = getParticipants();
+		clients.addAll(getWatchers());
 		for (ClientItem client : clients)
 			client.sendMsg(msg);
+	
 	}
 	
 	public boolean checkandHandleStateTrans(PlayerStates state, ClientItem client){
@@ -275,6 +274,7 @@ public class CluedoGameServer extends CluedoGame {
 		return false;
 	}
 	
+	@Override
 	public boolean hasPlayerConnectedByNick(String nick){
 		for (CluedoPlayer p: players)
 			if (p.getNick().equals(nick)) return true;

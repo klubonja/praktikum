@@ -40,8 +40,7 @@ class CommunicationHandler implements Runnable {
 	 * 
 	 *            tcp verbindung steht server wartet auf tcp handshake
 	 */
-	CommunicationHandler(ClientItem c, DataManagerServer dm,
-			DataGuiManagerServer dgm) {
+	CommunicationHandler(ClientItem c, DataManagerServer dm, DataGuiManagerServer dgm) {
 		dataManager = dm;
 		dataGuiManager = dgm;
 		client = c;
@@ -82,7 +81,7 @@ class CommunicationHandler implements Runnable {
 			} 
 			catch (Exception e) {
 				auxx.logsevere(
-						"communicationhandler for client : " + client.getNick()	+ " running out\n", e);
+						"communicationhandler for client : " + client.getNick()	+ " running out because : "+e.getMessage(),e);
 				auxx.logsevere("last message :" + currentMsg);
 				closeProtokollConnection();
 			}
@@ -152,9 +151,7 @@ class CommunicationHandler implements Runnable {
 
 	private void closeProtokollConnection() {
 		if (dataGuiManager.removeClient(client)) {
-			dataManager
-					.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
-			
+			dataManager.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));			
 		}
 		killThread();
 	}
@@ -240,13 +237,15 @@ class CommunicationHandler implements Runnable {
 					room.equals(winnerRoom)){
 					dataManager.notifyAll(NetworkMessages.game_endedMsg(id,
 							dataManager.getGameByID(id).getWinningStatement()));
-				} else {
+				} 
+				else {
 					dataManager.notifyAll(NetworkMessages.
 					wrong_accusationMsg(id, NetworkMessages.
 					statement(person, room, weapon)));
 					//KICK PLAYER OUT OF THE GAME
 				}
-			} else
+			} 
+	   	   	else
 				if (checker.getType().equals("suspicion")) {
 				int id = checker.getMessage().getInt("gameID");
 				dataManager.setSuspector(dataManager.getGameByID(id).getPlayerByClient(client).getNick());

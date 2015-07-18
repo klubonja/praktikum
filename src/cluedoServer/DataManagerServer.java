@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.json.JSONObject;
-
 import staticClasses.NetworkMessages;
-import staticClasses.auxx;
 import cluedoNetworkGUI.DataManager;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPosition;
@@ -133,14 +130,14 @@ public class DataManagerServer extends DataManager {
 	
 	public boolean removeClientfromSystem(ClientItem client){
 		Iterator<CluedoGameServer> iter = gamesList.iterator();
-		//for (CluedoGameServer cgs: gamesList){
 		while(iter.hasNext()){
 			CluedoGameServer cgs = iter.next();
 			cgs.findAndRemovePlayer(client);
 			cgs.findAndRemoveWatcher(client);
 			if (cgs.getNumberConnected() == 0){
 				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
-				if (removeGame(cgs)) cgs.notifyAll(NetworkMessages.game_deletedMsg(cgs.getGameId()));								
+				iter.remove();
+				cgs.notifyAll(NetworkMessages.game_deletedMsg(cgs.getGameId()));								
 			}
 			else if (cgs.getGameState() == GameStates.ended){
 				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));

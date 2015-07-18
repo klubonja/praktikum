@@ -43,7 +43,7 @@ class IncomingHandler implements Runnable {
 					if (!message.equals("")) incommingLogic(message);
 			}			
 			catch (Exception e){
-				auxx.logsevere("error on incomming handler client :"+e.getMessage() );
+				auxx.logsevere("error on incomming handler client :"+e.getMessage() ,e);
 				killConnection();
 				dataGuiManager.refreshGamesListServer(server);// refresh view
 																// before

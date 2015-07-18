@@ -29,7 +29,7 @@ public class ClientPool extends ArrayList<ClientItem> {
 	
 	boolean checkForExistingIp(InetAddress adress){
 		for (ClientItem c : this)
-			if (adress.equals(c.getAdress())) return true;
+			if (adress.getHostAddress().equals(c.getAdress().getHostAddress())) return true;
 		return false;
 	}
 	

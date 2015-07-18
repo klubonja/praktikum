@@ -8,8 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-import staticClasses.Config;
-import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 
@@ -33,10 +31,12 @@ public class Connector extends Thread{
 		try {			
 			while (run){
 				Socket clientSocket = serverSocket.accept();
-				if (!dataManger.checkIpExists(clientSocket.getInetAddress())){
-					if (dataManger.isBlacklisted(clientSocket.getInetAddress()))
-						sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
-						auxx.sendTCPMsg(clientSocket, NetworkMessages.error_Msg(Config.BLACKLISTED_MSG));
+//				if (!dataManger.checkIpExists(clientSocket.getInetAddress())){
+//					if (dataManger.isBlacklisted(clientSocket.getInetAddress())){
+//						sendMsg(NetworkMessages.error_Msg(Config.BLACKLISTED_MSG), clientSocket);
+//					    auxx.sendTCPMsg(clientSocket, NetworkMessages.error_Msg(Config.BLACKLISTED_MSG));
+//					}
+						
 					Thread newCommunicationThread = 
 							new Thread(
 									new CommunicationHandler(
@@ -46,11 +46,11 @@ public class Connector extends Thread{
 									);
 					newCommunicationThread.start();	
 				}
-				else {
-					sendMsg(NetworkMessages.error_Msg("already connected"), clientSocket);
-					clientSocket.close();
-				}					 		
-			}					
+//				else {
+//					sendMsg(NetworkMessages.error_Msg("already connected"), clientSocket);
+//					clientSocket.close();
+//				}					 		
+//			}					
 		}
 		catch(IOException e){
 			//gui.setStatus(e.getMessage());

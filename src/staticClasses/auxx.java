@@ -115,10 +115,9 @@ public abstract class auxx {
 			}			
 		} 
 		catch (Exception e) {
-			logsevere("RECEIVE failed : ", e);
+			logsevere("RECEIVE failed because "+ e.getMessage());
 	    }
-		return null;
-		
+		return null;		
 	}
 	
 	public static ArrayList<String> handledTCPMessages(String[] jsonSource, Socket s){
