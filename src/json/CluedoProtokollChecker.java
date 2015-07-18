@@ -447,7 +447,7 @@ public class CluedoProtokollChecker {
 	
 	void validatePersonPos(JSONObject jsonParent){
 		if (validateValue(jsonParent, "person"))
-			validatePersonName(jsonParent.getString("person"));
+			validatePerson(jsonParent.getString("person"));
 		if (validateValue(jsonParent, "field"))
 			validateField(jsonParent, "field");
 	}
