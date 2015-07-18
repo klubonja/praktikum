@@ -161,7 +161,7 @@ public class CluedoGameServer extends CluedoGame {
 			}
 			c.sendMsg(NetworkMessages.error_Msg("you are already watching game "+getGameId()));
 		}
-		c.sendMsg(NetworkMessages.error_Msg("you damn cheater, you cant watch and play game "+getGameId()));
+		c.sendMsg(NetworkMessages.error_Msg("you damn cheater, you are already a player of game "+getGameId()));
 		
 		
 		return false;	

@@ -57,7 +57,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 		  			setRunningGame(gameID);
 		  	   }     		  
 			   else {
-				   client.sendMsg(NetworkMessages.error_Msg("you have to join game "+gameID+" first to join"));
+				   client.sendMsg(NetworkMessages.error_Msg("you have to join game "+gameID+" first to start"));
 			   }
 		  }
 	  	  
@@ -81,9 +81,10 @@ public class DataGuiManagerServer extends DataGuiManager {
      						   )
      				   );
 			   auxx.logfine(status.name());
-		   }
-		   if (status == JoinGameStatus.added){
 			   updateGame(gameID, dataManager.getNicksConnectedByGameID(gameID),dataManager.getGameByID(gameID).getWatchersConnected());
+		   }
+		   if (status == JoinGameStatus.already_watching){
+			   client.sendMsg(NetworkMessages.error_Msg("damn cheater, you are already watching"));
 		   }
 		   else if (status == JoinGameStatus.already_joined)
 			   client.sendMsg(NetworkMessages.error_Msg("you have already joined this game"));
