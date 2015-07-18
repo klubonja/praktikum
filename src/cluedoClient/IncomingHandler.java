@@ -239,7 +239,7 @@ class IncomingHandler implements Runnable {
 					
 						
 				}
-				if (game.hasPlayerConnectedByNick(nick)){
+				if (game.hasPlayerConnectedByNick(server.getMyNick())){
 					game.changeLabel(statesb.toString());
 				}
 //				else if (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.disprove.getName())){

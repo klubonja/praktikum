@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.Stack;
 
 import javafx.scene.paint.Color;
-import model.Deck;
 import kacheln.KachelContainer;
+import model.Deck;
 import stateManager.StateManager;
 import staticClasses.auxx;
 import view.DicePresenter;
@@ -107,15 +107,11 @@ public class ServerGameModel {
 		CluedoPlayer first = players.get(auxx.getRandInt(0, players.size()-1));
 		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
 		Iterator<CluedoPlayer> it = tmplist.iterator();
-		while (it.hasNext()){
-			CluedoPlayer pl = it.next();
-			if (pl != first){
-				players.remove(pl);
-				players.add(pl);
-			}
-			else {
-				break;
-			}
+		CluedoPlayer pl = first;
+		while (it.hasNext() && pl != first){
+			pl = it.next();
+			players.remove(pl);
+			players.add(pl);
 		}
 		tmplist = null;
 	}
