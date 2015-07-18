@@ -49,8 +49,7 @@ class CommunicationHandler implements Runnable {
 
 	private void awaitingLoginAttempt() {
 		auxx.logfine("awaiting login from client");
-		while (!readyForCommunication) { // will keep listening for valid login
-											// msg
+		while (!readyForCommunication) { // will keep listening for valid login msg
 			try {
 				ArrayList<String> messages = auxx.getTCPMessages(client.getSocket());
 				for (String message : messages){
@@ -259,66 +258,48 @@ class CommunicationHandler implements Runnable {
 				dataManager.notifyAll(NetworkMessages.suspicionMsg(
 						id, NetworkMessages.statement(person, room, weapon))
 						);
-			} else
-				if (checker.getType().equals("disprove")) {
+			} 
+			else if (checker.getType().equals("disprove")) {
 					String pool = "pool";
 					int id = checker.getMessage().getInt("gameID");
 					String card = checker.getMessage().getString("card");
 					dataManager.notifyAll(NetworkMessages.disprovedMsg(id, client.getNick(), pool));
 					System.out.println("USING THE SUSPECTOR " + dataManager.getSuspector());
 					dataManager.getClientByNick(dataManager.getSuspector()).sendMsg(NetworkMessages.disproveMsg(client.getGameId(), card));
-			} else 
-				if (checker.getType().equals("no disprove")) {
+			} 
+			else if (checker.getType().equals("no disprove")) {
 				int id = checker.getMessage().getInt("gameID");
 				dataManager.notifyAll(NetworkMessages.no_disproveMsg(id));
-			} else
-				if (checker.getType().equals("disproved")){
-					System.out.println(dataManager.getGameByID(checker.getMessage().getInt("gameID")).
-							getPlayerByClient(client).getCluedoPerson().getColor() + " has disproved it!");
-					
-				}
-	   	   
+			} 
+			else if (checker.getType().equals("disproved")){
+					System.out.println(dataManager.getGameByID(checker.getMessage().getInt("gameID")).getPlayerByClient(client).getCluedoPerson().getColor() + " has disproved it!");		
+			}	   	   
 	   	   else if(checker.getType().equals("end turn")){
 	   		   int gameID = checker.getMessage().getInt("gameID");
-	   		   //CluedoGameServer game = dataManager.getGameByID(gameID);
-	   		   //CluedoPlayer player = game.getPlayerByNick(client.getNick());
-		   		   //if (player.getPossibleStates().contains(PlayerStates.end_turn)){
-		   			   
-		   			   dataManager.endTurnRequest(gameID,client);
-		   		   //}
-	   		   
-	//   		   else {
-	//   			   client.sendMsg(NetworkMessages.error_Msg("stfu you're not done yet!" +player.returnStatesAsString()));
-	//   		   }
-	   		   // Validieren
-	   		   
-	   		   
-	   		   //setNextRound();
-	   		   //setCurrentPlayerNext();
+		   	   dataManager.endTurnRequest(gameID,client);
 	   	   }
-	     	  
 	 	   else if (checker.getType().equals("chat")) {														//CHAT
-				   JSONObject chatmsg = checker.getMessage();
-				   String msg = checker.getMessage().getString("message");
-				   String ts = checker.getMessage().getString("timestamp");
-					if (chatmsg.has("gameID")){
-						int gameID = chatmsg.getInt("gameID");
-						  dataManager.getGameByID(gameID).notifyAll(NetworkMessages.chatMsg(msg,gameID,ts));
-					}
-					else if (checker.getMessage().has("nick")){
-						dataGuiManager.addMsgIn(
-							chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
-							chatmsg.getString("message")
-						);
-						dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg,ts));
-					}
-					else {							  
-						dataManager.notifyAll(NetworkMessages.chatMsg(msg , ts));
-						dataGuiManager.addMsgIn(
-							ts+" "+chatmsg.getString("sender")+" says : \n"+
-							msg
-						);
-					}
+			   JSONObject chatmsg = checker.getMessage();
+			   String msg = checker.getMessage().getString("message");
+			   String ts = checker.getMessage().getString("timestamp");
+				if (chatmsg.has("gameID")){
+					int gameID = chatmsg.getInt("gameID");
+					  dataManager.getGameByID(gameID).notifyAll(NetworkMessages.chatMsg(msg,gameID,ts));
+				}
+				else if (checker.getMessage().has("nick")){
+					dataGuiManager.addMsgIn(
+						chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
+						chatmsg.getString("message")
+					);
+					dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg,ts));
+				}
+				else {							  
+					dataManager.notifyAll(NetworkMessages.chatMsg(msg , ts));
+					dataGuiManager.addMsgIn(
+						ts+" "+chatmsg.getString("sender")+" says : \n"+
+						msg
+					);
+				}
 	          }
      	  else  {											
      		   auxx.loginfo("SERVER INCOMING valid unchecked : \n"+ checker.getMessage());
@@ -331,9 +312,5 @@ class CommunicationHandler implements Runnable {
 //	        	   dataGuiManager.removeClient(client);
 	        	   auxx.loginfo("INCOMING INVALID : "+ checker.getErrString());
         }
-
 	}
-	
-	
-
 }
