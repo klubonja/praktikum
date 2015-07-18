@@ -46,7 +46,7 @@ public abstract class MulticastListenerThread extends Thread{
 			
 		} 
 		catch (Exception e) {
-			System.out.println("mutlicast client :"+e.getMessage());
+			auxx.logsevere("mutlicast client :"+e.getMessage());
 		}	
 	}
 	

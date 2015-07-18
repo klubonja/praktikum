@@ -5,6 +5,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 import staticClasses.Config;
+import staticClasses.auxx;
 import cluedoNetworkGUI.CluedoServerGUI;
 
 
@@ -50,13 +51,11 @@ public class MulticastServerThread extends Thread {
 				buf = broadcastMessage.getBytes();
 				packet = new DatagramPacket(buf, buf.length, groupAdress, port);
 				socket.send(packet);				
-				
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
+			} 
+			catch (Exception e) {
+				auxx.logsevere(e.getMessage());
 			}			
-		}
-	
-		
+		}	
 	}
 	
 	public void setBroadCastMsg(String msg){

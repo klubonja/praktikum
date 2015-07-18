@@ -43,7 +43,7 @@ class IncomingHandler implements Runnable {
 					if (!message.equals("")) incommingLogic(message);
 			}			
 			catch (Exception e){
-				auxx.logsevere("error on incomming handler client", e);
+				auxx.logsevere("error on incomming handler client :"+e.getMessage() );
 				killConnection();
 				dataGuiManager.refreshGamesListServer(server);// refresh view
 																// before
@@ -158,7 +158,6 @@ class IncomingHandler implements Runnable {
 			} 
 				
 			else if (checker.getType().equals("disprove")) {
-				System.out.println("NICK INCOMING " + server.getGameByGameID(checker.getMessage().getInt("gameID")).getPlayerByNick(server.myNick));
 				String card = checker.getMessage().getString("card").toString();
 			server.getGameByGameID(checker.getMessage().getInt("gameID"))
 			.changeLabel(

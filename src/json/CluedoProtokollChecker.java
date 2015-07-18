@@ -504,8 +504,6 @@ public class CluedoProtokollChecker {
 			return true;			
 		} 
 		catch (JSONException e) {
-		//	System. out.println("VERYBAD :JSONArray expected on : "+key+" loopindex"+ index + " for "+localtype+" value \n"+jsonParent.toString());
-			//e.printStackTrace();
 			setErr("JSONArray: \""+key+"\" expected  in "+jsonParent.toString());
 			return false;
 		}		

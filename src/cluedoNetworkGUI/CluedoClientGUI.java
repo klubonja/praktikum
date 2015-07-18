@@ -197,7 +197,6 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	public void addClient(String nick){
 		Platform.runLater(() -> {
 			clientNicks.add(nick);
-			System.out.println(nick+" single added");
 		});
 		
 	}

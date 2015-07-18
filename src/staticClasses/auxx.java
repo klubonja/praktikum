@@ -164,7 +164,7 @@ public abstract class auxx {
 			 return true;
 		}
 		catch (IOException e ){
-			logsevere("SEND failed : " + message, e);
+			logsevere("SEND failed : " + message +" because : "+e.getMessage() );
 			return false;
 		}			
 	}
