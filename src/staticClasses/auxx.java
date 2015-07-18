@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
@@ -237,7 +238,6 @@ public abstract class auxx {
 		ArrayList<String> list = new ArrayList<String>();
 		for (int i= 0; i < jsonarray.length(); i++)
 			list.add(jsonarray.getString(i));
-		System.out.println(list);
 		
 		return list;
 	}
@@ -257,5 +257,22 @@ public abstract class auxx {
 	    	inputField.setStyle("-fx-text-fill: #999999;-fx-font-style: italic;");
 		}
 		
+	}
+	
+	public static String formatStringList(List<String> strings,String formater){
+		StringBuffer formated = new StringBuffer();
+		int size = strings.size();
+		if (size >= 2){
+			for (int i = 0;i < size; i++){
+				if (i == size-1) formated.append(formater+" "+ strings.get(i));
+				else if (i == size-2) formated.append(strings.get(i)+" ");
+				else formated.append(strings.get(i)+" ,");
+			}
+		}
+		else {
+			formated.append(strings.get(0));
+		}
+		
+		return formated.toString();
 	}
 }

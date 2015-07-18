@@ -18,10 +18,16 @@ public class CluedoGameClient extends CluedoGame {
 	String myNick;
 	
 	ArrayList<String> watchers;
+	
+	Communicator communicator;
 
 	public CluedoGameClient(int gameId, ServerItem server) {
 		super(gameId);
 		this.server = server;
+//		Platform.runLater(() -> {
+//			communicator = new Communicator(this);
+//		});
+		
 		watchers = new ArrayList<String>();
 		myNick = server.getMyNick();
 	}
@@ -40,18 +46,14 @@ public class CluedoGameClient extends CluedoGame {
 	}
 
 	public void changeLabel(String str) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				communicator.changeLabel(str);
-			}
+		Platform.runLater(() -> {
+			communicator.changeLabel(str);
 		});
 	}
 
 	public void compareCards(String person, String weapon, String room) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				communicator.compareCards(person, weapon, room);
-			}
+		Platform.runLater(() -> {
+			communicator.compareCards(person, weapon, room);
 		});
 	}
 
@@ -67,6 +69,7 @@ public class CluedoGameClient extends CluedoGame {
 		return myNick;
 	}
 
+	@Override
 	public boolean start() { //aussumes playerlsit beeing ordered
 		auxx.loginfo("gameGUI of game " + getGameId() + " started");
 		filterPlayers();
@@ -229,6 +232,7 @@ public class CluedoGameClient extends CluedoGame {
 		return watchers.add(c);
 	}
 	
+	@Override
 	public boolean hasPlayerConnectedByNick(String nick){
 		for (CluedoPlayer p: players)
 			if (p.getNick().equals(nick)) return true;

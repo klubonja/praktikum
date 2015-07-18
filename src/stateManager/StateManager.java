@@ -25,6 +25,7 @@ public class StateManager {
 			if (i == pcm.getIndex()){
 				CluedoPlayer nextplayer = players.get(i);
 				nextplayer.setPossibleStates(stateMachine.getSucStates(PlayerStates.do_nothing));
+				System.out.println("currentplayer :"+ nextplayer.getNick()+" has states :"+nextplayer.getStatesAsStringFormatted());
 				if (nextplayer.hasAccused()){
 					nextplayer.setPossibleState(PlayerStates.do_nothing);
 					pcm.next(); // HIER WIRD DAS EINZIGE MAL IN DIESER KLASSE DER SPIELERPOINTER VERÄNDERT
@@ -54,6 +55,7 @@ public class StateManager {
 				}
 				break;
 		}
+		System.out.println("currentplayer :"+ curplayer.getNick()+" has states :"+curplayer.getStatesAsStringFormatted());
 	}
 	
 	public void handleDisprove(int curindex){
