@@ -260,7 +260,8 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 				game.changeLabel(auxx.formatStringList(newStates, "oder"));
 			}
 			else { //its some other fucker
-				game.itsSomeonesTurn();
+				if (newStates.contains(PlayerStates.roll_dice.getName()))
+					game.itsSomeonesTurn();				
 			}
 		}
 	}
