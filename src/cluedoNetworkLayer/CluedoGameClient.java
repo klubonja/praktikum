@@ -90,8 +90,10 @@ public class CluedoGameClient extends CluedoGame {
 		Platform.runLater(() -> {
 			communicator = new Communicator(this);
 			communicator.startGame();
-			communicator.setTitle(myNick + " playing on server "
-					+ server.getGroupName() + " Game : " + gameId);
+			String title;
+			if (this.hasWatcherConnectedByNick(myNick)) title = myNick + " playing on server "+ server.getGroupName() + " Game : " + gameId;
+			else title = myNick + " watching on server "+ server.getGroupName() + " Game : " + gameId;
+			communicator.setTitle(title);
 		});
 	}
 
