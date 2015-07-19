@@ -29,6 +29,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	final public Button createGame;
 	final public Button connectToTestServer;
 	final public Button refreshGamesList;
+	final public Button createServer;
 	final public ObservableList<String> clientNicks;
 	final public ListView<String> clientNicksView;
 
@@ -39,6 +40,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 super(primaryStage);
 		 submitMessageButton = new Button("Send");
 		 createGame = new Button("Create Game");
+		 createServer = new Button("Create Server");
 		 connectToTestServer = new Button("TestServerConnection");
 		 refreshGamesList = new Button("refreshGamesList");
 		 clientNicks =  FXCollections.observableArrayList();
@@ -119,7 +121,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         tabPane.getTabs().add(tab1);
         tabPane.getTabs().add(tab0);  
         
-        menue.getChildren().addAll(createGame,connectToTestServer,refreshGamesList);
+        menue.getChildren().addAll(createGame,connectToTestServer,refreshGamesList, createServer);
         
         
         Text title = new Text(desc);

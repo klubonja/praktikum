@@ -17,6 +17,7 @@ import javafx.scene.control.SelectionModel;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
@@ -24,10 +25,12 @@ import staticClasses.auxx;
 import broadcast.Multicaster;
 import broadcast.ServerHandShakeListener;
 import cluedoNetworkGUI.CluedoClientGUI;
+import cluedoNetworkGUI.CluedoServerGUI;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkGUI.GameVBox;
 import cluedoNetworkGUI.NetworkActorVBox;
 import cluedoNetworkLayer.CluedoGameClient;
+import cluedoServer.Server;
 import enums.GameStates;
 import enums.Persons;
 import enums.ServerStatus;
@@ -57,6 +60,7 @@ public class Client {
 		listenForServersThread();
 		sayHello();
 		
+		gui.createServer.setOnMouseClicked(e -> createServer());
 		auxx.log.log(Level.INFO,"CLIENT started");		
 	}	
 	
@@ -295,6 +299,13 @@ public class Client {
 		catch (Exception e){
 			auxx.logsevere("server isnt connected anymore", e);
 		}		
+	}
+	
+	public void createServer(){
+		Stage stage = new Stage();
+		CluedoServerGUI gui = new CluedoServerGUI(stage);
+		Server server = new Server(gui);
+		stage.show();
 	}
 }
 
