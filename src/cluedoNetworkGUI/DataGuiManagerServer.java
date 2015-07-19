@@ -47,7 +47,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 		  if (game != null){
 			  if (game.hasPlayerConnectedByClient(client)){	        		    			
 		  			addMsgIn("game "+gameID+ " started");
-		  			dataManager.notifyAll(
+		  			dataManager.sendMsgToAllClients(
 		  					NetworkMessages.game_startedMsg(
 		  							gameID, 
 		  							 game.getConnectedPlayersString()
@@ -67,7 +67,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 	public void joinGame(int gameID, String color,ClientItem client){
 		JoinGameStatus status =  dataManager.joinGame(gameID, color, client);
 		   if (status == JoinGameStatus.added){
-			   dataManager.notifyAll(
+			   dataManager.sendMsgToAllClients(
      				   NetworkMessages.player_addedMsg(
      						   NetworkMessages.player_info(
      								   client.getNick(), 
@@ -127,26 +127,26 @@ public class DataGuiManagerServer extends DataGuiManager {
 			if (!game.removeWatcher(client)){
 				game.removePlayer(client.getNick());
 				 if (game.getNumberConnected() == 0){
-						game.notifyAll(NetworkMessages.game_deletedMsg(gameID));
+						game.sendMsgsToAll(NetworkMessages.game_deletedMsg(gameID));
 						removeGameGui(gameID);
 						dataManager.removeGame(game);
 				}
 				else if (game.getGameState() == GameStates.not_started && game.getNumberConnected() < Config.MIN_CLIENTS_FOR_GAMESTART){
 					//game.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
-					dataManager.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
+					dataManager.sendMsgToAllClients(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
 					setGameWaitingGui(gameID);
 				}	
 				else if (game.getGameState() == GameStates.ended && GameStates.ended == stateBefore){
-					dataManager.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
+					dataManager.sendMsgToAllClients(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
 					setGameEndedGui(gameID);
 				}
 				else if (game.getGameState() == GameStates.ended){
-					dataManager.notifyAll(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
+					dataManager.sendMsgToAllClients(NetworkMessages.game_endedMsg(game.getGameId(), game.getWinningStatement()));
 					setGameEndedGui(gameID);
 				}
 				 return true;
 			}
-			dataManager.notifyAll(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
+			dataManager.sendMsgToAllClients(NetworkMessages.left_gameMsg(game.getGameId(), client.getNick()));
 			updateGame(gameID, game.getNicksConnected(), game.getWatchersConnected());
 		}
 		
@@ -201,7 +201,7 @@ public class DataGuiManagerServer extends DataGuiManager {
 				 if (game.getGameState() == GameStates.started){
 					 client.sendMsg(NetworkMessages.gameInfoMsg(game));
 				 }
-				 dataManager.notifyAll(NetworkMessages.watcher_addedMsg(gameID, client.getNick()));	
+				 dataManager.sendMsgToAllClients(NetworkMessages.watcher_addedMsg(gameID, client.getNick()));	
 				 refreshGamesList();
 			 }
 		}

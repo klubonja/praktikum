@@ -12,7 +12,7 @@ import view.DicePresenter;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
-import cluedoNetworkLayer.WinningStatement;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.Persons;
 import enums.PlayerStates;
 import enums.Rooms;
@@ -25,7 +25,15 @@ import finderOfPaths.Vorschlaege;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 
 public class ServerGameModel {
-
+	
+	private int gameID;
+	private int currentPlayerDisproveIndex = -1;
+	
+	private CluedoStatement winningStatement;
+	
+	public CluedoGameServer  network;
+	
+	
 	private Sucher sucher;
 	private Vorschlaege vorschlager;
 	private WahnsinnigTollerPathfinder pathfinder;
@@ -37,9 +45,8 @@ public class ServerGameModel {
 	private ServerBeweger serverBeweger;
 	private RaumBeweger raumBeweger;
 	private StateManager stateManager;
-	private int gameID;
-	private WinningStatement winningStatement;
-	public CluedoGameServer  network;
+	
+	
 	
 	
 	public ServerGameModel(CluedoGameServer game){
@@ -71,7 +78,7 @@ public class ServerGameModel {
 		stateManager.setNextTurnRec();
 	}
 	
-	public WinningStatement getWinningStatement() {
+	public CluedoStatement getWinningStatement() {
 		return winningStatement;
 	}
 	
@@ -80,7 +87,7 @@ public class ServerGameModel {
 		Stack<CluedoPlayer> players = pcManager.getPlayers();
 		deck.dealCluedoCards();
 		String[] wh = deck.getWinningHand();
-		winningStatement = new WinningStatement(
+		winningStatement = new CluedoStatement(
 				Persons.getPersonByColor(wh[0]),
 				Weapons.getWeaponByName(wh[1]), Rooms.getRoomByName(wh[2]));
 
@@ -169,5 +176,36 @@ public class ServerGameModel {
 		stateManager.setNextTurnRec();
 		network.notifyNextRound();
 	}
+
+	public void suspect(CluedoStatement statement) {
+		setNextDisproveRound();		
+	}
+	
+	public void setNextDisproveRound(){
+		currentPlayerDisproveIndex = rotate(pcManager.getCurrentPlayerIndex(),pcManager.getSize(),false);
+		if (currentPlayerDisproveIndex != pcManager.getCurrentPlayerIndex() && currentPlayerDisproveIndex != -1){
+			stateManager.handleDisprove(currentPlayerDisproveIndex);
+			network.sendStateUpdateMsg(pcManager.getPlayerByIndex(currentPlayerDisproveIndex));
+		}
+		else{
+			endDisproveRound();
+		}
+	}
+	
+	public void  endDisproveRound(){
+		stateManager.transitionByAction(PlayerStates.suspect);
+		network.sendStateUpdateMsg(pcManager.getCurrentPlayer());
+		currentPlayerDisproveIndex = -1;
+	}
+	
+	public static int rotate(int start,int size, boolean forward){
+		int idx = start;
+		if (forward) idx++;
+		else idx--;
+		
+		return idx%size;
+	}
+
+	
 	
 }

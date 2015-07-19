@@ -13,6 +13,7 @@ import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoPosition;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
 
@@ -103,7 +104,7 @@ class CommunicationHandler implements Runnable {
 				client.setGroupName(checker.getMessage().getString("group"));
 				client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(),
 								dataManager.getClientPool(), dataManager.getGameList()));
-				dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
+				dataManager.sendMsgToAllClients(NetworkMessages.user_addedMsg(client.getNick()));
 				readyForCommunication = true;
 				runThread = true;
 			}
@@ -135,7 +136,7 @@ class CommunicationHandler implements Runnable {
 
 	void createGame(String color, ClientItem client) {
 		int gameID = dataGuiManager.createGame(color, client);
-		dataManager.notifyAll(
+		dataManager.sendMsgToAllClients(
 				NetworkMessages.game_createdMsg(
 						NetworkMessages.player_info(
 							client.getNick(), 
@@ -151,7 +152,7 @@ class CommunicationHandler implements Runnable {
 
 	private void closeProtokollConnection() {
 		if (dataGuiManager.removeClient(client)) {
-			dataManager.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));			
+			dataManager.sendMsgToAllClients(NetworkMessages.user_leftMsg(client.getNick()));			
 		}
 		killThread();
 	}
@@ -235,28 +236,25 @@ class CommunicationHandler implements Runnable {
 				if(person.equals(winnerPerson) &&
 					weapon.equals(winnerWeapon) &&
 					room.equals(winnerRoom)){
-					dataManager.notifyAll(NetworkMessages.game_endedMsg(id,
+					dataManager.sendMsgToAllClients(NetworkMessages.game_endedMsg(id,
 							dataManager.getGameByID(id).getWinningStatement()));
 				} 
 				else {
-					dataManager.notifyAll(NetworkMessages.
-					wrong_accusationMsg(id, NetworkMessages.
-					statement(person, room, weapon)));
-					//KICK PLAYER OUT OF THE GAME
+//					dataManager.notifyAll(NetworkMessages.
+//					wrogit ng_accusationMsg(id, NetworkMessages.
+//					statement(person, room, weapon)));
+//					//KICK PLAYER OUT OF THE GAME
 				}
 			} 
 	   	   	else
 				if (checker.getType().equals("suspicion")) {
-				int id = checker.getMessage().getInt("gameID");
-				dataManager.setSuspector(dataManager.getGameByID(id).getPlayerByClient(client).getNick());
-				System.out.println("GETTING THE SUSPECTOR " + dataManager.getSuspector());
+				int gameID = checker.getMessage().getInt("gameID");
+			
 				JSONObject json = checker.getMessage().getJSONObject("statement");
 				String person = json.getString("person").toString();
 				String room = json.getString("room").toString();
 				String weapon = json.getString("weapon").toString();
-				dataManager.notifyAll(NetworkMessages.suspicionMsg(
-						id, NetworkMessages.statement(person, room, weapon))
-						);
+				dataManager.suspectRequest(gameID, new CluedoStatement(person, weapon, room), client);
 			} 
 			else if (checker.getType().equals("disprove")) {
 					String pool = "pool";
@@ -283,7 +281,7 @@ class CommunicationHandler implements Runnable {
 			   String ts = checker.getMessage().getString("timestamp");
 				if (chatmsg.has("gameID")){
 					int gameID = chatmsg.getInt("gameID");
-					  dataManager.getGameByID(gameID).notifyAll(NetworkMessages.chatMsg(msg,gameID,ts));
+					  dataManager.getGameByID(gameID).sendMsgsToAll(NetworkMessages.chatMsg(msg,gameID,ts));
 				}
 				else if (checker.getMessage().has("nick")){
 					dataGuiManager.addMsgIn(
@@ -293,7 +291,7 @@ class CommunicationHandler implements Runnable {
 					dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg,ts));
 				}
 				else {							  
-					dataManager.notifyAll(NetworkMessages.chatMsg(msg , ts));
+					dataManager.sendMsgToAllClients(NetworkMessages.chatMsg(msg , ts));
 					dataGuiManager.addMsgIn(
 						ts+" "+chatmsg.getString("sender")+" says : \n"+
 						msg

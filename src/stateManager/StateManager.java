@@ -22,7 +22,7 @@ public class StateManager {
 	public void setNextTurnRec(){
 		Stack<CluedoPlayer> players  = pcm.getPlayers();
 		for (int i = 0;i < pcm.getSize(); i++){
-			if (i == pcm.getIndex()){
+			if (i == pcm.getCurrentPlayerIndex()){
 				CluedoPlayer nextplayer = players.get(i);
 				nextplayer.setPossibleStates(stateMachine.getSucStates(PlayerStates.do_nothing));
 				System.out.println("currentplayer :"+ nextplayer.getNick()+" has states :"+nextplayer.getStatesAsStringFormatted());

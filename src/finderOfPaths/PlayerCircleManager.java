@@ -63,7 +63,7 @@ public class PlayerCircleManager {
 		return players.get(currentIndex).getNick();
 	}
 	
-	public int getIndex() {
+	public int getCurrentPlayerIndex() {
 		return currentIndex;
 	}
 	

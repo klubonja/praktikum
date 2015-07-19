@@ -341,16 +341,16 @@ public class Communicator {
 					break;
 				}
 				
-				int bufferIndex = pcManager.getIndex();
+				int bufferIndex = pcManager.getCurrentPlayerIndex();
 				pcManager.next();
 				while(!cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
 					network.sendMsgToServer(NetworkMessages.no_disproveMsg(network.getGameId()));
 					pcManager.next();
-					if(bufferIndex == pcManager.getIndex() || cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
+					if(bufferIndex == pcManager.getCurrentPlayerIndex() || cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
 						break;
 					}
 				}
-				if(bufferIndex != pcManager.getIndex()){
+				if(bufferIndex != pcManager.getCurrentPlayerIndex()){
 					for(String cardOfTheOne : pcManager.getCurrentPlayer().getCards()){
 						if (cardOfTheOne.equals(person) ||
 								cardOfTheOne.equals(weapon) ||

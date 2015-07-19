@@ -16,7 +16,7 @@ import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoWeapon;
-import cluedoNetworkLayer.WinningStatement;
+import cluedoNetworkLayer.CluedoStatement;
 import cluedoServer.ClientItem;
 import enums.GameStates;
 import enums.PlayerStates;
@@ -316,7 +316,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String game_endedMsg(int gameID,WinningStatement statement){
+	public static String game_endedMsg(int gameID,CluedoStatement statement){
 		JSONObject statementJSON = new JSONObject();
 		try {
 			statementJSON.put("person", statement.getPerson().getColor());
