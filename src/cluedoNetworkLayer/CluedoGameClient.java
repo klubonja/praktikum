@@ -88,8 +88,8 @@ public class CluedoGameClient extends CluedoGame {
 		communicator.move(position, person);
 	}
 	
-	public void disprove(CluedoStatement sus) {
-		communicator.disprove(sus);
+	public void disprove() {
+		communicator.disprove();
 	}
 	
 	public void currentPlayerToNothing() {

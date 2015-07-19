@@ -236,7 +236,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		if (server == getSelectedServer()){
 			updateGame(gameID, game.getNicksConnected(),game.getWatchersConnected());
 		}
-			refreshGamesListServer(server);
+		refreshGamesListServer(server);
 	};	
 	
 	public void joinGameAsWatcher(ServerItem server,int gameID){
@@ -276,14 +276,6 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void handleDisprove(int gameID,ServerItem server){
 		server.getGameByGameID(gameID).disprove();
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+	}	
 	
 }
