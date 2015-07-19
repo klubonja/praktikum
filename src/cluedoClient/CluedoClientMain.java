@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.SimpleFormatter;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 import staticClasses.auxx;
 import cluedoNetworkGUI.CluedoClientGUI;
@@ -35,4 +36,6 @@ public class CluedoClientMain extends Application {
 		CluedoClientGUI gui = new CluedoClientGUI(primaryStage);
 		Client client = new Client(gui);		 
 	 }
+	
+	
 }

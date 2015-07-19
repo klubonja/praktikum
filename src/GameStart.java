@@ -1,6 +1,7 @@
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import view.MainMenuPresenter;
 import view.MainMenuView;
 
 public class GameStart extends Application{
@@ -13,8 +14,9 @@ public class GameStart extends Application{
 	public void start(Stage primaryStage) {
 		
 		this.primaryStage = primaryStage;
-// Create
+
         MainMenuView view = new MainMenuView();
+        MainMenuPresenter presenter = new MainMenuPresenter(view);
         
 
 
