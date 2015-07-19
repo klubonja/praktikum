@@ -4,6 +4,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,6 +20,9 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
@@ -35,6 +39,9 @@ public class MainMenuView extends StackPane{
 	private Button play;
 	private Button howToPlay;
 	private Label title;
+	
+	private Group background;
+	private MediaPlayer backgroundVideo;
 	
 	private Background mainBackground;
 	private BackgroundImage mainBackgroundImage;
@@ -100,7 +107,7 @@ public class MainMenuView extends StackPane{
 		mainBackgroundImage = new BackgroundImage(mainImage, BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
 				BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 		mainBackground = new Background(mainBackgroundImage);
-		main.setBackground(mainBackground);
+		//main.setBackground(mainBackground);
 		play = new Button("Play");
 		play.setStyle("-fx-background-color: #090a0c, linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%)," 
         + "linear-gradient(#20262b, #191d22),"
@@ -133,8 +140,26 @@ public class MainMenuView extends StackPane{
 		
 		
 		
+		backgroundVideo = new MediaPlayer(
+			      new Media("http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv")
+			    );
+		
+		
+		
+		background = new Group(new MediaView(backgroundVideo));
+			   
+
+			    backgroundVideo.setMute(true);
+			    backgroundVideo.setRate(50);
+
+			    backgroundVideo.setCycleCount(MediaPlayer.INDEFINITE);
+
+			    backgroundVideo.play();
+			  
+		
 		StackPane.setAlignment(main, Pos.CENTER);
-		this.getChildren().addAll(main);
+		StackPane.setAlignment(background, Pos.CENTER);
+		this.getChildren().addAll(main, background);
 		main.toFront();
 		
 	}

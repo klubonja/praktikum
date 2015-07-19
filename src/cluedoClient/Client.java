@@ -60,7 +60,7 @@ public class Client {
 		listenForServersThread();
 		sayHello();
 		
-		gui.createServer.setOnMouseClicked(e -> createServer());
+		//gui.createServer.setOnMouseClicked(e -> createServer());
 		auxx.log.log(Level.INFO,"CLIENT started");		
 	}	
 	
@@ -118,6 +118,18 @@ public class Client {
 			});
 		
 		////////////////////////// ENDCHAT//////////////////////////////////////
+			
+		///////////////////////CREATE SERVER/////////////////////////////////////	
+			gui.createServer.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			    @Override
+			    public void handle(MouseEvent click) {
+			    	Stage stage = new Stage();
+					CluedoServerGUI gui = new CluedoServerGUI(stage);
+					Server server = new Server(gui);
+					stage.show();
+			    }
+			});	
+		////////////////////////END CREATE SERVER/////////////////////////////////
 			
 		/////////////////////////RREFRSHGAMESLIST SELECTED SERVER////////////////
 			gui.refreshGamesList.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -301,12 +313,12 @@ public class Client {
 		}		
 	}
 	
-	public void createServer(){
-		Stage stage = new Stage();
-		CluedoServerGUI gui = new CluedoServerGUI(stage);
-		Server server = new Server(gui);
-		stage.show();
-	}
+//	public void createServer(){
+//		Stage stage = new Stage();
+//		CluedoServerGUI gui = new CluedoServerGUI(stage);
+//		Server server = new Server(gui);
+//		stage.show();
+//	}
 }
 
 
