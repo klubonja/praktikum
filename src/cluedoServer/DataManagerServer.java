@@ -110,10 +110,10 @@ public class DataManagerServer extends DataManager {
 		}		
 	}
 	
-	public void disproveRequest(int gameID, String card, String nick,ClientItem client) {
+	public void disproveRequest(int gameID, String card, ClientItem client) {
 		CluedoGameServer game = validatedClientGame(gameID, client);
 		if (game != null){
-			game.disproveRequest(card,nick,client);
+			game.disproveRequest(card,client);
 		}
 		
 	}
@@ -242,6 +242,12 @@ public class DataManagerServer extends DataManager {
 	public boolean joinGame(int gameID, String color, String nick) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public void accuseRequest(int gameID, CluedoStatement cluedoStatement,
+			ClientItem client) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

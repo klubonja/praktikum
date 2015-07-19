@@ -200,51 +200,57 @@ class CommunicationHandler implements Runnable {
 	   	   }
 	     	   
 	   	   	else if (checker.getType().equals("accuse")) {
-				int id = checker.getMessage().getInt("gameID");
-				JSONObject json = checker.getMessage().getJSONObject(
-						"statement");
-				String person = json.getString("person");
-				String room = json.getString("room");
-				String weapon = json.getString("weapon");
-				String winnerPerson = dataManager.getGameByID(id).getWinningStatement().getPerson().getPersonName();
-				String winnerRoom = dataManager.getGameByID(id).getWinningStatement().getRoom().getName();
-				String winnerWeapon = dataManager.getGameByID(id).getWinningStatement().getWeapon().getName();
-				dataManager.notifyAll(NetworkMessages.accuseMsg(
-						id, NetworkMessages.statement(person, room, weapon))
-						);
-				
-				switch (winnerPerson) { // irgendjemand hasst enums : winnerPerson = Persons.getPersonByName(winnerPerson).getColor();
-				case "Fräulein Gloria":
-					winnerPerson = "red";
-					break;
-				case "Oberts von Gatow":
-					winnerPerson = "yellow";
-					break;
-				case "Frau Weiss":
-					winnerPerson = "white";
-					break;
-				case "Reverend Green":
-					winnerPerson = "green";
-					break;
-				case "Baronin von Porz":
-					winnerPerson = "blue";
-					break;
-				case "Professor Bloom":
-					winnerPerson = "purple";
-					break;
-				}
-				if(person.equals(winnerPerson) &&
-					weapon.equals(winnerWeapon) &&
-					room.equals(winnerRoom)){
-					dataManager.sendMsgToAllClients(NetworkMessages.game_endedMsg(id,
-							dataManager.getGameByID(id).getWinningStatement()));
-				} 
-				else {
-//					dataManager.notifyAll(NetworkMessages.
-//					wrogit ng_accusationMsg(id, NetworkMessages.
-//					statement(person, room, weapon)));
-//					//KICK PLAYER OUT OF THE GAME
-				}
+		   	   	int gameID = checker.getMessage().getInt("gameID");	
+				JSONObject json = checker.getMessage().getJSONObject("statement");
+				String person = json.getString("person").toString();
+				String room = json.getString("room").toString();
+				String weapon = json.getString("weapon").toString();
+				dataManager.accuseRequest(gameID, new CluedoStatement(person, weapon, room), client);
+//				int id = checker.getMessage().getInt("gameID");
+//				JSONObject json = checker.getMessage().getJSONObject(
+//						"statement");
+//				String person = json.getString("person");
+//				String room = json.getString("room");
+//				String weapon = json.getString("weapon");
+//				String winnerPerson = dataManager.getGameByID(id).getWinningStatement().getPerson().getPersonName();
+//				String winnerRoom = dataManager.getGameByID(id).getWinningStatement().getRoom().getName();
+//				String winnerWeapon = dataManager.getGameByID(id).getWinningStatement().getWeapon().getName();
+//				dataManager.notifyAll(NetworkMessages.accuseMsg(
+//						id, NetworkMessages.statement(person, room, weapon))
+//						);
+//				
+//				switch (winnerPerson) { // irgendjemand hasst enums : winnerPerson = Persons.getPersonByName(winnerPerson).getColor();
+//				case "Fräulein Gloria":
+//					winnerPerson = "red";
+//					break;
+//				case "Oberts von Gatow":
+//					winnerPerson = "yellow";
+//					break;
+//				case "Frau Weiss":
+//					winnerPerson = "white";
+//					break;
+//				case "Reverend Green":
+//					winnerPerson = "green";
+//					break;
+//				case "Baronin von Porz":
+//					winnerPerson = "blue";
+//					break;
+//				case "Professor Bloom":
+//					winnerPerson = "purple";
+//					break;
+//				}
+//				if(person.equals(winnerPerson) &&
+//					weapon.equals(winnerWeapon) &&
+//					room.equals(winnerRoom)){
+//					dataManager.sendMsgToAllClients(NetworkMessages.game_endedMsg(id,
+//							dataManager.getGameByID(id).getWinningStatement()));
+//				} 
+//				else {
+////					dataManager.notifyAll(NetworkMessages.
+////					wrogit ng_accusationMsg(id, NetworkMessages.
+////					statement(person, room, weapon)));
+////					//KICK PLAYER OUT OF THE GAME
+//				}
 			} 
 	   	   	else if (checker.getType().equals("suspicion")) {
 					int gameID = checker.getMessage().getInt("gameID");	
@@ -257,18 +263,15 @@ class CommunicationHandler implements Runnable {
 			else if (checker.getType().equals("disprove")) {
 					String pool = "pool";
 					int gameID = checker.getMessage().getInt("gameID");
-					String card = checker.getMessage().getString("card");
-					String nick = checker.getMessage().getString("nick");
-					dataManager.disproveRequest(gameID,card,nick,client);
+					if (checker.getMessage().has("card")){
+						String card = checker.getMessage().getString("card");
+						dataManager.disproveRequest(gameID,card,client);
+					}
+					else {
+						dataManager.getGameByID(gameID).sendMsgsToAll(NetworkMessages.no_disproveMsg(gameID));
+					}
 					
-			} 
-			else if (checker.getType().equals("no disprove")) {
-				int id = checker.getMessage().getInt("gameID");
-				dataManager.notifyAll(NetworkMessages.no_disproveMsg(id));
-			} 
-			else if (checker.getType().equals("disproved")){
-					System.out.println(dataManager.getGameByID(checker.getMessage().getInt("gameID")).getPlayerByClient(client).getCluedoPerson().getColor() + " has disproved it!");		
-			}	   	   
+			} 	   	   
 	   	   else if(checker.getType().equals("end turn")){
 	   		   int gameID = checker.getMessage().getInt("gameID");
 		   	   dataManager.endTurnRequest(gameID,client);
