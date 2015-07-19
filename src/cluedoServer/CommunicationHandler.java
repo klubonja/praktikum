@@ -246,23 +246,21 @@ class CommunicationHandler implements Runnable {
 //					//KICK PLAYER OUT OF THE GAME
 				}
 			} 
-	   	   	else
-				if (checker.getType().equals("suspicion")) {
-				int gameID = checker.getMessage().getInt("gameID");
-			
-				JSONObject json = checker.getMessage().getJSONObject("statement");
-				String person = json.getString("person").toString();
-				String room = json.getString("room").toString();
-				String weapon = json.getString("weapon").toString();
-				dataManager.suspectRequest(gameID, new CluedoStatement(person, weapon, room), client);
+	   	   	else if (checker.getType().equals("suspicion")) {
+					int gameID = checker.getMessage().getInt("gameID");	
+					JSONObject json = checker.getMessage().getJSONObject("statement");
+					String person = json.getString("person").toString();
+					String room = json.getString("room").toString();
+					String weapon = json.getString("weapon").toString();
+					dataManager.suspectRequest(gameID, new CluedoStatement(person, weapon, room), client);
 			} 
 			else if (checker.getType().equals("disprove")) {
 					String pool = "pool";
-					int id = checker.getMessage().getInt("gameID");
+					int gameID = checker.getMessage().getInt("gameID");
 					String card = checker.getMessage().getString("card");
-					dataManager.notifyAll(NetworkMessages.disprovedMsg(id, client.getNick(), pool));
-					System.out.println("USING THE SUSPECTOR " + dataManager.getSuspector());
-					dataManager.getClientByNick(dataManager.getSuspector()).sendMsg(NetworkMessages.disproveMsg(client.getGameId(), card));
+					String nick = checker.getMessage().getString("nick");
+					dataManager.disproveRequest(gameID,card,nick,client);
+					
 			} 
 			else if (checker.getType().equals("no disprove")) {
 				int id = checker.getMessage().getInt("gameID");

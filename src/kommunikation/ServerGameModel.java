@@ -178,11 +178,12 @@ public class ServerGameModel {
 	}
 
 	public void suspect(CluedoStatement statement) {
+		currentPlayerDisproveIndex = pcManager.getCurrentPlayerIndex();
 		setNextDisproveRound();		
 	}
 	
 	public void setNextDisproveRound(){
-		currentPlayerDisproveIndex = rotate(pcManager.getCurrentPlayerIndex(),pcManager.getSize(),false);
+		currentPlayerDisproveIndex = rotate(currentPlayerDisproveIndex,pcManager.getSize(),false);
 		if (currentPlayerDisproveIndex != pcManager.getCurrentPlayerIndex() && currentPlayerDisproveIndex != -1){
 			stateManager.handleDisprove(currentPlayerDisproveIndex);
 			network.sendStateUpdateMsg(pcManager.getPlayerByIndex(currentPlayerDisproveIndex));

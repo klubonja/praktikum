@@ -216,6 +216,23 @@ public class CluedoGameServer extends CluedoGame {
 		return false;		
 	}
 	
+	public void disproveRequest(String card, String nick, ClientItem client) {
+		if(checkandHandleStateTrans(PlayerStates.disprove, client)){
+			sendMsgsToAll(
+					NetworkMessages.suspicionMsg(
+							getGameId(), 
+							NetworkMessages.statement(
+									statement.getPerson().getColor(), 
+									statement.getRoom().getName(), 
+									statement.getWeapon().getName()
+							)
+					)
+			);
+			gameLogic.suspect(statement);
+					
+		}		
+	}
+	
 //////////////////////////////////////////////FIND///////////////////////////////////////////////////////
 	
 	public boolean findAndRemovePlayer(ClientItem client) {
@@ -311,6 +328,8 @@ public class CluedoGameServer extends CluedoGame {
 		}
 		return false;
 	}
+
+	
 }
 
 

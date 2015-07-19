@@ -110,19 +110,18 @@ public class DataManagerServer extends DataManager {
 		}		
 	}
 	
+	public void disproveRequest(int gameID, String card, String nick,ClientItem client) {
+		CluedoGameServer game = validatedClientGame(gameID, client);
+		if (game != null){
+			game.disproveRequest(card,nick,client);
+		}
+		
+	}
+	
 	public void endTurnRequest(int gameID,ClientItem client){
 		CluedoGameServer game = validatedClientGame(gameID, client);
 		if (game != null){
 			game.endTurnRequest(client);
-//			else {
-//				game.sendMsgToParticipants(
-//						NetworkMessages.chatMsg(
-//							"@"+client.getNick()+": cant end turn at this point idiot, possible moves are :  "+game.getPlayerByClient(client).getStatesAsString(),
-//							game.getGameId(), 
-//							auxx.now()
-//							)
-//						);
-//			}
 		}
 	}
 	
@@ -244,6 +243,8 @@ public class DataManagerServer extends DataManager {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	
 }
 	
 
