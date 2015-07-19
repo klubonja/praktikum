@@ -13,7 +13,7 @@ public class GameStart extends Application{
 	public void start(Stage primaryStage) {
 		
 		this.primaryStage = primaryStage;
-
+// Create
         MainMenuView view = new MainMenuView();
         
 
