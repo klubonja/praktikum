@@ -196,7 +196,7 @@ public class CluedoGameServer extends CluedoGame {
 		if(checkandHandleStateTrans(PlayerStates.move, client)){
 			if (gameLogic.movePlayer(client.getNick(), newpos)) {
 				 client.sendMsg(NetworkMessages.okMsg());
-				 sendMsgsToAll(NetworkMessages.movedMsg(getGameId(),getPlayerByClient(client).getCluedoPerson().getPersonName(), newpos));
+				 sendMsgsToAll(NetworkMessages.movedMsg(getGameId(),getPlayerByClient(client).getCluedoPerson().getColor(), newpos));
 				 sendStateUpdateMsg(getPlayerByClient(client));
 
 				return true	;

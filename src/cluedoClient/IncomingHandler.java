@@ -14,6 +14,7 @@ import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPosition;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.NetworkHandhakeCodes;
 
 class IncomingHandler implements Runnable {
@@ -122,16 +123,17 @@ class IncomingHandler implements Runnable {
         							);	        		  
 			} 
 			else if (checker.getType().equals("suspicion")) {
-				JSONObject json = checker.getMessage().getJSONObject(
-						"statement");
-				int id = checker.getMessage().getInt("gameID");
+				JSONObject json = checker.getMessage().getJSONObject("statement");
+				int gameID = checker.getMessage().getInt("gameID");
 				String person = json.getString("person").toString();
 				String weapon = json.getString("weapon").toString();
 				String room = json.getString("room").toString();
-				server.getGameByGameID(id)
-						.compareCards(person, room, weapon);
-				server.getGameByGameID(id).changeLabel(server.getGameByGameID(id).getMyNick()
-						+ " is suspecting. " + "\n" + person + " " + room + " " + weapon);
+				CluedoStatement suspicion = new CluedoStatement(person, weapon, room);
+				dataGuiManager.handleSuspicion(gameID,suspicion,server);
+//				server.getGameByGameID(id)
+//						.compareCards(person, room, weapon);
+//				server.getGameByGameID(id).changeLabel(server.getGameByGameID(id).getMyNick()
+//						+ " is suspecting. " + "\n" + person + " " + room + " " + weapon);
 			}
 				
 			else if (checker.getType().equals("accuse")) {
@@ -158,25 +160,22 @@ class IncomingHandler implements Runnable {
 			} 
 				
 			else if (checker.getType().equals("disprove")) {
-				String card = checker.getMessage().getString("card").toString();
-			server.getGameByGameID(checker.getMessage().getInt("gameID"))
-			.changeLabel(
-			server.getGameByGameID(checker.getMessage().getInt("gameID")).getPlayerByNick(server.myNick).getCluedoPerson().getPersonName()
-			+ " had the card: " + card);
+				int gameID = checker.getMessage().getInt("gameID");
+				CluedoStatement suspicion = new CluedoStatement(p, w, r);
+				dataGuiManager.handleDisprove(gameID, suspicion, server);
 			} 
 				
-				else
-					if(checker.getType().equals("disproved")){
+			else if(checker.getType().equals("disproved")){
 				server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
-						checker.getMessage().getString("nick").toString() + " disproved!"
-						);
-			} else
-				if (checker.getType().equals("no disprove")){
+					checker.getMessage().getString("nick").toString() + " disproved!"
+					);
+			} 
+			else if (checker.getType().equals("no disprove")){
 					server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
 							server.getGameByGameID(checker.getMessage().getInt("gameID"))
 							.getPlayerByNick(server.myNick).getCluedoPerson().getPersonName() +
 							" did not disprove.");
-				}
+			}
 			else if (checker.getType().equals("game ended")){
         		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
 			}

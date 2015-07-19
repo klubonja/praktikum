@@ -352,9 +352,9 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String movedMsg(int gameID,String personname,CluedoPosition newpos){
+	public static String movedMsg(int gameID,String personcolor,CluedoPosition newpos){
 		CluedoJSON json = new CluedoJSON("moved");
-		json.put("person position", personPos(personname, newpos));
+		json.put("person position", personPos(personcolor, newpos));
 		json.put("gameID", gameID);		
 		
 		return json.toString();

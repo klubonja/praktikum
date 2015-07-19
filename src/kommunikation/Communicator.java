@@ -1,18 +1,11 @@
 package kommunikation;
 
+import java.util.ArrayList;
 import java.util.Stack;
 import java.util.logging.Level;
-import java.util.ArrayList;
-import java.util.Iterator;
 
-import org.json.JSONObject;
-
-import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.effect.Glow;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
 import kacheln.KachelContainer;
 import staticClasses.NetworkMessages;
@@ -27,6 +20,7 @@ import view.GameFrameView;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.PlayerStates;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.BallEbene2;
@@ -38,9 +32,16 @@ import finderOfPaths.Vorschlaege;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 
 public class Communicator {
-
-	private int [] wuerfelWurf;
+	
+	public final int gameid;
 	private String myNick;
+	
+	private CluedoGameClient network;
+	
+	private int [] wuerfelWurf;
+	private boolean sswitch;
+	private CluedoStatement curSuspicion = null;
+
 	
 	public boolean erstesMal;
 	
@@ -50,7 +51,7 @@ public class Communicator {
 	private BallEbene2 ballEbene;
 	private AussergewohnlichesZugfenster zugView;
 
-	private boolean sswitch;
+	
 	
 	private GameFramePresenter gamePresenter;
 	private DicePresenter dicePresenter;
@@ -63,11 +64,11 @@ public class Communicator {
 	private DerBeweger beweger;
 	private RaumBeweger raumBeweger;
 	private Stack<CluedoPlayer> players;
-	private CluedoGameClient network;
+	
 	//private ArrayList <String> order;
 	public PlayerCircleManager pcManager;
 	private KachelContainer kacheln;
-	public final int gameid;
+	
 
 	public Communicator(CluedoGameClient ngame) {
 		network = ngame;
@@ -113,7 +114,9 @@ public class Communicator {
 		
 	}
 	
-	
+	public void setCurSuspicion(CluedoStatement curSuspicion) {
+		this.curSuspicion = curSuspicion;
+	}
 
 	public void setTitle(String newtitle) {
 		gameView.setStageTitle(newtitle);
@@ -178,8 +181,7 @@ public class Communicator {
 	}
 
 	public void disprove(String card) {
-		network.sendMsgToServer(NetworkMessages.disproveMsg(
-				network.getGameId(), card));
+		network.sendMsgToServer(NetworkMessages.disproveMsg(network.getGameId(), card));
 	}
 
 	public void highlightCard(String card) {
@@ -372,6 +374,11 @@ public class Communicator {
 						}
 				}
 				return false;
+			}
+
+			public String disprove(CluedoStatement sus) {
+				// TODO Auto-generated method stub
+				return null;
 			}
 	
 	/*

@@ -194,6 +194,7 @@ public class ServerGameModel {
 		else{
 			endDisproveRound();
 		}
+		System.out.println("currentdisproveindex: "+currentPlayerDisproveIndex+" currentplayerindex:"+pcManager.getCurrentPlayerIndex());
 	}
 	
 	public boolean disprove(String card,String nick){
@@ -227,7 +228,7 @@ public class ServerGameModel {
 		if (forward) idx++;
 		else idx--;
 		
-		return idx%size;
+		return Math.abs(idx%size);
 	}
 
 	

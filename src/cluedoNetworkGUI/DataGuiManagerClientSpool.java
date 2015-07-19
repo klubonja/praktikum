@@ -9,6 +9,7 @@ import staticClasses.auxx;
 import cluedoClient.ServerItem;
 import cluedoClient.ServerPool;
 import cluedoNetworkLayer.CluedoGameClient;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.GameStates;
 import enums.PlayerStates;
 import enums.ServerStatus;
@@ -265,50 +266,24 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 			}
 		}
 	}
-		
-//		for (int welcherState = 0; welcherState < states.length(); welcherState++){
-//			statesb.append(states.get(welcherState));
-//			if (states.get(welcherState).equals(PlayerStates.end_turn.getName())){
-//				game.itsYourTurn();
-//			}
-//			else if (server.getMyNick().equals(nick) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
-//				auxx.loginfo("voll ghetto-code");
-////				game.currentPlayerToRolls();
-//				game.itsYourTurn();
-//			}
-//			else if ( ! (server.getMyNick().equals(nick) ) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
-//				auxx.loginfo("voll ghetto-code");
-////				game.currentPlayerToRolls();
-//				game.itsSomeonesTurn();
-//			}
-////			else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.accuse.getName())){
-////				game.currentPlayerToAccuse();
-////			}
-////			else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.suspect.getName())){
-////				game.currentPlayerToSuspect();
-////			}
-//			else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.disprove.getName())){
-//				game.currentPlayerToDisprove();
-//			}
-////			else if (states.get(welcherState).equals(PlayerStates.do_nothing.getName())){
-////				auxx.loginfo("voll ghetto-code");
-////				game.currentPlayerToNothing();
-////			}
-//			else if ( ! (states.get(welcherState).equals(PlayerStates.do_nothing.getName()))){
-//				auxx.loginfo("nicht so ghetto-code");
-//			}
-//			
-				
-//		}
-//		else if (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.disprove.getName())){
-//			server.getGameByGameID(gameID).disprove();
-//		}
-		
-		
-		
-		
-		
-	
 
+	public void handleSuspicion(int gameID, CluedoStatement suspicion,ServerItem server) {
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		if (game.hasPlayerConnectedByNick(server.getMyNick())){ //never ever trust anyone
+			game.setCurrentSuspicion(suspicion);
+		}		
+	}	
+	
+	public void handleDisprove(int gameID,CluedoStatement card,ServerItem server){
+		server.getGameByGameID(gameID).disprove(card);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

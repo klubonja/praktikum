@@ -268,7 +268,7 @@ public abstract class auxx {
 				else formated.append(strings.get(i)+" ,");
 			}
 		}
-		else {
+		else if (size == 1) {
 			formated.append(strings.get(0));
 		}
 		
