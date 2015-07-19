@@ -1,18 +1,12 @@
 package kommunikation;
 
-import java.util.Stack;
-import java.util.logging.Level;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Stack;
+import java.util.logging.Level;
 
-import org.json.JSONObject;
-
-import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.effect.Glow;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
 import kacheln.KachelContainer;
 import staticClasses.NetworkMessages;
@@ -27,6 +21,7 @@ import view.GameFrameView;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
+import enums.Persons;
 import enums.PlayerStates;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.BallEbene2;
@@ -334,39 +329,10 @@ public class Communicator {
 
 			
 			
-			public void compareCards(String person, String weapon, String room){
-				switch (person) {// nochwer hasst enums
-				case "red":
-					person = "Fräulein Gloria";
-					break;
-				case "yellow":
-					person = "Oberts von Gatow";
-					break;
-				case "white":
-					person = "Frau Weiss";
-					break;
-				case "green":
-					person = "Reverend Green";
-					break;
-				case "blue":
-					person = "Baronin von Porz";
-					break;
-				case "purple":
-					person = "Professor Bloom";
-					break;
-				}
-				
-				int bufferIndex = pcManager.getIndex();
-				pcManager.next();
-				while(!cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
-					network.sendMsgToServer(NetworkMessages.no_disproveMsg(network.getGameId()));
-					pcManager.next();
-					if(bufferIndex == pcManager.getIndex() || cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
-						break;
-					}
-				}
-				if(bufferIndex != pcManager.getIndex()){
-					for(String cardOfTheOne : pcManager.getCurrentPlayer().getCards()){
+			public void showPossibleDisprovals(String person, String weapon, String room){
+				person = Persons.getPersonByColor(person).getPersonName();
+				System.out.println(person);
+					for(String cardOfTheOne : network.getPlayerByNick(network.getMyNick()).getCards()){
 						if (cardOfTheOne.equals(person) ||
 								cardOfTheOne.equals(weapon) ||
 								cardOfTheOne.equals(room)) {
@@ -374,19 +340,6 @@ public class Communicator {
 								setCardFunction(cardOfTheOne);
 							}
 					}
-					pcManager.setIndex(bufferIndex);
-				}
-			}
-			
-			public boolean cardInspector(String person, String weapon, String room, ArrayList<String> cards){
-				for(String str : cards){
-					if (str.equals(person) ||
-							str.equals(weapon) ||
-							str.equals(room)) {
-						return true;
-						}
-				}
-				return false;
 			}
 	
 	/*

@@ -12,8 +12,10 @@ import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
+import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.NetworkHandhakeCodes;
+import enums.Persons;
 import enums.PlayerStates;
 
 /**
@@ -216,26 +218,7 @@ class CommunicationHandler implements Runnable {
 						id, NetworkMessages.statement(person, room, weapon))
 						);
 				
-				switch (winnerPerson) { // irgendjemand hasst enums : winnerPerson = Persons.getPersonByName(winnerPerson).getColor();
-				case "Fräulein Gloria":
-					winnerPerson = "red";
-					break;
-				case "Oberts von Gatow":
-					winnerPerson = "yellow";
-					break;
-				case "Frau Weiss":
-					winnerPerson = "white";
-					break;
-				case "Reverend Green":
-					winnerPerson = "green";
-					break;
-				case "Baronin von Porz":
-					winnerPerson = "blue";
-					break;
-				case "Professor Bloom":
-					winnerPerson = "purple";
-					break;
-				}
+				winnerPerson = Persons.getPersonByName(winnerPerson).getColor();
 				if(person.equals(winnerPerson) &&
 					weapon.equals(winnerWeapon) &&
 					room.equals(winnerRoom)){
@@ -255,9 +238,22 @@ class CommunicationHandler implements Runnable {
 				String person = json.getString("person").toString();
 				String room = json.getString("room").toString();
 				String weapon = json.getString("weapon").toString();
-				dataManager.notifyAll(NetworkMessages.suspicionMsg(
-						id, NetworkMessages.statement(person, room, weapon))
-						);
+				dataManager.notifyAll(NetworkMessages.chatMsg(
+						client.getNick() + " is suspecting. " + 
+						"\n" + person + " " + room + " " + weapon, id, auxx.now()));
+				
+				for(CluedoPlayer p : dataManager.getGameByID(id).getPlayers()){
+					if(!cardInspector(person, weapon, room, p.getCards())){
+						dataManager.notifyAll(NetworkMessages.chatMsg(
+								p.getNick() + " (" + p.getCluedoPerson() + ") did not have a card.", id, auxx.now()));
+					} else {
+						if(!p.getNick().equals(dataManager.getSuspector())){
+						dataManager.getClientByNick(p.getNick()).
+						sendMsg(NetworkMessages.suspicionMsg(id, NetworkMessages.statement(person, room, weapon)));
+						break;
+						}
+					}
+				}
 			} else
 				if (checker.getType().equals("disprove")) {
 					String pool = "pool";
@@ -274,7 +270,6 @@ class CommunicationHandler implements Runnable {
 				if (checker.getType().equals("disproved")){
 					System.out.println(dataManager.getGameByID(checker.getMessage().getInt("gameID")).
 							getPlayerByClient(client).getCluedoPerson().getColor() + " has disproved it!");
-					
 				}
 	   	   
 	   	   else if(checker.getType().equals("end turn")){
@@ -331,6 +326,18 @@ class CommunicationHandler implements Runnable {
 	        	   auxx.loginfo("INCOMING INVALID : "+ checker.getErrString());
         }
 
+	}
+	
+	public boolean cardInspector(String person, String weapon, String room, ArrayList<String> cards){
+		person = Persons.getPersonByColor(person).getPersonName();
+		for(String str : cards){
+			if (str.equals(person) ||
+					str.equals(weapon) ||
+					str.equals(room)) {
+				return true;
+				}
+		}
+		return false;
 	}
 	
 	

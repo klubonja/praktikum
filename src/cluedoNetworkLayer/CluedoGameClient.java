@@ -51,9 +51,9 @@ public class CluedoGameClient extends CluedoGame {
 		});
 	}
 
-	public void compareCards(String person, String weapon, String room) {
+	public void showDisprovals(String person, String weapon, String room) {
 		Platform.runLater(() -> {
-			communicator.compareCards(person, weapon, room);
+			communicator.showPossibleDisprovals(person, weapon, room);
 		});
 	}
 
