@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import kacheln.KachelContainer;
 import model.Deck;
 import stateManager.StateManager;
+import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import view.DicePresenter;
 import cluedoNetworkLayer.CluedoGameServer;
@@ -28,6 +29,7 @@ public class ServerGameModel {
 	
 	private int gameID;
 	private int currentPlayerDisproveIndex = -1;
+	private CluedoStatement curSuspicion = null;
 	
 	private CluedoStatement winningStatement;
 	
@@ -179,6 +181,7 @@ public class ServerGameModel {
 
 	public void suspect(CluedoStatement statement) {
 		currentPlayerDisproveIndex = pcManager.getCurrentPlayerIndex();
+		curSuspicion = statement;
 		setNextDisproveRound();		
 	}
 	
@@ -193,10 +196,30 @@ public class ServerGameModel {
 		}
 	}
 	
+	public boolean disprove(String card,String nick){
+		if (curSuspicion.isDisprovenBy(card)){
+			network.sendMsgsToAll(NetworkMessages.disprovedMsg(gameID, nick));
+			network.sendMsgByPlayer(
+					pcManager.getCurrentPlayer(), 
+					NetworkMessages.disprovedMsg(
+							gameID, 
+							nick, 
+							card
+					)
+			);
+			endDisproveRound();
+			return true;
+		}
+		network.sendMsgsToAll(NetworkMessages.no_disproveMsg(gameID));
+		setNextDisproveRound();
+		return false;
+	}
+	
 	public void  endDisproveRound(){
 		stateManager.transitionByAction(PlayerStates.suspect);
 		network.sendStateUpdateMsg(pcManager.getCurrentPlayer());
 		currentPlayerDisproveIndex = -1;
+		curSuspicion = null;
 	}
 	
 	public static int rotate(int start,int size, boolean forward){

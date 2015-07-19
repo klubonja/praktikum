@@ -159,6 +159,14 @@ public class CluedoGameServer extends CluedoGame {
 						)
 				);
 	}
+	
+	public void sendMsgByPlayer(CluedoPlayer cp,String msg){
+		for (ClientItem c: participants)
+			if (cp.getNick().equals(c.getNick())){
+				c.sendMsg(msg);
+				return;
+			}
+	}
 
 //////////////////////////////////////////////RUNNING GAME///////////////////////////////////////////////////////
 	
@@ -217,19 +225,8 @@ public class CluedoGameServer extends CluedoGame {
 	}
 	
 	public void disproveRequest(String card, String nick, ClientItem client) {
-		if(checkandHandleStateTrans(PlayerStates.disprove, client)){
-			sendMsgsToAll(
-					NetworkMessages.suspicionMsg(
-							getGameId(), 
-							NetworkMessages.statement(
-									statement.getPerson().getColor(), 
-									statement.getRoom().getName(), 
-									statement.getWeapon().getName()
-							)
-					)
-			);
-			gameLogic.suspect(statement);
-					
+		if(checkandHandleStateTrans(PlayerStates.disprove, client)){		
+			gameLogic.disprove(card,nick);					
 		}		
 	}
 	

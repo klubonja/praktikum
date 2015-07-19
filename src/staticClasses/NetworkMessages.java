@@ -15,8 +15,8 @@ import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
-import cluedoNetworkLayer.CluedoWeapon;
 import cluedoNetworkLayer.CluedoStatement;
+import cluedoNetworkLayer.CluedoWeapon;
 import cluedoServer.ClientItem;
 import enums.GameStates;
 import enums.PlayerStates;
@@ -388,6 +388,14 @@ public abstract class NetworkMessages {
 		json.put("nick", nick);
 		json.put("gameID", gameID);	
 		json.put("card", card);
+		
+		return json.toString();
+	}
+	
+	public static String disprovedMsg(int gameID,String nick){
+		CluedoJSON json = new CluedoJSON("disproved");
+		json.put("nick", nick);
+		json.put("gameID", gameID);	
 		
 		return json.toString();
 	}

@@ -2,6 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
+import cluedoServer.ClientItem;
 import enums.Persons;
 import enums.PlayerStates;
 

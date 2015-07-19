@@ -1,5 +1,7 @@
 package cluedoNetworkLayer;
 
+import java.util.Arrays;
+
 import enums.Persons;
 import enums.Rooms;
 import enums.Weapons;
@@ -38,4 +40,11 @@ public class CluedoStatement {
 			return false;
 		return true;
 	}
+	
+	public boolean isDisprovenBy(String card){
+		String[] trip = {getPerson().getColor(),getRoom().getName(),getWeapon().getName()};
+		return Arrays.asList(trip).contains(card);
+	}
+	
+	
 }
