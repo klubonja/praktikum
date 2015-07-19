@@ -33,7 +33,7 @@ import finderOfPaths.WahnsinnigTollerPathfinder;
 
 public class Communicator {
 	
-	public final int gameid;
+	public final int gameID;
 	private String myNick;
 	
 	private CluedoGameClient network;
@@ -64,20 +64,18 @@ public class Communicator {
 	private DerBeweger beweger;
 	private RaumBeweger raumBeweger;
 	private Stack<CluedoPlayer> players;
-	
-	//private ArrayList <String> order;
 	public PlayerCircleManager pcManager;
 	private KachelContainer kacheln;
 	
 
 	public Communicator(CluedoGameClient ngame) {
 		network = ngame;
-		gameid = ngame.getGameId();
+		gameID = ngame.getGameId();
 		pcManager = new PlayerCircleManager(network.getPlayers());
 		kacheln = new KachelContainer();
 		gameView = new GameFrameView(pcManager, kacheln, network);
 		gameView.start();
-		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameid, kacheln);
+		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameID, kacheln);
 		dicePresenter = gamePresenter.getDicePresenter();
 		zugPresenter = gamePresenter.getZugPresenter();
 
@@ -167,7 +165,7 @@ public class Communicator {
 		String weapon = zugView.getWaffenListe().getValue();
 		String room = "hall";
 		network.sendMsgToServer(NetworkMessages.suspicionMsg(
-				gameid,
+				gameID,
 				NetworkMessages.statement(person, room, weapon)));
 	}
 
@@ -215,7 +213,7 @@ public class Communicator {
 	}
 		
 	public void endTurn() {
-		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameid));
+		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameID));
 	}
 	
 	public void itsYourTurn(){
@@ -279,8 +277,6 @@ public class Communicator {
 	
 	//OPEN WINDOW
 			public void openWindow(){
-				auxx.logsevere("to the front!!!");
-				auxx.logsevere("" +zugView);
 				gameView.getKomplettesFeld().getChildren().remove(zugView);
 				gameView.getKomplettesFeld().getChildren().add(zugView);
 			}
@@ -376,9 +372,17 @@ public class Communicator {
 				return false;
 			}
 
-			public String disprove(CluedoStatement sus) {
-				// TODO Auto-generated method stub
-				return null;
+			public void disprove() {
+				ArrayList<String> disprover = curSuspicion.makeConjunction(pcManager.getPlayerByNick(myNick).getCards());
+				if (disprover.size() != 0){
+					//show cardpane with possible disprover
+					//network.sendMsgToServer(NetworkMessages.disproveMsg(gameID, selectedcard));
+					//bis dahin :
+					network.sendMsgToServer(NetworkMessages.disproveMsg(gameID, disprover.get(0)));
+				}
+				else {
+					network.sendMsgToServer(NetworkMessages.cantDisproveMsg(gameID));
+				}				
 			}
 	
 	/*

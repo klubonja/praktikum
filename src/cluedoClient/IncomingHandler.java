@@ -161,7 +161,6 @@ class IncomingHandler implements Runnable {
 				
 			else if (checker.getType().equals("disprove")) {
 				int gameID = checker.getMessage().getInt("gameID");
-				CluedoStatement suspicion = new CluedoStatement(p, w, r);
 				dataGuiManager.handleDisprove(gameID, suspicion, server);
 			} 
 				

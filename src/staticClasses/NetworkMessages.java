@@ -453,6 +453,13 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
+	public static String cantDisproveMsg(int gameID){
+		CluedoJSON json = new CluedoJSON("disprove");
+		json.put("gameID", gameID);
+		
+		return json.toString();
+	}
+	
 	public static String accuseMsg(int gameID, JSONObject statement){
 		CluedoJSON json = new CluedoJSON("accuse");
 		json.put("gameID", gameID);

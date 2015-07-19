@@ -1,5 +1,6 @@
 package cluedoNetworkLayer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import enums.Persons;
@@ -41,9 +42,29 @@ public class CluedoStatement {
 		return true;
 	}
 	
+	public String[] getStatementAsArray(){
+		return new String[]{getPerson().getColor(),getRoom().getName(),getWeapon().getName()};
+	}
+	
 	public boolean isDisprovenBy(String card){
-		String[] trip = {getPerson().getColor(),getRoom().getName(),getWeapon().getName()};
-		return Arrays.asList(trip).contains(card);
+		return Arrays.asList(getStatementAsArray()).contains(card);
+	}
+	
+	public ArrayList<String> makeConjunction(CluedoStatement sus){
+		ArrayList<String> conj = new ArrayList<String>();
+		String[] cards = sus.getStatementAsArray();
+		for (String card: cards)
+			if (isDisprovenBy(card))
+				conj.add(card);
+		return conj;
+	}
+	
+	public ArrayList<String> makeConjunction(ArrayList<String> cards){
+		ArrayList<String> conj = new ArrayList<String>();
+		for (String card: cards)
+			if (isDisprovenBy(card))
+				conj.add(card);
+		return conj;
 	}
 	
 	

@@ -274,8 +274,8 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		}		
 	}	
 	
-	public void handleDisprove(int gameID,CluedoStatement card,ServerItem server){
-		server.getGameByGameID(gameID).disprove(card);
+	public void handleDisprove(int gameID,ServerItem server){
+		server.getGameByGameID(gameID).disprove();
 	}
 	
 	
