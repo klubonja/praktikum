@@ -56,8 +56,13 @@ public abstract class CluedoNetworkGUI {
 		 statusContainer = new HBox();
 		 statusContainer.setFillHeight(true);
 		 tabPane = new TabPane();
-		 menue = new HBox();
-		 menue.setPrefHeight(30);		
+		 menue = new HBox(2);
+		 menue.setMinHeight(30);
+		 menue.setPrefHeight(30);	
+		 menue.setMaxHeight(30);
+		 menue.setMinWidth(700);
+		 menue.setPrefWidth(700);
+		 menue.setMaxWidth(700);
 		 
 		 networkActors = FXCollections.observableArrayList();
 		 networkActorsListView = new ListView<NetworkActorVBox>(networkActors);		 
@@ -71,8 +76,11 @@ public abstract class CluedoNetworkGUI {
 		 messagesIn = new TextArea();
 		 messagesOut = new TextArea();
 		 button0 = new Button();
-		 scene = new Scene(grid);
-		 inputField = new TextArea();			 
+		 scene = new Scene(grid, 1100, 650);
+		 
+		 inputField = new TextArea();
+		 inputField.setMaxHeight(50);
+		 inputField.setPrefHeight(50);
 		 
 		 inLabel = new Text("IN");
 		 outLabel = new Text("OUT");
@@ -84,7 +92,7 @@ public abstract class CluedoNetworkGUI {
 		 
 		 setListener();
 		 
-		 menue.getChildren().addAll(button0);
+		 //menue.getChildren().addAll(button0);
 		 
 		 messagesIn.setEditable(false);
 	     messagesOut.setEditable(false);		 		 

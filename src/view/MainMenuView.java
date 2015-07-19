@@ -169,7 +169,7 @@ public class MainMenuView extends StackPane{
 	
 	
 	public void start(){
-		this.scene = new Scene(this, 1000, 650);
+		this.scene = new Scene(this, 1100, 650);
 		this.stage = new Stage();
 		this.stage.setScene(scene);
         this.stage.setResizable(true);

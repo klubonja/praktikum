@@ -5,14 +5,24 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.Priority;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -32,6 +42,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	final public Button createServer;
 	final public ObservableList<String> clientNicks;
 	final public ListView<String> clientNicksView;
+	
+	private Background background;
+	private BackgroundSize backgroundSize;
+	private BackgroundImage backgroundImage;
+	private Image image;
 
 	
 	
@@ -57,54 +72,54 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	}
 	    
 	@Override
-	public void startUp() {        
-        
-       // grid.setPadding(new Insets(25, 25, 25, 25));
+	public void startUp() {    
+		
+		this.backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
+				false, false, false, true);
+		this.image = new Image("http://img2.wikia.nocookie.net/__cb20120601223256/lotr/images/7/77/Isengard_army.jpg");
+	    this.backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+					BackgroundPosition.CENTER, backgroundSize);
+	    this.background = new Background(backgroundImage);
+	    
+	        
+        grid.setPadding(new Insets(20));
+        grid.setHgap(20);
+        grid.setVgap(15);
         grid.setGridLinesVisible(false);
+        grid.setBackground(background);
         
+        
+        //Creates the rows and columns of the grid
         ColumnConstraints col0 = new ColumnConstraints();
-        col0.setHgrow(Priority.ALWAYS);
-        col0.setPercentWidth(35);
+        //col0.setHgrow(Priority.ALWAYS);
+        col0.setPercentWidth(30);
         grid.getColumnConstraints().add(col0);
         
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setHgrow(Priority.ALWAYS);
-        col1.setPercentWidth(20);
+        //col1.setHgrow(Priority.ALWAYS);
+        col1.setPercentWidth(40);
         grid.getColumnConstraints().add(col1);
         
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setHgrow(Priority.ALWAYS);
-        col2.setPercentWidth(45);
+        //col2.setHgrow(Priority.ALWAYS);
+        col2.setPercentWidth(30);
         grid.getColumnConstraints().add(col2);
         
         RowConstraints row0 = new RowConstraints(); //menue
-	    row0.setPercentHeight(6); 
+	    row0.setPercentHeight(10); 
 	    grid.getRowConstraints().add(row0);
 	    
 	    RowConstraints row1 = new RowConstraints();
-	    row1.setPercentHeight(6);        
+	    row1.setPercentHeight(40);        
 	    grid.getRowConstraints().add(row1);
 	    
-//	    RowConstraints row2 = new RowConstraints();
-//	    row1.setPercentHeight(5);        
-//	    grid.getRowConstraints().add(row2);
+	    RowConstraints row2 = new RowConstraints();
+	    row1.setPercentHeight(40);        
+	    grid.getRowConstraints().add(row2);
 	    
 	    RowConstraints row3 = new RowConstraints();
-	    row3.setPercentHeight(52);        
+	    row3.setPercentHeight(10);        
 	    grid.getRowConstraints().add(row3);
-	    
-	    RowConstraints row4 = new RowConstraints();
-	    row4.setPercentHeight(35);        
-	    grid.getRowConstraints().add(row4);
-	    
-//	    RowConstraints row5 = new RowConstraints();
-//	    row5.setPercentHeight(40);        
-//	    grid.getRowConstraints().add(row5);
-	    
-//	    RowConstraints row6 = new RowConstraints();
-//	    row6.setPercentHeight(10);
-//	    //row6.setVgrow(Priority.ALWAYS);
-//	    grid.getRowConstraints().add(row6);
         
         messagesIn.setWrapText(true);
         messagesOut.setWrapText(true);
@@ -113,7 +128,6 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         tab0.setText("Spiele");           
         tab0.setContent(gameListView);
               
-        
         Tab tab1 = new Tab();
         tab1.setText("Server");           
         tab1.setContent(networkActorsListView);
@@ -121,7 +135,9 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         tabPane.getTabs().add(tab1);
         tabPane.getTabs().add(tab0);  
         
-        menue.getChildren().addAll(createGame,connectToTestServer,refreshGamesList, createServer);
+        menue.getChildren().addAll(createGame, connectToTestServer, refreshGamesList, createServer);
+        HBox buttons = new HBox(2);
+        buttons.getChildren().addAll(createGame, connectToTestServer, refreshGamesList, createServer);
         
         
         Text title = new Text(desc);
@@ -129,22 +145,39 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         status.setFont(Font.font("Tahoma", FontWeight.NORMAL, 10));
         
         //messagesIn.setPrefHeight(150);
+        
+        VBox chatArea = new VBox(2);
+        chatArea.getChildren().addAll(messagesIn, inputField);
       
         grid.setValignment(submitMessageButton, VPos.CENTER);
        
+        
+        GridPane.setHalignment(buttons, HPos.CENTER);
+        GridPane.setValignment(buttons, VPos.CENTER);
+        GridPane.setConstraints(buttons, 1, 3);
+//        GridPane.setHalignment(menue, HPos.CENTER);
+//        GridPane.setHalignment(menue, HPos.CENTER);
+//        GridPane.setHalignment(menue, HPos.CENTER);
+//        GridPane.setHalignment(menue, HPos.CENTER);
+//        GridPane.setHalignment(menue, HPos.CENTER);
+//        GridPane.setHalignment(menue, HPos.CENTER);
+        grid.getChildren().addAll(buttons);
+       
        //grid.add(node,				  col,row,colspan,rowspan)
-        grid.add(menue, 				0, 0, 	3, 		1);
-        grid.add(statusContainer,   	0, 1, 	3, 		1);
-	    grid.add(networkActorsListView, 0, 2, 	1, 		1);
-	    grid.add(clientNicksView,       1, 2, 	1, 		1);
+        //grid.add(menue, 				1, 3, 	1, 		1);
+        grid.add(statusContainer,   	1, 0, 	1, 		1);
+	    grid.add(networkActorsListView, 0, 1, 	1, 		1);
+	    grid.add(clientNicksView,       2, 1, 	1, 		1);
 	    grid.add(gameListView, 			2, 2,	1, 		1);
+	    grid.add(chatArea, 			    0, 2,	1, 		2);
+	    
 	    
 //	    grid.add(inLabel, 				1, 2, 	1, 		1);
 //	    grid.add(messagesIn, 			1, 3, 	1, 		1);
 //	    grid.add(outLabel, 				1, 4, 1, 1);
 //	    grid.add(messagesOut, 			1, 5, 1, 1);	    
-	    grid.add(inputField, 			0, 3, 	2, 		1);
-	    grid.add(messagesIn,			1, 3, 	2, 		1);
+//	    grid.add(inputField, 			0, 3, 	2, 		1);
+//	    grid.add(messagesIn,			1, 3, 	2, 		1);
 	    
        
 
@@ -224,5 +257,65 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 				addClient(nick);
 			}				
 		});	
+	}
+
+	public Background getBackground() {
+		return background;
+	}
+
+	public void setBackground(Background background) {
+		this.background = background;
+	}
+
+	public BackgroundSize getBackgroundSize() {
+		return backgroundSize;
+	}
+
+	public void setBackgroundSize(BackgroundSize backgroundSize) {
+		this.backgroundSize = backgroundSize;
+	}
+
+	public BackgroundImage getBackgroundImage() {
+		return backgroundImage;
+	}
+
+	public void setBackgroundImage(BackgroundImage backgroundImage) {
+		this.backgroundImage = backgroundImage;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public Button getSubmitMessageButton() {
+		return submitMessageButton;
+	}
+
+	public Button getCreateGame() {
+		return createGame;
+	}
+
+	public Button getConnectToTestServer() {
+		return connectToTestServer;
+	}
+
+	public Button getRefreshGamesList() {
+		return refreshGamesList;
+	}
+
+	public Button getCreateServer() {
+		return createServer;
+	}
+
+	public ObservableList<String> getClientNicks() {
+		return clientNicks;
+	}
+
+	public ListView<String> getClientNicksView() {
+		return clientNicksView;
 	}
 }
