@@ -161,7 +161,7 @@ class IncomingHandler implements Runnable {
 				
 			else if (checker.getType().equals("disprove")) {
 				int gameID = checker.getMessage().getInt("gameID");
-				dataGuiManager.handleDisprove(gameID, suspicion, server);
+				dataGuiManager.handleDisprove(gameID, server);
 			} 
 				
 			else if(checker.getType().equals("disproved")){

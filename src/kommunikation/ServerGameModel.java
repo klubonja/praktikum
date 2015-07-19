@@ -186,9 +186,11 @@ public class ServerGameModel {
 	}
 	
 	public void setNextDisproveRound(){
+		int lastIndex = currentPlayerDisproveIndex;
 		currentPlayerDisproveIndex = rotate(currentPlayerDisproveIndex,pcManager.getSize(),false);
 		if (currentPlayerDisproveIndex != pcManager.getCurrentPlayerIndex() && currentPlayerDisproveIndex != -1){
 			stateManager.handleDisprove(currentPlayerDisproveIndex);
+			network.sendStateUpdateMsg(pcManager.getPlayerByIndex(lastIndex));
 			network.sendStateUpdateMsg(pcManager.getPlayerByIndex(currentPlayerDisproveIndex));
 		}
 		else{
