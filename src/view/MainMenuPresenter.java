@@ -4,6 +4,7 @@ import javafx.scene.effect.Glow;
 import javafx.stage.Stage;
 import cluedoClient.Client;
 import cluedoNetworkGUI.CluedoClientGUI;
+import cluedoNetworkGUI.CluedoClientPresenter;
 import cluedoNetworkGUI.CluedoServerGUI;
 import cluedoServer.Server;
 
@@ -35,11 +36,13 @@ public class MainMenuPresenter {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	public void createClient(){
 		
 			Stage stage = new Stage();
 			ClientGUI = new CluedoClientGUI(stage);
 			client = new Client(ClientGUI);
+			CluedoClientPresenter presenter = new CluedoClientPresenter(ClientGUI);
 			stage.show();
 			stage.setFullScreen(true);
 			view.close();
