@@ -275,7 +275,7 @@ public class CluedoProtokollChecker {
 
 	void val_suspect() {
 		val_watch_game();
-		validateStatement(jsonRoot);
+		validateStatement(jsonRoot.getJSONObject("statement"));
 	}
 
 	void val_disprove() {
