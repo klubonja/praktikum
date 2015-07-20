@@ -37,10 +37,10 @@ public class CluedoClientPresenter {
 	
 	public void activateEvents(){
 		
-		view.getClientNicksView().setOnMouseEntered(e -> addGlow(view.getClientNicksView()));
-		view.getGamesListView().setOnMouseEntered(e -> addGlow(view.getGamesListView()));
-		view.getClientNicksView().setOnMouseExited(e -> removeGlow(view.getClientNicksView()));
-		view.getGamesListView().setOnMouseExited(e -> removeGlow(view.getGamesListView()));
+//		view.getClientNicksView().setOnMouseEntered(e -> addGlow(view.getClientNicksView()));
+//		view.getGamesListView().setOnMouseEntered(e -> addGlow(view.getGamesListView()));
+//		view.getClientNicksView().setOnMouseExited(e -> removeGlow(view.getClientNicksView()));
+//		view.getGamesListView().setOnMouseExited(e -> removeGlow(view.getGamesListView()));
 		view.getExit().setOnMouseClicked(e -> exitGame());
 		
 		view.getCreateGame().setOnMouseEntered(e -> shadeBackground(view.getCreateGame()));
