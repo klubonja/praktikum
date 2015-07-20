@@ -437,6 +437,14 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
+	public static String suspectMsg(int gameID,String person,String weapon, String room){
+		CluedoJSON json = new CluedoJSON("suspect");
+		json.put("gameID", gameID);
+		json.put("statement",  statement(person, room, weapon));
+		
+		return json.toString();
+	}
+	
 	public static String suspectMsg(int gameID,JSONObject statement){
 		CluedoJSON json = new CluedoJSON("suspect");
 		json.put("gameID", gameID);
@@ -626,6 +634,10 @@ public abstract class NetworkMessages {
 		}	
 		
 		return newgame;
+	}
+	
+	public static CluedoStatement makeCluedoStatementFromJSON(JSONObject jsonstat){
+		return new CluedoStatement(jsonstat.getString("person"), jsonstat.getString("weapon"), jsonstat.getString("room"));
 	}
 	
 	public static ArrayList<CluedoGameClient> createGamesFromJSONGameArray(JSONArray gamearray,ServerItem server){

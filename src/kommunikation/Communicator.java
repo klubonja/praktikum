@@ -164,9 +164,7 @@ public class Communicator {
 		String person = zugView.getPersonenListe().getValue();
 		String weapon = zugView.getWaffenListe().getValue();
 		String room = "hall";
-		network.sendMsgToServer(NetworkMessages.suspicionMsg(
-				gameID,
-				NetworkMessages.statement(person, room, weapon)));
+		network.sendMsgToServer(NetworkMessages.suspectMsg(gameID, person,weapon,room)); //nicht suspicion das darf nur der server!!
 	}
 
 	public void accuse() {

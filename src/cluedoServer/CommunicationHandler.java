@@ -201,11 +201,13 @@ class CommunicationHandler implements Runnable {
 	     	   
 	   	   	else if (checker.getType().equals("accuse")) {
 		   	   	int gameID = checker.getMessage().getInt("gameID");	
-				JSONObject json = checker.getMessage().getJSONObject("statement");
-				String person = json.getString("person").toString();
-				String room = json.getString("room").toString();
-				String weapon = json.getString("weapon").toString();
-				dataManager.accuseRequest(gameID, new CluedoStatement(person, weapon, room), client);
+				dataManager.accuseRequest(
+						gameID, 
+						NetworkMessages.makeCluedoStatementFromJSON(
+								checker.getMessage().getJSONObject("statement")
+						), 
+						client
+				);
 //				int id = checker.getMessage().getInt("gameID");
 //				JSONObject json = checker.getMessage().getJSONObject(
 //						"statement");
@@ -252,13 +254,15 @@ class CommunicationHandler implements Runnable {
 ////					//KICK PLAYER OUT OF THE GAME
 //				}
 			} 
-	   	   	else if (checker.getType().equals("suspicion")) {
+	   	   	else if (checker.getType().equals("suspect")) {
 					int gameID = checker.getMessage().getInt("gameID");	
-					JSONObject json = checker.getMessage().getJSONObject("statement");
-					String person = json.getString("person").toString();
-					String room = json.getString("room").toString();
-					String weapon = json.getString("weapon").toString();
-					dataManager.suspectRequest(gameID, new CluedoStatement(person, weapon, room), client);
+					dataManager.suspectRequest(
+							gameID, 
+							NetworkMessages.makeCluedoStatementFromJSON(
+									checker.getMessage().getJSONObject("statement")
+							), 
+							client
+					);
 			} 
 			else if (checker.getType().equals("disprove")) {
 					String pool = "pool";
