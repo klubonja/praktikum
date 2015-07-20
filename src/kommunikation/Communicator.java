@@ -187,7 +187,7 @@ public class Communicator {
 
 	}
 
-	public void disprove(String card) {
+	public void sendDisproveMsg(String card) {
 		network.sendMsgToServer(NetworkMessages.disproveMsg(network.getGameId(), card));
 	}
 
@@ -203,7 +203,7 @@ public class Communicator {
 		for (int i = 0; i < gameView.getHand().getHandURI().size(); i++) {
 			if (card.equals(gameView.getHand().getHandURI().get(i))) {
 				gameView.getHand().getHand().get(i).setOnMousePressed(e -> {
-					disprove(card);
+					sendDisproveMsg(card);
 				});
 				gameView.getHand().getHand().get(i).setOnMouseReleased(e -> {
 					gamePresenter.getHandFramePresenter().removeEffects();

@@ -268,15 +268,17 @@ class CommunicationHandler implements Runnable {
 					);
 			} 
 			else if (checker.getType().equals("disprove")) {
-					String pool = "pool";
-					int gameID = checker.getMessage().getInt("gameID");
-					if (checker.getMessage().has("card")){
-						String card = checker.getMessage().getString("card");
-						dataManager.disproveRequest(gameID,card,client);
-					}
-					else {
-						dataManager.getGameByID(gameID).sendMsgsToAll(NetworkMessages.no_disproveMsg(gameID));
-					}
+				int gameID = checker.getMessage().getInt("gameID");
+				String card;
+				if (checker.getMessage().has("card")){
+					card = checker.getMessage().getString("card");
+//					dataManager.disproveRequest(gameID,card,client);
+				}
+				else {
+					card = "";
+//					dataManager.getGameByID(gameID).sendMsgsToAll(NetworkMessages.no_disproveMsg(gameID));
+				}
+				dataManager.disproveRequest(gameID,card,client);
 					
 			} 	   	   
 //=======

@@ -227,7 +227,7 @@ public class CluedoGameServer extends CluedoGame {
 	public void disproveRequest(String card, ClientItem client) {
 		if(checkandHandleStateTrans(PlayerStates.disprove, client)){		
 			if (!gameLogic.disprove(card,client.getNick())){
-				client.sendMsg(NetworkMessages.error_Msg("yourea damn liar, thats a no disprove"));
+				client.sendMsg(NetworkMessages.error_Msg("yourea damn liar, thats a no disprove, and youre an idiot"));
 			}				
 		}		
 	}
