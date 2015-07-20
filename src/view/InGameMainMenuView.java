@@ -5,9 +5,15 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -20,11 +26,24 @@ public class InGameMainMenuView extends GridPane{
 	private Scene scene;
 	private Stage stage;
 	
+	private Background background;
+	private BackgroundImage backgroundImage;
+	private Image image;
+	
 	private GameFrameView gameFrameView;
 	
 	public InGameMainMenuView(GameFrameView gameFrameView){
 		
 		this.gameFrameView = gameFrameView;
+		
+		this.image = new Image("http://orig07.deviantart.net/05ff/f/2010/161/a/0/rivendell_balcony_by_filiusdracul.jpg");
+		
+		
+		Rectangle rect = new Rectangle(1024,768);
+		rect.setArcHeight(60.0);
+		rect.setArcWidth(60.0);
+
+		this.setClip(rect);
 		
 		this.getRowConstraints().add(new RowConstraints(100));
 		this.getRowConstraints().add(new RowConstraints(100));
@@ -53,6 +72,7 @@ public class InGameMainMenuView extends GridPane{
 	public void start(){
 		
 		scene = new Scene (this, 400,200);
+		scene.setFill(Color.TRANSPARENT);
 		stage = new Stage();
 		stage.setScene(scene);
 		stage.setResizable(false);

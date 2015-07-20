@@ -18,11 +18,11 @@ public class InGameMainMenuPresenter {
 		view.getNo().setOnAction(e -> cancel());
 	}
 	
-	@SuppressWarnings("unused")
+	
 	public void goToMain(){
 		
-		IntroView intro = new IntroView();
-        intro.start();
+		MainMenuView menu = new MainMenuView();
+        menu.start();
         view.getGameFrameView().close();
         view.close();
 	}
@@ -30,6 +30,14 @@ public class InGameMainMenuPresenter {
 	public void cancel(){
 		
 		view.close();
+	}
+
+	public InGameMainMenuView getView() {
+		return view;
+	}
+
+	public void setView(InGameMainMenuView view) {
+		this.view = view;
 	}
 
 }

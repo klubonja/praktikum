@@ -2,8 +2,6 @@ package view;
 
 import java.util.ArrayList;
 
-import staticClasses.auxx;
-import model.Deck;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;

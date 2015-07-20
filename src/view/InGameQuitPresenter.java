@@ -30,4 +30,12 @@ public class InGameQuitPresenter {
 		view.close();
 	}
 
+	public InGameQuitView getView() {
+		return view;
+	}
+
+	public void setView(InGameQuitView view) {
+		this.view = view;
+	}
+
 }
