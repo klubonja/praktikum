@@ -12,6 +12,7 @@ public class CluedoClientPresenter {
 		this.view = view;
 		
 		activateEvents();
+		bindComponents();
 		
 	}
 	
@@ -22,6 +23,11 @@ public class CluedoClientPresenter {
 		view.getClientNicksView().setOnMouseExited(e -> removeGlow(view.getClientNicksView()));
 		view.getGamesListView().setOnMouseExited(e -> removeGlow(view.getGamesListView()));
 		
+	}
+	
+	public void bindComponents(){
+		
+		view.getAudio().volumeProperty().bind(view.getVolume().valueProperty());
 	}
 	
 	public void addGlow(Node nd){

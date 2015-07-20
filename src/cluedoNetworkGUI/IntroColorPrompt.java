@@ -3,7 +3,9 @@ package cluedoNetworkGUI;
 import java.util.ArrayList;
 
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -71,6 +73,8 @@ public class IntroColorPrompt extends GridPane{
 			Config.COLOR_SELECT_WINDOW_WIDTH += 100;
 			Image imageButton = new Image ("media/" + temp + ".png");
 			tempButton = new Button("", new ImageView(imageButton));
+			GridPane.setHalignment(tempButton, HPos.CENTER);
+			GridPane.setValignment(tempButton, VPos.CENTER);
 			GridPane.setConstraints(tempButton, columnCounter , rowCounter);
 			this.getChildren().add(tempButton);
 			if(columnCounter==2){
@@ -106,14 +110,14 @@ public class IntroColorPrompt extends GridPane{
 	}
 
 
-	public Stage getOurParent() {
-		return parent;
-	}
-
-
-	public void setParent(Stage parent) {
-		this.parent = parent;
-	}
+//	public Stage getOurParent() {
+//		return parent;
+//	}
+//
+//
+//	public void setParent(Stage parent) {
+//		this.parent = parent;
+//	}
 
 
 	public ArrayList<String> getColors() {

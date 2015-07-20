@@ -1,5 +1,6 @@
 package cluedoNetworkGUI;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javafx.application.Platform;
@@ -22,9 +23,11 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -65,12 +68,16 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private Label volumeLabel;
 	private HBox volumeBox;
 	
-	private StackPane promptArea;
+	private Pane promptArea;
+	
+	private Media clip;
+	private MediaPlayer audio;
 
 	
 	
 	
 	 public CluedoClientGUI(Stage primaryStage){
+		 
 		 super(primaryStage);
 		 submitMessageButton = new Button("Send");
 		 createGame = new Button("Create Game");
@@ -171,7 +178,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         clientsListTitle.setText("Connected Clients");
         gamesListTitle.setText("Game List");
         
-        volume = new Slider(0, 10, 2);
+        volume = new Slider(0, 1, 0.5);
         volumeLabel = new Label("Volume");
         volumeBox = new HBox(4);
         volumeBox.setPrefWidth(50);
@@ -190,7 +197,13 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         games = new VBox(2);
         games.getChildren().addAll(gamesListTitle, gameListView);
         
-        promptArea = new StackPane();
+        promptArea = new Pane();
+        
+        File file = new File("C:/Users/Kristi/Music/media.mp3");
+        String MEDIA_URL = file.toURI().toString();
+        clip = new Media(MEDIA_URL);
+        audio = new MediaPlayer(clip);
+        audio.play();
         
         GridPane.setConstraints(statusContainer, 1, 0);
          
@@ -220,7 +233,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         GridPane.setConstraints(promptArea, 1, 1);
         GridPane.setRowSpan(promptArea, 2);
-        GridPane.setHalignment(promptArea, HPos.RIGHT);
+        GridPane.setHalignment(promptArea, HPos.CENTER);
         GridPane.setValignment(promptArea, VPos.CENTER);
         
         grid.getChildren().addAll(statusContainer, menue, chatArea, servers, clients, games, volumeBox,
@@ -282,7 +295,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	public String selectColor(ArrayList<String> colors) {
 		Stage selectNewColor = new Stage();
 		IntroColorPrompt select = new IntroColorPrompt(selectNewColor, colors);
-		promptArea.getChildren().add(select);
+		//promptArea.getChildren().add(select);
 	
 	    Scene secondary = new Scene(select, Config.COLOR_SELECT_WINDOW_WIDTH, Config.COLOR_SELECT_WINDOW_HEIGHT);
 	    selectNewColor.initStyle(StageStyle.UNDECORATED);
@@ -480,11 +493,27 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		this.volumeBox = volumeBox;
 	}
 
-	public StackPane getPromptArea() {
+	public Pane getPromptArea() {
 		return promptArea;
 	}
 
-	public void setPromptArea(StackPane promptArea) {
+	public void setPromptArea(Pane promptArea) {
 		this.promptArea = promptArea;
+	}
+
+	public Media getClip() {
+		return clip;
+	}
+
+	public void setClip(Media clip) {
+		this.clip = clip;
+	}
+
+	public MediaPlayer getAudio() {
+		return audio;
+	}
+
+	public void setAudio(MediaPlayer audio) {
+		this.audio = audio;
 	}
 }
