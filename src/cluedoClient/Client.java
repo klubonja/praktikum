@@ -125,8 +125,10 @@ public class Client {
 			    public void handle(MouseEvent click) {
 			    	Stage stage = new Stage();
 					CluedoServerGUI gui = new CluedoServerGUI(stage);
+					@SuppressWarnings("unused")
 					Server server = new Server(gui);
 					stage.show();
+					stage.hide();
 			    }
 			});	
 		////////////////////////END CREATE SERVER/////////////////////////////////

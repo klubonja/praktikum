@@ -56,7 +56,7 @@ public abstract class CluedoNetworkGUI {
 		 statusContainer = new HBox();
 		 statusContainer.setFillHeight(true);
 		 tabPane = new TabPane();
-		 menue = new HBox(2);
+		 menue = new HBox(3);
 		 menue.setMinHeight(30);
 		 menue.setPrefHeight(30);	
 		 menue.setMaxHeight(30);
@@ -74,6 +74,7 @@ public abstract class CluedoNetworkGUI {
 		 
 		 grid = new GridPane();
 		 messagesIn = new TextArea();
+		 messagesIn.setPrefHeight(300);
 		 messagesOut = new TextArea();
 		 button0 = new Button();
 		 scene = new Scene(grid, 1100, 650);

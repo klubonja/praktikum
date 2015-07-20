@@ -4,10 +4,18 @@ import javafx.scene.effect.Glow;
 import javafx.stage.Stage;
 import cluedoClient.Client;
 import cluedoNetworkGUI.CluedoClientGUI;
+import cluedoNetworkGUI.CluedoServerGUI;
+import cluedoServer.Server;
 
 public class MainMenuPresenter {
 
 	private MainMenuView view;
+	
+	private CluedoServerGUI ServerGUI;
+	private CluedoClientGUI ClientGUI;
+	
+	private Server server;
+	private Client client;
 	
 	public MainMenuPresenter(MainMenuView view){
 		
@@ -20,27 +28,37 @@ public class MainMenuPresenter {
 	public void activateEvents(){
 		
 		
-		view.getPlay().setOnMouseClicked(e -> createClient());
-		view.getPlay().setOnMouseEntered(e -> addGlow());
-		view.getPlay().setOnMouseExited(e -> removeGlow());
+		view.getCreateClient().setOnMouseClicked(e -> createClient());
+		view.getCreateServer().setOnMouseClicked(e -> createServer());
+		//view.getPlay().setOnMouseEntered(e -> addGlow());
+		//view.getPlay().setOnMouseExited(e -> removeGlow());
 		
 	}
 	
 	public void createClient(){
 		
-	
 			Stage stage = new Stage();
-			CluedoClientGUI gui = new CluedoClientGUI(stage);
-			Client client = new Client(gui);
+			ClientGUI = new CluedoClientGUI(stage);
+			client = new Client(ClientGUI);
 			stage.show();
+			stage.setFullScreen(true);
 			view.close();
 		}
+	
+	public void createServer(){
+		
+		Stage stage = new Stage();
+		ServerGUI = new CluedoServerGUI(stage);
+		server = new Server(ServerGUI);
+		stage.show();
+		stage.hide();
+	}
 	
 	public void addGlow(){
 		
 		Glow glow = new Glow();
 		glow.setLevel(0.5);
-		view.getPlay().setStyle("-fx-background-color: #090a0c, linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%)," 
+		view.getCreateClient().setStyle("-fx-background-color: #090a0c, linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%)," 
 		        + "linear-gradient(#20262b, #191d22),"
 		        + "radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));"
 		     + "-fx-background-radius: 5,4,3,5;"
@@ -56,7 +74,7 @@ public class MainMenuPresenter {
 	
 	public void removeGlow(){
 		
-		view.getPlay().setEffect(null);
+		view.getCreateClient().setEffect(null);
 	}
 		
 
@@ -66,5 +84,37 @@ public class MainMenuPresenter {
 
 	public void setView(MainMenuView view) {
 		this.view = view;
+	}
+
+	public CluedoServerGUI getServerGUI() {
+		return ServerGUI;
+	}
+
+	public void setServerGUI(CluedoServerGUI serverGUI) {
+		ServerGUI = serverGUI;
+	}
+
+	public CluedoClientGUI getClientGUI() {
+		return ClientGUI;
+	}
+
+	public void setClientGUI(CluedoClientGUI clientGUI) {
+		ClientGUI = clientGUI;
+	}
+
+	public Server getServer() {
+		return server;
+	}
+
+	public void setServer(Server server) {
+		this.server = server;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}
 }

@@ -10,8 +10,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -43,10 +44,25 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	final public ObservableList<String> clientNicks;
 	final public ListView<String> clientNicksView;
 	
+	private VBox chatArea;
+	private VBox servers;
+	private VBox clients;
+	private VBox games;
+	private Label chatTitle;
+	private Label serversListTitle;
+	private Label clientsListTitle;
+	private Label gamesListTitle;
+	
+	private Text title;
+	
 	private Background background;
 	private BackgroundSize backgroundSize;
 	private BackgroundImage backgroundImage;
 	private Image image;
+	
+	private Slider volume;
+	private Label volumeLabel;
+	private HBox volumeBox;
 
 	
 	
@@ -120,48 +136,67 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	    RowConstraints row3 = new RowConstraints();
 	    row3.setPercentHeight(10);        
 	    grid.getRowConstraints().add(row3);
+	    //End
         
         messagesIn.setWrapText(true);
         messagesOut.setWrapText(true);
      
-        Tab tab0 = new Tab();
-        tab0.setText("Spiele");           
-        tab0.setContent(gameListView);
-              
-        Tab tab1 = new Tab();
-        tab1.setText("Server");           
-        tab1.setContent(networkActorsListView);
-        
-        tabPane.getTabs().add(tab1);
-        tabPane.getTabs().add(tab0);  
+//        Tab tab0 = new Tab();
+//        tab0.setText("Spiele");           
+//        tab0.setContent(gameListView);
+//              
+//        Tab tab1 = new Tab();
+//        tab1.setText("Server");           
+//        tab1.setContent(networkActorsListView);
+//        
+//        tabPane.getTabs().add(tab1);
+//        tabPane.getTabs().add(tab0);  
         
         menue.getChildren().addAll(createGame, connectToTestServer, refreshGamesList, createServer);
-        HBox buttons = new HBox(2);
-        buttons.getChildren().addAll(createGame, connectToTestServer, refreshGamesList, createServer);
         
-        
-        Text title = new Text(desc);
+        title = new Text(desc);
         title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         status.setFont(Font.font("Tahoma", FontWeight.NORMAL, 10));
         
+        chatTitle = new Label();
+        serversListTitle = new Label();
+        clientsListTitle = new Label();
+        gamesListTitle = new Label();
+        chatTitle.setText("Chat");
+        serversListTitle.setText("Server List");
+        clientsListTitle.setText("Connected Clients");
+        gamesListTitle.setText("Game List");
+        
+        volume = new Slider(0, 10, 2);
+        volumeLabel = new Label("Volume");
+        volumeBox = new HBox(4);
+        volumeBox.setPrefWidth(50);
+        volumeBox.getChildren().addAll(volumeLabel, volume);
+        
         //messagesIn.setPrefHeight(150);
         
-        VBox chatArea = new VBox(2);
+        chatArea = new VBox(2);
         chatArea.getChildren().addAll(messagesIn, inputField);
-      
-        grid.setValignment(submitMessageButton, VPos.CENTER);
-       
+        servers = new VBox(2);
+        clients = new VBox(2);
+        games = new VBox(2);
+         
+        GridPane.setHalignment(menue, HPos.CENTER);
+        GridPane.setValignment(menue, VPos.CENTER);
+        GridPane.setConstraints(menue, 1, 3);
+        GridPane.setHalignment(chatArea, HPos.CENTER);
+        GridPane.setHalignment(chatArea, HPos.CENTER);
+        GridPane.setConstraints(chatArea, 0, 2);
         
-        GridPane.setHalignment(buttons, HPos.CENTER);
-        GridPane.setValignment(buttons, VPos.CENTER);
-        GridPane.setConstraints(buttons, 1, 3);
+        GridPane.setConstraints(volumeBox, 2, 0);
+        GridPane.setHalignment(volumeBox, HPos.RIGHT);
+        GridPane.setValignment(volumeBox, VPos.CENTER);
+        
 //        GridPane.setHalignment(menue, HPos.CENTER);
 //        GridPane.setHalignment(menue, HPos.CENTER);
 //        GridPane.setHalignment(menue, HPos.CENTER);
 //        GridPane.setHalignment(menue, HPos.CENTER);
-//        GridPane.setHalignment(menue, HPos.CENTER);
-//        GridPane.setHalignment(menue, HPos.CENTER);
-        grid.getChildren().addAll(buttons);
+        grid.getChildren().addAll(menue, volumeBox);
        
        //grid.add(node,				  col,row,colspan,rowspan)
         //grid.add(menue, 				1, 3, 	1, 		1);
@@ -169,7 +204,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	    grid.add(networkActorsListView, 0, 1, 	1, 		1);
 	    grid.add(clientNicksView,       2, 1, 	1, 		1);
 	    grid.add(gameListView, 			2, 2,	1, 		1);
-	    grid.add(chatArea, 			    0, 2,	1, 		2);
+	    grid.add(chatArea, 			    0, 2,	1, 		1);
 	    
 	    
 //	    grid.add(inLabel, 				1, 2, 	1, 		1);
@@ -227,6 +262,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	    selectNewColor.setScene(secondary);
 	    selectNewColor.showAndWait();
 	    return select.returnColor();
+	    
 	}
 	
 	public void addClient(String nick){

@@ -17,6 +17,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
@@ -36,8 +37,9 @@ public class MainMenuView extends StackPane{
 	private Scene scene;
 	
 	private GridPane main;
-	private Button play;
-	private Button howToPlay;
+	private Button createClient;
+	private Button createServer;
+	private Button howTocreateClient;
 	private Label title;
 	
 	private Group background;
@@ -99,7 +101,7 @@ public class MainMenuView extends StackPane{
 	    
 	    title = new Label("Cluedo");
 		title.setTextFill(Color.WHITE);
-		title.setEffect(new Glow(0.7));
+		title.setEffect(new Glow(0.4));
 		title.setStyle("-fx-font-size: 80; -fx-font-weight: bold;");
 
 		//Creates the background of the grid
@@ -108,42 +110,53 @@ public class MainMenuView extends StackPane{
 				BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 		mainBackground = new Background(mainBackgroundImage);
 		//main.setBackground(mainBackground);
-		play = new Button("Play");
-		play.setStyle("-fx-background-color: #090a0c, linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%)," 
-        + "linear-gradient(#20262b, #191d22),"
-        + "radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));"
-     + "-fx-background-radius: 5,4,3,5;"
-     + "-fx-background-insets: 0,1,2,0;"
-    + "-fx-text-fill: white;"
-    + "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-     + "-fx-font-family: Arial;"
-    + "-fx-text-fill: linear-gradient(white, #d0d0d0);"
-    + "-fx-font-size: 12px;"
-    + "-fx-padding: 10 20 10 20;" );
-		play.maxWidthProperty().bind(column0.maxWidthProperty());
-		play.prefWidthProperty().bind(column0.prefWidthProperty());
-		play.minWidthProperty().bind(column0.minWidthProperty());
+		createClient = new Button("Create Client");
+		createClient.setPrefHeight(30);
+		createClient.setPrefWidth(100);
+		
+		createServer = new Button("Create Server");
+		createClient.setPrefHeight(30);
+		createClient.setPrefWidth(100);
+		
+		
+//		createClient.setStyle("-fx-background-color: #090a0c, linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%)," 
+//        + "linear-gradient(#20262b, #191d22),"
+//        + "radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));"
+//     + "-fx-background-radius: 5,4,3,5;"
+//     + "-fx-background-insets: 0,1,2,0;"
+//    + "-fx-text-fill: white;"
+//    + "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
+//     + "-fx-font-family: Arial;"
+//    + "-fx-text-fill: linear-gradient(white, #d0d0d0);"
+//    + "-fx-font-size: 12px;"
+//    + "-fx-padding: 10 20 10 20;" );
+		
  
-		howToPlay = new Button("How to Play");
-		GridPane.setConstraints(play, 0, 3);
-		GridPane.setHalignment(play, HPos.CENTER);
-		GridPane.setValignment(play, VPos.CENTER);
+		howTocreateClient = new Button("How to createClient");
+		GridPane.setConstraints(createClient, 0, 3);
+		GridPane.setHalignment(createClient, HPos.CENTER);
+		GridPane.setValignment(createClient, VPos.CENTER);
 		GridPane.setConstraints(title, 0, 1);
 		GridPane.setColumnSpan(title, 3);
 		GridPane.setHalignment(title, HPos.CENTER);
 		GridPane.setValignment(title, VPos.CENTER);
-		main.getChildren().addAll(play, title);
+		main.getChildren().addAll(createClient, title, createServer);
 		
-		
-		Stop[] stops = new Stop[] { new Stop(0, Color.LAVENDER), new Stop(1, Color.GHOSTWHITE)};
+		Stop darkgrey = new Stop(0,Color.DARKSLATEGREY);
+		Stop blue = new Stop(1, Color.MIDNIGHTBLUE);
+		Stop green = new Stop(2, Color.PALEGREEN);
+		Stop[] stops = new Stop[] { darkgrey, blue, green};
 		RadialGradient rg1 = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
 		
+		buttonBackgroundFill = new BackgroundFill(rg1 , new CornerRadii(1) , new Insets(1));
+		buttonBackground = new Background(buttonBackgroundFill);
+		
+		createClient.setBackground(buttonBackground);
 		
 		
 		backgroundVideo = new MediaPlayer(
 			      new Media("http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv")
 			    );
-		
 		
 		
 		background = new Group(new MediaView(backgroundVideo));
@@ -233,32 +246,32 @@ public class MainMenuView extends StackPane{
 
 
 
-	public Button getPlay() {
-		return play;
+	public Button getCreateClient() {
+		return createClient;
 	}
 
 
 
 
 
-	public void setPlay(Button play) {
-		this.play = play;
+	public void setCreateClient(Button createClient) {
+		this.createClient = createClient;
 	}
 
 
 
 
 
-	public Button getHowToPlay() {
-		return howToPlay;
+	public Button getHowTocreateClient() {
+		return howTocreateClient;
 	}
 
 
 
 
 
-	public void setHowToPlay(Button howToPlay) {
-		this.howToPlay = howToPlay;
+	public void setHowTocreateClient(Button howTocreateClient) {
+		this.howTocreateClient = howTocreateClient;
 	}
 
 
@@ -307,6 +320,158 @@ public class MainMenuView extends StackPane{
 
 	public void setMainImage(Image mainImage) {
 		this.mainImage = mainImage;
+	}
+
+
+
+
+
+	public Button getCreateServer() {
+		return createServer;
+	}
+
+
+
+
+
+	public void setCreateServer(Button createServer) {
+		this.createServer = createServer;
+	}
+
+
+
+
+
+	public Label getTitle() {
+		return title;
+	}
+
+
+
+
+
+	public void setTitle(Label title) {
+		this.title = title;
+	}
+
+
+
+
+
+	public Group getOurBackground() {
+		return background;
+	}
+
+
+
+
+
+	public void setBackground(Group background) {
+		this.background = background;
+	}
+
+
+
+
+
+	public MediaPlayer getBackgroundVideo() {
+		return backgroundVideo;
+	}
+
+
+
+
+
+	public void setBackgroundVideo(MediaPlayer backgroundVideo) {
+		this.backgroundVideo = backgroundVideo;
+	}
+
+
+
+
+
+	public Background getButtonBackground() {
+		return buttonBackground;
+	}
+
+
+
+
+
+	public void setButtonBackground(Background buttonBackground) {
+		this.buttonBackground = buttonBackground;
+	}
+
+
+
+
+
+	public BackgroundFill getButtonBackgroundFill() {
+		return buttonBackgroundFill;
+	}
+
+
+
+
+
+	public void setButtonBackgroundFill(BackgroundFill buttonBackgroundFill) {
+		this.buttonBackgroundFill = buttonBackgroundFill;
+	}
+
+
+
+
+
+	public LinearGradient getLin1() {
+		return lin1;
+	}
+
+
+
+
+
+	public void setLin1(LinearGradient lin1) {
+		this.lin1 = lin1;
+	}
+
+
+
+
+
+	public LinearGradient getLin2() {
+		return lin2;
+	}
+
+
+
+
+
+	public void setLin2(LinearGradient lin2) {
+		this.lin2 = lin2;
+	}
+
+
+
+
+
+	public RadialGradient getRad1() {
+		return rad1;
+	}
+
+
+
+
+
+	public void setRad1(RadialGradient rad1) {
+		this.rad1 = rad1;
+	}
+
+
+
+
+
+	public Scene getOurScene() {
+		return scene;
 	}
 
 }
