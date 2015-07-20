@@ -203,7 +203,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         exit.setMaxSize(200, 50);
         exit.setBackground(buttonBackground);
         
-        buttons.getChildren().addAll(createGame, createServer, connectToTestServer, refreshGamesList, exit);
+        buttons.getChildren().addAll(createGame, createServer, refreshGamesList, exit);
+        //buttons.getChildren().add(connectToTestServer);
         
         title = new Text(desc);
         title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
