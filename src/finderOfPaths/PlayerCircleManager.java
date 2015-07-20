@@ -141,7 +141,7 @@ public class PlayerCircleManager {
 		return players;
 	}
 
-	public void setPlayerManager(Stack<CluedoPlayer> playerManager) {
+	public void setPlayers(Stack<CluedoPlayer> playerManager) {
 		this.players = playerManager;
 	}
 	

@@ -54,6 +54,10 @@ public abstract class Config {
 	public final static double GAME_LIST_ITEM_HEIGHT = 60;
 	public final static double NETWORK_ACTOR_LIST_ITEM_HEIGHT = 50;
 	
+	public final static double MAIN_MENU_WINDOW_WIDTH = 1000;
+	public final static double MAIN_MENU_WINDOW_HEIGHT = 700;
+	
+	
 	public final static String BLACKLISTED_MSG = ""
 			+ "you have the ip of some evil known protoksaveollviolator, lets try anyway";
 

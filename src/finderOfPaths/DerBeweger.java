@@ -172,6 +172,8 @@ public class DerBeweger {
 								.getPosition().getX()];
 						anfangsRaumLabel = gui.getLabelHier(anfangsRaumKachel);
 						Rooms room = raumBeweger.checkRaum(anfangsRaumKachel);
+						System.out.println("RIGHT HERE BOSS");
+						zug.setZimmer(room.getName());
 						raumZielKachel = raumBeweger.positionInRaum(
 								pcManager.getCurrentPlayer(), room);
 						raumZielLabel = gui.getLabelHier(raumZielKachel);

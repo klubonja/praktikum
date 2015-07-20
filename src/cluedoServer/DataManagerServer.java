@@ -19,6 +19,7 @@ public class DataManagerServer extends DataManager {
 	ArrayList<ClientItem> blackList;
 	GameListServer gamesList;
 	private String suspector;
+	private String disprover;
 	
 	public DataManagerServer(String groupname) {
 		super(groupname);
@@ -250,7 +251,19 @@ public class DataManagerServer extends DataManager {
 		
 	}
 
-	
+
+
+
+
+	public String getDisprover() {
+		return disprover;
+	}
+
+
+
+	public void setDisprover(String disprover) {
+		this.disprover = disprover;
+	}
 }
 	
 

@@ -12,9 +12,11 @@ import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
+import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoStatement;
 import enums.NetworkHandhakeCodes;
+import enums.Persons;
 import enums.PlayerStates;
 
 /**
@@ -200,6 +202,7 @@ class CommunicationHandler implements Runnable {
 	   	   }
 	     	   
 	   	   	else if (checker.getType().equals("accuse")) {
+//<<<<<<< HEAD
 		   	   	int gameID = checker.getMessage().getInt("gameID");	
 				dataManager.accuseRequest(
 						gameID, 
@@ -276,6 +279,78 @@ class CommunicationHandler implements Runnable {
 					}
 					
 			} 	   	   
+//=======
+//				int id = checker.getMessage().getInt("gameID");
+//				JSONObject json = checker.getMessage().getJSONObject(
+//						"statement");
+//				String person = json.getString("person");
+//				String room = json.getString("room");
+//				String weapon = json.getString("weapon");
+//				String winnerPerson = dataManager.getGameByID(id).getWinningStatement().getPerson().getPersonName();
+//				String winnerRoom = dataManager.getGameByID(id).getWinningStatement().getRoom().getName();
+//				String winnerWeapon = dataManager.getGameByID(id).getWinningStatement().getWeapon().getName();
+//				dataManager.notifyAll(NetworkMessages.accuseMsg(
+//						id, NetworkMessages.statement(person, room, weapon))
+//						);
+//				
+//				winnerPerson = Persons.getPersonByName(winnerPerson).getColor();
+//				if(person.equals(winnerPerson) &&
+//					weapon.equals(winnerWeapon) &&
+//					room.equals(winnerRoom)){
+//					dataManager.notifyAll(NetworkMessages.game_endedMsg(id,
+//							dataManager.getGameByID(id).getWinningStatement()));
+//				} else {
+//					dataManager.notifyAll(NetworkMessages.
+//					wrong_accusationMsg(id, NetworkMessages.
+//					statement(person, room, weapon)));
+//					//KICK PLAYER OUT OF THE GAME
+//				}
+//			} else
+//				if (checker.getType().equals("suspicion")) {
+//				int id = checker.getMessage().getInt("gameID");
+//				dataManager.setSuspector(dataManager.getGameByID(id).getPlayerByClient(client).getNick());
+//				JSONObject json = checker.getMessage().getJSONObject("statement");
+//				String person = json.getString("person").toString();
+//				String room = json.getString("room").toString();
+//				String weapon = json.getString("weapon").toString();
+//				dataManager.notifyAll(NetworkMessages.chatMsg(
+//						client.getNick() + " is suspecting. " + 
+//						"\n" + person + " " + room + " " + weapon, id, auxx.now()));
+//				
+//				for(CluedoPlayer p : dataManager.getGameByID(id).getPlayers()){
+//					if(!cardInspector(person, weapon, room, p.getCards())){
+//						dataManager.notifyAll(NetworkMessages.chatMsg(
+//								p.getNick() + " (" + p.getCluedoPerson() + ") did not have a card.", id, auxx.now()));
+//					} else {
+//						if(!p.getNick().equals(dataManager.getSuspector())){
+//						dataManager.getClientByNick(p.getNick()).
+//						sendMsg(NetworkMessages.suspicionMsg(id, NetworkMessages.statement(person, room, weapon)));
+//						break;
+//						}
+//					}
+//				}
+//			} 
+//				else
+//				if (checker.getType().equals("disprove")) {
+//					String pool = "pool";
+//					int id = checker.getMessage().getInt("gameID");
+//					dataManager.setDisprover(dataManager.getGameByID(id).getPlayerByClient(client).getNick());
+//					String card = checker.getMessage().getString("card");
+//					dataManager.getClientByNick(dataManager.getDisprover()).sendMsg(NetworkMessages.disprovedMsg(id, client.getNick(), pool));
+//					dataManager.getClientByNick(dataManager.getSuspector()).sendMsg(NetworkMessages.disproveMsg(client.getGameId(), card));
+//			} 
+        //so eine nachricht bekommt kein client und wenn dann würde das hier in einer endloschleife resultieren
+//			else 
+//				if (checker.getType().equals("no disprove")) {
+//				int id = checker.getMessage().getInt("gameID");
+//				dataManager.notifyAll(NetworkMessages.no_disproveMsg(id));
+//			} else
+//				if (checker.getType().equals("disproved")){
+//					System.out.println(dataManager.getGameByID(checker.getMessage().getInt("gameID")).
+//							getPlayerByClient(client).getCluedoPerson().getColor() + " has disproved it!");
+//				}
+	   	   
+//>>>>>>> master
 	   	   else if(checker.getType().equals("end turn")){
 	   		   int gameID = checker.getMessage().getInt("gameID");
 		   	   dataManager.endTurnRequest(gameID,client);
@@ -315,4 +390,23 @@ class CommunicationHandler implements Runnable {
 	        	   auxx.loginfo("INCOMING INVALID : "+ checker.getErrString());
         }
 	}
+//das hat hier nichts zu suchen weil spiellogik
+//<<<<<<< HEAD
+//=======
+//	
+//	public boolean cardInspector(String person, String weapon, String room, ArrayList<String> cards){
+//		person = Persons.getPersonByColor(person).getPersonName();
+//		for(String str : cards){
+//			if (str.equals(person) ||
+//					str.equals(weapon) ||
+//					str.equals(room)) {
+//				return true;
+//				}
+//		}
+//		return false;
+//	}
+//	
+//	
+//
+//>>>>>>> master
 }

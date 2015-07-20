@@ -1,6 +1,7 @@
 package kommunikation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Stack;
 import java.util.logging.Level;
 
@@ -21,6 +22,7 @@ import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoStatement;
+import enums.Persons;
 import enums.PlayerStates;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.BallEbene2;
@@ -163,8 +165,17 @@ public class Communicator {
 	public void suspect() {
 		String person = zugView.getPersonenListe().getValue();
 		String weapon = zugView.getWaffenListe().getValue();
-		String room = "hall";
-		network.sendMsgToServer(NetworkMessages.suspectMsg(gameID, person,weapon,room)); //nicht suspicion das darf nur der server!!
+		String room = kacheln.getKacheln()
+				[pcManager.getCurrentPlayer().getPosition().getY()]
+				[pcManager.getCurrentPlayer().getPosition().getX()].
+				getRaum().getName();
+		network.sendMsgToServer(NetworkMessages.suspectMsg(gameID, person,weapon,room)); //nicht suspicion das darf nur der server!
+//=======
+//		
+//		network.sendMsgToServer(NetworkMessages.suspicionMsg(
+//				gameid,
+//				NetworkMessages.statement(person, room, weapon)));
+//>>>>>>> master
 	}
 
 	public void accuse() {
@@ -260,12 +271,24 @@ public class Communicator {
 
 		zugPresenter.getGameView().ONanklage.setOnMouseClicked(e -> {
 			suspect();
+			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+				remove(gameView.getKomplettesFeld().getZugView().getBottomBox());
+			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+				remove(gameView.getKomplettesFeld().getZugView().getVermuten());
+			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+				remove(gameView.getKomplettesFeld().getZugView().OFFanklage);
+			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+				add(gameView.getKomplettesFeld().getZugView().getButtonsBox());
+			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+				add(gameView.getKomplettesFeld().getZugView().getBottomBox());
+			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+				remove(gameView.getKomplettesFeld().getZugView().getClose());
+			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+				add(gameView.getKomplettesFeld().getZugView().getClose());
 			gameView.getKomplettesFeld().getChildren().remove(zugView);
 		});
 
-		gameView.getHand().getAccuse().setOnMouseClicked(e -> {
-			accuse();
-		});
+		gameView.getHand().getAccuse().setOnMouseClicked(e -> accuse());
 
 		// END TURN
 		gameView.getHand().getEndTurn().setOnMouseClicked(e -> endTurn());
@@ -315,68 +338,59 @@ public class Communicator {
 
 			
 			
-			public void compareCards(String person, String weapon, String room){
-				switch (person) {// nochwer hasst enums
-				case "red":
-					person = "Fräulein Gloria";
-					break;
-				case "yellow":
-					person = "Oberts von Gatow";
-					break;
-				case "white":
-					person = "Frau Weiss";
-					break;
-				case "green":
-					person = "Reverend Green";
-					break;
-				case "blue":
-					person = "Baronin von Porz";
-					break;
-				case "purple":
-					person = "Professor Bloom";
-					break;
-				}
-				
-				int bufferIndex = pcManager.getCurrentPlayerIndex();
-				pcManager.next();
-				while(!cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
-					network.sendMsgToServer(NetworkMessages.no_disproveMsg(network.getGameId()));
-					pcManager.next();
-					if(bufferIndex == pcManager.getCurrentPlayerIndex() || cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
-						break;
-					}
-				}
-				if(bufferIndex != pcManager.getCurrentPlayerIndex()){
-					for(String cardOfTheOne : pcManager.getCurrentPlayer().getCards()){
-						if (cardOfTheOne.equals(person) ||
-								cardOfTheOne.equals(weapon) ||
-								cardOfTheOne.equals(room)) {
-								highlightCard(cardOfTheOne);
-								setCardFunction(cardOfTheOne);
-							}
-					}
-					pcManager.setIndex(bufferIndex);
-				}
-			}
+//<<<<<<< HEAD
+//			public void compareCards(String person, String weapon, String room){
+//				switch (person) {// nochwer hasst enums
+//				case "red":
+//					person = "Fräulein Gloria";
+//					break;
+//				case "yellow":
+//					person = "Oberts von Gatow";
+//					break;
+//				case "white":
+//					person = "Frau Weiss";
+//					break;
+//				case "green":
+//					person = "Reverend Green";
+//					break;
+//				case "blue":
+//					person = "Baronin von Porz";
+//					break;
+//				case "purple":
+//					person = "Professor Bloom";
+//					break;
+//				}
+//				
+//				int bufferIndex = pcManager.getCurrentPlayerIndex();
+//				pcManager.next();
+//				while(!cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
+//					network.sendMsgToServer(NetworkMessages.no_disproveMsg(network.getGameId()));
+//					pcManager.next();
+//					if(bufferIndex == pcManager.getCurrentPlayerIndex() || cardInspector(person, weapon, room, pcManager.getCurrentPlayer().getCards())){
+//						break;
+//					}
+//				}
+//				if(bufferIndex != pcManager.getCurrentPlayerIndex()){
+//					for(String cardOfTheOne : pcManager.getCurrentPlayer().getCards()){
+//=======
 			
-			public boolean cardInspector(String person, String weapon, String room, ArrayList<String> cards){
-				for(String str : cards){
-					if (str.equals(person) ||
-							str.equals(weapon) ||
-							str.equals(room)) {
-						return true;
-						}
-				}
-				return false;
+
+//			
+			public void showPossibleDisprovals(ArrayList<String> possibleDisprovals){
+				for(String cardOfTheOne : possibleDisprovals){
+					highlightCard(cardOfTheOne);
+					setCardFunction(cardOfTheOne);
+				}	
 			}
 
-			public void disprove() {
+			public void handleDisprove() {
 				ArrayList<String> disprover = curSuspicion.makeConjunction(pcManager.getPlayerByNick(myNick).getCards());
 				if (disprover.size() != 0){
 					//show cardpane with possible disprover
 					//network.sendMsgToServer(NetworkMessages.disproveMsg(gameID, selectedcard));
 					//bis dahin :
-					network.sendMsgToServer(NetworkMessages.disproveMsg(gameID, disprover.get(0)));
+					showPossibleDisprovals(disprover);
+//					network.sendMsgToServer(NetworkMessages.disproveMsg(gameID, disprover.get(0)));
 				}
 				else {
 					network.sendMsgToServer(NetworkMessages.cantDisproveMsg(gameID));

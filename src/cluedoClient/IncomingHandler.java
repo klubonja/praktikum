@@ -14,7 +14,6 @@ import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerClientSpool;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPosition;
-import cluedoNetworkLayer.CluedoStatement;
 import enums.NetworkHandhakeCodes;
 
 class IncomingHandler implements Runnable {
@@ -123,6 +122,7 @@ class IncomingHandler implements Runnable {
         							);	        		  
 			} 
 			else if (checker.getType().equals("suspicion")) {
+//<<<<<<< HEAD
 				
 				int gameID = checker.getMessage().getInt("gameID");
 				dataGuiManager.handleSuspicion(
@@ -134,6 +134,16 @@ class IncomingHandler implements Runnable {
 //						.compareCards(person, room, weapon);
 //				server.getGameByGameID(id).changeLabel(server.getGameByGameID(id).getMyNick()
 //						+ " is suspecting. " + "\n" + person + " " + room + " " + weapon);
+//=======
+//				JSONObject json = checker.getMessage().getJSONObject(
+//						"statement");
+//				int id = checker.getMessage().getInt("gameID");
+//				String person = json.getString("person").toString();
+//				String weapon = json.getString("weapon").toString();
+//				String room = json.getString("room").toString();
+//				server.getGameByGameID(id)
+//						.showDisprovals(person, room, weapon);
+//>>>>>>> master
 			}
 				
 			else if (checker.getType().equals("accuse")) {
@@ -160,6 +170,7 @@ class IncomingHandler implements Runnable {
 			} 
 				
 			else if (checker.getType().equals("disprove")) {
+//<<<<<<< HEAD
 				int gameID = checker.getMessage().getInt("gameID");
 				dataGuiManager.handleDisprove(gameID, server);
 			} 
@@ -175,6 +186,27 @@ class IncomingHandler implements Runnable {
 							.getPlayerByNick(server.myNick).getCluedoPerson().getPersonName() +
 							" did not disprove.");
 			}
+//=======
+//				String card = checker.getMessage().getString("card").toString();
+//			server.getGameByGameID(checker.getMessage().getInt("gameID"))
+//			.changeLabel(
+//			server.getGameByGameID(checker.getMessage().getInt("gameID")).getPlayerByNick(server.myNick).getCluedoPerson().getPersonName()
+//			+ " had the card: " + card);
+//			} 
+//				
+//				else
+//					if(checker.getType().equals("disproved")){
+//				server.sendMsg(NetworkMessages.chatMsg(
+//						checker.getMessage().getString("nick").toString() + " disproved!",
+//						checker.getMessage().getInt("gameID"), auxx.now()));
+//			} else
+//				if (checker.getType().equals("no disprove")){
+//					server.sendMsg(NetworkMessages.chatMsg(
+//							server.getGameByGameID(checker.getMessage().getInt("gameID"))
+//							.getPlayerByNick(server.myNick).getCluedoPerson().getPersonName() +
+//							" did not disprove.", checker.getMessage().getInt("gameID"), auxx.now()));
+//				}
+//>>>>>>> master
 			else if (checker.getType().equals("game ended")){
         		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
 			}
@@ -273,7 +305,7 @@ class IncomingHandler implements Runnable {
 	
 	private void getGamesListLogic(String msg){
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(msg));
-		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error"});
+		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error,ok"});
 		
 		if (errcode == NetworkHandhakeCodes.OK) {	
 			JSONArray gamearray = checker.getMessage().getJSONArray("game array");	
