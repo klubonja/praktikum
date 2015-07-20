@@ -172,12 +172,6 @@ public class ServerGameModel {
 		}
 		return false;
 	}
-	
-	public void setNextRound(){
-		pcManager.next();
-		stateManager.setNextTurnRec();
-		network.notifyNextRound();
-	}
 
 	public void suspect(CluedoStatement statement) {
 		currentPlayerDisproveIndex = pcManager.getCurrentPlayerIndex();
@@ -233,6 +227,28 @@ public class ServerGameModel {
 		return Math.abs(idx%size);
 	}
 
-	
+	public void accuse(CluedoStatement accusation,String nick) {
+		if (accusation.equals(getWinningStatement())){
+			network.sendMsgsToAll(
+					NetworkMessages.game_endedMsg(
+							gameID, 
+							nick , 
+							accusation
+					)
+			);
+		}
+		else {
+			pcManager.getPlayerByNick(nick).setAccused(true);
+			network.sendMsgsToAll(NetworkMessages.wrongaccuationMsg(gameID, accusation));
+			stateManager.transitionByAction(PlayerStates.accuse);
+			setNextRound();
+		}		
+	}
+
+	public void setNextRound(){
+		pcManager.next();
+		stateManager.setNextTurnRec();
+		network.notifyNextRound();
+	}
 	
 }

@@ -86,6 +86,15 @@ public abstract class NetworkMessages {
 		return json;
 	}
 	
+	public static JSONObject statement(CluedoStatement statement){
+		JSONObject json = new JSONObject();
+		json.put("person", statement.getPerson().getColor());
+		json.put("weapon", statement.getWeapon().getName());
+		json.put("room", statement.getRoom().getName());
+		
+		return json;
+	}
+	
 	public static JSONObject gameinfo(int gameId,String gamestate,JSONArray playerInfos,JSONArray watchers,JSONArray personposes,JSONArray weaponposes){
 		JSONObject json = new JSONObject();
 		json.put("gameID",gameId);
@@ -301,10 +310,27 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
+	public static String wrongaccuationMsg(int gameID,CluedoStatement wacc){
+		CluedoJSON json = new CluedoJSON("wrong accusation");
+		json.put("statement", statement(wacc));
+		json.put("gameID", gameID);		
+		
+		return json.toString();
+	}
+	
 	public static String game_endedMsg(int gameID,String nick,JSONObject statement){
 		CluedoJSON json = new CluedoJSON("game ended");
 		json.put("nick", nick);
 		json.put("statement", statement);
+		json.put("gameID", gameID);		
+		
+		return json.toString();
+	}
+	
+	public static String game_endedMsg(int gameID,String nick,CluedoStatement winningstatement){
+		CluedoJSON json = new CluedoJSON("game ended");
+		json.put("nick", nick);
+		json.put("statement", statement(winningstatement));
 		json.put("gameID", gameID);		
 		
 		return json.toString();

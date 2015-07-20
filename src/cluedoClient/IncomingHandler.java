@@ -342,7 +342,7 @@ class IncomingHandler implements Runnable {
 	public void killConnection() {
 		localRun = false;
 		globalRun = false;
-		dataGuiManager.setStatus("Server "+server.getGroupName()+ " ceased to be");
+		dataGuiManager.setStatus("Server "+server.getGroupName()+ " ceased to be, is no more, passed the bucket and so on");
 		dataGuiManager.removeServer(server);
 		dataGuiManager.setServer();
 

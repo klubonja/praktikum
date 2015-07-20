@@ -206,6 +206,15 @@ public class CluedoGameServer extends CluedoGame {
 		return false;
 	}
 	
+	public boolean accuseRequest(CluedoStatement accusation,ClientItem client) {
+		if(checkandHandleStateTrans(PlayerStates.accuse, client)){
+			gameLogic.accuse(accusation,client.getNick());
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public boolean suspect(CluedoStatement statement, ClientItem client) {
 		if(checkandHandleStateTrans(PlayerStates.suspect, client)){
 			sendMsgsToAll(
@@ -327,7 +336,6 @@ public class CluedoGameServer extends CluedoGame {
 		}
 		return false;
 	}
-
 	
 }
 

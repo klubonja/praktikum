@@ -41,6 +41,10 @@ public class CluedoPlayer {
 		return hasAccused;
 	}
 	
+	public void setAccused(boolean accused){
+		hasAccused = accused;
+	}
+	
 	public void setPossibleState(PlayerStates state){
 		possibleStates = new ArrayList<PlayerStates>();
 		possibleStates.add(state);

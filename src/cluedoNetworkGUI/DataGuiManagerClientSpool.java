@@ -258,7 +258,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 					game.disprove();
 				else if (newStates.contains(PlayerStates.do_nothing.getName()))
 					game.currentPlayerToNothing();
-				game.changeLabel(auxx.formatStringList(newStates, "oder"));
+				game.changeLabel(auxx.formatStringList(newStates, "or"));
 			}
 			else { //its some other fucker
 				if (newStates.contains(PlayerStates.roll_dice.getName()))

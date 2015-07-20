@@ -134,6 +134,28 @@ public class DataManagerServer extends DataManager {
 			}
 		}
 	}
+	
+	public void accuseRequest(int gameID, CluedoStatement accusation,
+			ClientItem client) {
+		CluedoGameServer game = validatedClientGame(gameID, client);
+		if (game != null){
+			if (game.accuseRequest(accusation,client)) {
+		   		//ach 
+			}
+		}
+		
+	}
+	
+	public String getDisprover() {
+		return disprover;
+	}
+
+
+
+	public void setDisprover(String disprover) {
+		this.disprover = disprover;
+	}
+	
 	///////////////////////////////SENDMSGS/////////////////////////////////////////////////////////
 	@Override
 	public void sendMsgToAllClients(String msg){
@@ -245,25 +267,7 @@ public class DataManagerServer extends DataManager {
 		return false;
 	}
 
-	public void accuseRequest(int gameID, CluedoStatement cluedoStatement,
-			ClientItem client) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-
-	public String getDisprover() {
-		return disprover;
-	}
-
-
-
-	public void setDisprover(String disprover) {
-		this.disprover = disprover;
-	}
+	
 }
 	
 
