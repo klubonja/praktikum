@@ -58,7 +58,7 @@ public class CluedoClientPresenter {
 	
 	public void bindComponents(){
 		
-		//view.getAudio().volumeProperty().bind(view.getVolume().valueProperty());
+		view.getAudio().volumeProperty().bind(view.getVolume().valueProperty());
 	}
 	
 	public void addGlow(Node nd){

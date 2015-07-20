@@ -1,5 +1,6 @@
 package cluedoNetworkGUI;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -83,6 +84,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private Slider volume;
 	private Label volumeLabel;
 	private HBox volumeBox;
+	
+	private final File file = new File("media/clientAudio1.mp3");
 	
 	private Pane promptArea;
 	
@@ -294,11 +297,10 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         promptArea = new Pane();
         
-//        File file = new File("C:/Users/Kristi/Music/media.mp3");
-//        String MEDIA_URL = file.toURI().toString();
-//        clip = new Media(MEDIA_URL);
-//        audio = new MediaPlayer(clip);
-//        audio.play();
+        String url = file.toURI().toString();
+        clip = new Media(url);
+        audio = new MediaPlayer(clip);
+        audio.play();
         
         GridPane.setConstraints(statusContainer, 1, 0);
          
@@ -627,6 +629,10 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 
 	public void setVolumeBox(HBox volumeBox) {
 		this.volumeBox = volumeBox;
+	}
+
+	public File getFile() {
+		return file;
 	}
 
 	public Pane getPromptArea() {
