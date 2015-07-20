@@ -103,9 +103,9 @@ public class CluedoGameClient extends CluedoGame {
 
 	}
 	
-	public void itsSomeonesTurn(){
+	public void itsSomeonesTurn(String nick){
 		Platform.runLater(() -> {
-			communicator.itsSomeonesTurn();
+			communicator.itsSomeonesTurn(nick);
 		});
 		
 	}

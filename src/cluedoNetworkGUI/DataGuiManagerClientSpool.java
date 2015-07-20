@@ -262,7 +262,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 			}
 			else { //its some other fucker
 				if (newStates.contains(PlayerStates.roll_dice.getName()))
-					game.itsSomeonesTurn();				
+					game.itsSomeonesTurn(gameNick);				
 			}
 		}
 	}

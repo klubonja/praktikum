@@ -226,26 +226,30 @@ public class Communicator {
 	}
 	
 	public void itsYourTurn(){
+		pcManager.setIndexByPlayer(network.getPlayerByNick(myNick));
+//		if (!sswitch){
+//			sswitch = true;
+//			openWindow();
+//		}
+//		else {
+//			pcManager.next();
+//			
+//			openWindow();
+//		}
 		
-		if (!sswitch){
-			sswitch = true;
-			openWindow();
-		}
-		else {
-			pcManager.next();
-			
-			openWindow();
-		}
+		pcManager.setIndexByPlayer(network.getPlayerByNick(myNick));
+		openWindow();
 			
 	}
 	
-	public void itsSomeonesTurn(){
-		if (!sswitch){
-			sswitch = true;
-		}
-		else {
-		pcManager.next();
-		}
+	public void itsSomeonesTurn(String nick){
+		pcManager.setIndexByPlayer(network.getPlayerByNick(nick));
+//		if (!sswitch){
+//			sswitch = true;
+//		}
+//		else {
+//		pcManager.next();
+//		}
 	}
 	
 	public void kill() {
