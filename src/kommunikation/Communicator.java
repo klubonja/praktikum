@@ -226,7 +226,7 @@ public class Communicator {
 	}
 	
 	public void itsYourTurn(){
-		pcManager.setIndexByPlayer(network.getPlayerByNick(myNick));
+		
 //		if (!sswitch){
 //			sswitch = true;
 //			openWindow();
