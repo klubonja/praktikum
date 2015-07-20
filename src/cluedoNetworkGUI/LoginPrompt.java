@@ -1,25 +1,24 @@
 package cluedoNetworkGUI;
 
-import java.util.ArrayList;
-
-import staticClasses.Config;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import staticClasses.Config;
 
 
 public class LoginPrompt extends GridPane {
+	
 	
 	
 	String[] labelNames = {Config.GROUP_NAME,Config.GROUP_NAME+"_GROUP"};
@@ -29,13 +28,14 @@ public class LoginPrompt extends GridPane {
 	
 	Text errs = new Text();
 	Text title = new Text("Login");
-	final Button submit = new Button("login");
+	final Button submit = new Button("Login");
 	String[] returnData = new String[labelNames.length];
 	Stage stage;
 	
 	
 	public LoginPrompt(Stage s) {
 		super();
+		this.setVgap(3);
 		stage = s;
 		init();		
 	}
@@ -49,6 +49,14 @@ public class LoginPrompt extends GridPane {
 	private void init(){
 		setFields();
 		requestFocus();
+		
+		
+		Rectangle rect = new Rectangle(300, 200);
+		rect.setFill(Color.WHITE);
+		rect.setArcHeight(38);
+		rect.setArcWidth(38);
+
+		this.setClip(rect);
 		
 		title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
 		this.add(title, 0, 0);

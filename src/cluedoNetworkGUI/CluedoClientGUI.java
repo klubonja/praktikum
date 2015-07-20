@@ -301,6 +301,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         clip = new Media(url);
         audio = new MediaPlayer(clip);
         audio.play();
+        audio.setCycleCount(MediaPlayer.INDEFINITE);
         
         GridPane.setConstraints(statusContainer, 1, 0);
          
@@ -368,11 +369,16 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	}
     
     public String[] loginPrompt(String stageTitle){
-    	Stage loginStage = new Stage();
+    	Stage loginStage = new Stage(StageStyle.TRANSPARENT);
     	LoginPrompt loginPrompt = new LoginPrompt(loginStage);
-    	Scene secondary = new Scene(loginPrompt,Config.LOGIN_PROMPT_WINDOW_WIDTH,Config.LOGIN_PROMPT_WINDOW_HEIGHT);		
+    	Scene secondary = new Scene(loginPrompt,Config.LOGIN_PROMPT_WINDOW_WIDTH,Config.LOGIN_PROMPT_WINDOW_HEIGHT);
+    	secondary.setFill(Color.TRANSPARENT);
 		loginStage.setScene(secondary);
 		loginStage.setTitle(stageTitle);
+		loginStage.setOpacity(0.9);
+		loginStage.setAlwaysOnTop(true);
+		
+		
 		loginStage.showAndWait();	
 		
 		return loginPrompt.returnLoginData();
@@ -391,13 +397,14 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	}
 	  
 	public String selectColor(ArrayList<String> colors) {
-		Stage selectNewColor = new Stage();
+		Stage selectNewColor = new Stage(StageStyle.TRANSPARENT);
 		IntroColorPrompt select = new IntroColorPrompt(selectNewColor, colors);
-		//promptArea.getChildren().add(select);
 	
-	    Scene secondary = new Scene(select, Config.COLOR_SELECT_WINDOW_WIDTH, Config.COLOR_SELECT_WINDOW_HEIGHT);
-	    selectNewColor.initStyle(StageStyle.UNDECORATED);
+	    Scene secondary = new Scene(select, 415, 590);
+	    secondary.setFill(Color.TRANSPARENT);
 	    selectNewColor.setScene(secondary);
+	    selectNewColor.setOpacity(0.95);
+	    selectNewColor.setAlwaysOnTop(true);
 	    selectNewColor.showAndWait();
 	    return select.returnColor();
 	    

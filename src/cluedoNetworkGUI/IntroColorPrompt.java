@@ -14,6 +14,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import staticClasses.Config;
 
@@ -36,29 +38,46 @@ public class IntroColorPrompt extends GridPane{
 	public void layoutGrid(){
 		
 		  this.setPadding(new Insets(5));
-		  this.setHgap(5);
+		  this.setHgap(30);
 		  this.setVgap(5);
 	      this.setGridLinesVisible(false);
+	      
+	      Rectangle rect = new Rectangle(415, 590);
+	      rect.setFill(Color.WHITE);
+	      rect.setArcHeight(38);
+	      rect.setArcWidth(38);
+
+	      this.setClip(rect);
 	        
 	      ColumnConstraints col0 = new ColumnConstraints();
-	      col0.setPercentWidth(33.3);
+	      col0.setMaxWidth(200);
+	      col0.setPrefWidth(200);
 	      this.getColumnConstraints().add(col0);
 	        
 	      ColumnConstraints col1 = new ColumnConstraints();
-	      col1.setPercentWidth(33.3);
+	      col1.setMaxWidth(200);
+	      col1.setPrefWidth(200);
 	      this.getColumnConstraints().add(col1);
 	        
-	      ColumnConstraints col2 = new ColumnConstraints();
-	      col2.setPercentWidth(33.3);
-	      this.getColumnConstraints().add(col2);
+//	      ColumnConstraints col2 = new ColumnConstraints();
+//	      col2.setMaxWidth(100);
+//	      col2.setPrefWidth(100);
+//	      this.getColumnConstraints().add(col2);
 	        
-	      RowConstraints row0 = new RowConstraints(); //menue
-		  row0.setPercentHeight(10); 
+	      RowConstraints row0 = new RowConstraints(); 
+		  row0.setMaxHeight(200); 
+		  row0.setPrefHeight(200); 
 		  this.getRowConstraints().add(row0);
 		    
 		  RowConstraints row1 = new RowConstraints();
-		  row1.setPercentHeight(40);        
+		  row1.setMaxHeight(200); 
+		  row1.setPrefHeight(200);      
 		  this.getRowConstraints().add(row1);
+		  
+		  RowConstraints row2 = new RowConstraints();
+		  row2.setMaxHeight(200); 
+		  row2.setPrefHeight(200);      
+		  this.getRowConstraints().add(row2);
 		    
 	}
 
@@ -73,11 +92,17 @@ public class IntroColorPrompt extends GridPane{
 			Config.COLOR_SELECT_WINDOW_WIDTH += 100;
 			Image imageButton = new Image ("media/" + temp + ".png");
 			tempButton = new Button("", new ImageView(imageButton));
-			GridPane.setHalignment(tempButton, HPos.CENTER);
+			tempButton.setPrefSize(130, 190);
+			tempButton.setMaxSize(130, 190);
+			if(columnCounter==1){
+				GridPane.setHalignment(tempButton, HPos.LEFT);
+			}else{
+				GridPane.setHalignment(tempButton, HPos.RIGHT);	
+			}
 			GridPane.setValignment(tempButton, VPos.CENTER);
 			GridPane.setConstraints(tempButton, columnCounter , rowCounter);
 			this.getChildren().add(tempButton);
-			if(columnCounter==2){
+			if(columnCounter==1){
 				rowCounter++;
 				columnCounter=-1;
 			}
