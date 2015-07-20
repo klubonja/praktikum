@@ -1,15 +1,13 @@
 package cluedoClient;
 
-import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import java.util.logging.SimpleFormatter;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import staticClasses.auxx;
 import cluedoNetworkGUI.CluedoClientGUI;
+import cluedoNetworkGUI.CluedoClientPresenter;
 
 public class CluedoClientMain extends Application {
 	static FileHandler fh;
@@ -34,7 +32,8 @@ public class CluedoClientMain extends Application {
 	@Override
 	 public void start(Stage primaryStage) {		
 		CluedoClientGUI gui = new CluedoClientGUI(primaryStage);
-		Client client = new Client(gui);		 
+		Client client = new Client(gui);	
+		CluedoClientPresenter pres = new CluedoClientPresenter(gui);
 	 }
 	
 	
