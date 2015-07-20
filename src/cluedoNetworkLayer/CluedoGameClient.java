@@ -265,7 +265,7 @@ public class CluedoGameClient extends CluedoGame {
 	}
 
 	public void setCurrentSuspicion(CluedoStatement suspicion) {
-		// TODO Auto-generated method stub
+		communicator.setCurSuspicion(suspicion);
 		
 	}	
 }

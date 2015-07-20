@@ -123,13 +123,13 @@ class IncomingHandler implements Runnable {
         							);	        		  
 			} 
 			else if (checker.getType().equals("suspicion")) {
-				JSONObject json = checker.getMessage().getJSONObject("statement");
+				
 				int gameID = checker.getMessage().getInt("gameID");
-				String person = json.getString("person").toString();
-				String weapon = json.getString("weapon").toString();
-				String room = json.getString("room").toString();
-				CluedoStatement suspicion = new CluedoStatement(person, weapon, room);
-				dataGuiManager.handleSuspicion(gameID,suspicion,server);
+				dataGuiManager.handleSuspicion(
+						gameID,
+						NetworkMessages.makeCluedoStatementFromJSON(checker.getMessage().getJSONObject("statement")),
+						server
+				);
 //				server.getGameByGameID(id)
 //						.compareCards(person, room, weapon);
 //				server.getGameByGameID(id).changeLabel(server.getGameByGameID(id).getMyNick()
