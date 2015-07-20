@@ -1,7 +1,7 @@
 package cluedoNetworkGUI;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -71,7 +71,12 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private Background background;
 	private BackgroundSize backgroundSize;
 	private BackgroundImage backgroundImage;
-	private Image image;
+	
+	final private Image backIsengard = new Image("http://img2.wikia.nocookie.net/__cb20120601223256/lotr/images/7/77/Isengard_army.jpg");
+	final private Image backMinas = new Image("http://img4.wikia.nocookie.net/__cb20141228214636/lotr/images/e/e4/Minas_Tirith.jpg");
+	final private Image backRivendell = new Image("http://hdwallpapersfit.com/wp-content/uploads/2015/03/rivendell-wallpaper-new.jpg");
+	final private Image backMordor = new Image("http://img4.wikia.nocookie.net/__cb20140520211519/middleearthshadowofmordor7723/images/5/50/Yre1o.jpg");
+	final private Image backArgonath  = new Image("http://img4.wikia.nocookie.net/__cb20140520211519/middleearthshadowofmordor7723/images/5/50/Yre1o.jpg");
 	
 	private Background buttonBackground;
 	
@@ -113,11 +118,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		
 		backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
 				false, false, false, true);
-		image = new Image("http://img2.wikia.nocookie.net/__cb20120601223256/lotr/images/7/77/Isengard_army.jpg");
-	    backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
-					BackgroundPosition.CENTER, backgroundSize);
+		backgroundImage = new BackgroundImage(backIsengard, BackgroundRepeat.NO_REPEAT , 
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
 	    background = new Background(backgroundImage);
-	    
+
+		//assignBackground();
 	        
         grid.setPadding(new Insets(20));
         grid.setHgap(20);
@@ -177,7 +182,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         
         Stop white = new Stop(0,Color.SNOW);
-		Stop transparent = new Stop(1, Color.TRANSPARENT);
+		//Stop transparent = new Stop(1, Color.TRANSPARENT);
 		Stop[] stops = new Stop[] { white};
 		LinearGradient lg1 = new LinearGradient(0, 1, 0, 0, true, CycleMethod.NO_CYCLE, stops);
 		
@@ -289,11 +294,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         promptArea = new Pane();
         
-        File file = new File("C:/Users/Kristi/Music/media.mp3");
-        String MEDIA_URL = file.toURI().toString();
-        clip = new Media(MEDIA_URL);
-        audio = new MediaPlayer(clip);
-        audio.play();
+//        File file = new File("C:/Users/Kristi/Music/media.mp3");
+//        String MEDIA_URL = file.toURI().toString();
+//        clip = new Media(MEDIA_URL);
+//        audio = new MediaPlayer(clip);
+//        audio.play();
         
         GridPane.setConstraints(statusContainer, 1, 0);
          
@@ -406,6 +411,42 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		
 	}
 	
+	public void assignBackground(){
+		
+		BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
+				false, false, false, true);
+		
+		 Random rand = new Random();
+		 int number = rand.nextInt(7);
+		
+		switch(number){
+		case 1 :{
+			setBackgroundImage(new BackgroundImage(getBackIsengard(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+				BackgroundPosition.CENTER, backgroundSize));
+			setBackground(new Background(getBackgroundImage()));} break;
+		case 2 :{
+			setBackgroundImage(new BackgroundImage(getBackMinas(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+			BackgroundPosition.CENTER, backgroundSize));
+			setBackground(new Background(getBackgroundImage()));} break;
+		case 3 :{
+			setBackgroundImage(new BackgroundImage(getBackMordor(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+			BackgroundPosition.CENTER, backgroundSize));
+			setBackground(new Background(getBackgroundImage()));} break;
+		case 4 :{
+			setBackgroundImage(new BackgroundImage(getBackRivendell(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+			BackgroundPosition.CENTER, backgroundSize));
+			setBackground(new Background(getBackgroundImage()));} break;
+		case 5 :{
+			setBackgroundImage(new BackgroundImage(getBackArgonath(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+			BackgroundPosition.CENTER, backgroundSize));
+			setBackground(new Background(getBackgroundImage()));} break;
+		case 6 :{
+			setBackgroundImage(new BackgroundImage(getBackMinas(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+			BackgroundPosition.CENTER, backgroundSize));
+			setBackground(new Background(getBackgroundImage()));} break;
+		}
+	}
+	
 	public Button getExit() {
 		return exit;
 	}
@@ -461,11 +502,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	}
 
 	public Image getImage() {
-		return image;
-	}
-
-	public void setImage(Image image) {
-		this.image = image;
+		return backIsengard;
 	}
 
 	public Button getSubmitMessageButton() {
@@ -622,5 +659,33 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 
 	public void setButtonBackground(Background buttonBackground) {
 		this.buttonBackground = buttonBackground;
+	}
+
+	public HBox getButtons() {
+		return buttons;
+	}
+
+	public void setButtons(HBox buttons) {
+		this.buttons = buttons;
+	}
+
+	public Image getBackIsengard() {
+		return backIsengard;
+	}
+
+	public Image getBackMinas() {
+		return backMinas;
+	}
+
+	public Image getBackRivendell() {
+		return backRivendell;
+	}
+
+	public Image getBackMordor() {
+		return backMordor;
+	}
+
+	public Image getBackArgonath() {
+		return backArgonath;
 	}
 }
