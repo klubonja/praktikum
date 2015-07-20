@@ -60,8 +60,8 @@ public class StateManager {
 	
 	public void handleDisprove(int curindex){
 		for (int i = 0; i < pcm.getSize(); i++ ){
-			if (curindex == i) pcm.getPlayerByIndex(curindex).setPossibleState(PlayerStates.disprove);
-			else pcm.getPlayerByIndex(curindex).setPossibleState(PlayerStates.do_nothing);
+			if (curindex == i) pcm.getPlayerByIndex(i).setPossibleState(PlayerStates.disprove);
+			else pcm.getPlayerByIndex(i).setPossibleState(PlayerStates.do_nothing);
 		}
 	}
 	

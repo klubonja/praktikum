@@ -227,8 +227,8 @@ public class ServerGameModel {
 	
 	public static int rotate(int start,int size, boolean forward){
 		int idx = start;
-		if (forward) idx++;
-		else idx--;
+		if (forward) idx++; //rotate forward
+		else idx--;//rotatebackwards
 		
 		return Math.abs(idx%size);
 	}
