@@ -6,7 +6,12 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -50,11 +55,16 @@ public class LoginPrompt extends GridPane {
 		setFields();
 		requestFocus();
 		
+		BorderStroke stroke = new BorderStroke(Color.DARKSLATEGRAY, BorderStrokeStyle.SOLID, 
+				new CornerRadii(15), new BorderWidths(1));
+		Border border = new Border(stroke);
+		this.setBorder(border);
+		
 		
 		Rectangle rect = new Rectangle(300, 200);
 		rect.setFill(Color.WHITE);
-		rect.setArcHeight(38);
-		rect.setArcWidth(38);
+		rect.setArcHeight(30);
+		rect.setArcWidth(30);
 
 		this.setClip(rect);
 		

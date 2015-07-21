@@ -5,7 +5,18 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
@@ -22,11 +33,31 @@ public class InGameQuitView extends GridPane{
 	private Scene scene;
 	private Stage stage;
 	
+	private Background background;
+	private BackgroundImage backgroundImage;
+	private BackgroundSize backgroundSize;
+	private Image image;
+	
+	private BorderStroke backgroundStroke;
+	private Border backgroundBorder;
+	
 	private GameFrameView gameFrameView;
 	
 	public InGameQuitView(GameFrameView gameFrameView){
 		
 		this.gameFrameView = gameFrameView;
+		
+		this.image = new Image("media/inGameMenuBackground.jpg");
+		this.backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
+				false, false, false, true);
+		this.backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT , 
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+	    this.background = new Background(backgroundImage);
+	    
+	    this.backgroundStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, 
+				new CornerRadii(10), new BorderWidths(1.3));
+		this.backgroundBorder = new Border(backgroundStroke);
+		this.setBorder(backgroundBorder);
 		
 		this.getRowConstraints().add(new RowConstraints(100));
 		this.getRowConstraints().add(new RowConstraints(100));
@@ -38,7 +69,7 @@ public class InGameQuitView extends GridPane{
 		yes = new Button("Yes");
 		no = new Button("No");
 		
-		Rectangle rect = new Rectangle(400,200);
+		Rectangle rect = new Rectangle(400,230);
 		rect.setArcHeight(20);
 		rect.setArcWidth(20);
 
@@ -47,7 +78,7 @@ public class InGameQuitView extends GridPane{
 		GridPane.setConstraints(question, 0, 0);
 		GridPane.setColumnSpan(question, 2);
 		GridPane.setHalignment(question, HPos.CENTER);
-		GridPane.setValignment(question, VPos.CENTER);
+		GridPane.setValignment(question, VPos.BOTTOM);
 		GridPane.setConstraints(yes, 0, 1);
 		GridPane.setHalignment(yes, HPos.RIGHT);
 		GridPane.setValignment(yes, VPos.CENTER);
@@ -60,7 +91,7 @@ public class InGameQuitView extends GridPane{
 	
 	public void start(){
 		
-		scene = new Scene (this, 400,200);
+		scene = new Scene (this, 400,230);
 		scene.setFill(Color.TRANSPARENT);
 		stage = new Stage();
 		stage.setScene(scene);
@@ -130,6 +161,58 @@ public class InGameQuitView extends GridPane{
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+
+	public Background getOurBackground() {
+		return background;
+	}
+
+	public void setOurBackground(Background background) {
+		this.background = background;
+	}
+
+	public BackgroundImage getBackgroundImage() {
+		return backgroundImage;
+	}
+
+	public void setBackgroundImage(BackgroundImage backgroundImage) {
+		this.backgroundImage = backgroundImage;
+	}
+
+	public BackgroundSize getBackgroundSize() {
+		return backgroundSize;
+	}
+
+	public void setBackgroundSize(BackgroundSize backgroundSize) {
+		this.backgroundSize = backgroundSize;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public Scene getOurScene() {
+		return scene;
+	}
+
+	public BorderStroke getBackgroundStroke() {
+		return backgroundStroke;
+	}
+
+	public void setBackgroundStroke(BorderStroke backgroundStroke) {
+		this.backgroundStroke = backgroundStroke;
+	}
+
+	public Border getBackgroundBorder() {
+		return backgroundBorder;
+	}
+
+	public void setBackgroundBorder(Border backgroundBorder) {
+		this.backgroundBorder = backgroundBorder;
 	}
 	
 

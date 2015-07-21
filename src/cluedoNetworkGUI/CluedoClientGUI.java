@@ -400,7 +400,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		Stage selectNewColor = new Stage(StageStyle.TRANSPARENT);
 		IntroColorPrompt select = new IntroColorPrompt(selectNewColor, colors);
 	
-	    Scene secondary = new Scene(select, 415, 590);
+	    Scene secondary = new Scene(select, 415, 400);
 	    secondary.setFill(Color.TRANSPARENT);
 	    selectNewColor.setScene(secondary);
 	    selectNewColor.setOpacity(0.95);
