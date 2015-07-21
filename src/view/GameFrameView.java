@@ -1,18 +1,21 @@
 package view;
 
 
-import cluedoNetworkLayer.CluedoGameClient;
-import staticClasses.Config;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import kacheln.KachelContainer;
+import staticClasses.Config;
+import cluedoNetworkLayer.CluedoGameClient;
 import finderOfPaths.BallEbene2;
 import finderOfPaths.KrasserStack;
 import finderOfPaths.PlayerCircleManager;
@@ -29,6 +32,7 @@ public class GameFrameView extends GridPane{
 	ChatView chat;
 	BoardView board;
 	StatusView statusView;
+	Slider volume;
 
 	//private SpielfeldUndFiguren komplettesFeld;
 	//private FigurenView figuren;
@@ -47,22 +51,34 @@ public class GameFrameView extends GridPane{
 		pcManager = pcm;
 
 		/*(2 Rows x 2 Columns). */
-		this.getRowConstraints().add(new RowConstraints(25));
-		this.getRowConstraints().add(new RowConstraints(725));
-		this.getColumnConstraints().add(new ColumnConstraints(Config.GAMEWINDOW_HEIGHT));
-		this.getColumnConstraints().add(new ColumnConstraints(650));
+		
+		RowConstraints row0 = new RowConstraints();
+		row0.setPercentHeight(3.34);
+		this.getRowConstraints().add(row0);
+		
+		RowConstraints row1 = new RowConstraints();
+		row1.setPercentHeight(96.66);
+		this.getRowConstraints().add(row1);
+		
+		ColumnConstraints column0 = new ColumnConstraints();
+		column0.setPercentWidth(53.57);
+		this.getColumnConstraints().add(column0);
+		
+		ColumnConstraints column1 = new ColumnConstraints();
+		column1.setPercentWidth(46.43);
+		this.getColumnConstraints().add(column1);
+		
 		this.setVgap(4);
-		this.setHgap(4);
+		this.setHgap(2);
 		this.setPadding(new Insets(0, 4, 2, 4));
-		//this.setGridLinesVisible(true);
+		this.setGridLinesVisible(false);
 		
 		
 		//Adds the MenuBar and Menus at the top of the screen.
 		menu = new MenuBarView();
 		
-		/**
-		 * Adds the Game Board frame.
-		 */
+		
+		//Adds the Game Board frame.
 		board = new BoardView(kacheln);
 
 		//Adds the Notes frame.
@@ -74,13 +90,22 @@ public class GameFrameView extends GridPane{
 		//Adds the Dices frame.
 		dice = new DiceView();
 		
-		/**
-		 *  Adds the Stackpane with the field
-		 */
+		
+		//Adds the Stackpane with the field 
 		statusView = new StatusView();
 		ballEbene = new BallEbene2(pcm);
 		zugView = new AussergewohnlichesZugfenster();
 		komplettesFeld = new KrasserStack(ballEbene, board, zugView);
+		
+		//Adds the volume slider
+		volume = new Slider(0, 1, 0.5);
+		HBox volumeBox = new HBox(4);
+		volumeBox.setPrefWidth(200);
+		volumeBox.setMaxWidth(200);
+		volumeBox.setPrefHeight(10);
+		volumeBox.setMaxHeight(10);
+		Label volumeLabel = new Label("Volume");
+		volumeBox.getChildren().addAll(volumeLabel, volume);
 		
 		//Adds the frame for the Cards in hand.
 		hand = new HandFrameView(client);
@@ -89,9 +114,22 @@ public class GameFrameView extends GridPane{
 		   only for a better organising of objects. */
 
 		rightGrid = new GridPane();
-		rightGrid.getRowConstraints().add(new RowConstraints(450));
-		rightGrid.getColumnConstraints().add(new ColumnConstraints(350));
-		rightGrid.getColumnConstraints().add(new ColumnConstraints(300));
+		
+		RowConstraints row00 = new RowConstraints();
+		row00.setPercentHeight(100);
+		rightGrid.getRowConstraints().add(row00);
+		
+		ColumnConstraints column00 = new ColumnConstraints();
+		column00.setPercentWidth(53.846);
+		rightGrid.getColumnConstraints().add(column00);
+		
+		ColumnConstraints column01 = new ColumnConstraints();
+		column01.setPercentWidth(46.154);
+		rightGrid.getColumnConstraints().add(column01);
+		
+//		rightGrid.getRowConstraints().add(new RowConstraints(450));
+//		rightGrid.getColumnConstraints().add(new ColumnConstraints(350));
+//		rightGrid.getColumnConstraints().add(new ColumnConstraints(300));
 		rightGrid.setVgap(2);
 		rightGrid.setHgap(4);
 
@@ -99,9 +137,9 @@ public class GameFrameView extends GridPane{
 		VBox leftColumn = new VBox(10);
 		VBox rightColumn = new VBox(10);
 		rightColumn.getChildren().addAll(notes, dice);
-		leftColumn.getChildren().addAll(statusView,hand, chat);
+		leftColumn.getChildren().addAll(statusView, hand, chat);
 		
-		//
+		//Add elements to rightGrid
 		/*GridPane.setConstraints(notes,1,0);
 		GridPane.setConstraints(dice,1,1);
 		GridPane.setConstraints(chat,0,1);
@@ -116,13 +154,18 @@ public class GameFrameView extends GridPane{
 		GridPane.setConstraints(menu,0,0);
 		GridPane.setColumnSpan(menu, 2);
 		GridPane.setValignment(menu, VPos.TOP);
+		
+		GridPane.setConstraints(volumeBox,1,0);
+		GridPane.setValignment(volumeBox, VPos.BOTTOM);
+		GridPane.setHalignment(volumeBox, HPos.RIGHT);
+		
 
 		GridPane.setConstraints(komplettesFeld,0,1);
 
 		GridPane.setValignment(komplettesFeld, VPos.TOP);
 		GridPane.setHalignment(komplettesFeld, HPos.LEFT);
 		GridPane.setConstraints(rightGrid, 1,1);
-		this.getChildren().addAll(komplettesFeld, menu, rightGrid);
+		this.getChildren().addAll(komplettesFeld, menu, volumeBox, rightGrid);
 		
 		}
 	
@@ -269,6 +312,16 @@ public class GameFrameView extends GridPane{
 	
 	public StatusView getStatusView() {
 		return statusView;
+	}
+
+
+	public Slider getVolume() {
+		return volume;
+	}
+
+
+	public void setVolume(Slider volume) {
+		this.volume = volume;
 	}
 	
 	

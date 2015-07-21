@@ -39,9 +39,9 @@ public class InGameMainMenuView extends GridPane{
 		this.image = new Image("http://orig07.deviantart.net/05ff/f/2010/161/a/0/rivendell_balcony_by_filiusdracul.jpg");
 		
 		
-		Rectangle rect = new Rectangle(1024,768);
-		rect.setArcHeight(60.0);
-		rect.setArcWidth(60.0);
+		Rectangle rect = new Rectangle(400,200);
+		rect.setArcHeight(20);
+		rect.setArcWidth(20);
 
 		this.setClip(rect);
 		
@@ -77,9 +77,11 @@ public class InGameMainMenuView extends GridPane{
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.setFullScreen(false);
-		stage.initStyle(StageStyle.UNDECORATED);
+		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.toFront();
 		stage.centerOnScreen();
+		stage.setAlwaysOnTop(true);
+		stage.setOpacity(0.95);
 		stage.show();
 		
 		}

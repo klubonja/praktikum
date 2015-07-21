@@ -81,7 +81,9 @@ public abstract class CluedoNetworkGUI {
 		 
 		 inputField = new TextArea();
 		 inputField.setMaxHeight(50);
-		 inputField.setPrefHeight(50);
+		 inputField.setPrefHeight(30);
+		 inputField.setPrefWidth(150);
+		 inputField.setPromptText("ENTER to send");
 		 
 		 inLabel = new Text("IN");
 		 outLabel = new Text("OUT");
@@ -250,6 +252,10 @@ public abstract class CluedoNetworkGUI {
 	 
 	public void setStageHeight(double h){
 	    primaryStage.setHeight(h);
+	}
+
+	public TextArea getInputField() {
+		return inputField;
 	}
 
 }

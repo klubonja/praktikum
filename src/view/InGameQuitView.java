@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -36,6 +38,12 @@ public class InGameQuitView extends GridPane{
 		yes = new Button("Yes");
 		no = new Button("No");
 		
+		Rectangle rect = new Rectangle(400,200);
+		rect.setArcHeight(20);
+		rect.setArcWidth(20);
+
+		this.setClip(rect);
+		
 		GridPane.setConstraints(question, 0, 0);
 		GridPane.setColumnSpan(question, 2);
 		GridPane.setHalignment(question, HPos.CENTER);
@@ -53,13 +61,16 @@ public class InGameQuitView extends GridPane{
 	public void start(){
 		
 		scene = new Scene (this, 400,200);
+		scene.setFill(Color.TRANSPARENT);
 		stage = new Stage();
 		stage.setScene(scene);
 		stage.setResizable(false);
 		stage.setFullScreen(false);
-		stage.initStyle(StageStyle.UNDECORATED);
+		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.toFront();
 		stage.centerOnScreen();
+		stage.setAlwaysOnTop(true);
+		stage.setOpacity(0.95);
 		stage.show();
 		
 		}
