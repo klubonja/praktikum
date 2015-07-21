@@ -291,6 +291,8 @@ public class DerBeweger {
 				.getY()][pcManager.getCurrentPlayer().getPosition().getX()];
 		raumAnfangsLabel = gui.getLabelHier(raumAnfangsKachel);
 		
+		auxx.logsevere("in Raum Beweger denkt das Person : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor() +" ist \n"
+				+ "an der Position y : " +pcManager.getCurrentPlayer().getPosition().getY() +"  x : " +pcManager.getCurrentPlayer().getPosition().getX());
 		
 		System.out.println(" test " + startLabel.getLayoutX());
 
@@ -429,7 +431,7 @@ public class DerBeweger {
 				raumZielKachel = raumBeweger.positionInRaum(pcManager.getCurrentPlayer(), room);
 				raumZielLabel = gui.getLabelHier(raumZielKachel);
 				geheimgangBewegerAusgang(raumZielKachel, raum);
-
+				zug.setZimmer(room.getName());
 //				stack.getChildren()
 //				.add(zug);
 //				zug.toFront();

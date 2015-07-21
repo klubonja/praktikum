@@ -90,9 +90,9 @@ public class Ausloeser {
 	public void zuweisung(PlayerCircleManager pcManager) {
 		this.pcManager = pcManager;
 		System.out.println("zuweisung");
-		zug.YESgangImage.setOnMouseClicked(e -> {beweger
-				.useSecretPassage(pcManager);
-	});
+//		zug.YESgangImage.setOnMouseClicked(e -> {beweger
+//				.useSecretPassage(pcManager);
+//	});
 		ballEbene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {

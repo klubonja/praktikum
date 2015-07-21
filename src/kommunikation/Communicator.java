@@ -153,12 +153,14 @@ public class Communicator {
 		if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[position.getY()][position.getX()].isIstRaum()){
 			openWindow();
 		}
-		network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID));
+		
 	}
 	
 	public void move(CluedoPosition position, String person){
 		
+		
 		if (wuerfelWurf == null){
+			
 			useSecretPassage();
 		}
 		
@@ -287,6 +289,8 @@ public class Communicator {
 			}
 		});
 
+		zugPresenter.getGameView().YESgangImage.setOnMouseClicked(e -> network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID)));
+		
 		zugPresenter.getGameView().ONanklage.setOnMouseClicked(e -> {
 			suspect();
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().

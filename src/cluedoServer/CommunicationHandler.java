@@ -200,6 +200,10 @@ class CommunicationHandler implements Runnable {
 	   		   int gameID = checker.getMessage().getInt("gameID");
 	   		   dataManager.moveRequest(gameID,client,newpos);   		 
 	   	   }
+	   	   else if(checker.getType().equals("secret passage")){
+	   		   int gameID = checker.getMessage().getInt("gameID");
+	   		   dataManager.secretPassageRequest(gameID, client);
+	   	   }
 	     	   
 	   	   	else if (checker.getType().equals("accuse")) {
 //<<<<<<< HEAD

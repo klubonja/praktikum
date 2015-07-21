@@ -135,6 +135,15 @@ public class DataManagerServer extends DataManager {
 		}
 	}
 	
+	public void secretPassageRequest(int gameID, ClientItem client) {
+		CluedoGameServer game = validatedClientGame(gameID, client);
+		if (game != null){
+			if (game.useSecretPassageRequest(client)) {
+		   		//ach 
+			}
+		}
+	}
+	
 	public void accuseRequest(int gameID, CluedoStatement accusation,
 			ClientItem client) {
 		CluedoGameServer game = validatedClientGame(gameID, client);
@@ -267,10 +276,7 @@ public class DataManagerServer extends DataManager {
 		return false;
 	}
 
-	public void secretPassageRequest(int gameID, ClientItem client) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	
 }
