@@ -1,6 +1,6 @@
 package view;
 
-import javafx.scene.effect.Glow;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import cluedoClient.Client;
 import cluedoNetworkGUI.CluedoClientGUI;
@@ -19,12 +19,21 @@ public class MainMenuPresenter {
 	private Server server;
 	private Client client;
 	
+	public final String clickedButtonStyle = "-fx-padding: 8 15 15 15; -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0; " 
+			+ "-fx-background-radius: 8; -fx-background-color: "
+			+ "linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),  #9d4024, #d86e3a,"
+			+ "radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);"
+			+ "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,1) , 10,0,1,1 );"
+			+ "-fx-font-weight: bold; -fx-font-size: 1.1em;"
+			+ "-fx-font-family: Arial; -fx-text-fill: linear-gradient(white, #d0d0d0); -fx-font-size: 15px;";
+	
 
 	public MainMenuPresenter(MainMenuView view){
 		
 		this.view = view;
 		
 		activateEvents();
+		bindComponents();
 		
 		}
 	
@@ -33,9 +42,17 @@ public class MainMenuPresenter {
 		
 		view.getCreateClient().setOnMouseClicked(e -> createClient());
 		view.getCreateServer().setOnMouseClicked(e -> createServer());
-		//view.getPlay().setOnMouseEntered(e -> addGlow());
-		//view.getPlay().setOnMouseExited(e -> removeGlow());
 		
+		view.getCreateClient().setOnMouseEntered(e -> addGlow(view.getCreateClient()));
+		view.getCreateClient().setOnMouseExited(e -> removeGlow(view.getCreateClient()));
+		view.getCreateServer().setOnMouseEntered(e -> addGlow(view.getCreateServer()));
+		view.getCreateServer().setOnMouseExited(e -> removeGlow(view.getCreateServer()));
+	}
+	
+public void bindComponents(){
+		
+		view.getBackgroundVideo().volumeProperty().bind(view.getVolume().valueProperty());
+
 	}
 	
 	@SuppressWarnings("unused")
@@ -59,27 +76,14 @@ public class MainMenuPresenter {
 		stage.hide();
 	}
 	
-	public void addGlow(){
+	public void addGlow(Button b){
 		
-		Glow glow = new Glow();
-		glow.setLevel(0.5);
-		view.getCreateClient().setStyle("-fx-background-color: #090a0c, linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%)," 
-		        + "linear-gradient(#20262b, #191d22),"
-		        + "radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));"
-		     + "-fx-background-radius: 5,4,3,5;"
-		     + "-fx-background-insets: 0,1,2,0;"
-		    + "-fx-text-fill: white;"
-		    + "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-		     + "-fx-font-family: Arial;"
-		    + "-fx-text-fill: linear-gradient(white, #d0d0d0);"
-		    + "-fx-font-size: 12px;"
-		    + "-fx-padding: 10 20 10 20;"
-		    + "-fx-effect: glow(0.5);");
+		b.setStyle(clickedButtonStyle);
 	}
 	
-	public void removeGlow(){
+	public void removeGlow(Button b){
 		
-		view.getCreateClient().setEffect(null);
+		b.setStyle(view.getButtonStyle());
 	}
 		
 

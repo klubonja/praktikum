@@ -8,17 +8,15 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
@@ -40,7 +38,7 @@ public class MainMenuView extends StackPane{
 
 	private Button createClient;
 	private Button createServer;
-	private Button howTocreateClient;
+	private Button howToPlay;
 	private Label title;
 	
 	private Group background;
@@ -55,6 +53,18 @@ public class MainMenuView extends StackPane{
 	private LinearGradient lin1;
 	private LinearGradient lin2;
 	private RadialGradient rad1;
+	
+	private Slider volume;
+	private Label volumeLabel;
+	private HBox volumeBox;
+	
+	private final String buttonStyle = "-fx-padding: 8 15 15 15; -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0; " 
+					+ "-fx-background-radius: 8; -fx-background-color: "
+					+ "linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),  #9d4024, #d86e3a,"
+					+ "radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);"
+					+ "-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );"
+					+ "-fx-font-weight: bold; -fx-font-size: 1.1em;"
+					+ "-fx-font-family: Arial; -fx-text-fill: linear-gradient(white, #d0d0d0); -fx-font-size: 15px;";
 	
 	public MainMenuView(){
 		
@@ -106,41 +116,39 @@ public class MainMenuView extends StackPane{
 		title.setStyle("-fx-font-size: 80; -fx-font-weight: bold;");
 
 		//Creates the background of the grid
-		mainImage = new Image("http://www.migrantyouthproject.org/wp-content/uploads/2013/05/under_construction.jpg");
-		mainBackgroundImage = new BackgroundImage(mainImage, BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
-				BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-		mainBackground = new Background(mainBackgroundImage);
-		//main.setBackground(mainBackground);
+//		mainImage = new Image("http://www.migrantyouthproject.org/wp-content/uploads/2013/05/under_construction.jpg");
+//		mainBackgroundImage = new BackgroundImage(mainImage, BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+//				BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+//		mainBackground = new Background(mainBackgroundImage);
+//		main.setBackground(mainBackground);
+		
+		
 		createClient = new Button("Create Client");
-		createClient.setPrefHeight(30);
-		createClient.setPrefWidth(100);
+		createClient.setPrefSize(200, 75);
+		createClient.setMaxSize(200, 75);
 		
 		createServer = new Button("Create Server");
-		createClient.setPrefHeight(30);
-		createClient.setPrefWidth(100);
+		createServer.setPrefSize(200, 75);
+		createServer.setMaxSize(200, 75);
 		
-		
-//		createClient.setStyle("-fx-background-color: #090a0c, linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%)," 
-//        + "linear-gradient(#20262b, #191d22),"
-//        + "radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));"
-//     + "-fx-background-radius: 5,4,3,5;"
-//     + "-fx-background-insets: 0,1,2,0;"
-//    + "-fx-text-fill: white;"
-//    + "-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );"
-//     + "-fx-font-family: Arial;"
-//    + "-fx-text-fill: linear-gradient(white, #d0d0d0);"
-//    + "-fx-font-size: 12px;"
-//    + "-fx-padding: 10 20 10 20;" );
+		createClient.setStyle(buttonStyle);
+		createServer.setStyle(buttonStyle);
 		
  
-		howTocreateClient = new Button("How to createClient");
+		howToPlay = new Button("How to createClient");
 		GridPane.setConstraints(createClient, 0, 3);
 		GridPane.setHalignment(createClient, HPos.CENTER);
 		GridPane.setValignment(createClient, VPos.CENTER);
+		
+		GridPane.setConstraints(createServer, 1, 3);
+		GridPane.setHalignment(createServer, HPos.CENTER);
+		GridPane.setValignment(createServer, VPos.CENTER);
+		
 		GridPane.setConstraints(title, 0, 1);
 		GridPane.setColumnSpan(title, 3);
 		GridPane.setHalignment(title, HPos.CENTER);
 		GridPane.setValignment(title, VPos.CENTER);
+		
 		main.getChildren().addAll(createClient, title, createServer);
 		
 		Stop darkgrey = new Stop(0,Color.DARKSLATEGREY);
@@ -149,27 +157,34 @@ public class MainMenuView extends StackPane{
 		Stop[] stops = new Stop[] { darkgrey, blue, green};
 		RadialGradient rg1 = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
 		
-		buttonBackgroundFill = new BackgroundFill(rg1 , new CornerRadii(1) , new Insets(1));
-		buttonBackground = new Background(buttonBackgroundFill);
 		
-		createClient.setBackground(buttonBackground);
-		
-		
+		//Setup for the video background
 		backgroundVideo = new MediaPlayer(
 			      new Media("http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv")
-			    );
-		
+			    );	
 		
 		background = new Group(new MediaView(backgroundVideo));
+
+		backgroundVideo.setMute(false);
+		backgroundVideo.setRate(50);
+		backgroundVideo.setCycleCount(MediaPlayer.INDEFINITE);
+		backgroundVideo.play();
+			    
+			    
+		//Creates the volume slider
+		volume = new Slider(0, 1, 0.5);
+		volumeLabel = new Label("Volume");
+		volumeBox = new HBox(4);
+		volumeBox.setPrefSize(200, 50);
+		volumeBox.setMaxSize(200, 50);
+		volumeBox.getChildren().addAll(volumeLabel, volume);
+		
+		GridPane.setConstraints(volumeBox, 2, 1);
+		GridPane.setValignment(volumeBox, VPos.TOP);
+		GridPane.setHalignment(volumeBox, HPos.RIGHT);
+		main.getChildren().add(volumeBox);
 			   
-
-			    backgroundVideo.setMute(true);
-			    backgroundVideo.setRate(50);
-
-			    backgroundVideo.setCycleCount(MediaPlayer.INDEFINITE);
-
-			    backgroundVideo.play();
-			  
+  
 		
 		StackPane.setAlignment(main, Pos.CENTER);
 		StackPane.setAlignment(background, Pos.CENTER);
@@ -266,7 +281,7 @@ public class MainMenuView extends StackPane{
 
 
 	public Button getHowTocreateClient() {
-		return howTocreateClient;
+		return howToPlay;
 
 	}
 
@@ -276,7 +291,7 @@ public class MainMenuView extends StackPane{
 
 
 	public void setHowTocreateClient(Button howTocreateClient) {
-		this.howTocreateClient = howTocreateClient;
+		this.howToPlay = howTocreateClient;
 
 	}
 
@@ -479,5 +494,41 @@ public class MainMenuView extends StackPane{
 	public Scene getOurScene() {
 		return scene;
 	}
+
+
+	public Slider getVolume() {
+		return volume;
+	}
+
+
+	public void setVolume(Slider volume) {
+		this.volume = volume;
+	}
+
+
+	public Label getVolumeLabel() {
+		return volumeLabel;
+	}
+
+
+	public void setVolumeLabel(Label volumeLabel) {
+		this.volumeLabel = volumeLabel;
+	}
+
+
+	public HBox getVolumeBox() {
+		return volumeBox;
+	}
+
+
+	public void setVolumeBox(HBox volumeBox) {
+		this.volumeBox = volumeBox;
+	}
+
+
+	public String getButtonStyle() {
+		return buttonStyle;
+	}
+
 
 }

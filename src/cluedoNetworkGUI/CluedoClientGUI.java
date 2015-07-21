@@ -121,6 +121,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	@Override
 	public void startUp() {    
 		
+		//Formats the background of the Client Screen
 		backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
 				false, false, false, true);
 		backgroundImage = new BackgroundImage(backIsengard, BackgroundRepeat.NO_REPEAT , 
@@ -128,7 +129,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	    background = new Background(backgroundImage);
 
 		//assignBackground();
-	        
+	       
+	    //Formats the Grid
         grid.setPadding(new Insets(20));
         grid.setHgap(20);
         grid.setVgap(15);
@@ -185,7 +187,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         exit = new Button("Exit");
         
-        
+        //Formats the background of the buttons
         Stop white = new Stop(0,Color.SNOW);
 		//Stop transparent = new Stop(1, Color.TRANSPARENT);
 		Stop[] stops = new Stop[] { white};
@@ -194,6 +196,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		BackgroundFill buttonBackgroundFill = new BackgroundFill(lg1 , new CornerRadii(2) , new Insets(1));
 		buttonBackground = new Background(buttonBackgroundFill);
         
+		
+		//Creates the buttons
         buttons = new HBox(0.5);
         buttons.setMaxWidth(800);
         
@@ -233,8 +237,9 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         title = new Text(desc);
         title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        status.setFont(Font.font("Tahoma", FontWeight.BOLD, 12));
+        status.setFont(Font.font("Tahoma", FontWeight.BOLD, 13));
         
+        //Creates labels for each TextArea and formats them
         chatTitle = new Label();
         serversListTitle = new Label();
         clientsListTitle = new Label();
@@ -253,6 +258,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         gamesListTitle.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 12));
         gamesListTitle.setTextFill(Color.DARKSLATEGREY);
         
+        //Creates the Volume Slider
         volume = new Slider(0, 1, 0.5);
         volume.setOpacity(0.9);
         volumeLabel = new Label("Volume");
@@ -263,6 +269,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         volumeBox.setMaxWidth(200);
         volumeBox.getChildren().addAll(volumeLabel, volume);
         
+        //Different shadow for the different TextAreas in the grid
         InnerShadow innerShadow1 = new InnerShadow();
 		innerShadow1.setOffsetX(1.5);
 		innerShadow1.setOffsetY(1.5);
@@ -306,6 +313,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		innerShadow6.setColor(Color.DARKSLATEGREY);
 		 
 		
+		//Packing the elements in different VBoxes with the corresponding labels
         chatArea = new VBox(2);
         chatArea.getChildren().addAll(chatTitle ,messagesIn, inputField);
         messagesIn.setEffect(innerShadow2);
@@ -328,6 +336,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         gameListView.setEffect(innerShadow5);
         gameListView.setOpacity(0.9);
         
+        
+        //Setup the area in the middle of the screen
         promptArea = new GridPane();
         promptArea.setPadding(new Insets(20));
  
@@ -349,14 +359,13 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         infoArea.setOpacity(0.9);
         infoArea.setEffect(innerShadow6);
        
-        infoArea.appendText(HowToPlay.GOAL);
-        infoArea.appendText(HowToPlay.PLAY);
+        infoArea.setText(HowToPlay.GOAL + HowToPlay.PLAY);
         
         GridPane.setConstraints(infoArea, 0, 0);
         GridPane.setRowSpan(infoArea, 2);
         GridPane.setValignment(infoArea, VPos.CENTER);
         GridPane.setHalignment(infoArea, HPos.CENTER);
-        promptArea.getChildren().add(infoArea);
+        //promptArea.getChildren().add(infoArea);
         promptArea.setGridLinesVisible(false);
         
         String url = file.toURI().toString();
@@ -417,9 +426,9 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
        
 
         primaryStage.setScene(scene);
+        primaryStage.setAlwaysOnTop(true);
         primaryStage.show();
         
-        infoArea.setScrollTop(0);
     }
     
     public String askForIp() {

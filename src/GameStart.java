@@ -10,6 +10,7 @@ public class GameStart extends Application{
 	
 
 	
+	@SuppressWarnings("unused")
 	@Override
 	public void start(Stage primaryStage) {
 		
