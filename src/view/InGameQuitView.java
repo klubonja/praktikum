@@ -21,6 +21,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -66,6 +68,8 @@ public class InGameQuitView extends GridPane{
 		this.setHgap(20);
 		
 		question = new Label("Do you really want to QUIT the game?");
+		question.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 14));
+        question.setTextFill(Color.WHITESMOKE);
 		yes = new Button("Yes");
 		no = new Button("No");
 		

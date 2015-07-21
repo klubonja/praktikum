@@ -21,6 +21,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -74,8 +76,11 @@ public class InGameMainMenuView extends GridPane{
 		this.setHgap(20);
 		
 		question = new Label("Do you want to return to the Main Menu?");
+		question.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 14));
+        question.setTextFill(Color.WHITESMOKE);
 		yes = new Button("Yes");
 		no = new Button("No");
+		
 		
 		
 		GridPane.setConstraints(question, 0, 0);
