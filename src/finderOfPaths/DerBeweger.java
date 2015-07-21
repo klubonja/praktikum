@@ -178,9 +178,7 @@ public class DerBeweger {
 								pcManager.getCurrentPlayer(), room);
 						raumZielLabel = gui.getLabelHier(raumZielKachel);
 						inRaumBewegen();
-						stack.getChildren()
-						.add(zug);
-				zug.toFront();
+						
 					}
 
 					bewegenOhneRaum(anweisungen, schritte, nullSchritte);
@@ -432,9 +430,9 @@ public class DerBeweger {
 				raumZielLabel = gui.getLabelHier(raumZielKachel);
 				geheimgangBewegerAusgang(raumZielKachel, raum);
 
-				stack.getChildren()
-				.add(zug);
-		zug.toFront();
+//				stack.getChildren()
+//				.add(zug);
+//				zug.toFront();
 			}
 
 		});

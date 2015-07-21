@@ -1,7 +1,6 @@
 package kommunikation;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Stack;
 import java.util.logging.Level;
 
@@ -22,7 +21,6 @@ import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoStatement;
-import enums.Persons;
 import enums.PlayerStates;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.BallEbene2;
@@ -150,16 +148,29 @@ public class Communicator {
 	}
 	
 	public void useSecretPassage(){
-		
+		CluedoPosition position = pcManager.getCurrentPlayer().getPosition();
 		beweger.useSecretPassage(pcManager);
+		if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[position.getY()][position.getX()].isIstRaum()){
+			openWindow();
+		}
+		network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID));
 	}
 	
 	public void move(CluedoPosition position, String person){
+		
+		if (wuerfelWurf == null){
+			useSecretPassage();
+		}
+		
 		//pcManager.setIndexByPlayer(pcManager.getPlayerByPerson(person));
 					int yKoordinate = position.getY();
 					int xKoordinate = position.getX();
 					ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
-			
+					if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].isIstRaum()){
+						openWindow();
+					}
+					this.wuerfelWurf = null;
+					
 	}
 
 	public void suspect() {
@@ -238,12 +249,15 @@ public class Communicator {
 //		}
 		
 		pcManager.setIndexByPlayer(network.getPlayerByNick(myNick));
+		System.out.println("its MY("+myNick+") turn and opening window");
 		openWindow();
 			
 	}
 	
 	public void itsSomeonesTurn(String nick){
 		pcManager.setIndexByPlayer(network.getPlayerByNick(nick));
+		closeWindow();
+		System.out.println("its "+nick+"s turn and closing window");
 //		if (!sswitch){
 //			sswitch = true;
 //		}
@@ -300,44 +314,46 @@ public class Communicator {
 	}
 	
 	
-	//OPEN WINDOW
-			public void openWindow(){
-				gameView.getKomplettesFeld().getChildren().remove(zugView);
-				gameView.getKomplettesFeld().getChildren().add(zugView);
-			}
-			
-			//CLOSE WINDOW
-			public void closeWindow(){
-				gameView.getKomplettesFeld().getChildren().remove(zugView);
-			}
+		//OPEN WINDOW
+		public void openWindow(){
+			System.out.println("openwindow");
+			gameView.getKomplettesFeld().getChildren().remove(zugView);
+			gameView.getKomplettesFeld().getChildren().add(zugView);
+		}
+		
+		//CLOSE WINDOW
+		public void closeWindow(){
+			System.out.println("closewindow");
+			gameView.getKomplettesFeld().getChildren().remove(zugView);
+		}
 
-			public void updateStatesToNothing() {
-				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.do_nothing);
-			}
-			
-			public void updateStatesToRolls() {
-				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.do_nothing);
-			}
-			
-			public void updateStatesToSuspect(){
-				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.suspect);
-			}
-			
-			public void updateStatesToAccuse(){
-				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.accuse);
-			}
-			
-			public void updateStatesToDisprove(){
-				pcManager.getCurrentPlayer().setPossibleState(PlayerStates.disprove);
-			}
-			
-			public void changeLabel(String str){
-				gameView.getStatusView().setCurEventsMsg(str);
-			}
-			
-			public void setServerStateMsg(String str){
-				gameView.getStatusView().setSStateMsg(str);
-			}
+		public void updateStatesToNothing() {
+			pcManager.getCurrentPlayer().setPossibleState(PlayerStates.do_nothing);
+		}
+		
+		public void updateStatesToRolls() {
+			pcManager.getCurrentPlayer().setPossibleState(PlayerStates.do_nothing);
+		}
+		
+		public void updateStatesToSuspect(){
+			pcManager.getCurrentPlayer().setPossibleState(PlayerStates.suspect);
+		}
+		
+		public void updateStatesToAccuse(){
+			pcManager.getCurrentPlayer().setPossibleState(PlayerStates.accuse);
+		}
+		
+		public void updateStatesToDisprove(){
+			pcManager.getCurrentPlayer().setPossibleState(PlayerStates.disprove);
+		}
+		
+		public void changeLabel(String str){
+			gameView.getStatusView().setCurEventsMsg(str);
+		}
+		
+		public void setServerStateMsg(String str){
+			gameView.getStatusView().setSStateMsg(str);
+		}
 			
 
 			
@@ -393,8 +409,8 @@ public class Communicator {
 					//show cardpane with possible disprover
 					//network.sendMsgToServer(NetworkMessages.disproveMsg(gameID, selectedcard));
 					//bis dahin :
-					showPossibleDisprovals(disprover);
-//					network.sendMsgToServer(NetworkMessages.disproveMsg(gameID, disprover.get(0)));
+					//network.sendMsgToServer(NetworkMessages.disproveMsg(gameID, disprover.get(0)));
+					showPossibleDisprovals(disprover);				
 				}
 				else {
 					network.sendMsgToServer(NetworkMessages.cantDisproveMsg(gameID));

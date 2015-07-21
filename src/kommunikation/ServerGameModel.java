@@ -137,8 +137,8 @@ public class ServerGameModel {
 		serverBeweger.setNewPosition(person, position);
 	}
 	
-	public void useSecretPassage(Persons person){
-		serverBeweger.useSecretPassage(person);
+	public CluedoPosition useSecretPassage(CluedoPlayer player){
+		return serverBeweger.useSecretPassage(player);
 	}
 	
 	/**
@@ -173,6 +173,16 @@ public class ServerGameModel {
 		return false;
 	}
 
+	public CluedoPosition useSecretPassage(String nick){
+		CluedoPosition position = useSecretPassage(pcManager.getPlayerByNick(nick));
+		if (position != null) {
+			pcManager.getPlayerByNick(nick).setNewPosition(position);
+			stateManager.transitionByAction(PlayerStates.use_secret_passage);
+			return position;
+		}
+		return null;
+	}
+	
 	public void suspect(CluedoStatement statement) {
 		currentPlayerDisproveIndex = pcManager.getCurrentPlayerIndex();
 		curSuspicion = statement;

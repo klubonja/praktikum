@@ -111,7 +111,10 @@ public class CluedoGameClient extends CluedoGame {
 	}
 	
 	public void move(CluedoPosition position, String person) {
-		communicator.move(position, person);
+		
+		Platform.runLater(() -> {
+			communicator.move(position, person);
+		});
 	}
 	
 	public void disprove() {

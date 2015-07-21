@@ -267,6 +267,11 @@ public class DataManagerServer extends DataManager {
 		return false;
 	}
 
+	public void secretPassageRequest(int gameID, ClientItem client) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }
 	

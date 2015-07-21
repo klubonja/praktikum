@@ -206,6 +206,23 @@ public class CluedoGameServer extends CluedoGame {
 		return false;
 	}
 	
+	public boolean useSecretPassageRequest(ClientItem client) {
+		if(checkandHandleStateTrans(PlayerStates.use_secret_passage, client)){
+			CluedoPosition position = gameLogic.useSecretPassage(client.getNick());
+			if (position != null) {
+				 client.sendMsg(NetworkMessages.okMsg());
+				 
+				 sendMsgsToAll(NetworkMessages.movedMsg(getGameId(),getPlayerByClient(client).getCluedoPerson().getColor(), position));
+				 sendStateUpdateMsg(getPlayerByClient(client));
+
+				return true	;
+			}
+			client.sendMsg(NetworkMessages.error_Msg("move not legit"));
+		}
+		return false;
+	}
+	
+	
 	public boolean accuseRequest(CluedoStatement accusation,ClientItem client) {
 		if(checkandHandleStateTrans(PlayerStates.accuse, client)){
 			gameLogic.accuse(accusation,client.getNick());
@@ -336,6 +353,7 @@ public class CluedoGameServer extends CluedoGame {
 		}
 		return false;
 	}
+
 	
 }
 

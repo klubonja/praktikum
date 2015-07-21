@@ -69,8 +69,7 @@ public class ServerBeweger {
 		return kacheln.getKacheln()[pos.getY()][pos.getX()].isIstRaum();	
 	}
 	
-	public void useSecretPassage(Persons person){
-		CluedoPlayer player = pcManager.getPlayerByPerson(person);
+	public CluedoPosition useSecretPassage(CluedoPlayer player){
 		CluedoPosition position = player.getPosition();
 		if (kacheln.getKacheln()[position.getY()][position.getX()].getRaum()==Rooms.study){
 			position.setX(raumBeweger.positionInRaum(player, Rooms.kitchen).getPosition().getX());
@@ -88,7 +87,10 @@ public class ServerBeweger {
 			position.setX(raumBeweger.positionInRaum(player, Rooms.lounge).getPosition().getX());
 			position.setY(raumBeweger.positionInRaum(player, Rooms.lounge).getPosition().getY());
 		}
-		
+		else {
+			return null;
+		}
+		return position;
 	}
 	
 	
