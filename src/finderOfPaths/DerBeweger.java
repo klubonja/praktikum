@@ -405,12 +405,17 @@ public class DerBeweger {
 
 	public void geheimgangBewegerEingang(Rooms raum) {
 
+		Kachel anfangsFeldKachel = kachelContainer.getKacheln()[pcManager.getCurrentPlayer().getPosition().getY()][pcManager.getCurrentPlayer().getPosition().getX()];
+		Label anfangsFeldLabel = gui.getLabelHier(anfangsFeldKachel);
+		
+		
 		gangKachel = geheimGangKachel(raum, "anfang");
 		gangLabel = gui.getLabelHier(gangKachel);
 		
+		
 		Path path = new Path();
 		path.getElements().add(
-				new MoveTo(raumZielLabel.getLayoutX(), raumZielLabel
+				new MoveTo(anfangsFeldLabel.getLayoutX(), anfangsFeldLabel
 						.getLayoutY()));
 		path.getElements().add(
 				new LineTo(gangLabel.getLayoutX(), gangLabel.getLayoutY()));
