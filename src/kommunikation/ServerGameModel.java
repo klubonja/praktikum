@@ -3,6 +3,7 @@ package kommunikation;
 import java.util.Iterator;
 import java.util.Stack;
 
+import animation.RaumBeweger;
 import javafx.scene.paint.Color;
 import kacheln.KachelContainer;
 import model.Deck;
@@ -19,12 +20,16 @@ import enums.PlayerStates;
 import enums.Rooms;
 import enums.Weapons;
 import finderOfPaths.Ausloeser;
-import finderOfPaths.PlayerCircleManager;
-import finderOfPaths.RaumBeweger;
 import finderOfPaths.Sucher;
 import finderOfPaths.Vorschlaege;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 
+/**
+ * @since ca. 15.07.2015
+ * @version 21.07.2015
+ * @author Benedikt Mayer
+ * Das interne Spiel-Model des Servers. Hier darf der Server auch mal spielen!
+ */
 public class ServerGameModel {
 	
 	private int gameID;
@@ -34,7 +39,6 @@ public class ServerGameModel {
 	private CluedoStatement winningStatement;
 	
 	public CluedoGameServer  network;
-	
 	
 	private Sucher sucher;
 	private Vorschlaege vorschlager;
@@ -48,9 +52,10 @@ public class ServerGameModel {
 	private RaumBeweger raumBeweger;
 	private StateManager stateManager;
 	
-	
-	
-	
+	/**
+	 * Hier wird unser Server-Spiel-Model erzeugt! Juchee!
+	 * @param game unser Spiel, welches gespielt werden soll.
+	 */
 	public ServerGameModel(CluedoGameServer game){
 		
 		network = game;
@@ -74,16 +79,25 @@ public class ServerGameModel {
 		
 	}
 	
+	/**
+	 * auf geht's! Gogogo!
+	 */
 	public void start(){
 		dealCardsNetwork();
 		orderPlayersList();
 		stateManager.setNextTurnRec();
 	}
 	
+	/**
+	 * @return das winning Statement!
+	 */
 	public CluedoStatement getWinningStatement() {
 		return winningStatement;
 	}
 	
+	/**
+	 * Teilt die Karten fuer den Server aus und setzt dann den Spielern auch dementsprechend ihre Haende.
+	 */
 	public void dealCardsNetwork() {
 		Deck deck = new Deck(pcManager.getSize());
 		Stack<CluedoPlayer> players = pcManager.getPlayers();
@@ -99,6 +113,11 @@ public class ServerGameModel {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param color gibt es einen Spieler mit dieser Farbe?
+	 * @return true, falls es einen Spieler mit dieser Farbe gibt.
+	 */
 	public boolean checkForColor(Color color){
 		Stack<CluedoPlayer> pl = network.getPlayersConnected();
 		for (CluedoPlayer p : pl)
@@ -107,11 +126,18 @@ public class ServerGameModel {
 		return false;
 	}
 	
+	/**
+	 * Sortiert die Spielerliste..?
+	 */
 	public void orderPlayersList(){
 		if (!checkForColor(Color.RED))
 			setStart(pcManager.getPlayers());	
 	}
 	
+	/**
+	 * ??????????????????????
+	 * @param players
+	 */
 	public static void setStart(Stack<CluedoPlayer> players){
 		CluedoPlayer first = players.get(auxx.getRandInt(0, players.size()-1));
 		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone(); 
@@ -125,6 +151,10 @@ public class ServerGameModel {
 		tmplist = null;
 	}
 	
+	/**
+	 * damit der Server auf wuerfeln darf. Hier wird gerandomt!
+	 * @return das int[] welches erwuerfelt worde! Der Server hat gesprochen!
+	 */
 	public int[] rollDice(){
 		int ersterWuerfel = auxx.getRandInt(1, 6);
 		int zweiterWuerfel = auxx.getRandInt(1, 6);
@@ -133,17 +163,26 @@ public class ServerGameModel {
 		return new int[]{ersterWuerfel,zweiterWuerfel};
 	}
 	
+	/**
+	 * bewegt eine Spieler an eine neue Position
+	 * @param person der zu bewegende Spieler
+	 * @param position die Zielposition
+	 */
 	public void bewegen(Persons person, CluedoPosition position){
 		serverBeweger.setNewPosition(person, position);
 	}
 	
+	/**
+	 * Bewegt einen Spieler durch einen Geheimgang
+	 * @param player wer bewegt wird.
+	 * @return die CluedoPosition wo's mit dem Geheimgang hin gehen soll.
+	 */
 	public CluedoPosition useSecretPassage(CluedoPlayer player){
 		return serverBeweger.useSecretPassage(player);
 	}
 	
 	/**
-	 * 
-	 * @param position
+	 * @param position wo sich derjenige hinbewegen will
 	 * @return true, falls man sich dahin bewegen darf
 	 */
 	public boolean checkMove(CluedoPosition position){
@@ -151,19 +190,27 @@ public class ServerGameModel {
 	}
 	
 	/**
-	 * 
-	 * @param person
+	 * @param person derjenige, der einen Geheimgang nutzen will
 	 * @return true, falls man von hier aus den Geheimgang nutzen darf.
 	 */
 	public boolean checkSecretPassage(Persons person){
 		return serverBeweger.secretPassagePossible(person);
 	}
 	
+	/**
+	 * Beendet einen Zug und setzt die naechste Runde
+	 */
 	public void endTurn(){
 		stateManager.transitionByAction(PlayerStates.end_turn);
 		setNextRound();
 	}
 	
+	/**
+	 * wenn derjenige sich an gewaehlte Zielposition bewegen darf, wird das dann gemacht
+	 * @param nick derjenige, der sich bewegen will
+	 * @param newpos Die gewaehlte Zielposition
+	 * @return true, falls er sich dort hin bewegen kann
+	 */
 	public boolean movePlayer(String nick,CluedoPosition newpos){
 		if (checkMove(newpos)) {
 			pcManager.getPlayerByNick(nick).setNewPosition(newpos);
@@ -173,6 +220,11 @@ public class ServerGameModel {
 		return false;
 	}
 
+	/**
+	 * Bewegt einen Spieler durch einen Geheimgang, falls er das denn darf.
+	 * @param nick der Nick des Spielers welcher sich durch den Gang bewegen moechte.
+	 * @return die Zielposition falls er sich bewegen darf. Sonst null
+	 */
 	public CluedoPosition useSecretPassage(String nick){
 		CluedoPosition position = useSecretPassage(pcManager.getPlayerByNick(nick));
 		if (position != null) {
@@ -183,12 +235,19 @@ public class ServerGameModel {
 		return null;
 	}
 	
+	/**
+	 * Hier suspectet der Server
+	 * @param statement das Statement das suspectet wird.
+	 */
 	public void suspect(CluedoStatement statement) {
 		currentPlayerDisproveIndex = pcManager.getCurrentPlayerIndex();
 		curSuspicion = statement;
 		setNextDisproveRound();		
 	}
 	
+	/**
+	 * Hier wird die naechste Disprove-Runde eingeleitet
+	 */
 	public void setNextDisproveRound(){
 		int lastIndex = currentPlayerDisproveIndex;
 		currentPlayerDisproveIndex = rotate(currentPlayerDisproveIndex,pcManager.getSize(),false);
@@ -203,6 +262,12 @@ public class ServerGameModel {
 		System.out.println("currentdisproveindex: "+currentPlayerDisproveIndex+" currentplayerindex:"+pcManager.getCurrentPlayerIndex());
 	}
 	
+	/**
+	 * Jemand moechte disproven, also lassen wir ihn das auch machen.
+	 * @param card die Karte, welche disprovt wird
+	 * @param nick der Nick der Person, welche disprovt hat
+	 * @return true, falls er disprovt hat. False falls nicht
+	 */
 	public boolean disprove(String card,String nick){
 		if (curSuspicion.isDisprovenBy(card)){
 			network.sendMsgsToAll(NetworkMessages.disprovedMsg(gameID, nick));
@@ -222,6 +287,9 @@ public class ServerGameModel {
 		return false;
 	}
 	
+	/**
+	 * Hier wird eine disprove-Runde beendet.
+	 */
 	public void  endDisproveRound(){
 		stateManager.transitionByAction(PlayerStates.suspect);
 		network.sendStateUpdateMsg(pcManager.getCurrentPlayer());
@@ -229,6 +297,13 @@ public class ServerGameModel {
 		curSuspicion = null;
 	}
 	
+	/**
+	 * 
+	 * @param start
+	 * @param size
+	 * @param forward
+	 * @return
+	 */
 	public static int rotate(int start,int size, boolean forward){
 		int idx = start;
 		if (forward) idx++; //rotate forward
@@ -237,6 +312,11 @@ public class ServerGameModel {
 		return Math.abs(idx%size);
 	}
 
+	/**
+	 * Anklagen!
+	 * @param accusation die Anklage, welche gemacht wird!
+	 * @param nick der Nick der Person, welche anklagt
+	 */
 	public void accuse(CluedoStatement accusation,String nick) {
 		if (accusation.equals(getWinningStatement())){
 			network.sendMsgsToAll(
@@ -255,6 +335,9 @@ public class ServerGameModel {
 		}		
 	}
 
+	/**
+	 * Next round, boys.
+	 */
 	public void setNextRound(){
 		pcManager.next();
 		stateManager.setNextTurnRec();

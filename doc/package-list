@@ -1,12 +1,23 @@
 
+animation
+broadcast
 cluedoClient
 cluedoNetworkGUI
+cluedoNetworkLayer
 cluedoServer
 enums
-gui1_0
+finderOfPaths
 json
+kacheln
+kommunikation
 model
+nedkosTestPackage
 networkTest
 org.json
-testGui
+stateManager
+staticClasses
+testStackPane
 view
+view.label
+view.spielfeld
+yoloKI

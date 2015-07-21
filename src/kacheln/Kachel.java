@@ -12,7 +12,7 @@ import enums.Rooms;
 
 /**
  * @since 26.05.2015
- * @version 26.05.2015
+ * @version 21.05.2015
  * @author Benedikt Mayer
  * 
  * Eine Kachel ist ein Label mit Koordinaten und Hintergrundfarbe
@@ -30,15 +30,16 @@ public class Kachel{
 	private char [][] moeglichkeitenVonHier;
 	private Kachel vonHier;
 	private CluedoPosition position; 
-	
+		
 	/**
-	 * 
-	 * @param text die Aufschrift
 	 * @param position die CluedoPosition der Kachel
-	 * @param istRaum	ob die Kachel ein Raum ist
-	 * @param orientierung falls die Kachel eine T�r ist, die Orientierung
-	 * @param istTuer ob die Kachel eine T�r ist
+	 * @param istRaum ob die Kachel ein Raum ist
+	 * @param orientierung falls die Kachel eine Tuer ist, die Orientierung
+	 * @param istTuer ob die Kachel eine Tuer ist
+	 * @param raum der Raum hier (falls es einer ist)
 	 * @param moeglichkeitenHierher falls man hier her kann der Weg wie das geht
+	 * @param moeglichkeitenVonHier wo man von hier aus hin kann (falls man wo hin kann) und wie man dort hin kommt.
+	 * @param vonHier eine bestimmte Kachel, welche man von hier aus betreten kann.
 	 */
 	public Kachel (CluedoPosition position, boolean istRaum,Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier){
 		this.position = position;
@@ -51,15 +52,10 @@ public class Kachel{
 		this.vonHier = vonHier;
 	}
 	
-	public Kachel(){
-		
-	}
-	
-	public void setBackgroundColor(Label label, Color farbe){
-		hintergrundfarbe = new BackgroundFill(farbe, null, null);
-		Background hintergrund = new Background(hintergrundfarbe);
-		label.setBackground(hintergrund);
-	}
+	/**
+	 * Quick n' dirty zum initiieren ohne viel zu wissen.
+	 */
+	public Kachel(){}
 	
 	public Orientation getOrientierung() {
 		return orientierung;
