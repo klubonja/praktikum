@@ -36,7 +36,7 @@ public class ChatView extends VBox {
 	chatBox = new HBox(3);
 	//chatSend = new Button("Send");
 	chatField = new TextField();
-	chatField.setPrefWidth(200);
+	//chatField.setPrefWidth(200);
 	chatField.setMaxWidth(200);
 	//chatBox.getChildren().addAll(chatField, chatSend);
 	this.getChildren().addAll(getChatArea(),chatField,chatBox);

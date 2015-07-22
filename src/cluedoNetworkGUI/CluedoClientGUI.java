@@ -9,15 +9,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
@@ -85,6 +90,9 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private Slider volume;
 	private Label volumeLabel;
 	private HBox volumeBox;
+	private Button mute;
+	private final Image muteGraphic = new Image("http://png-3.findicons.com/files/icons/2711/free_icons_for_windows8_metro/512/mute.png"); 
+	private final Image unmuteGraphic = new Image("http://www.veryicon.com/icon/png/System/Icons8%20Metro%20Style/Volume%20Controls%20Volume%20up.png"); 
 	
 	private final File file = new File("media/clientAudio1.mp3");
 	
@@ -115,6 +123,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 
 		 setStartServiceButtonLabel("senddhandshake");
 		 setStylesheet("cluedoNetworkGUI/networkStyle.css");
+		 setMenuBar();
 		 startUp();	 		 
 	}
 	    
@@ -131,9 +140,9 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		//assignBackground();
 	       
 	    //Formats the Grid
-        grid.setPadding(new Insets(20));
+        grid.setPadding(new Insets(0, 0, 20, 0));
         grid.setHgap(20);
-        grid.setVgap(15);
+        grid.setVgap(10);
         grid.setGridLinesVisible(false);
         grid.setBackground(background);
         
@@ -154,12 +163,16 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         col2.setPercentWidth(30);
         grid.getColumnConstraints().add(col2);
         
-        RowConstraints row0 = new RowConstraints(); //menue
-	    row0.setPercentHeight(10); 
+        RowConstraints menuRow = new RowConstraints();
+	    menuRow.setPercentHeight(4); 
+	    grid.getRowConstraints().add(menuRow);
+	    
+        RowConstraints row0 = new RowConstraints();
+	    row0.setPercentHeight(8); 
 	    grid.getRowConstraints().add(row0);
 	    
 	    RowConstraints row1 = new RowConstraints();
-	    row1.setPercentHeight(40);        
+	    row1.setPercentHeight(38);        
 	    grid.getRowConstraints().add(row1);
 	    
 	    RowConstraints row2 = new RowConstraints();
@@ -173,23 +186,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         messagesIn.setWrapText(true);
         messagesOut.setWrapText(true);
-     
-//        Tab tab0 = new Tab();
-//        tab0.setText("Spiele");           
-//        tab0.setContent(gameListView);
-//              
-//        Tab tab1 = new Tab();
-//        tab1.setText("Server");           
-//        tab1.setContent(networkActorsListView);
-//        
-//        tabPane.getTabs().add(tab1);
-//        tabPane.getTabs().add(tab0); 
         
-        exit = new Button("Exit");
         
         //Formats the background of the buttons
         Stop white = new Stop(0,Color.SNOW);
-		//Stop transparent = new Stop(1, Color.TRANSPARENT);
+//		Stop transparent = new Stop(1, Color.TRANSPARENT);
 		Stop[] stops = new Stop[] { white};
 		LinearGradient lg1 = new LinearGradient(0, 1, 0, 0, true, CycleMethod.NO_CYCLE, stops);
 		
@@ -226,6 +227,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         createServer.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 13));
         createServer.setTextFill(Color.DARKSLATEGREY);
         
+        exit = new Button("Exit");
         exit.setPrefSize(200, 50);
         exit.setMaxSize(200, 50);
         exit.setBackground(buttonBackground);
@@ -234,6 +236,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         buttons.getChildren().addAll(createGame, createServer, refreshGamesList, exit);
         //buttons.getChildren().add(connectToTestServer);
+        buttons.setPadding(new Insets(0, 20, 0, 20));
         
         title = new Text(desc);
         title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
@@ -264,10 +267,20 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         volumeLabel = new Label("Volume");
         volumeLabel.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 12));
         volumeLabel.setTextFill(Color.WHITESMOKE);
-        volumeBox = new HBox(4);
+        volumeLabel.setAlignment(Pos.CENTER);
+        mute = new Button();
+        mute.setBackground(buttonBackground);
+        ImageView muteImage = new ImageView(unmuteGraphic);
+        muteImage.setFitHeight(20);
+        muteImage.setFitWidth(20);
+        mute.setGraphic(muteImage);
+        mute.setMaxSize(20, 20);
+        mute.setAlignment(Pos.CENTER);
+        volumeBox = new HBox(5);
         volumeBox.setPrefWidth(50);
         volumeBox.setMaxWidth(200);
-        volumeBox.getChildren().addAll(volumeLabel, volume);
+        volumeBox.getChildren().addAll(volumeLabel, volume , mute);
+        volumeBox.setPadding(new Insets(0, 20 , 0 , 0));
         
         //Different shadow for the different TextAreas in the grid
         InnerShadow innerShadow1 = new InnerShadow();
@@ -316,6 +329,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		//Packing the elements in different VBoxes with the corresponding labels
         chatArea = new VBox(2);
         chatArea.getChildren().addAll(chatTitle ,messagesIn, inputField);
+        chatArea.setPadding(new Insets(0, 0 , 0 , 20));
         messagesIn.setEffect(innerShadow2);
         inputField.setEffect(innerShadow3);
         messagesIn.setOpacity(0.9);
@@ -323,16 +337,19 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         servers = new VBox(2);
         servers.getChildren().addAll(serversListTitle, networkActorsListView);
+        servers.setPadding(new Insets(0, 0 , 0 , 20));
         networkActorsListView.setEffect(innerShadow1);
         networkActorsListView.setOpacity(0.9);
         
         clients = new VBox(2);
         clients.getChildren().addAll(clientsListTitle, clientNicksView);
+        clients.setPadding(new Insets(0, 20 , 0 , 0));
         clientNicksView.setEffect(innerShadow4);
         clientNicksView.setOpacity(0.9);
         
         games = new VBox(2);
         games.getChildren().addAll(gamesListTitle, gameListView);
+        games.setPadding(new Insets(0, 20 , 0 , 0));
         gameListView.setEffect(innerShadow5);
         gameListView.setOpacity(0.9);
         
@@ -344,9 +361,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         ColumnConstraints prompt0 = new ColumnConstraints();
         prompt0.setPercentWidth(100);
         promptArea.getColumnConstraints().add(prompt0);
+        
         RowConstraints prompt1 = new RowConstraints();
 	    prompt1.setPercentHeight(50); 
 	    promptArea.getRowConstraints().add(prompt1);
+	    
 	    RowConstraints prompt2 = new RowConstraints();
 	    prompt2.setPercentHeight(50);        
 	    promptArea.getRowConstraints().add(prompt2);
@@ -368,40 +387,44 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         //promptArea.getChildren().add(infoArea);
         promptArea.setGridLinesVisible(false);
         
+        
         String url = file.toURI().toString();
         clip = new Media(url);
         audio = new MediaPlayer(clip);
         audio.play();
         audio.setCycleCount(MediaPlayer.INDEFINITE);
         
-        GridPane.setConstraints(statusContainer, 1, 0);
+        
+        GridPane.setConstraints(statusContainer, 1, 1);
+        GridPane.setHalignment(statusContainer, HPos.CENTER);
+        GridPane.setValignment(statusContainer, VPos.BOTTOM);
          
         GridPane.setHalignment(buttons, HPos.CENTER);
         GridPane.setColumnSpan(buttons, 3);
         GridPane.setValignment(buttons, VPos.BOTTOM);
-        GridPane.setConstraints(buttons, 0, 3);
+        GridPane.setConstraints(buttons, 0, 4);
         
         GridPane.setHalignment(chatArea, HPos.CENTER);
         GridPane.setHalignment(chatArea, HPos.CENTER);
-        GridPane.setConstraints(chatArea, 0, 2);
+        GridPane.setConstraints(chatArea, 0, 3);
         
         GridPane.setHalignment(servers, HPos.CENTER);
         GridPane.setValignment(servers, VPos.CENTER);
-        GridPane.setConstraints(servers, 0, 1);
+        GridPane.setConstraints(servers, 0, 2);
         
         GridPane.setHalignment(clients, HPos.CENTER);
         GridPane.setHalignment(clients, HPos.CENTER);
-        GridPane.setConstraints(clients, 2, 1);
+        GridPane.setConstraints(clients, 2, 2);
         
         GridPane.setHalignment(games, HPos.CENTER);
         GridPane.setHalignment(games, HPos.CENTER);
-        GridPane.setConstraints(games, 2, 2);
+        GridPane.setConstraints(games, 2, 3);
         
-        GridPane.setConstraints(volumeBox, 2, 0);
+        GridPane.setConstraints(volumeBox, 2, 1);
         GridPane.setHalignment(volumeBox, HPos.RIGHT);
         GridPane.setValignment(volumeBox, VPos.CENTER);
         
-        GridPane.setConstraints(promptArea, 1, 1);
+        GridPane.setConstraints(promptArea, 1, 2);
         GridPane.setRowSpan(promptArea, 2);
         GridPane.setHalignment(promptArea, HPos.CENTER);
         GridPane.setValignment(promptArea, VPos.CENTER);
@@ -430,6 +453,42 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         primaryStage.show();
         
     }
+	
+	public void setMenuBar(){
+	
+		MenuBar menuBar = new MenuBar();
+		
+		Menu file = new Menu("File");
+		Menu help = new Menu("Help");
+		Menu window = new Menu("Window");
+		
+		MenuItem options = new MenuItem("Options");
+		MenuItem createGameMenu = new MenuItem("Create Client");
+		MenuItem createServerMenu = new MenuItem("Create Server");
+		MenuItem testServer = new MenuItem("Test LMU Server");
+		MenuItem exit = new MenuItem("Quit");
+		file.getItems().addAll(createGameMenu, createServerMenu, testServer, options, exit);
+		
+		MenuItem fullScreen = new MenuItem("Full Screen");
+		window.getItems().addAll(fullScreen);
+		
+		
+		MenuItem gameRules = new MenuItem("Game Rules");
+		help.getItems().addAll(gameRules);
+		
+		menuBar.getMenus().addAll(file, window, help);
+		menuBar.setOpacity(0.9);
+//		menuBar.setMaxWidth(1400);
+//		menuBar.setPrefWidth(1400);
+		
+		GridPane.setConstraints(menuBar, 0, 0);
+		GridPane.setColumnSpan(menuBar, 3);
+		GridPane.setValignment(menuBar, VPos.CENTER);
+		GridPane.setHalignment(menuBar, HPos.CENTER);
+		
+		grid.getChildren().add(menuBar);
+		
+	}
     
     public String askForIp() {
     	Stage ipPrompt = new Stage();
@@ -716,6 +775,22 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 
 	public void setVolumeBox(HBox volumeBox) {
 		this.volumeBox = volumeBox;
+	}
+
+	public Button getMute() {
+		return mute;
+	}
+
+	public void setMute(Button mute) {
+		this.mute = mute;
+	}
+
+	public Image getMuteGraphic() {
+		return muteGraphic;
+	}
+
+	public Image getUnmuteGraphic() {
+		return unmuteGraphic;
 	}
 
 	public File getFile() {

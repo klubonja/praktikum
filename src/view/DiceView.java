@@ -39,10 +39,27 @@ public class DiceView extends GridPane{
 		this.setGridLinesVisible(false);
 		this.setVgap(5);
 		this.setHgap(20);
-		this.getRowConstraints().add(new RowConstraints(120));
-		this.getRowConstraints().add(new RowConstraints(25));
-		this.getColumnConstraints().add(new ColumnConstraints(150));
-		this.getColumnConstraints().add(new ColumnConstraints(150));
+		
+		RowConstraints row0 = new RowConstraints();
+		row0.setPercentHeight(82.75);
+		this.getRowConstraints().add(row0);
+		
+		ColumnConstraints column0 = new ColumnConstraints();
+		column0.setPercentWidth(50);
+		this.getColumnConstraints().add(column0);
+		
+		RowConstraints row1 = new RowConstraints();
+		row1.setPercentHeight(17.25);
+		this.getRowConstraints().add(row1);
+		
+		ColumnConstraints column1 = new ColumnConstraints();
+		column1.setPercentWidth(50);
+		this.getColumnConstraints().add(column1);
+		
+//		this.getRowConstraints().add(new RowConstraints(120));
+//		this.getRowConstraints().add(new RowConstraints(25));
+//		this.getColumnConstraints().add(new ColumnConstraints(150));
+//		this.getColumnConstraints().add(new ColumnConstraints(150));
 		this.setPadding(new Insets(5));
 		
 		//Creates an ImageView for the first dice.

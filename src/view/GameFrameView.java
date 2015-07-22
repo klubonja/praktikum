@@ -116,8 +116,12 @@ public class GameFrameView extends GridPane{
 		rightGrid = new GridPane();
 		
 		RowConstraints row00 = new RowConstraints();
-		row00.setPercentHeight(100);
+		row00.setPercentHeight(50);
 		rightGrid.getRowConstraints().add(row00);
+		
+		RowConstraints row01 = new RowConstraints();
+		row01.setPercentHeight(50);
+		rightGrid.getRowConstraints().add(row01);
 		
 		ColumnConstraints column00 = new ColumnConstraints();
 		column00.setPercentWidth(53.846);
@@ -135,20 +139,26 @@ public class GameFrameView extends GridPane{
 
 		// VBox and HBox for dividing elements in two columns
 		VBox leftColumn = new VBox(10);
+		leftColumn.setMaxWidth(300);
+		leftColumn.setPrefWidth(300);
 		VBox rightColumn = new VBox(10);
+		rightColumn.setMaxWidth(300);
 		rightColumn.getChildren().addAll(notes, dice);
 		leftColumn.getChildren().addAll(statusView, hand, chat);
+		
+		GridPane.setConstraints(chat,0,1);
+		GridPane.setConstraints(hand,0,0);
 		
 		//Add elements to rightGrid
 		/*GridPane.setConstraints(notes,1,0);
 		GridPane.setConstraints(dice,1,1);
 		GridPane.setConstraints(chat,0,1);
 		GridPane.setConstraints(hand,0,0);*/
-		GridPane.setConstraints(rightColumn,1,0);
-		GridPane.setRowSpan(rightColumn, 2);
+//		GridPane.setConstraints(rightColumn,1,0);
+//		GridPane.setRowSpan(rightColumn, 2);
 		GridPane.setConstraints(leftColumn,0,0);
 		GridPane.setRowSpan(leftColumn, 2);
-		rightGrid.getChildren().addAll(rightColumn, leftColumn);
+		rightGrid.getChildren().addAll(rightColumn, chat, hand);
 		
 		
 		GridPane.setConstraints(menu,0,0);
@@ -165,6 +175,8 @@ public class GameFrameView extends GridPane{
 		GridPane.setValignment(komplettesFeld, VPos.TOP);
 		GridPane.setHalignment(komplettesFeld, HPos.LEFT);
 		GridPane.setConstraints(rightGrid, 1,1);
+		GridPane.setValignment(rightGrid, VPos.CENTER);
+		GridPane.setHalignment(rightGrid, HPos.CENTER);
 		this.getChildren().addAll(komplettesFeld, menu, volumeBox, rightGrid);
 		
 		}

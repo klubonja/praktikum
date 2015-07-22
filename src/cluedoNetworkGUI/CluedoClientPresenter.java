@@ -48,6 +48,8 @@ public class CluedoClientPresenter {
 		view.getConnectToTestServer().setOnMouseExited(e -> defaultBackground(view.getConnectToTestServer()));
 		view.getRefreshGamesList().setOnMouseEntered(e -> shadeBackground(view.getRefreshGamesList()));
 		view.getRefreshGamesList().setOnMouseExited(e -> defaultBackground(view.getRefreshGamesList()));
+		view.getMute().setOnMouseEntered(e -> shadeBackground(view.getMute()));
+		view.getMute().setOnMouseExited(e -> defaultBackground(view.getMute()));
 		view.getExit().setOnMouseEntered(e -> shadeBackground(view.getExit()));
 		view.getExit().setOnMouseExited(e -> defaultBackground(view.getExit()));
 		

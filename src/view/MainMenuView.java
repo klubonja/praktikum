@@ -1,5 +1,7 @@
 package view;
 
+import java.io.File;
+
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
@@ -19,6 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -28,6 +32,7 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class MainMenuView extends StackPane{
 	
@@ -73,7 +78,7 @@ public class MainMenuView extends StackPane{
 		main.setAlignment(Pos.CENTER);
 		main.setVgap(5);
 		main.setHgap(5);
-		main.setPadding(new Insets(20));
+		main.setPadding(new Insets(70, 20 , 50, 70));
 		main.setGridLinesVisible(true);
 		
 		
@@ -90,30 +95,40 @@ public class MainMenuView extends StackPane{
         column2.setPercentWidth(33.3);
         main.getColumnConstraints().add(column2);
         
-        RowConstraints row0 = new RowConstraints(); 
-	    row0.setPercentHeight(10); 
-	    main.getRowConstraints().add(row0);
+//        RowConstraints row0 = new RowConstraints(); 
+//	    row0.setPercentHeight(10); 
+//	    main.getRowConstraints().add(row0);
 	    
 	    RowConstraints row1 = new RowConstraints();
-	    row1.setPercentHeight(15);        
+//	    row1.setPercentHeight(23);
+	    row1.setPrefHeight(170);
 	    main.getRowConstraints().add(row1);
 	    
 	    RowConstraints row2 = new RowConstraints();
-	    row2.setPercentHeight(50);        
+//	    row2.setPercentHeight(54);  
+	    row2.setPrefHeight(400);
 	    main.getRowConstraints().add(row2);
 	    
 	    RowConstraints row3 = new RowConstraints();
-	    row3.setPercentHeight(15);        
+//	    row3.setPercentHeight(23);
+	    row3.setPrefHeight(150);
 	    main.getRowConstraints().add(row3);
 	    
-	    RowConstraints row4 = new RowConstraints();
-	    row4.setPercentHeight(10);        
-	    main.getRowConstraints().add(row4);
+//	    RowConstraints row4 = new RowConstraints();
+//	    row4.setPercentHeight(10);        
+//	    main.getRowConstraints().add(row4);
 	    
 	    title = new Label("Cluedo");
 		title.setTextFill(Color.WHITE);
 		title.setEffect(new Glow(0.4));
 		title.setStyle("-fx-font-size: 80; -fx-font-weight: bold;");
+		title.setAlignment(Pos.CENTER);
+		
+		Image lotr = new Image("media/introLogo.png");
+		ImageView lotrBack = new ImageView(lotr);
+		lotrBack.setFitHeight(100);
+		lotrBack.setFitWidth(500);
+	
 
 		//Creates the background of the grid
 //		mainImage = new Image("http://www.migrantyouthproject.org/wp-content/uploads/2013/05/under_construction.jpg");
@@ -136,20 +151,32 @@ public class MainMenuView extends StackPane{
 		
  
 		howToPlay = new Button("How to createClient");
-		GridPane.setConstraints(createClient, 0, 3);
+		GridPane.setConstraints(createClient, 0, 2);
 		GridPane.setHalignment(createClient, HPos.CENTER);
-		GridPane.setValignment(createClient, VPos.CENTER);
+		GridPane.setValignment(createClient, VPos.BOTTOM);
 		
-		GridPane.setConstraints(createServer, 1, 3);
+		GridPane.setConstraints(createServer, 1, 2);
 		GridPane.setHalignment(createServer, HPos.CENTER);
-		GridPane.setValignment(createServer, VPos.CENTER);
+		GridPane.setValignment(createServer, VPos.BOTTOM);
 		
 		GridPane.setConstraints(title, 0, 1);
 		GridPane.setColumnSpan(title, 3);
 		GridPane.setHalignment(title, HPos.CENTER);
 		GridPane.setValignment(title, VPos.CENTER);
 		
-		main.getChildren().addAll(createClient, title, createServer);
+		GridPane.setConstraints(lotrBack, 0, 0);
+		GridPane.setColumnSpan(lotrBack, 3);
+		GridPane.setHalignment(lotrBack, HPos.CENTER);
+		GridPane.setValignment(lotrBack, VPos.TOP);
+		
+		VBox titleBox = new VBox(-100);
+		titleBox.getChildren().addAll(lotrBack, title);
+		GridPane.setConstraints(titleBox, 1, 0);
+		//GridPane.setColumnSpan(titleBox, 3);
+		GridPane.setHalignment(titleBox, HPos.CENTER);
+		GridPane.setValignment(titleBox, VPos.CENTER);
+		
+		main.getChildren().addAll(createClient, createServer, titleBox);
 		
 		Stop darkgrey = new Stop(0,Color.DARKSLATEGREY);
 		Stop blue = new Stop(1, Color.MIDNIGHTBLUE);
@@ -157,16 +184,17 @@ public class MainMenuView extends StackPane{
 		Stop[] stops = new Stop[] { darkgrey, blue, green};
 		RadialGradient rg1 = new RadialGradient(1, 0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
 		
-		
+		File file = new File("C:/Users/Kristi/Downloads/landscape.mp4");
+		String url = file.toURI().toString();
+		Media video = new Media(url);
+        
 		//Setup for the video background
-		backgroundVideo = new MediaPlayer(
-			      new Media("http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv")
-			    );	
+		backgroundVideo = new MediaPlayer(video);	
 		
 		background = new Group(new MediaView(backgroundVideo));
-
+		backgroundVideo.setStartTime(new Duration(34100));
 		backgroundVideo.setMute(false);
-		backgroundVideo.setRate(50);
+		//backgroundVideo.setRate(50);
 		backgroundVideo.setCycleCount(MediaPlayer.INDEFINITE);
 		backgroundVideo.play();
 			    
