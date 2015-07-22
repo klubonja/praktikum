@@ -39,6 +39,7 @@ public class CluedoClientPresenter {
 		
 
 		view.getExit().setOnMouseClicked(e -> exitGame());
+		view.getExitButton().setOnAction(e -> exitGame());
 		
 		view.getCreateGame().setOnMouseEntered(e -> shadeBackground(view.getCreateGame()));
 		view.getCreateGame().setOnMouseExited(e -> defaultBackground(view.getCreateGame()));
@@ -52,6 +53,8 @@ public class CluedoClientPresenter {
 		view.getMute().setOnMouseExited(e -> defaultBackground(view.getMute()));
 		view.getExit().setOnMouseEntered(e -> shadeBackground(view.getExit()));
 		view.getExit().setOnMouseExited(e -> defaultBackground(view.getExit()));
+		
+		view.getGameRules().setOnAction(e -> showRules());
 		
 	}
 	
@@ -87,6 +90,11 @@ public class CluedoClientPresenter {
 	public void defaultBackground(Button b){
 		
 		b.setBackground(view.getButtonBackground());
+	}
+	
+	public void showRules(){
+		
+		view.getPromptArea().getChildren().add(view.getInfoArea());
 	}
 
 }

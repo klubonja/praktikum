@@ -59,7 +59,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	final public Button connectToTestServer;
 	final public Button refreshGamesList;
 	final public Button createServer;
-	private Button exit;
+	private Button exitButton;
 	final public ObservableList<String> clientNicks;
 	final public ListView<String> clientNicksView;
 	
@@ -94,17 +94,28 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private final Image muteGraphic = new Image("http://png-3.findicons.com/files/icons/2711/free_icons_for_windows8_metro/512/mute.png"); 
 	private final Image unmuteGraphic = new Image("http://www.veryicon.com/icon/png/System/Icons8%20Metro%20Style/Volume%20Controls%20Volume%20up.png"); 
 	
-	private final File file = new File("media/clientAudio1.mp3");
+	private final File audioFile = new File("media/clientAudio1.mp3");
 	
 	private GridPane promptArea;
-	private TextArea infoArea;
+	private GridPane infoArea;
+	private Button closePromptArea;
 	
 	private Media clip;
 	private MediaPlayer audio;
+	
+	private MenuBar menuBar;
+	private Menu file;
+	private Menu help;
+	private Menu window;
+	private MenuItem options;
+	private MenuItem createGameMenu;
+	private MenuItem createServerMenu;
+	private MenuItem testServer;
+	private MenuItem exit;
+	private MenuItem fullScreen;
+	private MenuItem gameRules;
+	
 
-	
-	
-	
 	 public CluedoClientGUI(Stage primaryStage){
 		 
 		 super(primaryStage);
@@ -123,7 +134,10 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 
 		 setStartServiceButtonLabel("senddhandshake");
 		 setStylesheet("cluedoNetworkGUI/networkStyle.css");
+		 
 		 setMenuBar();
+		 setPromptArea();
+		 
 		 startUp();	 		 
 	}
 	    
@@ -227,14 +241,14 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         createServer.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 13));
         createServer.setTextFill(Color.DARKSLATEGREY);
         
-        exit = new Button("Exit");
-        exit.setPrefSize(200, 50);
-        exit.setMaxSize(200, 50);
-        exit.setBackground(buttonBackground);
-        exit.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 13));
-        exit.setTextFill(Color.DARKSLATEGREY);
+        exitButton = new Button("Exit");
+        exitButton.setPrefSize(200, 50);
+        exitButton.setMaxSize(200, 50);
+        exitButton.setBackground(buttonBackground);
+        exitButton.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 13));
+        exitButton.setTextFill(Color.DARKSLATEGREY);
         
-        buttons.getChildren().addAll(createGame, createServer, refreshGamesList, exit);
+        buttons.getChildren().addAll(createGame, createServer, refreshGamesList, exitButton);
         //buttons.getChildren().add(connectToTestServer);
         buttons.setPadding(new Insets(0, 20, 0, 20));
         
@@ -354,41 +368,63 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         gameListView.setOpacity(0.9);
         
         
-        //Setup the area in the middle of the screen
-        promptArea = new GridPane();
-        promptArea.setPadding(new Insets(20));
- 
-        ColumnConstraints prompt0 = new ColumnConstraints();
-        prompt0.setPercentWidth(100);
-        promptArea.getColumnConstraints().add(prompt0);
+//        //Setup the area in the middle of the screen
+//        promptArea = new GridPane();
+//        promptArea.setPadding(new Insets(20));
+// 
+//        ColumnConstraints prompt0 = new ColumnConstraints();
+//        prompt0.setPercentWidth(100);
+//        promptArea.getColumnConstraints().add(prompt0);
+//        
+//        RowConstraints prompt1 = new RowConstraints();
+//	    prompt1.setPercentHeight(50); 
+//	    promptArea.getRowConstraints().add(prompt1);
+//	    
+//	    RowConstraints prompt2 = new RowConstraints();
+//	    prompt2.setPercentHeight(50);        
+//	    promptArea.getRowConstraints().add(prompt2);
+//        
+//        infoArea = new GridPane();
+//        infoArea.setPadding(new Insets(2.5));
+//        infoArea.setVgap(5);
+//        
+//        ColumnConstraints info0 = new ColumnConstraints();
+//        info0.setPercentWidth(100);
+//        promptArea.getColumnConstraints().add(info0);
+//        
+//        RowConstraints info1 = new RowConstraints();
+//	    info1.setPercentHeight(90); 
+//	    promptArea.getRowConstraints().add(info1);
+//	    
+//	    RowConstraints info2 = new RowConstraints();
+//	    info2.setPercentHeight(10);        
+//	    promptArea.getRowConstraints().add(info2);
+//        
+//        
+//        TextArea rules = new TextArea();
+//        rules.setPrefHeight(350);
+//        rules.setMaxHeight(350);
+//        rules.setWrapText(true);
+//        rules.setEditable(false);
+//        rules.setOpacity(0.9);
+//        rules.setEffect(innerShadow6);
+//        rules.setText(HowToPlay.GOAL + HowToPlay.PLAY);
+//        
+//        GridPane.setConstraints(rules, 0, 0);
+//        GridPane.setValignment(rules, VPos.CENTER);
+//        GridPane.setHalignment(rules, HPos.CENTER);
+//        
+//        infoArea.getChildren().add(rules);
+//        
+//        GridPane.setConstraints(infoArea, 0, 0);
+//        GridPane.setRowSpan(infoArea, 2);
+//        GridPane.setValignment(infoArea, VPos.CENTER);
+//        GridPane.setHalignment(infoArea, HPos.CENTER);
+//        //promptArea.getChildren().add(infoArea);
+//        promptArea.setGridLinesVisible(false);
         
-        RowConstraints prompt1 = new RowConstraints();
-	    prompt1.setPercentHeight(50); 
-	    promptArea.getRowConstraints().add(prompt1);
-	    
-	    RowConstraints prompt2 = new RowConstraints();
-	    prompt2.setPercentHeight(50);        
-	    promptArea.getRowConstraints().add(prompt2);
         
-        infoArea = new TextArea();
-        infoArea.setPrefHeight(350);
-        infoArea.setMaxHeight(350);
-        infoArea.setWrapText(true);
-        infoArea.setEditable(false);
-        infoArea.setOpacity(0.9);
-        infoArea.setEffect(innerShadow6);
-       
-        infoArea.setText(HowToPlay.GOAL + HowToPlay.PLAY);
-        
-        GridPane.setConstraints(infoArea, 0, 0);
-        GridPane.setRowSpan(infoArea, 2);
-        GridPane.setValignment(infoArea, VPos.CENTER);
-        GridPane.setHalignment(infoArea, HPos.CENTER);
-        //promptArea.getChildren().add(infoArea);
-        promptArea.setGridLinesVisible(false);
-        
-        
-        String url = file.toURI().toString();
+        String url = audioFile.toURI().toString();
         clip = new Media(url);
         audio = new MediaPlayer(clip);
         audio.play();
@@ -456,24 +492,24 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	
 	public void setMenuBar(){
 	
-		MenuBar menuBar = new MenuBar();
+		menuBar = new MenuBar();
 		
-		Menu file = new Menu("File");
-		Menu help = new Menu("Help");
-		Menu window = new Menu("Window");
+		file = new Menu("File");
+		help = new Menu("Help");
+		window = new Menu("Window");
 		
-		MenuItem options = new MenuItem("Options");
-		MenuItem createGameMenu = new MenuItem("Create Client");
-		MenuItem createServerMenu = new MenuItem("Create Server");
-		MenuItem testServer = new MenuItem("Test LMU Server");
-		MenuItem exit = new MenuItem("Quit");
+		options = new MenuItem("Options");
+		createGameMenu = new MenuItem("Create Client");
+		createServerMenu = new MenuItem("Create Server");
+		testServer = new MenuItem("Test LMU Server");
+		exit = new MenuItem("Quit");
 		file.getItems().addAll(createGameMenu, createServerMenu, testServer, options, exit);
 		
-		MenuItem fullScreen = new MenuItem("Full Screen");
+		fullScreen = new MenuItem("Full Screen");
 		window.getItems().addAll(fullScreen);
 		
 		
-		MenuItem gameRules = new MenuItem("Game Rules");
+		gameRules = new MenuItem("Game Rules");
 		help.getItems().addAll(gameRules);
 		
 		menuBar.getMenus().addAll(file, window, help);
@@ -487,6 +523,74 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		GridPane.setHalignment(menuBar, HPos.CENTER);
 		
 		grid.getChildren().add(menuBar);
+		
+	}
+	
+	public void setPromptArea(){
+		
+        promptArea = new GridPane();
+        promptArea.setPadding(new Insets(20));
+ 
+        //Constraints for the prompt grid
+        ColumnConstraints prompt0 = new ColumnConstraints();
+        prompt0.setPercentWidth(100);
+        promptArea.getColumnConstraints().add(prompt0);
+        
+        RowConstraints prompt1 = new RowConstraints();
+	    prompt1.setPercentHeight(50); 
+	    promptArea.getRowConstraints().add(prompt1);
+	    
+	    RowConstraints prompt2 = new RowConstraints();
+	    prompt2.setPercentHeight(50);        
+	    promptArea.getRowConstraints().add(prompt2);
+        
+        infoArea = new GridPane();
+//      infoArea.setPadding(new Insets(2.5));
+        infoArea.setVgap(5);
+        
+        //Constraints for the info grid
+        ColumnConstraints info0 = new ColumnConstraints();
+        info0.setPercentWidth(100);
+        infoArea.getColumnConstraints().add(info0);
+        
+        RowConstraints info1 = new RowConstraints();
+	    info1.setPercentHeight(90); 
+	    infoArea.getRowConstraints().add(info1);
+	    
+	    RowConstraints info2 = new RowConstraints();
+	    info2.setPercentHeight(10);        
+	    infoArea.getRowConstraints().add(info2);
+        
+	    InnerShadow innerShadow6 = new InnerShadow();
+		innerShadow6.setOffsetX(0);
+		innerShadow6.setOffsetY(0);
+		innerShadow6.setWidth(15);
+		innerShadow6.setHeight(15);
+		innerShadow6.setColor(Color.DARKSLATEGREY);
+        
+        TextArea rules = new TextArea();
+        rules.setPrefHeight(350);
+        rules.setMaxHeight(350);
+        rules.setWrapText(true);
+        rules.setEditable(false);
+        rules.setOpacity(0.9);
+        rules.setEffect(innerShadow6);
+        rules.setText(HowToPlay.GOAL + HowToPlay.PLAY);
+        
+        GridPane.setConstraints(rules, 0, 0);
+        GridPane.setValignment(rules, VPos.CENTER);
+        GridPane.setHalignment(rules, HPos.CENTER);
+        
+        closePromptArea = new Button("Close");
+        
+        infoArea.getChildren().add(rules);
+        
+        GridPane.setConstraints(infoArea, 0, 0);
+        GridPane.setRowSpan(infoArea, 2);
+        GridPane.setValignment(infoArea, VPos.CENTER);
+        GridPane.setHalignment(infoArea, HPos.CENTER);
+        //promptArea.getChildren().add(infoArea);
+        promptArea.setGridLinesVisible(true);
 		
 	}
     
@@ -596,11 +700,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	}
 	
 	public Button getExit() {
-		return exit;
+		return exitButton;
 	}
 
 	public void setExit(Button exit) {
-		this.exit = exit;
+		this.exitButton = exit;
 	}
 
 	public void removeClient(String nick){
@@ -794,7 +898,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	}
 
 	public File getFile() {
-		return file;
+		return audioFile;
 	}
 
 	public GridPane getPromptArea() {
@@ -819,6 +923,94 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 
 	public void setAudio(MediaPlayer audio) {
 		this.audio = audio;
+	}
+
+	public Button getExitButton() {
+		return exitButton;
+	}
+
+	public void setExitButton(Button exitButton) {
+		this.exitButton = exitButton;
+	}
+
+	public MenuBar getMenuBar() {
+		return menuBar;
+	}
+
+	public void setMenuBar(MenuBar menuBar) {
+		this.menuBar = menuBar;
+	}
+
+	public Menu getHelp() {
+		return help;
+	}
+
+	public void setHelp(Menu help) {
+		this.help = help;
+	}
+
+	public Menu getWindow() {
+		return window;
+	}
+
+	public void setWindow(Menu window) {
+		this.window = window;
+	}
+
+	public MenuItem getOptions() {
+		return options;
+	}
+
+	public void setOptions(MenuItem options) {
+		this.options = options;
+	}
+
+	public MenuItem getCreateGameMenu() {
+		return createGameMenu;
+	}
+
+	public void setCreateGameMenu(MenuItem createGameMenu) {
+		this.createGameMenu = createGameMenu;
+	}
+
+	public MenuItem getCreateServerMenu() {
+		return createServerMenu;
+	}
+
+	public void setCreateServerMenu(MenuItem createServerMenu) {
+		this.createServerMenu = createServerMenu;
+	}
+
+	public MenuItem getTestServer() {
+		return testServer;
+	}
+
+	public void setTestServer(MenuItem testServer) {
+		this.testServer = testServer;
+	}
+
+	public MenuItem getFullScreen() {
+		return fullScreen;
+	}
+
+	public void setFullScreen(MenuItem fullScreen) {
+		this.fullScreen = fullScreen;
+	}
+
+	public MenuItem getGameRules() {
+		return gameRules;
+	}
+
+	public void setGameRules(MenuItem gameRules) {
+		this.gameRules = gameRules;
+	}
+
+	public void setFile(Menu file) {
+		this.file = file;
+	}
+
+	public void setExit(MenuItem exit) {
+		this.exit = exit;
 	}
 
 	public Background getButtonBackground() {
@@ -857,11 +1049,19 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		return backArgonath;
 	}
 
-	public TextArea getInfoArea() {
+	public GridPane getInfoArea() {
 		return infoArea;
 	}
 
-	public void setInfoArea(TextArea infoArea) {
+	public void setInfoArea(GridPane infoArea) {
 		this.infoArea = infoArea;
+	}
+
+	public Button getClosePromptArea() {
+		return closePromptArea;
+	}
+
+	public void setClosePromptArea(Button closePromptArea) {
+		this.closePromptArea = closePromptArea;
 	}
 }

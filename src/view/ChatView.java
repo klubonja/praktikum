@@ -1,10 +1,13 @@
 package view;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 /**
  * @since 26.05.2015
@@ -23,7 +26,7 @@ public class ChatView extends VBox {
 	private TextArea chatArea;
 	Label chatLabel;
 	HBox chatBox;
-	//Button chatSend;
+	Button chatSend;
 	TextField chatField;
 	
 	
@@ -34,12 +37,21 @@ public class ChatView extends VBox {
 	//chatArea.set
 	getChatArea().setEditable(false);
 	chatBox = new HBox(3);
-	//chatSend = new Button("Send");
+	chatSend = new Button("Send");
 	chatField = new TextField();
 	//chatField.setPrefWidth(200);
 	chatField.setMaxWidth(200);
 	//chatBox.getChildren().addAll(chatField, chatSend);
 	this.getChildren().addAll(getChatArea(),chatField,chatBox);
+	
+	InnerShadow innerShadow6 = new InnerShadow();
+	innerShadow6.setOffsetX(0);
+	innerShadow6.setOffsetY(0);
+	innerShadow6.setWidth(15);
+	innerShadow6.setHeight(15);
+	innerShadow6.setColor(Color.DARKSLATEGREY);
+	
+	chatField.setEffect(innerShadow6);
 	
 	}
 
