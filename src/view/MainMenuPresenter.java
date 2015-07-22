@@ -64,6 +64,7 @@ public void bindComponents(){
 			CluedoClientPresenter presenter = new CluedoClientPresenter(ClientGUI);
 			stage.show();
 			stage.setFullScreen(true);
+			view.getBackgroundVideo().stop();
 			view.close();
 		}
 	

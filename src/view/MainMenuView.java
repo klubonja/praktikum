@@ -70,7 +70,7 @@ public class MainMenuView extends StackPane{
 		main.setAlignment(Pos.CENTER);
 		main.setVgap(5);
 		main.setHgap(5);
-		main.setPadding(new Insets(50, 20 , 50, 70));
+		main.setPadding(new Insets(50, 5 , 50, 5));
 		main.setGridLinesVisible(false);
 		
 		
@@ -134,16 +134,16 @@ public class MainMenuView extends StackPane{
 		
 		
 		createClient = new Button("Create Client");
-		createClient.setPrefSize(200, 75);
-		createClient.setMaxSize(200, 75);
+		createClient.setPrefSize(200, 68);
+		createClient.setMaxSize(200, 68);
 		
 		createServer = new Button("Create Server");
-		createServer.setPrefSize(200, 75);
-		createServer.setMaxSize(200, 75);
+		createServer.setPrefSize(200, 68);
+		createServer.setMaxSize(200, 68);
 		
 		credits = new Button("Credits");
-		credits.setPrefSize(200, 75);
-		credits.setMaxSize(200, 75);
+		credits.setPrefSize(200, 68);
+		credits.setMaxSize(200, 68);
 		
 		createClient.setStyle(buttonStyle);
 		createServer.setStyle(buttonStyle);
@@ -177,8 +177,13 @@ public class MainMenuView extends StackPane{
 		GridPane.setHalignment(cluedo, HPos.CENTER);
 		GridPane.setValignment(cluedo, VPos.TOP);
 		
+		GridPane.setConstraints(lmuImg, 0, 0);
+		GridPane.setColumnSpan(lmuImg, 3);
+		GridPane.setHalignment(lmuImg, HPos.LEFT);
+		GridPane.setValignment(lmuImg, VPos.TOP);
 		
-		main.getChildren().addAll(createClient, createServer, credits,  lotrBack, cluedo);
+		
+		main.getChildren().addAll(createClient, createServer, credits,  lotrBack, cluedo, lmuImg);
 		
 		File file = new File("C:/Users/Kristi/Downloads/landscape.mp4");
 		String url = file.toURI().toString();
@@ -225,7 +230,7 @@ public class MainMenuView extends StackPane{
 		this.scene = new Scene(this, 1100, 650);
 		this.stage = new Stage();
 		this.stage.setScene(scene);
-        this.stage.setResizable(true);
+        this.stage.setResizable(false);
         this.stage.setTitle("YinYanYolos present:");
         this.stage.show();
 	}
