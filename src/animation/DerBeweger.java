@@ -259,22 +259,32 @@ public class DerBeweger {
 	
 	/**
 	 * Der erste Teil der Animation durch den Geheimgang
-	 * @param raum Der Raum zu welchem man will
+	 * @param anfangsRaum Der Raum von welchem man startet
 	 */
-	public void geheimgangBewegerEingang(Rooms raum) {
+	public void geheimgangBewegerEingang(Rooms anfangsRaum) {
 
+		System.out.println("Der currentPlayer ist bei y : " +pcManager.getCurrentPlayer().getPosition().getY() +"  ||  x : " +pcManager.getCurrentPlayer().getPosition().getX());
+		
+		System.out.println("anfangsRaum : " +anfangsRaum);
+		
 		Kachel gangKachel1 = kachelContainer.getKacheln()[pcManager.getCurrentPlayer().getPosition().getY()][pcManager.getCurrentPlayer().getPosition().getX()];
 		Label gangLabel1 = boardView.getLabelHier(gangKachel1);
 		
+		Kachel gangKachel1_1 = raumBeweger.positionInRaum(pcManager.getCurrentPlayer(), anfangsRaum);
+		Label gangLabel1_1 = boardView.getLabelHier(gangKachel1_1);
 		
-		Kachel gangKachel2 = geheimGangKachel(raum, "anfang");
+		System.out.println("gangKachel1 ist bei y : " +gangKachel1.getPosition().getY() +"  ||  x : " +gangKachel1.getPosition().getX());
+		
+		System.out.println("gangKachel1_1 ist bei y : " +gangKachel1_1.getPosition().getY() +"  ||  x : " +gangKachel1_1.getPosition().getX());
+		
+		Kachel gangKachel2 = geheimGangKachel(anfangsRaum, "anfang");
 		Label gangLabel2 = boardView.getLabelHier(gangKachel2);
 		
+		System.out.println("gangKachel2 ist bei y : " +gangKachel2.getPosition().getY() +"  ||  x : " +gangKachel2.getPosition().getX());
 		
 		Path path = new Path();
 		path.getElements().add(
-				new MoveTo(gangLabel1.getLayoutX(), gangLabel1
-						.getLayoutY()));
+				new MoveTo(gangLabel1_1.getLayoutX(), gangLabel1_1.getLayoutY()));
 		path.getElements().add(
 				new LineTo(gangLabel2.getLayoutX(), gangLabel2.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
@@ -290,11 +300,16 @@ public class DerBeweger {
 						.getPosition().getY()][pcManager.getCurrentPlayer().getPosition()
 						.getX()];
 				Label gangLabel2_1 = boardView.getLabelHier(gangKachel2_1);
-				Rooms room = raumBeweger.checkRaum(gangKachel2_1);
-				Kachel gangKachel3 = raumBeweger.positionInRaum(pcManager.getCurrentPlayer(), room);
+				System.out.println("gangKachel2_1 ist bei y : " +gangKachel2_1.getPosition().getY() +"  ||  x : " +gangKachel2_1.getPosition().getX());
+				Rooms room2 = raumBeweger.checkRaum(gangKachel2);
+				Rooms room2_1 = raumBeweger.checkRaum(gangKachel2_1);
+				System.out.println("room2 : " +room2);
+				System.out.println("room2_1 : " +room2_1);
+				Kachel gangKachel3 = raumBeweger.positionInRaum(pcManager.getCurrentPlayer(), room2_1);
 				Label gangLabel3 = boardView.getLabelHier(gangKachel3);
-				geheimgangBewegerAusgang(gangKachel3, raum);
-				zugFenster.setZimmer(room.getName());
+				System.out.println("gangKachel3 ist bei y : " +gangKachel3.getPosition().getY() +"  ||  x : " +gangKachel3.getPosition().getX());
+				geheimgangBewegerAusgang(gangKachel3, anfangsRaum);
+				zugFenster.setZimmer(room2.getName());
 //				stack.getChildren()
 //				.add(zug);
 //				zug.toFront();
@@ -312,8 +327,13 @@ public class DerBeweger {
 
 		Kachel gangKachel4 = geheimGangKachel(raum, "ziel");
 		Label gangLabel4 = boardView.getLabelHier(gangKachel4);
+		
+		System.out.println("gangKachel4 ist bei y : " +gangKachel4.getPosition().getY() +"  ||  x : " +gangKachel4.getPosition().getX());
+		
 		Kachel gangKachel5 = raumZielKachelEingabe;
 		Label gangLabel5 = boardView.getLabelHier(gangKachel5);
+		
+		System.out.println("gangKachel5 ist bei y : " +gangKachel5.getPosition().getY() +"  ||  x : " +gangKachel5.getPosition().getX());
 		
 		Path path = new Path();
 		path.getElements().add(

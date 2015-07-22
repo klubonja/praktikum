@@ -11,15 +11,14 @@ import enums.Rooms;
 
 public class RaumBeweger {
 
-	private Kachel zielImRaum;
-	
 	public final PlayerCircleManager pcManager;
 	private KachelContainer kacheln;
 
+	private Kachel zielImRaum;
+	
 	public RaumBeweger(PlayerCircleManager pcm, KachelContainer kacheln){
 		pcManager = pcm;
 		this.kacheln = kacheln;
-		zielImRaum = kacheln.getKacheln()[0][0];
 	}
 
 	public Rooms checkRaum(Kachel aufenthalt) {
@@ -33,6 +32,7 @@ public class RaumBeweger {
 	
 	
 	public Kachel positionInRaum(CluedoPlayer player2, Rooms raum) {
+		zielImRaum = kacheln.getKacheln()[11][11];
 		if(pcManager.getCurrentPlayer().getCluedoPerson().getColor() == "yellow"){
 			if(raum == Rooms.hall){
 				System.out.println("haaaaaaaaaaaaall");
