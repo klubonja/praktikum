@@ -7,7 +7,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import kacheln.KachelContainer;
 import staticClasses.NetworkMessages;
@@ -123,7 +122,7 @@ public class GameFramePresenter {
     		gfv.chat.chatField.setStyle("-fx-text-fill: #000000;-fx-font-style: normal;");
 		}
 		else {
-			gfv.chat.chatField.setText("confirm with enter");
+			gfv.chat.chatField.setText("Confirm with ENTER");
 	    	gfv.chat.chatField.setStyle("-fx-text-fill: #999999;-fx-font-style: italic;");
 		}
 		

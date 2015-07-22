@@ -257,4 +257,8 @@ public abstract class CluedoNetworkGUI {
 		return inputField;
 	}
 
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
 }

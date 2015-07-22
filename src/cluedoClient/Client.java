@@ -84,6 +84,22 @@ public class Client {
             }
         });	
 		
+		gui.getCreateGameMenu().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	ArrayList<String> colors = new ArrayList<String>();
+            	for(Persons p : Persons.values()){
+            		colors.add(p.getColor());
+            	}
+	        	String color = gui.selectColor(colors);
+	        	auxx.loginfo("color from prompt "+color);
+
+	        	if(color != null){
+            		createGame(color);	  
+	        	}
+            }
+        });	
+		
 		EventHandler<KeyEvent> listenForEnter = new EventHandler<KeyEvent> (){
 			@Override
 			public void handle(KeyEvent e) {
@@ -123,6 +139,18 @@ public class Client {
 			gui.createServer.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			    @Override
 			    public void handle(MouseEvent click) {
+			    	Stage stage = new Stage();
+					CluedoServerGUI gui = new CluedoServerGUI(stage);
+					@SuppressWarnings("unused")
+					Server server = new Server(gui);
+					stage.show();
+					stage.hide();
+			    }
+			});	
+			
+			gui.getCreateServerMenu().setOnAction(new EventHandler<ActionEvent>() {
+			    @Override
+			    public void handle(ActionEvent click) {
 			    	Stage stage = new Stage();
 					CluedoServerGUI gui = new CluedoServerGUI(stage);
 					@SuppressWarnings("unused")
@@ -190,6 +218,19 @@ public class Client {
 		////////////////////////SEDNDHANDSHAKE MAN END/////////////////////////////////////////////////			
 			////////////////////////TESTSERVERCONNECTION MAN/////////////////////////////////////////////////
 			gui.connectToTestServer.setOnAction(new EventHandler<ActionEvent>() {
+	            @Override
+	            public void handle(ActionEvent event) {
+					try {
+						InetAddress addr = InetAddress.getByName("vanuabalavu.pms.ifi.lmu.de");
+						startTCPConnection(new ServerItem("testendeTentakel", addr, 30305));
+					} 
+					catch (UnknownHostException e) {
+						auxx.logsevere("testserverconnection failed Unknown Host:  ", e);
+					}            	
+	            }
+	        });	
+			
+			gui.getConnectToTestServer().setOnAction(new EventHandler<ActionEvent>() {
 	            @Override
 	            public void handle(ActionEvent event) {
 					try {

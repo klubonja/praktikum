@@ -15,6 +15,8 @@ public class MenuBarPresenter {
 	@SuppressWarnings("unused")
 	private InGameQuitPresenter inGameQuitPresenter;
 	
+	private InGameHintView hintSplash;
+	
 	
 	public MenuBarPresenter(MenuBarView view, GameFrameView gameFrameView){
 		 
@@ -25,8 +27,9 @@ public class MenuBarPresenter {
 	}
 	
 	public void activateEvents(){
-		view.quit.setOnAction(e -> exitGame());
-		view.main.setOnAction(e -> goToMain());
+		view.getQuit().setOnAction(e -> exitGame());
+		view.getMain().setOnAction(e -> goToMain());
+		view.getHints().setOnAction(e -> showRules());
 		
 	}
 	
@@ -49,6 +52,12 @@ public class MenuBarPresenter {
 		gameFrameView.getStage().toFront();
 		quitMenu.start();
 		}
+	
+	public void showRules(){
+		
+		hintSplash = new InGameHintView(gameFrameView);
+		hintSplash.start();
+	}
 
 	
 	//Getter and Setters

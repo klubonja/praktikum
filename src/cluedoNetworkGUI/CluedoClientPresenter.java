@@ -55,6 +55,9 @@ public class CluedoClientPresenter {
 		view.getExit().setOnMouseExited(e -> defaultBackground(view.getExit()));
 		
 		view.getGameRules().setOnAction(e -> showRules());
+		view.getClosePromptArea().setOnAction(e -> hideRules());
+		
+		view.getFullScreen().setOnAction(e -> setToFullScr());
 		
 	}
 	
@@ -95,6 +98,17 @@ public class CluedoClientPresenter {
 	public void showRules(){
 		
 		view.getPromptArea().getChildren().add(view.getInfoArea());
+	}
+	
+	public void hideRules(){
+		
+		view.getPromptArea().getChildren().clear();
+	}
+	
+	public void setToFullScr(){
+		
+		view.getPrimaryStage().setFullScreen(true);
+		view.getPrimaryStage().setAlwaysOnTop(true);
 	}
 
 }

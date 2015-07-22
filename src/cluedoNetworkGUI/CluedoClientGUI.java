@@ -137,6 +137,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 
 		 setMenuBar();
 		 setPromptArea();
+		 setOptionsArea();
 		 
 		 startUp();	 		 
 	}
@@ -499,7 +500,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		window = new Menu("Window");
 		
 		options = new MenuItem("Options");
-		createGameMenu = new MenuItem("Create Client");
+		createGameMenu = new MenuItem("Create Game");
 		createServerMenu = new MenuItem("Create Server");
 		testServer = new MenuItem("Test LMU Server");
 		exit = new MenuItem("Quit");
@@ -513,7 +514,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		help.getItems().addAll(gameRules);
 		
 		menuBar.getMenus().addAll(file, window, help);
-		menuBar.setOpacity(0.9);
+		menuBar.setOpacity(0.87);
 //		menuBar.setMaxWidth(1400);
 //		menuBar.setPrefWidth(1400);
 		
@@ -546,7 +547,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         infoArea = new GridPane();
 //      infoArea.setPadding(new Insets(2.5));
-        infoArea.setVgap(5);
+        infoArea.setVgap(8);
         
         //Constraints for the info grid
         ColumnConstraints info0 = new ColumnConstraints();
@@ -554,11 +555,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         infoArea.getColumnConstraints().add(info0);
         
         RowConstraints info1 = new RowConstraints();
-	    info1.setPercentHeight(90); 
+	    info1.setPercentHeight(85); 
 	    infoArea.getRowConstraints().add(info1);
 	    
 	    RowConstraints info2 = new RowConstraints();
-	    info2.setPercentHeight(10);        
+	    info2.setPercentHeight(15);        
 	    infoArea.getRowConstraints().add(info2);
         
 	    InnerShadow innerShadow6 = new InnerShadow();
@@ -575,22 +576,35 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         rules.setEditable(false);
         rules.setOpacity(0.9);
         rules.setEffect(innerShadow6);
-        rules.setText(HowToPlay.GOAL + HowToPlay.PLAY);
+        rules.setText(HowToPlay.GOAL + HowToPlay.PLAY + HowToPlay.SUGGESTION 
+        		+ HowToPlay.ACCUSING);
         
         GridPane.setConstraints(rules, 0, 0);
-        GridPane.setValignment(rules, VPos.CENTER);
+        GridPane.setValignment(rules, VPos.BOTTOM);
         GridPane.setHalignment(rules, HPos.CENTER);
         
         closePromptArea = new Button("Close");
+        closePromptArea.setOpacity(0.9);
+         
+        GridPane.setConstraints(closePromptArea, 0, 1);
+        GridPane.setValignment(closePromptArea, VPos.TOP);
+        GridPane.setHalignment(closePromptArea, HPos.RIGHT);
         
-        infoArea.getChildren().add(rules);
+        infoArea.getChildren().addAll(rules, closePromptArea);
+        infoArea.setGridLinesVisible(true);
         
         GridPane.setConstraints(infoArea, 0, 0);
         GridPane.setRowSpan(infoArea, 2);
         GridPane.setValignment(infoArea, VPos.CENTER);
         GridPane.setHalignment(infoArea, HPos.CENTER);
         //promptArea.getChildren().add(infoArea);
-        promptArea.setGridLinesVisible(true);
+        promptArea.setGridLinesVisible(false);
+		
+	}
+	
+	public void setOptionsArea(){
+		
+		GridPane optionsArea = new GridPane();
 		
 	}
     
