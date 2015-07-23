@@ -102,6 +102,7 @@ public class ServerGameModel {
 		Deck deck = new Deck(pcManager.getSize());
 		Stack<CluedoPlayer> players = pcManager.getPlayers();
 		deck.dealCluedoCards();
+		String[] poolcards = deck.getPoolCards();
 		String[] wh = deck.getWinningHand();
 		winningStatement = new CluedoStatement(
 				Persons.getPersonByColor(wh[0]),
