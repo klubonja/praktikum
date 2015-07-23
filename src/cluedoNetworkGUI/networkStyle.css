@@ -12,11 +12,13 @@
 .gameListItem:hover .gameInfoItem,
 .gameListItem:hover {
 	-fx-background-color: #000000;
+	-fx-background-radius: 5;
 	-fx-text-fill: #ffffff;		
 }
 
 .gameListItem:focused, .gameListItem:selected, .gameListItem:filled {
 	-fx-background-color: #ffffff;
+	-fx-background-radius: 5;
 	-fx-text-fill: #000000;
 }
 
@@ -45,6 +47,7 @@
 .ipListItem:hover .ipStatusItem ,
 .ipListItem:hover {
 	-fx-background-color: #000000;
+	-fx-background-radius: 5;
 	-fx-text-fill: #ffffff;		
 }
 
