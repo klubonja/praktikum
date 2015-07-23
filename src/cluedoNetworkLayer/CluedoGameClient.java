@@ -298,5 +298,9 @@ public class CluedoGameClient extends CluedoGame {
 	public void setCurrentSuspicion(CluedoStatement suspicion) {
 		communicator.setCurSuspicion(suspicion);
 		
+	}
+
+	public void moveForSuspiciton(int gameID, CluedoStatement suspicion) {
+		communicator.moveForSuspiciton(gameID,suspicion);
 	}	
 }

@@ -411,4 +411,9 @@ public class Communicator {
 		return gamePresenter;
 	}
 
+	public void moveForSuspiciton(int gameID2, CluedoStatement suspicion) {
+		CluedoPlayer player = pcManager.getPlayerByPerson(suspicion.getPerson());
+		beweger.getCarriedAlong(suspicion.getRoom(), player);
+	}
+
 }
