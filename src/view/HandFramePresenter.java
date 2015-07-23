@@ -9,7 +9,7 @@ public class HandFramePresenter {
 
 	HandFrameView view;
 
-	HandFramePresenter(HandFrameView view) {
+	public HandFramePresenter(HandFrameView view) {
 		this.view = view;
 		activateEvents();
 	}

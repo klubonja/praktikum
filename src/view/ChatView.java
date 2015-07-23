@@ -21,10 +21,10 @@ public class ChatView extends VBox {
 	
 
 	private TextArea chatArea;
-	Label chatLabel;
-	HBox chatBox;
+	private Label chatLabel;
+	private HBox chatBox;
 	//Button chatSend;
-	TextField chatField;
+	private TextField chatField;
 	
 	
 	public ChatView(){
@@ -52,5 +52,37 @@ public class ChatView extends VBox {
 	public void setChatArea(TextArea chatArea) {
 		this.chatArea = chatArea;
 	}
+
+
+	public Label getChatLabel() {
+		return chatLabel;
+	}
+
+
+	public void setChatLabel(Label chatLabel) {
+		this.chatLabel = chatLabel;
+	}
+
+
+	public HBox getChatBox() {
+		return chatBox;
+	}
+
+
+	public void setChatBox(HBox chatBox) {
+		this.chatBox = chatBox;
+	}
+
+
+	public TextField getChatField() {
+		return chatField;
+	}
+
+
+	public void setChatField(TextField chatField) {
+		this.chatField = chatField;
+	}
+	
+	
 
 }

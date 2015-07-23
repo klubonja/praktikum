@@ -8,7 +8,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import finderOfPaths.PlayerCircleManager;
+import kommunikation.PlayerCircleManager;
 
 public class IntroPresenter {
 	

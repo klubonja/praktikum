@@ -2,23 +2,23 @@ package finderOfPaths;
 
 import kacheln.Kachel;
 import kacheln.KachelContainer;
+import kommunikation.PlayerCircleManager;
 import staticClasses.auxx;
-import view.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Orientation;
 
 /**
  * @since 10.06.2015
- * @version 25.06.2015
+ * @version 21.07.2015
  * @author Benedikt Mayer, Maximilian Lammel
  *
- *	Hier werden alle M�glichkeiten berechnet, von der momentanen Position aus
+ *	Hier werden alle Moeglichkeiten berechnet, von der momentanen Position aus
  * sich zu bewegen in die entsprechenden Himmelsrichtungen. 
  */
 public class WahnsinnigTollerPathfinder {
 
 	/**
-	 * Alle M�glichkeiten, welche an Wegen ausgegeben werden.
+	 * Alle Moeglichkeiten, welche an Wegen ausgegeben werden.
 	 */
 	private char [][] moeglichkeiten = new char [1000][12];
 	private int welcheMoeglichkeit; 
@@ -27,6 +27,9 @@ public class WahnsinnigTollerPathfinder {
 	private int [] yCheck = new int [144];
 	private int checkIndex;
 	
+	/**
+	 * Die wichtigste Variable des Spiels
+	 */
 	private char hans;
 	
 	private Kachel [] suchKacheln = new Kachel [4];
@@ -84,16 +87,25 @@ public class WahnsinnigTollerPathfinder {
     
     public PlayerCircleManager pcManager;
     
+    /**
+     * Kacheln un' so.
+     */
     private KachelContainer kacheln;
     
-	public WahnsinnigTollerPathfinder(PlayerCircleManager pcm, KachelContainer kacheln){
-		pcManager = pcm;
+    /**
+     * Der unglaublich tolle, atemberaubende Pathfinder
+     * @param pcManager kuchen
+     * @param kacheln unsere schoenen Kacheln, sprich Spielfelder
+     */
+	public WahnsinnigTollerPathfinder(PlayerCircleManager pcManager, KachelContainer kacheln){
+		this.pcManager = pcManager;
 		this.kacheln = kacheln;
 		
 	}
 	
 	/**
 	 * Hauptmethode, mit welcher die ganzen checks aufgerufen werden.
+	 * THE SEARCH HAS BEGUN!
 	 */
 	public void findThatPathBetter(int wuerfelZahl, PlayerCircleManager pcManager){
 		this.pcManager = pcManager;
@@ -142,78 +154,10 @@ public class WahnsinnigTollerPathfinder {
         }
         
 	}
-		
-	public void checkForRoom(){
-		if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
 
-			int welcheKachel = 0;
-
-			for (int iReihen = 0; iReihen < kacheln.getKacheln().length; iReihen++){
-				for (int jSpalten = 0; jSpalten < kacheln.getKacheln()[iReihen].length; jSpalten++){
-						
-					Kachel momentanteKachel = kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte];
-					Kachel vergleichsKachel = kacheln.getKacheln()[iReihen][jSpalten];
-						
-					if (momentanteKachel.getRaum() == vergleichsKachel.getRaum() && vergleichsKachel.isIstTuer()){
-						suchKacheln[welcheKachel] = vergleichsKachel;
-						welcheKachel++;
-						tuerCounter++;
-					}
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Hier wird die momentane Position (y,x) gesetzt.
-	 * @param reihe hierauf wird die jetzigeSpalte gesetzt
-	 * @param spalte hierauf wird die jetzigeReihe gesetzt
-	 */
-	public void reset(int reihe, int spalte){
-		
-		jetzigeReihe = reihe;
-		jetzigeSpalte = spalte;
-		welcheMoeglichkeit = 0;
-		
-		for (int i = 0; i < moeglichkeiten.length; i++){
-			for (int j = 0; j < moeglichkeiten[i].length; j++){
-				moeglichkeiten[i][j] = hans;
-				for (int hamana = 0; hamana < mehrereMoeglichkeiten.length; hamana++){
-					mehrereMoeglichkeiten[hamana][i][j] = hans;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Hier wird 
-	 * @param jetzigeSpalte auf @param rootY[level] gesetzt 
-	 * @param jetzigeReihe auf @param rootX[level] gesetzt
-	 */
-	public void refreshRoot(){
-		jetzigeSpalte = rootX[level];
-		jetzigeReihe = rootY[level];
-	}
-	
-	/**
-	 * Hier werden die kompletten root Werte auf die Eingaben gesetzt
-	 * @param eingabeSpalte bestimmt alle @param rootX -Werte
-	 * @param eingabeReihe bestimmt alle @param rootY -Werte
-	 */
-	public void ausgangsPosition( int eingabeReihe,int eingabeSpalte){
-		level = 0;
-		
-		// Alle roots werden auf die Eingabe gesetzt.
-		for (int i = 0; i < rootX.length; i++){
-			rootX[i] = eingabeSpalte;
-			rootY[i] = eingabeReihe;
-		}		
-		
-	}
-	
 	/**
 	 * Hier werden die detect-Methoden aufgerufen und gecheckt ob der move legal ist.
-	 * @param richtung gibt die zu �berpr�fende Himmelsrichtung an
+	 * @param richtung gibt die zu ueberpruefende Himmelsrichtung an
 	 * @return true wenn die input-Richtung erlaubt ist.
 	 * @return false wenn die input-Richtung verboten ist.
 	 */
@@ -243,9 +187,70 @@ public class WahnsinnigTollerPathfinder {
 	}
 	
 	/**
-	 * Hier wird �berpr�ft ob man sich nach S�den bewegen darf
-	 * @return true falls im S�den keine T�r ist
-	 * @return false falls im S�den eine T�r ist
+	 * Hier wird der liste moeglichkeiten mit Himmelsrichtungen gef�llt.
+	 * @param maximaleSchritte die maximale Anzahl an Schritten
+	 * @param himmelsrichtungen die zu �berpr�fenden Himmelsrichtungen
+	 * @param currentEntry der momentane zu-�berpr�fende Eintrag
+	 * @param moeglichkeiten Die Ausgabeliste mit allen M�glichkeiten
+	 */
+	public void possibleMoves(int maximaleSchritte, char[] himmelsrichtungen, String currentEntryEingabe) {
+		
+		this.currentEntry = currentEntryEingabe;
+		
+		this.schritte = maximaleSchritte;
+		
+        // Falls wir bei der maximalen Anzahl an Schritten angekommen sind
+        if(currentEntry.length() == maximaleSchritte) {
+            if (checkThatPlace(currentEntry)){
+            	moeglichkeiten[welcheMoeglichkeit] = currentEntry.toCharArray();
+                if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
+                	mehrereMoeglichkeiten[welcheKachel] = moeglichkeiten;
+                	setMehrereMoeglichkeiten(mehrereMoeglichkeiten);
+                }
+                
+                welcheMoeglichkeit++;
+                setMoeglichkeiten(moeglichkeiten);
+
+            }
+            else {
+            }
+            
+            // level reduzieren            
+            level = currentEntry.length();;
+        }    
+
+
+        // sonst falls es g�ltige Richtungen gibt weiter diese hinzuf�gen.
+        else {
+        	for(int i = 0; i < himmelsrichtungen.length; i++) {
+            	
+            	String oldEntry = currentEntry;
+                currentEntry += himmelsrichtungen[i];
+                
+                if (detectHimmelsrichtung(himmelsrichtungen[i])){
+                	
+                	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);                	
+                    
+                }
+                else if (!detectHimmelsrichtung(himmelsrichtungen[i]) && letztesMalTuer){
+                	tuerRichtung = null;
+                	for ( int j = currentEntry.length(); j < maximaleSchritte; j++){
+            			currentEntry += "T";
+            		}
+                	
+                	letztesMalTuer = false;
+                	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);
+            	
+                }
+                	currentEntry = oldEntry;
+                }
+        }
+	}
+
+	/**
+	 * Hier wird ueberprueft ob man sich nach Sueden bewegen darf
+	 * @return true falls im Sueden keine Tuer ist
+	 * @return false falls im Sueden eine Tuer ist
 	 */
 	public boolean detectSouth(){
 		
@@ -266,9 +271,6 @@ public class WahnsinnigTollerPathfinder {
 		
 		if ( !kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum() && !detectPlayer(jetzigeReihe, jetzigeSpalte)){
 			
-			if (jetzigeReihe == 25 && jetzigeSpalte == 9){
-				System.out.println("Cheater");
-			}
 			return true;
 		}
 
@@ -392,85 +394,11 @@ public class WahnsinnigTollerPathfinder {
 				
 	}
 	
+	
 	/**
-	 * 
-	 * @param reihe zu überprüfende Reihe
-	 * @param spalte zu überprüfende Spalte
-	 * @return true wenn ein Spieler im Weg ist.
+	 * @param entry zu ueberpruefender eintrag
+	 * @return true, falls man hier hin kann, false sonst
 	 */
-	public boolean detectPlayer(int reihe, int spalte){
-		int size = pcManager.getSize();
-		for (int spieler = 0; spieler < size; spieler++){
-			CluedoPlayer momentanerPlayer = pcManager.getPlayerByIndex(spieler);
-			if (momentanerPlayer.getPosition().getX() == spalte && momentanerPlayer.getPosition().getY() == reihe){
-				return true;
-			}
-		}
-		return false;
-		
-	}
-
-	/**
-	 * Hier wird der liste moeglichkeiten mit Himmelsrichtungen gef�llt.
-	 * @param maximaleSchritte die maximale Anzahl an Schritten
-	 * @param himmelsrichtungen die zu �berpr�fenden Himmelsrichtungen
-	 * @param currentEntry der momentane zu-�berpr�fende Eintrag
-	 * @param moeglichkeiten Die Ausgabeliste mit allen M�glichkeiten
-	 */
-	public void possibleMoves(int maximaleSchritte, char[] himmelsrichtungen, String currentEntryEingabe) {
-		
-		this.currentEntry = currentEntryEingabe;
-		
-		this.schritte = maximaleSchritte;
-		
-        // Falls wir bei der maximalen Anzahl an Schritten angekommen sind
-        if(currentEntry.length() == maximaleSchritte) {
-            if (checkThatPlace(currentEntry)){
-            	moeglichkeiten[welcheMoeglichkeit] = currentEntry.toCharArray();
-                if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
-                	mehrereMoeglichkeiten[welcheKachel] = moeglichkeiten;
-                	setMehrereMoeglichkeiten(mehrereMoeglichkeiten);
-                }
-                
-                welcheMoeglichkeit++;
-                setMoeglichkeiten(moeglichkeiten);
-
-            }
-            else {
-            }
-            
-            // level reduzieren            
-            level = currentEntry.length();;
-        }    
-
-
-        // sonst falls es g�ltige Richtungen gibt weiter diese hinzuf�gen.
-        else {
-        	for(int i = 0; i < himmelsrichtungen.length; i++) {
-            	
-            	String oldEntry = currentEntry;
-                currentEntry += himmelsrichtungen[i];
-                
-                if (detectHimmelsrichtung(himmelsrichtungen[i])){
-                	
-                	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);                	
-                    
-                }
-                else if (!detectHimmelsrichtung(himmelsrichtungen[i]) && letztesMalTuer){
-                	tuerRichtung = null;
-                	for ( int j = currentEntry.length(); j < maximaleSchritte; j++){
-            			currentEntry += "T";
-            		}
-                	
-                	letztesMalTuer = false;
-                	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);
-            	
-                }
-                	currentEntry = oldEntry;
-                }
-        }
-	}
-
 	public boolean checkThatPlace(String entry){
 		char [] entries = entry.toCharArray();
 		
@@ -506,6 +434,97 @@ public class WahnsinnigTollerPathfinder {
 		
 		
 	}
+	
+	/**
+	 * 
+	 * @param reihe zu ueberpruefende Reihe
+	 * @param spalte zu ueberpruefende Spalte
+	 * @return true wenn ein Spieler im Weg ist.
+	 */
+	public boolean detectPlayer(int reihe, int spalte){
+		int size = pcManager.getSize();
+		for (int spieler = 0; spieler < size; spieler++){
+			CluedoPlayer momentanerPlayer = pcManager.getPlayerByIndex(spieler);
+			if (momentanerPlayer.getPosition().getX() == spalte && momentanerPlayer.getPosition().getY() == reihe){
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	/**
+	 * ueberprueft ob an der momentanen Reihe/Spalte ein Raum ist bzw. moeglicherweise eine Tuer
+	 * Setzt den tuerCounter und die suchKacheln
+	 */
+	public void checkForRoom(){
+		if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
+	
+			int welcheKachel = 0;
+	
+			for (int iReihen = 0; iReihen < kacheln.getKacheln().length; iReihen++){
+				for (int jSpalten = 0; jSpalten < kacheln.getKacheln()[iReihen].length; jSpalten++){
+						
+					Kachel momentanteKachel = kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte];
+					Kachel vergleichsKachel = kacheln.getKacheln()[iReihen][jSpalten];
+						
+					if (momentanteKachel.getRaum() == vergleichsKachel.getRaum() && vergleichsKachel.isIstTuer()){
+						suchKacheln[welcheKachel] = vergleichsKachel;
+						welcheKachel++;
+						tuerCounter++;
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Hier wird die momentane Position (y,x) gesetzt.
+	 * @param reihe hierauf wird die jetzigeSpalte gesetzt
+	 * @param spalte hierauf wird die jetzigeReihe gesetzt
+	 */
+	public void reset(int reihe, int spalte){
+		
+		jetzigeReihe = reihe;
+		jetzigeSpalte = spalte;
+		welcheMoeglichkeit = 0;
+		
+		for (int i = 0; i < moeglichkeiten.length; i++){
+			for (int j = 0; j < moeglichkeiten[i].length; j++){
+				moeglichkeiten[i][j] = hans;
+				for (int hamana = 0; hamana < mehrereMoeglichkeiten.length; hamana++){
+					mehrereMoeglichkeiten[hamana][i][j] = hans;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Hier wird 
+	 * @param jetzigeSpalte auf @param rootY[level] gesetzt 
+	 * @param jetzigeReihe auf @param rootX[level] gesetzt
+	 */
+	public void refreshRoot(){
+		jetzigeSpalte = rootX[level];
+		jetzigeReihe = rootY[level];
+	}
+	
+	/**
+	 * Hier werden die kompletten root Werte auf die Eingaben gesetzt
+	 * @param eingabeSpalte bestimmt alle @param rootX -Werte
+	 * @param eingabeReihe bestimmt alle @param rootY -Werte
+	 */
+	public void ausgangsPosition( int eingabeReihe,int eingabeSpalte){
+		level = 0;
+		
+		// Alle roots werden auf die Eingabe gesetzt.
+		for (int i = 0; i < rootX.length; i++){
+			rootX[i] = eingabeSpalte;
+			rootY[i] = eingabeReihe;
+		}		
+		
+	}
+
 	
 	public void refreshChecks(){
 		for (int x = 0; x < xCheck.length; x++){

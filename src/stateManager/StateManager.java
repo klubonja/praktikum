@@ -2,11 +2,11 @@ package stateManager;
 
 import java.util.Stack;
 
+import kommunikation.PlayerCircleManager;
 import kommunikation.ServerBeweger;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.GameStates;
 import enums.PlayerStates;
-import finderOfPaths.PlayerCircleManager;
 
 public class StateManager {
 	GameStates currentState;

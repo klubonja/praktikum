@@ -2,11 +2,13 @@
 package view;
 
 import kacheln.KachelContainer;
+import kommunikation.PlayerCircleManager;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
+import view.spielfeld.BoardView;
+import view.spielfeld.GameFrameView;
 import cluedoNetworkLayer.CluedoGameClient;
 import finderOfPaths.Ausloeser;
-import finderOfPaths.PlayerCircleManager;
 import finderOfPaths.Sucher;
 
 /**
@@ -99,7 +101,7 @@ public class DicePresenter {
 	}
 	
 	/**
-	 * Testmethode zum Würfeln
+	 * Hier wird gewuerfelt.
 	 */
 	public void wuerfeln(PlayerCircleManager pcManager){
 		this.pcManager = pcManager;
@@ -112,14 +114,9 @@ public class DicePresenter {
 		
 		kacheln.resetMoeglichkeiten();
 		
-		ausloeser.setWuerfelZahl(dice[0] + dice[1]);
-		System.out.println("==================================");
-		System.out.println("==================================");
-		System.out.println("Würfelzahl : " +ausloeser.getWuerfelZahl());
-		System.out.println("==================================");
-		System.out.println("==================================");
+		int wuerfelZahl = dice[0] + dice[1];
 		
-		sucher.suchen(ausloeser.getWuerfelZahl(), pcManager);
+		sucher.suchen(wuerfelZahl, pcManager);
 		if (istSpieler) {ausloeser.zuweisung(pcManager);}
 	}
 	

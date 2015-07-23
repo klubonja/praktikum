@@ -4,10 +4,13 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import kacheln.Kachel;
 import kacheln.KachelContainer;
+import kommunikation.PlayerCircleManager;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import view.AussergewohnlichesZugfenster;
-import view.BoardView;
+import view.spielfeld.BallEbene;
+import view.spielfeld.BoardView;
+import animation.DerBeweger;
 import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPosition;
@@ -15,35 +18,29 @@ import enums.Orientation;
 
 /**
  * Hier werden die MouseEvents der ballEbene ausgeloest und verwaltet.
- * ---------------------------------------------- || HIER WIRD AUCH DIE BEWEGUNG
- * AUSGELOEST!!!! || ----------------------------------------------
+ * ---------------------- || HIER WIRD AUCH DIE BEWEGUNG AUSGELOEST!!!! || --------------------------------
  * 
  * @since 13.06.2015
- * @version 25.06.2015
+ * @version 21.07.2015
  * @author Benedikt Mayer, Maximilian Lammel
  *
  */
 public class Ausloeser {
 
 	private BoardView gui;
-	private BallEbene2 ballEbene;
+	private BallEbene ballEbene;
 	private AussergewohnlichesZugfenster zug;
-	private KrasserStack stack;
 	private DerBeweger beweger;
 	private char[] moeglichkeiten;
 	private Orientation[] anweisungenOrientations = new Orientation[12];
 	private Orientation[] anweisungenOrientationsVonHier = new Orientation[12];
 	private WahnsinnigTollerPathfinder pathfinder;
-	private CluedoPosition aufServerWarten;
 
 	private int nullSchritte;
-
 	private int schritte;
 
 	private int xInsgesamt;
 	private int yInsgesamt;
-
-	private int wuerfelZahl;
 
 	public PlayerCircleManager pcManager;
 	private int gameid;
@@ -51,32 +48,34 @@ public class Ausloeser {
 
 	private KachelContainer kachelContainer;
 	/**
-	 * Konstruktor fuer den Ausloeser, welcher ballEbenen-clicks mit Bewegungen
-	 * verlinkt.
+	 * Konstruktor fuer den Ausloeser, welcher ballEbenen-clicks mit Bewegungen verlinkt.
 	 * 
-	 * @param gui
-	 *            um aufs KachelArray zuzugreifen
-	 * @param beweger
-	 *            um den Spieler/Ball zu bewegen
-	 * @param ballEbene
-	 *            um auf die click-events zugreifen zu koennen
-	 * @param pathfinder
-	 *            um den Weg berechnen zu lassen
+	 * @param kachelContainer enthaelt die ganzen tollen Kacheln
+	 * @param gui um aufs KachelArray zuzugreifen
+	 * @param beweger um den Spieler/Ball zu bewegen
+	 * @param ballEbene um auf die click-events zugreifen zu koennen
+	 * @param pathfinder um den Weg berechnen zu lassen
 	 */
-	public Ausloeser(KrasserStack stack, AussergewohnlichesZugfenster zug, BoardView gui, DerBeweger beweger, BallEbene2 ballEbene,
-			WahnsinnigTollerPathfinder pathfinder,PlayerCircleManager pcm, int gameid, CluedoGameClient network, KachelContainer kachelContainer) {
+	public Ausloeser(AussergewohnlichesZugfenster zug, BoardView gui, DerBeweger beweger, BallEbene ballEbene,
+			WahnsinnigTollerPathfinder pathfinder,PlayerCircleManager pcManager, int gameid, CluedoGameClient network, KachelContainer kachelContainer) {
 		this.kachelContainer = kachelContainer;
 		this.gui = gui;
 		this.gameid = gameid;
 		this.network = network;
 		this.ballEbene = ballEbene;
 		this.zug = zug;
-		this.stack = stack;
 		this.beweger = beweger;
 		this.pathfinder = pathfinder;
-		pcManager = pcm;
+		this.pcManager = pcManager;
 	}
 	
+	/**
+	 * Der Server will auch Ausloeser haben
+	 * @param kachelContainer enthaelt die ganzen tollen Kacheln 
+	 * @param gameid damit wir auch wissen welches Spiel hier abgeht.
+	 * @param pathfinder finder of most amazing paths
+	 * @param pcManager weils so schoen ist.
+	 */
 	public Ausloeser(KachelContainer kachelContainer, int gameid, WahnsinnigTollerPathfinder pathfinder, PlayerCircleManager pcManager){
 		this.kachelContainer = kachelContainer;
 		this.gameid = gameid;
@@ -89,10 +88,6 @@ public class Ausloeser {
 	 */
 	public void zuweisung(PlayerCircleManager pcManager) {
 		this.pcManager = pcManager;
-		System.out.println("zuweisung");
-//		zug.YESgangImage.setOnMouseClicked(e -> {beweger
-//				.useSecretPassage(pcManager);
-//	});
 		ballEbene.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -101,26 +96,10 @@ public class Ausloeser {
 		});
 	}
 
-	/**
-	 * berechnetdie Anzahl der zu gehenden Schritte in jegliche Richtung
-	 * 
-	 * @param moeglichkeitenEingabe
-	 *            das auszuwertende moeglichkeiten-Array
-	 * @return wie viele Schritte zu gehen sind
-	 */
-	public int wieVieleSchritte(char[] moeglichkeitenEingabe) {
-		this.moeglichkeiten = moeglichkeitenEingabe;
-		int counter = 0;
-		for (int i = 0; i < moeglichkeiten.length; i++) {
-			if (moeglichkeiten[i] != ' ') {
-				counter++;
-			}
-		}
-		return counter;
-	}
 
 	/**
-	 * Wird ausgeloest, wenn irgendwo in der ballEbene geclickt wird
+	 * Wird ausgeloest, wenn irgendwo in der ballEbene geclickt wird und schickt dann Anfragen an den Server
+	 * Wenn er dort nicht hindarf ist er ganz traurig.
 	 */
 	public void click(MouseEvent event) {
 
@@ -134,7 +113,7 @@ public class Ausloeser {
 								.getLayoutY() <= event.getY()) && (event
 								.getY() < gui.getLabelArray()[iReihen][jSpalten]
 								.getLayoutY() + 29))) {
-					aufServerWarten = new CluedoPosition(jSpalten, iReihen);
+					CluedoPosition aufServerWarten = new CluedoPosition(jSpalten, iReihen);
 					auxx.loginfo("positionen im ausloeser y : " +iReihen +" || x : " +jSpalten);
 					network.sendMsgToServer(NetworkMessages.moveMsg(gameid, new CluedoField(aufServerWarten)));
 					}
@@ -142,23 +121,25 @@ public class Ausloeser {
 		}
 	}
 
-	public void ausloesen(int iReihe, int jSpalte, String person, PlayerCircleManager pcManager) {
+	/**
+	 * PAM! Hier geht's ab! Hier wird DerBeweger ausgeloest und alles fuer die Bewegungs-Animation in Gang gesetzt
+	 * @param yKoordinate hier solls hin (y)
+	 * @param xKoordinate hier solls hin (x)
+	 * @param person Die Person welche abgeht
+	 * @param pcManager der pcManager falls er noch nicht da ist. Sicher ist sicher.
+	 */
+	public void ausloesen(int yKoordinate, int xKoordinate, String person, PlayerCircleManager pcManager) {
 		this.pcManager = pcManager;
 		try {
 
-			Kachel momentaneKachel = kachelContainer.getKacheln()[iReihe][jSpalte];
+			Kachel momentaneKachel = kachelContainer.getKacheln()[yKoordinate][xKoordinate];
 
-			auxx.logsevere("Reihe : " + iReihe + "  ||  Spalte : "
-					+ jSpalte);
-
-			char[] moeglichkeitenHierher = momentaneKachel
-					.getMoeglichkeitenHierher();
+			char[] moeglichkeitenHierher = momentaneKachel.getMoeglichkeitenHierher();
 
 			Kachel startKachel = momentaneKachel.getVonHier();
 			startKachel.setVonHier(null);
 
 			auxx.logsevere("anfangs Kachel laut Auslöser x : "
-					
 					+ startKachel.getPosition().getX() + "  ||  y : "
 					+ startKachel.getPosition().getY());
 
@@ -189,8 +170,7 @@ public class Ausloeser {
 	/**
 	 * Wandelt char [] mit anweisungen in Orientation [] mit anweisungen um
 	 * 
-	 * @param anweisungen
-	 *            umzuwandeldes char []
+	 * @param anweisungen umzuwandeldes char []
 	 * @return umgewandeltes Orientation []
 	 */
 	public Orientation[] charToOrientation(char[] anweisungen) {
@@ -224,6 +204,26 @@ public class Ausloeser {
 		return anweisungenOrientationsVerarbeitet;
 	}
 
+	/**
+	 * berechnetdie Anzahl der zu gehenden Schritte in jegliche Richtung
+	 * @param moeglichkeitenEingabe das auszuwertende moeglichkeiten-Array
+	 * @return wie viele Schritte zu gehen sind
+	 */
+	public int wieVieleSchritte(char[] moeglichkeitenEingabe) {
+		this.moeglichkeiten = moeglichkeitenEingabe;
+		int counter = 0;
+		for (int i = 0; i < moeglichkeiten.length; i++) {
+			if (moeglichkeiten[i] != ' ') {
+				counter++;
+			}
+		}
+		return counter;
+	}
+
+	
+	/**
+	 * Berechnet xInsgesamt und yInsgesamt basierend auf den anweisungenOrientations
+	 */
 	public void insgesamteDistanz() {
 
 		xInsgesamt = 0;
@@ -248,14 +248,9 @@ public class Ausloeser {
 		}
 	}
 
-	public int getWuerfelZahl() {
-		return wuerfelZahl;
-	}
-
-	public void setWuerfelZahl(int wuerfelZahl) {
-		this.wuerfelZahl = wuerfelZahl;
-	}
-
+	/**
+	 * Setzt die anweisungenOrientationsVonHier[ganzTolleZahl] wieder alle auf null
+	 */
 	public void resetAnweisungen() {
 
 		for (int i = 0; i < anweisungenOrientationsVonHier.length; i++) {
