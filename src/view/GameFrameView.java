@@ -143,6 +143,7 @@ public class GameFrameView extends GridPane{
 		leftColumn.setPrefWidth(300);
 		VBox rightColumn = new VBox(10);
 		rightColumn.setMaxWidth(300);
+		rightColumn.setPrefWidth(300);
 		rightColumn.getChildren().addAll(notes, dice);
 		leftColumn.getChildren().addAll(statusView, hand, chat);
 		
@@ -154,11 +155,11 @@ public class GameFrameView extends GridPane{
 		GridPane.setConstraints(dice,1,1);
 		GridPane.setConstraints(chat,0,1);
 		GridPane.setConstraints(hand,0,0);*/
-//		GridPane.setConstraints(rightColumn,1,0);
-//		GridPane.setRowSpan(rightColumn, 2);
+		GridPane.setConstraints(rightColumn,1,0);
+		GridPane.setRowSpan(rightColumn, 2);
 		GridPane.setConstraints(leftColumn,0,0);
 		GridPane.setRowSpan(leftColumn, 2);
-		rightGrid.getChildren().addAll(rightColumn, chat, hand);
+		rightGrid.getChildren().addAll(rightColumn, leftColumn);
 		
 		
 		GridPane.setConstraints(menu,0,0);

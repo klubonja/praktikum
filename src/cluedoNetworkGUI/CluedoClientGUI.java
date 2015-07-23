@@ -591,7 +591,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         GridPane.setHalignment(closePromptArea, HPos.RIGHT);
         
         infoArea.getChildren().addAll(rules, closePromptArea);
-        infoArea.setGridLinesVisible(true);
+        infoArea.setGridLinesVisible(false);
         
         GridPane.setConstraints(infoArea, 0, 0);
         GridPane.setRowSpan(infoArea, 2);
