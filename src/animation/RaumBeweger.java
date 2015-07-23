@@ -4,9 +4,8 @@ package animation;
 import kacheln.Kachel;
 import kacheln.KachelContainer;
 import kommunikation.PlayerCircleManager;
-import view.label.KrassesLabel;
-import view.spielfeld.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
 import enums.Rooms;
 
 public class RaumBeweger {
@@ -28,6 +27,42 @@ public class RaumBeweger {
 		else{
 			return null;
 		}
+	}
+	
+	public Kachel positonInDerTuer(Rooms raum){
+		Kachel tuerKachel = new Kachel();
+		if (raum == Rooms.study){
+			tuerKachel.setPosition(new CluedoPosition(3,6));
+		}
+		else if (raum == Rooms.hall){
+			tuerKachel.setPosition(new CluedoPosition(6,11));
+		}
+		else if (raum == Rooms.lounge){
+			tuerKachel.setPosition(new CluedoPosition(5,17));
+		}
+		else if (raum == Rooms.diningroom){
+			tuerKachel.setPosition(new CluedoPosition(12,16));
+		}
+		else if (raum == Rooms.kitchen){
+			tuerKachel.setPosition(new CluedoPosition(18,19));
+		}
+		else if (raum == Rooms.ballroom){
+			tuerKachel.setPosition(new CluedoPosition(17,19));
+		}
+		else if (raum == Rooms.conservatory){
+			tuerKachel.setPosition(new CluedoPosition(19,4));
+		}
+		else if (raum == Rooms.billiard){
+			tuerKachel.setPosition(new CluedoPosition(15,5));
+		}
+		else if (raum == Rooms.library){
+			tuerKachel.setPosition(new CluedoPosition(8,6));
+		}
+		else if (raum == Rooms.pool){
+			tuerKachel.setPosition(new CluedoPosition(8,11));
+		}
+		
+		return tuerKachel;
 	}
 	
 	

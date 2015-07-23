@@ -13,10 +13,11 @@ import kacheln.KachelContainer;
 import kommunikation.PlayerCircleManager;
 import staticClasses.auxx;
 import view.AussergewohnlichesZugfenster;
-import view.spielfeld.BallEbene;
 import view.spielfeld.BoardView;
+import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
+import enums.Persons;
 import enums.Rooms;
 
 /**
@@ -119,6 +120,49 @@ public class DerBeweger {
 	}
 
 	//////////////////////////////// Animation innerhalb des Normalen Felds //////////////////////////////////
+	
+	public void getCarriedAlong(Rooms zielRaum, CluedoPlayer player){
+
+		System.out.println("get carried??!?!?!?!??!?!?");
+		
+		Kachel spielerPositionKachel = kachelContainer.getKachelAt(player.getPosition().getY(), player.getPosition().getX());		
+		
+		Rooms anfangsRaum = spielerPositionKachel.getRaum();
+		
+		Label spielerAnfangsPositionLabel = new Label();
+		
+		if (kachelContainer.getKachelAt(player.getPosition().getY(), player.getPosition().getX()).isIstRaum()){
+			Kachel spielerAnfangsPositionKachel = raumBeweger.positionInRaum(player, anfangsRaum);
+			spielerAnfangsPositionLabel = boardView.getLabelHier(spielerAnfangsPositionKachel);
+		
+		}
+		else {
+			spielerAnfangsPositionLabel = boardView.getLabelHier(spielerPositionKachel);
+		}
+		
+		Kachel spielerPositionImRaumKachel = raumBeweger.positonInDerTuer(zielRaum);
+		
+		Kachel spielerZielPositionImRaumKachel = raumBeweger.positionInRaum(player, zielRaum);
+		Label spielerZielPositionImRaumLabel = boardView.getLabelHier(spielerZielPositionImRaumKachel);
+		
+		Persons person = player.getCluedoPerson();
+		
+		player.setNewPosition(spielerPositionImRaumKachel.getPosition());
+		
+		Path path = new Path();
+		path.getElements().add(
+				new MoveTo(spielerAnfangsPositionLabel.getLayoutX(), spielerAnfangsPositionLabel
+						.getLayoutY()));
+		path.getElements().add(
+				new LineTo(spielerZielPositionImRaumLabel.getLayoutX(), spielerZielPositionImRaumLabel
+						.getLayoutY()));
+		PathTransition pathTransition = new PathTransition();
+		pathTransition.setDuration(Duration.millis(2000));
+		pathTransition.setNode(pcManager.getCircleByPerson(person.getColor()));
+		pathTransition.setPath(path);
+		pathTransition.play();
+
+	}
 	
 	
 	/**
