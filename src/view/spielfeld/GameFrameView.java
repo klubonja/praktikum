@@ -87,7 +87,7 @@ public class GameFrameView extends GridPane{
 		board = new BoardView(kacheln);
 
 		//Adds the Notes frame.
-		notes = new NotesView();
+		notes = new NotesView(client);
 		
 		//Adds the Chat frame.
 		chat = new ChatView();
