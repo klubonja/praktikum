@@ -40,8 +40,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public void addGameToServer(ServerItem server, int gameID, String nick,String color){
-		CluedoGameClient newgame = 
-				new CluedoGameClient(gameID,server);
+		CluedoGameClient newgame = new CluedoGameClient(gameID,server);
 		newgame.joinGame(color, nick);
 		addGameToGui(gameID, nick,"",newgame.getGameState(),server.getGroupName(),server.getIpString());
 		
@@ -56,20 +55,15 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public void addClient(ServerItem server , String nick){
-		//System.out.println("added : "+server.getMyNick()+" - "+nick+" equals : "+ nick.equals(server.getMyNick()));
 		if (!nick.equals(server.getMyNick()) && server.addClient(nick) && server == selectedServer){
 			getGui().addClient(nick);
 			System.out.println("added : "+server.getMyNick()+" - "+nick+" equals : "+ nick.equals(server.getMyNick()));	
-		}
-				
+		}				
 	}
 	
 	
 	public void setClients(ServerItem server ,ArrayList<String> nicks){
-		server.setClientNicks(nicks);
-//		if (server == getSelectedServer())
-//			//setNicksGui(server);
-		
+		server.setClientNicks(nicks);		
 	}
 	
 	public void setSelectedServer(ServerItem selectedServer) {
@@ -260,10 +254,13 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 					game.currentPlayerToNothing();
 				game.changeLabel(auxx.formatStringList(newStates, "or"));
 			}
-			else { //its some other fucker
+			else { //its some other bloke
 				if (newStates.contains(PlayerStates.roll_dice.getName()))
 					game.itsSomeonesTurn(gameNick);				
 			}
+		}
+		else if (game.hasWatcherConnectedByNick(server.getMyNick())){
+			game.changeLabel(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
 		}
 	}
 

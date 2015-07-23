@@ -397,7 +397,7 @@ public class DerBeweger {
 		} else if (position.getX() == 17 && position.getY() == 5) {
 			auxx.logsevere("lounge");
 			geheimgangBewegerEingang(Rooms.lounge);
-		} else if (position.getX() == 4 && position.getY() == 19) {
+		} else if (position.getX() == 4 && position.getY() == 19/17) {
 			auxx.logsevere("conservatory");
 			geheimgangBewegerEingang(Rooms.conservatory);
 		}
