@@ -2,6 +2,7 @@ package cluedoNetworkLayer;
 
 import java.util.ArrayList;
 
+import cluedoServer.ClientItem;
 import enums.Persons;
 import enums.PlayerStates;
 
@@ -38,6 +39,10 @@ public class CluedoPlayer {
 	
 	public boolean hasAccused(){
 		return hasAccused;
+	}
+	
+	public void setAccused(boolean accused){
+		hasAccused = accused;
 	}
 	
 	public void setPossibleState(PlayerStates state){

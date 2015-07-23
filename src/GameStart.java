@@ -10,6 +10,7 @@ public class GameStart extends Application{
 	
 
 	
+
 	@SuppressWarnings("unused")
 	@Override
 	public void start(Stage primaryStage) {
@@ -19,6 +20,7 @@ public class GameStart extends Application{
 
         MainMenuView view = new MainMenuView();
         MainMenuPresenter presenter = new MainMenuPresenter(view);
+
         
 
 

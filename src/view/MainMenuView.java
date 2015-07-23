@@ -31,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+
 public class MainMenuView extends StackPane{
 	
 	private Stage stage;
@@ -45,11 +46,13 @@ public class MainMenuView extends StackPane{
 	
 	private Group background;
 	private MediaPlayer backgroundVideo;
+
 	
 	private Background mainBackground;
 	private BackgroundImage mainBackgroundImage;
 	private Image mainImage;
 	
+
 	private Slider volume;
 	private Label volumeLabel;
 	private HBox volumeBox;
@@ -75,6 +78,7 @@ public class MainMenuView extends StackPane{
 		
 		
 		//Creates the Rows and columns of the grid
+
 		ColumnConstraints column0 = new ColumnConstraints();
         column0.setPercentWidth(33.3);
         main.getColumnConstraints().add(column0);
@@ -217,6 +221,7 @@ public class MainMenuView extends StackPane{
 		StackPane.setAlignment(main, Pos.CENTER);
 		StackPane.setAlignment(background, Pos.CENTER);
 		this.getChildren().addAll(main, background);
+
 		main.toFront();
 		
 	}
@@ -231,6 +236,7 @@ public class MainMenuView extends StackPane{
 		this.stage = new Stage();
 		this.stage.setScene(scene);
         this.stage.setResizable(false);
+
         this.stage.setTitle("YinYanYolos present:");
         this.stage.show();
 	}
@@ -250,9 +256,7 @@ public class MainMenuView extends StackPane{
 	}
 
 
-
-
-
+	//Getters und Setters
 	public Stage getStage() {
 		return stage;
 	}
@@ -333,17 +337,12 @@ public class MainMenuView extends StackPane{
 
 
 
+
 	public BackgroundImage getMainBackgroundImage() {
 		return mainBackgroundImage;
+
 	}
 
-
-
-
-
-	public void setMainBackgroundImage(BackgroundImage mainBackgroundImage) {
-		this.mainBackgroundImage = mainBackgroundImage;
-	}
 
 
 
@@ -351,6 +350,7 @@ public class MainMenuView extends StackPane{
 
 	public Image getMainImage() {
 		return mainImage;
+		
 	}
 
 
@@ -423,7 +423,9 @@ public class MainMenuView extends StackPane{
 
 	public void setBackground(Group background) {
 		this.background = background;
+
 	}
+
 
 
 
@@ -431,7 +433,9 @@ public class MainMenuView extends StackPane{
 
 	public MediaPlayer getBackgroundVideo() {
 		return backgroundVideo;
+
 	}
+
 
 
 
@@ -439,6 +443,7 @@ public class MainMenuView extends StackPane{
 
 	public void setBackgroundVideo(MediaPlayer backgroundVideo) {
 		this.backgroundVideo = backgroundVideo;
+
 	}
 
 
@@ -482,6 +487,7 @@ public class MainMenuView extends StackPane{
 	public String getButtonStyle() {
 		return buttonStyle;
 	}
+
 
 
 }

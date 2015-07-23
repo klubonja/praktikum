@@ -23,15 +23,169 @@ public class CluedoGameClient extends CluedoGame {
 
 	public CluedoGameClient(int gameId, ServerItem server) {
 		super(gameId);
-		this.server = server;
-//		Platform.runLater(() -> {
-//			communicator = new Communicator(this);
-//		});
-		
+		this.server = server;		
 		watchers = new ArrayList<String>();
 		myNick = server.getMyNick();
 	}
 
+	
+	//////////////////////////////RUNNIGAME////////////////////////////////////////////////////////
+	
+	private void startGameGui(){
+		Platform.runLater(() -> {
+			communicator = new Communicator(this);
+			communicator.startGame();
+			String role;
+			if (this.hasWatcherConnectedByNick(myNick)) role = "watching";
+			else role = "playing";
+			communicator.setTitle(String.format("%s %s on server %s Game %d", getMyNick(),role,server.getGroupName(),gameId));
+
+		});
+	}
+	
+//	public void somebodyIsAccusing(String nick, String person, String weapon,
+//			String room) {
+//		String str = "The player " + nick + " is trying to solve the mystery!"
+//				+ "\n" + "Accused: " + person + " " + weapon + " " + room;
+//		changeLabel(str);
+//	}
+//
+//	public void somebodyFailedToAccuse(String person, String weapon, String room) {
+//		String str = "Accusation failed for: " + person + " " + weapon + " "
+//				+ room;
+//		changeLabel(str);
+//	}
+//
+//	public void changeLabel(String str) {
+//		Platform.runLater(() -> {
+//			communicator.changeLabel(str);
+//		});
+//	}
+//
+//	public void showDisprovals(String person, String weapon, String room) {
+//		Platform.runLater(() -> {
+//			communicator.showPossibleDisprovals(person, weapon, room);
+//>>>>>>> master
+//		});
+//	}	
+	
+	@Override
+	public boolean start() { //aussumes playerlsit beeing ordered
+		auxx.loginfo("gameGUI of game " + getGameId() + " started");
+		filterPlayers();
+		startGameGui();		
+		setGameState(GameStates.started);
+
+		return true;
+	}
+	
+	public boolean start(ArrayList <String> order) {
+		searchAndDestroyOrder(order);
+		start();
+
+		return true;
+	}
+	
+//	public void compareCards(String person, String weapon, String room) {
+//		Platform.runLater(() -> {
+//			communicator.compareCards(person, weapon, room);
+//		});
+//	}
+	
+	public void rollDice(int[] wuerfel) {
+		Platform.runLater(() -> {
+			communicator.rollDice(wuerfel);
+		});
+	}
+
+	public void itsYourTurn(){
+		Platform.runLater(() -> {
+			communicator.itsYourTurn();
+		});
+
+	}
+	
+	public void itsSomeonesTurn(String nick){
+		Platform.runLater(() -> {
+			communicator.itsSomeonesTurn(nick);
+		});
+		
+	}
+	
+	public void move(CluedoPosition position, String person) {
+		
+		Platform.runLater(() -> {
+			communicator.move(position, person);
+		});
+	}
+	
+	public void disprove() {
+		Platform.runLater(() -> {
+			communicator.handleDisprove();
+		});
+	}
+	
+	public void currentPlayerToNothing() {
+		Platform.runLater(() -> {
+			communicator.updateStatesToNothing();
+		});
+	}
+	
+	public void currentPlayerToRolls() {
+		Platform.runLater(() -> {
+			communicator.updateStatesToRolls();
+		});
+	}
+	
+	public void currentPlayerToAccuse(){
+		Platform.runLater(() -> {
+			communicator.updateStatesToAccuse();}
+		);}
+	
+	public void currentPlayerToSuspect(){
+		Platform.runLater(() -> {
+			communicator.updateStatesToSuspect();}
+		);}
+	
+	public void currentPlayerToDisprove(){
+		Platform.runLater(() -> {
+			communicator.updateStatesToDisprove();}
+		);}
+	
+	public void setCurSuspicion(CluedoStatement sus){
+		communicator.setCurSuspicion(sus);
+	}
+	
+	///////////////////////////////GETTER////////////////////////////////////////////////////////
+	
+	public ServerItem getServer() {
+		return server;
+	}
+
+	public Communicator getCommunicator() {
+		return communicator;
+	}
+
+	public String getMyNick() {
+		return myNick;
+	}
+	
+	public String getWatchersConnected(){
+		return auxx.formatStringList(getWatchers(), "and");
+	}
+	
+	public ArrayList<String> getWatchers() {
+		return watchers;
+	}
+	
+	////////////////////////////////SETTER/////////////////////////////////////////////////////////
+	
+	public void setMyNick(String myNick) {
+		this.myNick = myNick;
+	}
+
+	///////////////////////////////GAMEGUIACTION//////////////////////////////////////////////////////
+	
 	public void somebodyIsAccusing(String nick, String person, String weapon,
 			String room) {
 		String str = "The player " + nick + " is trying to solve the mystery!"
@@ -50,89 +204,35 @@ public class CluedoGameClient extends CluedoGame {
 			communicator.changeLabel(str);
 		});
 	}
-
-	public void showDisprovals(String person, String weapon, String room) {
-		Platform.runLater(() -> {
-			communicator.showPossibleDisprovals(person, weapon, room);
-		});
-	}
-
-	public ServerItem getServer() {
-		return server;
-	}
-
-	public Communicator getCommunicator() {
-		return communicator;
-	}
-
-	public String getMyNick() {
-		return myNick;
-	}
-
-	@Override
-	public boolean start() { //aussumes playerlsit beeing ordered
-		auxx.loginfo("gameGUI of game " + getGameId() + " started");
-		filterPlayers();
-		startGameGui();		
-		setGameState(GameStates.started);
-
-		return true;
-	}
 	
-	public boolean start(ArrayList <String> order) {
-		searchAndDestroyOrder(order);
-		start();
-
-		return true;
-	}
-	
-	private void startGameGui(){
-		Platform.runLater(() -> {
-			communicator = new Communicator(this);
-			communicator.startGame();
-			communicator.setTitle(myNick + " playing on server "
-					+ server.getGroupName() + " Game : " + gameId);
-		});
-	}
-
-	public void rollDice(int[] wuerfel) {
-		Platform.runLater(() -> {
-			communicator.rollDice(wuerfel);
-		});
-	}
-
-	public void itsYourTurn(){
-		Platform.runLater(() -> {
-			communicator.itsYourTurn();
-		});
-
-	}
-	
-	public void itsSomeonesTurn(){
-		Platform.runLater(() -> {
-			communicator.itsSomeonesTurn();
-		});
-		
-	}
-	
-	public void move(CluedoPosition position, String person) {
-		communicator.move(position, person);
-	}
-
-	public void setMyNick(String myNick) {
-		this.myNick = myNick;
-	}
-
-	public void sendMsgToServer(String msg) {
-		auxx.sendTCPMsg(server.getSocket(), msg);
-	}
-
 	public void addChatMsg(String msg) {
 		Platform.runLater(() -> {
 			communicator.addChatMsg(msg);
 		});
 	}
 
+	public void killCommunicator() {
+		Platform.runLater(() -> {
+			if (communicator != null) communicator.kill();
+		});
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+
+	
+
+	
+
+	
+	
+
+
+	public void sendMsgToServer(String msg) {
+		auxx.sendTCPMsg(server.getSocket(), msg);
+	}
+
+	
 	public void kill() {
 		try {
 			server.sendMsg(NetworkMessages.leave_gameMsg(gameId));
@@ -144,38 +244,6 @@ public class CluedoGameClient extends CluedoGame {
 			killCommunicator();
 		}
 	}
-
-	public void killCommunicator() {
-		Platform.runLater(() -> {
-			if (communicator != null) communicator.kill();
-		});
-	}
-
-	public void currentPlayerToNothing() {
-		Platform.runLater(() -> {
-			communicator.updateStatesToNothing();
-		});
-
-	}
-	
-	public void currentPlayerToRolls() {
-		Platform.runLater(() -> {
-			communicator.updateStatesToRolls();
-		});
-	}
-	
-	public void currentPlayerToAccuse(){
-		Platform.runLater(() -> {
-			communicator.updateStatesToAccuse();}
-		);}
-	public void currentPlayerToSuspect(){
-		Platform.runLater(() -> {
-			communicator.updateStatesToSuspect();}
-		);}
-	public void currentPlayerToDisprove(){
-		Platform.runLater(() -> {
-			communicator.updateStatesToDisprove();}
-		);}
 	
 	public void searchAndDestroyOrder(ArrayList<String> order){
 		Stack<CluedoPlayer>  tmplist = (Stack<CluedoPlayer>)players.clone();
@@ -202,24 +270,6 @@ public class CluedoGameClient extends CluedoGame {
 		players = getPlayersConnected();
 	}
 	
-	public String getWatchersConnected(){
-		StringBuffer nb = new StringBuffer();
-		for (String p : watchers)			
-				nb.append(p+", ");		
-		
-		if (nb.length() > 2) nb.delete(nb.length()-2, nb.length()-1);
-		return nb.toString();
-	}
-
-
-	public void disprove(String card) {
-		communicator.disprove(card);
-	}
-	
-	public ArrayList<String> getWatchers() {
-		return watchers;
-	}
-	
 	public boolean removeWatcher(String nick){
 		for (String n: watchers)
 			if (n.equals(nick))
@@ -235,8 +285,8 @@ public class CluedoGameClient extends CluedoGame {
 	@Override
 	public boolean hasPlayerConnectedByNick(String nick){
 		for (CluedoPlayer p: players)
-			if (p.getNick().equals(nick)) return true;
-		
+			if (p.getNick().equals(nick)) 
+				return true;		
 		return false;	
 	}
 	
@@ -247,5 +297,12 @@ public class CluedoGameClient extends CluedoGame {
 		return false;
 	}
 
-	
+	public void setCurrentSuspicion(CluedoStatement suspicion) {
+		communicator.setCurSuspicion(suspicion);
+		
+	}
+
+	public void moveForSuspiciton(int gameID, CluedoStatement suspicion) {
+		communicator.moveForSuspiciton(gameID,suspicion);
+	}	
 }

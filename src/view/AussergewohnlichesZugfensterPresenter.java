@@ -2,9 +2,9 @@ package view;
 
 import java.util.Iterator;
 
+import kommunikation.PlayerCircleManager;
 import cluedoNetworkLayer.CluedoPlayer;
 import staticClasses.Sounds;
-import finderOfPaths.PlayerCircleManager;
 
 public class AussergewohnlichesZugfensterPresenter {
 

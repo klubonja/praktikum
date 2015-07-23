@@ -2,11 +2,11 @@ package stateManager;
 
 import java.util.Stack;
 
+import kommunikation.PlayerCircleManager;
 import kommunikation.ServerBeweger;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.GameStates;
 import enums.PlayerStates;
-import finderOfPaths.PlayerCircleManager;
 
 public class StateManager {
 	GameStates currentState;
@@ -22,7 +22,7 @@ public class StateManager {
 	public void setNextTurnRec(){
 		Stack<CluedoPlayer> players  = pcm.getPlayers();
 		for (int i = 0;i < pcm.getSize(); i++){
-			if (i == pcm.getIndex()){
+			if (i == pcm.getCurrentPlayerIndex()){
 				CluedoPlayer nextplayer = players.get(i);
 				nextplayer.setPossibleStates(stateMachine.getSucStates(PlayerStates.do_nothing));
 				System.out.println("currentplayer :"+ nextplayer.getNick()+" has states :"+nextplayer.getStatesAsStringFormatted());
@@ -60,8 +60,8 @@ public class StateManager {
 	
 	public void handleDisprove(int curindex){
 		for (int i = 0; i < pcm.getSize(); i++ ){
-			if (curindex == i) pcm.getPlayerByIndex(curindex).setPossibleState(PlayerStates.disprove);
-			else pcm.getPlayerByIndex(curindex).setPossibleState(PlayerStates.do_nothing);
+			if (curindex == i) pcm.getPlayerByIndex(i).setPossibleState(PlayerStates.disprove);
+			else pcm.getPlayerByIndex(i).setPossibleState(PlayerStates.do_nothing);
 		}
 	}
 	

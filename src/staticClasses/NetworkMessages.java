@@ -15,8 +15,8 @@ import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
+import cluedoNetworkLayer.CluedoStatement;
 import cluedoNetworkLayer.CluedoWeapon;
-import cluedoNetworkLayer.WinningStatement;
 import cluedoServer.ClientItem;
 import enums.GameStates;
 import enums.PlayerStates;
@@ -82,6 +82,15 @@ public abstract class NetworkMessages {
 		json.put("person", person);
 		json.put("weapon", weapon);
 		json.put("room", room);
+		
+		return json;
+	}
+	
+	public static JSONObject statement(CluedoStatement statement){
+		JSONObject json = new JSONObject();
+		json.put("person", statement.getPerson().getColor());
+		json.put("weapon", statement.getWeapon().getName());
+		json.put("room", statement.getRoom().getName());
 		
 		return json;
 	}
@@ -301,10 +310,27 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
+	public static String wrongaccuationMsg(int gameID,CluedoStatement wacc){
+		CluedoJSON json = new CluedoJSON("wrong accusation");
+		json.put("statement", statement(wacc));
+		json.put("gameID", gameID);		
+		
+		return json.toString();
+	}
+	
 	public static String game_endedMsg(int gameID,String nick,JSONObject statement){
 		CluedoJSON json = new CluedoJSON("game ended");
 		json.put("nick", nick);
 		json.put("statement", statement);
+		json.put("gameID", gameID);		
+		
+		return json.toString();
+	}
+	
+	public static String game_endedMsg(int gameID,String nick,CluedoStatement winningstatement){
+		CluedoJSON json = new CluedoJSON("game ended");
+		json.put("nick", nick);
+		json.put("statement", statement(winningstatement));
 		json.put("gameID", gameID);		
 		
 		return json.toString();
@@ -316,7 +342,7 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String game_endedMsg(int gameID,WinningStatement statement){
+	public static String game_endedMsg(int gameID,CluedoStatement statement){
 		JSONObject statementJSON = new JSONObject();
 		try {
 			statementJSON.put("person", statement.getPerson().getColor());
@@ -352,9 +378,9 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
-	public static String movedMsg(int gameID,String personname,CluedoPosition newpos){
+	public static String movedMsg(int gameID,String personcolor,CluedoPosition newpos){
 		CluedoJSON json = new CluedoJSON("moved");
-		json.put("person position", personPos(personname, newpos));
+		json.put("person position", personPos(personcolor, newpos));
 		json.put("gameID", gameID);		
 		
 		return json.toString();
@@ -388,6 +414,14 @@ public abstract class NetworkMessages {
 		json.put("nick", nick);
 		json.put("gameID", gameID);	
 		json.put("card", card);
+		
+		return json.toString();
+	}
+	
+	public static String disprovedMsg(int gameID,String nick){
+		CluedoJSON json = new CluedoJSON("disproved");
+		json.put("nick", nick);
+		json.put("gameID", gameID);	
 		
 		return json.toString();
 	}
@@ -429,6 +463,14 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
+	public static String suspectMsg(int gameID,String person,String weapon, String room){
+		CluedoJSON json = new CluedoJSON("suspect");
+		json.put("gameID", gameID);
+		json.put("statement",  statement(person, room, weapon));
+		
+		return json.toString();
+	}
+	
 	public static String suspectMsg(int gameID,JSONObject statement){
 		CluedoJSON json = new CluedoJSON("suspect");
 		json.put("gameID", gameID);
@@ -441,6 +483,13 @@ public abstract class NetworkMessages {
 		CluedoJSON json = new CluedoJSON("disprove");
 		json.put("gameID", gameID);
 		json.put("card", card);
+		
+		return json.toString();
+	}
+	
+	public static String cantDisproveMsg(int gameID){
+		CluedoJSON json = new CluedoJSON("disprove");
+		json.put("gameID", gameID);
 		
 		return json.toString();
 	}
@@ -611,6 +660,10 @@ public abstract class NetworkMessages {
 		}	
 		
 		return newgame;
+	}
+	
+	public static CluedoStatement makeCluedoStatementFromJSON(JSONObject jsonstat){
+		return new CluedoStatement(jsonstat.getString("person"), jsonstat.getString("weapon"), jsonstat.getString("room"));
 	}
 	
 	public static ArrayList<CluedoGameClient> createGamesFromJSONGameArray(JSONArray gamearray,ServerItem server){

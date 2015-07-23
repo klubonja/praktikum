@@ -1,5 +1,6 @@
 package view;
 
+import view.spielfeld.GameFrameView;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;

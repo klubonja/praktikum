@@ -21,6 +21,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import staticClasses.HowToPlay;
+import view.spielfeld.GameFrameView;
 
 public class InGameHintView extends GridPane {
 	

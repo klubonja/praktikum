@@ -114,7 +114,7 @@ public class Server {
 	}
 	
 	private void stopServer(){
-		dataManager.notifyAll(NetworkMessages.disconnectedMsg("server "+ Config.GROUP_NAME + " says : byebye, and thanks for all the fish"));
+		dataManager.sendMsgToAllClients(NetworkMessages.disconnectedMsg("server "+ Config.GROUP_NAME + " says : byebye, and thanks for all the fish"));
 		if (connector != null) connector.kill();
 		if (TCPServerSocket != null)
 			try {
@@ -157,7 +157,7 @@ public class Server {
 			  if (e.getCode() == KeyCode.ENTER){
 			  	try {	
 			  		if (!gui.inputField.getText().equals("")){
-			  			dataManager.notifyAll(
+			  			dataManager.sendMsgToAllClients(
 			  					NetworkMessages.chatMsg(gui.inputField.getText(),auxx.now())
 			  					);	
 			  		}	

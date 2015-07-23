@@ -247,8 +247,8 @@ public class CluedoProtokollChecker {
 
 	void val_disproved() {
 		val_game_created();
-		if (validateValue(jsonRoot, "card"))
-			validateCards(jsonRoot.getString("card"));
+//		if (validateValue(jsonRoot, "card"))
+//			validateCards(jsonRoot.getString("card"));
 	}
 
 	void val_no_disprove() {
@@ -275,7 +275,8 @@ public class CluedoProtokollChecker {
 
 	void val_suspect() {
 		val_watch_game();
-		validateStatement(jsonRoot);
+		validateStatement(jsonRoot.getJSONObject("statement"));
+
 	}
 
 	void val_disprove() {
@@ -447,7 +448,7 @@ public class CluedoProtokollChecker {
 	
 	void validatePersonPos(JSONObject jsonParent){
 		if (validateValue(jsonParent, "person"))
-			validatePersonName(jsonParent.getString("person"));
+			validatePerson(jsonParent.getString("person"));
 		if (validateValue(jsonParent, "field"))
 			validateField(jsonParent, "field");
 	}
@@ -504,8 +505,6 @@ public class CluedoProtokollChecker {
 			return true;			
 		} 
 		catch (JSONException e) {
-		//	System. out.println("VERYBAD :JSONArray expected on : "+key+" loopindex"+ index + " for "+localtype+" value \n"+jsonParent.toString());
-			//e.printStackTrace();
 			setErr("JSONArray: \""+key+"\" expected  in "+jsonParent.toString());
 			return false;
 		}		

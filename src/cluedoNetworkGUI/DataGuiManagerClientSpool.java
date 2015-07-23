@@ -9,6 +9,7 @@ import staticClasses.auxx;
 import cluedoClient.ServerItem;
 import cluedoClient.ServerPool;
 import cluedoNetworkLayer.CluedoGameClient;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.GameStates;
 import enums.PlayerStates;
 import enums.ServerStatus;
@@ -39,8 +40,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public void addGameToServer(ServerItem server, int gameID, String nick,String color){
-		CluedoGameClient newgame = 
-				new CluedoGameClient(gameID,server);
+		CluedoGameClient newgame = new CluedoGameClient(gameID,server);
 		newgame.joinGame(color, nick);
 		addGameToGui(gameID, nick,"",newgame.getGameState(),server.getGroupName(),server.getIpString());
 		
@@ -55,20 +55,15 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	}
 	
 	public void addClient(ServerItem server , String nick){
-		//System.out.println("added : "+server.getMyNick()+" - "+nick+" equals : "+ nick.equals(server.getMyNick()));
 		if (!nick.equals(server.getMyNick()) && server.addClient(nick) && server == selectedServer){
 			getGui().addClient(nick);
 			System.out.println("added : "+server.getMyNick()+" - "+nick+" equals : "+ nick.equals(server.getMyNick()));	
-		}
-				
+		}				
 	}
 	
 	
 	public void setClients(ServerItem server ,ArrayList<String> nicks){
-		server.setClientNicks(nicks);
-//		if (server == getSelectedServer())
-//			//setNicksGui(server);
-		
+		server.setClientNicks(nicks);		
 	}
 	
 	public void setSelectedServer(ServerItem selectedServer) {
@@ -235,7 +230,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		if (server == getSelectedServer()){
 			updateGame(gameID, game.getNicksConnected(),game.getWatchersConnected());
 		}
-			refreshGamesListServer(server);
+		refreshGamesListServer(server);
 	};	
 	
 	public void joinGameAsWatcher(ServerItem server,int gameID){
@@ -254,61 +249,31 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 				if (newStates.contains(PlayerStates.roll_dice.getName()))
 					game.itsYourTurn();
 				else if (newStates.contains(PlayerStates.disprove.getName()))
-					game.currentPlayerToDisprove();
+					game.disprove();
 				else if (newStates.contains(PlayerStates.do_nothing.getName()))
 					game.currentPlayerToNothing();
-				game.changeLabel(auxx.formatStringList(newStates, "oder"));
+				game.changeLabel(auxx.formatStringList(newStates, "or"));
 			}
-			else { //its some other fucker
+			else { //its some other bloke
 				if (newStates.contains(PlayerStates.roll_dice.getName()))
-					game.itsSomeonesTurn();				
+					game.itsSomeonesTurn(gameNick);				
 			}
 		}
+		else if (game.hasWatcherConnectedByNick(server.getMyNick())){
+			game.changeLabel(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
+		}
 	}
-		
-//		for (int welcherState = 0; welcherState < states.length(); welcherState++){
-//			statesb.append(states.get(welcherState));
-//			if (states.get(welcherState).equals(PlayerStates.end_turn.getName())){
-//				game.itsYourTurn();
-//			}
-//			else if (server.getMyNick().equals(nick) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
-//				auxx.loginfo("voll ghetto-code");
-////				game.currentPlayerToRolls();
-//				game.itsYourTurn();
-//			}
-//			else if ( ! (server.getMyNick().equals(nick) ) &&  states.get(welcherState).equals(PlayerStates.roll_dice.getName())){
-//				auxx.loginfo("voll ghetto-code");
-////				game.currentPlayerToRolls();
-//				game.itsSomeonesTurn();
-//			}
-////			else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.accuse.getName())){
-////				game.currentPlayerToAccuse();
-////			}
-////			else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.suspect.getName())){
-////				game.currentPlayerToSuspect();
-////			}
-//			else if (server.getMyNick().equals(nick) && states.get(welcherState).equals(PlayerStates.disprove.getName())){
-//				game.currentPlayerToDisprove();
-//			}
-////			else if (states.get(welcherState).equals(PlayerStates.do_nothing.getName())){
-////				auxx.loginfo("voll ghetto-code");
-////				game.currentPlayerToNothing();
-////			}
-//			else if ( ! (states.get(welcherState).equals(PlayerStates.do_nothing.getName()))){
-//				auxx.loginfo("nicht so ghetto-code");
-//			}
-//			
-				
-//		}
-//		else if (checker.getMessage().getJSONObject("player").getJSONArray("playerstate").get(0).equals(PlayerStates.disprove.getName())){
-//			server.getGameByGameID(gameID).disprove();
-//		}
-		
-		
-		
-		
-		
-	
 
+	public void handleSuspicion(int gameID, CluedoStatement suspicion,ServerItem server) {
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		if (game.hasPlayerConnectedByNick(server.getMyNick())){ //never ever trust anyone
+			game.setCurrentSuspicion(suspicion);
+		}		
+		game.moveForSuspiciton(gameID,suspicion);
+	}	
+	
+	public void handleDisprove(int gameID,ServerItem server){
+		server.getGameByGameID(gameID).disprove();
+	}	
 	
 }

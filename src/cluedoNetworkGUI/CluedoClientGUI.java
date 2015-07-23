@@ -1078,4 +1078,5 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	public void setClosePromptArea(Button closePromptArea) {
 		this.closePromptArea = closePromptArea;
 	}
+
 }

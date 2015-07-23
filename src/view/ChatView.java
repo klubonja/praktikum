@@ -24,10 +24,13 @@ public class ChatView extends VBox {
 	
 
 	private TextArea chatArea;
-	Label chatLabel;
-	HBox chatBox;
-	Button chatSend;
-	TextField chatField;
+	
+
+	private Label chatLabel;
+	private HBox chatBox;
+	//Button chatSend;
+	private TextField chatField;
+
 	
 	
 	public ChatView(){
@@ -37,7 +40,7 @@ public class ChatView extends VBox {
 	//chatArea.set
 	getChatArea().setEditable(false);
 	chatBox = new HBox(3);
-	chatSend = new Button("Send");
+	//chatSend = new Button("Send");
 	chatField = new TextField();
 	//chatField.setPrefWidth(200);
 	chatField.setMaxWidth(200);
@@ -64,5 +67,37 @@ public class ChatView extends VBox {
 	public void setChatArea(TextArea chatArea) {
 		this.chatArea = chatArea;
 	}
+
+
+	public Label getChatLabel() {
+		return chatLabel;
+	}
+
+
+	public void setChatLabel(Label chatLabel) {
+		this.chatLabel = chatLabel;
+	}
+
+
+	public HBox getChatBox() {
+		return chatBox;
+	}
+
+
+	public void setChatBox(HBox chatBox) {
+		this.chatBox = chatBox;
+	}
+
+
+	public TextField getChatField() {
+		return chatField;
+	}
+
+
+	public void setChatField(TextField chatField) {
+		this.chatField = chatField;
+	}
+	
+	
 
 }

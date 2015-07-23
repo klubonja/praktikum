@@ -97,7 +97,7 @@ public class ClientItem {
 			socket.close();
 			return true;
 		} catch (IOException e) {
-			System.out.println("client connection "+getAdress()+ "was not closed due to:\n"+ e.getMessage());
+			auxx.logsevere("client connection "+getAdress()+ "was not closed due to:\n"+ e.getMessage());
 		}
 		
 		return false;

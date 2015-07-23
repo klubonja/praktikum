@@ -5,13 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.json.JSONObject;
-
 import staticClasses.NetworkMessages;
-import staticClasses.auxx;
 import cluedoNetworkGUI.DataManager;
 import cluedoNetworkLayer.CluedoGameServer;
 import cluedoNetworkLayer.CluedoPosition;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.GameStates;
 import enums.JoinGameStatus;
 
@@ -30,14 +28,15 @@ public class DataManagerServer extends DataManager {
 		gamesList = new GameListServer();
 	}
 	
-
-	
+	/////////////////////////////////GETTER//////////////////////////////////////////////////////
 	public ArrayList<ClientItem> getBlackList() {
 		return blackList;
 	}
+	
 	public ClientPool getClientPool() {
 		return clientPool;
 	}
+	
 	public GameListServer getGameList() {
 		return gamesList;
 	}
@@ -53,10 +52,6 @@ public class DataManagerServer extends DataManager {
 	
 	public CluedoGameServer getGameByID(int gameID){
 		return gamesList.getGameByID(gameID);
-	}
-	
-	public boolean startGameByID(int gameID,String nick){
-		return gamesList.getGameByID(gameID).start();
 	}
 	
 	public ClientItem getClientByNick(String nick){
@@ -75,14 +70,6 @@ public class DataManagerServer extends DataManager {
 		return glist;
 	}
 	
-	public JoinGameStatus joinGame(int gameID, String color,ClientItem client){
-		return gamesList.joinGameById(gameID, color, client);
-	}
-	
-	public boolean addNetworkActor(ClientItem client){
-		return clientPool.add(client);
-	}
-	
 	public String getNicksConnectedByIndex(int index){
 		return getGameByIndex(index).getNicksConnected();
 	}
@@ -91,92 +78,30 @@ public class DataManagerServer extends DataManager {
 		return gamesList.getGameByID(gameID).getNicksConnected();
 	}
 	
-	public boolean addGame(CluedoGameServer game){
-		return gamesList.add(game);
-	}
-	
-	public boolean removeGame(CluedoGameServer game){
-		return gamesList.remove(game);
-	}
-	
-	@Override
-	public boolean checkIpExists(InetAddress adress){
-		return clientPool.checkForExistingIp(adress);
-	}
-	
-	public boolean isBlacklisted(InetAddress adress){
-		for (ClientItem c : blackList)
-			if (adress.equals(c.getAdress())) return true;
-		return false;
-	}
-	
-	@Override
-	public void notifyAll(String msg){
-		clientPool.notifyAll(msg);
-	}
-	
-	public boolean blacklist(ClientItem client){
-		if (clientPool.contains(client))
-			clientPool.remove(client);
-		return blackList.add(client);
-	}
-	
 	@Override
 	public int getGameCount(){
 		return gamesList.size();
 	}
+	////////////////////////////////SETTER/////////////////////////////////////////////////////
 	
-	public boolean addClient(ClientItem client){
-		if (!hasClient(client))
-			return clientPool.add(client);
-		return false;
-	}
-	
-	public boolean removeClientfromSystem(ClientItem client){
-		Iterator<CluedoGameServer> iter = gamesList.iterator();
-		//for (CluedoGameServer cgs: gamesList){
-		while(iter.hasNext()){
-			CluedoGameServer cgs = iter.next();
-			cgs.findAndRemovePlayer(client);
-			cgs.findAndRemoveWatcher(client);
-			if (cgs.getNumberConnected() == 0){
-				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
-				if (removeGame(cgs)) cgs.notifyAll(NetworkMessages.game_deletedMsg(cgs.getGameId()));								
-			}
-			else if (cgs.getGameState() == GameStates.ended){
-				cgs.notifyAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
-			}
-			else if (cgs.getGameState() == GameStates.not_started){
-				cgs.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
-			}		
-		}	
-	
-		return clientPool.remove(client);
-	}
-	
+	///////////////////////////////////HASER//////////////////////////////////////////////////////
 	public boolean hasClient(ClientItem client){
 		for (ClientItem c: clientPool)
 			if (c.getNick().equals(client.getNick()))
 					return true;
 		return false;
  	}
-	
-	@Override
-	public boolean joinGame(int gameID, String color, String nick) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-
-	public String getSuspector() {
-		return suspector;
-	}
-
-
-
-	public void setSuspector(String suspector) {
-		this.suspector = suspector;
+	//////////////////////////////////RUNNING GAME///////////////////////////////////////////////////
+	public void suspectRequest(int gameID,CluedoStatement statement,ClientItem client){
+		CluedoGameServer game = validatedClientGame(gameID, client);
+		if (game != null){
+			if (statement.equals(game.getWinningStatement())){
+				sendMsgToAllClients(NetworkMessages.game_endedMsg(gameID, statement));
+			}
+			else {
+				game.suspect(statement, client);
+			}			
+		}
 	}
 	
 	public void rollDiceRequest(int gameID,ClientItem client){
@@ -186,30 +111,70 @@ public class DataManagerServer extends DataManager {
 		}		
 	}
 	
+	public void disproveRequest(int gameID, String card, ClientItem client) {
+		CluedoGameServer game = validatedClientGame(gameID, client);
+		if (game != null){
+			game.disproveRequest(card,client);
+		}
+		
+	}
+	
 	public void endTurnRequest(int gameID,ClientItem client){
 		CluedoGameServer game = validatedClientGame(gameID, client);
 		if (game != null){
 			game.endTurnRequest(client);
-//			else {
-//				game.sendMsgToParticipants(
-//						NetworkMessages.chatMsg(
-//							"@"+client.getNick()+": cant end turn at this point idiot, possible moves are :  "+game.getPlayerByClient(client).getStatesAsString(),
-//							game.getGameId(), 
-//							auxx.now()
-//							)
-//						);
-//			}
 		}
 	}
 	
 	public void moveRequest(int gameID, ClientItem client,CluedoPosition newpos){
 		CluedoGameServer game = validatedClientGame(gameID, client);
 		if (game != null){
-			if (game.movePlayer(client ,newpos)) {
+			if (game.movePlayerRequest(client ,newpos)) {
 		   		//ach 
 			}
 		}
 	}
+	
+	public void secretPassageRequest(int gameID, ClientItem client) {
+		CluedoGameServer game = validatedClientGame(gameID, client);
+		if (game != null){
+			if (game.useSecretPassageRequest(client)) {
+		   		//ach 
+			}
+		}
+	}
+	
+	public void accuseRequest(int gameID, CluedoStatement accusation,
+			ClientItem client) {
+		CluedoGameServer game = validatedClientGame(gameID, client);
+		if (game != null){
+			if (game.accuseRequest(accusation,client)) {
+		   		//ach 
+			}
+		}
+		
+	}
+	
+	public String getDisprover() {
+		return disprover;
+	}
+
+
+
+	public void setDisprover(String disprover) {
+		this.disprover = disprover;
+	}
+	
+	///////////////////////////////SENDMSGS/////////////////////////////////////////////////////////
+	@Override
+	public void sendMsgToAllClients(String msg){
+		clientPool.notifyAll(msg);
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	/////////////////////////////////VALIDATION///////////////////////////////////////////////////
 	
 	private boolean validateClient(ClientItem client){
 		boolean valid = true;
@@ -238,17 +203,83 @@ public class DataManagerServer extends DataManager {
 		return  null;
 	}
 
-
-
-	public String getDisprover() {
-		return disprover;
+	
+	////////////////////////////////////////////////////////////////////////////////
+	public boolean startGameByID(int gameID,String nick){
+		return gamesList.getGameByID(gameID).start();
+	}
+		
+	
+	public JoinGameStatus joinGame(int gameID, String color,ClientItem client){
+		return gamesList.joinGameById(gameID, color, client);
+	}
+	
+	public boolean addNetworkActor(ClientItem client){
+		return clientPool.add(client);
+	}
+	
+	public boolean addGame(CluedoGameServer game){
+		return gamesList.add(game);
+	}
+	
+	public boolean removeGame(CluedoGameServer game){
+		return gamesList.remove(game);
+	}
+	
+	@Override
+	public boolean checkIpExists(InetAddress adress){
+		return clientPool.checkForExistingIp(adress);
+	}
+	
+	public boolean isBlacklisted(InetAddress adress){
+		for (ClientItem c : blackList)
+			if (adress.equals(c.getAdress())) return true;
+		return false;
+	}
+	
+	public boolean blacklist(ClientItem client){
+		if (clientPool.contains(client))
+			clientPool.remove(client);
+		return blackList.add(client);
+	}
+	
+	public boolean addClient(ClientItem client){
+		if (!hasClient(client))
+			return clientPool.add(client);
+		return false;
+	}
+	
+	public boolean removeClientfromSystem(ClientItem client){
+		Iterator<CluedoGameServer> iter = gamesList.iterator();
+		while(iter.hasNext()){
+			CluedoGameServer cgs = iter.next();
+			cgs.findAndRemovePlayer(client);
+			cgs.findAndRemoveWatcher(client);
+			if (cgs.getNumberConnected() == 0){
+				cgs.sendMsgsToAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
+				iter.remove();
+				cgs.sendMsgsToAll(NetworkMessages.game_deletedMsg(cgs.getGameId()));								
+			}
+			else if (cgs.getGameState() == GameStates.ended){
+				cgs.sendMsgsToAll(NetworkMessages.game_endedMsg(cgs.getGameId(), cgs.getWinningStatement()));
+			}
+			else if (cgs.getGameState() == GameStates.not_started){
+				cgs.sendMsgsToAll(NetworkMessages.user_leftMsg(client.getNick()));
+			}		
+		}	
+	
+		return clientPool.remove(client);
+	}
+	
+	@Override
+	public boolean joinGame(int gameID, String color, String nick) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
+	
 
-
-	public void setDisprover(String disprover) {
-		this.disprover = disprover;
-	}
+	
 }
 	
 

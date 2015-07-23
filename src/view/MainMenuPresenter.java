@@ -88,6 +88,7 @@ public void bindComponents(){
 	}
 		
 
+
 	public MainMenuView getView() {
 		return view;
 	}
@@ -128,5 +129,6 @@ public void bindComponents(){
 	public void setClient(Client client) {
 		this.client = client;
 	}
+
 
 }

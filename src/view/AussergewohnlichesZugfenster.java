@@ -81,8 +81,8 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 		buttons = new HBox();
 		buttons.setSpacing(10);
 		buttons.setAlignment(Pos.CENTER);
-		buttons.getChildren().addAll(NOvermutenImage, NOwurfelImage,
-				NOgangImage);
+		buttons.getChildren().addAll(NOvermutenImage, NOwurfelImage,NOgangImage);
+		
 
 		bottom = new HBox();
 		bottom.setSpacing(150);

@@ -14,6 +14,7 @@ import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.NetworkHandhakeCodes;
 import enums.Persons;
 import enums.PlayerStates;
@@ -42,8 +43,7 @@ class CommunicationHandler implements Runnable {
 	 * 
 	 *            tcp verbindung steht server wartet auf tcp handshake
 	 */
-	CommunicationHandler(ClientItem c, DataManagerServer dm,
-			DataGuiManagerServer dgm) {
+	CommunicationHandler(ClientItem c, DataManagerServer dm, DataGuiManagerServer dgm) {
 		dataManager = dm;
 		dataGuiManager = dgm;
 		client = c;
@@ -51,8 +51,7 @@ class CommunicationHandler implements Runnable {
 
 	private void awaitingLoginAttempt() {
 		auxx.logfine("awaiting login from client");
-		while (!readyForCommunication) { // will keep listening for valid login
-											// msg
+		while (!readyForCommunication) { // will keep listening for valid login msg
 			try {
 				ArrayList<String> messages = auxx.getTCPMessages(client.getSocket());
 				for (String message : messages){
@@ -85,7 +84,7 @@ class CommunicationHandler implements Runnable {
 			} 
 			catch (Exception e) {
 				auxx.logsevere(
-						"communicationhandler for client : " + client.getNick()	+ " running out\n", e);
+						"communicationhandler for client : " + client.getNick()	+ " running out because : "+e.getMessage(),e);
 				auxx.logsevere("last message :" + currentMsg);
 				closeProtokollConnection();
 			}
@@ -107,7 +106,7 @@ class CommunicationHandler implements Runnable {
 				client.setGroupName(checker.getMessage().getString("group"));
 				client.sendMsg(NetworkMessages.login_sucMsg(client.getExpansions(),
 								dataManager.getClientPool(), dataManager.getGameList()));
-				dataManager.notifyAll(NetworkMessages.user_addedMsg(client.getNick()));
+				dataManager.sendMsgToAllClients(NetworkMessages.user_addedMsg(client.getNick()));
 				readyForCommunication = true;
 				runThread = true;
 			}
@@ -139,7 +138,7 @@ class CommunicationHandler implements Runnable {
 
 	void createGame(String color, ClientItem client) {
 		int gameID = dataGuiManager.createGame(color, client);
-		dataManager.notifyAll(
+		dataManager.sendMsgToAllClients(
 				NetworkMessages.game_createdMsg(
 						NetworkMessages.player_info(
 							client.getNick(), 
@@ -155,9 +154,7 @@ class CommunicationHandler implements Runnable {
 
 	private void closeProtokollConnection() {
 		if (dataGuiManager.removeClient(client)) {
-			dataManager
-					.notifyAll(NetworkMessages.user_leftMsg(client.getNick()));
-			
+			dataManager.sendMsgToAllClients(NetworkMessages.user_leftMsg(client.getNick()));			
 		}
 		killThread();
 	}
@@ -203,116 +200,190 @@ class CommunicationHandler implements Runnable {
 	   		   int gameID = checker.getMessage().getInt("gameID");
 	   		   dataManager.moveRequest(gameID,client,newpos);   		 
 	   	   }
+	   	   else if(checker.getType().equals("secret passage")){
+	   		   int gameID = checker.getMessage().getInt("gameID");
+	   		   dataManager.secretPassageRequest(gameID, client);
+	   	   }
 	     	   
 	   	   	else if (checker.getType().equals("accuse")) {
-				int id = checker.getMessage().getInt("gameID");
-				JSONObject json = checker.getMessage().getJSONObject(
-						"statement");
-				String person = json.getString("person");
-				String room = json.getString("room");
-				String weapon = json.getString("weapon");
-				String winnerPerson = dataManager.getGameByID(id).getWinningStatement().getPerson().getPersonName();
-				String winnerRoom = dataManager.getGameByID(id).getWinningStatement().getRoom().getName();
-				String winnerWeapon = dataManager.getGameByID(id).getWinningStatement().getWeapon().getName();
-				dataManager.notifyAll(NetworkMessages.accuseMsg(
-						id, NetworkMessages.statement(person, room, weapon))
-						);
-				
-				winnerPerson = Persons.getPersonByName(winnerPerson).getColor();
-				if(person.equals(winnerPerson) &&
-					weapon.equals(winnerWeapon) &&
-					room.equals(winnerRoom)){
-					dataManager.notifyAll(NetworkMessages.game_endedMsg(id,
-							dataManager.getGameByID(id).getWinningStatement()));
-				} else {
-					dataManager.notifyAll(NetworkMessages.
-					wrong_accusationMsg(id, NetworkMessages.
-					statement(person, room, weapon)));
-					//KICK PLAYER OUT OF THE GAME
+
+//
+		   	   	int gameID = checker.getMessage().getInt("gameID");	
+				dataManager.accuseRequest(
+						gameID, 
+						NetworkMessages.makeCluedoStatementFromJSON(
+								checker.getMessage().getJSONObject("statement")
+						), 
+						client
+				);
+//				int id = checker.getMessage().getInt("gameID");
+//				JSONObject json = checker.getMessage().getJSONObject(
+//						"statement");
+//				String person = json.getString("person");
+//				String room = json.getString("room");
+//				String weapon = json.getString("weapon");
+//				String winnerPerson = dataManager.getGameByID(id).getWinningStatement().getPerson().getPersonName();
+//				String winnerRoom = dataManager.getGameByID(id).getWinningStatement().getRoom().getName();
+//				String winnerWeapon = dataManager.getGameByID(id).getWinningStatement().getWeapon().getName();
+//				dataManager.notifyAll(NetworkMessages.accuseMsg(
+//						id, NetworkMessages.statement(person, room, weapon))
+//						);
+//				
+//				switch (winnerPerson) { // irgendjemand hasst enums : winnerPerson = Persons.getPersonByName(winnerPerson).getColor();
+//				case "Fräulein Gloria":
+//					winnerPerson = "red";
+//					break;
+//				case "Oberts von Gatow":
+//					winnerPerson = "yellow";
+//					break;
+//				case "Frau Weiss":
+//					winnerPerson = "white";
+//					break;
+//				case "Reverend Green":
+//					winnerPerson = "green";
+//					break;
+//				case "Baronin von Porz":
+//					winnerPerson = "blue";
+//					break;
+//				case "Professor Bloom":
+//					winnerPerson = "purple";
+//					break;
+//				}
+//				if(person.equals(winnerPerson) &&
+//					weapon.equals(winnerWeapon) &&
+//					room.equals(winnerRoom)){
+//					dataManager.sendMsgToAllClients(NetworkMessages.game_endedMsg(id,
+//							dataManager.getGameByID(id).getWinningStatement()));
+//				} 
+//				else {
+////					dataManager.notifyAll(NetworkMessages.
+////					wrogit ng_accusationMsg(id, NetworkMessages.
+////					statement(person, room, weapon)));
+////					//KICK PLAYER OUT OF THE GAME
+//				}
+			} 
+	   	   	else if (checker.getType().equals("suspect")) {
+					int gameID = checker.getMessage().getInt("gameID");	
+					dataManager.suspectRequest(
+							gameID, 
+							NetworkMessages.makeCluedoStatementFromJSON(
+									checker.getMessage().getJSONObject("statement")
+							), 
+							client
+					);
+			} 
+			else if (checker.getType().equals("disprove")) {
+				int gameID = checker.getMessage().getInt("gameID");
+				String card;
+				if (checker.getMessage().has("card")){
+					card = checker.getMessage().getString("card");
+//					dataManager.disproveRequest(gameID,card,client);
 				}
-			} else
-				if (checker.getType().equals("suspicion")) {
-				int id = checker.getMessage().getInt("gameID");
-				dataManager.setSuspector(dataManager.getGameByID(id).getPlayerByClient(client).getNick());
-				JSONObject json = checker.getMessage().getJSONObject("statement");
-				String person = json.getString("person").toString();
-				String room = json.getString("room").toString();
-				String weapon = json.getString("weapon").toString();
-				dataManager.notifyAll(NetworkMessages.chatMsg(
-						client.getNick() + " is suspecting. " + 
-						"\n" + person + " " + room + " " + weapon, id, auxx.now()));
-				
-				for(CluedoPlayer p : dataManager.getGameByID(id).getPlayers()){
-					if(!cardInspector(person, weapon, room, p.getCards())){
-						dataManager.notifyAll(NetworkMessages.chatMsg(
-								p.getNick() + " (" + p.getCluedoPerson() + ") did not have a card.", id, auxx.now()));
-					} else {
-						if(!p.getNick().equals(dataManager.getSuspector())){
-						dataManager.getClientByNick(p.getNick()).
-						sendMsg(NetworkMessages.suspicionMsg(id, NetworkMessages.statement(person, room, weapon)));
-						break;
-						}
-					}
+				else {
+					card = "";
+//					dataManager.getGameByID(gameID).sendMsgsToAll(NetworkMessages.no_disproveMsg(gameID));
 				}
-			} else
-				if (checker.getType().equals("disprove")) {
-					String pool = "pool";
-					int id = checker.getMessage().getInt("gameID");
-					dataManager.setDisprover(dataManager.getGameByID(id).getPlayerByClient(client).getNick());
-					String card = checker.getMessage().getString("card");
-					dataManager.getClientByNick(dataManager.getDisprover()).sendMsg(NetworkMessages.disprovedMsg(id, client.getNick(), pool));
-					dataManager.getClientByNick(dataManager.getSuspector()).sendMsg(NetworkMessages.disproveMsg(client.getGameId(), card));
-			} else 
-				if (checker.getType().equals("no disprove")) {
-				int id = checker.getMessage().getInt("gameID");
-				dataManager.notifyAll(NetworkMessages.no_disproveMsg(id));
-			} else
-				if (checker.getType().equals("disproved")){
-					System.out.println(dataManager.getGameByID(checker.getMessage().getInt("gameID")).
-							getPlayerByClient(client).getCluedoPerson().getColor() + " has disproved it!");
-				}
+				dataManager.disproveRequest(gameID,card,client);
+					
+			} 	   	   
+//=======
+//				int id = checker.getMessage().getInt("gameID");
+//				JSONObject json = checker.getMessage().getJSONObject(
+//						"statement");
+//				String person = json.getString("person");
+//				String room = json.getString("room");
+//				String weapon = json.getString("weapon");
+//				String winnerPerson = dataManager.getGameByID(id).getWinningStatement().getPerson().getPersonName();
+//				String winnerRoom = dataManager.getGameByID(id).getWinningStatement().getRoom().getName();
+//				String winnerWeapon = dataManager.getGameByID(id).getWinningStatement().getWeapon().getName();
+//				dataManager.notifyAll(NetworkMessages.accuseMsg(
+//						id, NetworkMessages.statement(person, room, weapon))
+//						);
+//				
+//				winnerPerson = Persons.getPersonByName(winnerPerson).getColor();
+//				if(person.equals(winnerPerson) &&
+//					weapon.equals(winnerWeapon) &&
+//					room.equals(winnerRoom)){
+//					dataManager.notifyAll(NetworkMessages.game_endedMsg(id,
+//							dataManager.getGameByID(id).getWinningStatement()));
+//				} else {
+//					dataManager.notifyAll(NetworkMessages.
+//					wrong_accusationMsg(id, NetworkMessages.
+//					statement(person, room, weapon)));
+//					//KICK PLAYER OUT OF THE GAME
+//				}
+//			} else
+//				if (checker.getType().equals("suspicion")) {
+//				int id = checker.getMessage().getInt("gameID");
+//				dataManager.setSuspector(dataManager.getGameByID(id).getPlayerByClient(client).getNick());
+//				JSONObject json = checker.getMessage().getJSONObject("statement");
+//				String person = json.getString("person").toString();
+//				String room = json.getString("room").toString();
+//				String weapon = json.getString("weapon").toString();
+//				dataManager.notifyAll(NetworkMessages.chatMsg(
+//						client.getNick() + " is suspecting. " + 
+//						"\n" + person + " " + room + " " + weapon, id, auxx.now()));
+//				
+//				for(CluedoPlayer p : dataManager.getGameByID(id).getPlayers()){
+//					if(!cardInspector(person, weapon, room, p.getCards())){
+//						dataManager.notifyAll(NetworkMessages.chatMsg(
+//								p.getNick() + " (" + p.getCluedoPerson() + ") did not have a card.", id, auxx.now()));
+//					} else {
+//						if(!p.getNick().equals(dataManager.getSuspector())){
+//						dataManager.getClientByNick(p.getNick()).
+//						sendMsg(NetworkMessages.suspicionMsg(id, NetworkMessages.statement(person, room, weapon)));
+//						break;
+//						}
+//					}
+//				}
+//			} 
+//				else
+//				if (checker.getType().equals("disprove")) {
+//					String pool = "pool";
+//					int id = checker.getMessage().getInt("gameID");
+//					dataManager.setDisprover(dataManager.getGameByID(id).getPlayerByClient(client).getNick());
+//					String card = checker.getMessage().getString("card");
+//					dataManager.getClientByNick(dataManager.getDisprover()).sendMsg(NetworkMessages.disprovedMsg(id, client.getNick(), pool));
+//					dataManager.getClientByNick(dataManager.getSuspector()).sendMsg(NetworkMessages.disproveMsg(client.getGameId(), card));
+//			} 
+        //so eine nachricht bekommt kein client und wenn dann würde das hier in einer endloschleife resultieren
+//			else 
+//				if (checker.getType().equals("no disprove")) {
+//				int id = checker.getMessage().getInt("gameID");
+//				dataManager.notifyAll(NetworkMessages.no_disproveMsg(id));
+//			} else
+//				if (checker.getType().equals("disproved")){
+//					System.out.println(dataManager.getGameByID(checker.getMessage().getInt("gameID")).
+//							getPlayerByClient(client).getCluedoPerson().getColor() + " has disproved it!");
+//				}
 	   	   
+//>>>>>>> master
 	   	   else if(checker.getType().equals("end turn")){
 	   		   int gameID = checker.getMessage().getInt("gameID");
-	   		   //CluedoGameServer game = dataManager.getGameByID(gameID);
-	   		   //CluedoPlayer player = game.getPlayerByNick(client.getNick());
-		   		   //if (player.getPossibleStates().contains(PlayerStates.end_turn)){
-		   			   
-		   			   dataManager.endTurnRequest(gameID,client);
-		   		   //}
-	   		   
-	//   		   else {
-	//   			   client.sendMsg(NetworkMessages.error_Msg("stfu you're not done yet!" +player.returnStatesAsString()));
-	//   		   }
-	   		   // Validieren
-	   		   
-	   		   
-	   		   //setNextRound();
-	   		   //setCurrentPlayerNext();
+		   	   dataManager.endTurnRequest(gameID,client);
 	   	   }
-	     	  
 	 	   else if (checker.getType().equals("chat")) {														//CHAT
-				   JSONObject chatmsg = checker.getMessage();
-				   String msg = checker.getMessage().getString("message");
-				   String ts = checker.getMessage().getString("timestamp");
-					if (chatmsg.has("gameID")){
-						int gameID = chatmsg.getInt("gameID");
-						  dataManager.getGameByID(gameID).notifyAll(NetworkMessages.chatMsg(msg,gameID,ts));
-					}
-					else if (checker.getMessage().has("nick")){
-						dataGuiManager.addMsgIn(
-							chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
-							chatmsg.getString("message")
-						);
-						dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg,ts));
-					}
-					else {							  
-						dataManager.notifyAll(NetworkMessages.chatMsg(msg , ts));
-						dataGuiManager.addMsgIn(
-							ts+" "+chatmsg.getString("sender")+" says : \n"+
-							msg
-						);
-					}
+			   JSONObject chatmsg = checker.getMessage();
+			   String msg = checker.getMessage().getString("message");
+			   String ts = checker.getMessage().getString("timestamp");
+				if (chatmsg.has("gameID")){
+					int gameID = chatmsg.getInt("gameID");
+					  dataManager.getGameByID(gameID).sendMsgsToAll(NetworkMessages.chatMsg(msg,gameID,ts));
+				}
+				else if (checker.getMessage().has("nick")){
+					dataGuiManager.addMsgIn(
+						chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says (privately) : \n"+
+						chatmsg.getString("message")
+					);
+					dataManager.getClientByNick(chatmsg.getString("nick")).sendMsg(NetworkMessages.chatMsg(msg,ts));
+				}
+				else {							  
+					dataManager.sendMsgToAllClients(NetworkMessages.chatMsg(msg , ts));
+					dataGuiManager.addMsgIn(
+						ts+" "+chatmsg.getString("sender")+" says : \n"+
+						msg
+					);
+				}
 	          }
      	  else  {											
      		   auxx.loginfo("SERVER INCOMING valid unchecked : \n"+ checker.getMessage());
@@ -325,21 +396,26 @@ class CommunicationHandler implements Runnable {
 //	        	   dataGuiManager.removeClient(client);
 	        	   auxx.loginfo("INCOMING INVALID : "+ checker.getErrString());
         }
+	}
 
-	}
-	
-	public boolean cardInspector(String person, String weapon, String room, ArrayList<String> cards){
-		person = Persons.getPersonByColor(person).getPersonName();
-		for(String str : cards){
-			if (str.equals(person) ||
-					str.equals(weapon) ||
-					str.equals(room)) {
-				return true;
-				}
-		}
-		return false;
-	}
-	
-	
+//das hat hier nichts zu suchen weil spiellogik
+//<<<<<<< HEAD
+//=======
+//	
+//	public boolean cardInspector(String person, String weapon, String room, ArrayList<String> cards){
+//		person = Persons.getPersonByColor(person).getPersonName();
+//		for(String str : cards){
+//			if (str.equals(person) ||
+//					str.equals(weapon) ||
+//					str.equals(room)) {
+//				return true;
+//				}
+//		}
+//		return false;
+//	}
+//	
+//	
+//
+//>>>>>>> master
 
 }

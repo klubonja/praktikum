@@ -1,12 +1,12 @@
 package finderOfPaths;
 
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import kacheln.Kachel;
 import kacheln.KachelContainer;
+import kommunikation.PlayerCircleManager;
 import staticClasses.auxx;
-import view.BoardView;
+import view.spielfeld.BoardView;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
@@ -14,9 +14,9 @@ import enums.Orientation;
 /**
  * 
  * Gibt allen erreichbaren Kacheln ein char [] mit anweisungen, wie man dort hin kommen kann.
- * Markiert diese Kacheln auch farbig.
+ * Markiert diese Kacheln auch wunderschoen farbig.
  * @since 13.06.2015
- * @version 25.06.2015
+ * @version 21.07.2015
  * @author Benedikt Mayer, Maximilian Lammel
  *
  */
@@ -24,7 +24,6 @@ public class Vorschlaege {
 
 	private BoardView gui;
 	private char [][] moeglichkeiten;
-	private Kachel jetzigeKachel;
 	private int jetzigeSpalte;
 	private int jetzigeReihe;
 	private int counterAussen;
@@ -48,11 +47,13 @@ public class Vorschlaege {
 	private Background [][] markierteHintergruende = new Background [25][24];
 	
 	/**
-	 * Erstellt einen Vorschlager, welcher eine gui braucht, um den Kacheln M�glichkeiten zuzuweisen.
+	 * Erstellt einen Vorschlager, welcher eine gui braucht, um den Kacheln Moeglichkeiten zuzuweisen.
 	 * @param gui die GUI, in welcher Kacheln informationen zugewiesen bekommen.
+	 * @param pcManager oh wow it's a pcManager
+	 * @param kacheln enthaelt die ganzen tollen Kacheln
 	 */
-	public Vorschlaege(BoardView gui,PlayerCircleManager pcm, KachelContainer kacheln){
-		pcManager = pcm;
+	public Vorschlaege(BoardView gui,PlayerCircleManager pcManager, KachelContainer kacheln){
+		this.pcManager = pcManager;
 		this.gui = gui;
 		this.kacheln = kacheln;
 		markierteHintergruendeUpdaten();
@@ -61,8 +62,13 @@ public class Vorschlaege {
 		
 	}
 	
-	public Vorschlaege(PlayerCircleManager pcm, KachelContainer kacheln){
-		this.pcManager = pcm;
+	/**
+	 * Auch der Server will vorschlagen
+	 * @param pcManager oh Wunder, ein pcManager
+	 * @param kacheln enthaelt die ganzen tollen Kacheln
+	 */
+	public Vorschlaege(PlayerCircleManager pcManager, KachelContainer kacheln){
+		this.pcManager = pcManager;
 		this.kacheln = kacheln;
 		spieler = false;
 		this.currentPlayer = pcManager.getCurrentPlayer();
@@ -70,12 +76,12 @@ public class Vorschlaege {
 	
 	/**
 	 * Geht alle Kacheln durch und gibt den erreichbaren ein char [] mit Anweisungen.
-	 * @param moeglichkeitenEingabe alle m�glichen Eingaben - vom pathfinder vorher berechnet.
-	 * @param mehrereMoeglichkeiten wenn es mehrere Türen gibt.
+	 * @param moeglichkeitenEingabe alle moeglichen Eingaben - vom pathfinder vorher berechnet.
+	 * @param mehrereMoeglichkeiten wenn es mehrere Tueren gibt.
 	 * @param moeglichkeiten[counterAussen] das zugewiesene char []
 	 * @param xPositionenEingabe alle xPositionen, von welchen aus gesucht werden soll 
 	 * @param yPositionenEingabe alle yPositionen, von welchen aus gesucht werden soll
-	 * @param tuerCounterEingabe von wie vielen Türen aus gesucht werden soll
+	 * @param tuerCounterEingabe von wie vielen Tueren aus gesucht werden soll
 	 */
 	public void vorschlaegeMachen(char [][] moeglichkeitenEingabe, char [][][] mehrereMoeglichkeiten, int [] xPositionenEingabe, int [] yPositionenEingabe, int tuerCounterEingabe, PlayerCircleManager pcManager){
 		
@@ -163,7 +169,7 @@ public class Vorschlaege {
 	}
 
 	/**
-	 * Updatet die ehemals unmarkierten Hintergründe.
+	 * Updatet die ehemals unmarkierten Hintergruende.
 	 */
 	public void markierteHintergruendeUpdaten(){
 		if(spieler){
@@ -176,7 +182,7 @@ public class Vorschlaege {
 	}
 	
 	/**
-	 * Setzt alle möglichkeiten wieder auf null
+	 * Setzt alle moeglichkeiten wieder auf null
 	 */
 	public void resetAnweisungsArrays(){
 		
@@ -192,7 +198,7 @@ public class Vorschlaege {
 	}
 	
 	/**
-	 * Setzt die Distanz auf den für die moeglichkeiten gültigen Wert
+	 * Setzt die Distanz auf den fuer die moeglichkeiten gueltigen Wert
 	 */
 	public void distanzenUpdaten(){
 		
@@ -220,8 +226,8 @@ public class Vorschlaege {
 	}
 	
 	/**
-	 * Stellt sicher, dass man aus "S"-Türen etc. nur nach Süden raus kann. 
-	 * @return true, falls das möglich ist.
+	 * Stellt sicher, dass man aus "S"-Tueren etc. nur nach Sueden raus kann. 
+	 * @return true, falls das moeglich ist.
 	 */
 	public boolean checkForWeirdStuff(){
 		Kachel checkThis = kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte];
@@ -248,7 +254,7 @@ public class Vorschlaege {
 	}
 	
 	/**
-	 * Setzt die moeglichkeitenHierHer und die moeglichkeitenVonHier einer gültigen Kachel
+	 * Setzt die moeglichkeitenHierHer und die moeglichkeitenVonHier einer gueltigen Kachel
 	 * @param farbe
 	 */
 	public void moeglichkeitenSetzenMitTueren(Color farbe){
@@ -271,7 +277,7 @@ public class Vorschlaege {
 	
 
 	/**
-	 * Setzt die moeglichkeitenHierHer und die moeglichkeitenVonHier einer gültigen Kachel
+	 * Setzt die moeglichkeitenHierHer und die moeglichkeitenVonHier einer gueltigen Kachel
 	 * @param farbe
 	 */	
 	public void moeglichkeitenSetzenOhneTueren(Color farbe){
@@ -287,10 +293,10 @@ public class Vorschlaege {
 	}
 
 	/**
-	 * Überprüft, ob diese Position eine der erreichbaren ist.
-	 * @param xKoordinate zu überprüfende x Koordinate
-	 * @param yKoordinate zu überprüfende y Koordinate
-	 * @return true, falls diese Position gültig ist.
+	 * Überprueft, ob diese Position eine der erreichbaren ist.
+	 * @param xKoordinate zu ueberpruefende x Koordinate
+	 * @param yKoordinate zu ueberpruefende y Koordinate
+	 * @return true, falls diese Position gueltig ist.
 	 */
 	public boolean hierHerValide(CluedoPosition position){
 		
@@ -307,20 +313,6 @@ public class Vorschlaege {
 		return false;
 	}
 	
-	/**
-	 * @return der currentPlayer im vorschlager
-	 */
-	public CluedoPlayer getCurrentPlayer() {
-		return currentPlayer;
-	}
-	
-	/**
-	 * @param currentPlayer welcher im vorschlager gesetzt werden soll.
-	 */
-	public void setCurrentPlayer(CluedoPlayer currentPlayer) {
-		this.currentPlayer = currentPlayer;
-	}
-
 	public boolean isSpieler() {
 		return spieler;
 	}

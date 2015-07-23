@@ -30,7 +30,6 @@ class IncomingHandler implements Runnable {
 		this.server = server;
 		this.localRun = localRun;
 		this.globalRun = globalRun;
-		setListener();
 	}
 
 	@Override
@@ -39,18 +38,25 @@ class IncomingHandler implements Runnable {
 		while (globalRun && localRun) {
 			try {
 				ArrayList<String> messages = auxx.getTCPMessages(server.getSocket());
-				for (String message: messages)
-					if (!message.equals("")) incommingLogic(message);
+				if (messages != null){
+					for (String message: messages)
+						incommingLogic(message);
+				}
+				else {				
+					auxx.logsevere("server hastily decided to leave");
+					killConnection();
+					dataGuiManager.refreshGamesListServer(server);
+				}
 			}			
 			catch (Exception e){
-				auxx.logsevere("error on incomming handler client", e);
+				auxx.logsevere("error on incomming handler client :"+e.getMessage() ,e);
 				killConnection();
 				dataGuiManager.refreshGamesListServer(server);// refresh view
 																// before
 																// running out,
-																// its a
-																// differnet
-																// thread anyway
+																// its all
+																// different
+																// threads anyway
 			}
 		}
 
@@ -108,7 +114,6 @@ class IncomingHandler implements Runnable {
         				  checker.getMessage().getString("gamestate"),
         				  orderlist
         				  );
-        		  
 			}
 			else if (checker.getType().equals("player_cards")){
         		 server.getGameByGameID(
@@ -122,16 +127,15 @@ class IncomingHandler implements Runnable {
         							);	        		  
 			} 
 			else if (checker.getType().equals("suspicion")) {
-				JSONObject json = checker.getMessage().getJSONObject(
-						"statement");
-				int id = checker.getMessage().getInt("gameID");
-				String person = json.getString("person").toString();
-				String weapon = json.getString("weapon").toString();
-				String room = json.getString("room").toString();
-				server.getGameByGameID(id)
-						.showDisprovals(person, room, weapon);
+
+				int gameID = checker.getMessage().getInt("gameID");
+				dataGuiManager.handleSuspicion(
+						gameID,
+						NetworkMessages.makeCluedoStatementFromJSON(checker.getMessage().getJSONObject("statement")),
+						server
+				);
+
 			}
-				
 			else if (checker.getType().equals("accuse")) {
 				JSONObject json = checker.getMessage().getJSONObject(
 						"statement");
@@ -144,7 +148,6 @@ class IncomingHandler implements Runnable {
 						person, weapon, room
 						);
 			}
-					
 			else if(checker.getType().equals("wrong accusation")){
 					JSONObject json = checker.getMessage().getJSONObject(
 							"statement");
@@ -156,32 +159,27 @@ class IncomingHandler implements Runnable {
 			} 
 				
 			else if (checker.getType().equals("disprove")) {
-				String card = checker.getMessage().getString("card").toString();
-			server.getGameByGameID(checker.getMessage().getInt("gameID"))
-			.changeLabel(
-			server.getGameByGameID(checker.getMessage().getInt("gameID")).getPlayerByNick(server.myNick).getCluedoPerson().getPersonName()
-			+ " had the card: " + card);
+
+				int gameID = checker.getMessage().getInt("gameID");
+				dataGuiManager.handleDisprove(gameID, server);
 			} 
 				
-				else
-					if(checker.getType().equals("disproved")){
-				server.sendMsg(NetworkMessages.chatMsg(
-						checker.getMessage().getString("nick").toString() + " disproved!",
-						checker.getMessage().getInt("gameID"), auxx.now()));
-			} else
-				if (checker.getType().equals("no disprove")){
-					server.sendMsg(NetworkMessages.chatMsg(
+			else if(checker.getType().equals("disproved")){
+				server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
+					checker.getMessage().getString("nick").toString() + " disproved!"
+					);
+			} 
+			else if (checker.getType().equals("no disprove")){
+					server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
 							server.getGameByGameID(checker.getMessage().getInt("gameID"))
 							.getPlayerByNick(server.myNick).getCluedoPerson().getPersonName() +
-							" did not disprove.", checker.getMessage().getInt("gameID"), auxx.now()));
-				}
+							" did not disprove.");
+			}
+
 			else if (checker.getType().equals("game ended")){
         		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
 			}
 			else if (checker.getType().equals("left game")){
-//        		 CluedoGameClient game = server.getGameByGameID(checker.getMessage().getInt("gameID"));
-//        		 game.removePlayer(checker.getMessage().getString("nick"));	
-//        		 dataGuiManager.refreshGamesListServer(server);
         		 dataGuiManager.removePlayerFromGameOnServer(
         				 checker.getMessage().getInt("gameID"),
         				 checker.getMessage().getString("nick"),
@@ -224,17 +222,6 @@ class IncomingHandler implements Runnable {
         		  if (chatmsgJSON.has("gameID")){
         			  server.getGameByGameID(chatmsgJSON.getInt("gameID")).addChatMsg(ts+" : "+chatmsg);
         		  }
-//        		  if (chatmsgJSON.has("nick")){
-//        			  dataGuiManager.addMsgIn(
-//        					  ts+" "+chatmsgJSON.getString("sender")+" says (privately) : "+ chatmsg
-//        					  );
-//        		  }
-//    			  else if (chatmsg.has("sender")){
-//    				  dataGuiManager.addMsgIn(
-//        					  chatmsg.getString("timestamp")+" "+chatmsg.getString("sender")+" says : \n"+
-//        							  chatmsg.getString("message")
-//        					  );
-//    			  }
     			  else {
     				  dataGuiManager.addChatMsgIn(chatmsg, ts,server);    				  
     			  }        		  
@@ -273,7 +260,7 @@ class IncomingHandler implements Runnable {
 	
 	private void getGamesListLogic(String msg){
 		CluedoProtokollChecker checker = new CluedoProtokollChecker(new JSONObject(msg));
-		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error"});
+		NetworkHandhakeCodes errcode = checker.validateExpectedType("login successful", new String[] {"error,ok"});
 		
 		if (errcode == NetworkHandhakeCodes.OK) {	
 			JSONArray gamearray = checker.getMessage().getJSONArray("game array");	
@@ -303,14 +290,11 @@ class IncomingHandler implements Runnable {
 		
 		auxx.logfine("Server login response was : " +msg);
 	}
-
-	public void setListener() {
-	}
-
+	
 	public void killConnection() {
 		localRun = false;
 		globalRun = false;
-		dataGuiManager.setStatus("Server "+server.getGroupName()+ " ceased to be");
+		dataGuiManager.setStatus("Server "+server.getGroupName()+ " ceased to be, is no more, passed the bucket and so on");
 		dataGuiManager.removeServer(server);
 		dataGuiManager.setServer();
 

@@ -10,9 +10,13 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import kacheln.Kachel;
 import kacheln.KachelContainer;
+import kommunikation.PlayerCircleManager;
 import staticClasses.auxx;
 import view.AussergewohnlichesZugfenster;
-import view.BoardView;
+import view.spielfeld.BallEbene;
+import view.spielfeld.BoardView;
+import view.spielfeld.KrasserStack;
+import animation.RaumBeweger;
 import cluedoNetworkLayer.CluedoPosition;
 import enums.Orientation;
 import enums.Rooms;
@@ -26,7 +30,7 @@ import enums.Rooms;
 public class DerBeweger {
 
 	private BoardView gui;
-	private BallEbene2 ballEbene;
+	private BallEbene ballEbene;
 	private RaumBeweger raumBeweger;
 	private KrasserStack stack;
 	private AussergewohnlichesZugfenster zug;
@@ -78,7 +82,7 @@ public class DerBeweger {
     public PlayerCircleManager pcManager;
     private KachelContainer kachelContainer;
     
-	public DerBeweger(KrasserStack stack, AussergewohnlichesZugfenster zug, BoardView gui, BallEbene2 ballEbene, RaumBeweger raumBeweger,PlayerCircleManager pcm, KachelContainer kachelContainer){
+	public DerBeweger(KrasserStack stack, AussergewohnlichesZugfenster zug, BoardView gui, BallEbene ballEbene, RaumBeweger raumBeweger,PlayerCircleManager pcm, KachelContainer kachelContainer){
 		pcManager = pcm;
 		this.kachelContainer = kachelContainer;
 		this.gui = gui;
