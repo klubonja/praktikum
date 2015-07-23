@@ -39,8 +39,15 @@ class IncomingHandler implements Runnable {
 		while (globalRun && localRun) {
 			try {
 				ArrayList<String> messages = auxx.getTCPMessages(server.getSocket());
-				for (String message: messages)
-					if (!message.equals("")) incommingLogic(message);
+				if (messages != null){
+					for (String message: messages)
+						incommingLogic(message);
+				}
+				else {				
+					auxx.logsevere("server hastily decided to leave");
+					killConnection();
+					dataGuiManager.refreshGamesListServer(server);
+				}
 			}			
 			catch (Exception e){
 				auxx.logsevere("error on incomming handler client :"+e.getMessage() ,e);

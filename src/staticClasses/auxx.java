@@ -102,17 +102,17 @@ public abstract class auxx {
 					new InputStreamReader(s.getInputStream(),StandardCharsets.UTF_8));
 			char[] buffer = new char[Config.MESSAGE_BUFFER];
 			int readpos = br.read(buffer,0,Config.MESSAGE_BUFFER);
-			String msg = new String (buffer,0,readpos);	
-			
-			if (readpos != -1 ){				
+			String msg;
+			try {
+				msg = new String (buffer,0,readpos);	
 				loginfo("RECEIVED : <MSG START> "+ msg +" <MSGS END>");
 				String[] rawmsgs = msg.split(Config.TCP_MESSAGE_DELIMITER_REGEX); //removing and splitting along newlines
 				return handledTCPMessages(rawmsgs, s);
 			}
-			else {
+			catch (IndexOutOfBoundsException e){
 				logsevere("readpos : "+readpos+" network stream closed");	
 				throw new Exception("Socket close");
-			}			
+			}
 		} 
 		catch (Exception e) {
 			logsevere("RECEIVE failed because "+ e.getMessage());
