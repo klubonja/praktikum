@@ -7,6 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -49,8 +52,6 @@ public class CluedoClientPresenter {
 		view.getConnectToTestServer().setOnMouseExited(e -> defaultBackground(view.getConnectToTestServer()));
 		view.getRefreshGamesList().setOnMouseEntered(e -> shadeBackground(view.getRefreshGamesList()));
 		view.getRefreshGamesList().setOnMouseExited(e -> defaultBackground(view.getRefreshGamesList()));
-		view.getMute().setOnMouseEntered(e -> shadeBackground(view.getMute()));
-		view.getMute().setOnMouseExited(e -> defaultBackground(view.getMute()));
 		view.getExit().setOnMouseEntered(e -> shadeBackground(view.getExit()));
 		view.getExit().setOnMouseExited(e -> defaultBackground(view.getExit()));
 		
@@ -58,6 +59,13 @@ public class CluedoClientPresenter {
 		view.getClosePromptArea().setOnAction(e -> hideRules());
 		
 		view.getFullScreen().setOnAction(e -> setToFullScr());
+		
+		view.getOptions().setOnAction(e -> showOptions());
+		view.getCloseOptionsArea().setOnAction(e -> hideOptions());
+		
+		view.getExitMenu().setOnAction(e -> exitGame());
+		
+		view.getArgonath().setOnAction(e -> setArgonath());	
 		
 	}
 	
@@ -81,6 +89,7 @@ public class CluedoClientPresenter {
 	
 	public void exitGame(){
 		Platform.exit();
+		System.exit(0);
 	}
 	
 	public void shadeBackground(Button b){
@@ -97,6 +106,7 @@ public class CluedoClientPresenter {
 	
 	public void showRules(){
 		
+		view.getPromptArea().getChildren().clear();
 		view.getPromptArea().getChildren().add(view.getInfoArea());
 	}
 	
@@ -105,10 +115,37 @@ public class CluedoClientPresenter {
 		view.getPromptArea().getChildren().clear();
 	}
 	
+	public void showOptions(){
+		
+		view.getPromptArea().getChildren().clear();
+		view.getPromptArea().getChildren().add(view.getOptionsArea());
+	}
+	
+	public void hideOptions(){
+		
+		view.getPromptArea().getChildren().clear();
+	}
+	
 	public void setToFullScr(){
 		
 		view.getPrimaryStage().setFullScreen(true);
 		view.getPrimaryStage().setAlwaysOnTop(true);
+	}
+	
+	public void muteLobby(){
+		
+		view.getAudio().setMute(true);
+	}
+	
+	public void setArgonath(){
+		
+		BackgroundImage argonath = new BackgroundImage(view.getBackMinas(), BackgroundRepeat.NO_REPEAT , 
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, view.getBackgroundSize());
+		view.setBackgroundImage(argonath);
+		
+		Background argonathB = new Background(view.getBackgroundImage());
+		view.setClientBackground(argonathB);
+		
 	}
 
 }
