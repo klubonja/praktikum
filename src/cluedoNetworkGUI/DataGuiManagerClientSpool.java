@@ -243,25 +243,27 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void handleStateUpdate(int gameID,String gameNick,ServerItem server,ArrayList<String> newStates){
 		CluedoGameClient game = server.getGameByGameID(gameID); 
-		if (game.hasPlayerConnectedByNick(gameNick)){ //never ever trust anyone
-			game.getPlayerByNick(gameNick).setPossibleStatesFromStringList(newStates);
-			if (gameNick.equals(server.getMyNick())){ // its me
-				if (newStates.contains(PlayerStates.roll_dice.getName()))
-					game.itsYourTurn();
-				else if (newStates.contains(PlayerStates.disprove.getName()))
-					game.disprove();
-				else if (newStates.contains(PlayerStates.do_nothing.getName()))
-					game.currentPlayerToNothing();
-				game.changeLabel(auxx.formatStringList(newStates, "or"));
+		if (game != null){
+			if (game.hasPlayerConnectedByNick(gameNick)){ //never ever trust anyone
+				game.getPlayerByNick(gameNick).setPossibleStatesFromStringList(newStates);
+				if (gameNick.equals(server.getMyNick())){ // its me
+					if (newStates.contains(PlayerStates.roll_dice.getName()))
+						game.itsYourTurn();
+					else if (newStates.contains(PlayerStates.disprove.getName()))
+						game.disprove();
+					else if (newStates.contains(PlayerStates.do_nothing.getName()))
+						game.currentPlayerToNothing();
+					game.changeLabel(auxx.formatStringList(newStates, "or"));
+				}
+				else { //its some other bloke
+					if (newStates.contains(PlayerStates.roll_dice.getName()))
+						game.itsSomeonesTurn(gameNick);				
+				}
 			}
-			else { //its some other bloke
-				if (newStates.contains(PlayerStates.roll_dice.getName()))
-					game.itsSomeonesTurn(gameNick);				
-			}
-		}
-		else if (game.hasWatcherConnectedByNick(server.getMyNick())){
-			game.changeLabel(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
-		}
+			else if (game.hasWatcherConnectedByNick(server.getMyNick())){
+				game.changeLabel(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
+			}	
+		}		
 	}
 
 	public void handleSuspicion(int gameID, CluedoStatement suspicion,ServerItem server) {
