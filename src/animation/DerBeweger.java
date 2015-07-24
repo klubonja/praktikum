@@ -147,7 +147,9 @@ public class DerBeweger {
 		
 		Persons person = player.getCluedoPerson();
 		
-		player.setNewPosition(spielerPositionImRaumKachel.getPosition());
+		pcManager.getPlayerByPerson(player.getCluedoPerson()).setNewPosition(spielerPositionImRaumKachel.getPosition());
+		
+//		player.setNewPosition(spielerPositionImRaumKachel.getPosition());
 		
 		Path path = new Path();
 		path.getElements().add(

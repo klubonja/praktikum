@@ -1,11 +1,9 @@
 package kommunikation;
 
 import java.util.ArrayList;
-
 import java.util.Stack;
 import java.util.logging.Level;
-import animation.DerBeweger;
-import animation.RaumBeweger;
+
 import javafx.event.EventHandler;
 import javafx.scene.effect.Glow;
 import javafx.stage.WindowEvent;
@@ -20,6 +18,8 @@ import view.spielfeld.BallEbene;
 import view.spielfeld.BoardView;
 import view.spielfeld.GameFramePresenter;
 import view.spielfeld.GameFrameView;
+import animation.DerBeweger;
+import animation.RaumBeweger;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
@@ -155,11 +155,12 @@ public class Communicator {
 	
 	public void move(CluedoPosition position, String person){
 
-		// hier machen wenn jemand nur eine secret passage verwenden will
-		if (wuerfelWurf == null){
+		CluedoPosition playerPosition = pcManager.getPlayerByPersonName(person).getPosition();
+		
+		if ( (Math.abs(position.getY() - playerPosition.getY() ) >=10 ) && ( Math.abs(position.getX() - playerPosition.getX() ) >=10 ) ){
 			useSecretPassage();
 		}
-	
+		
 		// hier wird sogar richtig bewegt. Krass.
 		else {
 			int yKoordinate = position.getY();

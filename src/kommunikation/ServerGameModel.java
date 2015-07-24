@@ -186,8 +186,8 @@ public class ServerGameModel {
 	 * @param position wo sich derjenige hinbewegen will
 	 * @return true, falls man sich dahin bewegen darf
 	 */
-	public boolean checkMove(CluedoPosition position){
-		return serverBeweger.movePossible(position);
+	public boolean checkMove(CluedoPosition position, String nick){
+		return serverBeweger.movePossible(position, nick);
 	}
 	
 	/**
@@ -213,7 +213,7 @@ public class ServerGameModel {
 	 * @return true, falls er sich dort hin bewegen kann
 	 */
 	public boolean movePlayer(String nick,CluedoPosition newpos){
-		if (checkMove(newpos)) {
+		if (checkMove(newpos, nick)) {
 			pcManager.getPlayerByNick(nick).setNewPosition(newpos);
 			stateManager.transitionByAction(PlayerStates.move);
 			return true;

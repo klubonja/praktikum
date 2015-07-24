@@ -53,7 +53,14 @@ public class ServerBeweger {
 	 * @param position darf man hierhin?
 	 * @return true, falls diese Position erreichbar ist.
 	 */
-	public boolean movePossible(CluedoPosition position){
+	public boolean movePossible(CluedoPosition position, String nick){
+		
+		CluedoPosition playerPosition = pcManager.getPlayerByNick(nick).getPosition();
+		
+		if ( (Math.abs(position.getY() - playerPosition.getY() ) >=10 ) && ( Math.abs(position.getX() - playerPosition.getX() ) >=10 ) ){
+			return true;
+		}
+		
 		int xZiel = position.getX();
 		int yZiel = position.getY();
 		
