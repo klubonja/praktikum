@@ -63,7 +63,7 @@ public class CluedoClientPresenter {
 	
 	public void bindComponents(){
 		
-		view.getAudio().volumeProperty().bind(view.getVolume().valueProperty());
+//		view.getAudio().volumeProperty().bind(view.getVolume().valueProperty());
 //		view.getInputField().clear();
 //		view.getInputField().setPromptText("ENTER to send");
 	}
