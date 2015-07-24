@@ -56,11 +56,7 @@ public class ServerBeweger {
 	public boolean movePossible(CluedoPosition position, String nick){
 		
 		CluedoPosition playerPosition = pcManager.getPlayerByNick(nick).getPosition();
-		
-		if ( (Math.abs(position.getY() - playerPosition.getY() ) >=10 ) && ( Math.abs(position.getX() - playerPosition.getX() ) >=10 ) ){
-			return true;
-		}
-		
+
 		int xZiel = position.getX();
 		int yZiel = position.getY();
 		
