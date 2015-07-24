@@ -105,5 +105,6 @@ public class ClientItem {
 	
 	public void sendMsg(String msg){
 		auxx.sendTCPMsg(socket, msg);
+		System.out.println("message sent to "+getNick());
 	}
 }

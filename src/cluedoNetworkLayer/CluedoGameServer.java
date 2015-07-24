@@ -120,10 +120,12 @@ public class CluedoGameServer extends CluedoGame {
 //////////////////////////////////////////////SENDMSGS///////////////////////////////////////////////////////
 	
 	public void sendMsgsToAll(String msg){
-		ArrayList<ClientItem> clients = getParticipants();
-		clients.addAll(getWatchers());
-		for (ClientItem client : clients)
-			client.sendMsg(msg);	
+		ArrayList<ClientItem> players = getParticipants();
+		for (ClientItem player : players)
+			player.sendMsg(msg);
+		ArrayList<ClientItem> watchers = getWatchers();
+		for (ClientItem watcher : watchers)
+			watcher.sendMsg(msg);
 	}
 	
 	public void notifyInit() {

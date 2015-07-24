@@ -177,6 +177,5 @@ public class ServerItem  {
 	
 	public void sendMsg(String msg){
 		auxx.sendTCPMsg(getSocket(), msg);
-	}
-	
+	}	
 }

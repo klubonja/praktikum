@@ -14,15 +14,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import model.Deck;
-import cluedoNetworkLayer.CluedoGameClient;
-import cluedoNetworkLayer.CluedoPlayer;
 
 public class HandFrameView extends BorderPane {
 
 	private Deck deck = new Deck(6);
 	private ArrayList<ImageView> hand = new ArrayList<ImageView>();
 	private ArrayList<String> handURI = new ArrayList<String>();
-	private CluedoGameClient client;
 	Label title;
 	private Label happening;
 	private Label text;
@@ -39,8 +36,8 @@ public class HandFrameView extends BorderPane {
 	private ComboBox<String> weapons = new ComboBox<String>();
 	private ComboBox<String> rooms = new ComboBox<String>();
 
-	public HandFrameView(CluedoGameClient client) {
-		this.client = client;
+	public HandFrameView() {
+	
 		this.setMaxSize(350, 350);
 		this.setPrefSize(350, 350);
 		this.setMinSize(350, 350);
@@ -53,14 +50,14 @@ public class HandFrameView extends BorderPane {
 			
 		deck.makeDeck();
 		
-		for (CluedoPlayer p : client.getPlayersConnected()) {
-			if (p.getNick().equals(client.getMyNick())) {
-				for (String str : p.getCards()) {
-					handURI.add(str);
-					hand.add(new ImageView(new Image("media/" + str + ".png")));
-				}
-			}
-		}
+//		for (CluedoPlayer p : client.getPlayersConnected()) {
+//			if (p.getNick().equals(client.getMyNick())) {
+//				for (String str : p.getCards()) {
+//					handURI.add(str);
+//					hand.add(new ImageView(new Image("media/" + str + ".png")));
+//				}
+//			}
+//		}
 
 		title = new Label("Cards in hand. Click on a card to view it.");
 //		happening = new Label("Currently happening: ");
@@ -93,12 +90,20 @@ public class HandFrameView extends BorderPane {
 		this.setBottom(accusationBox);
 		this.cards.setSpacing(-30);
 		this.cards.setAlignment(Pos.CENTER);
-		this.cards.getChildren().addAll(hand);
+		//this.cards.getChildren().addAll(hand);
 		stack.getChildren().add(cards);
 		this.setCenter(stack);
 
 	}
-
+	
+	public void setPlayerCards(ArrayList<String> playerCards){
+		for (String card : playerCards){
+			handURI.add(card);
+			hand.add(new ImageView(new Image("media/" + card + ".png")));
+		}
+		this.cards.getChildren().addAll(hand);
+	}
+	
 	public ArrayList<ImageView> getHand() {
 		return hand;
 	}

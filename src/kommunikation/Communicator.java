@@ -75,12 +75,16 @@ public class Communicator {
 
 	/**
 	 * Der Kontruktor unsers ach-so-krassen Communicators
-	 * @param game das Spiel, welches wir von unserem netten Server kriegen.
+	 * @param network das Spiel, welches wir von unserem netten Server kriegen.
 	 */
-	public Communicator(CluedoGameClient game) {
-		network = game;
-		gameID = game.getGameId();
+	public Communicator(CluedoGameClient network) {
+		
+		this.network = network;
+		myNick = network.getMyNick();	
+		gameID = network.getGameId();		
 		pcManager = new PlayerCircleManager(network.getPlayers());
+		
+		
 		kacheln = new KachelContainer();
 		gameView = new GameFrameView(pcManager, kacheln, network);
 		gameView.start();
@@ -98,19 +102,17 @@ public class Communicator {
 		vorschlager = gamePresenter.getVorschlager();
 		raumBeweger = gamePresenter.getRaumBeweger();
 		pathfinder = gamePresenter.getPathfinder();
-		sucher = gamePresenter.getSucher();
-
-		myNick = network.getMyNick();
-		
+		sucher = gamePresenter.getSucher();	
 	}
 
 	/**
-	 * Es geht los! Hui, ich bin schon ganz aufgeregt
+	 * Es geht los! Huy, ich bin schon ganz aufgeregt, Huuuuuuuuyyyyyy !!!
 	 */
 	public void startGame() {
 		auxx.loginfo("Communicator started");
 		myNick = network.getMyNick();
 		setHandler();
+		if (network.hasWatcherConnectedByNick(myNick)) gameView.setWatchersMode();
 		
 		auxx.loginfo("this is importenter:: \n \n %%%%%%%%%%%%%%%  Mynick : " +myNick);
 		
@@ -119,7 +121,7 @@ public class Communicator {
 		auxx.logsevere("Communicator.startGame");
 		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
 		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
-		
+		gameView.getHand().setPlayerCards(pcManager.getCardsByNick(myNick));
 	}
 		
 	/**
@@ -346,12 +348,11 @@ public class Communicator {
 			}
 
 			public void handleDisprove() {
-				ArrayList<String> disprover = curSuspicion.makeConjunction(pcManager.getPlayerByNick(myNick).getCards());
+				ArrayList<String> disprover = 
+						curSuspicion.makeConjunction(
+								pcManager.getPlayerByNick(myNick).
+								getCards());
 				if (disprover.size() != 0){
-					//show cardpane with possible disprover
-					//network.sendMsgToServer(NetworkMessages.disproveMsg(gameID, selectedcard));
-					//bis dahin :
-					//network.sendMsgToServer(NetworkMessages.disproveMsg(gameID, disprover.get(0)));
 					showPossibleDisprovals(disprover);				
 				}
 				else {
@@ -419,5 +420,9 @@ public class Communicator {
 		CluedoPlayer player = pcManager.getPlayerByPerson(suspicion.getPerson());
 		beweger.getCarriedAlong(suspicion.getRoom(), player);
 	}
-
+	
+	
+	public void setCards(String myNick,ArrayList<String> cards) {
+		gameView.getHand().setPlayerCards(cards);		
+	}
 }
