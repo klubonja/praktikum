@@ -157,7 +157,7 @@ public class Ausloeser {
 
 			beweger.anfangsKachelSetzen(startKachel);
 
-			beweger.bewegen(anweisungenOrientations, schritte, nullSchritte);
+			beweger.bewegen(startKachel, anweisungenOrientations, schritte, nullSchritte);
 
 			nullSchritte = 0;
 			pathfinder.setWelcheKachel(0);

@@ -81,7 +81,7 @@ public class DerBeweger {
 	 * @param schritteEingabe die Anzahl der tatsaechlichen auszufuehrenden Schritte
 	 * @param nullSchritteEingabe die Anzahl der Nullschritte
 	 */
-	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe, int nullSchritteEingabe){
+	public void bewegen(Kachel spielerPositionKachel, Orientation [] anweisungenEingabe, int schritteEingabe, int nullschritteEingabe){
 		
 		if(spielerPositionKachel.isIstTuer()){
 			Kachel anfangsRaumKachel = kachelContainer.getKacheln()[spielerPositionKachel.getPosition().getY()][spielerPositionKachel.getPosition().getX()];
@@ -89,10 +89,10 @@ public class DerBeweger {
 			Rooms room = raumBeweger.checkRaum(anfangsRaumKachel);
 			Kachel raumStartKachel = raumBeweger.positionInRaum(pcManager.getCurrentPlayer(), room);
 			Label raumStartLabel = boardView.getLabelHier(raumStartKachel);
-			ausRaumBewegen(raumStartLabel, anfangsRaumLabel);
+			ausRaumBewegen(spielerPositionKachel, raumStartLabel, anfangsRaumLabel, anweisungenEingabe, schritteEingabe, nullschritteEingabe);
 		}
 		else{
-			bewegenOhneRaum(anweisungenEingabe, schritteEingabe, nullSchritteEingabe);
+			bewegenOhneRaum(anweisungenEingabe, schritteEingabe, nullschritteEingabe);
 		}
 	}
 	
@@ -278,7 +278,9 @@ public class DerBeweger {
 	 * @param raumStartLabel Hier geht's los
 	 * @param anfangsLabel Hier geht's hin
 	 */
-	public void ausRaumBewegen(Label raumStartLabel, Label anfangsLabel){
+	public void ausRaumBewegen(Kachel spielerPositionKachel, Label raumStartLabel, Label anfangsLabel, Orientation [] anweisungen, int schritte, int nullschritte){
+		
+		anfangsKachelSetzen(spielerPositionKachel);
 		
 		Path path = new Path();
 
@@ -296,7 +298,7 @@ public class DerBeweger {
 		pathTransition.play();
 		pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
-				bewegenOhneRaum(anweisungen, schritte, nullSchritte);
+				bewegenOhneRaum(anweisungen, schritte, nullschritte);
 			}
 		});
 	}

@@ -95,21 +95,21 @@ public class DerBeweger {
 		anfangsLabel = gui.getLabelArray()[pcManager.getCurrentPlayer().getPosition().getY()][pcManager.getCurrentPlayer().getPosition().getX()];
 	}
 	
-	public void bewegen(Orientation [] anweisungenEingabe, int schritteEingabe, int nullSchritteEingabe){
+	public void bewegen(Orientation [] anweisungen, int schritte, int nullSchritte){
+
+		CluedoPosition position = pcManager.getCurrentPlayer().getPosition();
+		Kachel spielerPositionKachel = kachelContainer.getKacheln()[position.getY()][position.getX()];
 		
-		this.schritte = schritteEingabe;		
-		this.nullSchritte = nullSchritteEingabe;		
-		this.anweisungen = anweisungenEingabe;
-		
-		if(anfangsKachel.isIstTuer()){
-			anfangsRaumKachel = kachelContainer.getKacheln()[anfangsKachel
-			         								.getPosition().getY()][anfangsKachel
-			         								.getPosition().getX()];
-			anfangsRaumLabel = gui.getLabelHier(anfangsRaumKachel);
-			Rooms room = raumBeweger.checkRaum(anfangsRaumKachel);
-			raumStartKachel = raumBeweger.positionInRaum(this.pcManager.getCurrentPlayer(), room);
-			raumStartLabel = gui.getLabelHier(raumStartKachel);
-			ausRaumBewegen();
+		if(spielerPositionKachel.isIstTuer()){
+ 
+			Kachel raumZielKachel = spielerPositionKachel;
+			Label raumZielLabel = gui.getLabelHier(raumZielKachel);
+			
+			Rooms room = raumBeweger.checkRaum(raumZielKachel);
+			
+			Kachel raumStartKachel = raumBeweger.positionInRaum(pcManager.getCurrentPlayer(), room);
+			Label raumStartLabel = gui.getLabelHier(raumStartKachel);
+			ausRaumBewegen(raumStartLabel, raumZielLabel, anweisungen, schritte, nullSchritte);
 		}
 		else{
 			bewegenOhneRaum(anweisungen, schritte, nullSchritte);
@@ -134,10 +134,12 @@ public class DerBeweger {
 
 		if (schritte > 0) {
 
+			System.out.println("schritte : " +schritte);
+			
 			jetzigeSpalte = pcManager.getCurrentPlayer().getPosition().getX();
 			jetzigeReihe = pcManager.getCurrentPlayer().getPosition().getY();
 
-			distanzBerechnen();
+			distanzBerechnen(anweisungenEingabe);
 
 			if (jetzigeReihe + yDistanz != 26 && jetzigeSpalte + xDistanz != 25
 					&& jetzigeReihe + yDistanz >= 0
@@ -198,16 +200,16 @@ public class DerBeweger {
 
 	}
 
-	public void anfangsKachelSetzen(Kachel neueAnfangsKachel) {
-
-		anfangsKachel = neueAnfangsKachel;
-		anfangsLabel = gui.getLabelHier(anfangsKachel);
-		auxx.logsevere("anfangs Kachel x : "
-				+ anfangsKachel.getPosition().getX() + " ||  y : "
-				+ anfangsKachel.getPosition().getY());
-		pcManager.getCurrentPlayer().getPosition().setX(anfangsKachel.getPosition().getX());
-		pcManager.getCurrentPlayer().getPosition().setY(anfangsKachel.getPosition().getY());
-	}
+//	public void anfangsKachelSetzen(Kachel neueAnfangsKachel) {
+//
+//		anfangsKachel = neueAnfangsKachel;
+//		anfangsLabel = gui.getLabelHier(anfangsKachel);
+//		auxx.logsevere("anfangs Kachel x : "
+//				+ anfangsKachel.getPosition().getX() + " ||  y : "
+//				+ anfangsKachel.getPosition().getY());
+//		pcManager.getCurrentPlayer().getPosition().setX(anfangsKachel.getPosition().getX());
+//		pcManager.getCurrentPlayer().getPosition().setY(anfangsKachel.getPosition().getY());
+//	}
 
 	public void positionUpdaten() {
 		pcManager.getCurrentPlayer().getPosition().setY(
@@ -216,7 +218,7 @@ public class DerBeweger {
 				pcManager.getCurrentPlayer().getPosition().getX() + xDistanz);
 	}
 
-	public void distanzBerechnen() {
+	public void distanzBerechnen(Orientation [] anweisungen) {
 		if (anweisungen[momentaneAnweisung] == Orientation.S) {
 			yDistanz = 1;
 			xDistanz = 0;
@@ -325,9 +327,7 @@ public class DerBeweger {
 	}
 
 	
-	public void ausRaumBewegen(){
-		
-		
+	public void ausRaumBewegen(Label raumStartLabel, Label anfangsLabel, Orientation [] anweisungen, int schritte, int nullschritte){
 		
 		Path path = new Path();
 
@@ -345,7 +345,8 @@ public class DerBeweger {
 		pathTransition.play();
 		pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
-				bewegenOhneRaum(anweisungen, schritte, nullSchritte);
+				System.out.println("weiter geht's bewegen ohne Raum nach aus Raum bewegen");
+				bewegenOhneRaum(anweisungen, schritte, nullschritte);
 			}
 		});
 	}
