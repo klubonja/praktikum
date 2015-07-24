@@ -159,8 +159,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         grid.setHgap(20);
         grid.setVgap(10);
         grid.setGridLinesVisible(false);
-        grid.setBackground(background);
-        
+        grid.setBackground(background);        
         
         //Creates the rows and columns of the grid
         ColumnConstraints col0 = new ColumnConstraints();
@@ -503,7 +502,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		options = new MenuItem("Options");
 		createGameMenu = new MenuItem("Create Game");
 		createServerMenu = new MenuItem("Create Server");
-		testServer = new MenuItem("Test LMU Server");
+		testServer = new MenuItem("Test LMU Serverr");
 		exit = new MenuItem("Quit");
 		file.getItems().addAll(createGameMenu, createServerMenu, testServer, options, exit);
 		
@@ -783,7 +782,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	public Button getConnectToTestServer() {
 		return connectToTestServer;
 	}
-
+	
 	public Button getRefreshGamesList() {
 		return refreshGamesList;
 	}
@@ -996,7 +995,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		this.createServerMenu = createServerMenu;
 	}
 
-	public MenuItem getTestServer() {
+	public MenuItem getTestServerMenuItem() {
 		return testServer;
 	}
 

@@ -233,13 +233,7 @@ public class Client {
 			gui.getConnectToTestServer().setOnAction(new EventHandler<ActionEvent>() {
 	            @Override
 	            public void handle(ActionEvent event) {
-					try {
-						InetAddress addr = InetAddress.getByName("vanuabalavu.pms.ifi.lmu.de");
-						startTCPConnection(new ServerItem("testendeTentakel", addr, 30305));
-					} 
-					catch (UnknownHostException e) {
-						auxx.logsevere("testserverconnection failed Unknown Host:  ", e);
-					}            	
+					startTestServerConnection();
 	            }
 	        });	
 			////////////////////////TESTSERVERCONNECTION MAN END/////////////////////////////////////////////////
@@ -249,7 +243,7 @@ public class Client {
 			      @Override
 				public void handle(WindowEvent e){
 			          try {
-			        	  dataGuiManager.sayGoodbye();
+			        	   dataGuiManager.sayGoodbye();
 			        	   globalRun = false;
 			        	   auxx.log.log(Level.INFO,"CLIENT CLOSED");
 			               Platform.exit();
@@ -362,7 +356,31 @@ public class Client {
 //		Server server = new Server(gui);
 //		stage.show();
 //	}
+	
+	public void startTestServerConnection(){
+		try {
+			InetAddress addr = InetAddress.getByName("vanuabalavu.pms.ifi.lmu.de");
+			startTCPConnection(new ServerItem("testendeTentakel", addr, 30305));
+		} 
+		catch (UnknownHostException e) {
+			auxx.logsevere("testserverconnection failed Unknown Host:  ", e);
+		}            
+	}
+	
+	public void kill(){
+		try {
+     	   dataGuiManager.sayGoodbye();
+     	   globalRun = false;
+     	   auxx.log.log(Level.INFO,"CLIENT CLOSED");
+            Platform.exit();
+            System.exit(0);	               
+       } 
+       catch (Exception e1) {
+            auxx.log.log(Level.SEVERE,e1.getMessage());
+       }
+   }
 }
+
 
 
 
