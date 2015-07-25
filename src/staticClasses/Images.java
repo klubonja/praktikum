@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class Images {
-	public static final ImageView BG = new ImageView(new Image("media/Field_0.png"));
+	public static ImageView BG = new ImageView(new Image("/media/Field_0.png"));
 	
 	public static ImageView weiss = new ImageView(new Image("media.gameObjects/weiss_n.png"));
 	public static ImageView green = new ImageView(new Image("media.gameObjects/green_n.png"));
