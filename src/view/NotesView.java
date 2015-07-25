@@ -325,13 +325,13 @@ public class NotesView extends TabPane {
 		GridPane.setConstraints(who, 0, 0);
 		GridPane.setColumnSpan(who, 3);
 		GridPane.setHalignment(who, HPos.CENTER);
-		GridPane.setConstraints(red, 0, 1);
+		GridPane.setConstraints(green, 0, 1);
 		GridPane.setConstraints(button1, 1, 1);
 		GridPane.setConstraints(txt1, 2, 1);
 		GridPane.setConstraints(blue, 0, 2);
 		GridPane.setConstraints(button2, 1, 2);
 		GridPane.setConstraints(txt2, 2, 2);
-		GridPane.setConstraints(green, 0, 3);
+		GridPane.setConstraints(red, 0, 3);
 		GridPane.setConstraints(button3, 1, 3);
 		GridPane.setConstraints(txt3, 2, 3);
 		GridPane.setConstraints(purple, 0, 4);

@@ -320,7 +320,7 @@ public class Client {
 	void sendStartGameRequest(int gameID){
 		
 		auxx.sendTCPMsg(dataGuiManager.getSelectedServer().getSocket(), NetworkMessages.start_gameMsg(gameID));
-		this.gui.getAudio().stop();
+		dataGuiManager.getGui().getAudio().stop();
 	}
 	
 	void selectIp(SelectionModel<NetworkActorVBox> smod) {

@@ -16,9 +16,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -29,6 +26,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
@@ -74,7 +72,7 @@ public class MainMenuView extends StackPane{
 		main.setAlignment(Pos.CENTER);
 		main.setVgap(5);
 		main.setHgap(5);
-		main.setPadding(new Insets(50, 5 , 50, 5));
+		main.setPadding(new Insets(45, 5 , 20, 5));
 		main.setGridLinesVisible(false);
 		
 		
@@ -104,12 +102,12 @@ public class MainMenuView extends StackPane{
 	    
 	    RowConstraints row2 = new RowConstraints();
 //	    row2.setPercentHeight(50);  
-	    row2.setPrefHeight(410);
+	    row2.setPrefHeight(340);
 	    main.getRowConstraints().add(row2);
 	    
 	    RowConstraints row3 = new RowConstraints();
 //	    row3.setPercentHeight(20);
-	    row3.setPrefHeight(125);
+	    row3.setPrefHeight(180);
 	    main.getRowConstraints().add(row3);
 	    
 	    
@@ -185,12 +183,12 @@ public class MainMenuView extends StackPane{
 		GridPane.setConstraints(lmuImg, 0, 0);
 		GridPane.setColumnSpan(lmuImg, 3);
 		GridPane.setHalignment(lmuImg, HPos.LEFT);
-		GridPane.setValignment(lmuImg, VPos.CENTER);
+		GridPane.setValignment(lmuImg, VPos.BOTTOM);
 		
 		
 		main.getChildren().addAll(createClient, createServer, quit,  lotrBack, cluedo, lmuImg);
 		
-		File file = new File("C:/Users/Kristi/Downloads/landscape.mp4");
+		File file = new File("src/media/splash.mp4");
 		String url = file.toURI().toString();
 		Media video = new Media(url);
         
@@ -198,7 +196,7 @@ public class MainMenuView extends StackPane{
 		backgroundVideo = new MediaPlayer(video);	
 		
 		background = new Group(new MediaView(backgroundVideo));
-		backgroundVideo.setStartTime(new Duration(34100));
+		backgroundVideo.setStartTime(new Duration(0));
 		backgroundVideo.setMute(false);
 		//backgroundVideo.setRate(50);
 		backgroundVideo.setCycleCount(MediaPlayer.INDEFINITE);
@@ -208,6 +206,7 @@ public class MainMenuView extends StackPane{
 		//Creates the volume slider
 		volume = new Slider(0, 1, 0.5);
 		volumeLabel = new Label("Volume");
+		volumeLabel.setTextFill(Color.WHITESMOKE);
 		volumeBox = new HBox(4);
 		volumeBox.setPrefSize(200, 50);
 		volumeBox.setMaxSize(200, 50);
@@ -233,12 +232,14 @@ public class MainMenuView extends StackPane{
 	
 	public void start(){
 
-		this.scene = new Scene(this, 1100, 650);
+		this.scene = new Scene(this, 1100, 525);
 		this.stage = new Stage();
 		this.stage.setScene(scene);
-        this.stage.setResizable(false);
+        this.stage.setResizable(true);
         this.stage.setTitle("YinYanYolos present:");
-//      this.stage.initStyle(StageStyle.UNDECORATED);
+        this.stage.initStyle(StageStyle.UNDECORATED);
+        this.stage.setAlwaysOnTop(true);
+        this.stage.centerOnScreen();
         this.stage.show();
 	}
 	
@@ -246,15 +247,15 @@ public class MainMenuView extends StackPane{
 		this.stage.close();
 	}
 	
-	public void createImageBackground(){
-		
-		mainImage = new Image("http://www.migrantyouthproject.org/wp-content/uploads/2013/05/under_construction.jpg");
-		mainBackgroundImage = new BackgroundImage(mainImage, BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
-				BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-		mainBackground = new Background(mainBackgroundImage);
-		main.setBackground(mainBackground);
-		
-	}
+//	public void createImageBackground(){
+//		
+//		mainImage = new Image("http://www.migrantyouthproject.org/wp-content/uploads/2013/05/under_construction.jpg");
+//		mainBackgroundImage = new BackgroundImage(mainImage, BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+//				BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+//		mainBackground = new Background(mainBackgroundImage);
+//		main.setBackground(mainBackground);
+//		
+//	}
 
 
 	//Getters und Setters
