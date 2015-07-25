@@ -304,6 +304,7 @@ public class Client {
 	}	
 	
 	void createGame(String color){
+		
 		auxx.sendTCPMsg(dataGuiManager.getSelectedServer().getSocket(), NetworkMessages.create_gameMsg(color));
 	}	
 	
@@ -317,7 +318,9 @@ public class Client {
 	}
 	
 	void sendStartGameRequest(int gameID){
+		
 		auxx.sendTCPMsg(dataGuiManager.getSelectedServer().getSocket(), NetworkMessages.start_gameMsg(gameID));
+		this.gui.getAudio().stop();
 	}
 	
 	void selectIp(SelectionModel<NetworkActorVBox> smod) {
