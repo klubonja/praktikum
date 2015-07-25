@@ -79,11 +79,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private BackgroundImage backgroundImage;
 	
 
-	final private Image backIsengard = new Image("http://img2.wikia.nocookie.net/__cb20120601223256/lotr/images/7/77/Isengard_army.jpg");
-	final private Image backMinas = new Image("http://img4.wikia.nocookie.net/__cb20141228214636/lotr/images/e/e4/Minas_Tirith.jpg");
-	final private Image backRivendell = new Image("http://hdwallpapersfit.com/wp-content/uploads/2015/03/rivendell-wallpaper-new.jpg");
-	final private Image backMordor = new Image("http://img4.wikia.nocookie.net/__cb20140520211519/middleearthshadowofmordor7723/images/5/50/Yre1o.jpg");
-	final private Image backArgonath  = new Image("http://img4.wikia.nocookie.net/__cb20140520211519/middleearthshadowofmordor7723/images/5/50/Yre1o.jpg");
+	final private Image backIsengard = new Image("media/Isengard_army.jpg");
+	final private Image backMinas = new Image("media/Minas_Tirith.jpg");
+//	final private Image backRivendell = new Image("http://hdwallpapersfit.com/wp-content/uploads/2015/03/rivendell-wallpaper-new.jpg");
+//	final private Image backMordor = new Image("http://img4.wikia.nocookie.net/__cb20140520211519/middleearthshadowofmordor7723/images/5/50/Yre1o.jpg");
+//	final private Image backArgonath  = new Image("http://img4.wikia.nocookie.net/__cb20140520211519/middleearthshadowofmordor7723/images/5/50/Yre1o.jpg");
 	MenuItem isengard;
 	MenuItem minasTirith;
 	MenuItem mordor;
@@ -98,10 +98,10 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private HBox volumeBox; 
 	
 //	private final Image muteGraphic = new Image("http://www.veryicon.com/icon/png/System/Icons8%20Metro%20Style/Volume%20Controls%20Volume%20up.png"); 
-	private final Image muteGraphic = new Image("media/Yre1o.jpg"); 
+//	private final Image muteGraphic = new Image("media/Yre1o.jpg"); 
 
 //	private final Image unmuteGraphic = new Image("http://png-3.findicons.com/files/icons/2711/free_icons_for_windows8_metro/512/mute.png"); 
-	private final Image unmuteGraphic = new Image("media/Yre1o.jpg"); 
+//	private final Image unmuteGraphic = new Image("media/Yre1o.jpg"); 
 
 	private final File audioFile = new File("media/clientAudio1.mp3");
 	
@@ -1088,17 +1088,17 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		return backMinas;
 	}
 
-	public Image getBackRivendell() {
-		return backRivendell;
-	}
-
-	public Image getBackMordor() {
-		return backMordor;
-	}
-
-	public Image getBackArgonath() {
-		return backArgonath;
-	}
+//	public Image getBackRivendell() {
+//		return backRivendell;
+//	}
+//
+//	public Image getBackMordor() {
+//		return backMordor;
+//	}
+//
+//	public Image getBackArgonath() {
+//		return backArgonath;
+//	}
 
 	public GridPane getInfoArea() {
 		return infoArea;
