@@ -1,5 +1,6 @@
 .gameListItem, .ipListItem {
 	-fx-background-color: #ffffff;
+	-fx-background-radius: 5;
 	-fx-text-fill: #000000;
 	-fx-padding: 5 0 5 5;
 	-fx-border-color:  #999999;
@@ -27,6 +28,7 @@
 .gameNameItem {
 	-fx-font: 15px "Tahoma";
 	-fx-background-color: #ffffff;
+	-fx-background-radius: 5;
 	-fx-text-fill: #000000;
 	
 }
@@ -35,6 +37,7 @@
 	-fx-font: 8px "Tahoma";
     -fx-padding: 0;
     -fx-background-color: #ffffff;
+    -fx-background-radius: 5;
 	-fx-text-fill: #000000;
 	
     
@@ -58,18 +61,21 @@
 .ipNameItem {
 	-fx-font: 14px "Tahoma";
 	-fx-background-color: #ffffff;
+	-fx-background-radius: 5;
 	-fx-text-fill: #000000;
 }
 
 .ipIpItem {
 	-fx-font: 12px "Tahoma";
 	-fx-background-color: #ffffff;
+	-fx-background-radius: 5;
 	-fx-text-fill: #000000;
 }
 
 .ipStatusItem {
 	-fx-font: 10px "Tahoma";
 	-fx-background-color: #ffffff;
+	-fx-background-radius: 5;
 	-fx-text-fill: #000000;
 }
 
@@ -111,6 +117,7 @@
 
 #menue .button:hover{
 	-fx-background-color: #000000;
+	-fx-background-radius: 5;
 	-fx-text-fill: #ffffff;
 
 }

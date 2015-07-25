@@ -23,6 +23,7 @@ public class InGameQuitPresenter {
 	public void quitGame(){
 		
 		Platform.exit();
+		System.exit(0);
 	}
 	
 	public void cancel(){
