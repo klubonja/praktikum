@@ -1,15 +1,6 @@
 package view.spielfeld;
 
 
-import cluedoNetworkLayer.CluedoGameClient;
-import staticClasses.Config;
-import view.AussergewohnlichesZugfenster;
-import view.ChatView;
-import view.DiceView;
-import view.HandFrameView;
-import view.MenuBarView;
-import view.NotesView;
-import view.StatusView;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -24,6 +15,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import kacheln.KachelContainer;
 import kommunikation.PlayerCircleManager;
+import staticClasses.Config;
+import view.AussergewohnlichesZugfenster;
+import view.ChatView;
+import view.DiceView;
+import view.HandFrameView;
+import view.MenuBarView;
+import view.NotesView;
+import view.StatusView;
+import cluedoNetworkLayer.CluedoGameClient;
 
 
 
@@ -50,6 +50,7 @@ public class GameFrameView extends GridPane{
 	private Stage stage;
 	private Scene scene;
 	public final PlayerCircleManager pcManager;
+	
 
 	
 	public GameFrameView(PlayerCircleManager pcm, KachelContainer kacheln, CluedoGameClient client){
@@ -113,7 +114,7 @@ public class GameFrameView extends GridPane{
 		volumeBox.getChildren().addAll(volumeLabel, volume);
 		
 		//Adds the frame for the Cards in hand.
-		hand = new HandFrameView(client);
+		hand = new HandFrameView();
 
 		/* Left part of the whole GameFrame,
 		   only for a better organising of objects. */
@@ -199,6 +200,11 @@ public class GameFrameView extends GridPane{
 		stage.setAlwaysOnTop(true);
 		stage.show();
 		
+	}
+	
+	public void setWatchersMode(){
+		rightGrid.getChildren().remove(0);
+		stage.setWidth(1200);
 	}
 	
 	public void setStageTitle(String title){

@@ -6,7 +6,6 @@ import java.util.Stack;
 import javafx.scene.shape.Circle;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Persons;
-import enums.PlayerStates;
 
 
 public class PlayerCircleManager {
@@ -20,19 +19,13 @@ public class PlayerCircleManager {
 		super();
 		init(plist);
 	}
+
+	public ArrayList<String> getCardsByNick(String nick){
+		CluedoPlayer player = getPlayerByNick(nick);
+		if (player != null) return player.getCards();
+		return new ArrayList<String>();
+	}
 	
-//	public void updatePlayerStates(){		
-//		for (int i = 0;i < players.size(); i++){
-//			if (i == currentIndex)	{
-//				players.get(i).setCurrentState(PlayerStates.do_nothing); // hier werden possible moves von do nothing aus gesetzt
-//			}
-//			else{
-//				players.get(i).setDoNothing(); // hier werden possible moves geleert und do nothing hinzugefügt
-//			}			
-//		}
-//			
-//	}
-//	
 	public void init(Stack<CluedoPlayer> plist){
 		players = plist;
 		circle = new ArrayList<Circle>();

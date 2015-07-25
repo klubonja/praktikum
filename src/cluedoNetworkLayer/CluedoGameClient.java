@@ -42,32 +42,7 @@ public class CluedoGameClient extends CluedoGame {
 
 		});
 	}
-	
-//	public void somebodyIsAccusing(String nick, String person, String weapon,
-//			String room) {
-//		String str = "The player " + nick + " is trying to solve the mystery!"
-//				+ "\n" + "Accused: " + person + " " + weapon + " " + room;
-//		changeLabel(str);
-//	}
-//
-//	public void somebodyFailedToAccuse(String person, String weapon, String room) {
-//		String str = "Accusation failed for: " + person + " " + weapon + " "
-//				+ room;
-//		changeLabel(str);
-//	}
-//
-//	public void changeLabel(String str) {
-//		Platform.runLater(() -> {
-//			communicator.changeLabel(str);
-//		});
-//	}
-//
-//	public void showDisprovals(String person, String weapon, String room) {
-//		Platform.runLater(() -> {
-//			communicator.showPossibleDisprovals(person, weapon, room);
-//>>>>>>> master
-//		});
-//	}	
+
 	
 	@Override
 	public boolean start() { //aussumes playerlsit beeing ordered
@@ -304,5 +279,15 @@ public class CluedoGameClient extends CluedoGame {
 
 	public void moveForSuspiciton(int gameID, CluedoStatement suspicion) {
 		communicator.moveForSuspiciton(gameID,suspicion);
+	}
+
+
+	public void setCardsForPlayer(ArrayList<String> cards) {
+		getConnectedPlayerByName(server.getMyNick()).setCards(cards);	
+//		getCommunicator().
+//		setCards(
+//				server.getMyNick(),
+//				cards);
+		
 	}	
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -23,7 +22,6 @@ import broadcast.Multicaster;
 import cluedoNetworkGUI.CluedoServerGUI;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoGameServer;
-import enums.Persons;
 
 /**
  * @author guldener
@@ -108,12 +106,12 @@ public class Server {
 			auxx.loginfo("new TCPSocket created");
 		} 
 		catch (IOException e) {
-			stopServer();
+			kill();
 			auxx.logsevere("creating serversocket failed :" + e.getMessage());			
 		}		
 	}
 	
-	private void stopServer(){
+	public void kill(){
 		dataManager.sendMsgToAllClients(NetworkMessages.disconnectedMsg("server "+ Config.GROUP_NAME + " says : byebye, and thanks for all the fish"));
 		if (connector != null) connector.kill();
 		if (TCPServerSocket != null)

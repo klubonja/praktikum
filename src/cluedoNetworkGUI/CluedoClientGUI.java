@@ -79,11 +79,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private BackgroundSize backgroundSize;
 	private BackgroundImage backgroundImage;
 	
-	final private Image backIsengard = new Image("http://img2.wikia.nocookie.net/__cb20120601223256/lotr/images/7/77/Isengard_army.jpg");
-	final private Image backMinas = new Image("http://img4.wikia.nocookie.net/__cb20141228214636/lotr/images/e/e4/Minas_Tirith.jpg");
-	final private Image backRivendell = new Image("http://hdwallpapersfit.com/wp-content/uploads/2015/03/rivendell-wallpaper-new.jpg");
-	final private Image backMordor = new Image("http://img4.wikia.nocookie.net/__cb20140520211519/middleearthshadowofmordor7723/images/5/50/Yre1o.jpg");
-	final private Image backArgonath  = new Image("http://img4.wikia.nocookie.net/__cb20140520211519/middleearthshadowofmordor7723/images/5/50/Yre1o.jpg");
+	final private Image backIsengard = new Image("media/Isengard_army.jpg");
+	final private Image backMinas = new Image("media/Minas_Tirith.jpg");
+	final private Image backRivendell = new Image("media/rivendell-wallpaper-new.jpg");
+	final private Image backMordor = new Image("media/Yre1o.jpg");
+	final private Image backArgonath  = new Image("media/Yre1o.jpg");
 	
 	private Background buttonBackground;
 	
@@ -91,9 +91,13 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private Label volumeLabel;
 	private HBox volumeBox;
 	private Button mute;
-	private final Image muteGraphic = new Image("http://png-3.findicons.com/files/icons/2711/free_icons_for_windows8_metro/512/mute.png"); 
-	private final Image unmuteGraphic = new Image("http://www.veryicon.com/icon/png/System/Icons8%20Metro%20Style/Volume%20Controls%20Volume%20up.png"); 
 	
+//	private final Image muteGraphic = new Image("http://www.veryicon.com/icon/png/System/Icons8%20Metro%20Style/Volume%20Controls%20Volume%20up.png"); 
+	private final Image muteGraphic = new Image("media/Yre1o.jpg"); 
+
+//	private final Image unmuteGraphic = new Image("http://png-3.findicons.com/files/icons/2711/free_icons_for_windows8_metro/512/mute.png"); 
+	private final Image unmuteGraphic = new Image("media/Yre1o.jpg"); 
+
 	private final File audioFile = new File("media/clientAudio1.mp3");
 	
 	private GridPane promptArea;
@@ -159,8 +163,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         grid.setHgap(20);
         grid.setVgap(10);
         grid.setGridLinesVisible(false);
-        grid.setBackground(background);
-        
+        grid.setBackground(background);        
         
         //Creates the rows and columns of the grid
         ColumnConstraints col0 = new ColumnConstraints();
@@ -425,11 +428,12 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 //        promptArea.setGridLinesVisible(false);
         
         
-        String url = audioFile.toURI().toString();
-        clip = new Media(url);
-        audio = new MediaPlayer(clip);
-        audio.play();
-        audio.setCycleCount(MediaPlayer.INDEFINITE);
+//        String url = audioFile.toURI().toString();
+//        clip = new //Media(url);
+//        Media("file:////home/g/guldener/git/yinyanyolos/src/media/clientAudio1.mp3");
+//        audio = new MediaPlayer(clip);
+//        audio.play();
+//        audio.setCycleCount(MediaPlayer.INDEFINITE);
         
         
         GridPane.setConstraints(statusContainer, 1, 1);
@@ -502,7 +506,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		options = new MenuItem("Options");
 		createGameMenu = new MenuItem("Create Game");
 		createServerMenu = new MenuItem("Create Server");
-		testServer = new MenuItem("Test LMU Server");
+		testServer = new MenuItem("Test LMU Serverr");
 		exit = new MenuItem("Quit");
 		file.getItems().addAll(createGameMenu, createServerMenu, testServer, options, exit);
 		
@@ -782,7 +786,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	public Button getConnectToTestServer() {
 		return connectToTestServer;
 	}
-
+	
 	public Button getRefreshGamesList() {
 		return refreshGamesList;
 	}
@@ -995,7 +999,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		this.createServerMenu = createServerMenu;
 	}
 
-	public MenuItem getTestServer() {
+	public MenuItem getTestServerMenuItem() {
 		return testServer;
 	}
 

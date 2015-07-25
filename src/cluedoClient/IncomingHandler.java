@@ -116,18 +116,10 @@ class IncomingHandler implements Runnable {
         				  );
 			}
 			else if (checker.getType().equals("player_cards")){
-        		 server.getGameByGameID(
-        				 checker.getMessage().getInt("gameID")
-        				 ).getConnectedPlayerByName(
-        						 server.getMyNick()
-        						 ).setCards(
-        								 auxx.jsonArrayToArrayList(
-        										 checker.getMessage().getJSONArray("cards")
-        										 )
-        							);	        		  
+        		 dataGuiManager.setCardsOnGame(checker.getMessage().getInt("gameID"), auxx.jsonArrayToArrayList(
+						 checker.getMessage().getJSONArray("cards")),server);        		  		  
 			} 
 			else if (checker.getType().equals("suspicion")) {
-
 				int gameID = checker.getMessage().getInt("gameID");
 				dataGuiManager.handleSuspicion(
 						gameID,
@@ -170,10 +162,7 @@ class IncomingHandler implements Runnable {
 					);
 			} 
 			else if (checker.getType().equals("no disprove")){
-					server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
-							server.getGameByGameID(checker.getMessage().getInt("gameID"))
-							.getPlayerByNick(server.myNick).getCluedoPerson().getPersonName() +
-							" did not disprove.");
+					dataGuiManager.noDisprove(checker.getMessage().getInt("gameID"),server);
 			}
 
 			else if (checker.getType().equals("game ended")){
@@ -247,7 +236,7 @@ class IncomingHandler implements Runnable {
 		}		
 		else {
 			auxx.loginfo("INCOMING invalid : "+checker.getErrString());
-			server.sendMsg(NetworkMessages.error_Msg(checker.getErrString()));
+			//server.sendMsg(NetworkMessages.error_Msg(checker.getErrString()));
 		}	
 	}
 	
@@ -298,7 +287,6 @@ class IncomingHandler implements Runnable {
 		dataGuiManager.removeServer(server);
 		dataGuiManager.setServer();
 
-		auxx.logsevere("incomming handler thread runnning outon server : "
-				+ server.getGroupName());
+		auxx.logsevere("incomming handler thread runnning outon server : " + server.getGroupName());
 	}
 }

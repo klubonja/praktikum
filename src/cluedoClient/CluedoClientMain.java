@@ -33,7 +33,7 @@ public class CluedoClientMain extends Application {
 	 public void start(Stage primaryStage) {		
 		CluedoClientGUI gui = new CluedoClientGUI(primaryStage);
 		Client client = new Client(gui);	
-		CluedoClientPresenter pres = new CluedoClientPresenter(gui);
+		CluedoClientPresenter pres = new CluedoClientPresenter(gui,client);
 		
 	 }
 	

@@ -1,6 +1,9 @@
 package cluedoNetworkGUI;
 
+import cluedoClient.ServerItem;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -24,11 +27,13 @@ public class CluedoClientPresenter {
 	
 	private Background shadeBackground;
 	private BackgroundFill buttonBackgroundFill;
+	private final cluedoClient.Client client;
 	
 	
-	public CluedoClientPresenter(CluedoClientGUI view){
+	public CluedoClientPresenter(CluedoClientGUI view,cluedoClient.Client client){
 		
 		this.view = view;
+		this.client = client;
 		
 		activateEvents();
 		bindComponents();
@@ -40,6 +45,14 @@ public class CluedoClientPresenter {
 
 		view.getExit().setOnMouseClicked(e -> exitGame());
 		view.getExitButton().setOnAction(e -> exitGame());
+		view.getTestServerMenuItem().setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				connectToTestServer();
+				
+			}
+		});
 		
 		view.getCreateGame().setOnMouseEntered(e -> shadeBackground(view.getCreateGame()));
 		view.getCreateGame().setOnMouseExited(e -> defaultBackground(view.getCreateGame()));
@@ -63,7 +76,7 @@ public class CluedoClientPresenter {
 	
 	public void bindComponents(){
 		
-		view.getAudio().volumeProperty().bind(view.getVolume().valueProperty());
+//		view.getAudio().volumeProperty().bind(view.getVolume().valueProperty());
 //		view.getInputField().clear();
 //		view.getInputField().setPromptText("ENTER to send");
 	}
@@ -74,13 +87,13 @@ public class CluedoClientPresenter {
 		nd.setEffect(glow);	
 	}
 	
-	public void removeGlow(Node nd){
-		
+	public void removeGlow(Node nd){		
 		nd.setEffect(null);	
 	}
 	
 	public void exitGame(){
-		Platform.exit();
+		client.kill();
+		System.exit(0);
 	}
 	
 	public void shadeBackground(Button b){
@@ -109,6 +122,10 @@ public class CluedoClientPresenter {
 		
 		view.getPrimaryStage().setFullScreen(true);
 		view.getPrimaryStage().setAlwaysOnTop(true);
+	}
+	
+	public void connectToTestServer(){
+		client.startTestServerConnection();
 	}
 
 }

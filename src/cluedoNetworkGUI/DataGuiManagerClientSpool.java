@@ -57,7 +57,6 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	public void addClient(ServerItem server , String nick){
 		if (!nick.equals(server.getMyNick()) && server.addClient(nick) && server == selectedServer){
 			getGui().addClient(nick);
-			System.out.println("added : "+server.getMyNick()+" - "+nick+" equals : "+ nick.equals(server.getMyNick()));	
 		}				
 	}
 	
@@ -70,10 +69,10 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		this.selectedServer = selectedServer;
 		setStatus("selected server : "+selectedServer.getGroupName());
 		setWindowName("logged in to server "+selectedServer.getGroupName()+" as "+selectedServer.getMyNick());
-		cleanInput();
+		cleanInput();		
 		setNicksGui(selectedServer);
+		refreshGamesListServer(selectedServer);
 		addMsgIn(selectedServer.getChat());
-		auxx.logfine("logged in to server "+selectedServer.getGroupName()+" as "+selectedServer.getMyNick());
 	}
 	
 	public ServerItem getSelectedServer() {
@@ -94,7 +93,6 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 				setReadyGame(gameID);				
 			}				
 			updateGame(gameID, game.getNicksConnected(),game.getWatchersConnected());
-			auxx.loginfo("connected to game "+gameID+" : number Nicks connected : "+game.getNumberConnected());
 
 			return true;
 		}
@@ -243,25 +241,27 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void handleStateUpdate(int gameID,String gameNick,ServerItem server,ArrayList<String> newStates){
 		CluedoGameClient game = server.getGameByGameID(gameID); 
-		if (game.hasPlayerConnectedByNick(gameNick)){ //never ever trust anyone
-			game.getPlayerByNick(gameNick).setPossibleStatesFromStringList(newStates);
-			if (gameNick.equals(server.getMyNick())){ // its me
-				if (newStates.contains(PlayerStates.roll_dice.getName()))
-					game.itsYourTurn();
-				else if (newStates.contains(PlayerStates.disprove.getName()))
-					game.disprove();
-				else if (newStates.contains(PlayerStates.do_nothing.getName()))
-					game.currentPlayerToNothing();
-				game.changeLabel(auxx.formatStringList(newStates, "or"));
+		if (game != null){
+			if (game.hasPlayerConnectedByNick(gameNick)){ //never ever trust anyone
+				game.getPlayerByNick(gameNick).setPossibleStatesFromStringList(newStates);
+				if (gameNick.equals(server.getMyNick())){ // its me
+					if (newStates.contains(PlayerStates.roll_dice.getName()))
+						game.itsYourTurn();
+					else if (newStates.contains(PlayerStates.disprove.getName()))
+						game.disprove();
+					else if (newStates.contains(PlayerStates.do_nothing.getName()))
+						game.currentPlayerToNothing();
+					game.changeLabel(auxx.formatStringList(newStates, "or"));
+				}
+				else { //its some other bloke
+					if (newStates.contains(PlayerStates.roll_dice.getName()))
+						game.itsSomeonesTurn(gameNick);				
+				}
 			}
-			else { //its some other bloke
-				if (newStates.contains(PlayerStates.roll_dice.getName()))
-					game.itsSomeonesTurn(gameNick);				
-			}
-		}
-		else if (game.hasWatcherConnectedByNick(server.getMyNick())){
-			game.changeLabel(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
-		}
+			else if (game.hasWatcherConnectedByNick(server.getMyNick())){
+				game.changeLabel(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
+			}	
+		}		
 	}
 
 	public void handleSuspicion(int gameID, CluedoStatement suspicion,ServerItem server) {
@@ -274,6 +274,19 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	
 	public void handleDisprove(int gameID,ServerItem server){
 		server.getGameByGameID(gameID).disprove();
-	}	
+	}
+
+	public void noDisprove(int gameID, ServerItem server) {
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		if (game != null){
+			game.changeLabel("No disprove this round");
+		}
+		
+	}
+
+	public void setCardsOnGame(int gameID,ArrayList<String> cards,ServerItem server) {
+		CluedoGameClient game = server.getGameByGameID(gameID);
+		game.setCardsForPlayer(cards);		
+	}
 	
 }

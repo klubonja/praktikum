@@ -45,6 +45,7 @@ public class Client {
 	
 	CluedoClientGUI gui;
 	ServerPool serverList;
+	ArrayList<Server> createdServers;
 	DataGuiManagerClientSpool dataGuiManager;
 	boolean globalRun;
 		
@@ -54,6 +55,7 @@ public class Client {
 		dataGuiManager = new DataGuiManagerClientSpool(gui, serverList);
 		dataGuiManager.setWindowName(Config.GROUP_NAME+ " Client");		
 		globalRun = true;
+		createdServers = new ArrayList<Server>();
 		
 		
 		setHandler();
@@ -139,24 +141,14 @@ public class Client {
 			gui.createServer.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			    @Override
 			    public void handle(MouseEvent click) {
-			    	Stage stage = new Stage();
-					CluedoServerGUI gui = new CluedoServerGUI(stage);
-					@SuppressWarnings("unused")
-					Server server = new Server(gui);
-					stage.show();
-					stage.hide();
+			    	createServer();
 			    }
 			});	
 			
 			gui.getCreateServerMenu().setOnAction(new EventHandler<ActionEvent>() {
 			    @Override
 			    public void handle(ActionEvent click) {
-			    	Stage stage = new Stage();
-					CluedoServerGUI gui = new CluedoServerGUI(stage);
-					@SuppressWarnings("unused")
-					Server server = new Server(gui);
-					stage.show();
-					stage.hide();
+			    	createServer();
 			    }
 			});	
 		////////////////////////END CREATE SERVER/////////////////////////////////
@@ -233,13 +225,7 @@ public class Client {
 			gui.getConnectToTestServer().setOnAction(new EventHandler<ActionEvent>() {
 	            @Override
 	            public void handle(ActionEvent event) {
-					try {
-						InetAddress addr = InetAddress.getByName("vanuabalavu.pms.ifi.lmu.de");
-						startTCPConnection(new ServerItem("testendeTentakel", addr, 30305));
-					} 
-					catch (UnknownHostException e) {
-						auxx.logsevere("testserverconnection failed Unknown Host:  ", e);
-					}            	
+					startTestServerConnection();
 	            }
 	        });	
 			////////////////////////TESTSERVERCONNECTION MAN END/////////////////////////////////////////////////
@@ -249,7 +235,7 @@ public class Client {
 			      @Override
 				public void handle(WindowEvent e){
 			          try {
-			        	  dataGuiManager.sayGoodbye();
+			        	   dataGuiManager.sayGoodbye();
 			        	   globalRun = false;
 			        	   auxx.log.log(Level.INFO,"CLIENT CLOSED");
 			               Platform.exit();
@@ -290,7 +276,7 @@ public class Client {
 		String answer = NetworkMessages.udp_clientMsg(Config.GROUP_NAME);
 		ServerHandShakeListener cl = 
 				new ServerHandShakeListener(
-						dataGuiManager,answer,"udp server",Config.BROADCAST_PORT,this,globalRun);
+						dataGuiManager,answer,"udp server",Config.BROADCAST_PORT,this,true);
 		cl.start();
 	}
 	
@@ -362,7 +348,42 @@ public class Client {
 //		Server server = new Server(gui);
 //		stage.show();
 //	}
+	
+	public void startTestServerConnection(){
+		try {
+			InetAddress addr = InetAddress.getByName("vanuabalavu.pms.ifi.lmu.de");
+			startTCPConnection(new ServerItem("testendeTentakel", addr, 30305));
+		} 
+		catch (UnknownHostException e) {
+			auxx.logsevere("testserverconnection failed Unknown Host:  ", e);
+		}            
+	}
+	
+	public void createServer(){
+		Stage stage = new Stage();
+		CluedoServerGUI gui = new CluedoServerGUI(stage);
+		@SuppressWarnings("unused")
+		Server server = new Server(gui);
+		createdServers.add(server);
+		stage.show();
+		stage.hide();
+	}
+	
+	public void kill(){
+		try {
+     	   dataGuiManager.sayGoodbye();
+     	   for (Server s: createdServers) s.kill();
+     	   globalRun = false;
+     	   auxx.log.log(Level.INFO,"CLIENT CLOSED");
+            Platform.exit();
+            System.exit(0);	               
+       } 
+       catch (Exception e1) {
+            auxx.log.log(Level.SEVERE,e1.getMessage());
+       }
+   }
 }
+
 
 
 

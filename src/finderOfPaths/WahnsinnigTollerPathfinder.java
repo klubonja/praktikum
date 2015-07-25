@@ -206,11 +206,9 @@ public class WahnsinnigTollerPathfinder {
                 if (kacheln.getKacheln()[jetzigeReihe][jetzigeSpalte].isIstRaum()){
                 	mehrereMoeglichkeiten[welcheKachel] = moeglichkeiten;
                 	setMehrereMoeglichkeiten(mehrereMoeglichkeiten);
-                }
-                
+                }                
                 welcheMoeglichkeit++;
                 setMoeglichkeiten(moeglichkeiten);
-
             }
             else {
             }
@@ -236,8 +234,7 @@ public class WahnsinnigTollerPathfinder {
                 	tuerRichtung = null;
                 	for ( int j = currentEntry.length(); j < maximaleSchritte; j++){
             			currentEntry += "T";
-            		}
-                	
+            		}                	
                 	letztesMalTuer = false;
                 	possibleMoves(maximaleSchritte,himmelsrichtungen,currentEntry);
             	
