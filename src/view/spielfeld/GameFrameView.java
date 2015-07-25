@@ -195,6 +195,7 @@ public class GameFrameView extends GridPane{
 		stage = new Stage();		
 		stage.setScene(scene);
 		stage.setResizable(true);
+		stage.setMaximized(true);
 		//stage.setFullScreen(true);
 		stage.setTitle("Cluedo");
 		stage.setAlwaysOnTop(true);

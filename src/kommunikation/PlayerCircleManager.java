@@ -3,6 +3,7 @@ package kommunikation;
 import java.util.ArrayList;
 import java.util.Stack;
 
+import staticClasses.Images;
 import javafx.scene.shape.Circle;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Persons;
