@@ -146,11 +146,11 @@ public class NotesView extends TabPane {
 		this.how = new Label("HOW?");
 		this.where = new Label("WHERE?");
 		this.green = new Label("Green");
-		this.red = new Label("Red");
-		this.blue = new Label("Blue");
-		this.purple = new Label("Purple");
-		this.yellow = new Label("Yellow");
-		this.white = new Label("White");
+		this.red = new Label("Gloria");
+		this.blue = new Label("Bloom");
+		this.purple = new Label("Porz");
+		this.yellow = new Label("Gatow");
+		this.white = new Label("Weiss");
 		
 		this.dagger = new Label("Dagger");
 		this.candlestick = new Label("Candlestick");
