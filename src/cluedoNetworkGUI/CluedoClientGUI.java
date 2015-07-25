@@ -117,6 +117,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private MenuItem testServer;
 	private MenuItem exitMenu;
 	private MenuItem fullScreen;
+	private MenuItem mute;
 	private MenuItem gameRules;
 	
 
@@ -448,7 +449,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 //		file.getItems().add(options);
 		
 		fullScreen = new MenuItem("Full Screen");
-		window.getItems().addAll(fullScreen);
+		mute = new MenuItem("Mute");
+		window.getItems().addAll(mute, fullScreen);
 		
 		
 		gameRules = new MenuItem("Rules");
@@ -988,6 +990,14 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 
 	public void setOptions(MenuItem options) {
 		this.options = options;
+	}
+
+	public MenuItem getMute() {
+		return mute;
+	}
+
+	public void setMute(MenuItem mute) {
+		this.mute = mute;
 	}
 
 	public MenuItem getCreateGameMenu() {

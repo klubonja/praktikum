@@ -59,6 +59,7 @@ public class CluedoClientPresenter {
 		view.getClosePromptArea().setOnAction(e -> hideRules());
 		
 		view.getFullScreen().setOnAction(e -> setToFullScr());
+		view.getMute().setOnAction(e -> muteLobby());
 		
 		view.getOptions().setOnAction(e -> showOptions());
 		view.getCloseOptionsArea().setOnAction(e -> hideOptions());
@@ -135,6 +136,15 @@ public class CluedoClientPresenter {
 	public void muteLobby(){
 		
 		view.getAudio().setMute(true);
+		view.getMute().setText("Unmute");
+		view.getMute().setOnAction(e -> unmuteLobby());
+	}
+	
+	public void unmuteLobby(){
+		
+		view.getAudio().setMute(false);
+		view.getMute().setText("Mute");
+		view.getMute().setOnAction(e -> muteLobby());
 	}
 	
 	public void setArgonath(){
