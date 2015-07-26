@@ -24,6 +24,9 @@ public class KIKarten {
 		addKarten(mycards);
 	}
 
+	public KIKarten(){
+	}
+	
 	public void addRaum(Rooms raum){
 		raeume.add(raum);
 	}
@@ -32,9 +35,10 @@ public class KIKarten {
 		personen.add(person);
 	}
 	
-	public void addWaffen(Weapons waffe){
+	public void addWaffe(Weapons waffe){
 		waffen.add(waffe);
 	}
+	
 	
 	/**
 	 * 
@@ -140,7 +144,7 @@ public class KIKarten {
 	public void addKarten(ArrayList<String> cards){
 		for (String card: cards){
 			if (Persons.isMemberPersonName(card)) addPerson(Persons.getPersonByName(card));
-			if (Weapons.isMember(card)) addWaffen(Weapons.getWeaponByName(card));
+			if (Weapons.isMember(card)) addWaffe(Weapons.getWeaponByName(card));
 			if (Rooms.isMember(card)) addRaum(Rooms.getRoomByName(card));
 		}
 	}
