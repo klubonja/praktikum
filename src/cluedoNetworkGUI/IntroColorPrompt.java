@@ -102,7 +102,7 @@ public class IntroColorPrompt extends GridPane{
 		int rowCounter = 0;
 		for(String temp : colors){
 			Config.COLOR_SELECT_WINDOW_WIDTH += 100;
-			Image imageButton = new Image ("media/" + temp + ".png");
+			Image imageButton = new Image ("media/cards/" + temp + ".png");
 			tempButton = new Button("", new ImageView(imageButton));
 			tempButton.setPrefSize(140, 190);
 			tempButton.setMaxSize(140, 190);

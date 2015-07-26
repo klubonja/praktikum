@@ -215,7 +215,7 @@ public class Communicator {
 	public void highlightCard(String card) {
 		for (int i = 0; i < gameView.getHand().getHandURI().size(); i++) {
 			if (card.equals(gameView.getHand().getHandURI().get(i))) {
-				gameView.getHand().getHand().get(i).setEffect(new Glow(0.5));
+				gameView.getHand().getHand().get(i).setEffect(new Glow(0.8));
 			}
 		}
 	}
@@ -359,6 +359,25 @@ public class Communicator {
 				else {
 					network.sendMsgToServer(NetworkMessages.cantDisproveMsg(gameID));
 				}				
+			}
+			
+			//arrangiert welche der Buttons im Zugfenster verwendet werde dürfen 
+			public void setZugFensterButtons(ArrayList<String> states){
+				if(states.contains(PlayerStates.suspect.getName())){
+					zugPresenter.enableSuspect();
+				} else {
+					zugPresenter.disableSuspect();
+				}
+				if(states.contains(PlayerStates.roll_dice.getName())){
+					zugPresenter.enableRoll();
+				} else {
+					zugPresenter.disableRoll();
+				}
+				if(states.contains(PlayerStates.use_secret_passage.getName())){
+					zugPresenter.enablePassage();
+				} else {
+					zugPresenter.disablePassage();
+				}
 			}
 	
 	public void kill() {

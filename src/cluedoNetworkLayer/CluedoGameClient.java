@@ -82,6 +82,10 @@ public class CluedoGameClient extends CluedoGame {
 
 	}
 	
+	public void changeZugFensterButtons(ArrayList<String> states){
+		communicator.setZugFensterButtons(states);
+	}
+	
 	public void itsSomeonesTurn(String nick){
 		Platform.runLater(() -> {
 			communicator.itsSomeonesTurn(nick);
@@ -285,7 +289,7 @@ public class CluedoGameClient extends CluedoGame {
 
 
 	public void setCardsForPlayer(ArrayList<String> cards) {
-		getConnectedPlayerByName(server.getMyNick()).setCards(cards);	
+		getConnectedPlayerByName(server.getMyNick()).setCards(cards);
 //		getCommunicator().
 //		setCards(
 //				server.getMyNick(),

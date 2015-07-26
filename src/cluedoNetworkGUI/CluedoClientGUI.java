@@ -92,10 +92,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private HBox volumeBox;
 	private Button mute;
 	
-//	private final Image muteGraphic = new Image("http://www.veryicon.com/icon/png/System/Icons8%20Metro%20Style/Volume%20Controls%20Volume%20up.png"); 
 	private final Image muteGraphic = new Image("media/Yre1o.jpg"); 
 
-//	private final Image unmuteGraphic = new Image("http://png-3.findicons.com/files/icons/2711/free_icons_for_windows8_metro/512/mute.png"); 
 	private final Image unmuteGraphic = new Image("media/Yre1o.jpg"); 
 
 	private final File audioFile = new File("media/clientAudio1.mp3");

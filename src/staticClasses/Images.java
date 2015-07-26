@@ -14,13 +14,14 @@ public class Images {
 	public static ImageView gloria;
 	public static ImageView gatow;
 
-	public static ImageView disabled;
-	public static ImageView enabledSuspect;
-	public static ImageView enabledRoll;
-	public static ImageView enabledPassage;
+	public static Image disabled;
+	public static Image enabled;
+	public static Image suspectImage;
+	public static Image rollImage;
+	public static Image passageImage;
 	public static ImageView suspect;
-	public static ImageView passage;
 	public static ImageView roll;
+	public static ImageView passage;
 	public static ImageView suspectNOW;
 	public static ImageView suspectLATER;
 	
@@ -35,13 +36,14 @@ public class Images {
 	gloria = new ImageView(new Image("media/gameObjects/gloria_s.png"));
 	gatow = new ImageView(new Image("media/gameObjects/gatow_w.png"));
 	
-	disabled = new ImageView(new Image("media/buttons/disabled.png"));
-	enabledSuspect = new ImageView(new Image("media/buttons/enabled.png"));
-	enabledRoll = new ImageView(new Image("media/buttons/enabled.png"));
-	enabledPassage = new ImageView(new Image("media/buttons/enabled.png"));
-	suspect = new ImageView(new Image("media/buttons/suspect.png"));
-	roll = new ImageView(new Image("media/buttons/roll.png"));
-	passage = new ImageView(new Image("media/buttons/passage.png"));
+	disabled = new Image("media/buttons/disabled.png");
+	enabled = new Image("media/buttons/enabled.png");
+	suspectImage = new Image("media/buttons/suspect.png");
+	rollImage = new Image("media/buttons/roll.png");
+	passageImage = new Image("media/buttons/passage.png");
+	suspect = new ImageView(enabled);
+	roll = new ImageView(enabled);
+	passage = new ImageView(enabled);
 	
 	suspectNOW = new ImageView(new Image("media/buttons/suspectNOW.png"));
 	suspectLATER = new ImageView(new Image("media/buttons/suspectLATER.png"));

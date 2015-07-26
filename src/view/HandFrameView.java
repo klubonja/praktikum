@@ -20,8 +20,6 @@ public class HandFrameView extends BorderPane {
 	private Deck deck = new Deck(6);
 	private ArrayList<ImageView> hand = new ArrayList<ImageView>();
 	private ArrayList<String> handURI = new ArrayList<String>();
-	Label title;
-	private Label happening;
 	private Label text;
 	private VBox top = new VBox();
 	private StackPane stack = new StackPane();
@@ -42,24 +40,8 @@ public class HandFrameView extends BorderPane {
 		this.setPrefSize(350, 350);
 		this.setMinSize(350, 350);
 		
-//		ArrayList<String> cardstmp = player.getCards();
-//		for(String str : cardstmp){
-//			auxx.logfine("imagestring :" + str);
-//			
-//			hand.add(new ImageView(new Image("media/" + str + ".png")));}
-			
 		deck.makeDeck();
 		
-//		for (CluedoPlayer p : client.getPlayersConnected()) {
-//			if (p.getNick().equals(client.getMyNick())) {
-//				for (String str : p.getCards()) {
-//					handURI.add(str);
-//					hand.add(new ImageView(new Image("media/" + str + ".png")));
-//				}
-//			}
-//		}
-
-		title = new Label("Cards in hand. Click on a card to view it.");
 //		happening = new Label("Currently happening: ");
 //		text = new Label();
 //		top.getChildren().addAll(happening, text);
@@ -88,7 +70,7 @@ public class HandFrameView extends BorderPane {
 
 //		this.setTop(top);
 		this.setBottom(accusationBox);
-		this.cards.setSpacing(-30);
+		this.cards.setSpacing(-50);
 		this.cards.setAlignment(Pos.CENTER);
 		//this.cards.getChildren().addAll(hand);
 		stack.getChildren().add(cards);
@@ -99,7 +81,21 @@ public class HandFrameView extends BorderPane {
 	public void setPlayerCards(ArrayList<String> playerCards){
 		for (String card : playerCards){
 			handURI.add(card);
-			hand.add(new ImageView(new Image("media/" + card + ".png")));
+			hand.add(new ImageView(new Image("media/cards/" + card + ".png")));
+		}
+		
+		for(ImageView img : hand){
+			img.setOnMouseEntered(e -> {
+				img.translateYProperty().setValue(img.getY() - 30);
+			});
+			img.setOnMouseExited(e -> {
+				img.translateYProperty().setValue(img.getY());
+			});
+			img.setOnMouseClicked(e -> {
+				for(ImageView card : hand){
+				card.setEffect(null);
+				}
+			});
 		}
 		this.cards.getChildren().addAll(hand);
 	}

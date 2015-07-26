@@ -65,9 +65,9 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 		buttons.setSpacing(10);
 		buttons.setAlignment(Pos.CENTER);
 		buttons.getChildren().addAll(
-				Images.enabledSuspect,
-				Images.enabledRoll,
-				Images.enabledPassage);
+				Images.suspect,
+				Images.roll,
+				Images.passage);
 		
 
 		bottom = new HBox();
@@ -91,21 +91,6 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 		this.setCenter(organizer);
 		this.setWidth(696);
 		this.setHeight(725);
-	}
-
-	public void killEmAll() {
-		buttons.getChildren().removeAll(personen, waffen, zimmer);
-		bottom.getChildren().removeAll(
-				Images.suspectNOW,
-				Images.suspectLATER,
-				back);
-	}
-
-	public void addInactiveButtons() {
-		buttons.getChildren().addAll(
-				Images.enabledSuspect,
-				Images.enabledRoll,
-				Images.enabledPassage);
 	}
 
 	public HBox getButtonsBox() {

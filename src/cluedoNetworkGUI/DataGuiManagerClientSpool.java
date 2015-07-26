@@ -3,6 +3,7 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
@@ -245,13 +246,25 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 			if (game.hasPlayerConnectedByNick(gameNick)){ //never ever trust anyone
 				game.getPlayerByNick(gameNick).setPossibleStatesFromStringList(newStates);
 				if (gameNick.equals(server.getMyNick())){ // its me
-					if (newStates.contains(PlayerStates.roll_dice.getName()))
+					if (newStates.contains(PlayerStates.roll_dice.getName())){
 						game.itsYourTurn();
-					else if (newStates.contains(PlayerStates.disprove.getName()))
+						Platform.runLater(() -> {game.changeZugFensterButtons(newStates);});
+					}
+					else if (newStates.contains(PlayerStates.disprove.getName())){
 						game.disprove();
-					else if (newStates.contains(PlayerStates.do_nothing.getName()))
+						game.changeZugFensterButtons(newStates);
+					}
+					else if (newStates.contains(PlayerStates.do_nothing.getName())){
 						game.currentPlayerToNothing();
-					game.changeLabel(auxx.formatStringList(newStates, "or"));
+						game.changeLabel(auxx.formatStringList(newStates, "or"));
+						game.changeZugFensterButtons(newStates);
+					}
+					else if(newStates.contains(PlayerStates.suspect.getName())){
+						game.changeZugFensterButtons(newStates);
+					}
+					else if(newStates.contains(PlayerStates.use_secret_passage.getName())){
+						game.changeZugFensterButtons(newStates);
+					}
 				}
 				else { //its some other bloke
 					if (newStates.contains(PlayerStates.roll_dice.getName()))
