@@ -180,7 +180,13 @@ public class Communicator {
 				System.out.println("katatonga katanga!");
 			}
 			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].isIstRaum()){
-				openWindow();
+				
+				if (kiplay){
+					ki.postmove();
+				}
+				else {
+					openWindow();
+				}
 			}
 			this.wuerfelWurf = null;
 		}
@@ -189,16 +195,8 @@ public class Communicator {
 	/**
 	 * Suspect! Surprise! Drama!
 	 */
-	public void suspect() {
-		String person = zugView.getPersonenListe().getValue();
-		String weapon = zugView.getWaffenListe().getValue();
-		String room = kacheln.getKacheln()
-				[pcManager.getCurrentPlayer().getPosition().getY()]
-				[pcManager.getCurrentPlayer().getPosition().getX()].
-				getRaum().getName();
-
+	public void suspect(String person,String weapon,String room) {
 		network.sendMsgToServer(NetworkMessages.suspectMsg(gameID, person,weapon,room)); //nicht suspicion das darf nur der server!
-
 	}
 
 	public void accuse() {
@@ -289,10 +287,17 @@ public class Communicator {
 
 		zugPresenter.getGameView().YESgangImage.setOnMouseClicked(e -> network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID)));
 		
-		
-		// BOESE!!
 		zugPresenter.getGameView().ONanklage.setOnMouseClicked(e -> {
-			suspect();
+			String person = zugView.getPersonenListe().getValue();
+			String weapon = zugView.getWaffenListe().getValue();
+			String room = kacheln.getKacheln()
+					[pcManager.getCurrentPlayer().getPosition().getY()]
+					[pcManager.getCurrentPlayer().getPosition().getX()].
+					getRaum().getName();
+			suspect(person,weapon,room);
+			
+			
+			// BOESE!!
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
 				remove(gameView.getKomplettesFeld().getZugView().getBottomBox());
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
@@ -308,6 +313,7 @@ public class Communicator {
 			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
 				add(gameView.getKomplettesFeld().getZugView().getClose());
 			gameView.getKomplettesFeld().getChildren().remove(zugView);
+			
 		});
 
 		gameView.getHand().getAccuse().setOnMouseClicked(e -> accuse());
@@ -444,5 +450,9 @@ public class Communicator {
 	
 	public void setCards(String myNick,ArrayList<String> cards) {
 		gameView.getHand().setPlayerCards(cards);		
+	}
+	public void kiSwitch(){
+		kiplay = !kiplay;
+		auxx.logsevere("KI playing : "+ kiplay);
 	}
 }

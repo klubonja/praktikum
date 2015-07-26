@@ -15,6 +15,9 @@ import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoStatement;
+import enums.Persons;
+import enums.Rooms;
+import enums.Weapons;
 
 public class KI {
 
@@ -49,26 +52,42 @@ public class KI {
 			accuse();
 			return;			
 		}
-		else if (false){ //take secret passage
-			
+		else if (false){ //take secret passage			
 		}
 		else {// roll dice
 			communicator.getDicePresenter().iWantToRollTheDice();
-		}
-		
+		}		
 	}
 	
-
-	public CluedoPosition tellMeWhereToGo(){
-		KIKachel iGoHere = new KIKachel();
-		ArrayList <KIKachel> moeglicheKacheln = whereDoIGo.kachelnSuchen();
-		iGoHere = whereDoIGo.getBestKachel(moeglicheKacheln);
-		if (whereDoIGo.gibtEsTueren(whereDoIGo.tuerKIKachelnSuchen(moeglicheKacheln))){
-			ArrayList <KIKachel> tuerKacheln = whereDoIGo.tuerKIKachelnSuchen(moeglicheKacheln);
-			iGoHere = whereDoIGo.getBestKachel(tuerKacheln);
+	public void postmove(){
+		CluedoPosition pos = yourOwnPlayer.getPosition();
+		if (kiKacheln.getKachelAt(pos.getX(), pos.getY()).isIstRaum()){
+			suspectRand();
 		}
-		return iGoHere.getPosition();
+		else {
+			communicator.endTurn();
+		}		
 	}
+	
+	public void suspectRand(){
+		Persons pers = eigeneKarten.welchePersonenHabenWirNicht().get(
+				auxx.getRandInt(
+						0,eigeneKarten.welchePersonenHabenWirNicht().size()-1 
+						)
+				);
+		Weapons wpn = eigeneKarten.welcheWaffenHabenWirNicht().get(
+				auxx.getRandInt(
+						0,eigeneKarten.welcheWaffenHabenWirNicht().size()-1 
+						)
+				);
+		Rooms room = eigeneKarten.welcheRaeumeHabenWirNicht().get(
+				auxx.getRandInt(
+						0,eigeneKarten.welcheRaeumeHabenWirNicht().size()-1 
+						)
+				);
+		communicator.suspect(pers.getColor(), wpn.getName(), room.getName());
+	}
+
 	
 	public void move(){
 		CluedoPosition pos = asCloseAspossibleToNextDoor();		
@@ -89,17 +108,6 @@ public class KI {
 		return getClosestKachelFromList(nextToDoors, yourOwnPlayer.getPosition()).getPosition();			
 	}
 	
-	public static KIKachel getClosestKachelFromList(List<KIKachel> klist,CluedoPosition pos){
-		KIKachel kachel = klist.get(0);
-		int d = getDist(kachel, pos);
-		for (KIKachel k: klist){
-			int dtmp = Math.abs((k.getPosition().getX()+k.getPosition().getY()) - (pos.getX()+pos.getY()));
-			if (dtmp < d) kachel = k;
-		}
-		
-		return kachel; //für alle kacheln die gleichweit und am weitesten weg sind gilt wer höhere y werte hat wird bevorzugt und dann wer höhere x werte hat
-	}
-	
 	public boolean shallwefinish(){
 		return safeKarten.wieVielProzentHabenWir()  > Config.HOWMANYOFDEMCARDS/Config.ALLOFDEMCARDS;			
 	}
@@ -111,8 +119,33 @@ public class KI {
 	}
 
 	
+	////////////////////////////////////HELPER////////////////////////////////////////////////
+	
+	
 	public static int getDist(Kachel k,CluedoPosition pos){
 		return Math.abs((k.getPosition().getX()+k.getPosition().getY()) - (pos.getX()+pos.getY()));
+	}
+	
+	public CluedoPosition tellMeWhereToGo(){
+		KIKachel iGoHere = new KIKachel();
+		ArrayList <KIKachel> moeglicheKacheln = whereDoIGo.kachelnSuchen();
+		iGoHere = whereDoIGo.getBestKachel(moeglicheKacheln);
+		if (whereDoIGo.gibtEsTueren(whereDoIGo.tuerKIKachelnSuchen(moeglicheKacheln))){
+			ArrayList <KIKachel> tuerKacheln = whereDoIGo.tuerKIKachelnSuchen(moeglicheKacheln);
+			iGoHere = whereDoIGo.getBestKachel(tuerKacheln);
+		}
+		return iGoHere.getPosition();
+	}
+	
+	public static KIKachel getClosestKachelFromList(List<KIKachel> klist,CluedoPosition pos){
+		KIKachel kachel = klist.get(0);
+		int d = getDist(kachel, pos);
+		for (KIKachel k: klist){
+			int dtmp = Math.abs((k.getPosition().getX()+k.getPosition().getY()) - (pos.getX()+pos.getY()));
+			if (dtmp < d) kachel = k;
+		}
+		
+		return kachel; //für alle kacheln die gleichweit und am weitesten weg sind gilt wer höhere y werte hat wird bevorzugt und dann wer höhere x werte hat
 	}
 	
 }
