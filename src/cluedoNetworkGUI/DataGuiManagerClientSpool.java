@@ -252,18 +252,16 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 					}
 					else if (newStates.contains(PlayerStates.disprove.getName())){
 						game.disprove();
-						game.changeZugFensterButtons(newStates);
 					}
 					else if (newStates.contains(PlayerStates.do_nothing.getName())){
 						game.currentPlayerToNothing();
 						game.changeLabel(auxx.formatStringList(newStates, "or"));
-						game.changeZugFensterButtons(newStates);
 					}
 					else if(newStates.contains(PlayerStates.suspect.getName())){
-						game.changeZugFensterButtons(newStates);
+						Platform.runLater(() -> {game.changeZugFensterButtons(newStates);});
 					}
 					else if(newStates.contains(PlayerStates.use_secret_passage.getName())){
-						game.changeZugFensterButtons(newStates);
+						Platform.runLater(() -> {game.changeZugFensterButtons(newStates);});
 					}
 				}
 				else { //its some other bloke

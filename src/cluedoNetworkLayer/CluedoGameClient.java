@@ -86,6 +86,12 @@ public class CluedoGameClient extends CluedoGame {
 		communicator.setZugFensterButtons(states);
 	}
 	
+//	public void showDisprovals(String person, String weapon, String room) {
+//		Platform.runLater(() -> {
+//			communicator.showPossibleDisprovals(person, weapon, room);
+//		});
+//	}
+	
 	public void itsSomeonesTurn(String nick){
 		Platform.runLater(() -> {
 			communicator.itsSomeonesTurn(nick);

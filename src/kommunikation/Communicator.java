@@ -25,6 +25,7 @@ import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoStatement;
+import enums.Persons;
 import enums.PlayerStates;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.Sucher;
@@ -379,6 +380,19 @@ public class Communicator {
 					zugPresenter.disablePassage();
 				}
 			}
+			
+//			public void showPossibleDisprovals(String person, String weapon, String room){
+//				person = Persons.getPersonByColor(person).getPersonName();
+//				System.out.println(person);
+//					for(String cardOfTheOne : network.getPlayerByNick(network.getMyNick()).getCards()){
+//						if (cardOfTheOne.equals(person) ||
+//								cardOfTheOne.equals(weapon) ||
+//								cardOfTheOne.equals(room)) {
+//								highlightCard(cardOfTheOne);
+//								setCardFunction(cardOfTheOne);
+//							}
+//					}
+//			}
 	
 	public void kill() {
 		gameView.close();
