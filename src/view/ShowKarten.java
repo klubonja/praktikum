@@ -67,6 +67,8 @@ public class ShowKarten extends GridPane{
 		Config.SHOWKARTEN_WIDTH = 0;
 		int counter = 0;
 		int columnCounter = 0;
+		Text status = new Text(ueberschrift);
+		this.getChildren().add(status);
 		for (String s : karten){
 			Config.SHOWKARTEN_WIDTH += 150;
 			Image card = new Image ("media/" + s + ".png");
