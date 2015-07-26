@@ -62,7 +62,7 @@ public class KI {
 			if (dtmp < d) kachel = k;
 		}
 		
-		return kachel; //für alle kacheln die gleichweitweg und am weitesten weg sind gilt wer höhere y werte hat wird bevorzugt und dann wer höhere x werte hat
+		return kachel; //für alle kacheln die gleichweit und am weitesten weg sind gilt wer höhere y werte hat wird bevorzugt und dann wer höhere x werte hat
 	}
 	
 	public boolean shallwefinish(){
