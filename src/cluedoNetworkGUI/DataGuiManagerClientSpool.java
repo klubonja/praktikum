@@ -290,5 +290,12 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		CluedoGameClient game = server.getGameByGameID(gameID);
 		game.setCardsForPlayer(cards);		
 	}
+
+	public void handleDisproved(int gameID, ServerItem server, String card,String nick) {
+		CluedoGameClient game = server.getGameByGameID(gameID);
+	
+		
+		
+	}
 	
 }

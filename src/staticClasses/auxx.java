@@ -242,6 +242,7 @@ public abstract class auxx {
 	}
 	
 	public static int getRandInt(int min,int max){
+		if (max < (min)) return 0;
 		Random rint = new Random();		
 		return rint.nextInt(Math.max(max-min + 1,0)) + min;				
 	}

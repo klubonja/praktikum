@@ -21,6 +21,7 @@ import view.spielfeld.GameFrameView;
 import yoloKI.KI;
 import animation.DerBeweger;
 import animation.RaumBeweger;
+import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
@@ -243,6 +244,10 @@ public class Communicator {
 				gameView.getHand().getHand().get(i).setEffect(new Glow(0.5));
 			}
 		}
+	}
+	
+	public void sendKIMove(CluedoPosition pos){
+		network.sendMsgToServer(NetworkMessages.moveMsg(network.getGameId(),new CluedoField(pos)));
 	}
 	
 	/**

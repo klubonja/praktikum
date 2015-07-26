@@ -19,13 +19,10 @@ public class WhereDoIGo {
 	public ArrayList <KIKachel> kachelnSuchen(){
 		ArrayList <KIKachel> kacheln = new ArrayList <KIKachel> ();		
 		for (int yKoordinate = 0; yKoordinate < kIkachelContainer.getKacheln().length; yKoordinate++)
-			for (int xKoordinate = 0; xKoordinate < kIkachelContainer.getKacheln()[yKoordinate].length; xKoordinate++){
-				
-				KIKachel momentaneKIKachel = kIkachelContainer.getKacheln()[yKoordinate][xKoordinate];
-				
+			for (int xKoordinate = 0; xKoordinate < kIkachelContainer.getKacheln()[yKoordinate].length; xKoordinate++){				
+				KIKachel momentaneKIKachel = kIkachelContainer.getKacheln()[yKoordinate][xKoordinate];				
 				if (momentaneKIKachel.getMoeglichkeitenHierher() != null){
 					kacheln.add(momentaneKIKachel);
-					System.out.println("where do igo : kachel nichtempty");
 				}
 			}
 		
@@ -33,7 +30,7 @@ public class WhereDoIGo {
 	}
 	
 	public KIKachel getBestKachel(ArrayList <KIKachel> kiKacheln){
-		KIKachel bestKachel = new KIKachel();
+		KIKachel bestKachel = null;
 		int bestRating = 0;
 		
 		for ( KIKachel kachel : kiKacheln){
@@ -41,12 +38,12 @@ public class WhereDoIGo {
 				bestRating = kachel.getRating();
 				bestKachel = kachel;
 			}
-		}
-		
+		}		
 		if (bestRating == 0){
 			bestKachel = kiKacheln.get(0);
 		}
 		
+		if (bestKachel == null) return kiKacheln.get(0);
 		return bestKachel;
 	}
 	

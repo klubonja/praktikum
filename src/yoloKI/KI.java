@@ -5,7 +5,6 @@ import java.util.List;
 
 import kacheln.KIKachel;
 import kacheln.KIKachelContainer;
-import kacheln.Kachel;
 import kommunikation.Communicator;
 import kommunikation.PlayerCircleManager;
 import staticClasses.Config;
@@ -98,7 +97,8 @@ public class KI {
 	
 	public void move(){
 		CluedoPosition pos = asCloseAspossibleToNextDoor();		
-		communicator.getAusloeser().suggestMoveToServer(pos);
+//		communicator.getAusloeser().suggestMoveToServer(pos);
+		communicator.sendKIMove(pos);
 	}
 	
 	
@@ -130,20 +130,20 @@ public class KI {
 	////////////////////////////////////HELPER////////////////////////////////////////////////
 	
 	
-	public static int getDist(Kachel k,CluedoPosition pos){
+	public static int getDist(KIKachel k,CluedoPosition pos){
 		return Math.abs((k.getPosition().getX()+k.getPosition().getY()) - (pos.getX()+pos.getY()));
 	}
 	
-	public CluedoPosition tellMeWhereToGo(){
-		KIKachel iGoHere = new KIKachel();
-		ArrayList <KIKachel> moeglicheKacheln = whereDoIGo.kachelnSuchen();
-		iGoHere = whereDoIGo.getBestKachel(moeglicheKacheln);
-		if (whereDoIGo.gibtEsTueren(whereDoIGo.tuerKIKachelnSuchen(moeglicheKacheln))){
-			ArrayList <KIKachel> tuerKacheln = whereDoIGo.tuerKIKachelnSuchen(moeglicheKacheln);
-			iGoHere = whereDoIGo.getBestKachel(tuerKacheln);
-		}
-		return iGoHere.getPosition();
-	}
+//	public CluedoPosition tellMeWhereToGo(){
+//		KIKachel iGoHere = new KIKachel();
+//		ArrayList <KIKachel> moeglicheKacheln = whereDoIGo.kachelnSuchen();
+//		iGoHere = whereDoIGo.getBestKachel(moeglicheKacheln);
+//		if (whereDoIGo.gibtEsTueren(whereDoIGo.tuerKIKachelnSuchen(moeglicheKacheln))){
+//			ArrayList <KIKachel> tuerKacheln = whereDoIGo.tuerKIKachelnSuchen(moeglicheKacheln);
+//			iGoHere = whereDoIGo.getBestKachel(tuerKacheln);
+//		}
+//		return iGoHere.getPosition();
+//	}
 	
 	public static KIKachel getClosestKachelFromList(List<KIKachel> klist,CluedoPosition pos){
 		KIKachel kachel = klist.get(0);
@@ -151,8 +151,10 @@ public class KI {
 		for (KIKachel k: klist){
 			int dtmp = getDist(k, pos);//Math.abs((k.getPosition().getX()+k.getPosition().getY()) - (pos.getX()+pos.getY()));
 			if (dtmp < d) kachel = k;
+			System.out.println("checking closest kachel to : x " +k.getX()+" y "+k.getY()+" from  x"+pos.getX()+" y"+pos.getY());
 		}
 		
+		System.out.println("closest kachel to "+pos.getX()+" y"+pos.getY()+ " is x"+kachel.getX()+" y"+kachel.getY());
 		return kachel; //für alle kacheln die gleichweit und am weitesten weg sind gilt wer höhere y werte hat wird bevorzugt und dann wer höhere x werte hat
 	}
 	public CluedoPosition asCloseAspossibleToNextDoor() {
@@ -166,8 +168,7 @@ public class KI {
 		ArrayList<KIKachel> doorsinfield = kiKacheln.getDoors();
 		
 		for (KIKachel door: doorsinfield){
-		//	nextToDoors.add(getClosestKachelFromList(moeglicheKacheln, door.getPosition()));
-			//System.out.println(door.getRaum().getName());
+			nextToDoors.add(getClosestKachelFromList(moeglicheKacheln, door.getPosition()));
 		}
 		
 		return getClosestKachelFromList(nextToDoors, yourOwnPlayer.getPosition()).getPosition();			

@@ -61,16 +61,12 @@ public class KIKachelContainer {
 	/**
 	 * Alle moeglichkeitenHierher werden auf null gesetzt
 	 */
-	public void resetMoeglichkeiten(){
-		
-		for( int iSpalten = 0; iSpalten < kacheln.length;iSpalten++){
-			
+	public void resetMoeglichkeiten(){		
+		for( int iSpalten = 0; iSpalten < kacheln.length;iSpalten++){			
 			for (int jReihen = 0; jReihen < kacheln[iSpalten].length;jReihen++){
 				kacheln[iSpalten][jReihen].setMoeglichkeitenHierher(null);
-			}
-			
+			}			
 		}
-		
 	}
 	
 	public int getRatingAt(int yKoordinate, int xKoordinate){

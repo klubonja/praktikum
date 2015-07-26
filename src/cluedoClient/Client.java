@@ -341,13 +341,6 @@ public class Client {
 		}		
 	}
 	
-//	public void createServer(){
-//		Stage stage = new Stage();
-//		CluedoServerGUI gui = new CluedoServerGUI(stage);
-//		Server server = new Server(gui);
-//		stage.show();
-//	}
-	
 	public void startTestServerConnection(){
 		try {
 			InetAddress addr = InetAddress.getByName("vanuabalavu.pms.ifi.lmu.de");
@@ -366,7 +359,7 @@ public class Client {
 		createdServers.add(server);
 		stage.show();
 		stage.hide();
-	}
+	} 
 	
 	public void kill(){
 		try {

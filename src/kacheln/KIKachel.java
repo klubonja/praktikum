@@ -1,33 +1,44 @@
 package kacheln;
 
 import cluedoNetworkLayer.CluedoPosition;
-import enums.Orientation;
-import enums.Rooms;
 
-public class KIKachel extends Kachel {
+
+public class KIKachel {
 
 	private int rating;
+	private Kachel kachel;
 	
-	public KIKachel(CluedoPosition position, boolean istRaum,Orientation orientierung,Rooms raum, boolean istTuer, char [] moeglichkeitenHierher, char [][] moeglichkeitenVonHier, Kachel vonHier, int rating){
-		super (position, istRaum,orientierung,raum,istTuer, moeglichkeitenHierher, moeglichkeitenVonHier,vonHier);
-		this.rating = rating;
-	}
-	
-	public KIKachel (Kachel kachel, int rating){
-		super(kachel.getPosition(), kachel.isIstRaum(), kachel.getOrientierung(), kachel.getRaum(), kachel.isIstTuer(), kachel.getMoeglichkeitenHierher(), kachel.getMoeglichkeitenVonHier(), kachel.getVonHier());
+	public KIKachel(Kachel k,int rating){
+		kachel = k;
 		this.rating = rating;
 	}
 	
 	public KIKachel (Kachel kachel){
-		super(kachel.getPosition(), kachel.isIstRaum(), kachel.getOrientierung(), kachel.getRaum(), kachel.isIstTuer(), kachel.getMoeglichkeitenHierher(), kachel.getMoeglichkeitenVonHier(), kachel.getVonHier());
 		this.rating = 1;
+		this.kachel = kachel;
 		if (kachel.isIstTuer()){
 			this.rating = 4;
 		}
 	}
-
-	public KIKachel(){
-		this.rating = 0;
+	
+	public Kachel getKachel() {
+		return kachel;
+	}
+	
+	public CluedoPosition getPosition(){
+		return kachel.getPosition();
+	}
+	
+	public int getX(){
+		return kachel.getPosition().getX();
+	}
+	
+	public int getY(){
+		return kachel.getPosition().getY();
+	}
+	
+	public boolean isIstRaum(){
+		return kachel.isIstRaum();
 	}
 	
 	public int getRating() {
@@ -37,6 +48,15 @@ public class KIKachel extends Kachel {
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
+	public boolean isIstTuer(){
+		return kachel.isIstTuer();
+	}
+	public char[] getMoeglichkeitenHierher() {
+		return kachel.getMoeglichkeitenHierher();
+	}
 	
+	public void setMoeglichkeitenHierher(char[] moeglichkeitenHierher){
+		kachel.setMoeglichkeitenHierher(moeglichkeitenHierher);
+	}
 	
 }
