@@ -464,5 +464,12 @@ public class Communicator {
 	public void kiSwitch(){
 		kiplay = !kiplay;
 		auxx.logsevere("KI playing : "+ kiplay);
+		
+		if(kiplay){
+		gameView.getMenu().getActivateKI().setText("Disable KI");
+		}else{
+		gameView.getMenu().getActivateKI().setText("Enable KI");	
+		}
+			
 	}
 }
