@@ -1,11 +1,17 @@
 package view.spielfeld;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import kacheln.KachelContainer;
 import kommunikation.PlayerCircleManager;
 import staticClasses.NetworkMessages;
@@ -53,6 +59,10 @@ public class GameFramePresenter {
 	public final PlayerCircleManager pcManager;
 	private KachelContainer kacheln;
 	private int gameid;
+	
+	public static int audioCounter=1;
+	private ArrayList<File> gameSounds;
+	
 
 	/**
 	 * Erstellt einen GameFramePresenter und damit alle Presenter des Spielfelds / den Pathfinder
@@ -72,6 +82,9 @@ public class GameFramePresenter {
 		
 		startEvents();
 		setHandler();
+		initSoundsList();
+		adjustAudio();
+		bindComponents();
 		
 	}
 	
@@ -80,9 +93,11 @@ public class GameFramePresenter {
 	 */
 	public void startEvents(){
 		
+		
 		auxx.logsevere("null? : " +currentPlayer.getPosition().getY() +currentPlayer.getPosition().getX());
 	
-		notesPresenter = new NotesPresenter(gfv.notes, currentPlayer);
+//		notesPresenter = new NotesPresenter(gfv.notes, currentPlayer);
+		notesPresenter = new NotesPresenter(gfv.notes);
 		handFramePresenter = new HandFramePresenter(gfv.getHand());
 		menuBarPresenter = new MenuBarPresenter(gfv.menu, gfv);
 		
@@ -100,6 +115,11 @@ public class GameFramePresenter {
 		
 		
 		gogogo();
+	}
+	
+	public void bindComponents(){
+		
+		gfv.getAudio().volumeProperty().bind(gfv.getVolume().valueProperty());
 	}
 	
 	public void setHandler(){
@@ -155,6 +175,39 @@ public class GameFramePresenter {
 		beweger.anfangsPositionSetzen(0);
 		System.out.println("test");
 		ausloeser.zuweisung(pcManager);
+	}
+	
+	public void initSoundsList(){
+		
+		gameSounds = new ArrayList<File>();
+		gameSounds.add(gfv.getAudioFile1());
+		gameSounds.add(gfv.getAudioFile2());
+		gameSounds.add(gfv.getAudioFile3());
+		gameSounds.add(gfv.getAudioFile4());
+		gameSounds.add(gfv.getAudioFile5());
+		gameSounds.add(gfv.getAudioFile6());
+		gameSounds.add(gfv.getAudioFile7());
+	}
+	
+	public void adjustAudio(){
+		
+		gfv.getAudio().setOnEndOfMedia(() -> {
+			String url = gameSounds.get(audioCounter).toURI().toString();
+	        gfv.setAudioMedia(new Media(url));
+	        gfv.setAudio(new MediaPlayer(gfv.getAudioMedia()));
+//	        gfv.getAudio().setStopTime(new Duration(9000));;
+	        gfv.getAudio().play();
+	        
+	        gfv.getAudio().volumeProperty().bind(gfv.getVolume().valueProperty());
+	        
+	        audioCounter++;
+	        if(audioCounter > 6){
+	        	
+	        	audioCounter = 0;
+	        }
+	        
+	        adjustAudio();
+	});
 	}
 	
 	//Getter and Setters

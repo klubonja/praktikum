@@ -1,6 +1,5 @@
 package cluedoNetworkGUI;
 
-import cluedoClient.ServerItem;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -62,8 +64,6 @@ public class CluedoClientPresenter {
 		view.getConnectToTestServer().setOnMouseExited(e -> defaultBackground(view.getConnectToTestServer()));
 		view.getRefreshGamesList().setOnMouseEntered(e -> shadeBackground(view.getRefreshGamesList()));
 		view.getRefreshGamesList().setOnMouseExited(e -> defaultBackground(view.getRefreshGamesList()));
-		view.getMute().setOnMouseEntered(e -> shadeBackground(view.getMute()));
-		view.getMute().setOnMouseExited(e -> defaultBackground(view.getMute()));
 		view.getExit().setOnMouseEntered(e -> shadeBackground(view.getExit()));
 		view.getExit().setOnMouseExited(e -> defaultBackground(view.getExit()));
 		
@@ -71,12 +71,20 @@ public class CluedoClientPresenter {
 		view.getClosePromptArea().setOnAction(e -> hideRules());
 		
 		view.getFullScreen().setOnAction(e -> setToFullScr());
+		view.getMute().setOnAction(e -> muteLobby());
+		
+		view.getOptions().setOnAction(e -> showOptions());
+		view.getCloseOptionsArea().setOnAction(e -> hideOptions());
+		
+		view.getExitMenu().setOnAction(e -> exitGame());
+		
+		view.getArgonath().setOnAction(e -> setArgonath());	
 		
 	}
 	
 	public void bindComponents(){
 		
-//		view.getAudio().volumeProperty().bind(view.getVolume().valueProperty());
+		view.getAudio().volumeProperty().bind(view.getVolume().valueProperty());
 //		view.getInputField().clear();
 //		view.getInputField().setPromptText("ENTER to send");
 	}
@@ -92,7 +100,9 @@ public class CluedoClientPresenter {
 	}
 	
 	public void exitGame(){
+
 		client.kill();
+		Platform.exit();
 		System.exit(0);
 	}
 	
@@ -110,10 +120,22 @@ public class CluedoClientPresenter {
 	
 	public void showRules(){
 		
+		view.getPromptArea().getChildren().clear();
 		view.getPromptArea().getChildren().add(view.getInfoArea());
 	}
 	
 	public void hideRules(){
+		
+		view.getPromptArea().getChildren().clear();
+	}
+	
+	public void showOptions(){
+		
+		view.getPromptArea().getChildren().clear();
+		view.getPromptArea().getChildren().add(view.getOptionsArea());
+	}
+	
+	public void hideOptions(){
 		
 		view.getPromptArea().getChildren().clear();
 	}
@@ -124,8 +146,34 @@ public class CluedoClientPresenter {
 		view.getPrimaryStage().setAlwaysOnTop(true);
 	}
 	
+
 	public void connectToTestServer(){
 		client.startTestServerConnection();
+	}
+
+	public void muteLobby(){
+		
+		view.getAudio().setMute(true);
+		view.getMute().setText("Unmute");
+		view.getMute().setOnAction(e -> unmuteLobby());
+	}
+	
+	public void unmuteLobby(){
+		
+		view.getAudio().setMute(false);
+		view.getMute().setText("Mute");
+		view.getMute().setOnAction(e -> muteLobby());
+	}
+	
+	public void setArgonath(){
+		
+		BackgroundImage argonath = new BackgroundImage(view.getBackMinas(), BackgroundRepeat.NO_REPEAT , 
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, view.getBackgroundSize());
+		view.setBackgroundImage(argonath);
+		
+		Background argonathB = new Background(view.getBackgroundImage());
+		view.setClientBackground(argonathB);
+		
 	}
 
 }

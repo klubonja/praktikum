@@ -24,6 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
+import cluedoNetworkLayer.CluedoGameClient;
 
 /**
  * 
@@ -33,6 +34,8 @@ import javafx.scene.paint.Stop;
  * The class responsible for the user notes.
  */
 public class NotesView extends TabPane {
+	
+	private CluedoGameClient client;
 	
 	private Tab userNotes;
 	private Tab checklist;
@@ -55,7 +58,7 @@ public class NotesView extends TabPane {
 	Label pipe;
 	Label spanner;
 	Label hall;
-	Label loungue;
+	Label lounge;
 	Label diningroom;
 	Label kitchen;
 	Label ballroom;
@@ -126,7 +129,9 @@ public class NotesView extends TabPane {
 	
 	
 	
-	public NotesView(){
+	public NotesView(CluedoGameClient client){
+		
+		this.client = client;
 		 
 		this.checklist = new Tab("Checklist");
 		
@@ -141,11 +146,11 @@ public class NotesView extends TabPane {
 		this.how = new Label("HOW?");
 		this.where = new Label("WHERE?");
 		this.green = new Label("Green");
-		this.red = new Label("Red");
-		this.blue = new Label("Blue");
-		this.purple = new Label("Purple");
-		this.yellow = new Label("Yellow");
-		this.white = new Label("White");
+		this.red = new Label("Gloria");
+		this.blue = new Label("Bloom");
+		this.purple = new Label("Porz");
+		this.yellow = new Label("Gatow");
+		this.white = new Label("Weiss");
 		
 		this.dagger = new Label("Dagger");
 		this.candlestick = new Label("Candlestick");
@@ -155,7 +160,7 @@ public class NotesView extends TabPane {
 		this.spanner = new Label("Spanner");
 		
 		this.hall = new Label("Hall");
-		this.loungue = new Label("Loungue");
+		this.lounge = new Label("Loungue");
 		this.diningroom = new Label("Diningroom");
 		this.kitchen = new Label("Kitchen");
 		this.ballroom = new Label("Ballroom");
@@ -182,7 +187,7 @@ public class NotesView extends TabPane {
 		labels.add(pipe);
 		labels.add(spanner);
 		labels.add(hall);
-		labels.add(loungue);
+		labels.add(lounge);
 		labels.add(diningroom);
 		labels.add(kitchen);
 		labels.add(ballroom);
@@ -320,13 +325,13 @@ public class NotesView extends TabPane {
 		GridPane.setConstraints(who, 0, 0);
 		GridPane.setColumnSpan(who, 3);
 		GridPane.setHalignment(who, HPos.CENTER);
-		GridPane.setConstraints(red, 0, 1);
+		GridPane.setConstraints(green, 0, 1);
 		GridPane.setConstraints(button1, 1, 1);
 		GridPane.setConstraints(txt1, 2, 1);
 		GridPane.setConstraints(blue, 0, 2);
 		GridPane.setConstraints(button2, 1, 2);
 		GridPane.setConstraints(txt2, 2, 2);
-		GridPane.setConstraints(green, 0, 3);
+		GridPane.setConstraints(red, 0, 3);
 		GridPane.setConstraints(button3, 1, 3);
 		GridPane.setConstraints(txt3, 2, 3);
 		GridPane.setConstraints(purple, 0, 4);
@@ -365,7 +370,7 @@ public class NotesView extends TabPane {
 		GridPane.setConstraints(hall, 0, 15);
 		GridPane.setConstraints(button13, 1, 15);
 		GridPane.setConstraints(txt13, 2, 15);
-		GridPane.setConstraints(loungue, 0, 16);
+		GridPane.setConstraints(lounge, 0, 16);
 		GridPane.setConstraints(button14, 1, 16);
 		GridPane.setConstraints(txt14, 2, 16);
 		GridPane.setConstraints(diningroom, 0, 17);
@@ -648,12 +653,12 @@ public class NotesView extends TabPane {
 
 
 	public Label getLoungue() {
-		return loungue;
+		return lounge;
 	}
 
 
 	public void setLoungue(Label loungue) {
-		this.loungue = loungue;
+		this.lounge = loungue;
 	}
 
 
@@ -1206,6 +1211,14 @@ public class NotesView extends TabPane {
 
 	public Background getDefaultTxt() {
 		return defaultTxt;
+	}
+
+	public CluedoGameClient getClient() {
+		return client;
+	}
+
+	public void setClient(CluedoGameClient client) {
+		this.client = client;
 	}
 	
 	

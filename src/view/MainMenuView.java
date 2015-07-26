@@ -16,9 +16,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -29,6 +26,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 
@@ -41,7 +39,7 @@ public class MainMenuView extends StackPane{
 
 	private Button createClient;
 	private Button createServer;
-	private Button credits;
+	private Button quit;
 	private Label title;
 	
 	private Group background;
@@ -59,11 +57,12 @@ public class MainMenuView extends StackPane{
 	
 	private final String buttonStyle = "-fx-padding: 8 15 15 15; -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0; " 
 					+ "-fx-background-radius: 8; -fx-background-color: "
-					+ "linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),  #9d4024, #d86e3a,"
-					+ "radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);"
+					+ "linear-gradient(from 0% 93% to 0% 100%, #228b22 0%, #008000 100%),  #228b22, #008000,"
+					+ "radial-gradient(center 50% -60%, radius 100%, #32cd32, #2e8b57);"
 					+ "-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );"
-					+ "-fx-font-weight: bold; -fx-font-size: 1.1em;"
-					+ "-fx-font-family: Arial; -fx-text-fill: linear-gradient(white, #d0d0d0); -fx-font-size: 15px;";
+					+ "-fx-font-weight: bold; -fx-font-size: 1.1em; font-stretch: ultra-expanded; "
+					+ "-fx-font-family: Helvetica; -fx-text-fill: linear-gradient(white, #d0d0d0); -fx-font-size: 14px;";
+	
 	
 	public MainMenuView(){
 		
@@ -73,7 +72,7 @@ public class MainMenuView extends StackPane{
 		main.setAlignment(Pos.CENTER);
 		main.setVgap(5);
 		main.setHgap(5);
-		main.setPadding(new Insets(50, 5 , 50, 5));
+		main.setPadding(new Insets(45, 5 , 20, 5));
 		main.setGridLinesVisible(false);
 		
 		
@@ -103,12 +102,12 @@ public class MainMenuView extends StackPane{
 	    
 	    RowConstraints row2 = new RowConstraints();
 //	    row2.setPercentHeight(50);  
-	    row2.setPrefHeight(410);
+	    row2.setPrefHeight(340);
 	    main.getRowConstraints().add(row2);
 	    
 	    RowConstraints row3 = new RowConstraints();
 //	    row3.setPercentHeight(20);
-	    row3.setPrefHeight(125);
+	    row3.setPrefHeight(180);
 	    main.getRowConstraints().add(row3);
 	    
 	    
@@ -120,8 +119,8 @@ public class MainMenuView extends StackPane{
 		
 		Image lotr = new Image("media/introLogo.png");
 		ImageView lotrBack = new ImageView(lotr);
-		lotrBack.setFitHeight(100);
-		lotrBack.setFitWidth(500);
+		lotrBack.setFitHeight(90);
+		lotrBack.setFitWidth(400);
 		
 		Image clue = new Image("http://wearegames.es/wp-content/uploads/2015/02/Logo-Cluedo.png");
 		ImageView cluedo = new ImageView(clue);
@@ -137,21 +136,21 @@ public class MainMenuView extends StackPane{
 //		createImageBackground();
 		
 		
-		createClient = new Button("Create Client");
+		createClient = new Button("START CLIENT");
 		createClient.setPrefSize(200, 68);
 		createClient.setMaxSize(200, 68);
 		
-		createServer = new Button("Create Server");
+		createServer = new Button("START SERVER");
 		createServer.setPrefSize(200, 68);
 		createServer.setMaxSize(200, 68);
 		
-		credits = new Button("Credits");
-		credits.setPrefSize(200, 68);
-		credits.setMaxSize(200, 68);
+		quit = new Button("QUIT");
+		quit.setPrefSize(200, 68);
+		quit.setMaxSize(200, 68);
 		
 		createClient.setStyle(buttonStyle);
 		createServer.setStyle(buttonStyle);
-		credits.setStyle(buttonStyle);
+		quit.setStyle(buttonStyle);
 		
  
 		GridPane.setConstraints(createClient, 0, 3);
@@ -162,16 +161,16 @@ public class MainMenuView extends StackPane{
 		GridPane.setHalignment(createServer, HPos.CENTER);
 		GridPane.setValignment(createServer, VPos.CENTER);
 		
-		GridPane.setConstraints(credits, 2, 3);
-		GridPane.setHalignment(credits, HPos.LEFT);
-		GridPane.setValignment(credits, VPos.CENTER);
+		GridPane.setConstraints(quit, 2, 3);
+		GridPane.setHalignment(quit, HPos.LEFT);
+		GridPane.setValignment(quit, VPos.CENTER);
 		
 //		GridPane.setConstraints(title, 0, 1);
 //		GridPane.setColumnSpan(title, 3);
 //		GridPane.setHalignment(title, HPos.CENTER);
 //		GridPane.setValignment(title, VPos.CENTER);
 		
-		GridPane.setConstraints(lotrBack, 0, 1);
+		GridPane.setConstraints(lotrBack, 0, 0);
 		GridPane.setColumnSpan(lotrBack, 3);
 		GridPane.setHalignment(lotrBack, HPos.CENTER);
 		GridPane.setValignment(lotrBack, VPos.BOTTOM);
@@ -179,17 +178,17 @@ public class MainMenuView extends StackPane{
 		GridPane.setConstraints(cluedo, 0, 1);
 		GridPane.setColumnSpan(cluedo, 3);
 		GridPane.setHalignment(cluedo, HPos.CENTER);
-		GridPane.setValignment(cluedo, VPos.TOP);
+		GridPane.setValignment(cluedo, VPos.CENTER);
 		
 		GridPane.setConstraints(lmuImg, 0, 0);
 		GridPane.setColumnSpan(lmuImg, 3);
 		GridPane.setHalignment(lmuImg, HPos.LEFT);
-		GridPane.setValignment(lmuImg, VPos.TOP);
+		GridPane.setValignment(lmuImg, VPos.BOTTOM);
 		
 		
-		main.getChildren().addAll(createClient, createServer, credits,  lotrBack, cluedo, lmuImg);
+		main.getChildren().addAll(createClient, createServer, quit,  lotrBack, cluedo, lmuImg);
 		
-		File file = new File("C:/Users/Kristi/Downloads/landscape.mp4");
+		File file = new File("src/media/splash.mp4");
 		String url = file.toURI().toString();
 		Media video = new Media(url);
         
@@ -197,7 +196,7 @@ public class MainMenuView extends StackPane{
 		backgroundVideo = new MediaPlayer(video);	
 		
 		background = new Group(new MediaView(backgroundVideo));
-		backgroundVideo.setStartTime(new Duration(34100));
+		backgroundVideo.setStartTime(new Duration(0));
 		backgroundVideo.setMute(false);
 		//backgroundVideo.setRate(50);
 		backgroundVideo.setCycleCount(MediaPlayer.INDEFINITE);
@@ -207,6 +206,7 @@ public class MainMenuView extends StackPane{
 		//Creates the volume slider
 		volume = new Slider(0, 1, 0.5);
 		volumeLabel = new Label("Volume");
+		volumeLabel.setTextFill(Color.WHITESMOKE);
 		volumeBox = new HBox(4);
 		volumeBox.setPrefSize(200, 50);
 		volumeBox.setMaxSize(200, 50);
@@ -232,28 +232,33 @@ public class MainMenuView extends StackPane{
 	
 	public void start(){
 
-		this.scene = new Scene(this, 1100, 650);
+		this.scene = new Scene(this, 1100, 525);
 		this.stage = new Stage();
 		this.stage.setScene(scene);
-        this.stage.setResizable(false);
-
+        this.stage.setResizable(true);
         this.stage.setTitle("YinYanYolos present:");
+        this.stage.initStyle(StageStyle.UNDECORATED);
+        this.stage.setAlwaysOnTop(true);
+        this.stage.centerOnScreen();
         this.stage.show();
+        
+        @SuppressWarnings("unused")
+		MainMenuPresenter pres = new MainMenuPresenter(this);
 	}
 	
 	public void close(){
 		this.stage.close();
 	}
 	
-	public void createImageBackground(){
-		
-		mainImage = new Image("http://www.migrantyouthproject.org/wp-content/uploads/2013/05/under_construction.jpg");
-		mainBackgroundImage = new BackgroundImage(mainImage, BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
-				BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-		mainBackground = new Background(mainBackgroundImage);
-		main.setBackground(mainBackground);
-		
-	}
+//	public void createImageBackground(){
+//		
+//		mainImage = new Image("http://www.migrantyouthproject.org/wp-content/uploads/2013/05/under_construction.jpg");
+//		mainBackgroundImage = new BackgroundImage(mainImage, BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+//				BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+//		mainBackground = new Background(mainBackgroundImage);
+//		main.setBackground(mainBackground);
+//		
+//	}
 
 
 	//Getters und Setters
@@ -381,16 +386,16 @@ public class MainMenuView extends StackPane{
 
 
 
-	public Button getCredits() {
-		return credits;
+	public Button getQuit() {
+		return quit;
 	}
 
 
 
 
 
-	public void setCredits(Button credits) {
-		this.credits = credits;
+	public void setQuit(Button credits) {
+		this.quit = credits;
 	}
 
 

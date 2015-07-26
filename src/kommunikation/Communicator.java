@@ -19,13 +19,13 @@ import view.spielfeld.BallEbene;
 import view.spielfeld.BoardView;
 import view.spielfeld.GameFramePresenter;
 import view.spielfeld.GameFrameView;
+import yoloKI.KI;
 import animation.DerBeweger;
 import animation.RaumBeweger;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoStatement;
-import enums.Persons;
 import enums.PlayerStates;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.Sucher;
@@ -53,6 +53,9 @@ public class Communicator {
 	private int [] wuerfelWurf;
 	private boolean sswitch;
 	private CluedoStatement curSuspicion = null;
+	
+	private boolean kiplay = false;
+	private KI ki;
 	
 	private GameFrameView gameView;
 	private BoardView boardView;
@@ -86,14 +89,16 @@ public class Communicator {
 		gameID = network.getGameId();		
 		pcManager = new PlayerCircleManager(network.getPlayers());
 		
-		
 		kacheln = new KachelContainer();
+		
 		gameView = new GameFrameView(pcManager, kacheln, network);
 		gameView.start();
 		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameID, kacheln);
 		dicePresenter = gamePresenter.getDicePresenter();
 		zugPresenter = gamePresenter.getZugPresenter();
 
+		ki = new KI(network,pcManager,this);
+		
 		diceView = gameView.getDice();
 		boardView = gameView.getBoard();
 		ballEbene = gameView.getBallEbene();
@@ -105,6 +110,8 @@ public class Communicator {
 		raumBeweger = gamePresenter.getRaumBeweger();
 		pathfinder = gamePresenter.getPathfinder();
 		sucher = gamePresenter.getSucher();	
+		
+		gameView.getMenu().getActivateKI().setOnAction(e -> kiSwitch());
 	}
 
 	/**
@@ -143,6 +150,8 @@ public class Communicator {
 		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 		
 		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
+		
+		if (kiplay) ki.move();
 	}
 	
 	/**
@@ -152,9 +161,12 @@ public class Communicator {
 		CluedoPosition position = pcManager.getCurrentPlayer().getPosition();
 		beweger.useSecretPassage(pcManager);
 		if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[position.getY()][position.getX()].isIstRaum()){
-			openWindow();
-		}
-		
+			if (!kiplay) openWindow();
+		}		
+	}
+	
+	public void requestUseSecretPassge(){
+		network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID));
 	}
 	
 	public void move(CluedoPosition position, String person){
@@ -170,8 +182,17 @@ public class Communicator {
 			int yKoordinate = position.getY();
 			int xKoordinate = position.getX();
 			ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
+			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].getRaum().equals("pool")){
+				System.out.println("katatonga katanga!");
+			}
 			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].isIstRaum()){
-				openWindow();
+				
+				if (kiplay){
+					ki.postmove();
+				}
+				else {
+					openWindow();
+				}
 			}
 			this.wuerfelWurf = null;
 		}
@@ -180,25 +201,32 @@ public class Communicator {
 	/**
 	 * Suspect! Surprise! Drama!
 	 */
-	public void suspect() {
-		String person = zugView.getPersonenListe().getValue();
-		String weapon = zugView.getWaffenListe().getValue();
-		String room = kacheln.getKacheln()
-				[pcManager.getCurrentPlayer().getPosition().getY()]
-				[pcManager.getCurrentPlayer().getPosition().getX()].
-				getRaum().getName();
-
+	public void suspect(String person,String weapon,String room) {
 		network.sendMsgToServer(NetworkMessages.suspectMsg(gameID, person,weapon,room)); //nicht suspicion das darf nur der server!
-
 	}
 
-	public void accuse() {
-		String person = gameView.getHand().getPersons().getValue();
-		String weapon = gameView.getHand().getWeapons().getValue();
-		String room = gameView.getHand().getRooms().getValue();
+	public void accuse(String person, String weapon, String room) {	
 		network.sendMsgToServer(NetworkMessages.accuseMsg(network.getGameId(),
 				NetworkMessages.statement(person, room, weapon)));
+	}
+	
 
+	public void endTurn() {
+		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameID));
+	}
+	
+	public void itsYourTurn(){
+		pcManager.setIndexByPlayer(network.getPlayerByNick(myNick));
+		System.out.println("its MY("+myNick+") turn and opening window");
+		openWindow();
+		if (kiplay) ki.startTurn();
+			
+	}
+	
+	public void itsSomeonesTurn(String nick){
+		pcManager.setIndexByPlayer(network.getPlayerByNick(nick));
+		closeWindow();
+		System.out.println("its "+nick+"s turn and closing window");
 	}
 
 	/**
@@ -216,7 +244,7 @@ public class Communicator {
 	public void highlightCard(String card) {
 		for (int i = 0; i < gameView.getHand().getHandURI().size(); i++) {
 			if (card.equals(gameView.getHand().getHandURI().get(i))) {
-				gameView.getHand().getHand().get(i).setEffect(new Glow(0.8));
+				gameView.getHand().getHand().get(i).setEffect(new Glow(0.5));
 			}
 		}
 	}
@@ -243,39 +271,6 @@ public class Communicator {
 
 	}
 
-	public void endTurn() {
-		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameID));
-	}
-	
-	public void itsYourTurn(){
-		
-//		if (!sswitch){
-//			sswitch = true;
-//			openWindow();
-//		}
-//		else {
-//			pcManager.next();
-//			
-//			openWindow();
-//		}
-		
-		pcManager.setIndexByPlayer(network.getPlayerByNick(myNick));
-		System.out.println("its MY("+myNick+") turn and opening window");
-		openWindow();
-			
-	}
-	
-	public void itsSomeonesTurn(String nick){
-		pcManager.setIndexByPlayer(network.getPlayerByNick(nick));
-		closeWindow();
-		System.out.println("its "+nick+"s turn and closing window");
-//		if (!sswitch){
-//			sswitch = true;
-//		}
-//		else {
-//		pcManager.next();
-//		}
-	}
 	
 		/**
 	 * Hier werden irgendwelche Dinge gehandelt (z.B. wenn das Spielfenster einfach so geschlossen wird.
@@ -293,30 +288,45 @@ public class Communicator {
 			}
 		});
 
-		Images.passage.setOnMouseClicked(e -> network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID)));
+		Images.passage.setOnMouseClicked(
+				e -> requestUseSecretPassge());
 		
-		
-		// BOESE!!
 		Images.suspectNOW.setOnMouseClicked(e -> {
-			suspect();
+			String person = zugView.getPersonenListe().getValue();
+			String weapon = zugView.getWaffenListe().getValue();
+			String room = kacheln.getKacheln()
+					[pcManager.getCurrentPlayer().getPosition().getY()]
+					[pcManager.getCurrentPlayer().getPosition().getX()].
+					getRaum().getName();
+			suspect(person,weapon,room);
+			
+			
+			// BOESE!!
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
-				remove(gameView.getKomplettesFeld().getZugView().getBottomBox());
-			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
-				remove(gameView.getKomplettesFeld().getZugView().getVermuten());
-			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
-				remove(Images.suspectLATER);
-			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
-				add(gameView.getKomplettesFeld().getZugView().getButtonsBox());
-			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
-				add(gameView.getKomplettesFeld().getZugView().getBottomBox());
-			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
-				remove(gameView.getKomplettesFeld().getZugView().getBackButton());
-			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
-				add(gameView.getKomplettesFeld().getZugView().getBackButton());
-			gameView.getKomplettesFeld().getChildren().remove(zugView);
+			remove(gameView.getKomplettesFeld().getZugView().getBottomBox());
+		gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+			remove(gameView.getKomplettesFeld().getZugView().getVermuten());
+		gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+			remove(Images.suspectLATER);
+		gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+			add(gameView.getKomplettesFeld().getZugView().getButtonsBox());
+		gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+			add(gameView.getKomplettesFeld().getZugView().getBottomBox());
+		gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+			remove(gameView.getKomplettesFeld().getZugView().getBackButton());
+		gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+			add(gameView.getKomplettesFeld().getZugView().getBackButton());
+		gameView.getKomplettesFeld().getChildren().remove(zugView);
+			
 		});
 
-		gameView.getHand().getAccuse().setOnMouseClicked(e -> accuse());
+		gameView.getHand().getAccuse().setOnMouseClicked(e -> {
+			String person = gameView.getHand().getPersons().getValue();
+			String weapon = gameView.getHand().getWeapons().getValue();
+			String room = gameView.getHand().getRooms().getValue();
+			
+			accuse(person,weapon,room);
+		});
 
 		// END TURN
 		gameView.getHand().getEndTurn().setOnMouseClicked(e -> endTurn());
@@ -355,7 +365,8 @@ public class Communicator {
 								pcManager.getPlayerByNick(myNick).
 								getCards());
 				if (disprover.size() != 0){
-					showPossibleDisprovals(disprover);				
+					if (kiplay) ki.chooseDisprove(disprover);
+					else showPossibleDisprovals(disprover);		
 				}
 				else {
 					network.sendMsgToServer(NetworkMessages.cantDisproveMsg(gameID));
@@ -380,19 +391,6 @@ public class Communicator {
 					zugPresenter.disablePassage();
 				}
 			}
-			
-//			public void showPossibleDisprovals(String person, String weapon, String room){
-//				person = Persons.getPersonByColor(person).getPersonName();
-//				System.out.println(person);
-//					for(String cardOfTheOne : network.getPlayerByNick(network.getMyNick()).getCards()){
-//						if (cardOfTheOne.equals(person) ||
-//								cardOfTheOne.equals(weapon) ||
-//								cardOfTheOne.equals(room)) {
-//								highlightCard(cardOfTheOne);
-//								setCardFunction(cardOfTheOne);
-//							}
-//					}
-//			}
 	
 	public void kill() {
 		gameView.close();
@@ -430,6 +428,22 @@ public class Communicator {
 			
 
 			
+	public KachelContainer getKacheln() {
+		return kacheln;
+	}
+
+	public void setKacheln(KachelContainer kacheln) {
+		this.kacheln = kacheln;
+	}
+
+	public WahnsinnigTollerPathfinder getPathfinder() {
+		return pathfinder;
+	}
+
+	public void setPathfinder(WahnsinnigTollerPathfinder pathfinder) {
+		this.pathfinder = pathfinder;
+	}
+
 	public void setCurSuspicion(CluedoStatement curSuspicion) {
 		this.curSuspicion = curSuspicion;
 	}
@@ -449,14 +463,33 @@ public class Communicator {
 	public GameFramePresenter getGamePresenter() {
 		return gamePresenter;
 	}
+	
+	public DicePresenter getDicePresenter() {
+		return dicePresenter;
+	}
 
 	public void moveForSuspiciton(int gameID2, CluedoStatement suspicion) {
 		CluedoPlayer player = pcManager.getPlayerByPerson(suspicion.getPerson());
 		beweger.getCarriedAlong(suspicion.getRoom(), player);
 	}
 	
+	public Ausloeser getAusloeser() {
+		return ausloeser;
+	}
+	
 	
 	public void setCards(String myNick,ArrayList<String> cards) {
 		gameView.getHand().setPlayerCards(cards);		
+	}
+	public void kiSwitch(){
+		kiplay = !kiplay;
+		auxx.logsevere("KI playing : "+ kiplay);
+		
+		if(kiplay){
+		gameView.getMenu().getActivateKI().setText("Disable KI");
+		}else{
+		gameView.getMenu().getActivateKI().setText("Enable KI");	
+		}
+			
 	}
 }

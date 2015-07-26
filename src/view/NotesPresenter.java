@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
+import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 
 
@@ -28,7 +29,9 @@ public class NotesPresenter {
 	
 	private NotesView view;
 	
-	private CluedoPlayer currentPlayer;
+//	private CluedoPlayer currentPlayer;
+	
+	private CluedoGameClient client;
 	
 	//Creating new Radial Gradients for the color of the Buttons.
 	private final Stop[] redlist = new Stop[] { new Stop(0, Color.CRIMSON), new Stop(1, Color.TOMATO)};
@@ -81,10 +84,11 @@ public class NotesPresenter {
 	
 	
 	
-	public NotesPresenter(NotesView view, CluedoPlayer currentPlayer){
+	public NotesPresenter(NotesView view){
 		
 		this.view = view;
-		this.currentPlayer = currentPlayer;
+		this.client = view.getClient();
+		//this.currentPlayer = currentPlayer;
 		this.defaultButton = view.getDefaultButton();
 		this.defaultBorder = view.getDefaultBorder();
 		this.defaultTxt = view.getDefaultTxt();
@@ -97,6 +101,7 @@ public class NotesPresenter {
 	 * Triggers the events.
 	 */
 	public void startEvents(){
+		
 		
 		for(Button button : view.getButtons()){
 			button.setOnMouseClicked(e -> redBack(button));
@@ -112,73 +117,146 @@ public class NotesPresenter {
 	 * Highlights the buttons that correspond to the actual cards in hand.
 	 */
 	public void updateNotes(){
-		for(String card : currentPlayer.getCards()){
-			
-			if(card.equals("green")){
-				redBack(view.getButton1());
-				
-			}if(card.equals("red")){
-				redBack(view.getButton2());
-				
-			}if(card.equals("blue")){
-				redBack(view.getButton3());
-				
-			}if(card.equals("purple")){
-				redBack(view.getButton4());
-				
-			}if(card.equals("yellow")){
-				redBack(view.getButton5());
-				
-			}if(card.equals("white")){
-				redBack(view.getButton6());
-				
-			}if(card.equals("dagger")){
-				redBack(view.getButton7());
-				
-			}if(card.equals("candlestick")){
-				redBack(view.getButton8());
-				
-			}if(card.equals("revolver")){
-				redBack(view.getButton9());
-				
-			}if(card.equals("rope")){
-				redBack(view.getButton10());
-				
-			}if(card.equals("pipe")){
-				redBack(view.getButton11());
-				
-			}if(card.equals("spanner")){
-				redBack(view.getButton12());
-				
-			}if(card.equals("hall")){
-				redBack(view.getButton13());
-				
-			}if(card.equals("loungue")){
-				redBack(view.getButton14());
-				
-			}if(card.equals("diningroom")){
-				redBack(view.getButton15());
-				
-			}if(card.equals("kitchen")){
-				redBack(view.getButton16());
-				
-			}if(card.equals("ballroom")){
-				redBack(view.getButton17());
-				
-			}if(card.equals("conservatory")){
-				redBack(view.getButton18());
-				
-			}if(card.equals("billiard")){
-				redBack(view.getButton19());
-				
-			}if(card.equals("library")){
-				redBack(view.getButton20());
-				
-			}if(card.equals("study")){
-				redBack(view.getButton21());
-				
+		
+		for (CluedoPlayer p : client.getPlayersConnected()) {
+			if (p.getNick().equals(client.getMyNick())) {
+				for (String str : p.getCards()) {
+					
+					if(str.equals("Reverend Green")){
+						redBack(view.getButton1());
+						
+					}if(str.equals("Fräulein Gloria")){
+						redBack(view.getButton2());
+						
+					}if(str.equals("Professor Bloom")){
+						redBack(view.getButton3());
+						
+					}if(str.equals("Baronin von Porz")){
+						redBack(view.getButton4());
+						
+					}if(str.equals("Oberts von Gatow")){
+						redBack(view.getButton5());
+						
+					}if(str.equals("Frau Weiss")){
+						redBack(view.getButton6());
+						
+					}if(str.equals("dagger")){
+						redBack(view.getButton7());
+						
+					}if(str.equals("candlestick")){
+						redBack(view.getButton8());
+						
+					}if(str.equals("revolver")){
+						redBack(view.getButton9());
+						
+					}if(str.equals("rope")){
+						redBack(view.getButton10());
+						
+					}if(str.equals("pipe")){
+						redBack(view.getButton11());
+						
+					}if(str.equals("spanner")){
+						redBack(view.getButton12());
+						
+					}if(str.equals("hall")){
+						redBack(view.getButton13());
+						
+					}if(str.equals("lounge")){
+						redBack(view.getButton14());
+						
+					}if(str.equals("diningroom")){
+						redBack(view.getButton15());
+						
+					}if(str.equals("kitchen")){
+						redBack(view.getButton16());
+						
+					}if(str.equals("ballroom")){
+						redBack(view.getButton17());
+						
+					}if(str.equals("conservatory")){
+						redBack(view.getButton18());
+						
+					}if(str.equals("billiard")){
+						redBack(view.getButton19());
+						
+					}if(str.equals("library")){
+						redBack(view.getButton20());
+						
+					}if(str.equals("study")){
+						redBack(view.getButton21());
+						
+					}
+					
+				}
 			}
 		}
+//		for(String card : currentPlayer.getCards()){
+//			
+//			if(card.equals("green")){
+//				redBack(view.getButton1());
+//				
+//			}if(card.equals("red")){
+//				redBack(view.getButton2());
+//				
+//			}if(card.equals("blue")){
+//				redBack(view.getButton3());
+//				
+//			}if(card.equals("purple")){
+//				redBack(view.getButton4());
+//				
+//			}if(card.equals("yellow")){
+//				redBack(view.getButton5());
+//				
+//			}if(card.equals("white")){
+//				redBack(view.getButton6());
+//				
+//			}if(card.equals("dagger")){
+//				redBack(view.getButton7());
+//				
+//			}if(card.equals("candlestick")){
+//				redBack(view.getButton8());
+//				
+//			}if(card.equals("revolver")){
+//				redBack(view.getButton9());
+//				
+//			}if(card.equals("rope")){
+//				redBack(view.getButton10());
+//				
+//			}if(card.equals("pipe")){
+//				redBack(view.getButton11());
+//				
+//			}if(card.equals("spanner")){
+//				redBack(view.getButton12());
+//				
+//			}if(card.equals("hall")){
+//				redBack(view.getButton13());
+//				
+//			}if(card.equals("loungue")){
+//				redBack(view.getButton14());
+//				
+//			}if(card.equals("diningroom")){
+//				redBack(view.getButton15());
+//				
+//			}if(card.equals("kitchen")){
+//				redBack(view.getButton16());
+//				
+//			}if(card.equals("ballroom")){
+//				redBack(view.getButton17());
+//				
+//			}if(card.equals("conservatory")){
+//				redBack(view.getButton18());
+//				
+//			}if(card.equals("billiard")){
+//				redBack(view.getButton19());
+//				
+//			}if(card.equals("library")){
+//				redBack(view.getButton20());
+//				
+//			}if(card.equals("study")){
+//				redBack(view.getButton21());
+//				
+//			}
+//		}
 		
 	}
 	

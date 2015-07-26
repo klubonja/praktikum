@@ -1,6 +1,8 @@
 package view.spielfeld;
 
 
+import java.io.File;
+
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -12,7 +14,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import kacheln.KachelContainer;
 import kommunikation.PlayerCircleManager;
 import staticClasses.Config;
@@ -51,12 +56,23 @@ public class GameFrameView extends GridPane{
 	private Scene scene;
 	public final PlayerCircleManager pcManager;
 	
+	private final File audioFile1 = new File("src/media/gameAudio1.mp3");
+	private final File audioFile2 = new File("src/media/gameAudio2.mp3");
+	private final File audioFile3 = new File("src/media/gameAudio3.mp3");
+	private final File audioFile4 = new File("src/media/gameAudio4.mp3");
+	private final File audioFile5 = new File("src/media/gameAudio5.mp3");
+	private final File audioFile6 = new File("src/media/gameAudio6.mp3");
+	private final File audioFile7 = new File("src/media/gameAudio7.mp3");
+	private Media audioMedia;
+	private MediaPlayer audio;
+	
 
 	
 	public GameFrameView(PlayerCircleManager pcm, KachelContainer kacheln, CluedoGameClient client){
 		pcManager = pcm;
 
 		/*(2 Rows x 2 Columns). */
+		
 		
 		RowConstraints row0 = new RowConstraints();
 		row0.setPercentHeight(3.34);
@@ -88,7 +104,7 @@ public class GameFrameView extends GridPane{
 		board = new BoardView(kacheln);
 
 		//Adds the Notes frame.
-		notes = new NotesView();
+		notes = new NotesView(client);
 		
 		//Adds the Chat frame.
 		chat = new ChatView();
@@ -186,6 +202,8 @@ public class GameFrameView extends GridPane{
 		GridPane.setHalignment(rightGrid, HPos.CENTER);
 		this.getChildren().addAll(komplettesFeld, menu, volumeBox, rightGrid);
 		
+		setAudio();
+		
 		}
 	
 	
@@ -214,7 +232,17 @@ public class GameFrameView extends GridPane{
 	public void close(){
 		this.stage.close();
 	}
+	
+	public void setAudio(){
+		
+		String url = audioFile1.toURI().toString();
+        audioMedia = new Media(url);
+        audio = new MediaPlayer(audioMedia);
+//      audio.setStopTime(new Duration(9000));
+        audio.play();
 
+	}
+	
 
 	
 	//Getter and Setter Methods
@@ -347,6 +375,61 @@ public class GameFrameView extends GridPane{
 
 	public void setVolume(Slider volume) {
 		this.volume = volume;
+	}
+
+
+	public Media getAudioMedia() {
+		return audioMedia;
+	}
+
+
+	public void setAudioMedia(Media audioMedia) {
+		this.audioMedia = audioMedia;
+	}
+
+
+	public MediaPlayer getAudio() {
+		return audio;
+	}
+
+
+	public void setAudio(MediaPlayer audio) {
+		this.audio = audio;
+	}
+
+
+	public File getAudioFile1() {
+		return audioFile1;
+	}
+
+
+	public File getAudioFile2() {
+		return audioFile2;
+	}
+
+
+	public File getAudioFile3() {
+		return audioFile3;
+	}
+
+
+	public File getAudioFile4() {
+		return audioFile4;
+	}
+
+
+	public File getAudioFile5() {
+		return audioFile5;
+	}
+
+
+	public File getAudioFile6() {
+		return audioFile6;
+	}
+
+
+	public File getAudioFile7() {
+		return audioFile7;
 	}
 	
 	

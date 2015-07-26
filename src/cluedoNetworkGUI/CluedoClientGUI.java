@@ -2,7 +2,6 @@ package cluedoNetworkGUI;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Random;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -19,10 +18,10 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
+import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
@@ -75,32 +74,42 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	
 	private Text title;
 	
-	private Background background;
+	private Background clientBackground;
 	private BackgroundSize backgroundSize;
 	private BackgroundImage backgroundImage;
 	
+
 	final private Image backIsengard = new Image("media/Isengard_army.jpg");
 	final private Image backMinas = new Image("media/Minas_Tirith.jpg");
-	final private Image backRivendell = new Image("media/rivendell-wallpaper-new.jpg");
-	final private Image backMordor = new Image("media/Yre1o.jpg");
-	final private Image backArgonath  = new Image("media/Yre1o.jpg");
+//	final private Image backRivendell = new Image("http://hdwallpapersfit.com/wp-content/uploads/2015/03/rivendell-wallpaper-new.jpg");
+//	final private Image backMordor = new Image("http://img4.wikia.nocookie.net/__cb20140520211519/middleearthshadowofmordor7723/images/5/50/Yre1o.jpg");
+//	final private Image backArgonath  = new Image("http://img4.wikia.nocookie.net/__cb20140520211519/middleearthshadowofmordor7723/images/5/50/Yre1o.jpg");
+	MenuItem isengard;
+	MenuItem minasTirith;
+	MenuItem mordor;
+	MenuItem argonath;
+	MenuItem theShire;
+	private SplitMenuButton backgroundSplit;
 	
 	private Background buttonBackground;
 	
 	private Slider volume;
 	private Label volumeLabel;
-	private HBox volumeBox;
-	private Button mute;
+	private HBox volumeBox; 
 	
-	private final Image muteGraphic = new Image("media/Yre1o.jpg"); 
+//	private final Image muteGraphic = new Image("http://www.veryicon.com/icon/png/System/Icons8%20Metro%20Style/Volume%20Controls%20Volume%20up.png"); 
+//	private final Image muteGraphic = new Image("media/Yre1o.jpg"); 
 
-	private final Image unmuteGraphic = new Image("media/Yre1o.jpg"); 
+//	private final Image unmuteGraphic = new Image("http://png-3.findicons.com/files/icons/2711/free_icons_for_windows8_metro/512/mute.png"); 
+//	private final Image unmuteGraphic = new Image("media/Yre1o.jpg"); 
 
-	private final File audioFile = new File("media/clientAudio1.mp3");
+	private final File audioFile = new File("src/media/clientAudio1.mp3");
 	
 	private GridPane promptArea;
 	private GridPane infoArea;
+	private GridPane optionsArea;
 	private Button closePromptArea;
+	private Button closeOptionsArea;
 	
 	private Media clip;
 	private MediaPlayer audio;
@@ -113,8 +122,9 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	private MenuItem createGameMenu;
 	private MenuItem createServerMenu;
 	private MenuItem testServer;
-	private MenuItem exit;
+	private MenuItem exitMenu;
 	private MenuItem fullScreen;
+	private MenuItem mute;
 	private MenuItem gameRules;
 	
 
@@ -140,6 +150,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		 setMenuBar();
 		 setPromptArea();
 		 setOptionsArea();
+		 setBack(backIsengard);
 		 
 		 startUp();	 		 
 	}
@@ -147,12 +158,6 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	@Override
 	public void startUp() {    
 		
-		//Formats the background of the Client Screen
-		backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
-				false, false, false, true);
-		backgroundImage = new BackgroundImage(backIsengard, BackgroundRepeat.NO_REPEAT , 
-				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
-	    background = new Background(backgroundImage);
 
 		//assignBackground();
 	       
@@ -161,7 +166,8 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         grid.setHgap(20);
         grid.setVgap(10);
         grid.setGridLinesVisible(false);
-        grid.setBackground(background);        
+        grid.setBackground(clientBackground);
+        
         
         //Creates the rows and columns of the grid
         ColumnConstraints col0 = new ColumnConstraints();
@@ -284,18 +290,10 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         volumeLabel.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 12));
         volumeLabel.setTextFill(Color.WHITESMOKE);
         volumeLabel.setAlignment(Pos.CENTER);
-        mute = new Button();
-        mute.setBackground(buttonBackground);
-        ImageView muteImage = new ImageView(unmuteGraphic);
-        muteImage.setFitHeight(20);
-        muteImage.setFitWidth(20);
-        mute.setGraphic(muteImage);
-        mute.setMaxSize(20, 20);
-        mute.setAlignment(Pos.CENTER);
         volumeBox = new HBox(5);
         volumeBox.setPrefWidth(50);
-        volumeBox.setMaxWidth(200);
-        volumeBox.getChildren().addAll(volumeLabel, volume , mute);
+        volumeBox.setMaxWidth(225);
+        volumeBox.getChildren().addAll(volumeLabel, volume);
         volumeBox.setPadding(new Insets(0, 20 , 0 , 0));
         
         //Different shadow for the different TextAreas in the grid
@@ -370,68 +368,12 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         gameListView.setOpacity(0.9);
         
         
-//        //Setup the area in the middle of the screen
-//        promptArea = new GridPane();
-//        promptArea.setPadding(new Insets(20));
-// 
-//        ColumnConstraints prompt0 = new ColumnConstraints();
-//        prompt0.setPercentWidth(100);
-//        promptArea.getColumnConstraints().add(prompt0);
-//        
-//        RowConstraints prompt1 = new RowConstraints();
-//	    prompt1.setPercentHeight(50); 
-//	    promptArea.getRowConstraints().add(prompt1);
-//	    
-//	    RowConstraints prompt2 = new RowConstraints();
-//	    prompt2.setPercentHeight(50);        
-//	    promptArea.getRowConstraints().add(prompt2);
-//        
-//        infoArea = new GridPane();
-//        infoArea.setPadding(new Insets(2.5));
-//        infoArea.setVgap(5);
-//        
-//        ColumnConstraints info0 = new ColumnConstraints();
-//        info0.setPercentWidth(100);
-//        promptArea.getColumnConstraints().add(info0);
-//        
-//        RowConstraints info1 = new RowConstraints();
-//	    info1.setPercentHeight(90); 
-//	    promptArea.getRowConstraints().add(info1);
-//	    
-//	    RowConstraints info2 = new RowConstraints();
-//	    info2.setPercentHeight(10);        
-//	    promptArea.getRowConstraints().add(info2);
-//        
-//        
-//        TextArea rules = new TextArea();
-//        rules.setPrefHeight(350);
-//        rules.setMaxHeight(350);
-//        rules.setWrapText(true);
-//        rules.setEditable(false);
-//        rules.setOpacity(0.9);
-//        rules.setEffect(innerShadow6);
-//        rules.setText(HowToPlay.GOAL + HowToPlay.PLAY);
-//        
-//        GridPane.setConstraints(rules, 0, 0);
-//        GridPane.setValignment(rules, VPos.CENTER);
-//        GridPane.setHalignment(rules, HPos.CENTER);
-//        
-//        infoArea.getChildren().add(rules);
-//        
-//        GridPane.setConstraints(infoArea, 0, 0);
-//        GridPane.setRowSpan(infoArea, 2);
-//        GridPane.setValignment(infoArea, VPos.CENTER);
-//        GridPane.setHalignment(infoArea, HPos.CENTER);
-//        //promptArea.getChildren().add(infoArea);
-//        promptArea.setGridLinesVisible(false);
         
-        
-//        String url = audioFile.toURI().toString();
-//        clip = new //Media(url);
-//        Media("file:////home/g/guldener/git/yinyanyolos/src/media/clientAudio1.mp3");
-//        audio = new MediaPlayer(clip);
-//        audio.play();
-//        audio.setCycleCount(MediaPlayer.INDEFINITE);
+        String url = audioFile.toURI().toString();
+        clip = new Media(url);
+        audio = new MediaPlayer(clip);
+        audio.play();
+        audio.setCycleCount(MediaPlayer.INDEFINITE);
         
         
         GridPane.setConstraints(statusContainer, 1, 1);
@@ -468,6 +410,10 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         GridPane.setHalignment(promptArea, HPos.CENTER);
         GridPane.setValignment(promptArea, VPos.CENTER);
         
+//        GridPane.setConstraints(mute, 3, 0);
+//        GridPane.setHalignment(mute, HPos.CENTER);
+//        GridPane.setValignment(mute, VPos.CENTER);
+        
         grid.getChildren().addAll(statusContainer, buttons, chatArea, servers, clients, games, volumeBox,
         		promptArea);
         
@@ -488,7 +434,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
        
 
         primaryStage.setScene(scene);
-        primaryStage.setAlwaysOnTop(true);
+        primaryStage.setAlwaysOnTop(false);
         primaryStage.show();
         
     }
@@ -497,22 +443,25 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	
 		menuBar = new MenuBar();
 		
-		file = new Menu("File");
+		file = new Menu("Menu");
 		help = new Menu("Help");
 		window = new Menu("Window");
 		
 		options = new MenuItem("Options");
 		createGameMenu = new MenuItem("Create Game");
 		createServerMenu = new MenuItem("Create Server");
-		testServer = new MenuItem("Test LMU Serverr");
-		exit = new MenuItem("Quit");
-		file.getItems().addAll(createGameMenu, createServerMenu, testServer, options, exit);
+
+		testServer = new MenuItem("Test LMU Server");
+		exitMenu = new MenuItem("Quit");
+		file.getItems().addAll(createGameMenu, createServerMenu, testServer, exitMenu);
+//		file.getItems().add(options);
 		
 		fullScreen = new MenuItem("Full Screen");
-		window.getItems().addAll(fullScreen);
+		mute = new MenuItem("Mute");
+		window.getItems().addAll(mute, fullScreen);
 		
 		
-		gameRules = new MenuItem("Game Rules");
+		gameRules = new MenuItem("Rules");
 		help.getItems().addAll(gameRules);
 		
 		menuBar.getMenus().addAll(file, window, help);
@@ -606,7 +555,92 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	
 	public void setOptionsArea(){
 		
-		GridPane optionsArea = new GridPane();
+		optionsArea = new GridPane();
+		optionsArea.setPadding(new Insets(10));
+		optionsArea.setAlignment(Pos.CENTER);
+		optionsArea.setVgap(15);
+		optionsArea.setHgap(15);
+		
+		optionsArea.setBackground(buttonBackground);
+		optionsArea.setOpacity(0.9);
+		optionsArea.setGridLinesVisible(true);
+		
+		ColumnConstraints column0 = new ColumnConstraints();
+        column0.setPercentWidth(50);
+        column0.setMaxWidth(250);
+        optionsArea.getColumnConstraints().add(column0);
+        
+        ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(50);
+        column1.setMaxWidth(250);
+        optionsArea.getColumnConstraints().add(column1);
+        
+        RowConstraints row1 = new RowConstraints();
+	    row1.setPercentHeight(50);
+	    optionsArea.getRowConstraints().add(row1);
+	    
+	    RowConstraints row2 = new RowConstraints();
+	    row2.setPercentHeight(50);        
+	    optionsArea.getRowConstraints().add(row2);
+	    
+	    Label musicVolume = new Label("Music Volume");
+	    
+	    GridPane.setConstraints(musicVolume, 0, 0);
+        GridPane.setValignment(musicVolume, VPos.BOTTOM);
+        GridPane.setHalignment(musicVolume, HPos.RIGHT);
+	    
+	    Label changeBackground = new Label("Select Background");
+	    
+	    GridPane.setConstraints(changeBackground, 0, 1);
+        GridPane.setValignment(changeBackground, VPos.TOP);
+        GridPane.setHalignment(changeBackground, HPos.RIGHT);
+        
+        volume = new Slider(0, 1, 0.5);
+        volume.setOpacity(0.9);
+        
+        GridPane.setConstraints(volume, 1, 0);
+        GridPane.setValignment(volume, VPos.BOTTOM);
+        GridPane.setHalignment(volume, HPos.CENTER);
+        
+        backgroundSplit = new SplitMenuButton();
+        backgroundSplit.setPrefWidth(200);
+        backgroundSplit.setText("View List");
+        isengard = new MenuItem("Isengard");
+    	minasTirith = new MenuItem("Minas Tirith");
+    	mordor = new MenuItem("Mordor");;
+    	argonath = new MenuItem("Argonath");;
+    	theShire = new MenuItem("The Shire");;
+        backgroundSplit.getItems().addAll(isengard, minasTirith, mordor, argonath, theShire);
+        
+        GridPane.setConstraints(backgroundSplit, 1, 1);
+        GridPane.setValignment(backgroundSplit, VPos.TOP);
+        GridPane.setHalignment(backgroundSplit, HPos.CENTER);
+        
+        closeOptionsArea = new Button("Close");
+        
+        GridPane.setConstraints(closeOptionsArea, 1, 1);
+        GridPane.setValignment(closeOptionsArea, VPos.BOTTOM);
+        GridPane.setHalignment(closeOptionsArea, HPos.RIGHT);
+        
+        
+        
+        optionsArea.getChildren().addAll(musicVolume, changeBackground, volume, backgroundSplit, closeOptionsArea);
+		
+		
+	}
+	
+	
+	/**
+	 * Formats the background of the Client Screen
+	 * @param img The image to be set as background
+	 */
+	public void setBack(Image img){
+		
+		backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
+						false, false, false, true);
+		backgroundImage = new BackgroundImage(img, BackgroundRepeat.NO_REPEAT , 
+						BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+		clientBackground = new Background(backgroundImage);
 		
 	}
     
@@ -679,41 +713,41 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		
 	}
 	
-	public void assignBackground(){
-		
-		BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
-				false, false, false, true);
-		
-		 Random rand = new Random();
-		 int number = rand.nextInt(7);
-		
-		switch(number){
-		case 1 :{
-			setBackgroundImage(new BackgroundImage(getBackIsengard(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
-				BackgroundPosition.CENTER, backgroundSize));
-			setBackground(new Background(getBackgroundImage()));} break;
-		case 2 :{
-			setBackgroundImage(new BackgroundImage(getBackMinas(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
-			BackgroundPosition.CENTER, backgroundSize));
-			setBackground(new Background(getBackgroundImage()));} break;
-		case 3 :{
-			setBackgroundImage(new BackgroundImage(getBackMordor(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
-			BackgroundPosition.CENTER, backgroundSize));
-			setBackground(new Background(getBackgroundImage()));} break;
-		case 4 :{
-			setBackgroundImage(new BackgroundImage(getBackRivendell(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
-			BackgroundPosition.CENTER, backgroundSize));
-			setBackground(new Background(getBackgroundImage()));} break;
-		case 5 :{
-			setBackgroundImage(new BackgroundImage(getBackArgonath(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
-			BackgroundPosition.CENTER, backgroundSize));
-			setBackground(new Background(getBackgroundImage()));} break;
-		case 6 :{
-			setBackgroundImage(new BackgroundImage(getBackMinas(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
-			BackgroundPosition.CENTER, backgroundSize));
-			setBackground(new Background(getBackgroundImage()));} break;
-		}
-	}
+//	public void assignBackground(){
+//		
+//		BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
+//				false, false, false, true);
+//		
+//		 Random rand = new Random();
+//		 int number = rand.nextInt(7);
+//		
+//		switch(number){
+//		case 1 :{
+//			setBackgroundImage(new BackgroundImage(getBackIsengard(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+//				BackgroundPosition.CENTER, backgroundSize));
+//			setBackground(new Background(getBackgroundImage()));} break;
+//		case 2 :{
+//			setBackgroundImage(new BackgroundImage(getBackMinas(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+//			BackgroundPosition.CENTER, backgroundSize));
+//			setBackground(new Background(getBackgroundImage()));} break;
+//		case 3 :{
+//			setBackgroundImage(new BackgroundImage(getBackMordor(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+//			BackgroundPosition.CENTER, backgroundSize));
+//			setBackground(new Background(getBackgroundImage()));} break;
+//		case 4 :{
+//			setBackgroundImage(new BackgroundImage(getBackRivendell(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+//			BackgroundPosition.CENTER, backgroundSize));
+//			setBackground(new Background(getBackgroundImage()));} break;
+//		case 5 :{
+//			setBackgroundImage(new BackgroundImage(getBackArgonath(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+//			BackgroundPosition.CENTER, backgroundSize));
+//			setBackground(new Background(getBackgroundImage()));} break;
+//		case 6 :{
+//			setBackgroundImage(new BackgroundImage(getBackMinas(), BackgroundRepeat.NO_REPEAT , BackgroundRepeat.NO_REPEAT,
+//			BackgroundPosition.CENTER, backgroundSize));
+//			setBackground(new Background(getBackgroundImage()));} break;
+//		}
+//	}
 	
 	public Button getExit() {
 		return exitButton;
@@ -745,12 +779,12 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		});	
 	}
 
-	public Background getBackground() {
-		return background;
+	public Background getClientBackground() {
+		return clientBackground;
 	}
 
-	public void setBackground(Background background) {
-		this.background = background;
+	public void setClientBackground(Background background) {
+		this.clientBackground = background;
 	}
 
 	public BackgroundSize getBackgroundSize() {
@@ -897,21 +931,6 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		this.volumeBox = volumeBox;
 	}
 
-	public Button getMute() {
-		return mute;
-	}
-
-	public void setMute(Button mute) {
-		this.mute = mute;
-	}
-
-	public Image getMuteGraphic() {
-		return muteGraphic;
-	}
-
-	public Image getUnmuteGraphic() {
-		return unmuteGraphic;
-	}
 
 	public File getFile() {
 		return audioFile;
@@ -981,6 +1000,14 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		this.options = options;
 	}
 
+	public MenuItem getMute() {
+		return mute;
+	}
+
+	public void setMute(MenuItem mute) {
+		this.mute = mute;
+	}
+
 	public MenuItem getCreateGameMenu() {
 		return createGameMenu;
 	}
@@ -1026,7 +1053,15 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 	}
 
 	public void setExit(MenuItem exit) {
-		this.exit = exit;
+		this.exitMenu = exit;
+	}
+
+	public MenuItem getExitMenu() {
+		return exitMenu;
+	}
+
+	public void setExitMenu(MenuItem exitMenu) {
+		this.exitMenu = exitMenu;
 	}
 
 	public Background getButtonBackground() {
@@ -1053,17 +1088,17 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 		return backMinas;
 	}
 
-	public Image getBackRivendell() {
-		return backRivendell;
-	}
-
-	public Image getBackMordor() {
-		return backMordor;
-	}
-
-	public Image getBackArgonath() {
-		return backArgonath;
-	}
+//	public Image getBackRivendell() {
+//		return backRivendell;
+//	}
+//
+//	public Image getBackMordor() {
+//		return backMordor;
+//	}
+//
+//	public Image getBackArgonath() {
+//		return backArgonath;
+//	}
 
 	public GridPane getInfoArea() {
 		return infoArea;
@@ -1079,6 +1114,46 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 
 	public void setClosePromptArea(Button closePromptArea) {
 		this.closePromptArea = closePromptArea;
+	}
+
+	public GridPane getOptionsArea() {
+		return optionsArea;
+	}
+
+	public void setOptionsArea(GridPane optionsArea) {
+		this.optionsArea = optionsArea;
+	}
+
+	public Button getCloseOptionsArea() {
+		return closeOptionsArea;
+	}
+
+	public void setCloseOptionsArea(Button closeOptionsArea) {
+		this.closeOptionsArea = closeOptionsArea;
+	}
+
+	public MenuItem getIsengard() {
+		return isengard;
+	}
+
+	public MenuItem getMinasTirith() {
+		return minasTirith;
+	}
+
+	public MenuItem getMordor() {
+		return mordor;
+	}
+
+	public MenuItem getArgonath() {
+		return argonath;
+	}
+
+	public MenuItem getTheShire() {
+		return theShire;
+	}
+
+	public SplitMenuButton getBackgroundSplit() {
+		return backgroundSplit;
 	}
 
 }

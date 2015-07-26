@@ -22,18 +22,21 @@ public class MenuBarView extends MenuBar{
 	private MenuItem quit;
 	private MenuItem hints;
 	
+	private MenuItem activateKI;
+	
 	public MenuBarView(){
 		
 		
 //	this.setPrefWidth(1400);
 //	this.setMaxWidth(1400);
-	options = new Menu("Options");
+	options = new Menu("Menu");
 	help = new Menu("Help");
 	sounds = new MenuItem("Sound");
 	main = new MenuItem("Main Menu");
 	quit = new MenuItem("Exit Game");
 	hints = new MenuItem("Game Rules");
-	options.getItems().addAll(sounds, main, quit);
+	activateKI = new MenuItem("Enable KI");
+	options.getItems().addAll(sounds, activateKI, main, quit);
 	help.getItems().add(hints);
 	this.getMenus().addAll(options, help);
 	
@@ -85,6 +88,14 @@ public class MenuBarView extends MenuBar{
 
 	public void setHints(MenuItem hints) {
 		this.hints = hints;
+	}
+
+	public MenuItem getActivateKI() {
+		return activateKI;
+	}
+
+	public void setActivateKI(MenuItem activateKI) {
+		this.activateKI = activateKI;
 	}
 
 }

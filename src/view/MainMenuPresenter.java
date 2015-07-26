@@ -1,5 +1,6 @@
 package view;
 
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import cluedoClient.Client;
@@ -27,6 +28,14 @@ public class MainMenuPresenter {
 			+ "-fx-font-weight: bold; -fx-font-size: 1.1em;"
 			+ "-fx-font-family: Arial; -fx-text-fill: linear-gradient(white, #d0d0d0); -fx-font-size: 15px;";
 	
+	private final String clButtonStyle = "-fx-padding: 8 15 15 15; -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0; " 
+			+ "-fx-background-radius: 8; -fx-background-color: "
+			+ "linear-gradient(from 0% 93% to 0% 100%, #228b22 0%, #008000 100%),  #228b22, #008000,"
+			+ "radial-gradient(center 50% 50%, radius 100%, #32cd32, #2e8b57);"
+			+ "-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );"
+			+ "-fx-font-weight: bold; -fx-font-size: 1.1em;  font-stretch: ultra-expanded; "
+			+ "-fx-font-family: Helvetica; -fx-text-fill: linear-gradient(white, #d0d0d0); -fx-font-size: 14px;";
+	
 
 	public MainMenuPresenter(MainMenuView view){
 		
@@ -42,11 +51,14 @@ public class MainMenuPresenter {
 		
 		view.getCreateClient().setOnMouseClicked(e -> createClient());
 		view.getCreateServer().setOnMouseClicked(e -> createServer());
+		view.getQuit().setOnMouseClicked(e -> quitGame());
 		
 		view.getCreateClient().setOnMouseEntered(e -> addGlow(view.getCreateClient()));
 		view.getCreateClient().setOnMouseExited(e -> removeGlow(view.getCreateClient()));
 		view.getCreateServer().setOnMouseEntered(e -> addGlow(view.getCreateServer()));
 		view.getCreateServer().setOnMouseExited(e -> removeGlow(view.getCreateServer()));
+		view.getQuit().setOnMouseEntered(e -> addGlow(view.getQuit()));
+		view.getQuit().setOnMouseExited(e -> removeGlow(view.getQuit()));
 	}
 	
 public void bindComponents(){
@@ -63,7 +75,7 @@ public void bindComponents(){
 			client = new Client(ClientGUI);
 			CluedoClientPresenter presenter = new CluedoClientPresenter(ClientGUI,client);
 			stage.show();
-			stage.setFullScreen(true);
+			stage.setFullScreen(false);
 			view.getBackgroundVideo().stop();
 			view.close();
 		}
@@ -79,16 +91,22 @@ public void bindComponents(){
 	
 	public void addGlow(Button b){
 		
-		b.setStyle(clickedButtonStyle);
+		b.setStyle(clButtonStyle);
 	}
 	
 	public void removeGlow(Button b){
 		
 		b.setStyle(view.getButtonStyle());
 	}
+	
+	public void quitGame(){
+		
+		Platform.exit();
+		System.exit(0);
+	}
 		
 
-
+	//Getters and Setter
 	public MainMenuView getView() {
 		return view;
 	}
