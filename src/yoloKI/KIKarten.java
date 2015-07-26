@@ -1,8 +1,13 @@
 package yoloKI;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import model.Deck;
 import staticClasses.Config;
+import staticClasses.auxx;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.Persons;
 import enums.Rooms;
 import enums.Weapons;
@@ -12,9 +17,11 @@ public class KIKarten {
 	private ArrayList<Rooms> raeume = new ArrayList<Rooms>();
 	private ArrayList<Persons> personen = new ArrayList<Persons>();
 	private ArrayList<Weapons> waffen = new ArrayList<Weapons>();
+	private Deck deck;
 
-	public KIKarten(){
-		
+	public KIKarten(ArrayList<String> mycards,int amtplayers){
+		deck = new Deck(amtplayers);
+		addKarten(mycards);
 	}
 
 	public void addRaum(Rooms raum){
@@ -128,6 +135,43 @@ public class KIKarten {
 
 	public void setWaffen(ArrayList<Weapons> waffen) {
 		this.waffen = waffen;
+	}
+	
+	public void addKarten(ArrayList<String> cards){
+		for (String card: cards){
+			if (Persons.isMemberPersonName(card)) addPerson(Persons.getPersonByName(card));
+			if (Weapons.isMember(card)) addWaffen(Weapons.getWeaponByName(card));
+			if (Rooms.isMember(card)) addRaum(Rooms.getRoomByName(card));
+		}
+	}
+	
+	public List<String> getWhatYouHaveAsStringList(){
+		List<String> have = new ArrayList<String>();		
+		for (Rooms r: raeume) have.add(r.getName());
+		for (Persons p: personen) have.add(p.getPersonName());
+		for (Weapons w: waffen) have.add(w.getName());
+		
+		return have;		
+	}
+		
+	public List<String> getWhatYouDontHave(){
+		List<String> dontave = deck.getDeck();
+		dontave.removeAll(getWhatYouHaveAsStringList());
+		return dontave;
+	}
+	
+	public CluedoStatement makeAccusingRandStatement(){
+		List<Rooms> rooms = Arrays.asList(Rooms.values());
+		rooms.removeAll(getRaeume());
+		Rooms room = rooms.get(auxx.getRandInt(0, rooms.size()-1));
+		List<Persons> persons = Arrays.asList(Persons.values());
+		persons.removeAll(getPersonen());
+		Persons person = persons.get(auxx.getRandInt(0, persons.size()-1));
+		List<Weapons> weapons = Arrays.asList(Weapons.values());
+		weapons.removeAll(getWaffen());
+		Weapons weapon = weapons.get(auxx.getRandInt(0, weapons.size()-1));
+		
+		return new CluedoStatement(person, weapon, room);		
 	}
 	
 	

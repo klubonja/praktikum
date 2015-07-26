@@ -87,7 +87,7 @@ public class Deck {
 		return winningHand;
 	}
 
-	public String choseRandom(List<String> list) {
+	public static String choseRandom(List<String> list) {
 		if (list.size() < 0) return null;
 		int index = auxx.getRandInt(0, list.size()-1);
 		String card =  list.get(index);
@@ -96,8 +96,8 @@ public class Deck {
 		return card;
 	}
 	
-	public String[] choseNRandom(int n,List<String> list){
-		if (n > deck.size()) return null;
+	public static String[] choseNRandom(int n,List<String> list){
+		if (n > list.size()) return null;
 		String[] dieantwoord = new String[n];
 		while (n > 0) {
 			dieantwoord[n-1] = choseRandom(list);

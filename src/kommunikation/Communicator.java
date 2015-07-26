@@ -18,6 +18,7 @@ import view.spielfeld.BallEbene;
 import view.spielfeld.BoardView;
 import view.spielfeld.GameFramePresenter;
 import view.spielfeld.GameFrameView;
+import yoloKI.KI;
 import animation.DerBeweger;
 import animation.RaumBeweger;
 import cluedoNetworkLayer.CluedoGameClient;
@@ -52,6 +53,9 @@ public class Communicator {
 	private boolean sswitch;
 	private CluedoStatement curSuspicion = null;
 	
+	private boolean kiplay = false;
+	private KI ki;
+	
 	private GameFrameView gameView;
 	private BoardView boardView;
 	private DiceView diceView;
@@ -84,6 +88,7 @@ public class Communicator {
 		gameID = network.getGameId();		
 		pcManager = new PlayerCircleManager(network.getPlayers());
 		
+		ki = new KI(network,pcManager,this);
 		
 		kacheln = new KachelContainer();
 		gameView = new GameFrameView(pcManager, kacheln, network);
@@ -141,6 +146,8 @@ public class Communicator {
 		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
 		
 		dicePresenter.rollTheDiceForSomeone(ersterWuerfel, zweiterWuerfel, pcManager);
+		
+		if (kiplay) ki.move();
 	}
 	
 	/**
@@ -196,7 +203,25 @@ public class Communicator {
 		String room = gameView.getHand().getRooms().getValue();
 		network.sendMsgToServer(NetworkMessages.accuseMsg(network.getGameId(),
 				NetworkMessages.statement(person, room, weapon)));
+	}
+	
 
+	public void endTurn() {
+		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameID));
+	}
+	
+	public void itsYourTurn(){
+		pcManager.setIndexByPlayer(network.getPlayerByNick(myNick));
+		System.out.println("its MY("+myNick+") turn and opening window");
+		openWindow();
+		if (kiplay) ki.startTurn();
+			
+	}
+	
+	public void itsSomeonesTurn(String nick){
+		pcManager.setIndexByPlayer(network.getPlayerByNick(nick));
+		closeWindow();
+		System.out.println("its "+nick+"s turn and closing window");
 	}
 
 	/**
@@ -241,39 +266,6 @@ public class Communicator {
 
 	}
 
-	public void endTurn() {
-		network.sendMsgToServer(NetworkMessages.end_turnMsg(gameID));
-	}
-	
-	public void itsYourTurn(){
-		
-//		if (!sswitch){
-//			sswitch = true;
-//			openWindow();
-//		}
-//		else {
-//			pcManager.next();
-//			
-//			openWindow();
-//		}
-		
-		pcManager.setIndexByPlayer(network.getPlayerByNick(myNick));
-		System.out.println("its MY("+myNick+") turn and opening window");
-		openWindow();
-			
-	}
-	
-	public void itsSomeonesTurn(String nick){
-		pcManager.setIndexByPlayer(network.getPlayerByNick(nick));
-		closeWindow();
-		System.out.println("its "+nick+"s turn and closing window");
-//		if (!sswitch){
-//			sswitch = true;
-//		}
-//		else {
-//		pcManager.next();
-//		}
-	}
 	
 		/**
 	 * Hier werden irgendwelche Dinge gehandelt (z.B. wenn das Spielfenster einfach so geschlossen wird.
@@ -415,10 +407,18 @@ public class Communicator {
 	public GameFramePresenter getGamePresenter() {
 		return gamePresenter;
 	}
+	
+	public DicePresenter getDicePresenter() {
+		return dicePresenter;
+	}
 
 	public void moveForSuspiciton(int gameID2, CluedoStatement suspicion) {
 		CluedoPlayer player = pcManager.getPlayerByPerson(suspicion.getPerson());
 		beweger.getCarriedAlong(suspicion.getRoom(), player);
+	}
+	
+	public Ausloeser getAusloeser() {
+		return ausloeser;
 	}
 	
 	

@@ -8,6 +8,7 @@ import staticClasses.auxx;
 import view.spielfeld.BoardView;
 import view.spielfeld.GameFrameView;
 import cluedoNetworkLayer.CluedoGameClient;
+import cluedoNetworkLayer.CluedoPosition;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.Sucher;
 
@@ -117,7 +118,28 @@ public class DicePresenter {
 		int wuerfelZahl = dice[0] + dice[1];
 		
 		sucher.suchen(wuerfelZahl, pcManager);
-		if (istSpieler) {ausloeser.zuweisung(pcManager);}
+		if (istSpieler) {
+			ausloeser.zuweisung(pcManager);
+		}
+	}
+	
+	public void kiMove(PlayerCircleManager pcManager,CluedoPosition pos){
+		this.pcManager = pcManager;
+		
+		auxx.logsevere("DicePresenter.wuerfeln");
+		auxx.logsevere("currentPlayer Color : " +pcManager.getCurrentPlayer().getCluedoPerson().getColor());
+		auxx.logsevere("currentPlayer x : " +pcManager.getCurrentPlayer().getPosition().getX() + "  ||  y : " +pcManager.getCurrentPlayer().getPosition().getY());
+		
+		if (istSpieler){gui.resetBackground();}
+		
+		kacheln.resetMoeglichkeiten();
+		
+		int wuerfelZahl = dice[0] + dice[1];
+		
+		sucher.suchen(wuerfelZahl, pcManager);
+		if (istSpieler) {
+			ausloeser.suggestMoveToServer(pos);
+		}
 	}
 	
 
@@ -128,7 +150,6 @@ public class DicePresenter {
 	public void setDice(int[] dice) {
 		this.dice = dice;
 	}
-
 	
 	
 }
