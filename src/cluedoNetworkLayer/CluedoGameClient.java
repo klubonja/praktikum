@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import javafx.application.Platform;
 import kommunikation.Communicator;
+import staticClasses.Images;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoClient.ServerItem;
@@ -23,6 +24,7 @@ public class CluedoGameClient extends CluedoGame {
 
 	public CluedoGameClient(int gameId, ServerItem server) {
 		super(gameId);
+		Images.initImages();
 		this.server = server;		
 		watchers = new ArrayList<String>();
 		myNick = server.getMyNick();

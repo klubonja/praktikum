@@ -53,7 +53,7 @@ public class KrasserStack extends StackPane {
 	 */
 	public void start(){
 		stage = new Stage();
-		scene = new Scene(this, 700, 700);
+		scene = new Scene(this, 696, 725);
 		stage.setScene(scene);
 	}
 	
@@ -61,13 +61,11 @@ public class KrasserStack extends StackPane {
 	 * Die Insets werden auf 0 gesetzt und die ebenen hinzugefuegt.
 	 */
 	public void layoutStuff(){
-		ImageView BG = new ImageView(new Image("media/Field_0.png"));
-		
+		StackPane.setMargin(Images.bg, new Insets(-25,0,0,-75));
 		StackPane.setMargin(boardView, new Insets(0,0,0,0));
 		StackPane.setMargin(ballEbene, new Insets(0,0,0,0));
-		StackPane.setMargin(BG, new Insets(-65,0,0,-70));
 		boardView.setOpacity(0.5);
-		this.getChildren().addAll(zugView, BG, boardView, ballEbene);
+		this.getChildren().addAll(zugView, Images.bg, boardView, ballEbene);
 	}
 	
 	public AussergewohnlichesZugfenster getZugView() {

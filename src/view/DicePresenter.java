@@ -3,6 +3,7 @@ package view;
 
 import kacheln.KachelContainer;
 import kommunikation.PlayerCircleManager;
+import staticClasses.Images;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import view.spielfeld.BoardView;
@@ -66,7 +67,7 @@ public class DicePresenter {
 	
 	public void startEvents(){
 		
-		view.getZugView().YESwurfelImage.setOnMouseClicked(e -> iWantToRollTheDice());
+		Images.YESwurfelImage.setOnMouseClicked(e -> iWantToRollTheDice());
 	}
 	
 	public void iWantToRollTheDice(){

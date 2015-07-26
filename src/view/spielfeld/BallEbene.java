@@ -43,7 +43,7 @@ public class BallEbene extends GridPane{
 	 */
 	public void start(){
 		stage = new Stage();
-		scene = new Scene(this, 700, 700);
+		scene = new Scene(this, 696, 725);
 		stage.setScene(scene);
 	}
 	

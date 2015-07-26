@@ -335,7 +335,7 @@ public class BoardView extends GridPane {
 	public void start(){
 		this.stage = new Stage();
 		this.setStyle("-fx-background-color: rgba(255, 255, 255, 0);");
-		this.scene = new Scene(this, 700, 700);
+		this.scene = new Scene(this, 696, 725);
 		this.stage.setScene(scene);
 	}
 
@@ -389,6 +389,14 @@ public class BoardView extends GridPane {
 	
 	public KrassesLabel getLabelHier(Kachel kachel){
 		return labelArray[kachel.getPosition().getY()][kachel.getPosition().getX()];
+	}
+
+	public KachelContainer getKachelContainer() {
+		return kachelContainer;
+	}
+
+	public void setKachelContainer(KachelContainer kachelContainer) {
+		this.kachelContainer = kachelContainer;
 	}
 	
 }

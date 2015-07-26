@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.scene.effect.Glow;
 import javafx.stage.WindowEvent;
 import kacheln.KachelContainer;
+import staticClasses.Images;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import view.AussergewohnlichesZugfenster;
@@ -291,18 +292,18 @@ public class Communicator {
 			}
 		});
 
-		zugPresenter.getGameView().YESgangImage.setOnMouseClicked(e -> network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID)));
+		Images.YESgangImage.setOnMouseClicked(e -> network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID)));
 		
 		
 		// BOESE!!
-		zugPresenter.getGameView().ONanklage.setOnMouseClicked(e -> {
+		Images.ONanklage.setOnMouseClicked(e -> {
 			suspect();
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
 				remove(gameView.getKomplettesFeld().getZugView().getBottomBox());
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
 				remove(gameView.getKomplettesFeld().getZugView().getVermuten());
 			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
-				remove(gameView.getKomplettesFeld().getZugView().OFFanklage);
+				remove(Images.OFFanklage);
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
 				add(gameView.getKomplettesFeld().getZugView().getButtonsBox());
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().

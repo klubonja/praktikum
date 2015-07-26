@@ -1,16 +1,18 @@
 package view;
 
-import enums.Persons;
-import model.Deck;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.Deck;
+import staticClasses.Images;
 
 /**
  * Eine View Klasse die die erste Version des Spielerzueges repraesentiert.
@@ -26,26 +28,7 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 	private HBox vermuten;
 	private VBox organizer;
 
-	public ImageView YESvermutenImage = new ImageView(new Image(
-			"media/YESanklage.png"));
-	public ImageView NOvermutenImage = new ImageView(new Image(
-			"media/NOanklage.png"));
-	public ImageView YESgangImage = new ImageView(
-			new Image("media/YESgang.png"));
-	public ImageView NOgangImage = new ImageView(new Image("media/NOgang.png"));
-	public ImageView YESwurfelImage = new ImageView(new Image(
-			"media/YESwurfeln.png"));
-	public ImageView NOwurfelImage = new ImageView(new Image(
-			"media/NOwurfeln.png"));
-	public ImageView OFFanklage = new ImageView(new Image(
-			"media/OFFanklage.png"));
-	public ImageView ONanklage = new ImageView(new Image("media/ONanklage.png"));
-	public ImageView OFFvermuten = new ImageView(new Image(
-			"media/OFFvermuten.png"));
-	public ImageView ONvermuten = new ImageView(new Image(
-			"media/ONvermuten.png"));
-
-	private Button close = new Button("Better not click me, I close the window");
+	private Button close = new Button("Back");
 
 	private ComboBox<String> personen = new ComboBox<String>();
 	private ComboBox<String> waffen = new ComboBox<String>();
@@ -81,20 +64,31 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 		buttons = new HBox();
 		buttons.setSpacing(10);
 		buttons.setAlignment(Pos.CENTER);
-		buttons.getChildren().addAll(NOvermutenImage, NOwurfelImage,NOgangImage);
+		buttons.getChildren().addAll(
+				Images.NOanklageImage,
+				Images.NOwurfelImage,
+				Images.NOgangImage);
 		
 
 		bottom = new HBox();
 		bottom.setSpacing(150);
 		bottom.setAlignment(Pos.CENTER);
-		bottom.getChildren().add(close);
 
 		organizer = new VBox();
 		organizer.setSpacing(10);
 		organizer.setAlignment(Pos.CENTER);
-		organizer.getChildren().addAll(buttons, bottom, close);
+		organizer.getChildren().addAll(buttons);
 
-		this.setStyle("-fx-background-image: url('media/ZugFensterResized3.png');");
+		this.setBackground(
+				new Background(
+						new BackgroundImage(
+								Images.zug.getImage(),
+								BackgroundRepeat.NO_REPEAT,
+								BackgroundRepeat.NO_REPEAT,
+								BackgroundPosition.DEFAULT,
+								BackgroundSize.DEFAULT)
+						)
+				);
 		this.setCenter(organizer);
 		this.setWidth(450);
 		this.setHeight(300);
@@ -102,13 +96,17 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 
 	public void killEmAll() {
 		buttons.getChildren().removeAll(personen, waffen, zimmer);
-		bottom.getChildren().removeAll(ONanklage, ONvermuten, OFFanklage,
-				OFFvermuten, close);
+		bottom.getChildren().removeAll(
+				Images.ONanklage,
+				Images.OFFanklage,
+				close);
 	}
 
 	public void addInactiveButtons() {
-		buttons.getChildren().addAll(NOvermutenImage, NOwurfelImage,
-				NOgangImage);
+		buttons.getChildren().addAll(
+				Images.NOanklageImage,
+				Images.NOwurfelImage,
+				Images.NOgangImage);
 	}
 
 	public HBox getButtonsBox() {
