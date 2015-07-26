@@ -13,10 +13,13 @@ public class KIKarten {
 	private ArrayList<Persons> personen = new ArrayList<Persons>();
 	private ArrayList<Weapons> waffen = new ArrayList<Weapons>();
 
-	public KIKarten(){
+	public KIKarten(ArrayList <String> cards){
 		
 	}
 
+	public KIKarten(){
+	}
+	
 	public void addRaum(Rooms raum){
 		raeume.add(raum);
 	}
@@ -25,9 +28,10 @@ public class KIKarten {
 		personen.add(person);
 	}
 	
-	public void addWaffen(Weapons waffe){
+	public void addWaffe(Weapons waffe){
 		waffen.add(waffe);
 	}
+	
 	
 	/**
 	 * 

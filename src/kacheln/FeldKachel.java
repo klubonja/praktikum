@@ -15,10 +15,6 @@ import enums.Rooms;
 public class FeldKachel extends Kachel {
 
 	/**
-	 * 
-	 * @param text die Aufschrift
-	 * @param xKoordinate xKoordinate im Grid
-	 * @param yKoordinate yKoordinate im Grid
 	 * @param istRaum	ob die Kachel ein Raum ist
 	 * @param orientierung falls die Kachel eine Tuer ist, die Orientierung
 	 * @param raum hier immer null

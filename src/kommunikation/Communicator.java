@@ -396,6 +396,22 @@ public class Communicator {
 			
 
 			
+	public KachelContainer getKacheln() {
+		return kacheln;
+	}
+
+	public void setKacheln(KachelContainer kacheln) {
+		this.kacheln = kacheln;
+	}
+
+	public WahnsinnigTollerPathfinder getPathfinder() {
+		return pathfinder;
+	}
+
+	public void setPathfinder(WahnsinnigTollerPathfinder pathfinder) {
+		this.pathfinder = pathfinder;
+	}
+
 	public void setCurSuspicion(CluedoStatement curSuspicion) {
 		this.curSuspicion = curSuspicion;
 	}
