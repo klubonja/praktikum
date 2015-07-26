@@ -44,6 +44,7 @@ public class GameFrameView extends GridPane{
 	private KrasserStack komplettesFeld;
 	BallEbene ballEbene;
 	AussergewohnlichesZugfenster zugView;
+	
 
 	private HandFrameView hand;
 	

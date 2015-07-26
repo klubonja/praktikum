@@ -48,6 +48,7 @@ public enum CluedoProtokollMessageTypes {
 	suspect("suspect"),
 	disprove("disprove"),
 	end_turn("end turn"),
+	poolcards("poolcards"),
 	accuse("accuse");
 	
 	

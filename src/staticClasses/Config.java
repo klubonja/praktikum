@@ -43,6 +43,8 @@ public abstract class Config {
 	public final static double IP_PROMPT_WINDOW_HEIGHT = 200;
 	public final static double IP_PROMPT_WINDOW_WIDTH = 300;
 	
+	
+	
 	public final static double LOGIN_PROMPT_WINDOW_WIDTH = 300;
 	public final static double LOGIN_PROMPT_WINDOW_HEIGHT = 200;
 	
@@ -61,8 +63,8 @@ public abstract class Config {
 	public final static String BLACKLISTED_MSG = ""
 			+ "you have the ip of some evil known protoksaveollviolator, lets try anyway";
 
-
-
+	public final static double SHOWKARTEN_HEIGHT = 400;
+	public static double SHOWKARTEN_WIDTH = 150;
 	public static double COLOR_SELECT_WINDOW_WIDTH = 300;
 
 

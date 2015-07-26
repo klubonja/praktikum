@@ -5,15 +5,22 @@ import java.util.Stack;
 import java.util.logging.Level;
 
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.effect.Glow;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import kacheln.KachelContainer;
+import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import view.AussergewohnlichesZugfenster;
 import view.AussergewohnlichesZugfensterPresenter;
 import view.DicePresenter;
 import view.DiceView;
+import view.ShowKarten;
 import view.spielfeld.BallEbene;
 import view.spielfeld.BoardView;
 import view.spielfeld.GameFramePresenter;
@@ -26,6 +33,7 @@ import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoStatement;
 import enums.PlayerStates;
+import enums.Rooms;
 import finderOfPaths.Ausloeser;
 import finderOfPaths.Sucher;
 import finderOfPaths.Vorschlaege;
@@ -61,6 +69,8 @@ public class Communicator {
 	private DiceView diceView;
 	private BallEbene ballEbene;
 	private AussergewohnlichesZugfenster zugView;
+	
+	
 	
 	private GameFramePresenter gamePresenter;
 	private DicePresenter dicePresenter;
@@ -176,10 +186,10 @@ public class Communicator {
 			int yKoordinate = position.getY();
 			int xKoordinate = position.getX();
 			ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
-			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].getRaum().equals("pool")){
-				System.out.println("katatonga katanga!");
+			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].getRaum() == Rooms.pool){
+				
 			}
-			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].isIstRaum()){
+			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].isIstRaum() && kacheln.getKacheln()[yKoordinate][xKoordinate].getRaum() != Rooms.pool){
 				openWindow();
 			}
 			this.wuerfelWurf = null;
@@ -241,8 +251,21 @@ public class Communicator {
 	 * @param card Karte wird gehighlitet
 	 */
 	public void highlightCard(String card) {
+		ArrayList<String> myHand = new ArrayList<String>();
 		for (int i = 0; i < gameView.getHand().getHandURI().size(); i++) {
-			if (card.equals(gameView.getHand().getHandURI().get(i))) {
+				if(enums.Persons.isMemberPersonName(gameView.getHand().getHandURI().get(i))){
+					myHand.add(enums.Persons.getColorByPersonName(gameView.getHand().getHandURI().get(i)));
+				}
+				else{
+					myHand.add(gameView.getHand().getHandURI().get(i));
+				}
+			
+			
+		}
+		
+		for (int i = 0; i < myHand.size(); i++) {
+			
+			if (card.equals(myHand.get(i))) {
 				gameView.getHand().getHand().get(i).setEffect(new Glow(0.5));
 			}
 		}
@@ -253,8 +276,20 @@ public class Communicator {
 	 * @param card
 	 */
 	public void setCardFunction(String card){
+		ArrayList<String> myHand = new ArrayList<String>();
 		for (int i = 0; i < gameView.getHand().getHandURI().size(); i++) {
-			if (card.equals(gameView.getHand().getHandURI().get(i))) {
+			if(enums.Persons.isMemberPersonName(gameView.getHand().getHandURI().get(i))){
+				myHand.add(enums.Persons.getColorByPersonName(gameView.getHand().getHandURI().get(i)));
+			}
+			else{
+				myHand.add(gameView.getHand().getHandURI().get(i));
+			}
+		
+		
+		
+	}
+		for (int i = 0; i < myHand.size(); i++) {
+			if (card.equals(myHand.get(i))) {
 				gameView.getHand().getHand().get(i).setOnMousePressed(e -> {
 					sendDisproveMsg(card);
 				});
@@ -265,9 +300,35 @@ public class Communicator {
 		}
 	}
 
-	public void showPoolCards() {
-		//TODO hier muss noch was rein Leute
+	public void showPoolCards(ArrayList<String> karten) {
+		
+		Stage pool = new Stage(StageStyle.TRANSPARENT);
+		ShowKarten poolcards = new ShowKarten(pool, karten); 
+		System.out.println("ShowKarten stage wird erstellt? ");
+		Scene secondary = new Scene(poolcards, Config.SHOWKARTEN_HEIGHT, Config.SHOWKARTEN_WIDTH);
+		
+		System.out.println("ShowKarten scene wird erstellt? ");
+		secondary.setFill(Color.TRANSPARENT);
+		pool.setScene(secondary);
+		pool.setOpacity(0.9);
+		pool.setAlwaysOnTop(true);
+		pool.showAndWait();
 
+	}
+	
+	public void showDisprovedCard(String karte){
+		
+		
+		Stage pool = new Stage(StageStyle.TRANSPARENT);
+		ShowKarten poolcards = new ShowKarten(pool, karte);
+		System.out.println("ShowKarten stage wird erstellt? ");
+		Scene secondary = new Scene(poolcards, Config.SHOWKARTEN_HEIGHT, Config.SHOWKARTEN_WIDTH);
+		System.out.println("ShowKarten scene wird erstellt? ");
+		secondary.setFill(Color.TRANSPARENT);
+		pool.setScene(secondary);
+		pool.setOpacity(0.9);
+		pool.setAlwaysOnTop(true);
+		pool.showAndWait();
 	}
 
 	
@@ -344,10 +405,24 @@ public class Communicator {
 			}
 
 			public void handleDisprove() {
+				ArrayList<String> cards = new ArrayList<String>();
+				ArrayList<String> myCards = new ArrayList<String>();
+				cards = pcManager.getPlayerByNick(myNick).
+						getCards();
+				for(int i = 0; i < cards.size(); i++){
+					if(enums.Persons.isMemberPersonName(cards.get(i))){
+						myCards.add(enums.Persons.getColorByPersonName(cards.get(i)));
+					}
+					else{
+						myCards.add(cards.get(i));
+					}
+				}
+				System.out.println("Unsere Karten: " +pcManager.getPlayerByNick(myNick).
+						getCards().toString());
+				System.out.println("In der Arraylist: " + myCards.toString());
 				ArrayList<String> disprover = 
 						curSuspicion.makeConjunction(
-								pcManager.getPlayerByNick(myNick).
-								getCards());
+								myCards);
 				if (disprover.size() != 0){
 					showPossibleDisprovals(disprover);				
 				}
