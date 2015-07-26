@@ -9,13 +9,13 @@ import kacheln.Kachel;
 import kommunikation.Communicator;
 import kommunikation.PlayerCircleManager;
 import staticClasses.Config;
-import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoStatement;
 import enums.Persons;
+import enums.PlayerStates;
 import enums.Rooms;
 import enums.Weapons;
 
@@ -48,21 +48,26 @@ public class KI {
 	}
 	
 	public void startTurn(){
-		if (shallwefinish()) {//accuse aka mostprobably fuck up your game
-			accuse();
+		if (shallwefinish()) {
+			accuseRand();//accuse aka mostprobably fuck up your game
 			return;			
 		}
-		else if (false){ //take secret passage			
+		else if (yourOwnPlayer.getPossibleStates().contains(PlayerStates.use_secret_passage) && auxx.getRandInt(1, 2)%2 == 0){ //take secret passage	
+			communicator.requestUseSecretPassge();
 		}
 		else {// roll dice
 			communicator.getDicePresenter().iWantToRollTheDice();
 		}		
 	}
 	
+	
 	public void postmove(){
 		CluedoPosition pos = yourOwnPlayer.getPosition();
 		if (kiKacheln.getKachelAt(pos.getX(), pos.getY()).isIstRaum()){
 			suspectRand();
+		}
+		else if(shallwefinish()){
+			accuseRand();
 		}
 		else {
 			communicator.endTurn();
@@ -112,10 +117,14 @@ public class KI {
 		return safeKarten.wieVielProzentHabenWir()  > Config.HOWMANYOFDEMCARDS/Config.ALLOFDEMCARDS;			
 	}
 	
-	public void accuse(){
+	public void accuseRand(){
 		CluedoStatement finalstatement = safeKarten.makeAccusingRandStatement();
-		network.sendMsgToServer(NetworkMessages.accuseMsg(network.getGameId(),
-				NetworkMessages.statement(finalstatement.getPerson().getPersonName(), finalstatement.getRoom().getName(), finalstatement.getWeapon().getName())));
+		communicator.accuse(finalstatement.getPerson().getPersonName(), finalstatement.getRoom().getName(), finalstatement.getWeapon().getName());
+	}
+	
+	public void chooseDisprove(ArrayList<String> disprover) {
+		String card = disprover.get(auxx.getRandInt(0, disprover.size()-1));		
+		communicator.sendDisproveMsg(card);
 	}
 
 	
@@ -147,5 +156,7 @@ public class KI {
 		
 		return kachel; //für alle kacheln die gleichweit und am weitesten weg sind gilt wer höhere y werte hat wird bevorzugt und dann wer höhere x werte hat
 	}
+
+	
 	
 }
