@@ -28,7 +28,7 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 	private HBox vermuten;
 	private VBox organizer;
 
-	private Button close = new Button("Back");
+	private Button back = new Button("Back");
 
 	private ComboBox<String> personen = new ComboBox<String>();
 	private ComboBox<String> waffen = new ComboBox<String>();
@@ -65,13 +65,12 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 		buttons.setSpacing(10);
 		buttons.setAlignment(Pos.CENTER);
 		buttons.getChildren().addAll(
-				Images.NOanklageImage,
-				Images.NOwurfelImage,
-				Images.NOgangImage);
+				Images.enabledSuspect,
+				Images.enabledRoll,
+				Images.enabledPassage);
 		
 
 		bottom = new HBox();
-		bottom.setSpacing(150);
 		bottom.setAlignment(Pos.CENTER);
 
 		organizer = new VBox();
@@ -90,23 +89,23 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 						)
 				);
 		this.setCenter(organizer);
-		this.setWidth(450);
-		this.setHeight(300);
+		this.setWidth(696);
+		this.setHeight(725);
 	}
 
 	public void killEmAll() {
 		buttons.getChildren().removeAll(personen, waffen, zimmer);
 		bottom.getChildren().removeAll(
-				Images.ONanklage,
-				Images.OFFanklage,
-				close);
+				Images.suspectNOW,
+				Images.suspectLATER,
+				back);
 	}
 
 	public void addInactiveButtons() {
 		buttons.getChildren().addAll(
-				Images.NOanklageImage,
-				Images.NOwurfelImage,
-				Images.NOgangImage);
+				Images.enabledSuspect,
+				Images.enabledRoll,
+				Images.enabledPassage);
 	}
 
 	public HBox getButtonsBox() {
@@ -133,12 +132,12 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 		this.zimmer.setText(room);
 	}
 
-	public Button getClose() {
-		return close;
+	public Button getBackButton() {
+		return back;
 	}
 
-	public void setClose(Button close) {
-		this.close = close;
+	public void setBackButton(Button back) {
+		this.back = back;
 	}
 
 	public HBox getVermuten() {

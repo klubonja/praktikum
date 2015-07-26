@@ -287,6 +287,6 @@ class IncomingHandler implements Runnable {
 		dataGuiManager.removeServer(server);
 		dataGuiManager.setServer();
 
-		auxx.logsevere("incomming handler thread runnning outon server : " + server.getGroupName());
+		auxx.logsevere("incomming handler thread runnning out on server : " + server.getGroupName());
 	}
 }

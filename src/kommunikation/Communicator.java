@@ -292,26 +292,26 @@ public class Communicator {
 			}
 		});
 
-		Images.YESgangImage.setOnMouseClicked(e -> network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID)));
+		Images.passage.setOnMouseClicked(e -> network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID)));
 		
 		
 		// BOESE!!
-		Images.ONanklage.setOnMouseClicked(e -> {
+		Images.suspectNOW.setOnMouseClicked(e -> {
 			suspect();
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
 				remove(gameView.getKomplettesFeld().getZugView().getBottomBox());
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
 				remove(gameView.getKomplettesFeld().getZugView().getVermuten());
 			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
-				remove(Images.OFFanklage);
+				remove(Images.suspectLATER);
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
 				add(gameView.getKomplettesFeld().getZugView().getButtonsBox());
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
 				add(gameView.getKomplettesFeld().getZugView().getBottomBox());
 			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
-				remove(gameView.getKomplettesFeld().getZugView().getClose());
+				remove(gameView.getKomplettesFeld().getZugView().getBackButton());
 			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
-				add(gameView.getKomplettesFeld().getZugView().getClose());
+				add(gameView.getKomplettesFeld().getZugView().getBackButton());
 			gameView.getKomplettesFeld().getChildren().remove(zugView);
 		});
 

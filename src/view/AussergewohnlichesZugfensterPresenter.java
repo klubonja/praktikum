@@ -21,112 +21,111 @@ public class AussergewohnlichesZugfensterPresenter {
 	public void zugFensterButtonManager() {
 
 		// Vermuten
-		Images.YESanklageImage.setOnMouseClicked(e -> {
+		Images.suspect.setOnMouseClicked(e -> {
 			gameView.getOrganizer().getChildren().remove(gameView.getButtonsBox());
-			gameView.getBottomBox().getChildren().add(Images.OFFanklage);
+			gameView.getBottomBox().getChildren().add(Images.suspectLATER);
 			gameView.getOrganizer().getChildren().add(gameView.getVermuten());
 			gameView.getOrganizer().getChildren().add(gameView.getBottomBox());
-			gameView.getOrganizer().getChildren().add(gameView.getClose());
+			gameView.getOrganizer().getChildren().add(gameView.getBackButton());
 		});
 
 		// Gang nehmen
-		Images.YESgangImage.setOnMouseClicked(e -> {
+		Images.passage.setOnMouseClicked(e -> {
 			Sounds.gangSound();
 			removeButtons();
 			gameView.addInactiveButtons();
 		});
 
 		// Button Animation
-		Images.NOanklageImage.setOnMouseEntered(e -> {
+		Images.enabledSuspect.setOnMouseEntered(e -> {
 			removeButtons();
 			gameView.getButtonsBox()
 					.getChildren()
-					.addAll(Images.YESanklageImage,
-							Images.NOwurfelImage,
-							Images.NOgangImage);
+					.addAll(Images.suspect,
+							Images.enabledRoll,
+							Images.enabledPassage);
 		});
 
 		// Button Animation
-		Images.YESanklageImage.setOnMouseExited(e -> {
+		Images.suspect.setOnMouseExited(e -> {
 			removeButtons();
 			gameView.addInactiveButtons();
 		});
 
 		// Button Animation
-		Images.NOwurfelImage.setOnMouseEntered(e -> {
+		Images.enabledRoll.setOnMouseEntered(e -> {
 			removeButtons();
-			gameView.getButtonsBox()
-					.getChildren()
-					.addAll(Images.NOanklageImage, Images.YESwurfelImage,
-							Images.NOgangImage);
+			gameView.getButtonsBox().getChildren().addAll(
+					Images.enabledSuspect,
+					Images.roll,
+					Images.enabledPassage);
 		});
 
 		// Button Animation
-		Images.YESwurfelImage.setOnMouseExited(e -> {
+		Images.roll.setOnMouseExited(e -> {
 			removeButtons();
 			gameView.addInactiveButtons();
 		});
 
 		// Button Animation
-		Images.NOgangImage.setOnMouseEntered(e -> {
+		Images.enabledPassage.setOnMouseEntered(e -> {
 			removeButtons();
-			gameView
-
-			.getButtonsBox()
-					.getChildren()
-					.addAll(Images.NOanklageImage, Images.NOwurfelImage,
-							Images.YESgangImage);
+			gameView.getButtonsBox().getChildren().addAll(
+					Images.enabledSuspect,
+					Images.enabledRoll,
+					Images.passage);
 		});
 
 		// Button Animation
-		Images.YESgangImage.setOnMouseExited(e -> {
+		Images.passage.setOnMouseExited(e -> {
 			removeButtons();
 			gameView.addInactiveButtons();
 		});
 
 		// Der Button fuer die aeusserung der Anklage
-		Images.ONanklage.setOnMouseExited(e -> {
-			gameView.getBottomBox().getChildren()
-					.removeAll(Images.OFFanklage, Images.ONanklage);
-			gameView.getBottomBox().getChildren().addAll(Images.OFFanklage);
+		Images.suspectNOW.setOnMouseExited(e -> {
+			gameView.getBottomBox().getChildren().removeAll(
+					Images.suspectLATER,
+					Images.suspectNOW);
+			gameView.getBottomBox().getChildren().addAll(
+					Images.suspectLATER);
 		});
 
-		// Schliesst das Zugfenster (nur fuer Developing gedacht
-		// nicht fuer das eigentliche Spiel)
-		gameView.getClose().setOnMouseClicked(e -> {
+		//WE HAVE TO GO BACK!
+		gameView.getBackButton().setOnMouseClicked(e -> {
 			gameView.getOrganizer().getChildren().remove(gameView.getVermuten());
-			gameView.getBottomBox().getChildren().remove(Images.ONanklage);
-			gameView.getBottomBox().getChildren().remove(Images.OFFanklage);
+			gameView.getBottomBox().getChildren().remove(Images.suspectNOW);
+			gameView.getBottomBox().getChildren().remove(Images.suspectLATER);
 			gameView.getOrganizer().getChildren().remove(gameView.getBottomBox());
-			gameView.getOrganizer().getChildren().remove(gameView.getClose());
+			gameView.getOrganizer().getChildren().remove(gameView.getBackButton());
 			gameView.getOrganizer().getChildren().add(gameView.getButtonsBox());
 		});
 	}
 
 	public void vermutungButtonManager() {
 		// Der Button fuer die aeusserung der Vermutung
-		Images.OFFanklage.setOnMouseEntered(e -> {
-			gameView.getBottomBox().getChildren().remove(Images.OFFanklage);
-			gameView.getBottomBox().getChildren().remove(Images.ONanklage);
+		Images.suspectLATER.setOnMouseEntered(e -> {
+			gameView.getBottomBox().getChildren().remove(Images.suspectLATER);
+			gameView.getBottomBox().getChildren().remove(Images.suspectNOW);
 			gameView.getBottomBox().getChildren()
-					.addAll(Images.ONanklage);
+					.addAll(Images.suspectNOW);
 		});
 
 		// Der Button fuer die aeusserung der Anklage
-		Images.ONanklage.setOnMouseExited(e -> {
-			gameView.getBottomBox().getChildren().remove(Images.ONanklage);
-			gameView.getBottomBox().getChildren().remove(Images.OFFanklage);
+		Images.suspectNOW.setOnMouseExited(e -> {
+			gameView.getBottomBox().getChildren().remove(Images.suspectNOW);
+			gameView.getBottomBox().getChildren().remove(Images.suspectLATER);
 			gameView.getBottomBox().getChildren()
-					.addAll(Images.OFFanklage);
+					.addAll(Images.suspectLATER);
 		});
 	}
 
 	public void removeButtons() {
 		gameView.getButtonsBox()
 				.getChildren()
-				.removeAll(Images.NOanklageImage, Images.YESanklageImage,
-						Images.NOwurfelImage, Images.YESwurfelImage,
-						Images.NOgangImage, Images.YESgangImage);
+				.removeAll(Images.enabledSuspect, Images.suspect,
+						Images.enabledRoll, Images.roll,
+						Images.enabledPassage, Images.passage);
 	}
 
 	public AussergewohnlichesZugfenster getGameView() {

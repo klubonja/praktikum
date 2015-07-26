@@ -13,15 +13,16 @@ public class Images {
 	public static ImageView bloom;
 	public static ImageView gloria;
 	public static ImageView gatow;
-	
-	public static ImageView YESanklageImage;
-	public static ImageView NOanklageImage;
-	public static ImageView YESgangImage;
-	public static ImageView NOgangImage;
-	public static ImageView YESwurfelImage;
-	public static ImageView NOwurfelImage;
-	public static ImageView OFFanklage;
-	public static ImageView ONanklage;
+
+	public static ImageView disabled;
+	public static ImageView enabledSuspect;
+	public static ImageView enabledRoll;
+	public static ImageView enabledPassage;
+	public static ImageView suspect;
+	public static ImageView passage;
+	public static ImageView roll;
+	public static ImageView suspectNOW;
+	public static ImageView suspectLATER;
 	
 	public static void initImages(){
 	bg = new ImageView(new Image("media/Field_0.png"));
@@ -34,13 +35,15 @@ public class Images {
 	gloria = new ImageView(new Image("media/gameObjects/gloria_s.png"));
 	gatow = new ImageView(new Image("media/gameObjects/gatow_w.png"));
 	
-	YESanklageImage = new ImageView(new Image("media/YESanklage.png"));
-	NOanklageImage = new ImageView(new Image("media/NOanklage.png"));
-	YESgangImage = new ImageView(new Image("media/YESgang.png"));
-	NOgangImage = new ImageView(new Image("media/NOgang.png"));
-	YESwurfelImage = new ImageView(new Image("media/YESwurfeln.png"));
-	NOwurfelImage = new ImageView(new Image("media/NOwurfeln.png"));
-	OFFanklage = new ImageView(new Image("media/OFFanklage.png"));
-	ONanklage = new ImageView(new Image("media/ONanklage.png"));
+	disabled = new ImageView(new Image("media/buttons/disabled.png"));
+	enabledSuspect = new ImageView(new Image("media/buttons/enabled.png"));
+	enabledRoll = new ImageView(new Image("media/buttons/enabled.png"));
+	enabledPassage = new ImageView(new Image("media/buttons/enabled.png"));
+	suspect = new ImageView(new Image("media/buttons/suspect.png"));
+	roll = new ImageView(new Image("media/buttons/roll.png"));
+	passage = new ImageView(new Image("media/buttons/passage.png"));
+	
+	suspectNOW = new ImageView(new Image("media/buttons/suspectNOW.png"));
+	suspectLATER = new ImageView(new Image("media/buttons/suspectLATER.png"));
 	}
 }

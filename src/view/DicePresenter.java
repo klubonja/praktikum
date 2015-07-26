@@ -66,8 +66,7 @@ public class DicePresenter {
 	}
 	
 	public void startEvents(){
-		
-		Images.YESwurfelImage.setOnMouseClicked(e -> iWantToRollTheDice());
+		Images.roll.setOnMouseClicked(e -> iWantToRollTheDice());
 	}
 	
 	public void iWantToRollTheDice(){
