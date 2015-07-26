@@ -1,26 +1,34 @@
 package kacheln;
 
+import java.util.ArrayList;
+
 import staticClasses.Config;
 
 public class KIKachelContainer {
 
 
 	private KIKachel [][] kacheln;
-	
+	private ArrayList<KIKachel> doors;
 	/**
 	 * Erstellt einen KachelContainer nach Standard-ISO-Bauanleitung
 	 */
 	public KIKachelContainer(KachelContainer kachelContainer){
 		kacheln = new KIKachel [Config.ROWS][Config.COLUMNS];
+		doors = new ArrayList<KIKachel>();
 		for (int yKoordinate = 0; yKoordinate < kacheln.length; yKoordinate++){
 			for (int xKoordinate = 0; xKoordinate < kacheln[yKoordinate].length; xKoordinate++){
 				Kachel momentaneNichtKIKachel = kachelContainer.getKacheln()[yKoordinate][xKoordinate];
-				kacheln[yKoordinate][xKoordinate] = new KIKachel (momentaneNichtKIKachel);
+				KIKachel k = new KIKachel (momentaneNichtKIKachel);
+				kacheln[yKoordinate][xKoordinate] = k;
+				if (k.isIstTuer()) doors.add(k);
 			}
 		}
 		
 	}
-
+	
+	public ArrayList<KIKachel> getDoors() {
+		return doors;
+	}
 	
 	/**
 	 * Eine Kachel an einer bestimmten Position 
