@@ -284,6 +284,17 @@ public abstract class NetworkMessages {
 		return json.toString();
 	}
 	
+	public static String pool_cardsMsg(int gameID,ArrayList<String> cards){
+		CluedoJSON json = new CluedoJSON("poolcards");
+		json.put("gameID", gameID);
+		JSONArray cardsJSON = new JSONArray();
+		for (String s: cards)
+			cardsJSON.put(s);
+		json.put("cards", cardsJSON);		
+		
+		return json.toString();
+	}
+	
 	public static String game_startedMsg(int gameID,ArrayList<String> order){
 		JSONArray orderJSON = new JSONArray();
 		for (String nick: order)

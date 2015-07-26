@@ -81,6 +81,20 @@ public enum Persons {
 	                return person;
 	        return null;
 	    }
+	 static public String getColorByPersonName(String name) {
+	        Persons[] persons = Persons.values();
+	        for (Persons person  : persons)
+	            if (person.getPersonName().equals(name))
+	                return person.getColor();
+	        return null;
+	    }
+	 static public String getPersonByPersonName(String name) {
+	        Persons[] persons = Persons.values();
+	        for (Persons person  : persons)
+	            if (person.getPersonName().equals(name))
+	                return person.getPersonName();
+	        return null;
+	    }
 	 public static ArrayList<String> getPersonsString() {        
 	        Persons[] persons = Persons.values();
 	        ArrayList<String> pnames = new ArrayList<String>();

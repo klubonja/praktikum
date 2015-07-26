@@ -231,6 +231,11 @@ public class CluedoProtokollChecker {
 		if (validateValue(jsonRoot,"result"))
 			validateDiceResult(jsonRoot,"result");
 	}
+	
+	void val_poolcards(){
+		if(validateValue(jsonRoot, "cards"))
+			isJSONArrayOfType(jsonRoot, "cards", "cards");
+	}
 
 	void val_moved() {
 		val_watch_game();

@@ -169,6 +169,14 @@ public class CluedoGameServer extends CluedoGame {
 				return;
 			}
 	}
+	
+	public void sendPoolcardsByPlayer(CluedoPlayer cp,ArrayList<String> cards){
+		for (ClientItem c: participants)
+			if (cp.getNick().equals(c.getNick())){
+				c.sendMsg(NetworkMessages.pool_cardsMsg(getGameId(), cards));
+				return;
+			}
+	}
 
 //////////////////////////////////////////////RUNNING GAME///////////////////////////////////////////////////////
 	

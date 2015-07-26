@@ -99,15 +99,7 @@ class IncomingHandler implements Runnable {
 			else if (checker.getType().equals("watcher added")){
       		  dataGuiManager.addWatcherToGame(server,checker.getMessage().getInt("gameID"),checker.getMessage().getString("nick"));      		  
 			}
-			else if (checker.getType().equals("game started")){
-        		  ArrayList<String> orderlist = auxx.jsonArrayToArrayList(checker.getMessage().getJSONArray("order"));
-        		  dataGuiManager.startGameOnServer(
-        				  server,
-        				  checker.getMessage().getInt("gameID"),
-        				  checker.getMessage().getString("gamestate"),
-        				  orderlist
-        				  );
-			}
+			
 			else if (checker.getType().equals("player_cards")){
         		 dataGuiManager.setCardsOnGame(checker.getMessage().getInt("gameID"), auxx.jsonArrayToArrayList(
 						 checker.getMessage().getJSONArray("cards")),server);        		  		  
@@ -150,12 +142,24 @@ class IncomingHandler implements Runnable {
 			} 
 				
 			else if(checker.getType().equals("disproved")){
+				if(checker.getMessage().has("card")){
+				String card = checker.getMessage().getString("card");
+				dataGuiManager.handleDisproved(checker.getMessage().getInt("gameID"), server, card);
 				server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
 					checker.getMessage().getString("nick").toString() + " disproved!"
 					);
+				
+//				server.getGameByGameID(checker.getMessage().getInt("gameID")).disprovedKarte(checker.getMessage().getString("card"));
+				}
 			} 
 			else if (checker.getType().equals("no disprove")){
 					dataGuiManager.noDisprove(checker.getMessage().getInt("gameID"),server);
+			}
+			
+			else if(checker.getType().equals("poolcards")){
+				
+				server.getGameByGameID(checker.getMessage().getInt("gameID")).showPoolcards(auxx.jsonArrayToArrayList(checker
+						.getMessage().getJSONArray("cards")));
 			}
 
 			else if (checker.getType().equals("game ended")){
