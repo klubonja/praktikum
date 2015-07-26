@@ -52,6 +52,7 @@ public class Communicator {
 	
 	private int [] wuerfelWurf;
 	private boolean sswitch;
+	private boolean accusing = false;
 	private CluedoStatement curSuspicion = null;
 	
 	private boolean kiplay = false;
@@ -205,7 +206,8 @@ public class Communicator {
 		network.sendMsgToServer(NetworkMessages.suspectMsg(gameID, person,weapon,room)); //nicht suspicion das darf nur der server!
 	}
 
-	public void accuse(String person, String weapon, String room) {	
+	public void accuse(String person, String weapon, String room) {
+		accusing = true;
 		network.sendMsgToServer(NetworkMessages.accuseMsg(network.getGameId(),
 				NetworkMessages.statement(person, room, weapon)));
 	}
@@ -491,5 +493,21 @@ public class Communicator {
 		gameView.getMenu().getActivateKI().setText("Enable KI");	
 		}
 			
+	}
+
+	public boolean getAccusing() {
+		return accusing;
+	}
+
+	public void setAccusing(boolean accusing) {
+		this.accusing = accusing;
+	}
+
+	public CluedoGameClient getNetwork() {
+		return network;
+	}
+
+	public void setNetwork(CluedoGameClient network) {
+		this.network = network;
 	}
 }

@@ -203,17 +203,12 @@ class CommunicationHandler implements Runnable {
 	   	   }
 	     	   
 	   	   	else if (checker.getType().equals("accuse")) {
-
-//
 		   	   	int gameID = checker.getMessage().getInt("gameID");	
-				dataManager.accuseRequest(
-						gameID, 
-						NetworkMessages.makeCluedoStatementFromJSON(
-								checker.getMessage().getJSONObject("statement")
-						), 
-						client
-				);
-
+				dataManager.accuseRequest(gameID, NetworkMessages.makeCluedoStatementFromJSON(
+								checker.getMessage().getJSONObject("statement")),client);
+				
+				JSONObject statement = checker.getMessage().getJSONObject("statement");
+				dataManager.sendMsgToAllClients(NetworkMessages.accuseMsg(gameID, statement));
 			} 
 	   	   	else if (checker.getType().equals("suspect")) {
 					int gameID = checker.getMessage().getInt("gameID");	

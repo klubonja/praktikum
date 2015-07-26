@@ -128,10 +128,7 @@ class IncomingHandler implements Runnable {
 				String weapon = json.getString("weapon").toString();
 				String room = json.getString("room").toString();
 				server.getGameByGameID(checker.getMessage().getInt("gameID"))
-						.somebodyIsAccusing(
-						server.getGameByGameID(checker.getMessage().getInt("gameID")).getMyNick(),
-						person, weapon, room
-						);
+						.somebodyIsAccusing();
 			}
 			else if(checker.getType().equals("wrong accusation")){
 					JSONObject json = checker.getMessage().getJSONObject(

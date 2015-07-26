@@ -173,11 +173,10 @@ public class CluedoGameClient extends CluedoGame {
 
 	///////////////////////////////GAMEGUIACTION//////////////////////////////////////////////////////
 	
-	public void somebodyIsAccusing(String nick, String person, String weapon,
-			String room) {
-		String str = "The player " + nick + " is trying to solve the mystery!"
-				+ "\n" + "Accused: " + person + " " + weapon + " " + room;
-		changeLabel(str);
+	public void somebodyIsAccusing() {
+		if(communicator.getAccusing()){
+			
+		}
 	}
 
 	public void somebodyFailedToAccuse(String person, String weapon, String room) {
