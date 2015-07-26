@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import kacheln.KIKachel;
 import kacheln.KIKachelContainer;
-import kacheln.KIKachel;
 import finderOfPaths.WahnsinnigTollerPathfinder;
 
 public class WhereDoIGo {
@@ -63,8 +62,7 @@ public class WhereDoIGo {
 		return tuerKIKacheln;
 	}
 	
-	public boolean gibtEsTueren(ArrayList <KIKachel> kacheln){
-		
+	public boolean gibtEsTueren(ArrayList <KIKachel> kacheln){		
 		return tuerKIKachelnSuchen(kacheln).size() > 0; 
 	}
 	
