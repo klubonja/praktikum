@@ -43,8 +43,7 @@ public class Deck {
 	}
 	
 	public void dealCluedoCards(){
-		rooms.remove("pool");
-		
+		rooms.remove("pool");		
 		winningHand = new String[3];
 		ArrayList<String> randomPersons = new ArrayList<String>();
 		randomPersons.add("red");

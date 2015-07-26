@@ -181,9 +181,6 @@ public class Communicator {
 			int yKoordinate = position.getY();
 			int xKoordinate = position.getX();
 			ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
-			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].getRaum().equals("pool")){
-				System.out.println("katatonga katanga!");
-			}
 			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].isIstRaum()){
 				
 				if (kiplay){
@@ -471,5 +468,12 @@ public class Communicator {
 		gameView.getMenu().getActivateKI().setText("Enable KI");	
 		}
 			
+	}
+
+	public void moved() {
+		if (kiplay){
+			ki.moved();
+		}
+		
 	}
 }

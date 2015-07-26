@@ -251,6 +251,8 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 						game.disprove();
 					else if (newStates.contains(PlayerStates.do_nothing.getName()))
 						game.currentPlayerToNothing();
+					else if (newStates.contains(PlayerStates.end_turn.getName())) //KI
+						game.moved();
 					game.changeLabel(auxx.formatStringList(newStates, "or"));
 				}
 				else { //its some other bloke

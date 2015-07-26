@@ -100,6 +100,13 @@ public class CluedoGameClient extends CluedoGame {
 		});
 	}
 	
+	public void moved() {
+		Platform.runLater(() -> {
+			communicator.moved(); //for KI
+		});
+		
+	}	
+	
 	public void currentPlayerToNothing() {
 		Platform.runLater(() -> {
 			communicator.updateStatesToNothing();
@@ -289,5 +296,8 @@ public class CluedoGameClient extends CluedoGame {
 //				server.getMyNick(),
 //				cards);
 		
-	}	
+	}
+
+
+	
 }

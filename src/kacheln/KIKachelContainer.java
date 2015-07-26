@@ -20,7 +20,9 @@ public class KIKachelContainer {
 				Kachel momentaneNichtKIKachel = kachelContainer.getKacheln()[yKoordinate][xKoordinate];
 				KIKachel k = new KIKachel (momentaneNichtKIKachel);
 				kacheln[yKoordinate][xKoordinate] = k;
-				if (k.isIstTuer()) doors.add(k);
+				if (momentaneNichtKIKachel.isIstTuer()) {
+					doors.add(k);
+				}
 			}
 		}
 		

@@ -17,8 +17,7 @@ public class WhereDoIGo {
 	}
 	
 	public ArrayList <KIKachel> kachelnSuchen(){
-		ArrayList <KIKachel> kacheln = new ArrayList <KIKachel> ();
-		
+		ArrayList <KIKachel> kacheln = new ArrayList <KIKachel> ();		
 		for (int yKoordinate = 0; yKoordinate < kIkachelContainer.getKacheln().length; yKoordinate++)
 			for (int xKoordinate = 0; xKoordinate < kIkachelContainer.getKacheln()[yKoordinate].length; xKoordinate++){
 				
@@ -26,6 +25,7 @@ public class WhereDoIGo {
 				
 				if (momentaneKIKachel.getMoeglichkeitenHierher() != null){
 					kacheln.add(momentaneKIKachel);
+					System.out.println("where do igo : kachel nichtempty");
 				}
 			}
 		
