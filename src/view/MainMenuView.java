@@ -241,6 +241,9 @@ public class MainMenuView extends StackPane{
         this.stage.setAlwaysOnTop(true);
         this.stage.centerOnScreen();
         this.stage.show();
+        
+        @SuppressWarnings("unused")
+		MainMenuPresenter pres = new MainMenuPresenter(this);
 	}
 	
 	public void close(){

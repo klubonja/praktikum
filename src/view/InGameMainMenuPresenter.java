@@ -23,6 +23,7 @@ public class InGameMainMenuPresenter {
 		
 		MainMenuView menu = new MainMenuView();
         menu.start();
+        view.getGameFrameView().getAudio().stop();
         view.getGameFrameView().close();
         view.close();
 	}
