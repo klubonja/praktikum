@@ -1,7 +1,9 @@
 package yoloKI;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import kacheln.Kachel;
 import kommunikation.Communicator;
 import kommunikation.PlayerCircleManager;
 import staticClasses.Config;
@@ -9,6 +11,7 @@ import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
+import cluedoNetworkLayer.CluedoPosition;
 import cluedoNetworkLayer.CluedoStatement;
 
 public class KI {
@@ -47,7 +50,19 @@ public class KI {
 	}
 	
 	public void move(){
-		com.getAusloeser().suggestMoveToServer(pos);
+		
+		//com.getAusloeser().suggestMoveToServer(pos);
+	}
+	
+	public Kachel getClosestKachelFromList(List<Kachel> klist,CluedoPosition pos){
+		Kachel kachel = new Kachel();
+		int d = 0;
+		for (Kachel k: klist){
+			int dtmp = Math.abs((k.getPosition().getX()+k.getPosition().getY()) - (pos.getX()+pos.getY()));
+			if (dtmp < d) kachel = k;
+		}
+		
+		return kachel; //für alle kacheln die gleichweitweg und am weitesten weg sind gilt wer höhere y werte hat wird bevorzugt und dann wer höhere x werte hat
 	}
 	
 	public boolean shallwefinish(){
