@@ -37,8 +37,8 @@ public class KI {
 		network = n;
 		communicator = communi;
 		yourOwnPlayer = pcManager.getPlayerByNick(network.getMyNick());
-		safeKarten = new KIKarten(yourOwnPlayer.getCards(),pcManager.getSize());
-		eigeneKarten = new KIKarten(yourOwnPlayer.getCards());
+		safeKarten = new KIKarten(yourOwnPlayer.getCards(), pcManager.getSize());
+		eigeneKarten = new KIKarten(yourOwnPlayer.getCards(), pcManager.getSize());
 		this.whereDoIGo = new WhereDoIGo(communicator.getPathfinder(), kiKacheln);
 		this.kiKacheln = new KIKachelContainer(communicator.getKacheln());
 	}

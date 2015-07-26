@@ -24,9 +24,6 @@ public class KIKarten {
 		addKarten(mycards);
 	}
 
-	public KIKarten(){
-	}
-	
 	public void addRaum(Rooms raum){
 		raeume.add(raum);
 	}
