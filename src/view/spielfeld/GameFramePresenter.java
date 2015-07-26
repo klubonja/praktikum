@@ -203,7 +203,7 @@ public class GameFramePresenter {
 	        audioCounter++;
 	        if(audioCounter > 6){
 	        	
-	        	audioCounter = 1;
+	        	audioCounter = 0;
 	        }
 	        
 	        adjustAudio();
