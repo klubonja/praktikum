@@ -88,15 +88,16 @@ public class Communicator {
 		gameID = network.getGameId();		
 		pcManager = new PlayerCircleManager(network.getPlayers());
 		
-		ki = new KI(network,pcManager,this);
-		
 		kacheln = new KachelContainer();
+		
 		gameView = new GameFrameView(pcManager, kacheln, network);
 		gameView.start();
 		gamePresenter = new GameFramePresenter(gameView,network,pcManager, gameID, kacheln);
 		dicePresenter = gamePresenter.getDicePresenter();
 		zugPresenter = gamePresenter.getZugPresenter();
 
+		ki = new KI(network,pcManager,this);
+		
 		diceView = gameView.getDice();
 		boardView = gameView.getBoard();
 		ballEbene = gameView.getBallEbene();
@@ -175,6 +176,9 @@ public class Communicator {
 			int yKoordinate = position.getY();
 			int xKoordinate = position.getX();
 			ausloeser.ausloesen(yKoordinate, xKoordinate, person, pcManager);
+			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].getRaum().equals("pool")){
+				System.out.println("katatonga katanga!");
+			}
 			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].isIstRaum()){
 				openWindow();
 			}
