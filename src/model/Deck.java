@@ -23,6 +23,7 @@ public class Deck {
 	String[] winningHand;
 	
 	private List<String> persons = new ArrayList<String>();
+	private List<String> personscolor = new ArrayList<String>();
 	private List<String> weapons = new ArrayList<String>();
 	private List<String> rooms = new ArrayList<String>();
 	private List<String> deck;
@@ -32,6 +33,7 @@ public class Deck {
 		deck = new ArrayList<String>();
 		rooms = Rooms.getRoomsString();
 		persons = Persons.getPersonsString();
+		personscolor =  Persons.getPersonsStringColor();
 		weapons = Weapons.getWeaponsString();
 	}
 	
@@ -39,26 +41,18 @@ public class Deck {
 		deck.addAll(rooms);
 		deck.addAll(weapons);
 		deck.addAll(persons);
-		rooms.remove("pool");
 	}
 	
 	public void dealCluedoCards(){
 		rooms.remove("pool");		
 		winningHand = new String[3];
-		ArrayList<String> randomPersons = new ArrayList<String>();
-		randomPersons.add("red");
-		randomPersons.add("yellow");
-		randomPersons.add("white");
-		randomPersons.add("green");
-		randomPersons.add("blue");
-		randomPersons.add("purple");
-		String randomPerson = choseRandom(randomPersons);
+		String randomPerson = choseRandom(personscolor);
 		String randomWeapon = choseRandom(weapons);
 		String randomRoom = choseRandom(rooms);
 		winningHand[0] = randomPerson;
 		winningHand[1] = randomWeapon;
 		winningHand[2] = randomRoom;
-		persons.remove(randomPerson);
+		persons.remove(Persons.getPersonByColor(randomPerson).getPersonName());
 		weapons.remove(randomWeapon);
 		rooms.remove(randomRoom);
 		System.out.println("AND THE WINNER IIIIIIIIIIIIIIIIS: " + winningHand[0] + " " + winningHand[1] + " "  + winningHand[2]);

@@ -2,7 +2,6 @@ package enums;
 
 import java.util.ArrayList;
 
-import staticClasses.auxx;
 import javafx.scene.paint.Color;
 import cluedoNetworkLayer.CluedoPosition;
 
@@ -89,6 +88,14 @@ public enum Persons {
 	        	pnames.add(p.getPersonName());
 	        return pnames;
 	    }
+	 
+	 public static ArrayList<String> getPersonsStringColor() {        
+        Persons[] persons = Persons.values();
+        ArrayList<String> pnames = new ArrayList<String>();
+        for (Persons p: persons)
+        	pnames.add(p.getColor());
+        return pnames;
+    }
 	
 	 
 	

@@ -188,7 +188,7 @@ public class CluedoServerGUI extends CluedoNetworkGUI {
         
 
          primaryStage.setScene(scene);
-         //primaryStage.show();
+         //primaryStage.show(); // wir brauchen keine gui
      }
     
 	void setAdditionalListener(){
