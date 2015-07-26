@@ -109,6 +109,8 @@ public class Communicator {
 		raumBeweger = gamePresenter.getRaumBeweger();
 		pathfinder = gamePresenter.getPathfinder();
 		sucher = gamePresenter.getSucher();	
+		
+		gameView.getMenu().getActivateKI().setOnAction(e -> kiSwitch());
 	}
 
 	/**

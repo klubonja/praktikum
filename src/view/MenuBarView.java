@@ -35,6 +35,7 @@ public class MenuBarView extends MenuBar{
 	main = new MenuItem("Main Menu");
 	quit = new MenuItem("Exit Game");
 	hints = new MenuItem("Game Rules");
+	activateKI = new MenuItem("Activate KI");
 	options.getItems().addAll(sounds, activateKI, main, quit);
 	help.getItems().add(hints);
 	this.getMenus().addAll(options, help);
