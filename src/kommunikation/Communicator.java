@@ -158,9 +158,8 @@ public class Communicator {
 		CluedoPosition position = pcManager.getCurrentPlayer().getPosition();
 		beweger.useSecretPassage(pcManager);
 		if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[position.getY()][position.getX()].isIstRaum()){
-			openWindow();
-		}
-		
+			if (!kiplay) openWindow();
+		}		
 	}
 	
 	public void requestUseSecretPassge(){
