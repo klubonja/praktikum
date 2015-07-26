@@ -3,11 +3,12 @@ package yoloKI;
 import java.util.ArrayList;
 import java.util.List;
 
-import kacheln.Kachel;
-import kommunikation.Communicator;
-import kommunikation.PlayerCircleManager;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
+import kacheln.KIKachel;
+import kacheln.KIKachelContainer;
+import kommunikation.Communicator;
+import kommunikation.PlayerCircleManager;
 import staticClasses.auxx;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -20,19 +21,26 @@ public class KI {
 	
 	private ArrayList<KIPerson> personen;
 	private KIKarten safeKarten;
+	private KIKarten eigeneKarten;
 	private ArrayList<KIRaum> raeume;
 	private KILogbuch aktionen;
+	private Communicator communicator;
 	private CluedoGameClient network;
-	private PlayerCircleManager pcm;
-	private Communicator com;
-	CluedoPlayer me;
-	
+	private WhereDoIGo whereDoIGo;
+	private WhatDoIGuess whatDoIGuess;
+	private KIKachelContainer kiKacheln;
+	private CluedoPlayer yourOwnPlayer;
+	private PlayerCircleManager pcManager;
+
 	public KI(CluedoGameClient n,PlayerCircleManager pcManager,Communicator communi){
-		pcm = pcManager;
+		this.pcManager = pcManager;
 		network = n;
-		com = communi;
-		me = pcManager.getPlayerByNick(network.getMyNick());
-		safeKarten = new KIKarten(me.getCards(),pcm.getSize());
+		communicator = communi;
+		yourOwnPlayer = pcManager.getPlayerByNick(network.getMyNick());
+		safeKarten = new KIKarten(yourOwnPlayer.getCards(), pcManager.getSize());
+		eigeneKarten = new KIKarten(yourOwnPlayer.getCards(), pcManager.getSize());
+		this.whereDoIGo = new WhereDoIGo(communicator.getPathfinder(), kiKacheln);
+		this.kiKacheln = new KIKachelContainer(communicator.getKacheln());
 	}
 	
 	public void startTurn(){
@@ -44,7 +52,7 @@ public class KI {
 			
 		}
 		else {// roll dice
-			com.getDicePresenter().iWantToRollTheDice();
+			communicator.getDicePresenter().iWantToRollTheDice();
 		}
 		
 	}
@@ -54,10 +62,10 @@ public class KI {
 		//com.getAusloeser().suggestMoveToServer(pos);
 	}
 	
-	public Kachel getClosestKachelFromList(List<Kachel> klist,CluedoPosition pos){
-		Kachel kachel = new Kachel();
+	public KIKachel getClosestKachelFromList(List<KIKachel> klist,CluedoPosition pos){
+		KIKachel kachel = new KIKachel();
 		int d = 0;
-		for (Kachel k: klist){
+		for (KIKachel k: klist){
 			int dtmp = Math.abs((k.getPosition().getX()+k.getPosition().getY()) - (pos.getX()+pos.getY()));
 			if (dtmp < d) kachel = k;
 		}
@@ -73,6 +81,17 @@ public class KI {
 		CluedoStatement finalstatement = safeKarten.makeAccusingRandStatement();
 		network.sendMsgToServer(NetworkMessages.accuseMsg(network.getGameId(),
 				NetworkMessages.statement(finalstatement.getPerson().getPersonName(), finalstatement.getRoom().getName(), finalstatement.getWeapon().getName())));
+	}
+
+	public CluedoPosition tellMeWhereToGo(){
+		KIKachel iGoHere = new KIKachel();
+		ArrayList <KIKachel> moeglicheKacheln = whereDoIGo.kachelnSuchen();
+		iGoHere = whereDoIGo.getBestKachel(moeglicheKacheln);
+		if (whereDoIGo.gibtEsTueren(whereDoIGo.tuerKIKachelnSuchen(moeglicheKacheln))){
+			ArrayList <KIKachel> tuerKacheln = whereDoIGo.tuerKIKachelnSuchen(moeglicheKacheln);
+			iGoHere = whereDoIGo.getBestKachel(tuerKacheln);
+		}
+		return iGoHere.getPosition();
 	}
 	
 }

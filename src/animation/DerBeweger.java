@@ -204,17 +204,12 @@ public class DerBeweger {
 			}
 
 			Path path = new Path();
-			path.getElements().add(
-					new MoveTo(spielerPositionLabel.getLayoutX(), spielerPositionLabel
-							.getLayoutY()));
-
-			path.getElements()
-					.add(new LineTo(zielLabel.getLayoutX(), zielLabel
-							.getLayoutY()));
+			
+			path.getElements().add(new MoveTo(spielerPositionLabel.getLayoutX(), spielerPositionLabel.getLayoutY()));
+			path.getElements().add(new LineTo(zielLabel.getLayoutX(), zielLabel.getLayoutY()));
 
 			PathTransition pathTransition = new PathTransition();
-			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 300
-					+ Math.abs(xDistanz) * 300));
+			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 300	+ Math.abs(xDistanz) * 300));
 			pathTransition.setNode(pcManager.getCurrentCircle());
 			pathTransition.setPath(path);
 			pathTransition.play();
