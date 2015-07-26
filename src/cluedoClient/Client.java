@@ -235,11 +235,7 @@ public class Client {
 			      @Override
 				public void handle(WindowEvent e){
 			          try {
-			        	   dataGuiManager.sayGoodbye();
-			        	   globalRun = false;
-			        	   auxx.log.log(Level.INFO,"CLIENT CLOSED");
-			               Platform.exit();
-			               System.exit(0);	               
+			               kill();           
 			          } 
 			          catch (Exception e1) {
 			               auxx.log.log(Level.SEVERE,e1.getMessage());
