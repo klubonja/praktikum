@@ -230,13 +230,13 @@ class CommunicationHandler implements Runnable {
 				String card;
 				if (checker.getMessage().has("card")){
 					card = checker.getMessage().getString("card");
-//					dataManager.disproveRequest(gameID,card,client);
+					dataManager.disproveRequest(gameID,card,client);					
 				}
 				else {
 					card = "";
 //					dataManager.getGameByID(gameID).sendMsgsToAll(NetworkMessages.no_disproveMsg(gameID));
 				}
-				dataManager.disproveRequest(gameID,card,client);
+				
 					
 			} 	   	   
 

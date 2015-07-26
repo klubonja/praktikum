@@ -158,9 +158,12 @@ public class Communicator {
 		CluedoPosition position = pcManager.getCurrentPlayer().getPosition();
 		beweger.useSecretPassage(pcManager);
 		if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[position.getY()][position.getX()].isIstRaum()){
-			openWindow();
-		}
-		
+			if (!kiplay) openWindow();
+		}		
+	}
+	
+	public void requestUseSecretPassge(){
+		network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID));
 	}
 	
 	public void move(CluedoPosition position, String person){
@@ -180,7 +183,13 @@ public class Communicator {
 				System.out.println("katatonga katanga!");
 			}
 			if (pcManager.getCurrentPlayer().getNick().equals(myNick) && kacheln.getKacheln()[yKoordinate][xKoordinate].isIstRaum()){
-				openWindow();
+				
+				if (kiplay){
+					ki.postmove();
+				}
+				else {
+					openWindow();
+				}
 			}
 			this.wuerfelWurf = null;
 		}
@@ -189,22 +198,11 @@ public class Communicator {
 	/**
 	 * Suspect! Surprise! Drama!
 	 */
-	public void suspect() {
-		String person = zugView.getPersonenListe().getValue();
-		String weapon = zugView.getWaffenListe().getValue();
-		String room = kacheln.getKacheln()
-				[pcManager.getCurrentPlayer().getPosition().getY()]
-				[pcManager.getCurrentPlayer().getPosition().getX()].
-				getRaum().getName();
-
+	public void suspect(String person,String weapon,String room) {
 		network.sendMsgToServer(NetworkMessages.suspectMsg(gameID, person,weapon,room)); //nicht suspicion das darf nur der server!
-
 	}
 
-	public void accuse() {
-		String person = gameView.getHand().getPersons().getValue();
-		String weapon = gameView.getHand().getWeapons().getValue();
-		String room = gameView.getHand().getRooms().getValue();
+	public void accuse(String person, String weapon, String room) {	
 		network.sendMsgToServer(NetworkMessages.accuseMsg(network.getGameId(),
 				NetworkMessages.statement(person, room, weapon)));
 	}
@@ -287,12 +285,20 @@ public class Communicator {
 			}
 		});
 
-		zugPresenter.getGameView().YESgangImage.setOnMouseClicked(e -> network.sendMsgToServer(NetworkMessages.secret_passageMsg(gameID)));
+		zugPresenter.getGameView().YESgangImage.setOnMouseClicked(
+				e -> requestUseSecretPassge());
 		
-		
-		// BOESE!!
 		zugPresenter.getGameView().ONanklage.setOnMouseClicked(e -> {
-			suspect();
+			String person = zugView.getPersonenListe().getValue();
+			String weapon = zugView.getWaffenListe().getValue();
+			String room = kacheln.getKacheln()
+					[pcManager.getCurrentPlayer().getPosition().getY()]
+					[pcManager.getCurrentPlayer().getPosition().getX()].
+					getRaum().getName();
+			suspect(person,weapon,room);
+			
+			
+			// BOESE!!
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
 				remove(gameView.getKomplettesFeld().getZugView().getBottomBox());
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
@@ -308,9 +314,16 @@ public class Communicator {
 			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
 				add(gameView.getKomplettesFeld().getZugView().getClose());
 			gameView.getKomplettesFeld().getChildren().remove(zugView);
+			
 		});
 
-		gameView.getHand().getAccuse().setOnMouseClicked(e -> accuse());
+		gameView.getHand().getAccuse().setOnMouseClicked(e -> {
+			String person = gameView.getHand().getPersons().getValue();
+			String weapon = gameView.getHand().getWeapons().getValue();
+			String room = gameView.getHand().getRooms().getValue();
+			
+			accuse(person,weapon,room);
+		});
 
 		// END TURN
 		gameView.getHand().getEndTurn().setOnMouseClicked(e -> endTurn());
@@ -349,7 +362,8 @@ public class Communicator {
 								pcManager.getPlayerByNick(myNick).
 								getCards());
 				if (disprover.size() != 0){
-					showPossibleDisprovals(disprover);				
+					if (kiplay) ki.chooseDisprove(disprover);
+					else showPossibleDisprovals(disprover);		
 				}
 				else {
 					network.sendMsgToServer(NetworkMessages.cantDisproveMsg(gameID));
@@ -444,5 +458,9 @@ public class Communicator {
 	
 	public void setCards(String myNick,ArrayList<String> cards) {
 		gameView.getHand().setPlayerCards(cards);		
+	}
+	public void kiSwitch(){
+		kiplay = !kiplay;
+		auxx.logsevere("KI playing : "+ kiplay);
 	}
 }

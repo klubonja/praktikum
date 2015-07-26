@@ -76,27 +76,20 @@ class IncomingHandler implements Runnable {
 						playerJSON.getString("nick"),
 						playerJSON.getString("color"));
 			}
-
-			else
-				if (checker.getType().equals("player added")) {
+			else if (checker.getType().equals("player added")) {
 				int gameID = checker.getMessage().getInt("gameID");
 				JSONObject player = checker.getMessage()
 						.getJSONObject("player");
 				dataGuiManager.joinGameOnServer(server, gameID,
 						player.getString("color"), player.getString("nick"));
-
-			}
-			
-				else
-				if (checker.getType().equals("game started")) {
+			}			
+			else if (checker.getType().equals("game started")) {
 				ArrayList<String> orderlist = auxx.jsonArrayToArrayList(checker
 						.getMessage().getJSONArray("order"));
 				dataGuiManager.startGameOnServer(server, checker.getMessage()
 						.getInt("gameID"),
 						checker.getMessage().getString("gamestate"), orderlist);
-
-			}
-			
+			}			
 			else if (checker.getType().equals("player added")){
 				  int gameID = checker.getMessage().getInt("gameID");
         		  JSONObject player = checker.getMessage().getJSONObject("player");
