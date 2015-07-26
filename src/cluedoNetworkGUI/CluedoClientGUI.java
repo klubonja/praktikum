@@ -434,7 +434,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
        
 
         primaryStage.setScene(scene);
-        primaryStage.setAlwaysOnTop(true);
+        primaryStage.setAlwaysOnTop(false);
         primaryStage.show();
         
     }

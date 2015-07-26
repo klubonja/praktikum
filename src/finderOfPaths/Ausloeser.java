@@ -102,21 +102,26 @@ public class Ausloeser {
 	 * Wenn er dort nicht hindarf ist er ganz traurig.
 	 */
 	public void click(MouseEvent event) {
+		CluedoPosition pos = new CluedoPosition((int) event.getX(), (int) event.getY());
+		suggestMoveToServer(pos);
+	}
+	
+	public void suggestMoveToServer(CluedoPosition pos) {
 
 		for (int iReihen = 0; iReihen < gui.getLabelArray().length - 1; iReihen++) {
 			for (int jSpalten = 0; jSpalten < gui.getLabelArray()[iReihen].length - 1; jSpalten++) {
-				if ((gui.getLabelArray()[iReihen][jSpalten].getLayoutX() <= event
+				if ((gui.getLabelArray()[iReihen][jSpalten].getLayoutX() <= pos
 						.getX())
-						&& (event.getX() < gui.getLabelArray()[iReihen][jSpalten]
+						&& (pos.getX() < gui.getLabelArray()[iReihen][jSpalten]
 								.getLayoutX() + 29)
 						&& ((gui.getLabelArray()[iReihen][jSpalten]
-								.getLayoutY() <= event.getY()) && (event
+								.getLayoutY() <= pos.getY()) && (pos
 								.getY() < gui.getLabelArray()[iReihen][jSpalten]
 								.getLayoutY() + 29))) {
 					CluedoPosition aufServerWarten = new CluedoPosition(jSpalten, iReihen);
 					auxx.loginfo("positionen im ausloeser y : " +iReihen +" || x : " +jSpalten);
 					network.sendMsgToServer(NetworkMessages.moveMsg(gameid, new CluedoField(aufServerWarten)));
-					}
+				}
 			}
 		}
 	}
