@@ -232,9 +232,10 @@ public class Client {
 			////////////////////////CLOSEWINDOW/////////////////////////////////////////////////
 
 			gui.primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			      @Override
+			   
+				@Override
 				public void handle(WindowEvent e){
-			          try {
+					try {
 			               kill();           
 			          } 
 			          catch (Exception e1) {
@@ -364,15 +365,17 @@ public class Client {
 	public void kill(){
 		try {
      	   dataGuiManager.sayGoodbye();
-     	   for (Server s: createdServers) s.kill();
      	   globalRun = false;
-     	   auxx.log.log(Level.INFO,"CLIENT CLOSED");
-            Platform.exit();
-            System.exit(0);	               
+     	   for (Server s: createdServers) s.kill();     	  
+     	   auxx.log.log(Level.INFO,"CLIENT CLOSED");            
        } 
        catch (Exception e1) {
-            auxx.log.log(Level.SEVERE,e1.getMessage());
+            auxx.log.log(Level.SEVERE,"client kill failed ",e1);            
        }
+		finally {
+			Platform.exit();
+            System.exit(0);	
+		}
    }
 }
 
