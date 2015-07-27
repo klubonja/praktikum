@@ -349,7 +349,7 @@ public void showPoolCards(ArrayList<String> karten) {
 		System.out.println("ShowKarten scene wird erstellt? ");
 		secondary.setFill(Color.TRANSPARENT);
 		pool.setScene(secondary);
-		pool.setOpacity(0.9);
+		pool.setOpacity(0.95);
 		pool.setAlwaysOnTop(true);
 		pool.showAndWait();
 	}
