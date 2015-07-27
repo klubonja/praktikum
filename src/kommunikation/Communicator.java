@@ -375,7 +375,7 @@ public void showPoolCards(ArrayList<String> karten) {
 		System.out.println("PoolCards scene wird erstellt? ");
 		secondary.setFill(Color.TRANSPARENT);
 		suspicionStage.setScene(secondary);
-		suspicionStage.setOpacity(0.95);
+		suspicionStage.setOpacity(0.90);
 		suspicionStage.setAlwaysOnTop(true);
 		suspicionStage.showAndWait();
 

@@ -10,6 +10,11 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -74,6 +79,7 @@ public class ShowKarten extends GridPane{
 		
 		Text status = new Text(ueberschrift);
 		status.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 14));
+		status.setFill(Color.WHITESMOKE);
 		GridPane.setValignment(status, VPos.CENTER);
 		GridPane.setHalignment(status, HPos.CENTER);
 		GridPane.setConstraints(status, 0, 0);
@@ -101,6 +107,7 @@ public class ShowKarten extends GridPane{
 		int columnCounter = 0;
 		
 		Text status = new Text(ueberschrift);
+		status.setFill(Color.WHITESMOKE);
 		status.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 14));
 		GridPane.setValignment(status, VPos.CENTER);
 		GridPane.setHalignment(status, HPos.CENTER);
@@ -135,6 +142,7 @@ public class ShowKarten extends GridPane{
 		
 		Text status = new Text(suspecter + "hat eine Vermutung gemacht:");
 		status.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 14));
+		status.setFill(Color.WHITESMOKE);
 		GridPane.setValignment(status, VPos.CENTER);
 		GridPane.setHalignment(status, HPos.CENTER);
 		GridPane.setConstraints(status, 0, 0);
@@ -174,6 +182,15 @@ public class ShowKarten extends GridPane{
 	    rect.setArcWidth(10);
 
 	    this.setClip(rect);
+	    
+	    Image lotr = new Image("https://awesomewallpapers.files.wordpress.com/2009/05/movie-lord-of-the-rings-34641.jpg");
+		BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
+				false, false, false, true);
+		BackgroundImage backgroundImage = new BackgroundImage(lotr, BackgroundRepeat.NO_REPEAT , 
+				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+	    Background background = new Background(backgroundImage);
+	    
+	    this.setBackground(background);
 	        
 	    ColumnConstraints col0 = new ColumnConstraints();
 	    col0.setMaxWidth(200);
