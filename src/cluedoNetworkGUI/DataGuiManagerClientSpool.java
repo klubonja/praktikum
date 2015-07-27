@@ -3,6 +3,7 @@ package cluedoNetworkGUI;
 
 import java.util.ArrayList;
 
+import javafx.application.Platform;
 import staticClasses.Config;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
@@ -245,28 +246,40 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 			if (game.hasPlayerConnectedByNick(gameNick)){ //never ever trust anyone
 				game.getPlayerByNick(gameNick).setPossibleStatesFromStringList(newStates);
 				if (gameNick.equals(server.getMyNick())){ // its me
-					if (newStates.contains(PlayerStates.roll_dice.getName()))
+					if (newStates.contains(PlayerStates.roll_dice.getName())){
 						game.itsYourTurn();
-					else if (newStates.contains(PlayerStates.disprove.getName()))
+						Platform.runLater(() -> {game.changeZugFensterButtons(newStates);});
+					}
+					else if (newStates.contains(PlayerStates.disprove.getName())){
 						game.disprove();
-					else if (newStates.contains(PlayerStates.do_nothing.getName()))
+					}
+					else if (newStates.contains(PlayerStates.do_nothing.getName())){
 						game.currentPlayerToNothing();
+					}
 					else if (newStates.contains(PlayerStates.end_turn.getName())) //KI
 						game.moved();	
-					
+					}
+					else if(newStates.contains(PlayerStates.suspect.getName())){
+						Platform.runLater(() -> {game.changeZugFensterButtons(newStates);});
+					}
+					else if(newStates.contains(PlayerStates.use_secret_passage.getName())){
+						Platform.runLater(() -> {game.changeZugFensterButtons(newStates);});
+					}
 					game.showyourstates("you can : "+auxx.formatStringList(newStates, "or"));
 				}
+				
 				else { //its some other bloke
-					if (newStates.contains(PlayerStates.roll_dice.getName()))
+					if (newStates.contains(PlayerStates.roll_dice.getName())){
 						game.itsSomeonesTurn(gameNick);			
-						game.showothersstates(gameNick+" can :"+auxx.formatStringList(newStates, "or"));
+					}
+					game.showothersstates(gameNick+" can :"+auxx.formatStringList(newStates, "or"));
+					
 				}
 			}
-			else if (game.hasWatcherConnectedByNick(server.getMyNick())){
-				game.showyourstates(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
-			}	
-		}		
-	}
+		else if (game.hasWatcherConnectedByNick(server.getMyNick())){
+			game.showyourstates(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
+		}	
+	}	
 
 	public void handleSuspicion(int gameID, CluedoStatement suspicion,ServerItem server) {
 		CluedoGameClient game = server.getGameByGameID(gameID);
@@ -297,6 +310,14 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	public void handleDisproved(int gameID, ServerItem server, String card) {
 		server.getGameByGameID(gameID).showDisprove(card);
 
+	}
+	
+	public void openWinner(){
+		
+	}
+	
+	public void openLoser(){
+		
 	}
 	
 }

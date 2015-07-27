@@ -4,6 +4,7 @@ import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -159,7 +160,7 @@ public class DerBeweger {
 				new LineTo(spielerZielPositionImRaumLabel.getLayoutX(), spielerZielPositionImRaumLabel.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(pcManager.getCircleByPerson(person.getColor()));
+		pathTransition.setNode(pcManager.getCharacterByPerson(person.getColor()));
 		pathTransition.setPath(path);
 		pathTransition.play();
 
@@ -209,7 +210,7 @@ public class DerBeweger {
 
 			PathTransition pathTransition = new PathTransition();
 			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 300	+ Math.abs(xDistanz) * 300));
-			pathTransition.setNode(pcManager.getCurrentCircle());
+			pathTransition.setNode(pcManager.getCurrentCharacter());
 			pathTransition.setPath(path);
 			pathTransition.play();
 			pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
@@ -246,7 +247,11 @@ public class DerBeweger {
 	 * @param raumZielLabel hier solls hin.
 	 */
 	public void inRaumBewegen(Label raumZielLabel) {
-
+		pcManager.getCurrentCharacter().setImage(
+				new Image("media/gameObjects/" +
+						pcManager.getCurrentPlayer().getCluedoPerson().getColor() +
+						"_s.png"));
+		
 		Kachel raumAnfangsKachel = kachelContainer.getKacheln()[pcManager.getCurrentPlayer().getPosition().getY()][pcManager.getCurrentPlayer().getPosition().getX()];
 		Label raumAnfangsLabel = boardView.getLabelHier(raumAnfangsKachel);
 		
@@ -262,7 +267,7 @@ public class DerBeweger {
 						.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(pcManager.getCurrentCircle());
+		pathTransition.setNode(pcManager.getCurrentCharacter());
 		pathTransition.setPath(path);
 		pathTransition.play();
 	}
@@ -273,6 +278,10 @@ public class DerBeweger {
 	 * @param anfangsLabel Hier geht's hin
 	 */
 	public void ausRaumBewegen(Kachel spielerPositionKachel, Label raumStartLabel, Label anfangsLabel, Orientation [] anweisungen, int schritte, int nullschritte){
+		pcManager.getCurrentCharacter().setImage(
+				new Image("media/gameObjects/" +
+						pcManager.getCurrentPlayer().getCluedoPerson().getColor() +
+						"_s.png"));
 		
 		anfangsKachelSetzen(spielerPositionKachel);
 		
@@ -287,7 +296,7 @@ public class DerBeweger {
 		
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(pcManager.getCurrentCircle());
+		pathTransition.setNode(pcManager.getCurrentCharacter());
 		pathTransition.setPath(path);
 		pathTransition.play();
 		pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
@@ -304,6 +313,10 @@ public class DerBeweger {
 	 * @param anfangsRaum Der Raum von welchem man startet
 	 */
 	public void geheimgangBewegerEingang(Rooms anfangsRaum) {
+		pcManager.getCurrentCharacter().setImage(
+				new Image("media/gameObjects/" +
+						pcManager.getCurrentPlayer().getCluedoPerson().getColor() +
+						"_s.png"));
 
 		System.out.println("Der currentPlayer ist bei y : " +pcManager.getCurrentPlayer().getPosition().getY() +"  ||  x : " +pcManager.getCurrentPlayer().getPosition().getX());
 		
@@ -331,7 +344,7 @@ public class DerBeweger {
 				new LineTo(gangLabel2.getLayoutX(), gangLabel2.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(pcManager.getCurrentCircle());
+		pathTransition.setNode(pcManager.getCurrentCharacter());
 		pathTransition.setPath(path);
 		pathTransition.play();
 		pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
@@ -366,7 +379,11 @@ public class DerBeweger {
 	 * @param raum der Raum zu welchem man will
 	 */
 	public void geheimgangBewegerAusgang(Kachel raumZielKachelEingabe, Rooms raum) {
-
+		pcManager.getCurrentCharacter().setImage(
+				new Image("media/gameObjects/" +
+						pcManager.getCurrentPlayer().getCluedoPerson().getColor() +
+						"_s.png"));
+		
 		Kachel gangKachel4 = geheimGangKachel(raum, "ziel");
 		Label gangLabel4 = boardView.getLabelHier(gangKachel4);
 		
@@ -385,7 +402,7 @@ public class DerBeweger {
 						.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(pcManager.getCurrentCircle());
+		pathTransition.setNode(pcManager.getCurrentCharacter());
 		pathTransition.setPath(path);
 		pathTransition.play();
 	}
@@ -464,7 +481,7 @@ public class DerBeweger {
 
 			PathTransition pathTransition = new PathTransition();
 			pathTransition.setDuration(Duration.millis(1000));
-			pathTransition.setNode(pcManager.getCurrentCircle());
+			pathTransition.setNode(pcManager.getCurrentCharacter());
 			pathTransition.setPath(path);
 			pathTransition.play();
 			
@@ -519,21 +536,37 @@ public class DerBeweger {
 		if (anweisungen[momentaneAnweisung] == Orientation.S) {
 			yDistanz = 1;
 			xDistanz = 0;
+			pcManager.getCurrentCharacter().setImage(
+					new Image("media/gameObjects/" +
+							pcManager.getCurrentPlayer().getCluedoPerson().getColor() +
+							"_s.png"));
 		}
 
 		else if (anweisungen[momentaneAnweisung] == Orientation.O) {
 			xDistanz = 1;
 			yDistanz = 0;
+			pcManager.getCurrentCharacter().setImage(
+					new Image("media/gameObjects/" +
+							pcManager.getCurrentPlayer().getCluedoPerson().getColor() +
+							"_o.png"));
 		}
 
 		else if (anweisungen[momentaneAnweisung] == Orientation.N) {
 			yDistanz = -1;
 			xDistanz = 0;
+			pcManager.getCurrentCharacter().setImage(
+					new Image("media/gameObjects/" +
+							pcManager.getCurrentPlayer().getCluedoPerson().getColor() +
+							"_n.png"));
 		}
 
 		else if (anweisungen[momentaneAnweisung] == Orientation.W) {
 			xDistanz = -1;
 			yDistanz = 0;
+			pcManager.getCurrentCharacter().setImage(
+					new Image("media/gameObjects/" +
+							pcManager.getCurrentPlayer().getCluedoPerson().getColor() +
+							"_w.png"));
 		}
 
 		else {

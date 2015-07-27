@@ -374,6 +374,14 @@ public class Client {
             auxx.log.log(Level.SEVERE,e1.getMessage());
        }
    }
+
+	public CluedoClientGUI getGui() {
+		return gui;
+	}
+
+	public void setGui(CluedoClientGUI gui) {
+		this.gui = gui;
+	}
 }
 
 

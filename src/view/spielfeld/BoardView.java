@@ -1,8 +1,13 @@
 package view.spielfeld;
 
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -88,13 +93,15 @@ public class BoardView extends GridPane {
 	 */
 	public void setLayout(){
 		labelArray = new KrassesLabel[Config.ROWS][Config.COLUMNS];
-		this.setGridLinesVisible(true);
+		this.setGridLinesVisible(false);
 
-		BackgroundFill backgroundFillBlueViolet = new BackgroundFill(Color.BLUEVIOLET, null, null);
-		Background backgroundBlueViolet = new Background(backgroundFillBlueViolet);
-		
-		BackgroundFill backgroundFillBrown = new BackgroundFill(Color.BROWN, null, null);
-		Background backgroundBrown = new Background(backgroundFillBrown);
+//		Color color = new Color(0,0,0,0.1);
+//		BackgroundFill backgroundFillBlueViolet = new BackgroundFill(color, null, null);
+//		Background backgroundBlueViolet = new Background(backgroundFillBlueViolet);
+//		
+//		
+//		BackgroundFill backgroundFillBrown = new BackgroundFill(Color.BROWN, null, null);
+//		Background backgroundBrown = new Background(backgroundFillBrown);
 		
 		for (int iReihen = 0; iReihen< Config.ROWS;iReihen++){
 			for (int jSpalten = 0; jSpalten<Config.COLUMNS;jSpalten++){
@@ -104,14 +111,12 @@ public class BoardView extends GridPane {
 				
 				if (jSpalten == 24){
 					labelArray[iReihen][jSpalten] = new KrassesLabel();
-					labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 					kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(new CluedoPosition(jSpalten,iReihen), true, null, null, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 				}
 				
 				else if ( iReihen == 25){
 					kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(new CluedoPosition(jSpalten,iReihen), true, null, null, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 					labelArray[iReihen][jSpalten] = new KrassesLabel();
-					labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 				}
 				
 				
@@ -122,14 +127,12 @@ public class BoardView extends GridPane {
 						|| (iReihen == 4 && jSpalten == 0) ){
 					if (iReihen == 3 && jSpalten == 6){ /////////////////// T�R ///////////////////
 						labelArray[iReihen][jSpalten] = new KrassesLabel();
-						labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-						labelArray[iReihen][jSpalten].setText(" S ");
 						kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.S, Rooms.study, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 					}
 					
 					else {///////////// RAUM ////////////////
 						labelArray[iReihen][jSpalten] = new KrassesLabel();
-						labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
+//						labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 						kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(  new CluedoPosition(jSpalten,iReihen), true, null, Rooms.study, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 					}
 					
@@ -139,21 +142,16 @@ public class BoardView extends GridPane {
 						|| (iReihen==11 && jSpalten == 0) ){
 						if (iReihen == 10 && jSpalten == 3){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" S ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.S, Rooms.library, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else if (iReihen == 8  && jSpalten == 6){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" O ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.O, Rooms.library, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else {///////////// RAUM ////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(  new CluedoPosition(jSpalten,iReihen), true, null, Rooms.library, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
@@ -163,21 +161,16 @@ public class BoardView extends GridPane {
 						|| (iReihen == 17 && jSpalten == 0) ){
 						if  (iReihen == 15 && jSpalten == 5){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" O ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.O, Rooms.billiard, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else if(iReihen == 12 && jSpalten == 1) {/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" N ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.N, Rooms.billiard, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else {///////////// RAUM ////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(new CluedoPosition(jSpalten,iReihen), true, null, Rooms.billiard, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
@@ -189,14 +182,11 @@ public class BoardView extends GridPane {
 						|| (iReihen == 24 && 5 < jSpalten && jSpalten < 9) ){
 						if (iReihen == 19 && jSpalten == 4){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" O ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.O, Rooms.conservatory, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else {///////////// RAUM ////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(  new CluedoPosition(jSpalten,iReihen), true, null, Rooms.conservatory, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
@@ -207,21 +197,16 @@ public class BoardView extends GridPane {
 						|| (iReihen == 0 && jSpalten == 15) ){
 						if  (iReihen == 6 && (jSpalten == 11 || jSpalten == 12) ){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" S ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.S, Rooms.hall, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else if (iReihen == 4 && jSpalten == 9) {/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" W ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.W, Rooms.hall, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else {///////////// RAUM ////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(  new CluedoPosition(jSpalten,iReihen), true, null, Rooms.hall, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
@@ -230,35 +215,26 @@ public class BoardView extends GridPane {
 					else if ( (7 < iReihen && iReihen < 15  && 8 < jSpalten && jSpalten < 14) ){//Schwimmbad
 						if  (iReihen == 14 && jSpalten == 11){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" S ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.S, Rooms.pool, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else if(iReihen == 9  && jSpalten == 13){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" O ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.O, Rooms.pool, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else if(iReihen == 8  && jSpalten == 11){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" N ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.N, Rooms.pool, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else if(iReihen == 12 && jSpalten == 9) {/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" W ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.W, Rooms.pool, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else {///////////// RAUM ////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(  new CluedoPosition(jSpalten,iReihen), true, null, Rooms.pool, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 					}
@@ -267,28 +243,21 @@ public class BoardView extends GridPane {
 						|| (22 < iReihen  && 9 < jSpalten && jSpalten < 14) ){
 						if  (iReihen == 19 && jSpalten == 15){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" O ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.O, Rooms.ballroom, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else if (iReihen == 17 && (jSpalten == 9 || jSpalten == 14) ){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" N ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.N, Rooms.ballroom, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else if (iReihen == 19 && jSpalten == 8 ) {/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" W ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.W, Rooms.ballroom, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else {///////////// RAUM ////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(  new CluedoPosition(jSpalten,iReihen), true, null, Rooms.ballroom, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 					}
@@ -298,14 +267,11 @@ public class BoardView extends GridPane {
 						|| (iReihen == 8 && jSpalten == 23) ){
 						if (iReihen == 5 && jSpalten == 17){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" S ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.S, Rooms.lounge, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else {///////////// RAUM ////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(  new CluedoPosition(jSpalten,iReihen), true, null, Rooms.lounge, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 					}
@@ -315,21 +281,16 @@ public class BoardView extends GridPane {
 						|| (iReihen == 16 && jSpalten==23) ){
 						if (iReihen == 9 && jSpalten == 17){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" N ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.N, Rooms.diningroom, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else if (iReihen == 11 && jSpalten == 16){/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" W ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.W, Rooms.diningroom, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else {///////////// RAUM ////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(  new CluedoPosition(jSpalten,iReihen), true, null, Rooms.diningroom, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 					}
@@ -339,14 +300,11 @@ public class BoardView extends GridPane {
 						|| (iReihen == 24 && 14 < jSpalten) ){
 						if (iReihen == 18 && jSpalten == 19) {/////////////////// T�R ///////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBrown);
-							labelArray[iReihen][jSpalten].setText(" N ");
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new TuerKachel(new CluedoPosition(jSpalten,iReihen), true, Orientation.N, Rooms.kitchen, true, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 						
 						else {///////////// RAUM ////////////////
 							labelArray[iReihen][jSpalten] = new KrassesLabel();
-							labelArray[iReihen][jSpalten].setBackground(backgroundBlueViolet);
 							kachelContainer.setNewKachelPosition(iReihen, jSpalten, new RaumKachel(new CluedoPosition(jSpalten,iReihen), true, null, Rooms.kitchen, false, keineMoeglichkeiten, keineMoeglichkeiten2, null));
 						}
 					}
@@ -376,7 +334,8 @@ public class BoardView extends GridPane {
 
 	public void start(){
 		this.stage = new Stage();
-		this.scene = new Scene(this, 700, 700);
+		this.setStyle("-fx-background-color: rgba(255, 255, 255, 0);");
+		this.scene = new Scene(this, 696, 725);
 		this.stage.setScene(scene);
 	}
 
@@ -430,6 +389,14 @@ public class BoardView extends GridPane {
 	
 	public KrassesLabel getLabelHier(Kachel kachel){
 		return labelArray[kachel.getPosition().getY()][kachel.getPosition().getX()];
+	}
+
+	public KachelContainer getKachelContainer() {
+		return kachelContainer;
+	}
+
+	public void setKachelContainer(KachelContainer kachelContainer) {
+		this.kachelContainer = kachelContainer;
 	}
 	
 }

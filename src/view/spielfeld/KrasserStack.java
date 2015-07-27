@@ -1,8 +1,16 @@
 package view.spielfeld;
 
+import staticClasses.Images;
 import view.AussergewohnlichesZugfenster;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -14,6 +22,7 @@ import javafx.stage.Stage;
  *
  */
 public class KrasserStack extends StackPane {
+	
 
 	private Stage stage;
 	private Scene scene;
@@ -44,7 +53,7 @@ public class KrasserStack extends StackPane {
 	 */
 	public void start(){
 		stage = new Stage();
-		scene = new Scene(this, 700, 700);
+		scene = new Scene(this, 696, 725);
 		stage.setScene(scene);
 	}
 	
@@ -52,9 +61,11 @@ public class KrasserStack extends StackPane {
 	 * Die Insets werden auf 0 gesetzt und die ebenen hinzugefuegt.
 	 */
 	public void layoutStuff(){
+		StackPane.setMargin(Images.bg, new Insets(-25,0,0,-75));
 		StackPane.setMargin(boardView, new Insets(0,0,0,0));
 		StackPane.setMargin(ballEbene, new Insets(0,0,0,0));
-		this.getChildren().addAll(zugView, boardView, ballEbene);
+		boardView.setOpacity(0.5);
+		this.getChildren().addAll(zugView, Images.bg, boardView, ballEbene);
 	}
 	
 	public AussergewohnlichesZugfenster getZugView() {

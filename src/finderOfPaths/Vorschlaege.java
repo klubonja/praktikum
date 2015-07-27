@@ -120,7 +120,7 @@ public class Vorschlaege {
 							&& (moeglichkeiten[counterAussen] != null)
 							&& kacheln.getKacheln()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstRaum() == false)
 					{
-						moeglichkeitenSetzenMitTueren(Color.GREY);
+						moeglichkeitenSetzenMitTueren(Color.RED);
 					}
 					
 					// Falls das Ganze zu einer T�r zeigt
@@ -154,7 +154,7 @@ public class Vorschlaege {
 						&& (moeglichkeiten[counterAussen] != null)
 						&& kacheln.getKacheln()[jetzigeReihe + yDistanz][jetzigeSpalte + xDistanz].isIstRaum() == false)
 				{
-					moeglichkeitenSetzenOhneTueren(Color.GREY);
+					moeglichkeitenSetzenOhneTueren(Color.RED);
 				}
 				else if( (yDistanz != 0 || xDistanz != 0) && (jetzigeReihe + yDistanz >=0) && (jetzigeSpalte + xDistanz >=0) 
 						&& (jetzigeReihe + yDistanz < 25) && (jetzigeSpalte + xDistanz < 24)

@@ -79,8 +79,8 @@ public class CluedoPlayer {
 	
 	
 	public void setNewPosition(int x,int y) {
-		this.position.setX(x);
-		this.position.setY(y);
+		this.position.setX(x+14);
+		this.position.setY(y+14);
 	}
 	
 	public void setNewPosition(CluedoPosition newpos) {

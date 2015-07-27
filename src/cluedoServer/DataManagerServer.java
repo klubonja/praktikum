@@ -95,12 +95,12 @@ public class DataManagerServer extends DataManager {
 	public void suspectRequest(int gameID,CluedoStatement statement,ClientItem client){
 		CluedoGameServer game = validatedClientGame(gameID, client);
 		if (game != null){
-			if (statement.equals(game.getWinningStatement())){
-				sendMsgToAllClients(NetworkMessages.game_endedMsg(gameID, statement));
-			}
-			else {
+//			if (statement.equals(game.getWinningStatement())){
+//				sendMsgToAllClients(NetworkMessages.game_endedMsg(gameID, statement));
+//			}
+//			else {
 				game.suspect(statement, client);
-			}			
+//			}			
 		}
 	}
 	
@@ -149,7 +149,9 @@ public class DataManagerServer extends DataManager {
 		CluedoGameServer game = validatedClientGame(gameID, client);
 		if (game != null){
 			if (game.accuseRequest(accusation,client)) {
-		   		//ach 
+				if (accusation.equals(game.getWinningStatement())){
+					sendMsgToAllClients(NetworkMessages.game_endedMsg(gameID, client.nick, accusation));
+				}
 			}
 		}
 		

@@ -23,6 +23,7 @@ class IncomingHandler implements Runnable {
 
 	boolean localRun = true;
 	boolean globalRun = true;
+	boolean winner = false;
 
 	IncomingHandler(DataGuiManagerClientSpool dgm, ServerItem server,
 			boolean globalRun, boolean localRun) {
@@ -119,11 +120,6 @@ class IncomingHandler implements Runnable {
 				String person = json.getString("person").toString();
 				String weapon = json.getString("weapon").toString();
 				String room = json.getString("room").toString();
-				server.getGameByGameID(checker.getMessage().getInt("gameID"))
-						.somebodyIsAccusing(
-						server.getGameByGameID(checker.getMessage().getInt("gameID")).getMyNick(),
-						person, weapon, room
-						);
 			}
 			else if(checker.getType().equals("wrong accusation")){
 					JSONObject json = checker.getMessage().getJSONObject(
@@ -163,7 +159,9 @@ class IncomingHandler implements Runnable {
 			}
 
 			else if (checker.getType().equals("game ended")){
-        		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
+        		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));
+        		 server.getGameByGameID(checker.getMessage().getInt("gameID"))
+					.somebodyIsAccusing(checker.getMessage().getString("nick"));
 			}
 			else if (checker.getType().equals("left game")){
         		 dataGuiManager.removePlayerFromGameOnServer(
@@ -284,6 +282,6 @@ class IncomingHandler implements Runnable {
 		dataGuiManager.removeServer(server);
 		dataGuiManager.setServer();
 
-		auxx.logsevere("incomming handler thread runnning outon server : " + server.getGroupName());
+		auxx.logsevere("incomming handler thread runnning out on server : " + server.getGroupName());
 	}
 }
