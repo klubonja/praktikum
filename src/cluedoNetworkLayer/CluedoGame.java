@@ -38,7 +38,7 @@ public abstract class CluedoGame {
 		
 		Persons[] persons = Persons.values();
 		for(Persons p : persons) 
-			players.add(new CluedoPlayer(p, PlayerStates.do_nothing, p.getStartposition()));
+			players.add(new CluedoPlayer(p, PlayerStates.do_nothing, new CluedoPosition(p.getStartposition().getX(),p.getStartposition().getY())));
 		Weapons[] weaponsEnum = Weapons.values();
 		for(Weapons w : weaponsEnum) 
 			weapons.add(new CluedoWeapon(w, new CluedoPosition(11, 11)) ); //11,11 ist schwimmbad	
