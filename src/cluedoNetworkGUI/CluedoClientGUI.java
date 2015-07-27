@@ -369,11 +369,11 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
         
         
         
-        String url = audioFile.toURI().toString();
-        clip = new Media(url);
-        audio = new MediaPlayer(clip);
-        audio.play();
-        audio.setCycleCount(MediaPlayer.INDEFINITE);
+//        String url = audioFile.toURI().toString();
+//        clip = new Media(url);
+//        audio = new MediaPlayer(clip);
+//        audio.play();
+//        audio.setCycleCount(MediaPlayer.INDEFINITE);
         
         
         GridPane.setConstraints(statusContainer, 1, 1);
