@@ -80,7 +80,7 @@ public class ShowKarten extends GridPane{
 		Text status = new Text(ueberschrift);
 		GridPane.setValignment(status, VPos.CENTER);
 		GridPane.setHalignment(status, HPos.CENTER);
-		GridPane.setConstraints(status, 0, 2);
+		GridPane.setConstraints(status, 0, 0);
 		this.getChildren().add(status);
 		
 		for (String s : karten){
@@ -123,7 +123,7 @@ public class ShowKarten extends GridPane{
 	        
 	    ColumnConstraints col0 = new ColumnConstraints();
 	    col0.setMaxWidth(200);
-	    col0.setPrefWidth(200);
+	    col0.setPrefWidth(100);
 	    this.getColumnConstraints().add(col0);
 	    
 	    RowConstraints row0 = new RowConstraints();
