@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 import staticClasses.Images;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import cluedoNetworkLayer.CluedoPlayer;
 import enums.Persons;
@@ -12,7 +13,7 @@ import enums.Persons;
 public class PlayerCircleManager {
 		
 	public Stack<CluedoPlayer> players;
-	public  ArrayList<Circle> circle;
+	public  ArrayList<ImageView> characters;
 	
 	private int currentIndex = 0;
  	
@@ -29,17 +30,25 @@ public class PlayerCircleManager {
 	
 	public void init(Stack<CluedoPlayer> plist){
 		players = plist;
-		circle = new ArrayList<Circle>();
-		for (CluedoPlayer p: players)
-			circle.add(new Circle(0,0,14,p.getCluedoPerson().getFarbe()));
+		characters = new ArrayList<ImageView>();
+		for (CluedoPlayer p: players){
+			switch(p.getCluedoPerson().getColor()){
+			case "red": characters.add(Images.red); break;
+			case "blue": characters.add(Images.blue); break;
+			case "purple": characters.add(Images.purple); break;
+			case "green": characters.add(Images.green); break;
+			case "yellow": characters.add(Images.yellow); break;
+			case "white": characters.add(Images.white); break;
+			}
+		}
 	}
 	
 	public void addPlayer(CluedoPlayer p){
 		players.add(p);
 	}
 	
-	public void addCircle(Circle c){
-		circle.add(c);
+	public void addCharacter(ImageView character){
+		characters.add(character);
 	}
 	public void next(){		
 		currentIndex = (currentIndex + 1) % players.size();		
@@ -49,8 +58,8 @@ public class PlayerCircleManager {
 		return players.get(currentIndex);
 	}
 	
-	public Circle getCurrentCircle(){
-		return circle.get(currentIndex);
+	public ImageView getCurrentCharacter(){
+		return characters.get(currentIndex);
 	}
 
 	public String getCurrentNick(){
@@ -73,8 +82,8 @@ public class PlayerCircleManager {
 		return players.get(i);
 	}
 	
-	public Circle getCircleByIndex(int i){
-		return circle.get(i);
+	public ImageView getCharacterByIndex(int i){
+		return characters.get(i);
 	}
 	
 	public CluedoPlayer getPlayerByNick(String nick){
@@ -86,10 +95,10 @@ public class PlayerCircleManager {
 		return null;
 	}
 	
-	public Circle getCircleByNick(String nick){
+	public ImageView getCharacterByNick(String nick){
 		for (int i = 0; i < getSize(); i++){
 			if (players.get(i).getNick().equals(nick))
-				return circle.get(i);
+				return characters.get(i);
 		}
 		
 		return null;
@@ -114,10 +123,10 @@ public class PlayerCircleManager {
 		return null;
 	}
 	
-	public Circle getCircleByPerson(String person){
+	public ImageView getCharacterByPerson(String person){
 		for (int i = 0; i < getSize(); i++){
 			if (players.get(i).getCluedoPerson().getColor().equals(person))
-				return circle.get(i);
+				return characters.get(i);
 		}
 		
 		return null;

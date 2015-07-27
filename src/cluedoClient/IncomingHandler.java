@@ -157,7 +157,14 @@ class IncomingHandler implements Runnable {
 			}
 
 			else if (checker.getType().equals("game ended")){
-        		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));		        		  
+        		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));
+        		 if(checker.getMessage().getString("nick").equals(server.getMyNick())){
+						dataGuiManager.youWin();
+						winner = true;
+					} else
+					if(!winner){
+					dataGuiManager.youLose();
+					}
 			}
 			else if (checker.getType().equals("left game")){
         		 dataGuiManager.removePlayerFromGameOnServer(
@@ -218,19 +225,8 @@ class IncomingHandler implements Runnable {
         		  killConnection();   
 			}
 			else if (checker.getType().equals("error")){
-				if(checker.getMessage().getString("message").equals("WINNER")||
-						checker.getMessage().getString("message").equals("LOSER")){
-					if(checker.getMessage().getString("message").equals("WINNER")){
-						dataGuiManager.youWin();
-						winner = true;
-					} else
-					if(checker.getMessage().getString("message").equals("LOSER") && !winner){
-					dataGuiManager.youLose();
-					}
-				} else { //error is not WINNER/LOSER
         		dataGuiManager.setStatus("ERROR : "+checker.getMessage().getString("message")); 
         		dataGuiManager.setStatusStyle(Color.RED);
-				}
 			}
 			else {
 				auxx.loginfo("INCOMING unchecked valid type: "+checker.getType());

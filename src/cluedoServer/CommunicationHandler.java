@@ -13,6 +13,7 @@ import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoPosition;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
 
@@ -203,7 +204,7 @@ class CommunicationHandler implements Runnable {
 	   	   }
 	     	   
 	   	   	else if (checker.getType().equals("accuse")) {
-		   	   	int gameID = checker.getMessage().getInt("gameID");	
+		   	   	int gameID = checker.getMessage().getInt("gameID");
 				dataManager.accuseRequest(gameID, NetworkMessages.makeCluedoStatementFromJSON(
 								checker.getMessage().getJSONObject("statement")),client);
 				

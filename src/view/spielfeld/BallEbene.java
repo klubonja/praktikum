@@ -73,7 +73,7 @@ public class BallEbene extends GridPane{
 		}
 		int size = pcManager.getSize();
 		for (int i = 0; i < size;i++){
-			this.add( pcManager.getCircleByIndex(i), 0, 0);
+			this.add( pcManager.getCharacterByIndex(i), 0, 0);
 		}
 		
 	}
