@@ -77,6 +77,14 @@ public class DataGuiManager   {
 		  Platform.runLater(() -> {gui.setStatus(stat);});
 	  }
 	  
+	  public void youWin(){
+		  Platform.runLater(() -> {gui.youHaveWon();});
+	  }
+	  
+	  public void youLose(){
+		  Platform.runLater(() -> {gui.youHaveLost();});
+	  }
+	  
 	  public void setStatusStyle(Color color){
 		  Platform.runLater(() -> {gui.status.setFill(color);});
 	  }

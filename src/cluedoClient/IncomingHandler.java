@@ -23,6 +23,7 @@ class IncomingHandler implements Runnable {
 
 	boolean localRun = true;
 	boolean globalRun = true;
+	boolean winner = false;
 
 	IncomingHandler(DataGuiManagerClientSpool dgm, ServerItem server,
 			boolean globalRun, boolean localRun) {
@@ -217,8 +218,19 @@ class IncomingHandler implements Runnable {
         		  killConnection();   
 			}
 			else if (checker.getType().equals("error")){
+				if(checker.getMessage().getString("message").equals("WINNER")||
+						checker.getMessage().getString("message").equals("LOSER")){
+					if(checker.getMessage().getString("message").equals("WINNER")){
+						dataGuiManager.youWin();
+						winner = true;
+					} else
+					if(checker.getMessage().getString("message").equals("LOSER") && !winner){
+					dataGuiManager.youLose();
+					}
+				} else { //error is not WINNER/LOSER
         		dataGuiManager.setStatus("ERROR : "+checker.getMessage().getString("message")); 
         		dataGuiManager.setStatusStyle(Color.RED);
+				}
 			}
 			else {
 				auxx.loginfo("INCOMING unchecked valid type: "+checker.getType());

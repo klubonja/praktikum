@@ -18,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import staticClasses.Config;
 import enums.GameStates;
 
@@ -131,6 +132,28 @@ public abstract class CluedoNetworkGUI {
 	       	
 	      return false;	      
 	  }
+	  
+	  public void youHaveWon(){
+			Stage stage = new Stage();
+			Winner window = new Winner(stage);
+			Scene scene = new Scene(window, 480, 360);
+			stage.setTitle("You have cracked the mystery!");
+			stage.setScene(scene);
+			stage.setAlwaysOnTop(true);
+			stage.initStyle(StageStyle.UNDECORATED);
+			stage.showAndWait();
+		}
+		
+		public void youHaveLost(){
+			Stage stage = new Stage();
+			Loser window = new Loser(stage);
+			Scene scene = new Scene(window, 1280, 720);
+			stage.setTitle("Better luck next time!");
+			stage.setScene(scene);
+			stage.setAlwaysOnTop(true);
+			stage.initStyle(StageStyle.UNDECORATED);
+			stage.showAndWait();
+		}
 	  
 	  public  void emptyIpList(){
 		  networkActorsListView.getItems().clear();

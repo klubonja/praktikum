@@ -300,4 +300,12 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		game.setCardsForPlayer(cards);		
 	}
 	
+	public void openWinner(){
+		
+	}
+	
+	public void openLoser(){
+		
+	}
+	
 }
