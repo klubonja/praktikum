@@ -253,6 +253,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 						game.currentPlayerToNothing();
 					else if (newStates.contains(PlayerStates.end_turn.getName())) //KI
 						game.moved();	
+					
 					game.showyourstates("you can : "+auxx.formatStringList(newStates, "or"));
 				}
 				else { //its some other bloke
