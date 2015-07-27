@@ -150,7 +150,7 @@ public class DataManagerServer extends DataManager {
 		if (game != null){
 			if (game.accuseRequest(accusation,client)) {
 				if (accusation.equals(game.getWinningStatement())){
-					sendMsgToAllClients(NetworkMessages.game_endedMsg(gameID, accusation));
+					sendMsgToAllClients(NetworkMessages.game_endedMsg(gameID, client.nick, accusation));
 				}
 			}
 		}

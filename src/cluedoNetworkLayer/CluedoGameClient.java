@@ -173,10 +173,10 @@ public class CluedoGameClient extends CluedoGame {
 
 	///////////////////////////////GAMEGUIACTION//////////////////////////////////////////////////////
 	
-	public void somebodyIsAccusing() {
-		if(communicator.getAccusing()){
-			
-		}
+	public void somebodyIsAccusing(String nick) {
+		Platform.runLater(() -> {
+		communicator.checkIfWon(nick);
+		});
 	}
 
 	public void somebodyFailedToAccuse(String person, String weapon, String room) {

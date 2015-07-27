@@ -207,9 +207,16 @@ class CommunicationHandler implements Runnable {
 		   	   	int gameID = checker.getMessage().getInt("gameID");
 				dataManager.accuseRequest(gameID, NetworkMessages.makeCluedoStatementFromJSON(
 								checker.getMessage().getJSONObject("statement")),client);
-				
 				JSONObject statement = checker.getMessage().getJSONObject("statement");
-				dataManager.sendMsgToAllClients(NetworkMessages.accuseMsg(gameID, statement));
+				String person = statement.getString("person");
+				String weapon = statement.getString("weapon");
+				String room = statement.getString("room");
+				
+				if(person.equals(dataManager.getGameByID(gameID).getWinningStatement().getPerson())&&
+					weapon.equals(dataManager.getGameByID(gameID).getWinningStatement().getWeapon())&&
+					room.equals(dataManager.getGameByID(gameID).getWinningStatement().getRoom())){
+					dataManager.sendMsgToAllClients(NetworkMessages.game_endedMsg(gameID, client.getNick(), statement));
+				}
 			} 
 	   	   	else if (checker.getType().equals("suspect")) {
 					int gameID = checker.getMessage().getInt("gameID");	

@@ -5,7 +5,10 @@ import java.util.Stack;
 import java.util.logging.Level;
 
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.effect.Glow;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import kacheln.KachelContainer;
 import staticClasses.Images;
@@ -22,6 +25,8 @@ import view.spielfeld.GameFrameView;
 import yoloKI.KI;
 import animation.DerBeweger;
 import animation.RaumBeweger;
+import cluedoNetworkGUI.Loser;
+import cluedoNetworkGUI.Winner;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
 import cluedoNetworkLayer.CluedoPosition;
@@ -393,6 +398,37 @@ public class Communicator {
 					zugPresenter.disablePassage();
 				}
 			}
+			
+			public void checkIfWon(String nick){
+				if(nick.equals(this.myNick)){
+					youHaveWon();
+				}
+				else {
+					youHaveLost();
+				}
+			}
+			
+			  public void youHaveWon(){
+					Stage stage = new Stage();
+					Winner window = new Winner(stage);
+					Scene scene = new Scene(window, 480, 360);
+					stage.setTitle("You have cracked the mystery!");
+					stage.setScene(scene);
+					stage.setAlwaysOnTop(true);
+					stage.initStyle(StageStyle.UNDECORATED);
+					stage.showAndWait();
+				}
+				
+				public void youHaveLost(){
+					Stage stage = new Stage();
+					Loser window = new Loser(stage);
+					Scene scene = new Scene(window, 1280, 720);
+					stage.setTitle("Better luck next time!");
+					stage.setScene(scene);
+					stage.setAlwaysOnTop(true);
+					stage.initStyle(StageStyle.UNDECORATED);
+					stage.showAndWait();
+				}
 	
 	public void kill() {
 		gameView.close();

@@ -128,8 +128,6 @@ class IncomingHandler implements Runnable {
 				String person = json.getString("person").toString();
 				String weapon = json.getString("weapon").toString();
 				String room = json.getString("room").toString();
-				server.getGameByGameID(checker.getMessage().getInt("gameID"))
-						.somebodyIsAccusing();
 			}
 			else if(checker.getType().equals("wrong accusation")){
 					JSONObject json = checker.getMessage().getJSONObject(
@@ -158,13 +156,8 @@ class IncomingHandler implements Runnable {
 
 			else if (checker.getType().equals("game ended")){
         		 dataGuiManager.setGameEndedOnServer(server,checker.getMessage().getInt("gameID"));
-        		 if(checker.getMessage().getString("nick").equals(server.getMyNick())){
-						dataGuiManager.youWin();
-						winner = true;
-					} else
-					if(!winner){
-					dataGuiManager.youLose();
-					}
+        		 server.getGameByGameID(checker.getMessage().getInt("gameID"))
+					.somebodyIsAccusing(checker.getMessage().getString("nick"));
 			}
 			else if (checker.getType().equals("left game")){
         		 dataGuiManager.removePlayerFromGameOnServer(
