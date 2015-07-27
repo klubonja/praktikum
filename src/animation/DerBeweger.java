@@ -126,12 +126,13 @@ public class DerBeweger {
 		System.out.println("get carried??!?!?!?!??!?!?");
 		
 		Kachel spielerPositionKachel = kachelContainer.getKachelAt(player.getPosition().getY(), player.getPosition().getX());		
+//		Label spielerPositionLabel = boardView.getLabelHier(spielerPositionKachel);
 		
 		Rooms anfangsRaum = spielerPositionKachel.getRaum();
 		
 		Label spielerAnfangsPositionLabel = new Label();
 		
-		if (kachelContainer.getKachelAt(player.getPosition().getY(), player.getPosition().getX()).isIstRaum()){
+		if (spielerPositionKachel.isIstRaum()){
 			Kachel spielerAnfangsPositionKachel = raumBeweger.positionInRaum(player, anfangsRaum);
 			spielerAnfangsPositionLabel = boardView.getLabelHier(spielerAnfangsPositionKachel);
 		
@@ -142,22 +143,20 @@ public class DerBeweger {
 		
 		Kachel spielerPositionImRaumKachel = raumBeweger.positonInDerTuer(zielRaum);
 		
+		player.setNewPosition(spielerPositionImRaumKachel.getPosition());
+		
 		Kachel spielerZielPositionImRaumKachel = raumBeweger.positionInRaum(player, zielRaum);
 		Label spielerZielPositionImRaumLabel = boardView.getLabelHier(spielerZielPositionImRaumKachel);
 		
 		Persons person = player.getCluedoPerson();
 		
-		pcManager.getPlayerByPerson(player.getCluedoPerson()).setNewPosition(spielerPositionImRaumKachel.getPosition());
 		
-//		player.setNewPosition(spielerPositionImRaumKachel.getPosition());
 		
 		Path path = new Path();
 		path.getElements().add(
-				new MoveTo(spielerAnfangsPositionLabel.getLayoutX(), spielerAnfangsPositionLabel
-						.getLayoutY()));
+				new MoveTo(spielerAnfangsPositionLabel.getLayoutX(), spielerAnfangsPositionLabel.getLayoutY()));
 		path.getElements().add(
-				new LineTo(spielerZielPositionImRaumLabel.getLayoutX(), spielerZielPositionImRaumLabel
-						.getLayoutY()));
+				new LineTo(spielerZielPositionImRaumLabel.getLayoutX(), spielerZielPositionImRaumLabel.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
 		pathTransition.setNode(pcManager.getCircleByPerson(person.getColor()));

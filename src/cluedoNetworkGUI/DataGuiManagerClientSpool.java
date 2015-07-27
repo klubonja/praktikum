@@ -273,7 +273,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		if (game.hasPlayerConnectedByNick(server.getMyNick())){ //never ever trust anyone
 			game.setCurrentSuspicion(suspicion);
 		}		
-//		game.moveForSuspicion(gameID,suspicion);
+		game.moveForSuspicion(gameID,suspicion);
 	}	
 	
 	public void handleDisprove(int gameID,ServerItem server){
