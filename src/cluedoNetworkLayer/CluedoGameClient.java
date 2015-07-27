@@ -280,12 +280,16 @@ public class CluedoGameClient extends CluedoGame {
 	}
 
 	public void setCurrentSuspicion(CluedoStatement suspicion) {
-		communicator.setCurSuspicion(suspicion);
+		Platform.runLater(() -> {
+			communicator.setCurSuspicion(suspicion);
+		});
 		
 	}
 
 	public void moveForSuspiciton(int gameID, CluedoStatement suspicion) {
-		communicator.moveForSuspiciton(gameID,suspicion);
+		Platform.runLater(() -> {
+			communicator.moveForSuspiciton(gameID,suspicion);
+		});
 	}
 
 
@@ -299,5 +303,22 @@ public class CluedoGameClient extends CluedoGame {
 	}
 
 
-	
+
+
+
+	public void showPoolcards(ArrayList<String> karten) {
+		Platform.runLater(() -> {
+			communicator.showPoolCards(karten);
+		});
+		
+	}
+
+
+	public void showDisprove(String karte) {
+		Platform.runLater(() -> {
+			communicator.showDisprovedCard(karte);
+		});
+		
+	}	
+
 }

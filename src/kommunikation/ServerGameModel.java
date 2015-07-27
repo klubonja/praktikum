@@ -1,6 +1,9 @@
 package kommunikation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 
 import animation.RaumBeweger;
@@ -51,6 +54,7 @@ public class ServerGameModel {
 	private ServerBeweger serverBeweger;
 	private RaumBeweger raumBeweger;
 	private StateManager stateManager;
+	private String[] poolcards;
 	
 	/**
 	 * Hier wird unser Server-Spiel-Model erzeugt! Juchee!
@@ -102,7 +106,7 @@ public class ServerGameModel {
 		Deck deck = new Deck(pcManager.getSize());
 		Stack<CluedoPlayer> players = pcManager.getPlayers();
 		deck.dealCluedoCards();
-		String[] poolcards = deck.getPoolCards();
+		poolcards = deck.getPoolCards();
 		String[] wh = deck.getWinningHand();
 		winningStatement = new CluedoStatement(
 				Persons.getPersonByColor(wh[0]),
@@ -215,6 +219,34 @@ public class ServerGameModel {
 	public boolean movePlayer(String nick,CluedoPosition newpos){
 		if (checkMove(newpos, nick)) {
 			pcManager.getPlayerByNick(nick).setNewPosition(newpos);
+			Rooms r = kacheln.getKachelAt(newpos.getX(), newpos.getY()).getRaum();
+			
+			if(kacheln.getKacheln()
+					[pcManager.getCurrentPlayer().getPosition().getY()]
+							[pcManager.getCurrentPlayer().getPosition().getX()].isIstRaum()){
+				System.out.println("Wir sind im Raum: " + kacheln.getKacheln()
+						[pcManager.getCurrentPlayer().getPosition().getY()]
+								[pcManager.getCurrentPlayer().getPosition().getX()].
+								getRaum().getName());
+			if(kacheln.getKacheln()
+				[pcManager.getCurrentPlayer().getPosition().getY()]
+				[pcManager.getCurrentPlayer().getPosition().getX()].
+				getRaum() == Rooms.pool){
+				System.out.println("Wir sind im Pool");
+				List<String> poolcardsList = Arrays.asList(poolcards);
+				ArrayList<String> poolcardsArrayList = new ArrayList<String>(poolcardsList);
+				network.sendPoolcardsByPlayer(pcManager.getCurrentPlayer(), poolcardsArrayList);
+			
+			}
+			
+			}
+//			if (r == Rooms.pool) {
+//				System.out.println("Wir sind im Pool");
+//				List<String> poolcardsList = Arrays.asList(poolcards);
+//				ArrayList<String> poolcardsArrayList = new ArrayList<String>(poolcardsList);
+//				network.sendPoolcardsByPlayer(pcManager.getCurrentPlayer(), poolcardsArrayList);
+//			}
+
 			stateManager.transitionByAction(PlayerStates.move);
 			return true;
 		}

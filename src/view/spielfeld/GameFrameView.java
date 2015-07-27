@@ -49,6 +49,7 @@ public class GameFrameView extends GridPane{
 	private KrasserStack komplettesFeld;
 	BallEbene ballEbene;
 	AussergewohnlichesZugfenster zugView;
+	
 
 	private HandFrameView hand;
 	
@@ -215,7 +216,6 @@ public class GameFrameView extends GridPane{
 		stage.setResizable(true);
 		//stage.setFullScreen(true);
 		stage.setTitle("Cluedo");
-		stage.setAlwaysOnTop(true);
 		stage.show();
 		
 	}

@@ -22,7 +22,7 @@ public class StatusView extends VBox {
 		serverStateMessages.setStyle("-fx-text-fill: red;");
 		setAlignment(Pos.CENTER);
 		setPadding(new Insets(10, 10, 10, 10));
-		setSpacing(10);
+		setSpacing(5);
 		getChildren().addAll(serverStateMessages,currentEvents);
 	}
 	
