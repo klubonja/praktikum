@@ -24,6 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import cluedoNetworkLayer.CluedoGameClient;
 
 /**
@@ -394,6 +396,10 @@ public class NotesView extends TabPane {
 		GridPane.setConstraints(study, 0, 23);
 		GridPane.setConstraints(button21, 1, 23);
 		GridPane.setConstraints(txt21, 2, 23);
+		
+		for(TextField t : textFlds){
+			t.setFont(Font.font("Tahoma", FontWeight.NORMAL, 11));
+		}
 		
 		editSize();
 		addtoGUI();

@@ -22,6 +22,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import staticClasses.Config;
@@ -71,6 +73,7 @@ public class ShowKarten extends GridPane{
 	private void setHandlerDisprove(){
 		
 		Text status = new Text(ueberschrift);
+		status.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 14));
 		GridPane.setValignment(status, VPos.CENTER);
 		GridPane.setHalignment(status, HPos.CENTER);
 		GridPane.setConstraints(status, 0, 0);
@@ -98,6 +101,7 @@ public class ShowKarten extends GridPane{
 		int columnCounter = 0;
 		
 		Text status = new Text(ueberschrift);
+		status.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 14));
 		GridPane.setValignment(status, VPos.CENTER);
 		GridPane.setHalignment(status, HPos.CENTER);
 		GridPane.setConstraints(status, 0, 0);
@@ -130,6 +134,7 @@ public class ShowKarten extends GridPane{
 	public void setHandlerSuspectCards(){
 		
 		Text status = new Text(suspecter + "hat eine Vermutung gemacht:");
+		status.setFont(Font.font("Tahoma", FontWeight.SEMI_BOLD, 14));
 		GridPane.setValignment(status, VPos.CENTER);
 		GridPane.setHalignment(status, HPos.CENTER);
 		GridPane.setConstraints(status, 0, 0);
