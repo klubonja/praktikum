@@ -141,11 +141,15 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		setSelectedServer(server);
 	}
 	
-	public void setGameEndedOnServer(ServerItem server,int gameID){
+	public void setGameEndedOnServer(String nick, ServerItem server,int gameID){
 		CluedoGameClient game = server.getGameByGameID(gameID);
 		game.killCommunicator();
 		game.setGameState(GameStates.ended);
 		setGameEndedGui(gameID);
+		if ( ! nick.equals("")){
+			game.somebodyIsAccusing(nick);
+		}
+		
 	}
 	
 	public void setGamesOnServer(ServerItem server, ArrayList<CluedoGameClient> glist){
