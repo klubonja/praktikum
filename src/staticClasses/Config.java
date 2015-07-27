@@ -63,8 +63,8 @@ public abstract class Config {
 	public final static String BLACKLISTED_MSG = ""
 			+ "you have the ip of some evil known protoksaveollviolator, lets try anyway";
 
-	public final static double SHOWKARTEN_HEIGHT = 400;
-	public static double SHOWKARTEN_WIDTH = 150;
+	public final static double SHOWKARTEN_HEIGHT = 300;
+	public static double SHOWKARTEN_WIDTH = 400;
 	
 	public static double COLOR_SELECT_WINDOW_WIDTH = 300;
 	
