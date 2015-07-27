@@ -8,8 +8,8 @@ import javafx.scene.text.Text;
 
 public class StatusView extends VBox {
 	
-	Text currentEvents;
-	Text serverStateMessages;
+	Text yourstates;
+	Text othersstates;
 	Label currentEventsTitle = new Label("Current Events:");
 	Label serverStateMessagesTitle = new Label("Server Says:");
 	
@@ -17,21 +17,21 @@ public class StatusView extends VBox {
 	
 	public StatusView(){
 		super();
-		currentEvents = new Text("no events");
-		serverStateMessages = new Text("no statemsg");
-		serverStateMessages.setStyle("-fx-text-fill: red;");
+		yourstates = new Text("no events");
+		othersstates = new Text("no statemsg");
+		othersstates.setStyle("-fx-text-fill: red;");
 		setAlignment(Pos.CENTER);
 		setPadding(new Insets(10, 10, 10, 10));
 		setSpacing(5);
-		getChildren().addAll(serverStateMessages,currentEvents);
+		getChildren().addAll(othersstates,yourstates);
 	}
 	
-	public void setSStateMsg(String msg){
-		serverStateMessages.setText(msg);
+	public void setothersstatemsg(String msg){
+		othersstates.setText(msg);
 	}
 	
-	public void setCurEventsMsg(String msg){
-		currentEvents.setText(msg);
+	public void setyourstatesmsg(String msg){
+		yourstates.setText(msg);
 	}
 	
 	

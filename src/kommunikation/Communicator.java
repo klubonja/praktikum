@@ -435,7 +435,7 @@ public void showPoolCards(ArrayList<String> karten) {
 
 		
 		public void setServerStateMsg(String str){
-			gameView.getStatusView().setSStateMsg(str);
+			gameView.getStatusView().setothersstatemsg(str);
 		}
 			
 			public void showPossibleDisprovals(ArrayList<String> possibleDisprovals){
@@ -517,8 +517,13 @@ public void showPoolCards(ArrayList<String> karten) {
 		pcManager.getCurrentPlayer().setPossibleState(PlayerStates.disprove);
 	}
 			
-	public void changeLabel(String str){
-		gameView.getStatusView().setCurEventsMsg(str);
+	public void showyourstates(String str){
+		gameView.getStatusView().setyourstatesmsg(str);
+	}
+	
+	public void showsothersstates(String str) {
+		gameView.getStatusView().setothersstatemsg(str);
+		
 	}
 			
 
