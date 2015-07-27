@@ -330,7 +330,7 @@ public void showPoolCards(ArrayList<String> karten) {
 		System.out.println("ShowKarten stage wird erstellt? ");
 		Scene secondary = new Scene(poolcards, Config.SHOWKARTEN_HEIGHT, Config.SHOWKARTEN_WIDTH);
 		
-		System.out.println("ShowKarten scene wird erstellt? ");
+		System.out.println("PoolCards scene wird erstellt? ");
 		secondary.setFill(Color.TRANSPARENT);
 		pool.setScene(secondary);
 		pool.setOpacity(0.9);
@@ -346,7 +346,9 @@ public void showPoolCards(ArrayList<String> karten) {
 		ShowKarten poolcards = new ShowKarten(pool, karte);
 		System.out.println("ShowKarten stage wird erstellt? ");
 		Scene secondary = new Scene(poolcards, Config.SHOWKARTEN_HEIGHT, Config.SHOWKARTEN_WIDTH);
-		System.out.println("ShowKarten scene wird erstellt? ");
+		
+		System.out.println("Disprove scene wird erstellt? ");
+		
 		secondary.setFill(Color.TRANSPARENT);
 		pool.setScene(secondary);
 		pool.setOpacity(0.95);

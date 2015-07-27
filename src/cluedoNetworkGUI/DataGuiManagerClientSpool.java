@@ -252,13 +252,13 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 					else if (newStates.contains(PlayerStates.do_nothing.getName()))
 						game.currentPlayerToNothing();
 					else if (newStates.contains(PlayerStates.end_turn.getName())) //KI
-						game.moved();
-					game.changeLabel(auxx.formatStringList(newStates, "or"));
+						game.moved();					
 				}
 				else { //its some other bloke
 					if (newStates.contains(PlayerStates.roll_dice.getName()))
 						game.itsSomeonesTurn(gameNick);				
 				}
+				game.changeLabel(auxx.formatStringList(newStates, "or"));
 			}
 			else if (game.hasWatcherConnectedByNick(server.getMyNick())){
 				game.changeLabel(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
