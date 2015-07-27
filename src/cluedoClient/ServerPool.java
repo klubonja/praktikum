@@ -38,9 +38,8 @@ public class ServerPool extends ArrayList<ServerItem> {
 	
 	public void sendToAll(String msg){
 		for (ServerItem server: this)
-
-			auxx.sendTCPMsg(server.getSocket(), msg);
-			
+			if (server.getSocket() != null)
+				auxx.sendTCPMsg(server.getSocket(), msg);					
 	}
 	
 	public ServerItem getServerItem(ServerItem server) {

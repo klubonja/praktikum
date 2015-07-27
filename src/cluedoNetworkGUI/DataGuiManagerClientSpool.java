@@ -252,16 +252,18 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 					else if (newStates.contains(PlayerStates.do_nothing.getName()))
 						game.currentPlayerToNothing();
 					else if (newStates.contains(PlayerStates.end_turn.getName())) //KI
-						game.moved();					
+						game.moved();	
+					
+					game.showyourstates("you can : "+auxx.formatStringList(newStates, "or"));
 				}
 				else { //its some other bloke
 					if (newStates.contains(PlayerStates.roll_dice.getName()))
-						game.itsSomeonesTurn(gameNick);				
+						game.itsSomeonesTurn(gameNick);			
+						game.showothersstates(gameNick+" can :"+auxx.formatStringList(newStates, "or"));
 				}
-				game.changeLabel(auxx.formatStringList(newStates, "or"));
 			}
 			else if (game.hasWatcherConnectedByNick(server.getMyNick())){
-				game.changeLabel(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
+				game.showyourstates(gameNick+ "is about to "+ auxx.formatStringList(newStates, "or"));
 			}	
 		}		
 	}
@@ -273,6 +275,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 		}		
 //		game.moveForSuspiciton(gameID,suspicion);
 		game.showSuspicionCards(gameID, suspicion);
+//		game.moveForSuspicion(gameID,suspicion);
 	}	
 	
 	public void handleDisprove(int gameID,ServerItem server){
@@ -282,7 +285,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 	public void noDisprove(int gameID, ServerItem server) {
 		CluedoGameClient game = server.getGameByGameID(gameID);
 		if (game != null){
-			game.changeLabel("No disprove this round");
+			game.showyourstates("No disprove this round");
 		}
 		
 	}

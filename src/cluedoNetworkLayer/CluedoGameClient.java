@@ -172,20 +172,27 @@ public class CluedoGameClient extends CluedoGame {
 			String room) {
 		String str = "The player " + nick + " is trying to solve the mystery!"
 				+ "\n" + "Accused: " + person + " " + weapon + " " + room;
-		changeLabel(str);
+		showyourstates(str);
 	}
 
 	public void somebodyFailedToAccuse(String person, String weapon, String room) {
 		String str = "Accusation failed for: " + person + " " + weapon + " "
 				+ room;
-		changeLabel(str);
+		showyourstates(str);
 	}
 
-	public void changeLabel(String str) {
+	public void showyourstates(String str) {
 		Platform.runLater(() -> {
-			communicator.changeLabel(str);
+			communicator.showyourstates(str);
 		});
 	}
+	
+	public void showothersstates(String str) {
+		// TODO Auto-generated method stub
+		Platform.runLater(() -> {
+			communicator.showsothersstates(str);
+		});
+	}	
 	
 	public void addChatMsg(String msg) {
 		Platform.runLater(() -> {
@@ -286,7 +293,7 @@ public class CluedoGameClient extends CluedoGame {
 		
 	}
 
-	public void moveForSuspiciton(int gameID, CluedoStatement suspicion) {
+	public void moveForSuspicion(int gameID, CluedoStatement suspicion) {
 		Platform.runLater(() -> {
 			communicator.moveForSuspiciton(gameID,suspicion);
 		});
@@ -321,12 +328,10 @@ public class CluedoGameClient extends CluedoGame {
 		
 	}
 
-
 	public void showSuspicionCards(int gameID, CluedoStatement suspicion) {
 		Platform.runLater(() -> {
 			communicator.showCardsforSuspiction(suspicion);
 		});
 		
 	}	
-
 }

@@ -145,7 +145,7 @@ class IncomingHandler implements Runnable {
 				if(checker.getMessage().has("card")){
 				String card = checker.getMessage().getString("card");
 				dataGuiManager.handleDisproved(checker.getMessage().getInt("gameID"), server, card);
-				server.getGameByGameID(checker.getMessage().getInt("gameID")).changeLabel(
+				server.getGameByGameID(checker.getMessage().getInt("gameID")).showyourstates(
 					checker.getMessage().getString("nick").toString() + " disproved!"
 					);
 				
