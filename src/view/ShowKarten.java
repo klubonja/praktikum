@@ -183,7 +183,7 @@ public class ShowKarten extends GridPane{
 
 	    this.setClip(rect);
 	    
-	    Image lotr = new Image("https://awesomewallpapers.files.wordpress.com/2009/05/movie-lord-of-the-rings-34641.jpg");
+	    Image lotr = new Image("media/ringBack.jpg");
 		BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
 				false, false, false, true);
 		BackgroundImage backgroundImage = new BackgroundImage(lotr, BackgroundRepeat.NO_REPEAT , 

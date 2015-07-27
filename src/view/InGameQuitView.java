@@ -50,7 +50,7 @@ public class InGameQuitView extends GridPane{
 		
 		this.gameFrameView = gameFrameView;
 		
-		this.image = new Image("media/inGameMenuBackground.jpg");
+		this.image = new Image("src/media/ringBack.jpg");
 		this.backgroundSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, 
 				false, false, false, true);
 		this.backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT , 
@@ -74,7 +74,7 @@ public class InGameQuitView extends GridPane{
 		yes = new Button("Yes");
 		no = new Button("No");
 		
-		Rectangle rect = new Rectangle(400,230);
+		Rectangle rect = new Rectangle(400,300);
 		rect.setArcHeight(20);
 		rect.setArcWidth(20);
 
@@ -96,7 +96,7 @@ public class InGameQuitView extends GridPane{
 	
 	public void start(){
 		
-		scene = new Scene (this, 400,230);
+		scene = new Scene (this, 400,300);
 		scene.setFill(Color.TRANSPARENT);
 		stage = new Stage();
 		stage.setScene(scene);
