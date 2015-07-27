@@ -13,6 +13,7 @@ import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoNetworkGUI.DataGuiManagerServer;
 import cluedoNetworkLayer.CluedoPosition;
+import cluedoNetworkLayer.CluedoStatement;
 import enums.NetworkHandhakeCodes;
 import enums.PlayerStates;
 
@@ -203,17 +204,19 @@ class CommunicationHandler implements Runnable {
 	   	   }
 	     	   
 	   	   	else if (checker.getType().equals("accuse")) {
-
-//
-		   	   	int gameID = checker.getMessage().getInt("gameID");	
-				dataManager.accuseRequest(
-						gameID, 
-						NetworkMessages.makeCluedoStatementFromJSON(
-								checker.getMessage().getJSONObject("statement")
-						), 
-						client
-				);
-
+		   	   	int gameID = checker.getMessage().getInt("gameID");
+				dataManager.accuseRequest(gameID, NetworkMessages.makeCluedoStatementFromJSON(
+								checker.getMessage().getJSONObject("statement")),client);
+				JSONObject statement = checker.getMessage().getJSONObject("statement");
+				String person = statement.getString("person");
+				String weapon = statement.getString("weapon");
+				String room = statement.getString("room");
+				
+				if(person.equals(dataManager.getGameByID(gameID).getWinningStatement().getPerson())&&
+					weapon.equals(dataManager.getGameByID(gameID).getWinningStatement().getWeapon())&&
+					room.equals(dataManager.getGameByID(gameID).getWinningStatement().getRoom())){
+					dataManager.sendMsgToAllClients(NetworkMessages.game_endedMsg(gameID, client.getNick(), statement));
+				}
 			} 
 	   	   	else if (checker.getType().equals("suspect")) {
 					int gameID = checker.getMessage().getInt("gameID");	

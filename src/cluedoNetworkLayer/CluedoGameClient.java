@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import javafx.application.Platform;
 import kommunikation.Communicator;
+import staticClasses.Images;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import cluedoClient.ServerItem;
@@ -23,6 +24,7 @@ public class CluedoGameClient extends CluedoGame {
 
 	public CluedoGameClient(int gameId, ServerItem server) {
 		super(gameId);
+		Images.initImages();
 		this.server = server;		
 		watchers = new ArrayList<String>();
 		myNick = server.getMyNick();
@@ -79,6 +81,16 @@ public class CluedoGameClient extends CluedoGame {
 		});
 
 	}
+	
+	public void changeZugFensterButtons(ArrayList<String> states){
+		communicator.setZugFensterButtons(states);
+	}
+	
+//	public void showDisprovals(String person, String weapon, String room) {
+//		Platform.runLater(() -> {
+//			communicator.showPossibleDisprovals(person, weapon, room);
+//		});
+//	}
 	
 	public void itsSomeonesTurn(String nick){
 		Platform.runLater(() -> {
@@ -168,13 +180,12 @@ public class CluedoGameClient extends CluedoGame {
 
 	///////////////////////////////GAMEGUIACTION//////////////////////////////////////////////////////
 	
-	public void somebodyIsAccusing(String nick, String person, String weapon,
-			String room) {
-		String str = "The player " + nick + " is trying to solve the mystery!"
-				+ "\n" + "Accused: " + person + " " + weapon + " " + room;
-		showyourstates(str);
+	public void somebodyIsAccusing(String nick) {
+		Platform.runLater(() -> {
+		communicator.checkIfWon(nick);
+		});
 	}
-
+	
 	public void somebodyFailedToAccuse(String person, String weapon, String room) {
 		String str = "Accusation failed for: " + person + " " + weapon + " "
 				+ room;
@@ -301,7 +312,7 @@ public class CluedoGameClient extends CluedoGame {
 
 
 	public void setCardsForPlayer(ArrayList<String> cards) {
-		getConnectedPlayerByName(server.getMyNick()).setCards(cards);	
+		getConnectedPlayerByName(server.getMyNick()).setCards(cards);
 //		getCommunicator().
 //		setCards(
 //				server.getMyNick(),

@@ -1,9 +1,8 @@
 package view;
 
-import java.util.Iterator;
-
+import javafx.scene.image.Image;
 import kommunikation.PlayerCircleManager;
-import cluedoNetworkLayer.CluedoPlayer;
+import staticClasses.Images;
 import staticClasses.Sounds;
 
 public class AussergewohnlichesZugfensterPresenter {
@@ -22,185 +21,126 @@ public class AussergewohnlichesZugfensterPresenter {
 
 	public void zugFensterButtonManager() {
 
-		// Vermuten
-		gameView.YESvermutenImage.setOnMouseClicked(e -> {
-			gameView.getOrganizer().getChildren()
-					.remove(gameView.getButtonsBox());
-			gameView.getOrganizer().getChildren()
-					.remove(gameView.getBottomBox());
-			gameView.getOrganizer().getChildren().add(gameView.getVermuten());
-			gameView.getOrganizer().getChildren().add(gameView.getBottomBox());
-			gameView.getBottomBox().getChildren().remove(gameView.getClose());
-			gameView.getBottomBox().getChildren().add(gameView.OFFanklage);
-			gameView.getBottomBox().getChildren().add(gameView.getClose());
-		});
+		
 
-		// Gang nehmen
-		gameView.YESgangImage.setOnMouseClicked(e -> {
-			Sounds.gangSound();
-			removeButtons();
-			gameView.addInactiveButtons();
-		});
+		
 
-		// Button Animation
-		gameView.NOvermutenImage.setOnMouseEntered(e -> {
-			removeButtons();
-			gameView.getButtonsBox()
-					.getChildren()
-					.addAll(gameView.YESvermutenImage, gameView.NOwurfelImage,
-							gameView.NOgangImage);
-		});
+		
 
-		// Button Animation
-		gameView.YESvermutenImage.setOnMouseExited(e -> {
-			removeButtons();
-			gameView.addInactiveButtons();
-		});
+		
 
-		// Button Animation
-		gameView.NOwurfelImage.setOnMouseEntered(e -> {
-			removeButtons();
-			gameView.getButtonsBox()
-					.getChildren()
-					.addAll(gameView.NOvermutenImage, gameView.YESwurfelImage,
-							gameView.NOgangImage);
-		});
+		
 
-		// Button Animation
-		gameView.YESwurfelImage.setOnMouseExited(e -> {
-			removeButtons();
-			gameView.addInactiveButtons();
-		});
-
-		// Button Animation
-		gameView.NOgangImage.setOnMouseEntered(e -> {
-			removeButtons();
-			gameView
-
-			.getButtonsBox()
-					.getChildren()
-					.addAll(gameView.NOvermutenImage, gameView.NOwurfelImage,
-							gameView.YESgangImage);
-		});
-
-		// Button Animation
-		gameView.YESgangImage.setOnMouseExited(e -> {
-			removeButtons();
-			gameView.addInactiveButtons();
-		});
-
-		// Der Button fuer die aeusserung der Vermutung
-		gameView.ONvermuten.setOnMouseClicked(e -> {
-			removeButtons();
-		});
-
-		// Der Button fuer die aeusserung der Vermutung
-		gameView.OFFvermuten.setOnMouseEntered(e -> {
-			removeButtons();
-			gameView.getBottomBox().getChildren().addAll(gameView.ONvermuten);
-		});
+		
 
 		// Der Button fuer die aeusserung der Anklage
-		gameView.ONanklage.setOnMouseExited(e -> {
-			gameView.getBottomBox().getChildren()
-					.removeAll(gameView.OFFanklage, gameView.ONanklage);
-			gameView.getBottomBox().getChildren().addAll(gameView.OFFanklage);
+		Images.suspectNOW.setOnMouseExited(e -> {
+			gameView.getBottomBox().getChildren().removeAll(
+					Images.suspectLATER,
+					Images.suspectNOW);
+			gameView.getBottomBox().getChildren().addAll(
+					Images.suspectLATER);
 		});
 
-		// Schliesst das Zugfenster (nur fuer Developing gedacht
-		// nicht fuer das eigentliche Spiel)
-		gameView.getClose().setOnMouseClicked(e -> {
-			removeButtons();
-			gameView.killEmAll();
-			gameView.getChildren().remove(gameView);
-			gameView.visibleProperty().set(false);
+		//WE HAVE TO GO BACK!
+		gameView.getBackButton().setOnMouseClicked(e -> {
+			gameView.getOrganizer().getChildren().remove(gameView.getVermuten());
+			gameView.getBottomBox().getChildren().remove(Images.suspectNOW);
+			gameView.getBottomBox().getChildren().remove(Images.suspectLATER);
+			gameView.getOrganizer().getChildren().remove(gameView.getBottomBox());
+			gameView.getOrganizer().getChildren().remove(gameView.getBackButton());
+			gameView.getOrganizer().getChildren().add(gameView.getButtonsBox());
 		});
 	}
 
 	public void vermutungButtonManager() {
-//		gameView.ONanklage
-//				.setOnMouseClicked(e -> {
-//					
-//					if (!gameView.getPersonenListe().getValue()
-//							.equals("Taeter")
-//							&& !gameView.getWaffenListe().getValue()
-//									.equals("Waffe")) {
-//						vermutung(gameView.getPersonenListe().getValue(),
-//								gameView.getWaffenListe().getValue(), "room");
-//					}
-//					
-//					Iterator<CluedoPlayer> iter = pcManager.playerManager
-//							.iterator();
-//					CluedoPlayer buffer = (CluedoPlayer) pcManager
-//							.getCurrentPlayer();
-//					CluedoPlayer current = iter.next();
-//
-//					System.out.println(buffer.getCluedoPerson() + " vermutet");
-//					System.out.println("TÄTER "
-//							+ gameView.getPersonenListe().getValue());
-//					System.out.println("WAFFE "
-//							+ gameView.getWaffenListe().getValue());
-//					System.out.println("RAUM ");
-//
-//					if (iter.hasNext() && (!iter.next().getNick().equals(""))) {
-//						for (String card : current.getCards()) {
-//							// SPIELER HAT MOMENTAN KEINE KARTEN IN DER HAND??
-//							// SEARCH ME
-//				if (card.equals(gameView.getPersonenListe().getValue())
-//						|| card.equals(gameView.getWaffenListe().getValue())) {
-//					System.out.println(current.getCluedoPerson() + " Hat was!");
-//				} else {
-//					System.out.println(current.getCluedoPerson() + " Hat nix!");
-//				}
-//			}
-//			current = iter.next();
-//		} else {
-//			current = pcManager.playerManager.get(0);
-//			for (String card : current.getCards()) {
-//				if (card.equals(gameView.getPersonenListe().getValue())
-//						|| card.equals(gameView.getWaffenListe().getValue())) {
-//				}
-//			}
-//			current = iter.next();
-//			if (current == buffer) {
-//				System.out.println("Keiner hat die Karten.");
-//			}
-//		}
-//	})	;
-
 		// Der Button fuer die aeusserung der Vermutung
-		gameView.OFFanklage.setOnMouseEntered(e -> {
-			gameView.getBottomBox().getChildren().remove(gameView.OFFanklage);
-			gameView.getBottomBox().getChildren().remove(gameView.ONanklage);
-			gameView.getBottomBox().getChildren().remove(gameView.getClose());
+		Images.suspectLATER.setOnMouseEntered(e -> {
+			gameView.getBottomBox().getChildren().remove(Images.suspectLATER);
+			gameView.getBottomBox().getChildren().remove(Images.suspectNOW);
 			gameView.getBottomBox().getChildren()
-					.addAll(gameView.ONanklage, gameView.getClose());
+					.addAll(Images.suspectNOW);
 		});
 
 		// Der Button fuer die aeusserung der Anklage
-		gameView.ONanklage.setOnMouseExited(e -> {
-			gameView.getBottomBox().getChildren().remove(gameView.ONanklage);
-			gameView.getBottomBox().getChildren().remove(gameView.OFFanklage);
-			gameView.getBottomBox().getChildren().remove(gameView.getClose());
+		Images.suspectNOW.setOnMouseExited(e -> {
+			gameView.getBottomBox().getChildren().remove(Images.suspectNOW);
+			gameView.getBottomBox().getChildren().remove(Images.suspectLATER);
 			gameView.getBottomBox().getChildren()
-					.addAll(gameView.OFFanklage, gameView.getClose());
+					.addAll(Images.suspectLATER);
 		});
 	}
 
-	public void removeButtons() {
-		gameView.getButtonsBox()
-				.getChildren()
-				.removeAll(gameView.NOvermutenImage, gameView.YESvermutenImage,
-						gameView.NOwurfelImage, gameView.YESwurfelImage,
-						gameView.NOgangImage, gameView.YESgangImage);
+	public void disableSuspect(){
+		Images.suspect.setImage(Images.disabled);
+		Images.suspect.setOnMouseClicked(e -> {});
+		Images.suspect.setOnMouseEntered(e -> {});
+		Images.suspect.setOnMouseExited(e -> {});
 	}
-
-	public String[] vermutung(String person, String weapon, String room) {
-		String[] vermutung = new String[3];
-		vermutung[0] = person;
-		vermutung[1] = weapon;
-		vermutung[2] = room;
-		return vermutung;
+	
+	public void disableRoll(){
+		Images.roll.setImage(Images.disabled);
+		Images.roll.setOnMouseClicked(e -> {});
+		Images.roll.setOnMouseEntered(e -> {});
+		Images.roll.setOnMouseExited(e -> {});
+	}
+	
+	public void disablePassage(){
+		Images.passage.setImage(Images.disabled);
+		Images.passage.setOnMouseClicked(e -> {});
+		Images.passage.setOnMouseEntered(e -> {});
+		Images.passage.setOnMouseExited(e -> {});
+	}
+	
+	public void enableSuspect(){
+		Images.suspect.setImage(Images.enabled);
+		
+		// Vermuten
+				Images.suspect.setOnMouseClicked(e -> {
+					gameView.getOrganizer().getChildren().remove(gameView.getButtonsBox());
+					gameView.getBottomBox().getChildren().add(Images.suspectLATER);
+					gameView.getOrganizer().getChildren().add(gameView.getVermuten());
+					gameView.getOrganizer().getChildren().add(gameView.getBottomBox());
+					gameView.getOrganizer().getChildren().add(gameView.getBackButton());
+				});
+				
+		// Button Animation
+		Images.suspect.setOnMouseEntered(e -> {
+			Images.suspect.setImage(Images.suspectImage);
+		});
+		
+		Images.suspect.setOnMouseExited(e -> {
+			Images.suspect.setImage(Images.enabled);
+		});
+	}
+	
+	public void enableRoll(){
+		Images.roll.setImage(Images.enabled);
+		
+		// Button Animation
+		Images.roll.setOnMouseEntered(e -> {
+			Images.roll.setImage(Images.rollImage);
+		});
+			Images.roll.setOnMouseExited(e -> {
+			Images.roll.setImage(Images.enabled);
+		});
+	}
+	
+	public void enablePassage(){
+		Images.passage.setImage(Images.enabled);
+		
+		// Gang nehmen
+		Images.passage.setOnMouseClicked(e -> {
+			Sounds.gangSound();
+		});
+		
+		// Button Animation
+		Images.passage.setOnMouseEntered(e -> {
+			Images.passage.setImage(Images.passageImage);
+		});
+			Images.passage.setOnMouseExited(e -> {
+			Images.passage.setImage(Images.enabled);
+		});
 	}
 
 	public AussergewohnlichesZugfenster getGameView() {

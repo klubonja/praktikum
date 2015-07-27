@@ -161,7 +161,7 @@ public class DerBeweger {
 			PathTransition pathTransition = new PathTransition();
 			pathTransition.setDuration(Duration.millis(Math.abs(yDistanz) * 300
 					+ Math.abs(xDistanz) * 300));
-			pathTransition.setNode(pcManager.getCurrentCircle());
+			pathTransition.setNode(pcManager.getCurrentCharacter());
 			pathTransition.setPath(path);
 			pathTransition.play();
 			pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
@@ -271,7 +271,7 @@ public class DerBeweger {
 
 			PathTransition pathTransition = new PathTransition();
 			pathTransition.setDuration(Duration.millis(1000));
-			pathTransition.setNode(pcManager.getCurrentCircle());
+			pathTransition.setNode(pcManager.getCurrentCharacter());
 			pathTransition.setPath(path);
 			pathTransition.play();
 			
@@ -321,7 +321,7 @@ public class DerBeweger {
 						.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(pcManager.getCurrentCircle());
+		pathTransition.setNode(pcManager.getCurrentCharacter());
 		pathTransition.setPath(path);
 		pathTransition.play();
 	}
@@ -340,7 +340,7 @@ public class DerBeweger {
 		
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(pcManager.getCurrentCircle());
+		pathTransition.setNode(pcManager.getCurrentCharacter());
 		pathTransition.setPath(path);
 		pathTransition.play();
 		pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
@@ -421,7 +421,7 @@ public class DerBeweger {
 				new LineTo(gangLabel.getLayoutX(), gangLabel.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(pcManager.getCurrentCircle());
+		pathTransition.setNode(pcManager.getCurrentCharacter());
 		pathTransition.setPath(path);
 		pathTransition.play();
 		pathTransition.setOnFinished(new EventHandler<ActionEvent>() {
@@ -460,7 +460,7 @@ public class DerBeweger {
 						.getLayoutY()));
 		PathTransition pathTransition = new PathTransition();
 		pathTransition.setDuration(Duration.millis(2000));
-		pathTransition.setNode(pcManager.getCurrentCircle());
+		pathTransition.setNode(pcManager.getCurrentCharacter());
 		pathTransition.setPath(path);
 		pathTransition.play();
 	}

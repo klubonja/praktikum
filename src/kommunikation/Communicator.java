@@ -14,6 +14,7 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import kacheln.KachelContainer;
 import staticClasses.Config;
+import staticClasses.Images;
 import staticClasses.NetworkMessages;
 import staticClasses.auxx;
 import view.AussergewohnlichesZugfenster;
@@ -28,6 +29,8 @@ import view.spielfeld.GameFrameView;
 import yoloKI.KI;
 import animation.DerBeweger;
 import animation.RaumBeweger;
+import cluedoNetworkGUI.Loser;
+import cluedoNetworkGUI.Winner;
 import cluedoNetworkLayer.CluedoField;
 import cluedoNetworkLayer.CluedoGameClient;
 import cluedoNetworkLayer.CluedoPlayer;
@@ -57,6 +60,7 @@ public class Communicator {
 	private String myNick;
 	
 	private CluedoGameClient network;
+	
 	
 	private int [] wuerfelWurf;
 	private boolean sswitch;
@@ -382,8 +386,7 @@ public void showPoolCards(ArrayList<String> karten) {
 	}
 	
 
-	
-		/**
+	/**
 	 * Hier werden irgendwelche Dinge gehandelt (z.B. wenn das Spielfenster einfach so geschlossen wird.
 	 * Aber welcher Vollhonk schliesst einfach so das Fenster......?
 	 */
@@ -399,10 +402,10 @@ public void showPoolCards(ArrayList<String> karten) {
 			}
 		});
 
-		zugPresenter.getGameView().YESgangImage.setOnMouseClicked(
+		Images.passage.setOnMouseClicked(
 				e -> requestUseSecretPassge());
 		
-		zugPresenter.getGameView().ONanklage.setOnMouseClicked(e -> {
+		Images.suspectNOW.setOnMouseClicked(e -> {
 			String person = zugView.getPersonenListe().getValue();
 			String weapon = zugView.getWaffenListe().getValue();
 			String room = kacheln.getKacheln()
@@ -414,20 +417,20 @@ public void showPoolCards(ArrayList<String> karten) {
 			
 			// BOESE!!
 			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
-				remove(gameView.getKomplettesFeld().getZugView().getBottomBox());
-			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
-				remove(gameView.getKomplettesFeld().getZugView().getVermuten());
-			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
-				remove(gameView.getKomplettesFeld().getZugView().OFFanklage);
-			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
-				add(gameView.getKomplettesFeld().getZugView().getButtonsBox());
-			gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
-				add(gameView.getKomplettesFeld().getZugView().getBottomBox());
-			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
-				remove(gameView.getKomplettesFeld().getZugView().getClose());
-			gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
-				add(gameView.getKomplettesFeld().getZugView().getClose());
-			gameView.getKomplettesFeld().getChildren().remove(zugView);
+			remove(gameView.getKomplettesFeld().getZugView().getBottomBox());
+		gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+			remove(gameView.getKomplettesFeld().getZugView().getVermuten());
+		gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+			remove(Images.suspectLATER);
+		gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+			add(gameView.getKomplettesFeld().getZugView().getButtonsBox());
+		gameView.getKomplettesFeld().getZugView().getOrganizer().getChildren().
+			add(gameView.getKomplettesFeld().getZugView().getBottomBox());
+		gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+			remove(gameView.getKomplettesFeld().getZugView().getBackButton());
+		gameView.getKomplettesFeld().getZugView().getBottomBox().getChildren().
+			add(gameView.getKomplettesFeld().getZugView().getBackButton());
+		gameView.getKomplettesFeld().getChildren().remove(zugView);
 			
 		});
 
@@ -443,6 +446,7 @@ public void showPoolCards(ArrayList<String> karten) {
 		gameView.getHand().getEndTurn().setOnMouseClicked(e -> endTurn());
 		
 	}
+	
 	
 	
 		//OPEN WINDOW
@@ -469,7 +473,8 @@ public void showPoolCards(ArrayList<String> karten) {
 					setCardFunction(cardOfTheOne);
 				}	
 			}
-
+			
+		
 //			public void handleDisprove() {
 //				ArrayList<String> disprover = 
 //						curSuspicion.makeConjunction(
@@ -511,8 +516,56 @@ public void showPoolCards(ArrayList<String> karten) {
 					network.sendMsgToServer(NetworkMessages.cantDisproveMsg(gameID));
 				}				
 			}
+
+			//arrangiert welche der Buttons im Zugfenster verwendet werde dürfen 
+			public void setZugFensterButtons(ArrayList<String> states){
+				if(states.contains(PlayerStates.suspect.getName())){
+					zugPresenter.enableSuspect();
+				} else {
+					zugPresenter.disableSuspect();
+				}
+				if(states.contains(PlayerStates.roll_dice.getName())){
+					zugPresenter.enableRoll();
+				} else {
+					zugPresenter.disableRoll();
+				}
+				if(states.contains(PlayerStates.use_secret_passage.getName())){
+					zugPresenter.enablePassage();
+				} else {
+					zugPresenter.disablePassage();
+				}
+			}
 			
+			public void checkIfWon(String nick){
+				if(nick.equals(this.myNick)){
+					youHaveWon();
+				}
+				else {
+					youHaveLost();
+				}
+			}
 			
+			  public void youHaveWon(){
+					Stage stage = new Stage();
+					Winner window = new Winner(stage);
+					Scene scene = new Scene(window, 480, 360);
+					stage.setTitle("You have cracked the mystery!");
+					stage.setScene(scene);
+					stage.setAlwaysOnTop(true);
+					stage.initStyle(StageStyle.UNDECORATED);
+					stage.showAndWait();
+				}
+				
+				public void youHaveLost(){
+					Stage stage = new Stage();
+					Loser window = new Loser(stage);
+					Scene scene = new Scene(window, 1280, 720);
+					stage.setTitle("Better luck next time!");
+					stage.setScene(scene);
+					stage.setAlwaysOnTop(true);
+					stage.initStyle(StageStyle.UNDECORATED);
+					stage.showAndWait();
+				}
 	
 	public void kill() {
 		gameView.close();

@@ -103,7 +103,7 @@ public class CluedoClientGUI extends CluedoNetworkGUI{
 //	private final Image unmuteGraphic = new Image("http://png-3.findicons.com/files/icons/2711/free_icons_for_windows8_metro/512/mute.png"); 
 //	private final Image unmuteGraphic = new Image("media/Yre1o.jpg"); 
 
-	private final File audioFile = new File("media/clientAudio1.mp3");
+	private final File audioFile = new File("src/media/clientAudio1.mp3");
 	
 	private GridPane promptArea;
 	private GridPane infoArea;

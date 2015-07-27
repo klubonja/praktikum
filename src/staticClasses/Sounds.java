@@ -10,7 +10,7 @@ public abstract class Sounds {
 	 * Spielt ein Geraeusch, waehrend die Karten verteilt werden.
 	 */
 	public static void cardSound() {
-		String sound = "media/card.wav";
+		String sound = "src/media/sounds/card.wav";
 		Media mediaFile = new Media(new File(sound).toURI().toString());
 		MediaPlayer mediaplayer = new MediaPlayer(mediaFile);
 		mediaplayer.setAutoPlay(true);
@@ -21,7 +21,7 @@ public abstract class Sounds {
 	 * Sound fur den Gang nehmen Button
 	 */
 	public static void gangSound() {
-		String sound = "media/gang.mp3";
+		String sound = "src/media/sounds/gang.mp3";
 		Media mediaFile = new Media(new File(sound).toURI().toString());
 		MediaPlayer mediaplayer = new MediaPlayer(mediaFile);
 		mediaplayer.setAutoPlay(true);
@@ -32,7 +32,7 @@ public abstract class Sounds {
 	 * Sound fur die Turkacheln
 	 */
 	public static void doorSound() {
-		String sound = "media/door.mp3";
+		String sound = "src/media/sounds/door.mp3";
 		Media mediaFile = new Media(new File(sound).toURI().toString());
 		MediaPlayer mediaplayer = new MediaPlayer(mediaFile);
 		mediaplayer.setAutoPlay(true);
@@ -43,7 +43,7 @@ public abstract class Sounds {
 	 * Sound fur das Wurfeln
 	 */
 	public static void diceSound() {
-		String sound = "media/dice.wav";
+		String sound = "src/media/sounds/dice.wav";
 		Media mediaFile = new Media(new File(sound).toURI().toString());
 		MediaPlayer mediaplayer = new MediaPlayer(mediaFile);
 		mediaplayer.setAutoPlay(true);

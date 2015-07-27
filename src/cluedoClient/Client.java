@@ -377,6 +377,14 @@ public class Client {
             System.exit(0);	
 		}
    }
+
+	public CluedoClientGUI getGui() {
+		return gui;
+	}
+
+	public void setGui(CluedoClientGUI gui) {
+		this.gui = gui;
+	}
 }
 
 
