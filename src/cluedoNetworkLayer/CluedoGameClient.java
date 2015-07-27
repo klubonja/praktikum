@@ -293,7 +293,7 @@ public class CluedoGameClient extends CluedoGame {
 		
 	}
 
-	public void moveForSuspiciton(int gameID, CluedoStatement suspicion) {
+	public void moveForSuspicion(int gameID, CluedoStatement suspicion) {
 		Platform.runLater(() -> {
 			communicator.moveForSuspiciton(gameID,suspicion);
 		});

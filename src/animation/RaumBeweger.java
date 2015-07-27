@@ -68,7 +68,7 @@ public class RaumBeweger {
 	
 	public Kachel positionInRaum(CluedoPlayer player2, Rooms raum) {
 		zielImRaum = kacheln.getKacheln()[11][11];
-		if(pcManager.getCurrentPlayer().getCluedoPerson().getColor() == "yellow"){
+		if(pcManager.getCurrentPlayer().getCluedoPerson().getColor() == "purple"){
 			if(raum == Rooms.hall){
 				System.out.println("haaaaaaaaaaaaall");
 				zielImRaum.getPosition().setX(11);
