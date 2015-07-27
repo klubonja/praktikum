@@ -10,8 +10,14 @@ import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
@@ -27,7 +33,10 @@ public class ShowKarten extends GridPane{
 	private Button closeButton = new Button("Close");
 	private String karte;
 	private String ueberschrift;
+	private String suspecter;
 	private ArrayList<String> karten;
+	private ArrayList<String> suspecterKarten;
+
 	
 	public ShowKarten(Stage stage, String karte){
 		this.parent = stage;
@@ -46,6 +55,17 @@ public class ShowKarten extends GridPane{
 		setHandlerPoolcards();
 		layoutGrid();
 		setHandler();
+	}
+	
+	public ShowKarten(Stage stage, ArrayList<String> suspecterKarten, String suspecter){
+		
+		this.parent = stage;
+		this.suspecter = suspecter;
+		this.suspecterKarten = suspecterKarten;
+		setHandlerSuspectCards();
+		layoutGrid();
+		setHandler();
+		
 	}
 	
 	private void setHandlerDisprove(){
@@ -106,10 +126,39 @@ public class ShowKarten extends GridPane{
 		this.getChildren().add(closeButton);
 	}
 	
+	
+	public void setHandlerSuspectCards(){
+		
+		Text status = new Text(suspecter + "hat eine Vermutung gemacht:");
+		GridPane.setValignment(status, VPos.CENTER);
+		GridPane.setHalignment(status, HPos.CENTER);
+		GridPane.setConstraints(status, 0, 0);
+		this.getChildren().add(status);
+		
+		HBox cards = new HBox(10);
+		for (String s : suspecterKarten){
+			Image card = new Image ("media/" + s + ".png");
+			ImageView cardView = new ImageView(card);
+			cards.getChildren().add(cardView);
+		}
+		GridPane.setValignment(cards, VPos.CENTER);
+		GridPane.setHalignment(cards, HPos.CENTER);
+		GridPane.setConstraints(cards, 0, 1);
+		this.getChildren().add(cards);
+		
+		
+		GridPane.setValignment(closeButton, VPos.CENTER);
+		GridPane.setHalignment(closeButton, HPos.CENTER);
+		GridPane.setConstraints(closeButton, 0, 2);
+		this.getChildren().add(closeButton);
+
+	}
+	
+	
 	public void layoutGrid(){
 		 
 		this.setPadding(new Insets(15));
-		this.setHgap(20);
+		this.setHgap(25);
 		this.setVgap(10);
 	    this.setGridLinesVisible(false);
 	    this.setAlignment(Pos.CENTER);
@@ -129,20 +178,25 @@ public class ShowKarten extends GridPane{
 	    RowConstraints row0 = new RowConstraints();
 //	    row0.setMaxHeight(400);
 //	    row0.setPrefHeight(400);
-	    row0.setPercentHeight(20);
+	    row0.setPercentHeight(15);
 	    this.getRowConstraints().add(row0);
 	    
 	    RowConstraints row1 = new RowConstraints();
 //	    row1.setMaxHeight(400);
 //	    row1.setPrefHeight(400);
-	    row1.setPercentHeight(80);
+	    row1.setPercentHeight(70);
 	    this.getRowConstraints().add(row1);
 	    
 	    RowConstraints row2 = new RowConstraints();
 //	    row2.setMaxHeight(400);
 //	    row2.setPrefHeight(400);
-	    row2.setPercentHeight(80);
+	    row2.setPercentHeight(15);
 	    this.getRowConstraints().add(row2);
+	    
+	    BorderStroke backgroundStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, 
+				new CornerRadii(10), new BorderWidths(1.3));
+		Border backgroundBorder = new Border(backgroundStroke);
+		this.setBorder(backgroundBorder);
 	}
 	
 	public void setHandler() {

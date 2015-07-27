@@ -62,7 +62,7 @@ public class AussergewohnlichesZugfenster extends BorderPane {
 	 * 
 	 */
 	public void setLayout() {
-		personen.getItems().addAll("Gloria", "Gatow", "Weiss", "Green", "Porz", "Bloom");
+		personen.getItems().addAll("red", "yellow", "white", "green", "blue", "purple");
 		personen.setValue("Person");
 		personen.setMaxWidth(110);
 		waffen.getItems().addAll(deck.getWeapons());

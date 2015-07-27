@@ -319,6 +319,14 @@ public class CluedoGameClient extends CluedoGame {
 			communicator.showDisprovedCard(karte);
 		});
 		
+	}
+
+
+	public void showSuspicionCards(int gameID, CluedoStatement suspicion) {
+		Platform.runLater(() -> {
+			communicator.showCardsforSuspiction(suspicion);
+		});
+		
 	}	
 
 }

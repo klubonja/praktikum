@@ -65,7 +65,12 @@ public abstract class Config {
 
 	public final static double SHOWKARTEN_HEIGHT = 400;
 	public static double SHOWKARTEN_WIDTH = 150;
+	
 	public static double COLOR_SELECT_WINDOW_WIDTH = 300;
+	
+	public final static double SUSPICION_HEIGHT = 300;
+	public final static double SUSPICION_WIDTH = 400;
+	
 
 
 

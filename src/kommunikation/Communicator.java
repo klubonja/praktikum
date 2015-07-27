@@ -328,7 +328,7 @@ public void showPoolCards(ArrayList<String> karten) {
 		Stage pool = new Stage(StageStyle.TRANSPARENT);
 		ShowKarten poolcards = new ShowKarten(pool, karten); 
 		System.out.println("ShowKarten stage wird erstellt? ");
-		Scene secondary = new Scene(poolcards, Config.SHOWKARTEN_HEIGHT, Config.SHOWKARTEN_WIDTH);
+		Scene secondary = new Scene(poolcards, Config.SHOWKARTEN_WIDTH, Config.SHOWKARTEN_HEIGHT);
 		
 		System.out.println("PoolCards scene wird erstellt? ");
 		secondary.setFill(Color.TRANSPARENT);
@@ -345,7 +345,7 @@ public void showPoolCards(ArrayList<String> karten) {
 		Stage pool = new Stage(StageStyle.TRANSPARENT);
 		ShowKarten poolcards = new ShowKarten(pool, karte);
 		System.out.println("ShowKarten stage wird erstellt? ");
-		Scene secondary = new Scene(poolcards, Config.SHOWKARTEN_HEIGHT, Config.SHOWKARTEN_WIDTH);
+		Scene secondary = new Scene(poolcards, Config.SHOWKARTEN_WIDTH, Config.SHOWKARTEN_HEIGHT);
 		
 		System.out.println("Disprove scene wird erstellt? ");
 		
@@ -354,6 +354,31 @@ public void showPoolCards(ArrayList<String> karten) {
 		pool.setOpacity(0.95);
 		pool.setAlwaysOnTop(true);
 		pool.showAndWait();
+	}
+	
+	public void showCardsforSuspiction(CluedoStatement suspicion) {
+		String[] cards = new String[3];
+		cards = suspicion.getStatementAsArray();	
+		
+		System.out.println(cards[0] + cards[2]);
+		ArrayList<String> karten = new ArrayList<String>();
+		karten.add(cards[0]);
+		karten.add(cards[1]);
+		karten.add(cards[2]);
+		
+		String suspector = pcManager.getCurrentNick();
+		Stage suspicionStage = new Stage(StageStyle.TRANSPARENT);
+		ShowKarten suspicionCards = new ShowKarten(suspicionStage ,karten, suspector); 
+		System.out.println("ShowSuspicion stage wird erstellt? ");
+		Scene secondary = new Scene(suspicionCards, Config.SUSPICION_WIDTH, Config.SUSPICION_HEIGHT);
+		
+		System.out.println("PoolCards scene wird erstellt? ");
+		secondary.setFill(Color.TRANSPARENT);
+		suspicionStage.setScene(secondary);
+		suspicionStage.setOpacity(0.95);
+		suspicionStage.setAlwaysOnTop(true);
+		suspicionStage.showAndWait();
+
 	}
 	
 
@@ -486,6 +511,8 @@ public void showPoolCards(ArrayList<String> karten) {
 					network.sendMsgToServer(NetworkMessages.cantDisproveMsg(gameID));
 				}				
 			}
+			
+			
 	
 	public void kill() {
 		gameView.close();
@@ -594,5 +621,11 @@ public void showPoolCards(ArrayList<String> karten) {
 		}
 		
 	}
+
+//	public void showCardsforSuspiction(CluedoStatement suspicion) {
+//		String[] cards = new String[3];
+//		cards = suspicion.getStatementAsArray();	
+//		
+//	}
 }
 

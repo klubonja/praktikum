@@ -272,6 +272,7 @@ public class DataGuiManagerClientSpool extends DataGuiManager{
 			game.setCurrentSuspicion(suspicion);
 		}		
 //		game.moveForSuspiciton(gameID,suspicion);
+		game.showSuspicionCards(gameID, suspicion);
 	}	
 	
 	public void handleDisprove(int gameID,ServerItem server){
